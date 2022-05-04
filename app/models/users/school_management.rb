@@ -67,7 +67,7 @@ module Users
     end
 
     def custom_agreements_path
-      url_helpers.dashboard_school_internship_applications_path(school)
+      url_helpers.dashboard_internship_agreements_path
     end
 
     def role_presenter

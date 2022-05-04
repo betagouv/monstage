@@ -60,11 +60,10 @@ Rails.application.routes.draw do
 
     resources :schools, only: %i[index edit update show] do
       resources :users, only: %i[destroy update index], module: 'schools'
-      resources :internship_applications, only: %i[index], module: 'schools'
       resources :internship_agreement_presets, only: %i[edit update],  module: 'schools'
 
       resources :class_rooms, only: %i[index new create edit update show destroy], module: 'schools' do
-        resources :students, only: %i[show update index], module: 'class_rooms'
+        resources :students, only: %i[update index], module: 'class_rooms'
       end
       put '/update_students_by_group', to: 'schools/students#update_by_group', module: 'schools'
       get '/information', to: 'schools#information', module: 'schools'

@@ -63,7 +63,9 @@ tr:hover a.trash-user{
 .dark-notice {
   background: $bg-light-blue 0% 0% no-repeat padding-box;
   box-shadow: 0px 3px 6px #0000001A;
-  border-radius: 14px;
+  .notice-label{
+    max-width: 532px;
+  }
 }
 
 .btn .disabled {

@@ -30,7 +30,7 @@ module Dashboard
         assert_response :success
         assert_select 'title', 'Mes candidatures | Monstage'
         assert_select 'h1.h2.mb-3', text: student.name
-        assert_select 'a[href=?]', dashboard_school_class_room_path(school, class_room)
+        assert_select 'a[href=?]', dashboard_school_class_room_students_path(school, class_room)
         assert_select 'h2.h4', text: 'Aucun stage sélectionné'
       end
 

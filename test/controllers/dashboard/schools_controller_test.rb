@@ -62,8 +62,8 @@ module Dashboard
       sign_in(school_manager)
       get edit_dashboard_school_path(school.to_param)
 
-      assert_select '.alert.alert-info p', text: "Renseignez les classes pour permettre aux enseignants (et aux élèves) de s'inscrire."
-      assert_select '.alert.alert-info p', text: 'Indiquez les semaines de stage afin que les offres proposées aux élèves correspondent à ces dates.'
+      assert_select '.modal-body p',
+                    text: 'Veuillez renseigner vos dates de stage afin que vos élèves puissent commencer à postuler.'
     end
 
     test 'GET edit as God works' do

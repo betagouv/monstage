@@ -6,11 +6,6 @@ module Dashboard
       include NestedSchool
       include NestedClassRoom
 
-      def show
-        @student = @class_room.students.find(params[:id])
-        authorize! :show_user_in_school, @student
-      end
-
       def index
         @students = @class_room.students
                                .includes([:school, :internship_applications])

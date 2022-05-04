@@ -56,7 +56,7 @@ class ManageCompleteOfferFillingTest < ApplicationSystemTestCase
         # assert_equal 'Stage individuel (un seul élève par stage)', find('span.badge-internship-offer-alone').text
         # assert_equal 'Une super cool entreprise', find('.test-description').text
         assert_equal 'Delta dev', find('h1').text
-        assert_equal 'Paris 13e arrondissement', find('.test-city').text
+        assert_equal 'Paris 12', find('.test-city').text
       end
     end
   end

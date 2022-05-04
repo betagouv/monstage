@@ -6,7 +6,7 @@
     - else
       h1.h2.mb-3= @current_student.presenter.full_name
     - unless current_user.student?
-      p= link_to dashboard_school_class_room_path(@current_student.school, @current_student.class_room) do
+      p = link_to dashboard_school_class_room_students_path(@current_student.school, @current_student.class_room) do
         i.fas.fa-chevron-left.mr-1
         | Retour
 - if @internship_applications.size.zero?

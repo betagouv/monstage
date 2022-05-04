@@ -7,28 +7,28 @@
                 class: 'ml-auto',
                 id: 'test-create-offer' do
         button.fr-fi-add-line.fr-btn.fr-btn--icon-left Déposer une offre
-  .fr-tabs.fr-mb-9w.w-100
-    .row
-      = render partial: "dashboard/internship_offers/tabs",
-               locals: { internship_offers: @internship_offers,
-                         all_states_counter: @all_states_counter }
+.fr-tabs.fr-mb-9w.w-100
+  .row
+    = render partial: "dashboard/internship_offers/tabs",
+              locals: { internship_offers: @internship_offers,
+                        all_states_counter: @all_states_counter }
 
-    .fr-tabs__panel.fr-tabs__panel--selected.internships
-      = render partial: 'dashboard/internship_offers/offers_and_agreements_content',
-              locals: { params: params }
+  .fr-tabs__panel.fr-tabs__panel--selected.internships
+    = render partial: 'dashboard/internship_offers/offers_and_agreements_content',
+            locals: { params: params }
 
-    - if @internship_offers.total_pages > @internship_offers.current_page
-      .row.d-flex.d-sm-none
-        .col-12.mt-3
-          .actions.d-flex.d-sm-block
-            = link_to path_to_next_page(@internship_offers),
-                      class: 'fr-btn' do
-              | Plus de resultats
+  - if @internship_offers.total_pages > @internship_offers.current_page
+    .row.d-flex.d-sm-none
+      .col-12.mt-3
+        .actions.d-flex.d-sm-block
+          = link_to path_to_next_page(@internship_offers),
+                    class: 'fr-btn' do
+            | Plus de resultats
 
-    .row.d-none.d-sm-flex
-      .col-12.mt-3= paginate(@internship_offers)
+  .row.d-none.d-sm-flex
+    .col-12.mt-3= paginate(@internship_offers)
 
-  - if @internship_offers.empty?
-    .row.fr-mb-2w
-      .col-12
-        h1.h2.mt-4 Aucune offre n'a été publiée selon ces critères
+- if @internship_offers.empty?
+  .row.fr-mb-2w
+    .col-12
+      h1.h2.mt-4 Aucune offre n'a été publiée selon ces critères
