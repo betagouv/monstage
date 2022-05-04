@@ -68,7 +68,9 @@ RailsAdmin.config do |config|
     edit
     delete
 
-    switch_user
+    switch_user do
+      except ['Users::God']
+    end
 
     export
   end
