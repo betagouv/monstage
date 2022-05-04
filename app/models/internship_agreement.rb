@@ -87,6 +87,9 @@ class InternshipAgreement < ApplicationRecord
     end
   end
 
+  delegate :internship_offer, to: :internship_application
+  delegate :employer, to: :internship_offer
+
 
 
   def at_least_one_validated_terms

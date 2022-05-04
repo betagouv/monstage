@@ -324,7 +324,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     end
 
     # ensure failure drives user to login_page
-    if ENV['RUN_BRITTLE_TEST']
+    if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'
       find('span#alert-text', text: "Un compte est déjà associé à ce numéro de téléphone, connectez-vous ou réinitialisez votre mot de passe si vous l'avez oublié")
       assert_equal '+33 06 00 11 00 11', find("input[name='user[phone]']").value
     end

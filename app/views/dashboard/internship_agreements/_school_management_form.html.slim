@@ -7,20 +7,20 @@
       #nav-tab.nav.nav-tabs role="tablist"
         = link_to "Chef d'établissement",
                   '#nav-school-management',
-                  class: "nav-item nav-link active",
+                  class: "nav-item nav-link fr-raw-link #{current_user.school_manager? ? "active" : ''}",
                   id: 'nav-school-management-tab',
                   data: { 'toggle': "tab" },
                   role: "tab",
                   'aria-controls': "nav-school-management",
-                  'aria-selected': "false"
+                  'aria-selected': "#{current_user.school_manager?}"
         = link_to 'Offreur',
                   '#nav-employer',
-                  class: "nav-item nav-link",
+                  class: "nav-item nav-link fr-raw-link",
                   id: 'nav-employer-tab',
                   data: { 'toggle': "tab" },
                   role: "tab",
                   'aria-controls': "nav-employer",
-                  'aria-selected': "true"
+                  'aria-selected': "#{current_user.employer?}"
 
       #nav-tabContent.tab-content
 

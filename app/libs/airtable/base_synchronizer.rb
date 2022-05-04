@@ -10,7 +10,6 @@ module Airtable
       pool = Concurrent::FixedThreadPool.new(synchronizers.size, fallback_policy: :abort)
       synchronizers.map do |synchronizer|
         pool.post do
-          puts "pust to pull: #{synchronizer}"
           synchronizer.pull_all
         end
       end
