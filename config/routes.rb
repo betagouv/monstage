@@ -56,7 +56,6 @@ Rails.application.routes.draw do
   namespace :dashboard, path: 'dashboard' do
     # resources :support_tickets, only: %i[new create] not used anymore since remote internships are off
     resources :internship_agreements,  except: %i[destroy]
-    resources :internship_applications, only: %i[index]
 
     resources :schools, only: %i[index edit update show] do
       resources :users, only: %i[destroy update index], module: 'schools'
