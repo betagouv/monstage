@@ -17,7 +17,7 @@ module UserAdmin
         field :confirmed_at
         field :sign_in_count
 
-        scopes [:kept]
+        scopes [:kept, :discarded]
       end
 
       edit do
