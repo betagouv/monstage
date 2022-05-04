@@ -67,6 +67,7 @@ module Dashboard
       authorize! :create, InternshipAgreement
       @internship_agreements = current_user.internship_agreements
                                            .includes([:internship_application])
+      @school = current_user.school if current_user.is_a?(Users::SchoolManagement)
     end
 
     private
@@ -113,7 +114,7 @@ module Dashboard
       when 'completed_by_employer' then "La convention a été envoyée au chef d'établissement."
       when 'started_by_school_manager' then 'La convention a été enregistrée.'
       when 'validated' then "La convention a été validée."
-      else 
+      else
         'La convention a été enregistrée.'
       end
     end
