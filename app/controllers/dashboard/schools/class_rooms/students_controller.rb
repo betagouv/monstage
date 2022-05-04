@@ -7,6 +7,7 @@ module Dashboard
       include NestedClassRoom
 
       def index
+        authorize! :manage_school_students, current_user.school
         @students = @class_room.students
                                .includes([:school, :internship_applications])
                                .order(:last_name, :first_name)
