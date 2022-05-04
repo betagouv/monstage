@@ -10,9 +10,8 @@
         .row
 
           .col-12.d-flex.justify-content-between
-            = link_to current_user.custom_dashboard_path, class: 'fr-raw-link' do
-              = button_tag type: "button", data: { action: 'click->footer#saveAndQuit' }, class: 'fr-btn mx-1', id:'save_and_quit' do
-                | Enregistrer et quitter
+            = button_tag type: "button", data: { action: 'click->footer#saveAndQuit' }, class: 'fr-btn mx-1', id:'save_and_quit' do
+              | Enregistrer et quitter
 
             = button_tag type: "button", data: { action: 'click->footer#checkFormValidity' }, class: 'fr-btn mx-1', id: 'send_agreement' do
               i.fas.fa-check
