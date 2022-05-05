@@ -164,7 +164,7 @@ fr:
         tutor_name: Nom du tuteur
         tutor_phone: Téléphone du tuteur
         tutor_email: Email du tuteur
-      
+
       internship_agreement:
         aasm_state:
           employer:
@@ -248,6 +248,9 @@ fr:
         school: "Etablissement"
         school_manager: "Chef d'établissement"
         teacher: "Professeur"
+        discarded_at: Supprimé le
+        operator: Association
+        ministry_id: ID de l'institution de tutelle
       week:
         number: Numéro de semaine
         year: Année

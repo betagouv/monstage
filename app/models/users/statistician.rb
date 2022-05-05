@@ -20,6 +20,10 @@ module Users
         end
         fields(*UserAdmin::ACCOUNT_FIELDS)
       end
+
+      edit do
+        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
+      end
     end
 
     validate :email_in_list

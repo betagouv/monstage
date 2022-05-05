@@ -9,6 +9,10 @@ module EmployerAdmin
 
         scopes(UserAdmin::DEFAULT_SCOPES)
       end
+
+      edit do
+        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
+      end
     end
   end
 end

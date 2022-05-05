@@ -16,6 +16,11 @@ module Users
 
         scopes(UserAdmin::DEFAULT_SCOPES)
       end
+
+      edit do
+        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
+        field :ministry_id
+      end
     end
 
     validate :email_in_list

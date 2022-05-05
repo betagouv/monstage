@@ -6,6 +6,8 @@ module UserAdmin
   DEFAULT_FIELDS = %i[id email first_name last_name]
   ACCOUNT_FIELDS = %i[confirmed_at sign_in_count]
 
+  DEFAULT_EDIT_FIELDS = %i[first_name last_name email phone password password_confirmation confirmed_at type discarded_at]
+
   DEFAULT_SCOPES = %i[kept discarded]
 
   included do
@@ -23,7 +25,7 @@ module UserAdmin
       end
 
       edit do
-        fields(*DEFAULT_FIELDS)
+        fields(*DEFAULT_EDIT_FIELDS)
       end
 
       # show do

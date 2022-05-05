@@ -17,8 +17,13 @@ module Users
         fields(*UserAdmin::DEFAULT_FIELDS)
         field :operator
         fields(*UserAdmin::ACCOUNT_FIELDS)
-        
+
         scopes(UserAdmin::DEFAULT_SCOPES)
+      end
+
+      edit do
+        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
+        field :operator
       end
     end
 
