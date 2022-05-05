@@ -2,34 +2,36 @@
 
 module UserAdmin
   extend ActiveSupport::Concern
-  BASE_FIELDS = %i[id email first_name last_name].freeze
-  DEFAULTS_FIELDS = (BASE_FIELDS + %i[confirmed_at]).freeze
+
+  DEFAULT_FIELDS = %i[id email first_name last_name]
+  ACCOUNT_FIELDS = %i[confirmed_at sign_in_count]
+
+  DEFAULT_SCOPES = %i[kept discarded]
 
   included do
     rails_admin do
       list do
-        fields(*BASE_FIELDS)
+        fields(*DEFAULT_FIELDS)
         field :type do
           pretty_value do
             value.constantize.model_name.human
           end
         end
-        field :confirmed_at
-        field :sign_in_count
+        fields(*ACCOUNT_FIELDS)
 
-        scopes [:kept, :discarded]
+        scopes(DEFAULT_SCOPES)
       end
 
       edit do
-        fields(*DEFAULTS_FIELDS)
+        fields(*DEFAULT_FIELDS)
       end
 
       # show do
-      #   fields(*UserAdmin::DEFAULTS_FIELDS)
+      #   fields(*UserAdmin::DEFAULT_FIELDS)
       # end
 
       show do
-        fields(*DEFAULTS_FIELDS)
+        fields(*DEFAULT_FIELDS)
         field :confirmation_sent_at do
           date_format 'KO'
           strftime_format '%d/%m/%Y'
@@ -46,7 +48,7 @@ module UserAdmin
       end
 
       export do
-        fields(*UserAdmin::DEFAULTS_FIELDS)
+        fields(*DEFAULT_FIELDS)
         field :role
         field :type
       end

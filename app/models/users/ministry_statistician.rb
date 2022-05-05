@@ -7,14 +7,14 @@ module Users
       configure :created_at, :datetime
 
       list do
+        fields(*UserAdmin::DEFAULT_FIELDS)
         field :ministry_name do
           label 'Administration centrale'
           pretty_value { bindings[:object]&.ministry&.name }
         end
-        fields(*UserAdmin::DEFAULTS_FIELDS)
-        field :sign_in_count
-        field :last_sign_in_at
-        field :created_at
+        fields(*UserAdmin::ACCOUNT_FIELDS)
+
+        scopes(UserAdmin::DEFAULT_SCOPES)
       end
     end
 

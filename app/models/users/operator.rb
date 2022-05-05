@@ -14,8 +14,11 @@ module Users
 
     rails_admin do
       list do
-        fields(*UserAdmin::DEFAULTS_FIELDS)
+        fields(*UserAdmin::DEFAULT_FIELDS)
         field :operator
+        fields(*UserAdmin::ACCOUNT_FIELDS)
+        
+        scopes(UserAdmin::DEFAULT_SCOPES)
       end
     end
 

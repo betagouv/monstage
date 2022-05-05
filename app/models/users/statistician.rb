@@ -7,8 +7,9 @@ module Users
       configure :created_at, :datetime
 
       list do
-        scopes [:active]
+        scopes(UserAdmin::DEFAULT_SCOPES)
 
+        fields(*UserAdmin::DEFAULT_FIELDS)
         field :department do
           label 'Département'
           pretty_value { bindings[:object]&.department}
@@ -17,10 +18,7 @@ module Users
           label 'Code postal'
           pretty_value { bindings[:object]&.department_zipcode}
         end
-        fields(*UserAdmin::DEFAULTS_FIELDS)
-        field :sign_in_count
-        field :last_sign_in_at
-        field :created_at
+        fields(*UserAdmin::ACCOUNT_FIELDS)
       end
     end
 
