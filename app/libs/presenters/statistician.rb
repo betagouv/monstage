@@ -47,12 +47,5 @@ module Presenters
     def offer_export_mail_subject(department: )
       "Export des offres du département de #{I18n.transliterate(department)}"
     end
-
-    private
-    attr_reader :user
-
-    def initialize(statistician)
-      @user = statistician
-    end
   end
 end

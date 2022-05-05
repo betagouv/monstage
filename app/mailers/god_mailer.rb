@@ -2,7 +2,7 @@
 
 class GodMailer < ApplicationMailer
   require_relative '../libs/email_utils'
-  default from: proc { EmailUtils.formatted_email }
+  default from: proc { EmailUtils.formatted_from }
 
   def weekly_kpis_email
     current_week = Week.selectable_from_now_until_end_of_school_year.first
@@ -21,4 +21,3 @@ class GodMailer < ApplicationMailer
     )
   end
 end
-

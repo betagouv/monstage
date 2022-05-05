@@ -26,7 +26,7 @@ class EmployerMailer < ApplicationMailer
          subject: 'Information - Une candidature a été annulée')
   end
 
-  def agreement_creation_notice_email(internship_agreement: )
+  def internship_application_approved_with_agreement_email(internship_agreement: )
     internship_application = internship_agreement.internship_application
     @internship_offer      = internship_application.internship_offer
     student                = internship_application.student
