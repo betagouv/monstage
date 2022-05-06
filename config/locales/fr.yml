@@ -238,19 +238,24 @@ fr:
       user:
         accept_terms: "Conditions d'utilisation"
         class_room: "Classe"
+        class_room_id: ID de la classe
         confirmed_at: Confirmé le
         first_name: Prénom
         gender: Sexe
+        birth_date: Date de naissance
         last_name: Nom
         main_teacher: "Professeur principal"
         other: "Autres fonctions"
         phone: Téléphone mobile
         school: "Etablissement"
+        school_id: ID de l'établissement
         school_manager: "Chef d'établissement"
         teacher: "Professeur"
         discarded_at: Supprimé le
         operator: Association
         ministry_id: ID de l'institution de tutelle
+        phone_password_reset_count: Compteur de remise à zéro de mot de passe par téléphone
+        anonymized: Anonymisé
       week:
         number: Numéro de semaine
         year: Année
