@@ -440,7 +440,24 @@ fr:
       user:
         kept: Actifs
         discarded: Supprimés
-
+      users~employer:
+        kept: Actifs
+        discarded: Supprimés
+      users~operator:
+        kept: Actifs
+        discarded: Supprimés
+      users~school_management:
+        kept: Actifs
+        discarded: Supprimés
+      users~ministry_statistician:
+        kept: Actifs
+        discarded: Supprimés
+      users~statistician:
+        kept: Actifs
+        discarded: Supprimés
+      users~student:
+        kept: Actifs
+        discarded: Supprimés
   dashboard:
     internship_offer:
       created: Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.
