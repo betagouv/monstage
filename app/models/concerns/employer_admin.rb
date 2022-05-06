@@ -3,6 +3,8 @@ module EmployerAdmin
 
   included do
     rails_admin do
+      weight 3
+      
       list do
         fields(*UserAdmin::DEFAULT_FIELDS)
         fields(*UserAdmin::ACCOUNT_FIELDS)

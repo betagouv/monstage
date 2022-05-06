@@ -3,6 +3,8 @@
 module Users
   class MinistryStatistician < User
     rails_admin do
+      weight 6
+      
       configure :last_sign_in_at, :datetime
       configure :created_at, :datetime
 

@@ -5,6 +5,9 @@ module InternshipOffers
     include WeeklyFramable
 
     rails_admin do
+      weight 13
+      navigation_label "Offres"
+      
       configure :created_at, :datetime do
         date_format 'BUGGY'
       end

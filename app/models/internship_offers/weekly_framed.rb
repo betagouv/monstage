@@ -6,6 +6,9 @@ module InternshipOffers
     include ActiveAdminable
     # ActiveAdmin index specifics
     rails_admin do
+      weight 11
+      navigation_label "Offres"
+
       list do
         scopes [:not_from_api]
         field :title

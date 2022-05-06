@@ -83,4 +83,9 @@ class InternshipOfferKeyword < ApplicationRecord
            .difference(REJECTED_NATURES)
            .empty?
   end
+
+  rails_admin do
+    weight 14
+    navigation_label 'Divers'
+  end
 end

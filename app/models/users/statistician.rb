@@ -3,6 +3,8 @@
 module Users
   class Statistician < User
     rails_admin do
+      weight 5
+
       configure :last_sign_in_at, :datetime
       configure :created_at, :datetime
 

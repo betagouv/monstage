@@ -3,6 +3,7 @@ module SchoolManagementAdmin
 
   included do
     rails_admin do
+      weight 4
       list do
         fields(*UserAdmin::DEFAULT_FIELDS)
         field :school

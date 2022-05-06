@@ -25,11 +25,11 @@ fr:
   activerecord:
     models:
       email_whitelists/statistician:
-        one: courriel autorisé du référent départemental
-        other: courriels autorisés des référents départementaux
+        one: Courriel autorisé du référent départemental
+        other: Courriels autorisés des référents départementaux
       email_whitelists/ministry:
-        one: courriel autorisé du référent central
-        other: courriels autorisés des référents centraux
+        one: Courriel autorisé du référent central
+        other: Courriels autorisés des référents centraux
       group:
         one: Groupe
         other: Groupes
@@ -45,6 +45,9 @@ fr:
       internship_offers/api:
         one: Offre API
         other: Offres API
+      internship_offer_keyword:
+        one: Mot clé de recherche
+        other: Mots clé de recherche
       internship_application:
         one: Candidature
         other: Candidatures
@@ -61,8 +64,8 @@ fr:
         one: Secteur
         other: Secteurs
       school:
-        one: Etablissement
-        other: Etablissements
+        one: Établissement
+        other: Établissements
       user:
         one: Utilisateur
         other: Utilisateurs

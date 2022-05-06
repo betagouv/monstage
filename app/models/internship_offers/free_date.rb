@@ -4,6 +4,9 @@ module InternshipOffers
 
     # ActiveAdmin index specifics
     rails_admin do
+      weight 12
+      navigation_label "Offres"
+
       list do
         field :title
         field :zipcode
