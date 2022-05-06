@@ -1,4 +1,4 @@
-.row.py-5.align-items-center
+.row.align-items-center
   .col-md-6.col-sm-12
     .fr-px-2w
       = image_tag asset_pack_path('media/images/homepage/01.svg'),
@@ -10,9 +10,8 @@
 
       p.mt-3.fr-text.mb-lg-5.mb-md-5.mb-sm-4.mb-3
         |
-          Lörem ipsum milig hemida i exos guss, jikrorad. Nyhetsundvikare
-          prediling huruvida disånade, dir. Bötning pingen i ädösegisk tedivassade.
-          Lenera infrar guneliga operamani. Valig nåheten.
+          Consultez de nombreuses offres, soignez votre candidature 
+          et postulez à vos stages préférés.
       p.mt-4.text-center-left
         = link_to internship_offers_path(current_user_or_visitor.default_search_options),
                   class: 'fr-raw-link',
@@ -21,19 +20,22 @@
 
   .col-md-6.col-sm-12.text-center.d-none.d-md-block
     .fr-px-2w
-      = image_tag asset_pack_path('media/images/homepage/fake.svg'),
-                    alt: "Illustration animée, prof élèves",
+      = image_tag asset_pack_path('media/images/homepage/trouver-un-stage.svg'),
+                    alt: "Trouver un stage",
                     width: '100%',
-                    class:'border'
+                    class:'fr-p-5w'
 
   / 2
-.row.py-5.align-items-center
+.row.align-items-center
   .col-md-6.col-sm-12.text-center.d-none.d-md-block
+    = image_tag asset_pack_path('media/images/homepage/link-step-1-2.svg'),
+                    alt: "lien",
+                    class: 'link-step-1-2'
     .fr-px-2w
-      = image_tag asset_pack_path('media/images/homepage/fake.svg'),
-                    alt: "Illustration animée, prof élèves",
+      = image_tag asset_pack_path('media/images/homepage/accompagner-vos-eleves.svg'),
+                    alt: "Accompagner vos élèves",
                     width: '100%',
-                    class:'border'
+                    class:'fr-p-5w'
   .col-md-6.col-sm-12
     .fr-px-2w
       = image_tag asset_pack_path('media/images/homepage/02.svg'),
@@ -45,17 +47,19 @@
 
       p.mt-3.fr-text.mb-lg-5.mb-md-5.mb-sm-4.mb-3
         |
-          Lörem ipsum milig hemida i exos guss, jikrorad. Nyhetsundvikare
-          prediling huruvida disånade, dir. Bötning pingen i ädösegisk tedivassade.
-          Lenera infrar guneliga operamani. Valig nåheten.
+          Suivez vos élèves dans leur parcours de stage d’observation, 
+          de la recherche à la semaine de stage.
       p.mt-4.text-center-left
         = link_to internship_offers_path(current_user_or_visitor.default_search_options),
                   class: 'fr-raw-link',
                   data: { :"test-id" => 'mobile-search-button-first' }
           span.fr-btn.fr-btn--secondary.fr-px-6w= "Accompagner mes élèves"
   / 3
-.row.py-5.align-items-center
+.row.align-items-center
   .col-md-6.col-sm-12
+    = image_tag asset_pack_path('media/images/homepage/link-step-2-3.svg'),
+                    alt: "lien",
+                    class: 'link-step-2-3'
     .fr-px-2w
       = image_tag asset_pack_path('media/images/homepage/03.svg'),
                   alt: "Premièrement",
@@ -66,9 +70,8 @@
 
       p.mt-3.fr-text.mb-lg-5.mb-md-5.mb-sm-4.mb-3
         |
-          Lörem ipsum milig hemida i exos guss, jikrorad. Nyhetsundvikare
-          prediling huruvida disånade, dir. Bötning pingen i ädösegisk tedivassade.
-          Lenera infrar guneliga operamani. Valig nåheten.
+          Du dépôt d’offres via votre espace personnalisé aux conseils 
+          pour bien vous préparer à l’arrivée du stagiaire.
       p.mt-4.text-center-left
         - if !user_signed_in? || can?(:supply_offers, current_user)
           - target_link = current_user&.custom_dashboard_path || new_user_registration_path
@@ -79,7 +82,7 @@
 
   .col-md-6.col-sm-12.text-center.d-none.d-md-block
     .fr-px-2w
-      = image_tag asset_pack_path('media/images/homepage/fake.svg'),
-                    alt: "Illustration animée, prof élèves",
+      = image_tag asset_pack_path('media/images/homepage/accueillir-un-stagiaire.svg'),
+                    alt: "Accueillir un stagiaire",
                     width: '100%',
-                    class:'border'
+                    class:'fr-p-5w'

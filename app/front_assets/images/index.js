@@ -76,6 +76,8 @@ import './homepage/alternatives/viens-voir-mon-taff.png';
 
 import './homepage/benefices/icon-accompagner-les-eleves.png';
 import './homepage/hero-group-resized.png';
+import './homepage/hero-illustration.svg';
+import './homepage/opportunities-illustration.svg';
 import './homepage/hero-group-xs.png';
 import './homepage/eleves-parents-eleves-16-9.svg';
 import './homepage/etablissements-scolaires-16-9.svg';
@@ -87,6 +89,11 @@ import './homepage/ms3e-big-badge.svg';
 import './homepage/animated_people.gif';
 import './homepage/benefices/icon-offrir-un-stage.png';
 import './homepage/benefices/icon-trouver-un-stage.png';
+import './homepage/accompagner-vos-eleves.svg';
+import './homepage/trouver-un-stage.svg';
+import './homepage/accueillir-un-stagiaire.svg';
+import './homepage/link-step-1-2.svg';
+import './homepage/link-step-2-3.svg';
 
 
 import './homepage/partenaires/Logo-jobirl.jpg';

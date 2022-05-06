@@ -113,6 +113,20 @@ img.covering {
   height: auto;
 }
 
+.link-step-1-2 {
+  position: absolute;
+  top: -140px;
+  left: 400px;
+  z-index: -1;
+}
+
+.link-step-2-3 {
+  position: absolute;
+  top: -240px;
+  left: 460px;
+  z-index: -1;
+}
+
 .right-flying-email {
   position: absolute;
   width: 118.41px;
