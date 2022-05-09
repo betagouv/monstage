@@ -34,7 +34,7 @@ class InternshipApplication < ApplicationRecord
 
   # reminders after 7 days, 14 days and none afterwards
   scope :remindable, lambda {
-    passed_sumitted = submitted.where(submitted_at: 15.days.ago..7.days.ago)
+    passed_sumitted = submitted.where(submitted_at: 16.days.ago..7.days.ago)
                                .where(canceled_at: nil)
     starting = passed_sumitted.where('pending_reminder_sent_at is null')
     current  = passed_sumitted.where('pending_reminder_sent_at < :date', date: 7.days.ago)
