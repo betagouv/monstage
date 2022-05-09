@@ -42,7 +42,7 @@ class InternshipApplication < ApplicationRecord
   }
 
   scope :expirable, lambda {
-    submitted.where('submitted_at < :date', date: 15.days.ago)
+    submitted.where('submitted_at < :date', date: 30.days.ago)
   }
 
   #

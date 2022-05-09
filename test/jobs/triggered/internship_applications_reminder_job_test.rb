@@ -48,9 +48,9 @@ module Triggered
     end
 
     test 'perform does sends email and expire!' \
-         'when internship_applications is pending for more than 2 weeks' do
+         'when internship_applications is pending for more than 30 days' do
       internship_application = create(:weekly_internship_application, :submitted,
-                                      submitted_at: 16.days.ago,
+                                      submitted_at: 31.days.ago,
                                       internship_offer: @internship_offer)
 
       freeze_time do
