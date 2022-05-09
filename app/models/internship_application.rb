@@ -31,14 +31,14 @@ class InternshipApplication < ApplicationRecord
   #
   # Triggers scopes (used for transactional mails)
   #
-  scope :not_reminded, lambda {
-    where(pending_reminder_sent_at: nil)
-  }
 
+  # reminders after 7 days, 14 days and none afterwards
   scope :remindable, lambda {
-    submitted.not_reminded
-             .where(submitted_at: 15.days.ago..7.days.ago)
-             .where(canceled_at: nil)
+    passed_sumitted = submitted.where(submitted_at: 15.days.ago..7.days.ago)
+                               .where(canceled_at: nil)
+    starting = passed_sumitted.where('pending_reminder_sent_at is null')
+    current  = passed_sumitted.where('pending_reminder_sent_at < :date', date: 7.days.ago)
+    starting.or(current)
   }
 
   scope :expirable, lambda {
@@ -123,7 +123,7 @@ class InternshipApplication < ApplicationRecord
 
     event :submit do
       transitions from: :drafted, to: :submitted, after: proc { |*_args|
-        update!("submitted_at": Time.now.utc)
+        update!("submitted_at": Time.now.utc, pending_reminder_sent_at: Date.today)
         EmployerMailer.internship_application_submitted_email(internship_application: self)
                       .deliver_later
       }

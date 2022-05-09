@@ -29,21 +29,22 @@ module Triggered
     test 'perform sends email and update pending_reminder_sent_at' \
          'when internship_applications is pending for more than 1 a week' do
       internship_application = create(:weekly_internship_application, :submitted,
-                                      submitted_at: 8.days.ago,
-                                      internship_offer: @internship_offer)
+                                        submitted_at: 8.days.ago,
+                                        internship_offer: @internship_offer)
 
       freeze_time do
         assert_changes -> { internship_application.reload.pending_reminder_sent_at },
-                       from: nil,
-                       to: Time.now.utc do
+                      from: nil,
+                      to: Time.now.utc do
           InternshipApplicationsReminderJob.perform_now(@internship_offer.employer)
           assert_enqueued_emails 1
         end
-      end
-      assert_nil internship_application.expired_at
+        assert_nil internship_application.expired_at
+        assert_equal DateTime.now, internship_application.pending_reminder_sent_at
 
-      assert_no_emails do # ensure re-entrance does not send emails
-        InternshipApplicationsReminderJob.perform_now(@internship_offer.employer)
+        assert_no_emails do # ensure re-entrance does not send emails
+          InternshipApplicationsReminderJob.perform_now(@internship_offer.employer)
+        end
       end
     end
 
@@ -51,6 +52,7 @@ module Triggered
          'when internship_applications is pending for more than 30 days' do
       internship_application = create(:weekly_internship_application, :submitted,
                                       submitted_at: 31.days.ago,
+                                      pending_reminder_sent_at: 13.days.ago,
                                       internship_offer: @internship_offer)
 
       freeze_time do
@@ -62,6 +64,7 @@ module Triggered
         end
         internship_application.reload
         assert_equal Time.now.utc, internship_application.expired_at, 'expired_at not updated'
+        refute_equal DateTime.now, internship_application.pending_reminder_sent_at
       end
       assert_no_emails do # ensure re-entrance does not send emails
         InternshipApplicationsReminderJob.perform_now(@internship_offer.employer)
