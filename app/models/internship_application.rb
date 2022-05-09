@@ -123,7 +123,7 @@ class InternshipApplication < ApplicationRecord
 
     event :submit do
       transitions from: :drafted, to: :submitted, after: proc { |*_args|
-        update!("submitted_at": Time.now.utc, pending_reminder_sent_at: Date.today)
+        update!("submitted_at": Time.now.utc)
         EmployerMailer.internship_application_submitted_email(internship_application: self)
                       .deliver_later
       }
