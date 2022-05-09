@@ -318,4 +318,17 @@ class InternshipApplication < ApplicationRecord
                   )
     UrlShortener.short_url(target)
   end
+
+  rails_admin do
+    weight 14
+    navigation_label 'Offres'
+
+    list do
+      field :id
+      field :student
+      field :internship_offer
+      field :aasm_state
+      field :week
+    end
+  end
 end

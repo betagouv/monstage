@@ -5,7 +5,7 @@ class Sector < ApplicationRecord
   before_create :set_uuid
 
   rails_admin do
-    weight 14
+    weight 15
     navigation_label 'Divers'
 
     list do

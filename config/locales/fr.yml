@@ -245,6 +245,11 @@ fr:
         group_name: Groupe ou institution
         school: Établissement réservé
 
+      internship_application:
+        student: Élève
+        internship_offer: Offre
+        aasm_state: État
+
       user:
         accept_terms: "Conditions d'utilisation"
         class_room: "Classe"

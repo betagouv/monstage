@@ -19,7 +19,7 @@ class Group < ApplicationRecord
             inverse_of: :group
 
   rails_admin do
-    weight 14
+    weight 15
     navigation_label 'Divers'
   end
 end
