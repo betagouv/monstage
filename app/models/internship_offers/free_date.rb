@@ -16,6 +16,25 @@ module InternshipOffers
         field :is_public
         field :created_at
       end
+
+      edit do
+        field :title
+        field :description
+        field :sector
+        field :max_candidates
+        field :max_students_per_group
+        field :tutor_name
+        field :tutor_phone
+        field :tutor_email
+        field :employer_website
+        field :discarded_at
+        field :employer_name
+        field :is_public
+        field :group
+        field :employer_description
+        field :published_at
+        field :school
+      end
     end
 
     # scope  to request internship offers

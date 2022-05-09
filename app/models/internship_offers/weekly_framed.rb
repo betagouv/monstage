@@ -37,6 +37,7 @@ module InternshipOffers
       edit do
         field :title
         field :description
+        field :sector
         field :max_candidates
         field :max_students_per_group
         field :tutor_name
@@ -49,7 +50,7 @@ module InternshipOffers
         field :group
         field :employer_description
         field :published_at
-        field :weeks_count
+        field :school
         field :first_monday
         field :last_monday
       end

@@ -159,9 +159,11 @@ fr:
         description: Description
         sector: Secteur
         school_track: Filière
-        max_candidates: Nbr. max de candidats
+        max_candidates: Nbr. max de candidats accueillis sur l'année
         max_students_per_group: Effectif max. d'un groupe d'élèves
         sector_id: Secteurs professionnels
+        new_daily_hours: Horaires journaliers
+        daily_lunch_break: Pause déjeuner
 
       tutor: &tutor_fields
         tutor_name: Nom du tuteur
@@ -205,6 +207,9 @@ fr:
         weeks_count: Nbr. de semaines proposées
         first_monday: Premier lundi de stage
         last_monday: Dernier lundi de stage
+        first_date: Premier jour
+        last_date: Dernier jour
+        daterange: Plage de disponibilité
         supplied_applications: Nbr. de candidatures par stages
         submitted_application_count: Nbr. de candidatures soumises
         rejected_application_count: Nbr. de candidatures refusées
@@ -236,7 +241,9 @@ fr:
         full_year: Disponible toute l'année
         full_employer: Employeur
         full_address: Adresse de l'employeur
+        coordinates: Coordonnées GPS
         group_name: Groupe ou institution
+        school: Établissement réservé
 
       user:
         accept_terms: "Conditions d'utilisation"
