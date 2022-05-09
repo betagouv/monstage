@@ -196,7 +196,7 @@ fr:
         created_at: "Crée le"
         department: Département
         academy: Académie
-        discarded_at: Supprimée le
+        discarded_at: Dépubliée le
         view_count: Nombre de vues
         published_at: Publiée le
         weeks:
@@ -466,6 +466,15 @@ fr:
       users~student:
         kept: Actifs
         discarded: Supprimés
+      internship_offers~weekly_framed:
+        kept: Actives
+        discarded: Supprimées
+      internship_offers~free_date:
+        kept: Actives
+        discarded: Supprimées
+      internship_offers~api:
+        kept: Actives
+        discarded: Supprimées
   dashboard:
     internship_offer:
       created: Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.

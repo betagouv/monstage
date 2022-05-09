@@ -13,13 +13,13 @@ module InternshipOffers
       end
 
       list do
-        scopes [:from_api]
+        scopes [:kept, :discarded]
 
         field :title
+        field :department
         field :zipcode
         field :employer_name
         field :is_public
-        field :department
         field :created_at
       end
 
