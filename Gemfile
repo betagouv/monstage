@@ -37,7 +37,7 @@ gem 'sidekiq'
 gem 'redis-namespace' # plug redis queues on same instance for prod/staging
 
 # admin
-gem 'rails_admin', '~> 3.0'
+gem 'rails_admin', '~> 2.2'
 gem 'rails_admin-i18n'
 
 # instrumentation
