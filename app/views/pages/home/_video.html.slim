@@ -12,9 +12,9 @@ script src="https://player.vimeo.com/api/player.js"
             | Histoire de parcours
           .fr-px-2w.fr-text--lg.pb-2 Luca Biancheri, conducteur de travaux
           p.fr-px-2w
-            | Lörem ipsum filodiktisk sogenat inte orade sara besade. Antin usk telesa, pont previs. Odat självoptimering. Befövis disade fastän nod. Spesk höhet ode.
-          p.fr-px-2w
-            | Tipuck mäbussade nask. Utoskapet doderade i naliga i astrovipp har taskade. Sarisk sende sedan halogi.
+            | Responsabilité, sens du détail et savoir-faire.
+            br
+            | Luca nous raconte son passionnant métier dans le bâtiment.
           p.fr-px-2w
             - if can?(:welcome_students, current_user) || !user_signed_in?
               .d-md-none
@@ -24,7 +24,7 @@ script src="https://player.vimeo.com/api/player.js"
                   .fr-col-12.blue-france-bg.text-center
                     .fr-btn.fr-fi-search-line.fr-btn--icon-right.fr-px-11w
                       = "Trouver un stage "
-              .d-none.d-md-block
+              .d-none.d-md-block.fr-px-2w
                 link_to data-videos-carousel-target='inViewPort' = link_to internship_offers_path,
                           class: '',
                           data: { :"test-id" => 'mobile-search-button' }
