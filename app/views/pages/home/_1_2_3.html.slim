@@ -1,4 +1,4 @@
-.row.align-items-center
+.row.align-items-center.fr-my-4w
   .col-md-6.col-sm-12
     .fr-px-2w
       = image_tag asset_pack_path('media/images/homepage/01.svg'),
@@ -22,20 +22,18 @@
     .fr-px-2w
       = image_tag asset_pack_path('media/images/homepage/trouver-un-stage.svg'),
                     alt: "Trouver un stage",
-                    width: '100%',
-                    class:'fr-p-5w'
+                    width: '100%'
 
   / 2
-.row.align-items-center
+.row.align-items-center.fr-mb-4w
   .col-md-6.col-sm-12.text-center.d-none.d-md-block
     = image_tag asset_pack_path('media/images/homepage/link-step-1-2.svg'),
                     alt: "lien",
-                    class: 'link-step-1-2'
+                    class: 'link-step-1-2 d-none d-lg-block'
     .fr-px-2w
       = image_tag asset_pack_path('media/images/homepage/accompagner-vos-eleves.svg'),
                     alt: "Accompagner vos élèves",
-                    width: '100%',
-                    class:'fr-p-5w'
+                    width: '100%'
   .col-md-6.col-sm-12
     .fr-px-2w
       = image_tag asset_pack_path('media/images/homepage/02.svg'),
@@ -55,11 +53,11 @@
                   data: { :"test-id" => 'mobile-search-button-first' }
           span.fr-btn.fr-btn--secondary.fr-px-6w= "Accompagner mes élèves"
   / 3
-.row.align-items-center
+.row.align-items-center.fr-mb-4w
   .col-md-6.col-sm-12
     = image_tag asset_pack_path('media/images/homepage/link-step-2-3.svg'),
                     alt: "lien",
-                    class: 'link-step-2-3'
+                    class: 'link-step-2-3 d-none d-lg-block'
     .fr-px-2w
       = image_tag asset_pack_path('media/images/homepage/03.svg'),
                   alt: "Premièrement",
@@ -84,5 +82,4 @@
     .fr-px-2w
       = image_tag asset_pack_path('media/images/homepage/accueillir-un-stagiaire.svg'),
                     alt: "Accueillir un stagiaire",
-                    width: '100%',
-                    class:'fr-p-5w'
+                    width: '100%'
