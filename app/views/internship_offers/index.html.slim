@@ -1,10 +1,10 @@
 - content_for(:canonical_url, params[:page] ? internship_offers_url(page: params[:page]) : internship_offers_url)
 
 - content_for(:custom_header) do
-  h1.text-white.text-center.pt-5.pb-5.pb-md-4.my-0.bg-custom-blue
+  h1.fr-h1.text-white.text-center.pt-5.pb-5.pb-md-4.my-0.bg-blue
     = "Postulez à des offres de stage"
   .position-sticky.sticky-top.bg-custom-blue.wrapper-sticky-with-offset
-    .container.d-none.d-md-block
+    .container-monstage.d-none.d-md-block
       .row
         .col-12
           .pt-3

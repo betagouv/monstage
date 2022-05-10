@@ -135,7 +135,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     find('label[for="internship_type_true"]').click
     click_button('Modifier l\'offre')
     assert_equal 4, internship_offer.reload.max_candidates
-    assert_equal 1, internship_offer.reload.max_students_per_group
+    assert_equal 2, internship_offer.reload.max_students_per_group
   end
 
   test 'Employer cannot change type if applications are associated' do
