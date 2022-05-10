@@ -7,14 +7,14 @@ p style=p_styles
   table
     tr
       td Du lundi
-      td style='padding: 0 10px' = @last_monday.strftime('%d %B %Y')
+      td style='padding: 0 10px' = @human_last_monday
     tr
       td au dimanche
-      td style='padding: 0 10px' = @last_sunday.strftime('%d %B %Y')
+      td style='padding: 0 10px' = @human_last_sunday
 p style=p_styles
   h3
     |Inscriptions
-  ul 
+  ul
     - @kpis[:subscriptions].each do |key, kpi|
       li =  "#{key} : #{kpi}"
 p style=p_styles
