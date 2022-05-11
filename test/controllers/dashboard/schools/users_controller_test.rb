@@ -67,14 +67,16 @@ module Dashboard
       end
 
       test 'GET users#index as SchoolManagement contains key navigations links' do
-        school = create(:school, :with_school_manager)
+        school = create(:school, :with_school_manager,:with_weeks)
         sign_in(school.school_manager)
 
         get dashboard_school_users_path(school)
         assert_response :success
-        assert_select 'title', "Professeurs du #{school.name} | Monstage"
-        assert_select '.test-dashboard-nav a.fr-link[href=?]', dashboard_school_class_rooms_path(school), count: 1
-        assert_select '.test-dashboard-nav a.fr-link.active[href=?]', dashboard_school_users_path(school), count: 1
+        assert_select 'title', "Professeurs du #{school.presenter.school_name_in_sentence} | Monstage"
+        assert_select 'ul.fr-tabs__list li a[href=?]', dashboard_school_path(school), count: 1
+        assert_select 'ul.fr-tabs__list li a[href=?]', dashboard_school_users_path(school), count: 1
+        assert_select 'ul.fr-tabs__list li a[href=?] button[aria-selected="false"]', dashboard_school_path(school), count: 1
+        assert_select 'ul.fr-tabs__list li a[href=?] button[aria-selected="true"]', dashboard_school_users_path(school), count: 1
       end
 
       test 'GET users#index as SchoolManagement contains UX guidelines when no staff' do

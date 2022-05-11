@@ -29,9 +29,11 @@ fr:
     schools:
       show:
         page_title: "Classes du %{name}"
+      information:
+        page_title: 'Informations relatives aux conventions'
       internship_agreement_presets:
         edit:
-          page_title: "Modifier les informations relative aux convetions"
+          page_title: "Modifier les informations relatives aux conventions"
       internship_applications:
         index:
           page_title: "Conventions de stage"
@@ -49,6 +51,8 @@ fr:
             page_title: "Élèves de la classe"
       edit:
         page_title: Semaines de stage
+      manager_school:
+        page_title: 'Informations relatives au %{name}'
       students:
         index:
           page_title: "Élèves des classes du %{name}"

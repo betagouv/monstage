@@ -1,14 +1,3 @@
-/Remove code after  February, 15th 2022 or uncomment
-/- if current_user.employer?
-  = render partial: 'dashboard/internship_offers/tabs'
-  h1.h4.text-body.pt-3 Vous souhaitez participer à la mise en place de stages à distance ?
-  p
-    |
-      Nos associations partenaires vous proposent des solutions de stages
-      à distance, et peuvent vous accompagner dans leur mise en place.
-/- if current_user.is_a?(Users::SchoolManagement)
-  = render partial: 'dashboard/schools/navbar', locals: {school: current_user.school, render_ux_guidelines: true}
-
   h2.h4.text-body.pt-3
     |
       Contactez-nous, nous vous mettrons en lien avec nos associations partenaires.

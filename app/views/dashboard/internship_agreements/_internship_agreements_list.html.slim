@@ -1,0 +1,21 @@
+#agreement-button-panel.fr-tabs__panel.fr-tabs__panel--selected [
+  aria-labelled-by="agreement-button"
+  role="tabpanel"
+  tabindex="0"]
+
+  - if @internship_agreements.empty?
+    = render partial: 'empty_agreement_list'
+
+  - else
+    table.table.table-hover.table-sticky-thead.table-rg2a
+      thead
+        tr.d-flex.tr-white.row
+          th.small.muted.col-sm-2 Elève
+          th.small.muted.col-sm-3 Offre de stage
+          th.small.muted.col-sm-2 Organisme d'accueil
+          th.small.muted.col-sm-2 Statut
+          th.small.muted.col-sm-3
+      tbody
+        - @internship_agreements.each do |internship_agreement|
+          = render partial: 'dashboard/internship_agreements/internship_agreement',
+                    locals: { internship_agreement: internship_agreement }

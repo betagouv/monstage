@@ -30,7 +30,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   end
 
   test 'student with no class_room can submit a 3e prepa métier application when school have not choosen week' do
-    if ENV['RUN_BRITTLE_TEST']
+    if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'
       weeks = Week.selectable_from_now_until_end_of_school_year.to_a.first(2)
       school = create(:school, weeks: [])
       student = create(:student, school: school)
@@ -127,7 +127,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   end
 
   test 'GET #show as Student with existing draft application shows the draft' do
-    if ENV['RUN_BRITTLE_TEST']
+    if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'
       weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
       internship_offer      = create(:weekly_internship_offer, weeks: weeks)
       school                = create(:school, weeks: weeks)

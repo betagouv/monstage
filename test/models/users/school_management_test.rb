@@ -71,9 +71,10 @@ module Users
       school = create(:school, weeks: [Week.find_by(number: 1, year: 2020)])
       class_room = create(:class_room, school: school)
       school_manager = create(:school_manager, school: school, class_room: class_room)
-      redirect_to = @url_helpers.dashboard_school_class_room_path(school, class_room)
+      redirect_to = @url_helpers.dashboard_school_class_room_students_path(school, class_room)
       assert_equal(redirect_to, school_manager.after_sign_in_path)
     end
+
     test 'change school notify new school_manager' do
       school_1 = create(:school)
       school_2 = create(:school)
@@ -92,5 +93,13 @@ module Users
         mock_mail.verify
       end
     end
+
+    test '#custom_dashboard_path as main_teacher' do
+      school = create(:school, :with_school_manager, weeks: [Week.find_by(number: 1, year: 2020)])
+      class_room = create(:class_room, school: school)
+      main_teacher = create(:main_teacher, school: school, class_room: class_room)
+      assert_equal @url_helpers.dashboard_school_class_room_students_path(school, class_room), main_teacher.custom_dashboard_path
+    end
   end
 end
+

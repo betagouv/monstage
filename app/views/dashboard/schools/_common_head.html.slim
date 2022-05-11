@@ -1,0 +1,64 @@
+- badge_counter = Finders::TabSchoolManager.new(school: @school) if current_user.school_manager?
+- badge_counter = Finders::TabMainTeacher.new(main_teacher: current_user) if current_user.main_teacher?
+- badge_counter = Finders::TabNull.new if badge_counter.nil?
+
+h1.h2.mb-4
+  .fr-raw-link.fr-mb-2w= link_to account_path do
+    = @school.presenter.school_name
+    span.fr-fi-edit-fill<
+
+.fr-tabs.mb-5
+  ul.fr-tabs__list aria-label=("school-tab") role="tablist"
+    li
+      - path = dashboard_school_path(@school)
+      = link_to path do
+        button#classes.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left [
+          aria-controls="classes-panel"
+          aria-selected="#{current_page?(path)}"
+          role="tab"
+          tabindex="0"]
+          | Classes
+          - if badge_counter.student_without_class_room_count.size.positive?
+            = " (#{badge_counter.student_without_class_room_count})"
+
+    li
+      - path = dashboard_school_users_path(@school)
+      = link_to path do
+        button#users.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left [
+          aria-controls="users-panel"
+          aria-selected="#{current_page?(path)}"
+          role="tab"
+          tabindex="1"]
+          | Personnels
+
+    li
+      - path = edit_dashboard_school_path(@school)
+      = link_to path do
+        button#weeks.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left [
+          aria-controls="weeks-panel"
+          aria-selected="#{current_page?(path)}"
+          role="tab"
+          tabindex="2"]
+          | Semaines
+
+    - if current_user.respond_to?(:school) && current_user.school.internship_agreement_open? && can?(:update, InternshipAgreement)
+      - path = dashboard_internship_agreements_path
+      = link_to path do
+        li
+          button#internship-agreements.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left [
+            aria-controls="internship-agreements-panel"
+            aria-selected="#{current_page?(path)}"
+            role="tab"
+            tabindex="3"]
+            | Mes conventions de stage
+      - if (can? :edit, current_user.try(:school))
+        li
+          - path = dashboard_school_information_path(school_id: @school.id)
+          = link_to path do
+            button#manage-school.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left [
+              aria-controls="manage-school-panel"
+              aria-selected="#{current_page?(path)}"
+              role="tab"
+              tabindex="4"]
+              | Gérer mon établissement
+  = yield

@@ -64,7 +64,7 @@ class AutocompleteSchoolTest < ApplicationSystemTestCase
       click_on 'Mon établissement'
     end
     
-    if ENV['RUN_BRITTLE_TEST']
+    if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'
       # default presence of fields
       assert_equal 1, all('#user_school_name').size, 'default school name missing'
       assert_equal 1, all('#user_class_room_id').size, 'default class room missing'

@@ -25,6 +25,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
                                           coordinates: Coordinates.bordeaux)
 
     visit internship_offers_path
+    # sleep 0.1
     fill_in_city_or_zipcode(with: 'Pari ', expect: 'Paris')
     submit_form
 

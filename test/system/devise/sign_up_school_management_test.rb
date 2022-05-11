@@ -25,7 +25,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       find('label[for="user_accept_terms"]').click
       click_on "Je m'inscris"
     end
-    if ENV['RUN_BRITTLE_TEST']
+    if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'
       # create school_manager
       school_nr = ((rand * 0.9 + 0.1) * 10_000_000).to_i
       assert_difference('Users::SchoolManagement.school_manager.count', 1) do

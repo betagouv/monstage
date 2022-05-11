@@ -11,7 +11,7 @@ class ManageCompleteOfferFillingTest < ApplicationSystemTestCase
   end
 
   test 'can create navigate back and forth while creating an offer' do
-    if ENV['RUN_BRITTLE_TEST']
+    if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'
       2.times { create(:school) }
       employer              = create(:employer)
       group                 = create(:group, name: 'hello', is_public: true)
@@ -56,7 +56,7 @@ class ManageCompleteOfferFillingTest < ApplicationSystemTestCase
         # assert_equal 'Stage individuel (un seul élève par stage)', find('span.badge-internship-offer-alone').text
         # assert_equal 'Une super cool entreprise', find('.test-description').text
         assert_equal 'Delta dev', find('h1').text
-        assert_equal 'Paris 13e arrondissement', find('.test-city').text
+        assert_equal 'Paris 12', find('.test-city').text
       end
     end
   end

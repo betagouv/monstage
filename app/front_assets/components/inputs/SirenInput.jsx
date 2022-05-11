@@ -125,7 +125,7 @@ export default function SirenInput({
               <label
                 {...getLabelProps({
                   className: 'label',
-                  htmlFor: `${resourceName}_siret`,
+                  htmlFor: `${resourceName}_siren`,
                 })}
               >
                 Rechercher votre société dans l’Annuaire des Entreprises

@@ -1,63 +1,61 @@
-- content_for :page_title, "#{t(".page_title", name: @school.name)} | Monstage"
+- content_for :page_title, "#{t(".page_title", name: @school.presenter.school_name_in_sentence)} | Monstage"
+= render layout: 'dashboard/schools/common_head' do
+  - unaffected_students = Presenters::ClassRoom.students_without_class_room(@school)
 
-= render partial: 'dashboard/schools/navbar', locals: { school: @school, render_ux_guidelines: true }
-- unaffected_students = Presenters::ClassRoom.students_without_class_room(@school)
-- if unaffected_students.present?
-  div data-controller='students'
-    = form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', class: 'd-block py-3') do
-      .row.align-items-center
-        .col-auto.text-primary
-          i.fas.fa-2x.fa-exclamation-triangle
-        .col.text-primary
-          | Certains de vos élèves ont besoin d'être affectés à une classe pour pouvoir postuler à des stages
-        .col-12.col-sm-4.pt-3.pt-sm-0
-          = submit_tag 'Enregistrer les modifications', disabled: true, class: 'fr-btn', data: { 'target': 'students.submitButton' }
+  #classes-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0"
+    - if unaffected_students.present?
+      div data-controller='students'
+        = form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', class: 'd-block py-3') do
+          .row.fr-text--md
+            .col-10
+              .row.align-items-center.p-3.bg-blue-950
+                .col-8.text-primary
+                  | Les élèves ci-dessous ont besoin d'être affectés à une classe pour pouvoir postuler à des stages.
+                .col-4.col-sm-4.pt-3.pt-sm-0
+                  = submit_tag 'Enregistrer les modifications', disabled: true, class: 'fr-btn fr-btn--sm', data: { 'target': 'students.submitButton' }
 
+              .row
+                .col-12.px-0
+                  ul.bg-blue-975.class-room.mt-0
+                    - unaffected_students.each do |student|
+                      li
+                        .row.p-2.d-flex data-test="student-not-in-class-room-#{student.id}"
+                          .col-7.d-flex.align-items-center.font-weight-bold.student-name= student.name
+                          .col-4
+                            = select_tag "student_#{student.id}",
+                                          options_from_collection_for_select(student.school.class_rooms.current, :id, :name, student.class_room_id),
+                                          prompt: 'Choisissez une classe' ,
+                                          class: "fr-select",
+                                          data: { action: 'change->students#selectStudentClassRoom' }
+                          .col-1.text-sm-center.d-flex.align-items-center
+                            = link_to dashboard_school_user_path(id: student.id, school_id: @school.id),
+                                      method: :delete,
+                                      class: 'fr-raw-link student-action',
+                                      data: {confirm: 'Cette action va supprimer un élève de votre établissement, confirmez-vous ?'} do
+                              span.fr-fi-close-line
+
+    .row.mt-3
+      .col-12.text-right.px-0
+        - if can?(:create, ClassRoom)
+          = link_to "Ajouter une classe", new_dashboard_school_class_room_path(@school), class: 'fr-btn fr-fi-add-line fr-btn--icon-left'
+    - Presenters::ClassRoom.with_school_tracks(@school).each do |school_track, class_rooms|
+      .row.mt-3
+        .col-8
+          .h3.mb-0= tr_school_track(school_track)
       .row
-        .col-12.px-0
-          table.table.table-hover.table-sticky-thead
+        .col-12.fr-table.fr-table--white
+          table
+            - cols = ["Classe",
+                "Compte actif",
+                "Sans candidature",
+                "Sans stage", ""]
             thead
-              tr.d-flex.tr-white
-                th.col-8
-                  small Elève
-                th.col-4
-            tbody class="class-room"
-              - unaffected_students.each do |student|
-                tr class="d-flex" data-test="student-not-in-class-room-#{student.id}"
-                  td.col-7.d-flex.align-items-center data-head="#{student.name}"= student.name
-                  td.col-4 data-head="Action"
-                    = select_tag "student_#{student.id}",
-                                  options_from_collection_for_select(student.school.class_rooms.current, :id, :name, student.class_room_id),
-                                  prompt: 'Choisissez une classe' ,
-                                  class: "fr-select",
-                                  data: { action: 'change->students#selectStudentClassRoom' }
-                  td.col-1.text-sm-center data-head="Suppression d-none"
-                    = link_to dashboard_school_user_path(id: student.id),
-                              method: :delete,
-                              class: 'trash-user text-decoration-none',
-                              data: {confirm: 'Cette action va supprimer un élève de votre établissement, confirmez-vous ?'} do
-                      i.fas.fa-trash.fa-lg.mt-2
-                      br
-                      small Supprimer
+              tr.tr-blue
+                - cols.map.with_index do |col, i|
+                  th class="align-top #{i.zero? ? '' : 'text-center'}" style="width: 20%"
+                    small= col
+            tbody
+              = render partial: "class_rooms/class_room",
+                      collection: Array(class_rooms),
+                      locals: { school: @school, cols: cols }
 
-- Presenters::ClassRoom.with_school_tracks(@school).each do |school_track, class_rooms|
-  .row.mt-5
-    .col-12
-      h5.mb-0= tr_school_track(school_track)
-  .row
-    table.table.table-hover.table-rg2a.table-sticky-thead
-      - cols = ["Classe",
-          "Compte actif",
-          "Sans candidature",
-          "Sans stage", ""]
-      thead
-        tr.tr-white
-          - cols.map.with_index do |col, i|
-            th class="align-top #{i.zero? ? '' : 'text-center'}" style="width: 20%"
-              small= col
-      tbody= render partial: "class_rooms/class_room", collection: Array(class_rooms), locals: { school: @school, cols: cols }
-
-- if can?(:create, ClassRoom)
-  .row
-    .col-12.my-3
-      = link_to "Ajouter une classe", new_dashboard_school_class_room_path(@school), class: 'fr-btn'

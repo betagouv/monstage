@@ -7,7 +7,7 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
   include OrganisationFormFiller
 
   test 'can create Organisation' do
-    if ENV['RUN_BRITTLE_TEST'] # TODO remove after chromeversion issue
+    if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'# TODO remove after chromeversion issue
     2.times { create(:school) }
     employer = create(:employer)
     group = create(:group, name: 'hello', is_public: true)
@@ -38,7 +38,7 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
   # end
 
   test 'create organisation fails gracefuly' do
-    if ENV['RUN_BRITTLE_TEST'] # TODO remove after chromeversion issue
+    if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'# TODO remove after chromeversion issue
     sector = create(:sector)
     employer = create(:employer)
     group = create(:group, name: 'hello', is_public: true)
