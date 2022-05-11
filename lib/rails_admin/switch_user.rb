@@ -16,7 +16,7 @@ module RailsAdmin
         end
 
         register_instance_option :link_icon do
-          'fas fa-eye'
+          'icon-eye-open'
         end
 
         # You may or may not want pjax for your action
