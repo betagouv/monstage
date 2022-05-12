@@ -8,13 +8,13 @@ ruby '2.7.2'
 
 # fwk/server
 gem 'actionpack', ">= 6.1.3.2"
-gem "rails", "~> 6.1.4.4"
+gem "rails", "~> 7.0.3"
 gem 'puma'
 # db
 gem 'pg'
 # pg extension for geo queries
 # wait for : https://github.com/rgeo/activerecord-postgis-adapter/tree/ar61 to be merge into master
-gem 'activerecord-postgis-adapter'
+gem "activerecord-postgis-adapter"; ">= 8.0.1"
 
 # don't bump until fixed, https://github.com/Casecommons/pg_search/issues/446
 gem 'pg_search', '2.3.2'                    # pg search for autocomplete
@@ -25,7 +25,7 @@ gem 'prawn-styled-text'
 gem 'uglifier'
 gem 'inline_svg'
 gem 'slim-rails'
-gem "view_component", require: "view_component/engine"
+gem "view_component"
 gem 'turbolinks'
 gem "react_on_rails"
 gem 'webpacker'
@@ -37,7 +37,7 @@ gem 'sidekiq'
 gem 'redis-namespace' # plug redis queues on same instance for prod/staging
 
 # admin
-gem 'rails_admin'
+gem "rails_admin", "3.0.0"
 gem 'rails_admin-i18n'
 
 # instrumentation
@@ -81,9 +81,9 @@ group :development do
   gem 'bullet'
   gem 'listen'
   gem 'web-console'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen'
+# Spring speeds up development by keeping your application running in the
+# background. Read more: https://github.com/rails/spring
+gem "spring", "3.0.0"
   gem 'letter_opener'
   gem 'activerecord-explain-analyze'
 end
