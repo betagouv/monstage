@@ -22,7 +22,6 @@ class MainTeacherMailerTest < ActionMailer::TestCase
     )
     assert_includes email.to, main_teacher.email
     assert_includes email.cc, school_manager.email
-    puts email.subject
     refute_email_spammyness(email)
   end
 
