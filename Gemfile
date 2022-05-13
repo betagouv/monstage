@@ -37,7 +37,7 @@ gem 'sidekiq'
 gem 'redis-namespace' # plug redis queues on same instance for prod/staging
 
 # admin
-gem "rails_admin", "3.0.0"
+gem 'rails_admin', '~> 3.0'
 gem 'rails_admin-i18n'
 
 # instrumentation
@@ -110,5 +110,3 @@ end
 group :test, :development, :review do
   gem 'factory_bot_rails'
 end
-
-
