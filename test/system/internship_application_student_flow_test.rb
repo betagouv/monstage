@@ -66,7 +66,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     page.find "input[name='internship_application[student_attributes][email]']", visible: true
     page.find("input[type='submit'][value='Valider']").click
     assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
-    page.find("input[type='submit'][value='Envoyer']").click
+    click_button('Envoyer')
     page.find('h1', text: 'Mes candidatures')
     assert page.has_content?(internship_offer.title)
   end
@@ -88,7 +88,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     # check for phone and email fields disabled
     page.find("input[type='submit'][value='Valider']").click
     assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
-    page.find("input[type='submit'][value='Envoyer']").click
+    click_button('Envoyer')
     page.find('h1', text: 'Mes candidatures')
     assert page.has_content?(internship_offer.title)
   end
@@ -113,7 +113,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     page.find "input[name='internship_application[student_attributes][email]']", visible: true
     page.find("input[type='submit'][value='Valider']").click
     assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
-    page.find("input[type='submit'][value='Envoyer']").click
+    click_button('Envoyer')
     page.find('h1', text: 'Mes candidatures')
     assert page.has_content?(internship_offer.title)
   end
