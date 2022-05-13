@@ -328,7 +328,11 @@ class InternshipApplication < ApplicationRecord
       field :student
       field :internship_offer
       field :aasm_state
-      field :week
+      field :week do
+        pretty_value do
+          bindings[:object].internship_offer.is_a?(InternshipOffers::WeeklyFramed) ? value : ""
+        end
+      end
     end
   end
 end

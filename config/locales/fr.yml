@@ -163,7 +163,8 @@ fr:
         max_students_per_group: Effectif max. d'un groupe d'élèves
         sector_id: Secteurs professionnels
         new_daily_hours: Horaires journaliers
-        daily_lunch_break: Pause déjeuner
+        daily_lunch_break: Pause déjeuner par jour
+        weekly_lunch_break: Pause déjeuner
 
       tutor: &tutor_fields
         tutor_name: Nom du tuteur
@@ -244,11 +245,13 @@ fr:
         coordinates: Coordonnées GPS
         group_name: Groupe ou institution
         school: Établissement réservé
+        internship_applications: Candidatures
 
       internship_application:
         student: Élève
         internship_offer: Offre
         aasm_state: État
+        week: Semaine
 
       user:
         accept_terms: "Conditions d'utilisation"
