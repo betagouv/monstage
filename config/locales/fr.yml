@@ -250,7 +250,16 @@ fr:
       internship_application:
         student: Élève
         internship_offer: Offre
-        aasm_state: État
+        aasm_state:
+          one: État
+          drafted: brouillon
+          submitted: envoyée
+          approved: acceptée
+          rejected: refusée
+          expired: expirée
+          canceled_by_employer: annulée par l'employeur
+          cancel_by_student: annulée par l'élève
+          convention_signed: convention signée
         week: Semaine
 
       user:
