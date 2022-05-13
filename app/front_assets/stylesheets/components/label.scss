@@ -1,3 +1,4 @@
+@use 'sass:math';
 .autocomplete-school-container .custom-label-container{
   input:focus + label,
   select:focus + label,
@@ -15,16 +16,16 @@
     top: $input-padding-y;
     // position label at same position as input content
     // to do so, we split the input padding-x between left [offset label]/padding[give some space around the label]
-    left: $input-padding-x/2;
-    padding-left: $input-padding-x/2;
-    padding-right: $input-padding-x/2;
+    left: math.div($input-padding-x, 2);
+    padding-left: math.div($input-padding-x, 2);
+    padding-right: math.div($input-padding-x, 2);
     position: absolute;
     display: inline-block;
 
     line-height: $input-line-height;
     transition: all .2s;
     abbr{
-      margin-left: -($input-padding-x/2);
+      margin-left: math.div(-$input-padding-x, 2) ;
     }
   }
 
