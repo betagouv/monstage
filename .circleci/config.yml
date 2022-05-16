@@ -84,7 +84,7 @@ jobs: # a collection of steps
             DATABASE_URL: "postgis://monstage_test:monstage_test@localhost:5432/monstage_test"
           command: |
             sudo apt-get install postgresql-client
-            bundle exec bin/rails db:create db:structure:load --trace
+            bundle exec bin/rails db:create db:schema:load --trace
 
       - run:
           name: Run TestUnit
