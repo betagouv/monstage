@@ -1,5 +1,7 @@
 require "active_support/core_ext/integer/time"
 Rails.application.configure do
+  # Verifies that versions and hashed value of the package contents in the project's package.json
+  config.webpacker.check_yarn_integrity = true
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded any time
@@ -9,6 +11,7 @@ Rails.application.configure do
 
   # Do not eager load code on boot.
   config.eager_load = true
+  # see sti_preload for current workaround with Rails 7.0
 
   # Show full error reports.
   config.consider_all_requests_local = true
@@ -79,15 +82,6 @@ Rails.application.configure do
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
-
-  # EWE commented out for now
-  # config.assets.debug = true
-  
-
-
-  # Suppress logger output for asset requests.
-  # config.assets.quiet = true
-  # EWE
 
   # Raises error for missing translations
   config.i18n.raise_on_missing_translations = true
