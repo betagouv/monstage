@@ -451,9 +451,9 @@ GEM
     thor (1.2.1)
     tilt (2.0.10)
     ttfunk (1.7.0)
-    turbolinks (5.2.1)
-      turbolinks-source (~> 5.2)
-    turbolinks-source (5.2.0)
+    turbo-rails (1.0.1)
+      actionpack (>= 6.0.0)
+      railties (>= 6.0.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     uglifier (4.2.0)
@@ -540,6 +540,7 @@ DEPENDENCIES
   rails_admin
   rails_admin-i18n
   react_on_rails
+  redis (~> 4.0)
   redis-namespace
   rest-client
   rubocop
@@ -551,7 +552,7 @@ DEPENDENCIES
   split
   spring
   spring-watcher-listen
-  turbolinks
+  turbo-rails
   tzinfo-data
   uglifier
   validates_zipcode

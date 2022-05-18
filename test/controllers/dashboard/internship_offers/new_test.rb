@@ -27,7 +27,7 @@ module Dashboard::InternshipOffers
       assert_select '#internship_type_false[checked]', count: 1
       assert_select '.form-group-select-max-candidates.d-none', count: 0
       assert_select '.form-group-select-max-candidates', count: 1
-      assert_select 'meta[name="turbolinks-visit-control"][content="reload"]'
+      assert_select 'meta[name="turbo-visit-control"][content="reload"]'
       sign_out(internship_offer.employer)
 
       god = create(:god)

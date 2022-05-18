@@ -23,7 +23,7 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
       .col-12.py-2
         = link_to "#tab-internship-application-detail",
                   class: '',
-                  data: {action: "click->dashboard-students-internship-application#toggleInternshipApplicationContent", :"dashboard-students-internship-application-target" => "linkIconContainer", turbolinks: false } do
+                  data: {action: "click->dashboard-students-internship-application#toggleInternshipApplicationContent", :"dashboard-students-internship-application-target" => "linkIconContainer", turbo: false } do
           i.fas.fa-chevron-right.mr-1
           = "Afficher ma candidature"
 

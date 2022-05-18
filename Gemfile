@@ -26,7 +26,7 @@ gem 'uglifier'
 gem 'inline_svg'
 gem 'slim-rails'
 gem "view_component", require: "view_component/engine"
-gem 'turbolinks'
+gem "turbo-rails"
 gem "react_on_rails"
 gem 'webpacker'
 gem 'caxlsx_rails'
@@ -54,6 +54,7 @@ gem 'bitly'
 gem 'cancancan'
 gem 'devise'
 gem 'devise-i18n'
+
 
 # model/utils
 gem 'discard'
@@ -112,3 +113,6 @@ group :test, :development, :review do
 end
 
 
+
+# Use Redis for Action Cable
+gem "redis", "~> 4.0"

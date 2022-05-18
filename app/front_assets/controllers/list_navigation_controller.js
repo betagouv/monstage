@@ -1,7 +1,7 @@
 import { Controller } from 'stimulus';
 import { isMobile } from '../utils/responsive';
 import Hammer from 'hammerjs';
-import Turbolinks from 'turbolinks';
+import { Turbo } from "@hotwired/turbo-rails";
 
 export default class extends Controller {
   static values = {
@@ -26,12 +26,12 @@ export default class extends Controller {
 
   previous() {
     const url = this.previousUrlValue;
-    Turbolinks.visit(url);
+    Turbo.visit(url);
   }
 
   next() {
     const url = this.nextUrlValue;
-    Turbolinks.visit(url);
+    Turbo.visit(url);
   }
 
   disconnect() {

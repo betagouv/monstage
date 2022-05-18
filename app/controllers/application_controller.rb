@@ -2,6 +2,11 @@
 
 class ApplicationController < ActionController::Base
   include TurbolinkHelpers
+  include Turbo::Redirection
+  # does it need anything else ?
+
+  helper Turbo::FramesHelper if Rails.env.test?
+  helper Turbo::StreamsHelper if Rails.env.test?
 
   before_action :check_school_requested
 

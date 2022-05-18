@@ -4,13 +4,11 @@ import Rails from 'rails-ujs';
 import ReactOnRails from 'react-on-rails';
 import { Application } from 'stimulus';
 import { definitionsFromContext } from 'stimulus/webpack-helpers';
-import Turbolinks from 'turbolinks';
 
 // icons
 import 'fonts/fontawesome';
 
 Rails.start();
-Turbolinks.start();
 const application = Application.start()
 
 const context = require.context('controllers', true, /.js$/)
