@@ -131,7 +131,7 @@
                             placeholder: "ex: nom@exemple.fr",
                             data: {action: 'change->signup#onBlurEmailInput', :"signup-target" => 'emailInput'} %>
           <%= f.label :email do %>
-              <span data-signup-target="label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
+              <span data-signup-target="label"><%= resource.role? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
               <%= f.rg2a_required_content_tag %>
           <% end %>
           <small class="form-text text-muted" data-signup-target="emailExplanation">Cette adresse sera utilisée pour communiquer avec vous</small>
