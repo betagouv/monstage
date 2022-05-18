@@ -1,5 +1,21 @@
 // input dropdown, repositionned within its container
-@use 'sass:math';
+// range slider
+$sliderHeight: 20px;
+$handleWidth: '60px';
+.slider-legend{
+  position: relative;
+  float: left;
+  top: -10px;
+  width: 90%;
+}
+.slider-handle{
+  position: absolute;
+  width: $handleWidth;
+  height: $sliderHeight;
+  margin-left: $handleWidth/-2;
+}
+
+
 .search-in-place,
 .search-in-sirene{
   position: absolute;
@@ -43,21 +59,6 @@
   }
 }
 
-// range slider
-$sliderHeight: 20px;
-.slider-legend{
-  position: relative;
-  float: left;
-  top: -10px;
-  width: 90%;
-}
-$handleWidth: 60px;
-.slider-handle{
-  position: absolute;
-  width: $handleWidth;
-  height: $sliderHeight;
-  margin-left: - math.div($handleWidth, 2);
-}
 
 
 @keyframes loading {
