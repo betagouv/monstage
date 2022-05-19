@@ -122,16 +122,16 @@ export default function SirenInput({
             getRootProps,
           }) => (
             <div>
-              <label
-                {...getLabelProps({
-                  className: 'label',
-                  htmlFor: `${resourceName}_siret`,
-                })}
-              >
-                Rechercher votre société dans l’Annuaire des Entreprises
-              </label>
-
               <div className="form-group">
+                <label
+                  {...getLabelProps({
+                    className: 'label',
+                    htmlFor: `${resourceName}_siren`,
+                  })}
+                >
+                  Rechercher votre société dans l’Annuaire des Entreprises
+                </label>
+
                 <div className="input-group input-siren">
                   <input
                     {...getInputProps({
