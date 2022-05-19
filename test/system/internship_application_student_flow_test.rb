@@ -66,7 +66,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     page.find "input[name='internship_application[student_attributes][email]']", visible: true
     page.find("input[type='submit'][value='Valider']").click
     assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
-    page.find("input[type='submit'][value='Envoyer']").click
+    click_button('Envoyer')
     page.find('h1', text: 'Mes candidatures')
     assert page.has_content?(internship_offer.title)
   end
@@ -88,7 +88,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     # check for phone and email fields disabled
     page.find("input[type='submit'][value='Valider']").click
     assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
-    page.find("input[type='submit'][value='Envoyer']").click
+    click_button('Envoyer')
     page.find('h1', text: 'Mes candidatures')
     assert page.has_content?(internship_offer.title)
   end
@@ -113,7 +113,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     page.find "input[name='internship_application[student_attributes][email]']", visible: true
     page.find("input[type='submit'][value='Valider']").click
     assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
-    page.find("input[type='submit'][value='Envoyer']").click
+    click_button('Envoyer')
     page.find('h1', text: 'Mes candidatures')
     assert page.has_content?(internship_offer.title)
   end
@@ -133,7 +133,13 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     visit '/'
     click_on 'Candidatures'
     internship_applications.each do |_aasm_state, internship_application|
-      click_on internship_application.internship_offer.title
+      url = dashboard_students_internship_application_path(
+        student_id: student.id,
+        id: internship_application.id
+      )
+      assert_selector "a[href='#{url}']",
+                      text: internship_application.internship_offer.title
+      visit url
       click_on 'Candidatures'
     end
   end
@@ -203,7 +209,12 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     sign_in(student)
     visit '/'
     visit dashboard_students_internship_applications_path(student, internship_application.internship_offer)
-    click_link(internship_application.internship_offer.title)
+    url= dashboard_students_internship_application_path(
+      student_id: student.id,
+      id: internship_application.id
+    )
+    assert page.has_selector?("a[href='#{url}']", count: 1)
+    visit url
     assert page.has_selector?("a[href='#tab-convention-detail']", count: 1)
   end
 
