@@ -19,8 +19,9 @@ class User < ApplicationRecord
   after_create :send_sms_token
 
   # school_managements includes different roles
-  # 1. school_manager should register with ac-xxx.fr email
-  # 2.3.4. can register
+  # Everyone should register with ac-xxx.fr email
+  # 1. should register with ce.UAI@ email
+  # 2.3.4. can register without
   enum role: {
     school_manager: 'school_manager',
     teacher: 'teacher',

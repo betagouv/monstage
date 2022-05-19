@@ -2,11 +2,12 @@ require 'test_helper'
 
 class ReportingKpiTest < ActiveSupport::TestCase
   test 'last_week_kpis' do
-    current_week = Week.selectable_from_now_until_end_of_school_year.first
-    last_week = Week.find(current_week.id.to_i - 2)
-    last_monday = last_week.week_date
-    last_sunday = last_monday + 6.days
-    school_manager = create(:school_manager, school: create(:school))
+    travel_to Date.new(2022, 01, 25) do
+      current_week = Week.selectable_from_now_until_end_of_school_year.first
+      last_week = Week.find(current_week.id.to_i - 2)
+      last_monday = last_week.week_date
+      last_sunday = last_monday + 6.days
+      school_manager = create(:school_manager, school: create(:school))
 
     # internship_offer_unpublished should not be taken into account
     next_weeks = Week.selectable_from_now_until_end_of_school_year

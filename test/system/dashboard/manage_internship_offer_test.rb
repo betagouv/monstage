@@ -108,9 +108,9 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   end
 
   test 'Employer can change max candidates parameter back and forth' do
-    employer = create(:employer)
-    weeks = Week.selectable_from_now_until_end_of_school_year.last(4)
-    if (weeks.size >= 4)
+    travel_to Date.new(2022, 01, 25) do
+      employer = create(:employer)
+      weeks = Week.selectable_from_now_until_end_of_school_year.last(4)
       internship_offer = create(:weekly_internship_offer, employer: employer, weeks: weeks)
       assert_equal 1, internship_offer.max_candidates
       sign_in(employer)
