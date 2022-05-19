@@ -3,8 +3,6 @@
 module Dashboard
   class InternshipOffersController < ApplicationController
     before_action :authenticate_user!
-    before_action :disable_turbolink_caching_to_force_page_refresh,
-                  only: %i[new edit]
     helper_method :order_direction
 
     def index
