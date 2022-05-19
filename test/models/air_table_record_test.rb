@@ -28,12 +28,10 @@ class AirTableRecordTest < ActiveSupport::TestCase
   test '.by_paqte' do
     create(:air_table_record,
            nb_spot_used: 10,
-           group: true,
            group: create(:group, name: "mfo",
                                  is_paqte: true))
     create(:air_table_record,
            nb_spot_used: 10,
-           group: true,
            group: create(:group, name: "fom",
                                  is_paqte: false))
 
