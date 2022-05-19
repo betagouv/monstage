@@ -10,10 +10,9 @@ class ReportingKpiTest < ActiveSupport::TestCase
       school_manager = create(:school_manager, school: create(:school))
 
     # internship_offer_unpublished should not be taken into account
-    next_weeks = Week.selectable_from_now_until_end_of_school_year
-    three_next_weeks = next_weeks.first(3).to_a
-    two_next_weeeks = next_weeks.first(2).to_a
-    if three_next_weeks.size == 3
+      next_weeks = Week.selectable_from_now_until_end_of_school_year
+      three_next_weeks = next_weeks.first(3).to_a
+      two_next_weeeks = next_weeks.first(2).to_a
       create(
         :weekly_internship_offer,
         :with_private_employer_group,
