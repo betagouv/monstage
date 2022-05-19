@@ -10,7 +10,7 @@ Rails.application.configure do
   config.cache_classes = false
 
   # Do not eager load code on boot.
-  config.eager_load = true
+  config.eager_load = false
   # see sti_preload for current workaround with Rails 7.0
 
   # Show full error reports.
