@@ -9,7 +9,7 @@
     <%= form_with(model: resource,
                   scope: resource_name,
                   url: confirmation_path(resource_name),
-                  local: true,
+                  data: { turbo: false },
                   html: { method: :post }) do |f| %>
       <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
       <p>Pour finaliser votre inscription, nous devons d’abord vérifier votre identité. Pour cela indiquez-nous l’adresse électronique associée à votre compte.</p>

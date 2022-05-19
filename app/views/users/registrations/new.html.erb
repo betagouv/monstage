@@ -19,7 +19,7 @@
   <div class="body">
     <%= form_with(model: resource,
                   scope: resource_name,
-                  local: true,
+                  data: {turbo: false},
                   url: registration_path(resource_name, as: resource.type.demodulize),
                   id: 'new_user') do |f| %>
       <%= f.rg2a_explain_required_asterisk %>

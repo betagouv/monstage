@@ -21,7 +21,7 @@
   <div class="body">
     <%= form_with(model: resource,
                   scope: resource_name,
-                  local: true,
+                  data: {turbo: false},
                   html: { id: "sign_in_form" },
                   url: session_path(resource_name)) do |f| %>
       <%= f.hidden_field :targeted_offer_id, value: params.dig(:user, :targeted_offer_id) %>
