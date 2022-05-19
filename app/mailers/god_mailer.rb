@@ -13,7 +13,9 @@ class GodMailer < ApplicationMailer
       last_monday: @last_monday,
       last_sunday: @last_sunday
     )
-    @human_date = I18n.l Date.today, format: '%d %B %Y'
+    @human_date        = I18n.l Date.today,   format: '%d %B %Y'
+    @human_last_monday = I18n.l @last_monday, format: '%d %B %Y'
+    @human_last_sunday = I18n.l @last_sunday, format: '%d %B %Y'
 
     mail(
       to: ENV['TEAM_EMAIL'],
