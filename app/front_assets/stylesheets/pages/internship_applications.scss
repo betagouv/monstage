@@ -23,7 +23,7 @@ $line-height: 4px;
     right: 50%;
     // position the line at the center of of the circle
     top: $nav-link-rounded-radius; // position at center of circle which is radius
-    margin-top: -($line-height/2); // recenter line considering his width
+    margin-top: -$line-height/2; // recenter line considering his width
     // add some colors
     background-color: $nav-tabs-border-color;
     z-index: 1;

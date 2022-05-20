@@ -131,7 +131,6 @@ export default function SirenInput({
                 >
                   Rechercher votre société dans l’Annuaire des Entreprises
                 </label>
-
                 <div className="input-group input-siren">
                   <input
                     {...getInputProps({

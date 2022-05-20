@@ -58,21 +58,30 @@ FactoryBot.define do
     end
 
     factory :main_teacher, class: 'Users::SchoolManagement', parent: :user do
+      school
       type { 'Users::SchoolManagement' }
       role { 'main_teacher' }
 
       first_name { 'Madame' }
       last_name { 'Labutte' }
+
+      sequence(:email) { |n| "labutte.#{n}@#{school.email_domain_name}" }
     end
 
     factory :teacher, class: 'Users::SchoolManagement', parent: :user do
+      school
       type { 'Users::SchoolManagement' }
       role { 'teacher' }
+
+      sequence(:email) { |n| "labotte.#{n}@#{school.email_domain_name}" }
     end
 
     factory :other, class: 'Users::SchoolManagement', parent: :user do
+      school
       type { 'Users::SchoolManagement' }
       role { 'other' }
+
+      sequence(:email) { |n| "lautre.#{n}@#{school.email_domain_name}" }
     end
 
     factory :statistician, class: 'Users::Statistician', parent: :user do

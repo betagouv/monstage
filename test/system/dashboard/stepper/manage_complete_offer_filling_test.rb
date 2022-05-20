@@ -52,8 +52,8 @@ class ManageCompleteOfferFillingTest < ApplicationSystemTestCase
         wait_form_submitted
         assert_equal 'Stage individuel (un seul élève par stage)', find('span.badge-internship-offer-alone').text
         assert_equal 'Une super cool entreprise', find('.test-description').text
-        assert_equal 'Delta dev', find('strong.test-employer-name.pl-4').text
-        assert_equal '75013 Paris 13e Arrondissement', find('span.test-zipcode-and-city').text
+        assert_equal 'EAST SIDE SOFTWARE', find('strong.test-employer-name.pl-4').text
+        assert_equal '75012 PARIS 12', find('span.test-zipcode-and-city').text
       end
     end
   end

@@ -1,3 +1,5 @@
-if Rails.env.staging? || Rails.env.review?
-  ActionMailer::Base.register_interceptor(SandboxEmailInterceptor)
+Rails.application.configure do
+  if Rails.env.staging? || Rails.env.review?
+    config.action_mailer.interceptors = %w[SandboxEmailInterceptor]
+  end
 end

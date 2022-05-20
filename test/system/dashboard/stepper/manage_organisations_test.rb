@@ -38,7 +38,6 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
   # end
 
   test 'create organisation fails gracefuly' do
-    if ENV['RUN_BRITTLE_TEST'] # TODO remove after chromeversion issue
     sector = create(:sector)
     employer = create(:employer)
     group = create(:group, name: 'hello', is_public: true)
@@ -51,7 +50,6 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
       find('#organisation_employer_description_rich_text', visible: false).set(as)
       click_on "Suivant"
       find('#error_explanation')
-    end
     end
   end
 end
