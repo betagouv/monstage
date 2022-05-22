@@ -9,5 +9,8 @@
     = link_to 'Mon établissement', account_path(section: 'school'), class: "list-group-item list-group-item-action #{'active' if current_section == 'school'}"
   - if can?(:show, :api_token)
     = link_to 'API', account_path(section: 'api'), class: "list-group-item list-group-item-action #{'active' if current_section == 'api'}"
-  = link_to destroy_user_session_path, class: "list-group-item list-group-item-action text-danger", method: :delete, data: { turbo: false } do
+  = link_to destroy_user_session_path,
+            class: "list-group-item list-group-item-action text-danger",
+            method: :delete,
+            data: { turbo: false } do
     | Déconnexion

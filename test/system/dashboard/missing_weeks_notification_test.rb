@@ -14,7 +14,7 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
   end
 
   test 'student troisieme try to apply to an offer while school manager has not open any internship week' do
-    if ENV['RUN_BRITTLE_TEST']
+    travel_to(Date.new(2019, 3, 1)) do
       internship_offer = create(:weekly_internship_offer)
       school = create(:school, :with_school_manager, weeks: [])
       school_manager = school.school_manager
@@ -25,7 +25,7 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
       explanation = "Attention, vérifiez bien que les dates de stage proposées dans l'annonce correspondent " \
                     "à vos dates de stage. Votre chef d'établissement n'a en effet pas renseigné " \
                     "les semaines de stage de votre établissement." \
-                    
+
       school_message = "Etablissement mis à jour avec succès"
 
       InternshipOffer.stub :nearby, InternshipOffer.all do

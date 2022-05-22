@@ -20,7 +20,7 @@
             = link_to dashboard_internship_offer_internship_applications_path(@internship_offer), class: 'nav-link px-0 px-lg-3' do
               = "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
 
-      li.ml-auto.d-flex
+      li.ml-auto.d-flex data-controller="link-submitter"
         - if can?(:discard, @internship_offer)
           a.nav-link.px-1.px-sm-2.ml-auto.text-center data-toggle="modal" data-target="#discard-internship-offer-modal" href=javascript_required_path
             i.fas.fa-trash
@@ -28,36 +28,52 @@
               | Supprimer
 
         - if can?(:update, @internship_offer) && @internship_offer.published_at?
-          = link_to dashboard_internship_offer_path(@internship_offer.to_param, internship_offer: {published_at: nil}), class: 'nav-link text-center px-1 px-sm-2', method: :patch, data: { :"test-id" => "toggle-publish-#{internship_offer.id}"} do
-            i.fas.fa-eye-slash
-            small.d-block
-              | Masquer
+          = form_with url: dashboard_internship_offer_path(@internship_offer.to_param, internship_offer: {published_at: nil}),
+                      method: :patch,
+                      class: 'nav-link text-center px-1 px-sm-2 text-sky-blue',
+                      data: { :"test-id" => "toggle-publish-#{internship_offer.id}", turbo: false } do
+
+            a [data-action="click->link-submitter#submit"
+               data-link-submitter-target="link"
+               data-test-id="toggle-publish-#{internship_offer.id}"]
+              i.fas.fa-eye-slash
+              small.d-block
+                | Masquer
 
         - if can?(:update, @internship_offer) && !@internship_offer.published_at?
-          = link_to dashboard_internship_offer_path(@internship_offer.to_param, internship_offer: {published_at: Time.now.iso8601(0)}), class: 'nav-link text-center px-1 px-sm-2', method: :patch, data: { :"test-id" => "toggle-publish-#{internship_offer.id}"} do
-            i.fas.fa-check
-            small.d-block
-              | Publier
+          = form_with url: dashboard_internship_offer_path(@internship_offer.to_param, internship_offer: {published_at: Time.now.iso8601(0)}),
+                      class: 'nav-link text-center px-1 px-sm-2 text-sky-blue',
+                      method: :patch,
+                      data: { :"test-id" => "toggle-publish-#{internship_offer.id}", turbo: false } do
+            a [data-action="click->link-submitter#submit"
+               data-link-submitter-target="link"
+               data-test-id="toggle-publish-#{internship_offer.id}"]
+              i.fas.fa-check
+              small.d-block
+                | Publier
 
         - if can?(:update, @internship_offer)
-          a.nav-link.px-1.px-sm-2.text-center href=edit_dashboard_internship_offer_path(@internship_offer.to_param)
-            i.fas.fa-pen
-            small.d-block
-              | Modifier
+          div data-turbo="false"
+            a.nav-link.px-1.px-sm-2.text-center href=edit_dashboard_internship_offer_path(@internship_offer.to_param)
+              i.fas.fa-pen
+              small.d-block
+                | Modifier
 
         - if can?(:read, @internship_offer)
-          a.nav-link.px-1.px-sm-2.text-center.d-none.d-md-block href=javascript_required_path onclick='window.print();return false;'
-            i.fas.fa-print
-            small.d-block
-              | Imprimer
+          div data-turbo="false"
+            a.nav-link.px-1.px-sm-2.text-center.d-none.d-md-block href=javascript_required_path onclick='window.print();return false;'
+              i.fas.fa-print
+              small.d-block
+                | Imprimer
 
 
-          a.nav-link.pl-1.pr-0.pr-sm-0.pl-sm-2.text-center href=new_dashboard_stepper_organisation_path
-            i.fas.fa-plus
-            small.d-none.d-sm-block
-              | Déposer une offre
-            small.d-block.d-sm-none
-              | Ajouter
+          div data-turbo="false"
+            a.nav-link.pl-1.pr-0.pr-sm-0.pl-sm-2.text-center href=new_dashboard_stepper_organisation_path
+              i.fas.fa-plus
+              small.d-none.d-sm-block
+                | Déposer une offre
+              small.d-block.d-sm-none
+                | Ajouter
 
 .row.mt-3
   .col-12

@@ -26,6 +26,7 @@ div data-internship-application-form-target="containerForm" class="#{@internship
           = form_with({model: @internship_application,
                       url: (is_creating ? internship_offer_internship_applications_path(@internship_offer) : internship_offer_internship_application_path(@internship_offer, @internship_application)),
                       scope: :internship_application,
+                      data: {turbo: false },
                       html: {method: is_creating ? :post : :patch, id: 'new_internship_application'} }) do |f|
 
             = render "layouts/form_errors",

@@ -1,4 +1,8 @@
-= form_with model: operator, url: '/reporting/operators/', data: { turbo: false }, method: :put, html: {class: "bg-light font-weight-bold text-blue tr"} do |f|
+= form_with model: operator,
+            url: '/reporting/operators/',
+            data: { turbo: false },
+            method: :put,
+            html: {class: "bg-light font-weight-bold text-blue tr"} do |f|
   = f.hidden_field :id, value: operator.id
   .td.align-middle.bl-1.bc-light
     = image_tag asset_pack_path("media/images/homepage/partenaires/#{operator.logo}"),
