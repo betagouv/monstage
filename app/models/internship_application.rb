@@ -31,18 +31,18 @@ class InternshipApplication < ApplicationRecord
   #
   # Triggers scopes (used for transactional mails)
   #
-  scope :not_reminded, lambda {
-    where(pending_reminder_sent_at: nil)
-  }
 
+  # reminders after 7 days, 14 days and none afterwards
   scope :remindable, lambda {
-    submitted.not_reminded
-             .where(submitted_at: 15.days.ago..7.days.ago)
-             .where(canceled_at: nil)
+    passed_sumitted = submitted.where(submitted_at: 16.days.ago..7.days.ago)
+                               .where(canceled_at: nil)
+    starting = passed_sumitted.where('pending_reminder_sent_at is null')
+    current  = passed_sumitted.where('pending_reminder_sent_at < :date', date: 7.days.ago)
+    starting.or(current)
   }
 
   scope :expirable, lambda {
-    submitted.where('submitted_at < :date', date: 15.days.ago)
+    submitted.where('submitted_at < :date', date: 30.days.ago)
   }
 
   #
@@ -142,16 +142,11 @@ class InternshipApplication < ApplicationRecord
                           update!("approved_at": Time.now.utc)
                           main_teacher = student.main_teacher
                           arg_hash = {internship_application: self, main_teacher: main_teacher}
-                          # StudentMailer.internship_application_approved_email
                           accepted_student_notify
-                          # since class_room and school_track might be anavailable
                           if student.school.internship_agreement_open? && type == "InternshipApplications::WeeklyFramed"
-                            # SchoolManagerMailer.agreement_creation_notice_email
-                            # EmployerMailer.agreement_creation_notice_email
                             create_agreement
-
                             if main_teacher.present?
-                              MainTeacherMailer.internship_application_approved_email(arg_hash)
+                              MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
                                                .deliver_later
                             end
                           else
@@ -245,10 +240,10 @@ class InternshipApplication < ApplicationRecord
     agreement.skip_validations_for_system = true
     agreement.save!
 
-    SchoolManagerMailer.agreement_creation_notice_email(
+    SchoolManagerMailer.internship_application_approved_with_agreement_email(
       internship_agreement: internship_agreement
     ).deliver_later
-    EmployerMailer.agreement_creation_notice_email(
+    EmployerMailer.internship_application_approved_with_agreement_email(
       internship_agreement: internship_agreement
     ).deliver_now
   end

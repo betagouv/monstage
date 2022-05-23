@@ -4,12 +4,38 @@ require 'test_helper'
 
 class InternshipApplicationTest < ActiveSupport::TestCase
   include ThirdPartyTestHelpers
-  test 'transition from draft to submit updates submitted_at and send semail to employer' do
+
+  test 'scope remindable' do
+    create(:weekly_internship_application, :submitted,
+                                           submitted_at: 5.days.ago,
+                                           pending_reminder_sent_at: 5.days.ago)
+    create(:weekly_internship_application, :submitted,
+                                           submitted_at: 10.days.ago,
+                                           pending_reminder_sent_at: 10.days.ago) # ok
+    create(:weekly_internship_application, :submitted,
+                                           submitted_at: 18.days.ago,
+                                           pending_reminder_sent_at: 18.days.ago)
+    create(:weekly_internship_application, :submitted,
+                                           submitted_at: 3.days.ago,
+                                           pending_reminder_sent_at: nil)
+    create(:weekly_internship_application, :submitted,
+                                           submitted_at: 8.days.ago,
+                                           pending_reminder_sent_at: 2.days.ago)
+    create(:weekly_internship_application, :submitted,
+                                           submitted_at: 8.days.ago,
+                                           pending_reminder_sent_at: nil) # ok
+    create(:weekly_internship_application, :approved,
+                                           approved_at: 10.days.ago,
+                                           pending_reminder_sent_at: 10.days.ago)
+    assert_equal 2, InternshipApplication.remindable.count
+  end
+
+  test 'transition from draft to submit updates submitted_at and sends email to employer' do
     internship_application = create(:weekly_internship_application, :drafted)
     freeze_time do
       assert_changes -> { internship_application.reload.submitted_at },
-                     from: nil,
-                     to: Time.now.utc do
+          from: nil,
+          to: Time.now.utc do
         mock_mail = MiniTest::Mock.new
         mock_mail.expect(:deliver_later, true)
         EmployerMailer.stub :internship_application_submitted_email, mock_mail do
@@ -73,7 +99,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     School.stub_any_instance(:internship_agreement_open?, true) do
       InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
         InternshipApplication.stub_any_instance(:create_agreement, nil) do
-          MainTeacherMailer.stub(:internship_application_approved_email,
+          MainTeacherMailer.stub(:internship_application_approved_with_agreement_email,
                                 mock_mail_to_main_teacher) do
             internship_application.save
             internship_application.approve!
@@ -98,7 +124,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     School.stub_any_instance(:internship_agreement_open?, true) do
       InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
         InternshipApplication.stub_any_instance(:create_agreement, nil) do
-          MainTeacherMailer.stub(:internship_application_approved_email,
+          MainTeacherMailer.stub(:internship_application_approved_with_agreement_email,
                                 mock_mail_to_main_teacher) do
             internship_application.save
             internship_application.approve!
@@ -122,7 +148,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
 
     InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
       School.stub_any_instance(:internship_agreement_open?, true) do
-        SchoolManagerMailer.stub(:agreement_creation_notice_email,
+        SchoolManagerMailer.stub(:internship_application_approved_with_agreement_email,
                                  mock_mail_to_school_manager) do
           internship_application.save
           internship_application.approve!
@@ -145,7 +171,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
 
     InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
       School.stub_any_instance(:internship_agreement_open?, true) do
-        EmployerMailer.stub(:agreement_creation_notice_email,
+        EmployerMailer.stub(:internship_application_approved_with_agreement_email,
                                  mock_mail_to_employer) do
           internship_application.save
           internship_application.approve!

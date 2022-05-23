@@ -61,8 +61,8 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       internship_offer = create(:weekly_internship_offer, employer: employer, weeks: [week_with_school])
 
       visit edit_dashboard_internship_offer_path(internship_offer)
-      find(".bg-success-20[data-week-id='#{week_with_school.id}']", count: 1)
-      find(".bg-dark-70[data-week-id='#{week_without_school.id}']", count: 1)
+      find(".bg-success-20[data-week-id='#{week_with_school.id}']")
+      find(".bg-dark-70[data-week-id='#{week_without_school.id}']")
     end
   end
 
@@ -108,34 +108,36 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   end
 
   test 'Employer can change max candidates parameter back and forth' do
-    employer = create(:employer)
-    weeks = Week.selectable_from_now_until_end_of_school_year.last(4)
-    internship_offer = create(:weekly_internship_offer, employer: employer, weeks: weeks)
-    assert_equal 1, internship_offer.max_candidates
-    sign_in(employer)
-    visit dashboard_internship_offers_path(internship_offer: internship_offer)
-    page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
-    click_link("Modifier")
-    find('label[for="internship_type_false"]').click # max_candidates can be set to many now
-    within('.form-group-select-max-candidates') do
-      fill_in('Nombre total d\'élèves que vous souhaitez accueillir sur l\'année scolaire', with: 4)
-    end
-    execute_script("document.getElementById('internship_offer_max_students_per_group').value = '2';")
-    click_button('Modifier l\'offre')
-    assert_equal 4,
-                internship_offer.reload.max_candidates,
-                'faulty max_candidates'
-    assert_equal 2,
-                internship_offer.max_students_per_group,
-                'faulty max_students_per_group'
+    travel_to Date.new(2022, 01, 25) do
+      employer = create(:employer)
+      weeks = Week.selectable_from_now_until_end_of_school_year.last(4)
+      internship_offer = create(:weekly_internship_offer, employer: employer, weeks: weeks)
+      assert_equal 1, internship_offer.max_candidates
+      sign_in(employer)
+      visit dashboard_internship_offers_path(internship_offer: internship_offer)
+      page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
+      click_link("Modifier")
+      find('label[for="internship_type_false"]').click # max_candidates can be set to many now
+      within('.form-group-select-max-candidates') do
+        fill_in('Nombre total d\'élèves que vous souhaitez accueillir sur l\'année scolaire', with: 4)
+      end
+      execute_script("document.getElementById('internship_offer_max_students_per_group').value = '2';")
+      click_button('Modifier l\'offre')
+      assert_equal 4,
+                  internship_offer.reload.max_candidates,
+                  'faulty max_candidates'
+      assert_equal 2,
+                  internship_offer.max_students_per_group,
+                  'faulty max_students_per_group'
 
-    visit dashboard_internship_offers_path(internship_offer: internship_offer)
-    page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
-    click_link("Modifier")
-    find('label[for="internship_type_true"]').click
-    click_button('Modifier l\'offre')
-    assert_equal 4, internship_offer.reload.max_candidates
-    assert_equal 1, internship_offer.reload.max_students_per_group
+      visit dashboard_internship_offers_path(internship_offer: internship_offer)
+      page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
+      click_link("Modifier")
+      find('label[for="internship_type_true"]').click
+      click_button('Modifier l\'offre')
+      assert_equal 4, internship_offer.reload.max_candidates
+      assert_equal 1, internship_offer.reload.max_students_per_group
+    end
   end
 
   test 'Employer cannot change type if applications are associated' do

@@ -8,18 +8,29 @@ module EmailUtils
   end
 
   def self.from
-    return 'support@monstagedetroisieme.fr' if Rails.env.review?
-
-    "support@#{URI(env_host).host.gsub(/^www\./, '')}"
+    "notification@monstagedetroisieme.fr"
   end
+
+  def self.formatted_from
+    formatted_email(from)
+  end
+
+  def self.reply_to
+    "support@monstagedetroisieme.fr"
+  end
+
+  def self.formatted_reply_to
+    formatted_email(reply_to)
+  end
+
 
   def self.display_name
     'Mon Stage de 3e'
   end
 
-  def self.formatted_email
+  def self.formatted_email(email)
     address = Mail::Address.new
-    address.address = from
+    address.address = email
     address.display_name = display_name
     address.format
   end

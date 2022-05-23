@@ -206,7 +206,7 @@ module Finders
     attr_reader :params, :user
 
     def platform_base_query
-      query = Reporting::InternshipOffer.where(discarded_at: nil)
+      query = Reporting::InternshipOffer.all
       query = query.during_year(school_year: school_year) if school_year_param?
       query = query.limited_to_ministry(user: user) if user.ministry_statistician?
       query = query.by_department(department: params[:department]) if department_param?

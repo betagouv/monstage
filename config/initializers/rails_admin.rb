@@ -30,7 +30,8 @@ require Rails.root.join('lib', 'rails_admin', 'kpi.rb')
 require Rails.root.join('lib', 'rails_admin', 'switch_user.rb')
 
 RailsAdmin.config do |config|
-  # config.asset_source = :webpacker
+
+  config.asset_source = :webpacker
   ### Popular gems integration
 
   ## == Devise ==
@@ -106,5 +107,5 @@ RailsAdmin.config do |config|
     "AB Testing" => "/split"
   }
 
-  
+
 end

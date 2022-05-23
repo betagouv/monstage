@@ -36,7 +36,7 @@ class OtherRegistrationsTest < ActionDispatch::IntegrationTest
     school = create(:school)
     create(:school_manager, school: school)
     assert_difference('Users::SchoolManagement.other.count', 1) do
-      post user_registration_path(params: { user: { email: 'cpe@edu.fr',
+      post user_registration_path(params: { user: { email: "cpe@#{school.email_domain_name}",
                                                     password: 'okokok',
                                                     password_confirmation: 'okokok',
                                                     type: 'Users::SchoolManagement',

@@ -20,8 +20,7 @@ class EmployerMailerTest < ActionMailer::TestCase
     internship_application = create(:weekly_internship_application)
     email = EmployerMailer.internship_applications_reminder_email(
       employer: internship_application.internship_offer.employer,
-      remindable_application_ids: [internship_application.id],
-      expirable_application_ids: [internship_application.id]
+      remindable_application_ids: [internship_application.id]
     )
     email.deliver_now
     assert_emails 1
@@ -29,10 +28,10 @@ class EmployerMailerTest < ActionMailer::TestCase
     refute_email_spammyness(email)
   end
 
-  test '.agreement_creation_notice_email delivers as expected' do
+  test '.internship_application_approved_with_agreement_email delivers as expected' do
     internship_agreement = create(:internship_agreement)
     employer = internship_agreement.internship_application.internship_offer.employer
-    email = EmployerMailer.agreement_creation_notice_email(
+    email = EmployerMailer.internship_application_approved_with_agreement_email(
       internship_agreement: internship_agreement
     )
     email.deliver_now

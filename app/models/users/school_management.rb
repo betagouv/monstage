@@ -24,6 +24,7 @@ module Users
     validates :school, presence: true, on: :create
     validate :only_join_managed_school, on: :create, unless: :school_manager?
     validate :official_uai_email_address, on: :create, if: :school_manager?
+    validate :official_email_address, on: :create
 
     before_update :notify_school_manager, if: :notifiable?
     after_create :notify_school_manager, if: :notifiable?

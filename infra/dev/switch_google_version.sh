@@ -5,7 +5,7 @@ set -x
 CHROME_OLD_VERSION="97.0.4692.71"
 # Following version might not be accurate in the future.
 # To be updated when new version is released.
-CHROME_NEW_VERSION="100.0.4896.60"
+CHROME_NEW_VERSION="101.0.4951.41"
 
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
 sudo apt-get update --allow-releaseinfo-change
