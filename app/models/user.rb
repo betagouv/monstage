@@ -94,7 +94,7 @@ class User < ApplicationRecord
   end
 
   def to_s
-    "logged in as : #{type}[##{id}]"
+    name
   end
 
   def name
