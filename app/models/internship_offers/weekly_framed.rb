@@ -140,9 +140,7 @@ module InternshipOffers
     end
 
     def visible
-      return "oui" if published?
-
-      "non"
+      published? ? "oui" : "non"
     end
 
     def supplied_applications
