@@ -129,52 +129,54 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
   end
 
   test 'search by all criteria' do
-    searched_keyword = 'helloworld'
-    searched_week = Week.selectable_from_now_until_end_of_school_year.first
-    searched_location = Coordinates.paris
-    not_searched_keyword = 'bouhbouh'
-    not_searched_week = Week.selectable_from_now_until_end_of_school_year.last
-    not_searched_location = Coordinates.bordeaux
-    searched_opts = { title: searched_keyword,
-                      coordinates: searched_location,
-                      weeks: [searched_week]}
-    # build findable
-    findable_internship_offer = create(:weekly_internship_offer, searched_opts)
+    travel_to(Date.new(2022, 3, 1)) do
+      searched_keyword = 'helloworld'
+      searched_week = Week.selectable_from_now_until_end_of_school_year.first
+      searched_location = Coordinates.paris
+      not_searched_keyword = 'bouhbouh'
+      not_searched_week = Week.selectable_from_now_until_end_of_school_year.last
+      not_searched_location = Coordinates.bordeaux
+      searched_opts = { title: searched_keyword,
+                        coordinates: searched_location,
+                        weeks: [searched_week]}
+      # build findable
+      findable_internship_offer = create(:weekly_internship_offer, searched_opts)
 
-    # build ignored
-    not_found_by_location = create(
-      :weekly_internship_offer,
-      searched_opts.merge(coordinates: Coordinates.bordeaux)
-    )
-    not_found_by_keyword = create(
-      :weekly_internship_offer,
-      searched_opts.merge(title: not_searched_keyword)
-    )
-    not_found_by_week = create(
-      :weekly_internship_offer,
-      searched_opts.merge(weeks: [not_searched_week])
-    )
-    not_found_by_school_track = create(
-      :troisieme_segpa_internship_offer,
-      searched_opts.reject { |k,v| k == :weeks }
-    )
+      # build ignored
+      not_found_by_location = create(
+        :weekly_internship_offer,
+        searched_opts.merge(coordinates: Coordinates.bordeaux)
+      )
+      not_found_by_keyword = create(
+        :weekly_internship_offer,
+        searched_opts.merge(title: not_searched_keyword)
+      )
+      not_found_by_week = create(
+        :weekly_internship_offer,
+        searched_opts.merge(weeks: [not_searched_week])
+      )
+      not_found_by_school_track = create(
+        :troisieme_segpa_internship_offer,
+        searched_opts.reject { |k,v| k == :weeks }
+      )
 
-    dictionnary_api_call_stub
-    SyncInternshipOfferKeywordsJob.perform_now
-    InternshipOfferKeyword.update_all(searchable: true)
+      dictionnary_api_call_stub
+      SyncInternshipOfferKeywordsJob.perform_now
+      InternshipOfferKeyword.update_all(searchable: true)
 
-    visit internship_offers_path
+      visit internship_offers_path
 
-    fill_in_city_or_zipcode(with: 'Pari', expect: 'Paris')
-    fill_in_keyword(keyword: searched_keyword)
-    find('#input-search-school-track').select('3e')
-    fill_in_week(week: searched_week, open_popover: true)
-    submit_form
+      fill_in_city_or_zipcode(with: 'Pari', expect: 'Paris')
+      fill_in_keyword(keyword: searched_keyword)
+      find('#input-search-school-track').select('3e')
+      fill_in_week(week: searched_week, open_popover: true)
+      submit_form
 
-    assert_presence_of(internship_offer: findable_internship_offer)
-    assert_absence_of(internship_offer: not_found_by_location)
-    assert_absence_of(internship_offer: not_found_by_keyword)
-    assert_absence_of(internship_offer: not_found_by_week)
-    assert_absence_of(internship_offer: not_found_by_school_track)
+      assert_presence_of(internship_offer: findable_internship_offer)
+      assert_absence_of(internship_offer: not_found_by_location)
+      assert_absence_of(internship_offer: not_found_by_keyword)
+      assert_absence_of(internship_offer: not_found_by_week)
+      assert_absence_of(internship_offer: not_found_by_school_track)
+    end
   end
 end
