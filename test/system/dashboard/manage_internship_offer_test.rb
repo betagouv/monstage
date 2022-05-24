@@ -21,6 +21,8 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     find('input[name="internship_offer[employer_name]"]').fill_in(with: 'NewCompany')
 
     click_on "Modifier l'offre"
+
+    
     wait_form_submitted
     assert /NewCompany/.match?(internship_offer.reload.employer_name)
   end
