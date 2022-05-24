@@ -72,6 +72,7 @@ module Dashboard::Stepper
               :max_candidates,
               :max_students_per_group,
               :school_track,
+              :siret,
               :weekly_lunch_break,
               weekly_hours: [],
               new_daily_hours: {},

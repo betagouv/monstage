@@ -14,17 +14,19 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   end
 
   test 'Employer can edit internship offer' do
-    employer = create(:employer)
-    internship_offer = create(:weekly_internship_offer, employer: employer)
-    sign_in(employer)
-    visit edit_dashboard_internship_offer_path(internship_offer)
-    find('input[name="internship_offer[employer_name]"]').fill_in(with: 'NewCompany')
+    travel_to(Date.new(2019, 3, 1)) do
+      employer = create(:employer)
+      internship_offer = create(:weekly_internship_offer, employer: employer)
 
-    click_on "Modifier l'offre"
+      sign_in(employer)
+      visit edit_dashboard_internship_offer_path(internship_offer)
+      find('input[name="internship_offer[employer_name]"]').fill_in(with: 'NewCompany')
 
-    
-    wait_form_submitted
-    assert /NewCompany/.match?(internship_offer.reload.employer_name)
+      click_on "Modifier l'offre"
+
+      wait_form_submitted
+      assert /NewCompany/.match?(internship_offer.reload.employer_name)
+    end
   end
 
   test 'Employer can edit school_track of an internship offer back and forth' do
