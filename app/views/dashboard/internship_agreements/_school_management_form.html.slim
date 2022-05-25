@@ -1,15 +1,15 @@
 = form_with model: @internship_agreement,
-                  url: dashboard_internship_agreement_path(@internship_agreement),
-                  class: 'form-offset-header',
-                  html: {'data-controller': 'internship-agreement-form'}, data: { turbo: false } do |form|
+            url: dashboard_internship_agreement_path(@internship_agreement),
+            class: 'form-offset-header',
+            data: {controller: 'internship-agreement-form', turbo: false } do |form|
   .row
     .col-12
       #nav-tab.nav.nav-tabs role="tablist"
         = link_to "Chef d'établissement", '#nav-school-management', class: "nav-item nav-link active", id: 'nav-school-management-tab', data: { 'toggle': "tab" }, role: "tab", 'aria-controls': "nav-school-management", 'aria-selected': "false"
         = link_to 'Offreur', '#nav-employer', class: "nav-item nav-link", id: 'nav-employer-tab', data: { 'toggle': "tab" }, role: "tab", 'aria-controls': "nav-employer", 'aria-selected': "true"
-      
+
       #nav-tabContent.tab-content
-        
+
         #nav-school-management.tab-pane.fade.active role="tabpanel" aria-labelledby="nav-school-management-tab"
           table.table-sticky-thead
             = render partial: 'dashboard/internship_agreements/form_header',
@@ -31,4 +31,3 @@
                       resource: @internship_agreement,
                       school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale',
                       disabled: true
-        
