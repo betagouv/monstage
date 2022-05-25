@@ -13,10 +13,9 @@
           Consultez de nombreuses offres, soignez votre candidature 
           et postulez à vos stages préférés.
       p.mt-4.text-center-left
-        = link_to internship_offers_path(current_user_or_visitor.default_search_options),
-                  class: 'fr-raw-link',
+        = link_to 'Rechercher un stage', internship_offers_path(current_user_or_visitor.default_search_options),
+                  class: 'fr-raw-link fr-btn fr-btn--secondary fr-px-9w',
                   data: { :"test-id" => 'mobile-search-button-first' }
-          span.fr-btn.fr-btn--secondary.fr-px-9w = "Rechercher un stage"
 
   .col-md-6.col-sm-12.text-center.d-none.d-md-block
     .fr-px-2w
@@ -48,10 +47,10 @@
           Suivez vos élèves dans leur parcours de stage d’observation, 
           de la recherche à la semaine de stage.
       p.mt-4.text-center-left
-        = link_to internship_offers_path(current_user_or_visitor.default_search_options),
-                  class: 'fr-raw-link',
+        = link_to 'Accompagner mes élèves', internship_offers_path(current_user_or_visitor.default_search_options),
+                  class: 'fr-raw-link fr-btn fr-btn--secondary fr-px-6w',
                   data: { :"test-id" => 'mobile-search-button-first' }
-          span.fr-btn.fr-btn--secondary.fr-px-6w= "Accompagner mes élèves"
+
   / 3
 .row.align-items-center.fr-mb-4w
   .col-md-6.col-sm-12
@@ -73,10 +72,9 @@
       p.mt-4.text-center-left
         - if !user_signed_in? || can?(:supply_offers, current_user)
           - target_link = current_user&.custom_dashboard_path || new_user_registration_path
-          = link_to target_link,
-                    class: 'fr-raw-link',
+          = link_to "Accueillir un stagiaire", target_link,
+                    class: 'fr-raw-link fr-btn fr-btn--secondary fr-px-8w',
                     data: { :"test-id" => 'mobile-search-button-first' }
-            span.fr-btn.fr-btn--secondary.fr-px-8w = "Accueillir un stagiaire"
 
   .col-md-6.col-sm-12.text-center.d-none.d-md-block
     .fr-px-2w
