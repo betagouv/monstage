@@ -20,8 +20,7 @@ class EmployerMailerTest < ActionMailer::TestCase
     internship_application = create(:weekly_internship_application)
     email = EmployerMailer.internship_applications_reminder_email(
       employer: internship_application.internship_offer.employer,
-      remindable_application_ids: [internship_application.id],
-      expirable_application_ids: [internship_application.id]
+      remindable_application_ids: [internship_application.id]
     )
     email.deliver_now
     assert_emails 1

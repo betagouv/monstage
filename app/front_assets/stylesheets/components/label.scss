@@ -24,7 +24,7 @@
     line-height: $input-line-height;
     transition: all .2s;
     abbr{
-      margin-left: -($input-padding-x/2);
+      margin-left: -$input-padding-x/2; 
     }
   }
 

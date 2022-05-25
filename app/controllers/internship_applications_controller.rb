@@ -25,7 +25,7 @@ class InternshipApplicationsController < ApplicationController
       @internship_application.submit!
       @internship_application.save!
       redirect_to dashboard_students_internship_applications_path(@internship_application.student, @internship_application),
-                  flash: { success: "Votre candidature a bien été envoyée. Poursuivez votre recherche d'un stage et notez que en l'absence de réponse dans un délai de 2 semaines, votre candidature sera automatiquement annulée." }
+                  flash: { success: "Votre candidature a bien été envoyée. Poursuivez votre recherche d'un stage et notez que en l'absence de réponse dans un délai de 30 jours, votre candidature sera automatiquement annulée." }
     else
       @internship_application.update(update_internship_application_params)
       redirect_to internship_offer_internship_application_path(@internship_offer, @internship_application)
