@@ -22,9 +22,9 @@ div data-controller="internship-application-form"
                           renewed: params[:renewed]   
 
   .row
-    .col-3.mb-4
-      .sticky-top
-        .row.my-2 style="border-bottom: 1px solid #eee"
+    .col-sm-3.col-12.mb-4
+      .sticky-top.fr-px-1w
+        .row.my-2.fr-pt-2w style="border-bottom: 1px solid #eee"
           .col-12
             .h3.text-dark= @internship_offer.title
             .h4.my-2= @internship_offer.employer_name
@@ -42,12 +42,13 @@ div data-controller="internship-application-form"
 
         
 
-    .col-7
-      = render "internship_offers/show_details", internship_offer: @internship_offer
+    .col-sm-7.col-12
+      .fr-px-1w
+        = render "internship_offers/show_details", internship_offer: @internship_offer
   
   .row.mt-4
-    .col-3 
-      .d-none.d-flex.align-items-center
+    .col-3
+      .d-none.d-flex.align-items-center.fr-px-1w
         - if @previous_internship_offer && support_listable?(current_user)
           = link_to listable_internship_offer_path(@previous_internship_offer), class: 'list-item-previous d-flex align-items-center fr-raw-link' do
             span.fr-fi-arrow-left-line aria-hidden="true"
@@ -55,7 +56,7 @@ div data-controller="internship-application-form"
               | Offre précédente
 
     .col-9
-      .d-none.d-flex.align-items-center.justify-content-end
+      .d-none.d-flex.align-items-center.justify-content-end.fr-px-1w
         - if @next_internship_offer && support_listable?(current_user)
           = link_to listable_internship_offer_path(@next_internship_offer), class: 'list-item-next d-flex align-items-center fr-raw-link' do
             span.mb-1
