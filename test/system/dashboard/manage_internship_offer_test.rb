@@ -135,7 +135,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       visit dashboard_internship_offers_path(internship_offer: internship_offer)
       page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
       click_link("Modifier")
-      find('label[for="internship_type_true"]').click
+      find('label[for="internship_type_true"]').click # max_candidates is now set to 1
       click_button('Modifier l\'offre')
       assert_equal 4, internship_offer.reload.max_candidates
       assert_equal 1, internship_offer.reload.max_students_per_group
