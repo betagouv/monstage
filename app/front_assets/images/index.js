@@ -14,6 +14,7 @@ import './internship_offers_new/paper.svg';
 import './internship_offer_show/offer_default_img.jpg';
 import './internship_offer_show/people.png';
 import './internship_offer_show/user.png';
+import './internship_offer_show/offer-header-illustration.svg';
 
 import './pages/logo_onisep.jpg';
 import './pages/logo_cget_texte.png';

@@ -82,12 +82,7 @@ module UsersHelper
         logo: 'logo-viens-voir-mon-taf.png',
         url: 'https://www.viensvoirmontaf.fr',
         height: 80
-      },
-      {
-        logo: 'logo-telemaque.png',
-        url: 'https://www.institut-telemaque.org/',
-        height: 80
-      },
+      }
     ].shuffle
   end
 
