@@ -289,60 +289,64 @@ module Dashboard::InternshipOffers
     end
 
     test 'GET #index as Employer displays links to internship_application' do
-      employer = create(:employer)
-      void_internship_offer = create(:weekly_internship_offer,
-                                     employer: employer)
-      internship_offer_with_pending_response = create(
-        :weekly_internship_offer, employer: employer
-      )
-      create(:weekly_internship_application, :submitted,
-             internship_offer: internship_offer_with_pending_response)
-      internship_offer_with_application = create(:weekly_internship_offer,
-                                                 employer: employer)
-      create(:weekly_internship_application, :approved,
-             internship_offer: internship_offer_with_application)
+      travel_to(Date.new(2019, 9, 1)) do
+        employer = create(:employer)
+        void_internship_offer = create(:weekly_internship_offer,
+                                      employer: employer)
+        internship_offer_with_pending_response = create(
+          :weekly_internship_offer, employer: employer
+        )
+        create(:weekly_internship_application, :submitted,
+              internship_offer: internship_offer_with_pending_response)
+        internship_offer_with_application = create(:weekly_internship_offer,
+                                                  employer: employer)
+        create(:weekly_internship_application, :approved,
+              internship_offer: internship_offer_with_application)
 
-      sign_in(employer)
-      get dashboard_internship_offers_path
-      assert_response :success
-      assert_select '.test-internship-offer', count: 3
-      assert_select 'a[href=?]',
-                    dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Répondre', count: 0
-      assert_select 'a[href=?]',
-                    dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Afficher', count: 0
-      assert_select 'a[href=?]',
-                    dashboard_internship_offer_internship_applications_path(internship_offer_with_application)
+        sign_in(employer)
+        get dashboard_internship_offers_path
+        assert_response :success
+        assert_select '.test-internship-offer', count: 3
+        assert_select 'a[href=?]',
+                      dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Répondre', count: 0
+        assert_select 'a[href=?]',
+                      dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Afficher', count: 0
+        assert_select 'a[href=?]',
+                      dashboard_internship_offer_internship_applications_path(internship_offer_with_application)
+      end
     end
 
     test 'GET #index as Employer displays pending submitted applications for kept internship_offers only' do
-      employer = create(:employer)
-      discarded_internship_offer = create(:weekly_internship_offer,
-                                          :discarded, employer: employer,
-                                          max_candidates: 10,
-                                          max_students_per_group: 5,
-                                          weeks: Week.selectable_from_now_until_end_of_school_year.first(10))
-      kept_internship_offer = create(:weekly_internship_offer,
-                                     employer: employer,
-                                     max_candidates: 10,
-                                     max_students_per_group: 5,
-                                     weeks: Week.selectable_from_now_until_end_of_school_year.first(10))
-      create(:weekly_internship_application, :submitted,
-             internship_offer: discarded_internship_offer)
-      2.times do
+      travel_to(Date.new(2019, 9, 1)) do
+        employer = create(:employer)
+        discarded_internship_offer = create(:weekly_internship_offer,
+                                            :discarded, employer: employer,
+                                            max_candidates: 10,
+                                            max_students_per_group: 5,
+                                            weeks: Week.selectable_from_now_until_end_of_school_year.first(10))
+        kept_internship_offer = create(:weekly_internship_offer,
+                                      employer: employer,
+                                      max_candidates: 10,
+                                      max_students_per_group: 5,
+                                      weeks: Week.selectable_from_now_until_end_of_school_year.first(10))
         create(:weekly_internship_application, :submitted,
-               internship_offer: kept_internship_offer)
-      end
-      3.times do
-        create(:weekly_internship_application, :approved,
-               internship_offer: kept_internship_offer)
-      end
+              internship_offer: discarded_internship_offer)
+        2.times do
+          create(:weekly_internship_application, :submitted,
+                internship_offer: kept_internship_offer)
+        end
+        3.times do
+          create(:weekly_internship_application, :approved,
+                internship_offer: kept_internship_offer)
+        end
 
-      sign_in(employer)
-      get dashboard_internship_offers_path
+        sign_in(employer)
+        get dashboard_internship_offers_path
 
-      assert_select '.fr-tag-rounded',
-                    text: '2',
-                    count: 1
+        assert_select '.fr-tag-rounded',
+                      text: '2',
+                      count: 1
+      end
     end
 
     test 'GET #index as Operator displays api_internship_offers' do
