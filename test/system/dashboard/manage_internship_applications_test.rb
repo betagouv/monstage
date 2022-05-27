@@ -48,9 +48,8 @@ module Dashboard
 
       visit dashboard_internship_offer_internship_applications_path(weekly_internship_application.internship_offer)
       find "div[data-test-id=\"internship-application-#{weekly_internship_application.id}\"]"
-      find('a.btn-link', text: 'Tout afficher +', exact_text: true)
-      find('.d-block.btn-link').click
-      click_on 'Accepter' # maybe not to do check TODO
+      click_link('+ Tout afficher')
+      click_on 'Accepter' 
       assert_changes -> { weekly_internship_application.reload.approved? },
                      from: false,
                      to: true do
@@ -105,7 +104,7 @@ module Dashboard
         find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]"
       end
 
-      click_link('Dates de candidature')
+      select('dates de candidature')
       find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]"
 
       click_link(internship_offer.title)
@@ -154,8 +153,7 @@ module Dashboard
 
       visit dashboard_internship_offer_internship_applications_path(free_date_internship_application.internship_offer)
       find "div[data-test-id=\"internship-application-#{free_date_internship_application.id}\"]"
-      find('.d-block.btn-link').click
-      click_on 'Refuser' # click_on 'Refuser' maybe TODO
+      click_on 'Refuser'
       assert_changes -> { free_date_internship_application.reload.rejected? },
                      from: false,
                      to: true do

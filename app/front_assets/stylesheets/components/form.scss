@@ -15,9 +15,6 @@
   overflow: scroll;
   background-color: $blue-france-975;
 
-  // border: 1px solid $input-border-color; TODO 
-  // border-top-left-radius: $input-border-radius; TODO
-  // border-top-right-radius: $input-border-radius; TODO
   padding: $input-btn-padding-x/2 $input-btn-padding-y;
   &.is-invalid{
     box-shadow: 0 0 2px rgba(255,0,0,.5);

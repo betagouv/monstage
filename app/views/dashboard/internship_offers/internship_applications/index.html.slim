@@ -18,7 +18,7 @@
         label.fr-text--light for="select-order" Trier par
         - selected = params[:order] || 'applicationDate'
         = select_tag :select_order,
-                    options_for_select([['dates de candidatures','applicationDate' ], [ 'dates de stage', 'internshipDate']], selected),
+                    options_for_select([['dates de candidature','applicationDate' ], [ 'dates de stage', 'internshipDate']], selected),
                     class:'fr-select',
                     id: "select-order",
                     data:{action: "change->select-and-go#handleChange",

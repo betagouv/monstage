@@ -7,7 +7,6 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
   include OrganisationFormFiller
 
   test 'can create Organisation' do
-    if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'# TODO remove after chromeversion issue
     2.times { create(:school) }
     employer = create(:employer)
     group = create(:group, name: 'hello', is_public: true)
@@ -22,7 +21,6 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
         find('span.number', text: '3')
         click_on "Suivant"
       end
-    end
     end
   end
 
