@@ -14,6 +14,27 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_select "[data-test-id=#{internship_offer.id}]", 0
   end
 
+  def create_offers
+    offer_paris_1 = create(
+      :weekly_internship_offer,
+      title: 'Vendeur'
+    )
+    offer_paris_2 = create(
+      :weekly_internship_offer,
+      title: 'Comptable'
+    )
+    offer_paris_3 = create(
+      :weekly_internship_offer,
+      title: 'Infirmier'
+    )
+    offer_bordeaux_1 = create(
+      :weekly_internship_offer,
+      title: 'Infirmier',
+      city: 'Bordeaux',
+      coordinates: Coordinates.bordeaux
+    )
+  end
+
   test 'GET #index as "Users::Visitor" works and has a page title' do
     get internship_offers_path
     assert_response :success
@@ -23,6 +44,118 @@ class IndexTest < ActionDispatch::IntegrationTest
   test 'GET #index with coordinates as "Users::Visitor" works' do
     get internship_offers_path(latitude: 44.8378, longitude: -0.579512)
     assert_response :success
+  end
+
+  test 'GET #index with wrong keyword as Visitor returns no results' do
+    create_offers
+    get internship_offers_path(keyword: 'avocat')
+    assert_response :success
+    assert_select 'h2', "Aucune offre n'est disponible."
+  end
+
+  test 'GET #index with wrong coordinates as Visitor returns no results' do
+    create_offers
+    get internship_offers_path(latitude: 4.8378, longitude: -0.579512)
+    assert_response :success
+    assert_select 'h2', "Aucune offre n'est disponible."
+  end
+
+  test 'GET #index ignore default radius in suggestions' do
+    offer_paris_1 = create(
+      :weekly_internship_offer,
+      title: 'Vendeur'
+    )
+
+    get internship_offers_path(
+      keyword: 'avocat', 
+      radius: Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER)
+      
+    assert_response :success
+    assert_select 'h2', "Aucune offre n'est disponible."
+    assert_absence_of(internship_offer: offer_paris_1)
+  end
+
+  test 'GET #index with wrong keyword and Paris location as Visitor returns no results with Paris suggestions' do
+    offer_paris_1 = create(
+      :weekly_internship_offer,
+      title: 'Vendeur'
+    )
+    offer_paris_2 = create(
+      :weekly_internship_offer,
+      title: 'Comptable'
+    )
+    offer_paris_3 = create(
+      :weekly_internship_offer,
+      title: 'Infirmier'
+    )
+    # not displayed
+    offer_bordeaux_1 = create( 
+      :weekly_internship_offer,
+      title: 'Infirmier',
+      city: 'Bordeaux',
+      coordinates: Coordinates.bordeaux
+    )
+    # not displayed
+    offer_bordeaux_2 = create(
+      :weekly_internship_offer,
+      title: 'Infirmier',
+      city: 'Bordeaux',
+      coordinates: Coordinates.bordeaux
+    )
+
+    get internship_offers_path(
+      keyword: 'avocat', 
+      latitude: Coordinates.paris[:latitude], 
+      longitude: Coordinates.paris[:longitude])
+
+    assert_response :success
+    assert_select 'h2', "Aucune offre n'est disponible."
+    assert_presence_of(internship_offer: offer_paris_1)
+    assert_presence_of(internship_offer: offer_paris_2)
+    assert_presence_of(internship_offer: offer_paris_3)
+    assert_absence_of(internship_offer: offer_bordeaux_1)
+    assert_absence_of(internship_offer: offer_bordeaux_2)
+  end
+
+  test 'GET #index with wrong keyword and wrong weeks as Visitor returns no results with weeks suggestions' do
+    offer_paris_1 = create(
+      :weekly_internship_offer,
+      title: 'Vendeur'
+    )
+    offer_paris_2 = create(
+      :weekly_internship_offer,
+      title: 'Comptable'
+    )
+    # not displayed
+    offer_paris_3 = create(
+      :weekly_internship_offer,
+      title: 'Infirmier',
+      week_ids: [1, 2, 3]
+    )
+    offer_bordeaux_1 = create(
+      :weekly_internship_offer,
+      title: 'Infirmier',
+      city: 'Bordeaux',
+      coordinates: Coordinates.bordeaux
+    )
+    offer_bordeaux_2 = create(
+      :weekly_internship_offer,
+      title: 'Infirmier',
+      city: 'Bordeaux',
+      coordinates: Coordinates.bordeaux
+    )
+
+    get internship_offers_path(
+      keyword: 'avocat',
+      week_ids: offer_paris_1.week_ids)
+
+    assert_response :success
+    assert_select 'h2', "Aucune offre n'est disponible."
+    assert_presence_of(internship_offer: offer_paris_1)
+    assert_presence_of(internship_offer: offer_paris_2)
+    assert_absence_of(internship_offer: offer_paris_3)
+    assert_presence_of(internship_offer: offer_bordeaux_1)
+    assert_presence_of(internship_offer: offer_bordeaux_2)
   end
 
   test 'GET #index canonical links works' do
