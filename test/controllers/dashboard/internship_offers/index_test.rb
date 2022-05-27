@@ -289,33 +289,35 @@ module Dashboard::InternshipOffers
     end
 
     test 'GET #index as Employer displays links to internship_application' do
-      employer = create(:employer)
-      void_internship_offer = create(:weekly_internship_offer,
-                                     employer: employer)
-      internship_offer_with_pending_response = create(
-        :weekly_internship_offer, employer: employer
-      )
-      create(:weekly_internship_application, :submitted,
-             internship_offer: internship_offer_with_pending_response)
-      internship_offer_with_application = create(:weekly_internship_offer,
-                                                 employer: employer)
-      create(:weekly_internship_application, :approved,
-             internship_offer: internship_offer_with_application)
+      travel_to(Date.new(2019, 9, 1)) do
+        employer = create(:employer)
+        void_internship_offer = create(:weekly_internship_offer,
+                                      employer: employer)
+        internship_offer_with_pending_response = create(
+          :weekly_internship_offer, employer: employer
+        )
+        create(:weekly_internship_application, :submitted,
+              internship_offer: internship_offer_with_pending_response)
+        internship_offer_with_application = create(:weekly_internship_offer,
+                                                  employer: employer)
+        create(:weekly_internship_application, :approved,
+              internship_offer: internship_offer_with_application)
 
-      sign_in(employer)
-      get dashboard_internship_offers_path
-      assert_response :success
-      assert_select '.test-internship-offer', count: 3
-      assert_select 'a[href=?]',
-                    dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Répondre', count: 0
-      assert_select 'a[href=?]',
-                    dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Afficher', count: 0
-      assert_select 'a[href=?]',
-                    dashboard_internship_offer_internship_applications_path(internship_offer_with_application)
+        sign_in(employer)
+        get dashboard_internship_offers_path
+        assert_response :success
+        assert_select '.test-internship-offer', count: 3
+        assert_select 'a[href=?]',
+                      dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Répondre', count: 0
+        assert_select 'a[href=?]',
+                      dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Afficher', count: 0
+        assert_select 'a[href=?]',
+                      dashboard_internship_offer_internship_applications_path(internship_offer_with_application)
+      end
     end
 
     test 'GET #index as Employer displays pending submitted applications for kept internship_offers only' do
-      travel_to Time.zone.local(2020, 1, 1) do
+      travel_to(Date.new(2019, 9, 1)) do
         employer = create(:employer)
         discarded_internship_offer = create(:weekly_internship_offer,
                                             :discarded, employer: employer,

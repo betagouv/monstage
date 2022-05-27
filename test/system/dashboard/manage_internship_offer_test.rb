@@ -14,7 +14,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   end
 
   test 'Employer can edit internship offer' do
-    travel_to(Date.new(2020, 9, 6)) do
+    travel_to(Date.new(2019, 3, 1)) do
       employer = create(:employer)
       internship_offer = create(:weekly_internship_offer, employer: employer)
       sign_in(employer)
@@ -110,7 +110,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   end
 
   test 'Employer can change max candidates parameter back and forth' do
-    travel_to(Date.new(2021, 1, 6)) do
+    travel_to(Date.new(2022, 1, 10)) do
       employer = create(:employer)
       weeks = Week.selectable_from_now_until_end_of_school_year.last(4)
       internship_offer = create(:weekly_internship_offer, employer: employer, weeks: weeks)
