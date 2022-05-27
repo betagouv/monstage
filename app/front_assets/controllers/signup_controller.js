@@ -34,14 +34,14 @@ export default class extends Controller {
   // on change email address, ensure user is shown academia address requirement when neeeded
   refreshEmailFieldLabel(event) {
     $(this.labelTarget).text(
-      event.target.value == "school_manager" ?
+      ["school_manager", "teacher", "main_teacher", "other"].includes(event.target.value) ?
       "Adresse électronique académique" :
       'Adresse électronique (e-mail)'
     );
     $(this.emailExplanationTarget).text(
       event.target.value == "school_manager" ?
       'Merci de saisir une adresse au format : ce.UAI@ac-academie.fr. Cette adresse sera utilisée pour communiquer avec vous. ' : 
-      'Cette adresse sera utilisée pour communiquer avec vous.'
+      'Merci de saisir une adresse au format : xxx@ac-academie.fr. Cette adresse sera utilisée pour communiquer avec vous. '
     )
   }
 

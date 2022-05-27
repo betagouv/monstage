@@ -4,15 +4,8 @@
 }
 
 .warning-block-wrapper.application {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  position: sticky;
-  top: 22px;
   margin-bottom: 2rem;
   z-index: 100;
-
 }
 
 .application .info-covid {
@@ -94,11 +87,10 @@ a.white {
 }
 
 .warning-bloc {
-  position: relative;
-  top: 70px;
   background-color: $bg-light-blue;
   padding: 30px;
   margin-bottom: 10px;
+  border-radius: 21px;
   .explanation {
     font-family: 'Helvetica Neue';
     color: $blue;
@@ -202,11 +194,7 @@ $sortLinkOffset: 15px;
   background-repeat: no-repeat;
   background-size: cover;
 }
-@include media-breakpoint-down(md) {
-  .info-covid {
-    position: static;
-  }
-}
+
 // custom dimension table for dashboard/internship_offers#index
 @include media-breakpoint-up(sm) {
   .table-dashboard-internship-offers {

@@ -15,10 +15,10 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
     refute_email_spammyness(email)
   end
 
-  test 'agreement_creation_notice_email' do
+  test 'internship_application_approved_with_agreement_email' do
     internship_agreement = create(:internship_agreement)
     school_manager = internship_agreement.internship_application.student.school.school_manager
-    email = SchoolManagerMailer.agreement_creation_notice_email(
+    email = SchoolManagerMailer.internship_application_approved_with_agreement_email(
       internship_agreement: internship_agreement
     )
     assert_includes email.to, school_manager.email
@@ -26,7 +26,7 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
     refute_email_spammyness(email)
   end
 
-  test 'internship_application_approved_email within troisieme generale context' do
+  test 'internship_application_with_no_agreement_email within troisieme generale context' do
     school = create(:school, :with_school_manager, :with_weeks)
     student = create(:student_with_class_room_3e, school: school)
     internship_offer = create(:weekly_internship_offer, weeks: school.weeks)
@@ -37,7 +37,7 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
     main_teacher = create(:main_teacher, class_room: school.class_rooms.first, school: school)
     school_manager = school.school_manager
     # internship_application.approve!
-    email = SchoolManagerMailer.internship_application_approved_email(
+    email = SchoolManagerMailer.internship_application_approved_with_no_agreement_email(
       internship_application: internship_application,
       main_teacher: main_teacher
     )
@@ -46,7 +46,7 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
     refute_email_spammyness(email)
   end
 
-  test 'internship_application_approved_email within troisieme generale context but no class_room' do
+  test 'internship_application_with_no_agreement_email within troisieme generale context but no class_room' do
     school = create(:school, :with_school_manager, :with_weeks)
     student = create(:student_with_class_room_3e, school: school)
     internship_offer = create(:weekly_internship_offer, weeks: school.weeks)
@@ -57,7 +57,7 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
     school_manager = school.school_manager
     main_teacher = nil
     internship_application.approve!
-    email = SchoolManagerMailer.internship_application_approved_email(
+    email = SchoolManagerMailer.internship_application_approved_with_no_agreement_email(
       internship_application: internship_application,
       main_teacher: main_teacher
     )

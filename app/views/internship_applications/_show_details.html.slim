@@ -1,4 +1,6 @@
-.row.mt-3
+/ - if can? :show, internship_application
+/ TODO mt-3 might not be needed anymore
+.row.bg-dark-light.mt-3
   .col-12
     h6.text-dark Motivation
     .reboot-trix-content= internship_application.motivation.to_s

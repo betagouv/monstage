@@ -13,8 +13,8 @@ class ReportingSchoolTest < ApplicationSystemTestCase
     assert_equal ['unsubscribed school'],
                   Reporting::School.by_subscribed_school(subscribed_school: false).pluck(:name),
                   'there should be only 2 unsubscribed schools'
-    assert_equal ['parisian subscribing school', 'oise subscribing school'],
-                 Reporting::School.by_subscribed_school(subscribed_school: true).pluck(:name),
+    assert_equal ['oise subscribing school', 'parisian subscribing school'],
+                 Reporting::School.by_subscribed_school(subscribed_school: true).pluck(:name).sort,
                  'there should be only 2 unsubscribed schools'
     sign_in(@statistician)
 

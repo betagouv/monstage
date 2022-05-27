@@ -62,7 +62,7 @@ module Finders
     end
 
     def base_query
-      query = Reporting::InternshipOffer.where(discarded_at: nil)
+      query = Reporting::InternshipOffer.all
       query = query.during_year(school_year: school_year) if school_year_param?
       query = query.by_department(department: params[:department]) if department_param?
       query = query.by_school_track(school_track: params[:school_track]) if school_track?

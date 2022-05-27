@@ -16,7 +16,7 @@ class ReportingDashboardTest < ApplicationSystemTestCase
     )
   end
 
-  test 'Offers are filtered by school_track' do
+  test 'Offers are filtered by school_track, deleted ones are displayed' do
     travel_to(Date.new(2020, 9, 3)) do
       create(:troisieme_prepa_metiers_internship_offer, zipcode: 60_000)
       3.times { create(:weekly_internship_offer,
@@ -33,12 +33,12 @@ class ReportingDashboardTest < ApplicationSystemTestCase
       sign_in(@statistician)
       visit reporting_dashboards_path(department: @department, school_year: 2020)
 
-      page.assert_selector("span[data-test-total=total-created-at]", text: '6')
+      page.assert_selector("span[data-test-total=total-created-at]", text: '7')
       find_link('Offres').click
 
       total_report_css = 'tfoot .test-total-report'
       select '3e'
-      page.assert_selector(total_report_css, text: '3')
+      page.assert_selector(total_report_css, text: '4')
       select '3e SEGPA'
       page.assert_selector(total_report_css, text: '2')
     end

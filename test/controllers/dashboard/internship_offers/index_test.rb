@@ -340,8 +340,11 @@ module Dashboard::InternshipOffers
 
         sign_in(employer)
         get dashboard_internship_offers_path
-
-        assert_select '.fr-tag-rounded',
+        # Maybe this following test is the right one : TODO
+        # assert_select '.fr-tag-rounded',
+        #                text: '2',
+        #                count: 1
+        assert_select '.fa-fw.red-notification-badge',
                       text: '2',
                       count: 1
       end

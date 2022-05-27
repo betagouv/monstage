@@ -1,7 +1,7 @@
-fieldset.mt-4 data-controller='organisation-form'
-  legend.my-4 Informations sur l'entreprise
-  .row.mt-3
-    .col-12.col-md-6.order-md-1.order-2
+.row
+  .col-md-6.order-md-1.order-2
+    fieldset data-controller='organisation-form'
+      legend Informations sur l'entreprise
       = form.rg2a_explain_required_asterisk
       = form.hidden_field :manual_enter, value: false
 
@@ -69,10 +69,7 @@ fieldset.mt-4 data-controller='organisation-form'
               = button_tag :submit, class: 'btn btn-primary' do
                 ="Suivant "
                 i.fas.fa-arrow-right
-    - warning_block = true if warning_block.nil?
-    - if warning_block
-      .col-lg-6.col-md-12.order-md-2.order-1.employer
-        = render partial: 'dashboard/stepper/warning_block'
-  .row.my-5
-
-
+  - warning_block = true if warning_block.nil?
+  - if warning_block
+    .col-md-6.order-md-2.order-1.employer
+      = render partial: 'dashboard/stepper/warning_block'

@@ -31,18 +31,6 @@ module Presenters
       student.phone
     end
 
-    def gender_text
-      return '' if student.gender.blank? || student.gender.eql?('np')
-      return 'Madame' if student.gender.eql?('f')
-      return 'Monsieur' if student.gender.eql?('m')
-
-      ''
-    end
-
-    def formal_name
-      "#{gender_text} #{first_name.try(:capitalize)} #{last_name.try(:capitalize)}"
-    end
-
     def student
       user
     end

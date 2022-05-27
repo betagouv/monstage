@@ -60,16 +60,16 @@
           <% end %>
         </div>
         <% if can?(:choose_role, resource) %>
-        <div class="form-group custom-label-container">
-          <%= f.select :role,
-                        options_from_collection_for_select(user_roles_to_select, :value, :text, resource.role),
-                        { prompt: '-- Veuillez choisir une fonction --' },
-                        { class: 'fr-select', required: true, data: {action: 'change->signup#refreshEmailFieldLabel', :'signup-target' => 'roleInput'} } %>
-          <%= f.label :role, class: "fr-label" do %>
-            Fonction
-            <%= f.rg2a_required_content_tag %>
-          <% end %>
-        </div>
+          <div class="form-group custom-label-container">
+            <%= f.select :role,
+                          options_from_collection_for_select(user_roles_to_select, :value, :text, resource.role),
+                          { prompt: '-- Veuillez choisir une fonction --' },
+                          { class: 'fr-select', required: true, data: {action: 'change->signup#refreshEmailFieldLabel', :'signup-target' => 'roleInput'} } %>
+            <%= f.label :role, class: "fr-label" do %>
+              Fonction
+              <%= f.rg2a_required_content_tag %>
+            <% end %>
+          </div>
         <% end %>
         <div class='fr-form-group'>
           <% if can?(:choose_gender_and_birthday, resource) %>

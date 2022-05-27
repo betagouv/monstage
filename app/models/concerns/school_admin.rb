@@ -32,7 +32,7 @@ module SchoolAdmin
         field :visible
         field :kind, :enum do
           enum do
-            ::School::VALID_TYPE_PARAMS
+            School::VALID_TYPE_PARAMS
           end
         end
         field :code_uai

@@ -30,7 +30,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   end
 
   test 'student with no class_room can submit a 3e prepa métier application when school have not choosen week' do
-    if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'
+    if ENV['RUN_BRITTLE_TEST']
       weeks = Week.selectable_from_now_until_end_of_school_year.to_a.first(2)
       school = create(:school, weeks: [])
       student = create(:student, school: school)
@@ -40,70 +40,93 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       visit internship_offer_path(internship_offer)
       first(:link, 'Postuler').click
 
-      # check application is now here, ensure feature is here
+# <<<<<<< HEAD
+#       # check application is now here, ensure feature is here
 
-      page.find('.test-missing-school-weeks', visible: true)
-      week_label = Week.selectable_from_now_until_end_of_school_year
-                      .first
-                      .human_select_text_method
+#       page.find('.test-missing-school-weeks', visible: true)
+#       week_label = Week.selectable_from_now_until_end_of_school_year
+#                       .first
+#                       .human_select_text_method
 
-      select(week_label)
-      # check for phone fields disabled
-      page.find "input[name='internship_application[student_attributes][phone]'][disabled]", visible: true
-      # check for email fields
-      page.find "input[name='internship_application[student_attributes][email]']", visible: true
-      page.find("input[type='submit'][value='Valider']").click
+#       select(week_label)
+#       # check for phone fields disabled
+#       page.find "input[name='internship_application[student_attributes][phone]'][disabled]", visible: true
+#       # check for email fields
+#       page.find "input[name='internship_application[student_attributes][email]']", visible: true
+#       page.find("input[type='submit'][value='Valider']").click
 
-      page.find('h1', text: 'Votre candidature')
-      page.find("input[type='submit'][value='Envoyer']").click
-    end
+#       page.find('h1', text: 'Votre candidature')
+#       page.find("input[type='submit'][value='Envoyer']").click
+#     end
+# =======
+#     click_on 'Je postule'
+#     # check application is now here, ensure feature is here
+#     page.find '#internship-application-closeform', visible: true
+#     page.find('.test-missing-school-weeks', visible: true)
+#     week_label = Week.selectable_from_now_until_end_of_school_year
+#                      .first
+#                      .human_select_text_method
+
+#     select(week_label)
+#     # check for phone fields disabled
+#     page.find "input[name='internship_application[student_attributes][phone]'][disabled]", visible: true
+#     # check for email fields
+#     page.find "input[name='internship_application[student_attributes][email]']", visible: true
+#     page.find("input[type='submit'][value='Valider']").click
+#     assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
+#     click_button('Envoyer')
+#     page.find('h1', text: 'Mes candidatures')
+#     assert page.has_content?(internship_offer.title)
+# >>>>>>> staging
+
+# TODO
   end
 
   test 'student with no class_room can submit a 3e segpa when school have not choosen week' do
     # weeks = Week.selectable_from_now_until_end_of_school_year.to_a.first(2)
-    # school = create(:school, weeks: [])
-    # student = create(:student, school: school)
-    # internship_offer = create(:troisieme_segpa_internship_offer)
+    school = create(:school, weeks: [])
+    student = create(:student, school: school)
+    internship_offer = create(:troisieme_segpa_internship_offer)
 
-    # sign_in(student)
-    # visit internship_offer_path(internship_offer)
-    # # check application form opener and check form is hidden by default
-    # page.find '#internship-application-closeform', visible: false
+    sign_in(student)
+    visit internship_offer_path(internship_offer)
+    # check application form opener and check form is hidden by default
+    page.find '#internship-application-closeform', visible: false
 
-    # click_on 'Je postule'
-    # # check application is now here, ensure feature is here
-    # # page.find '#internship-application-closeform', visible: true
-    # # check for phone and email fields disabled
-    # page.find("input[type='submit'][value='Valider']").click
-    # assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
-    # page.find("input[type='submit'][value='Valider']").click
-    # page.find('h1', text: 'Mes candidatures')
-    # assert page.has_content?(internship_offer.title)
+    click_on 'Je postule'
+    # check application is now here, ensure feature is here
+    page.find '#internship-application-closeform', visible: true
+    # check for phone and email fields disabled
+    page.find("input[type='submit'][value='Valider']").click
+    assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
+    click_button('Envoyer')
+    page.find('h1', text: 'Mes candidatures')
+    assert page.has_content?(internship_offer.title)
   end
 
   test 'student with no class_room can submit a 3e generale application when school have not choosen week' do
     # weeks = Week.selectable_from_now_until_end_of_school_year.to_a.first(2)
-    # school = create(:school, weeks: [])
-    # student = create(:student, school: school)
-    # internship_offer = create(:troisieme_segpa_internship_offer)
+    school = create(:school, weeks: [])
+    student = create(:student, school: school)
+    internship_offer = create(:troisieme_segpa_internship_offer)
 
-    # sign_in(student)
-    # visit internship_offer_path(internship_offer)
-    # # check application form opener and check form is hidden by default
-    # page.find '#internship-application-closeform', visible: false
+    sign_in(student)
+    visit internship_offer_path(internship_offer)
+    # check application form opener and check form is hidden by default
+    page.find '#internship-application-closeform', visible: false
 
-    # click_on 'Je postule'
-    # # check application is now here, ensure feature is here
-    # page.find '#internship-application-closeform', visible: true
-    # # check for phone fields disabled
-    # page.find "input[name='internship_application[student_attributes][phone]'][disabled]", visible: true
-    # # check for email fields
-    # page.find "input[name='internship_application[student_attributes][email]']", visible: true
-    # page.find("input[type='submit'][value='Valider']").click
-    # assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
-    # page.find("input[type='submit'][value='Envoyer']").click
-    # page.find('h1', text: 'Mes candidatures')
-    # assert page.has_content?(internship_offer.title)
+    click_on 'Je postule'
+    # check application is now here, ensure feature is here
+    page.find '#internship-application-closeform', visible: true
+    # check for phone fields disabled
+    page.find "input[name='internship_application[student_attributes][phone]'][disabled]", visible: true
+    # check for email fields
+    page.find "input[name='internship_application[student_attributes][email]']", visible: true
+    page.find("input[type='submit'][value='Valider']").click
+    assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
+    click_button('Envoyer')
+    page.find('h1', text: 'Mes candidatures')
+    assert page.has_content?(internship_offer.title)
   end
 
   test 'student can browse his internship_applications' do
@@ -121,13 +144,19 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     visit '/'
     click_on 'Candidatures'
     internship_applications.each do |_aasm_state, internship_application|
-      click_on internship_application.internship_offer.title
+      url = dashboard_students_internship_application_path(
+        student_id: student.id,
+        id: internship_application.id
+      )
+      assert_selector "a[href='#{url}']",
+                      text: internship_application.internship_offer.title
+      visit url
       click_on 'Candidatures'
     end
   end
 
   test 'GET #show as Student with existing draft application shows the draft' do
-    if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'
+    if ENV['RUN_BRITTLE_TEST']
       weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
       internship_offer      = create(:weekly_internship_offer, weeks: weeks)
       school                = create(:school, weeks: weeks)
@@ -192,7 +221,12 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     sign_in(student)
     visit '/'
     visit dashboard_students_internship_applications_path(student, internship_application.internship_offer)
-    click_link(internship_application.internship_offer.title)
+    url= dashboard_students_internship_application_path(
+      student_id: student.id,
+      id: internship_application.id
+    )
+    assert page.has_selector?("a[href='#{url}']", count: 1)
+    visit url
     assert page.has_selector?("a[href='#tab-convention-detail']", count: 1)
   end
 
