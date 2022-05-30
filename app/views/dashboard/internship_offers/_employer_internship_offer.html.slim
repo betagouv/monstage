@@ -3,8 +3,8 @@ tr class="test-internship-offer test-internship-offer-#{employer_internship_offe
     = link_to internship_offer_path(employer_internship_offer, origin: 'dashboard'),
               data: { "test-id": "#{employer_internship_offer.id}" },
               class: 'heavy-blue-link' do
-      p.internship-item-title.mb-0= employer_internship_offer.title
-    p.text-muted.internship-item-city.small.mb-0= employer_internship_offer.city.capitalize
+      p.internship-item-title.fr-pl-1v.mb-0= employer_internship_offer.title
+    p.text-muted.internship-item-city.small.fr-pl-1v.mb-0= employer_internship_offer.city.capitalize
 
   td.text-center.align-middle.d-none.d-md-table-cell.views data-head=cols[:view_count]
     span.badge.badge-view-count= employer_internship_offer.view_count

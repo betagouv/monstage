@@ -1,4 +1,7 @@
 - content_for :page_title, "#{t(".page_title", name: @internship_application.internship_offer.title)} | Monstage"
+= render 'layouts/breadcrumb',
+          links: [ [current_user.presenter.dashboard_name_link, current_user.dashboard_name],
+                   ['', @internship_application.internship_offer.title]]
 h1.h2.mb-3 = @internship_application.internship_offer.title
 
 div data-controller="dashboard-students-internship-application" data-dashboard-students-internship-application-state-value=@internship_application.aasm_state

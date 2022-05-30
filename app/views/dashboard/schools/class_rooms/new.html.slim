@@ -1,2 +1,5 @@
+= render 'layouts/breadcrumb',
+         links: [ [current_user.presenter.dashboard_name_link, current_user.dashboard_name],
+                  ['', 'Ajouter une classe']]
 h1.h2 Ajouter une classe de votre l'établissement
 .my-5= render "form"

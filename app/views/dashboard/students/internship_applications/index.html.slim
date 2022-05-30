@@ -1,3 +1,9 @@
+- if current_user.student?
+  = render 'layouts/breadcrumb', links: [ ['', 'Mes candidatures'] ]
+- else
+  = render 'layouts/breadcrumb',
+            links: [ [current_user.presenter.dashboard_name_link, current_user.dashboard_name],
+                   ['',  @current_student.presenter.full_name]]
 .row
   .col-12
     - if current_user.student?

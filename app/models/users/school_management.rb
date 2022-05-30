@@ -74,6 +74,9 @@ module Users
     def role_presenter
       Presenters::UserManagementRole.new(user: self)
     end
+    alias :presenter :role_presenter
+
+    def school_management? ; true end
 
     private
 

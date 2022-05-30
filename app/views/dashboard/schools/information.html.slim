@@ -1,4 +1,6 @@
 - content_for :page_title, "#{t(".page_title", name: @school.presenter.school_name_in_sentence)} | Monstage"
+= render 'layouts/breadcrumb', links: [ [current_user.presenter.dashboard_name_link, current_user.dashboard_name],
+                                        ['', 'Information']]
 = render layout: 'dashboard/schools/common_head' do
   #manage-school-panel.fr-tabs__panel.fr-tabs__panel--selected [
     aria-labelledby="tabpanel-404"

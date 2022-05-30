@@ -1,4 +1,5 @@
 - content_for :page_title, "#{t(".page_title", name: @school.presenter.school_name_in_sentence)} | Monstage"
+= render 'layouts/breadcrumb', links: [ ['', current_user.dashboard_name] ]
 = render layout: 'dashboard/schools/common_head' do
   - unaffected_students = Presenters::ClassRoom.students_without_class_room(@school)
 
