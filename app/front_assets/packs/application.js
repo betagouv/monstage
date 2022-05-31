@@ -16,6 +16,7 @@ import 'core-js/es/map';
 import 'core-js/es/set';
 
 import '@gouvfr/dsfr/dist/dsfr/dsfr.css';
+import '@gouvfr/dsfr/dist/utility/icons/icons-system/icons-system.css';
 import '@gouvfr/dsfr/dist/dsfr/dsfr.module.js';
 
 import '../stylesheets/screen.scss';
