@@ -56,6 +56,10 @@ module Presenters
       internship_offers_path(default_search_options)
     end
 
+    def dashboard_name_link
+      url_helpers.root_path
+    end
+
     protected
 
     attr_reader :user

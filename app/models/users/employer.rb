@@ -43,6 +43,10 @@ module Users
       internship_offers.map(&:anonymize)
     end
 
+    def presenter
+      Presenters::Employer.new(self)
+    end
+
     def employer?; true end
   end
 end

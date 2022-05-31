@@ -130,7 +130,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       assert_selector "a[href='#{url}']",
                       text: internship_application.internship_offer.title
       visit url
-      click_on 'Candidatures'
+      all( 'a', text: 'Candidatures').first.click
     end
   end
 
