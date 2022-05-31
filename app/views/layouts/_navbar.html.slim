@@ -86,11 +86,11 @@
                     li
                       = link_to 'Connexion',
                                 new_user_session_path,
-                                class: "fr-link fr-fi-lock-line text-decoration-none #{current_controller?(:sessions) ? 'active' : ''}"
+                                class: "fr-link fr-icon-lock-line text-decoration-none #{current_controller?(:sessions) ? 'active' : ''}"
                     li
                       = link_to 'Créer mon compte',
                             new_user_registration_path,
-                            class: "fr-link fr-fi-user-line text-decoration-none href#{current_controller?(:registrations) ? 'active' : ''}"
+                            class: "fr-link fr-icon-user-line text-decoration-none href#{current_controller?(:registrations) ? 'active' : ''}"
       #modal-833.fr-header__menu.fr-modal aria-labelledby="fr-btn-menu-mobile"
         .fr-container
           button.fr-btn--close.fr-btn aria-controls="modal-833"  Fermer

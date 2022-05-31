@@ -5,8 +5,8 @@ import { toggleElement, hideElement, showElement, isVisible } from '../utils/dom
 export default class extends Controller {
   static targets = ['collapsible', 'linkIconContainer', 'motivation', 'linkTextShowMore'];
 
-  klassRight() { return ("fr-fi--lg fr-fi-arrow-right-s-line text-danger"); }
-  klassDown() { return ("fr-fi--lg fr-fi-arrow-down-s-line text-danger"); }
+  klassRight() { return ("fr-icon--lg fr-icon-arrow-right-s-line text-danger"); }
+  klassDown() { return ("fr-fi--lg fr-icon-arrow-down-s-line text-danger"); }
 
   initialize(){
     $(this.linkIconContainerTarget).html(`<span aria-hidden="true" class="${this.klassRight()}"></span>`);

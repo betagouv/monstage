@@ -175,7 +175,7 @@ export default function SearchSchool({
                     onClick={onResetSearch}
                     aria-label="Réinitialiser la recherche"
                   >
-                    <span className="fr-fi-close-line"></span>
+                  <span className="fr-icon-close-line"></span>
                   </button>
                 )}
               
