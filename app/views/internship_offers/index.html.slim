@@ -25,10 +25,14 @@
   .col-12 = render "internship_offers/title",
                    internship_offers: @internship_offers
 
-= render partial: "internship_offer",
-                  collection: @internship_offers
-
-.row.d-flex
-  - if !@internship_offers.blank?
+- if @internship_offers.present?
+  = render partial: "internship_offer", collection: @internship_offers
+  .row.d-flex
     ul.col-12.d-none.d-flex.order-3.mt-2.mb-sm-3.justify-content-end
       = paginate(@internship_offers, views_prefix: 'internship_offers', window: 2)
+- if @alternative_internship_offers.present?
+  = image_tag asset_pack_path("media/images/search-no-result.svg"), alt: '', class: 'fr-responsive-img fr-mt-1w'
+  - @alternative_internship_offers.each do |internship_offer|
+    = render partial: "internship_offer", locals: { internship_offer: internship_offer }
+
+

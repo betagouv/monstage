@@ -4,6 +4,7 @@ import './logo-mon-stage-3e-blanc-short.svg';
 import './beta-gouv-logo.png';
 import './danger_sign_blue.svg';
 import './notice_people.svg';
+import './search-no-result.svg';
 
 import './onboarding/confirm-desktop-2.svg';
 import './onboarding/confirm-mobile-2.svg';
