@@ -128,6 +128,7 @@ import './homepage/sponsors/logo-anct.svg';
 import './homepage/sponsors/logo-ministere-education-nationale.svg';
 import './homepage/sponsors/logo-ministere-charge-de-la-ville.svg';
 import './homepage/sponsors/logo-ministere-cohesion-territoire.svg';
+import './homepage/sponsors/logo-ministere-de-la-transition-ecologique.svg';
 // import './homepage/sponsors/logo-min-ville.png';
 // import './homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.svg';
 // import './homepage/sponsors/Ministère-Éducation-Nationale-Jeunesse.svg';
