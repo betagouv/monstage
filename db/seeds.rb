@@ -332,6 +332,32 @@ def populate_internship_offers
     employer_name: 'Du temps pour moi',
     school_track: :troisieme_generale
   )
+  # dépubliée
+  InternshipOffers::WeeklyFramed.create!(
+    employer: Users::Employer.first,
+    weeks: Week.selectable_on_school_year,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: '(non publiée) Stage assistant.e banque et assurance',
+    description_rich_text: 'Vous assistez la responsable de secteur dans la gestion du recrutement des intervenant.e.s à domicile et la gestion des contrats de celles et ceux en contrat avec des particulier-employeurs.',
+    employer_description_rich_text: "Du Temps pour moi est une agence mandataire de garde d'enfants à domicile. Notre activité consister à aider les familles de la métropole lilloise à trouver leur intervenant(e) à domicile pour la garde de leurs enfants de 0 à 16 ans.",
+    employer_website: 'http://www.dtpm.fr/',
+    tutor_name: 'Gilles Charles',
+    tutor_email: 'fourcadex.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'Du temps pour moi',
+    max_candidates: 4,
+    max_students_per_group: 4,
+    school_track: :troisieme_generale,
+  )
+  io = InternshipOffer.last
+  io.published_at = nil
+  io.save
 
   # 3eme_generale-2019:
   InternshipOffers::WeeklyFramed.create!(
@@ -543,7 +569,7 @@ def populate_applications
     internship_offer: troisieme_generale_offers.first,
     week: troisieme_generale_offers.first.internship_offer_weeks.first.week
   )
-  
+
   puts  "second 3e generale stud is canceled by employer of last internship_offer"
   InternshipApplications::WeeklyFramed.create!(
     aasm_state: :canceled_by_employer,

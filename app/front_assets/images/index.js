@@ -53,6 +53,11 @@ import './homepage/02.svg';
 import './homepage/03.svg';
 import './homepage/fake.svg';
 
+import './homepage/resources/etablissements.svg';
+import './homepage/resources/parents_eleves.svg';
+import './homepage/resources/professionnels.svg';
+import './homepage/resources/referents.svg';
+
 import './homepage/social_networks/insta.svg';
 import './homepage/social_networks/twitter.svg';
 import './homepage/social_networks/linked_in.svg';

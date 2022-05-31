@@ -15,7 +15,7 @@
   overflow: scroll;
   background-color: $blue-france-975;
 
-  padding: ($input-btn-padding-x/2) $input-btn-padding-y;
+  padding: $input-btn-padding-x/2 $input-btn-padding-y;
   &.is-invalid{
     box-shadow: 0 0 2px rgba(255,0,0,.5);
   }
@@ -26,7 +26,7 @@
   border-bottom: 1px solid $input-border-color;
   border-bottom-left-radius: $input-border-radius;
   border-bottom-right-radius: $input-border-radius;
-  padding: ($input-btn-padding-x/2) $input-btn-padding-y;
+  padding: $input-btn-padding-x/2 $input-btn-padding-y;
   background-color: $input-bg;
 }
 

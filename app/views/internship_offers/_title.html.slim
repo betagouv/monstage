@@ -12,4 +12,4 @@
         = " #{'offre'.pluralize(internship_offers.total_count)} de stage"
 
     ul.col-12.d-none.d-md-flex.order-3.col-md-6.mb-0.mb-sm-3.justify-content-end
-      = paginate(@internship_offers, views_prefix: 'internship_offers', window: 2)
+      = paginate(internship_offers, views_prefix: 'internship_offers', window: 2)

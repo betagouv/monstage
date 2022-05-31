@@ -38,16 +38,11 @@ module Presenters
       end
 
       def human_max_candidates
-        ' Nombre d\'élèves accueillis pour ce stage'
+        instance.max_candidates
       end
 
       def human_max_students_per_group
-        if instance.max_students_per_group == 1
-          ' Stage individuel (un seul élève par stage)'
-        else
-          " Stage collectif (par groupe " \
-          "de #{instance.max_students_per_group} élèves)"
-        end
+        instance.max_students_per_group == 1 ? 'Individuel' : " Collectif"
       end
 
       def human_is_public
@@ -94,11 +89,18 @@ module Presenters
         return nil unless instance.school
 
         [instance.school.name, "#{instance.school.city} – CP #{instance.school.zipcode}"].compact.join("\n")
-      end  
+      end
+
+      def published_at
+        return 'Dépubliée' if instance.published_at.nil?
+
+        instance.published_at
+      end
 
       def weeks_list
         return [] unless instance.respond_to?(:weeks)
-        instance.weeks.each_with_index.map do |week, i| 
+
+        instance.weeks.each_with_index.map do |week, i|
           "Du #{week.beginning_of_week} au #{week.end_of_week}"
         end
       end

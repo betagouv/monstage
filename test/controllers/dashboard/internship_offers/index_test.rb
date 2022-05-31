@@ -342,10 +342,9 @@ module Dashboard::InternshipOffers
 
         sign_in(employer)
         get dashboard_internship_offers_path
-
         assert_select '.fr-tag-rounded',
-                      text: '2',
-                      count: 1
+                       text: '2',
+                       count: 1
       end
     end
 

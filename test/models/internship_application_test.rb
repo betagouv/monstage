@@ -4,12 +4,38 @@ require 'test_helper'
 
 class InternshipApplicationTest < ActiveSupport::TestCase
   include ThirdPartyTestHelpers
-  test 'transition from draft to submit updates submitted_at and send semail to employer' do
+
+  test 'scope remindable' do
+    create(:weekly_internship_application, :submitted,
+                                           submitted_at: 5.days.ago,
+                                           pending_reminder_sent_at: 5.days.ago)
+    create(:weekly_internship_application, :submitted,
+                                           submitted_at: 10.days.ago,
+                                           pending_reminder_sent_at: 10.days.ago) # ok
+    create(:weekly_internship_application, :submitted,
+                                           submitted_at: 18.days.ago,
+                                           pending_reminder_sent_at: 18.days.ago)
+    create(:weekly_internship_application, :submitted,
+                                           submitted_at: 3.days.ago,
+                                           pending_reminder_sent_at: nil)
+    create(:weekly_internship_application, :submitted,
+                                           submitted_at: 8.days.ago,
+                                           pending_reminder_sent_at: 2.days.ago)
+    create(:weekly_internship_application, :submitted,
+                                           submitted_at: 8.days.ago,
+                                           pending_reminder_sent_at: nil) # ok
+    create(:weekly_internship_application, :approved,
+                                           approved_at: 10.days.ago,
+                                           pending_reminder_sent_at: 10.days.ago)
+    assert_equal 2, InternshipApplication.remindable.count
+  end
+
+  test 'transition from draft to submit updates submitted_at and sends email to employer' do
     internship_application = create(:weekly_internship_application, :drafted)
     freeze_time do
       assert_changes -> { internship_application.reload.submitted_at },
-                     from: nil,
-                     to: Time.now.utc do
+          from: nil,
+          to: Time.now.utc do
         mock_mail = MiniTest::Mock.new
         mock_mail.expect(:deliver_later, true)
         EmployerMailer.stub :internship_application_submitted_email, mock_mail do
@@ -60,26 +86,149 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'transition from submited to approved send approved email to main_teacher' do
-    bitly_stub do
-      internship_application = create(:weekly_internship_application, :submitted)
-      student = internship_application.student
-      create(:school_manager, school: student.school)
-      create(:main_teacher, class_room: student.class_room,
-                            school: student.school)
+    school = create(:school)
+    class_room = create(:class_room, school: school)
+    student = build(:student, class_room: class_room)
+    create(:school_manager, school: school)
+    create(:main_teacher, class_room: class_room, school: school)
+    internship_application = create(:weekly_internship_application, :submitted, student: student)
 
-      mock_mail_to_main_teacher = MiniTest::Mock.new
-      mock_mail_to_main_teacher.expect(:deliver_later, true)
+    mock_mail_to_main_teacher = MiniTest::Mock.new
+    mock_mail_to_main_teacher.expect(:deliver_later, true)
 
-      MainTeacherMailer.stub(:internship_application_approved_email,
-                            mock_mail_to_main_teacher) do
-        internship_application.save
-        internship_application.approve!
+    School.stub_any_instance(:internship_agreement_open?, true) do
+      InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
+        InternshipApplication.stub_any_instance(:create_agreement, nil) do
+          MainTeacherMailer.stub(:internship_application_approved_with_agreement_email,
+                                mock_mail_to_main_teacher) do
+            internship_application.save
+            internship_application.approve!
+          end
+          mock_mail_to_main_teacher.verify
+        end
       end
-      mock_mail_to_main_teacher.verify
     end
   end
 
-  test 'transition from submited to approved create internship_agreemennt for student in troisieme_generale.class_room' do
+  test 'transition from submited to approved sends no email when main_teacher misses' do
+    school = create(:school)
+    class_room = create(:class_room, school: school)
+    student = build(:student, class_room: class_room)
+    create(:school_manager, school: school)
+
+    internship_application = create(:weekly_internship_application, :submitted, student: student)
+
+    mock_mail_to_main_teacher = MiniTest::Mock.new
+    mock_mail_to_main_teacher.expect(:deliver_later, true)
+
+    School.stub_any_instance(:internship_agreement_open?, true) do
+      InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
+        InternshipApplication.stub_any_instance(:create_agreement, nil) do
+          MainTeacherMailer.stub(:internship_application_approved_with_agreement_email,
+                                mock_mail_to_main_teacher) do
+            internship_application.save
+            internship_application.approve!
+          end
+          assert_raises(MockExpectationError) { mock_mail_to_main_teacher.verify }
+        end
+      end
+    end
+  end
+
+  test 'transition from submited to approved sends an email to school_manager when agreement is possible' do
+    school = create(:school)
+    class_room = create(:class_room, school: school)
+    student = build(:student, class_room: class_room)
+    create(:school_manager, school: school)
+
+    internship_application = create(:weekly_internship_application, :submitted, student: student)
+
+    mock_mail_to_school_manager = MiniTest::Mock.new
+    mock_mail_to_school_manager.expect(:deliver_later, true)
+
+    InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
+      School.stub_any_instance(:internship_agreement_open?, true) do
+        SchoolManagerMailer.stub(:internship_application_approved_with_agreement_email,
+                                 mock_mail_to_school_manager) do
+          internship_application.save
+          internship_application.approve!
+        end
+        mock_mail_to_school_manager.verify
+      end
+    end
+  end
+
+  test 'transition from submited to approved sends an email to employer when agreement is possible' do
+    school = create(:school)
+    class_room = create(:class_room, school: school)
+    student = build(:student, class_room: class_room)
+    create(:school_manager, school: school)
+
+    internship_application = create(:weekly_internship_application, :submitted, student: student)
+
+    mock_mail_to_employer = MiniTest::Mock.new
+    mock_mail_to_employer.expect(:deliver_now, true)
+
+    InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
+      School.stub_any_instance(:internship_agreement_open?, true) do
+        EmployerMailer.stub(:internship_application_approved_with_agreement_email,
+                                 mock_mail_to_employer) do
+          internship_application.save
+          internship_application.approve!
+        end
+        mock_mail_to_employer.verify
+      end
+    end
+  end
+
+  test 'transition from submited to approved sends an email to school_manager when no agreement is possible' do
+    school = create(:school)
+    class_room = create(:class_room, school: school)
+    student = build(:student, class_room: class_room)
+    create(:school_manager, school: school)
+
+    internship_application = create(:weekly_internship_application, :submitted, student: student)
+
+    mock_mail_to_school_manager = MiniTest::Mock.new
+    mock_mail_to_school_manager.expect(:deliver_later, true)
+
+    InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
+      School.stub_any_instance(:internship_agreement_open?, false) do
+        SchoolManagerMailer.stub(:internship_application_approved_with_no_agreement_email,
+                                 mock_mail_to_school_manager) do
+          internship_application.save
+          internship_application.approve!
+        end
+        mock_mail_to_school_manager.verify
+      end
+    end
+  end
+
+  test 'transition from submited to approved sends an email to main_teacher when no agreement is possible' do
+    school = create(:school)
+    class_room = create(:class_room, school: school)
+    student = build(:student, class_room: class_room)
+    create(:school_manager, school: school)
+    create(:main_teacher, class_room: class_room, school: school)
+
+    internship_application = create(:weekly_internship_application, :submitted, student: student)
+
+    mock_mail_to_main_teacher = MiniTest::Mock.new
+    mock_mail_to_main_teacher.expect(:deliver_later, true)
+
+    InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
+      School.stub_any_instance(:internship_agreement_open?, false) do
+        MainTeacherMailer.stub(:internship_application_approved_with_no_agreement_email,
+                                 mock_mail_to_main_teacher) do
+          internship_application.save
+          internship_application.approve!
+        end
+        mock_mail_to_main_teacher.verify
+      end
+    end
+  end
+
+  test 'transition from submited to approved create internship_agreement for student in troisieme_generale.class_room' do
     internship_offer = create(:weekly_internship_offer)
     school = create(:school, :with_school_manager, weeks: internship_offer.weeks)
     class_room = create(:class_room, :troisieme_generale, school: school)
@@ -171,10 +320,10 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'transition from rejected to approved does not send email to student w/o email' do
-    student = create(:student, phone: '+330611223944', email: nil )
-    internship_application = create(:weekly_internship_application, :rejected, student: student)
-    freeze_time do
-      bitly_stub do
+    InternshipApplication.stub_any_instance(:short_target_url, "http://bitly/short") do
+      student = create(:student, phone: '+330611223944', email: nil )
+      internship_application = create(:weekly_internship_application, :rejected, student: student)
+      freeze_time do
         assert_changes -> { internship_application.reload.approved_at },
                       from: nil,
                       to: Time.now.utc do
@@ -251,15 +400,13 @@ class InternshipApplicationTest < ActiveSupport::TestCase
       internship_offer: internship_offer,
       week: internship_offer.internship_offer_weeks.first.week,
       student: student
-    ) 
+    )
     internship_application_to_be_signed = create(
       :weekly_internship_application, :approved,
       internship_offer: internship_offer_2,
       week: internship_offer_2.internship_offer_weeks.first.week,
       student: student
     )
-   
-    
     assert_changes -> { internship_application_to_be_canceled_by_employer.reload.aasm_state },
                    from: 'approved',
                    to: 'expired' do
@@ -273,5 +420,21 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     internship_application.anonymize
 
     assert_not_equal 'amazing', internship_application.motivation
+  end
+
+  test "#accepted_student_notify when student registered by phone" do
+    student = create(:student,:registered_with_phone)
+    internship_application = create(:weekly_internship_application, student: student)
+    InternshipApplication.stub_any_instance(:short_target_url, "http://bitly/short") do
+      assert internship_application.accepted_student_notify.is_a?(SendSmsJob)
+    end
+  end
+
+  test "#accepted_student_notify when student registered by email" do
+    student = create(:student)
+    internship_application = create(:weekly_internship_application, student: student)
+    InternshipApplication.stub_any_instance(:deliver_later_with_additional_delay, 'email_sent') do
+      assert_equal "email_sent", internship_application.accepted_student_notify
+    end
   end
 end

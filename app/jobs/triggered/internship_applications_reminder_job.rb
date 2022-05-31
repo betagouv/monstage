@@ -19,8 +19,7 @@ module Triggered
         update_and_expire_expirable(expirable_application_ids)
 
         notify(employer: employer,
-               remindable_application_ids: remindable_application_ids,
-               expirable_application_ids: expirable_application_ids)
+               remindable_application_ids: remindable_application_ids)
       end
     end
 
@@ -41,11 +40,9 @@ module Triggered
     end
 
     def notify(employer:,
-               remindable_application_ids:,
-               expirable_application_ids:)
+               remindable_application_ids:)
       EmployerMailer.internship_applications_reminder_email(employer: employer,
-                                                            remindable_application_ids: remindable_application_ids,
-                                                            expirable_application_ids: expirable_application_ids)
+                                                            remindable_application_ids: remindable_application_ids)
                     .deliver_later
     end
   end

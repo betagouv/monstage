@@ -2,6 +2,7 @@ class DeviseMailerPreview < ActionMailer::Preview
   %w[Employer
      Operator
      Statistician
+     MinistryStatistician
      Student].map do |user|
     define_method(:"confirmation_instructions_#{user.downcase}") do
       CustomDeviseMailer.confirmation_instructions(

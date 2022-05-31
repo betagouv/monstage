@@ -63,8 +63,8 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       internship_offer = create(:weekly_internship_offer, employer: employer, weeks: [week_with_school])
 
       visit edit_dashboard_internship_offer_path(internship_offer)
-      find(".bg-success-20[data-week-id='#{week_with_school.id}']", count: 1)
-      find(".bg-dark-70[data-week-id='#{week_without_school.id}']", count: 1)
+      find(".bg-success-20[data-week-id='#{week_with_school.id}']")
+      find(".bg-dark-70[data-week-id='#{week_without_school.id}']")
     end
   end
 

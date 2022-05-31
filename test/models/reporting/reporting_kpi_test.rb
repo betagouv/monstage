@@ -2,32 +2,35 @@ require 'test_helper'
 
 class ReportingKpiTest < ActiveSupport::TestCase
   test 'last_week_kpis' do
-    current_week = Week.selectable_from_now_until_end_of_school_year.first
-    last_week = Week.find(current_week.id.to_i - 2)
-    last_monday = last_week.week_date
-    last_sunday = last_monday + 6.days
-    school_manager = create(:school_manager, school: create(:school))
+    travel_to Date.new(2022, 01, 25) do
+      current_week = Week.selectable_from_now_until_end_of_school_year.first
+      last_week = Week.find(current_week.id.to_i - 2)
+      last_monday = last_week.week_date
+      last_sunday = last_monday + 6.days
+      school_manager = create(:school_manager, school: create(:school))
 
-    if(Week.selectable_from_now_until_end_of_school_year.first(3).to_a.count == 3)
-      # internship_offer_unpublished should not be taken into account
+    # internship_offer_unpublished should not be taken into account
+      next_weeks = Week.selectable_from_now_until_end_of_school_year
+      three_next_weeks = next_weeks.first(3).to_a
+      two_next_weeeks = next_weeks.first(2).to_a
       create(
         :weekly_internship_offer,
         :with_private_employer_group,
         :unpublished,
         max_candidates: 3,
-        weeks: Week.selectable_from_now_until_end_of_school_year.first(3).to_a
+        weeks: three_next_weeks
       )
 
       internship_offer = create(
         :weekly_internship_offer, #public by default
         max_candidates: 2,
-        weeks: Week.selectable_from_now_until_end_of_school_year.first(2).to_a
+        weeks: two_next_weeeks
       )
       internship_offer = create(
         :weekly_internship_offer,
         :with_private_employer_group,
         max_candidates: 3,
-        weeks: Week.selectable_from_now_until_end_of_school_year.first(3).to_a
+        weeks: three_next_weeks
       )
 
       expected = {

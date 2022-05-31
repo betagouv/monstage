@@ -78,7 +78,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       find('#downshift-0-item-0').click
       select school_1.name, from: "user_school_id"
       select(class_room_1.name, from: 'user_class_room_id')
-      fill_in 'Adresse électronique', with: another_email
+      fill_in 'Adresse électronique', with: "another@#{school_1.email_domain_name}"
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       # find('label[for="user_accept_terms"]').click
@@ -86,7 +86,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
     end
 
     # check created teacher has valid info
-    created_teacher = Users::SchoolManagement.where(email: another_email).first
+    created_teacher = Users::SchoolManagement.where(email: "another@#{school_1.email_domain_name}").first
     assert_equal school_1, created_teacher.school
     assert_equal class_room_1, created_teacher.class_room
     assert_equal 'Martin', created_teacher.first_name
