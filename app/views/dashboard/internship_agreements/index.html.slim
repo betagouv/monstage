@@ -1,3 +1,6 @@
+= render 'layouts/breadcrumb',
+          links: [ [current_user.presenter.dashboard_name_link, current_user.dashboard_name],
+                   ['', 'Mes conventions de stage']]
 - # School managers and Employers do not have the same tabs  i.e. layout
 - if current_user.school_manager?
   = render partial: 'dashboard/internship_agreements/index_school_manager',

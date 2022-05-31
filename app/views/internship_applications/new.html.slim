@@ -1,14 +1,17 @@
 
-= render 'layouts/breadcrumb', links: [['/', 'Recherche de stage'], [internship_offer_path(@internship_offer), @internship_offer.title], ['', 'Je Postule']]
+= render 'layouts/breadcrumb',
+          links: [ ['/', 'Recherche de stage'],
+                   [internship_offer_path(@internship_offer), @internship_offer.title],
+                   ['', 'Je Postule'] ]
 
-.row.mt-3
+.row.mt-3.fr-px-2w
   .col-md-8
     h1.h6.my-3 Votre candidature
 
     - if @internship_offer.weekly?
       - applicable_weeks = current_user.school.has_weeks_on_current_year? ?  InternshipOfferWeek.applicable(user: current_user, internship_offer: @internship_offer).map(&:week).uniq & @internship_offer.weeks : @internship_offer.weeks.in_the_future
 
-    - is_creating = @internship_application.try(:new_record?)  
+    - is_creating = @internship_application.try(:new_record?)
 
     = form_with({model: @internship_application,
                  url: (is_creating ? internship_offer_internship_applications_path(@internship_offer) : internship_offer_internship_application_path(@internship_offer, @internship_application)),
@@ -22,9 +25,9 @@
       = f.hidden_field :type, value: @internship_offer.weekly? ? 'InternshipApplications::WeeklyFramed' : 'InternshipApplications::FreeDate'
       = f.hidden_field :internship_offer_id
       = f.hidden_field :internship_offer_type
-      
+
       fieldset.mb-4
-        
+
         - if @internship_offer.weekly?
           .fr-select-group class=('fr-callout-blue py-5 px-5' unless current_user.school.has_weeks_on_current_year?)
             - unless current_user.school.has_weeks_on_current_year?
@@ -41,7 +44,7 @@
             = "Pourquoi ce stage me motive"
             small.form-text.text-muted Relisez-vous pour éviter les fautes d'orthographe et utilisez une formule de politesse pour conclure.
           = f.rich_text_area :motivation, class: "fr-input col-12", required: true, rows: 5
-      
+
         = f.fields_for :student do |resume_form|
           = render partial: "users/resume_fields",
                   locals: { form: resume_form, phone_mail_disabled: true, disabled: false}
@@ -53,7 +56,7 @@
             | Annuler
           .d-inline-flex= f.submit "Valider", { class: 'fr-btn' }
 
-  
+
   .col-md-3.offset-md-1
     / h6 Voici de quoi vous aider
 

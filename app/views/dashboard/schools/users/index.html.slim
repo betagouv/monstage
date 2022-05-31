@@ -1,4 +1,6 @@
 - content_for :page_title, "#{t(".page_title", name: @school.presenter.school_name_in_sentence)} | Monstage"
+= render 'layouts/breadcrumb', links: [ [dashboard_school_path(@school.id), current_user.dashboard_name],
+                                        ['', 'Personnels']]
 = render layout: 'dashboard/schools/common_head' do
   #users-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0"
     - if @school.has_staff?

@@ -247,6 +247,7 @@ class User < ApplicationRecord
   def student? ; false end
   def employer? ; false end
   def operator? ; false end
+  def school_management?; false end
 
   def presenter
     Presenters::User.new(self)
