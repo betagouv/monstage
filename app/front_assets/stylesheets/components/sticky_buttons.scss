@@ -22,6 +22,11 @@
     left: 0;
     box-shadow: 0 -2px 20px rgba(0,0,0,.2);
   }
+  .btn-block-mobile {
+    text-align: center;
+    width: 100%;
+    display: block;
+  }
 }
 @include media-breakpoint-down(sm) {
   .d-sm-stick {
