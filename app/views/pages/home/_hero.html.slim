@@ -19,7 +19,7 @@ header.bg-cover-image-homepage.container-xl
           .d-md-none
             p.mt-4.py-lg-4.py-md-3.py-sm-3.py-xs-2.text-center
               = link_to internship_offers_path(current_user_or_visitor.default_search_options),
-                        class: 'fr-btn fr-fi-search-line fr-btn--icon-right bg-white fr-px-6w'  do
+                        class: 'fr-btn fr-icon-search-line fr-btn--icon-right bg-white fr-px-6w'  do
                 = "Rechercher un stage "
       .col-lg-6.col-md-12.d-flex.align-items-end.justify-content-center
         .d-none.d-sm-block
@@ -34,6 +34,6 @@ header.bg-cover-image-homepage.container-xl
                                form_id: :home_search_form }
     .actions.d-stick.d-md-none.p-2.fitting.text-center
       = link_to internship_offers_path(current_user_or_visitor.default_search_options),
-                class: 'fr-btn fr-fi-search-line fr-btn--icon-right fr-px-11w',
+                class: 'fr-btn fr-icon-search-line fr-btn--icon-right fr-px-11w',
                 data: { :"test-id" => 'mobile-search-button' }
         = "Rechercher un stage "

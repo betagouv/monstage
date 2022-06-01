@@ -60,11 +60,11 @@
             .row.p-4
               .col-12.d-flex.justify-content-start
                 = link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx)),
-                      class: 'fr-btn fr-btn-danger fr-fi-mail-line fr-btn--icon-left',
+                      class: 'fr-btn fr-btn-danger fr-icon-mail-line fr-btn--icon-left',
                       data: {turbolinks: false} do
                   | Exporter les statistiques des offres  
                 - if params[:department] || can?(:export_reporting_dashboard_data, current_user)
                   = link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)),
-                            class: 'ml-3 fr-btn fr-btn-danger fr-fi-mail-line fr-btn--icon-left',
+                            class: 'ml-3 fr-btn fr-btn-danger fr-icon-mail-line fr-btn--icon-left',
                             data: {turbolinks: false} do
                     | Exporter les offres

@@ -8,7 +8,7 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
     div.set-height-100
     = link_to dashboard_internship_offers_path(forwardable_params.except(:filter)),
               class: "#{is_active ? 'active' : ''}" do
-      button#current_button.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left [tabindex="0"
+      button#current_button.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left [tabindex="0"
                                                                                       role="tab"
                                                                                       aria-selected="#{is_active}"
                                                                                       aria-controls="tabpanel-404-panel"]
@@ -21,7 +21,7 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
   li
     = link_to dashboard_internship_offers_path(forwardable_params.merge({filter: 'unpublished'})),
               class: "#{is_active ? 'active' : ''}" do
-      button#unpublished_button.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left [tabindex="0"
+      button#unpublished_button.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left [tabindex="0"
                                                                                           role="tab"
                                                                                           aria-selected="#{is_active}"
                                                                                           aria-controls="tabpanel-404-panel"]
@@ -34,7 +34,7 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
   li
     = link_to dashboard_internship_offers_path(forwardable_params.merge({filter: 'past'})),
               class: "#{is_active ? 'active' : ''}" do
-      button#past_button.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left [
+      button#past_button.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left [
         tabindex="0"
         role="tab"
         aria-selected="#{is_active}"
@@ -51,7 +51,7 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
     li
       = link_to dashboard_internship_agreements_path,
                 class: "#{is_active ? 'active' : ''}" do
-        button#agreement-button.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left [
+        button#agreement-button.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left [
           tabindex="0"
           role="tab"
           aria-selected="#{is_active}"

@@ -38,14 +38,14 @@ div [class="test-search-container #{has_white_bg ? 'search-container py-2' : ''}
       .pb-5
       - if render_as_partial
         .col-auto-md.fr-mr-2w data-search-popover-target="searchSubmitContainer"
-          = form.button class: 'fr-btn fr-fi-search-line fr-btn--icon-right',
+          = form.button class: 'fr-btn fr-icon-search-line fr-btn--icon-right',
                         name: nil,
                         id: 'test-desktop-submit-search' do
             span.mr-2 = 'Rechercher'
       - else render_as_partial
         .actions.d-flex.d-stick.d-md-none.p-3
           = form.button "Afficher les résultats",
-                        class: 'fr-btn fr-fi-search-line fr-btn--icon-right',
+                        class: 'fr-btn fr-icon-search-line fr-btn--icon-right',
                         id: 'test-mobile-submit-search' do
             span.mr-2 = "Trouver un stage "
     .row

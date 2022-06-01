@@ -139,8 +139,8 @@ module InternshipApplications
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
 
-      assert_select 'a span.text-danger.fr-fi--lg.fr-fi-arrow-down-s-line', 0
-      assert_select 'a span.fr-fi-arrow-right-s-line', 1
+      assert_select 'a span.text-danger.fr-icon--lg.fr-icon-arrow-down-s-line', 0
+      assert_select 'a span.fr-icon-arrow-right-s-line', 1
       assert_select '.collapsible', 1
       assert_select '.collapsible.d-none', 0
       assert_select "[data-test-id=internship-application-#{internship_application.id}]", count: 1
@@ -157,8 +157,8 @@ module InternshipApplications
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
 
-      assert_select 'a span.text-danger.fr-fi--lg.fr-fi-arrow-down-s-line', 1
-      assert_select 'a span.fr-fi-arrow-right-s-line', 0
+      assert_select 'a span.text-danger.fr-icon--lg.fr-icon-arrow-down-s-line', 1
+      assert_select 'a span.fr-icon-arrow-right-s-line', 0
       assert_select '.collapsible', 1
       assert_has_link_count_to_transition(internship_application, :approve!, 0)
       assert_has_link_count_to_transition(internship_application, :reject!, 0)

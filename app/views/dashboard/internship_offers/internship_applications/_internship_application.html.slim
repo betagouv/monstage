@@ -10,9 +10,9 @@
            title="Afficher le détail de la candidature de #{internship_application.student.name}"
            data-turbolinks="false"]
           - if internship_application.submitted?
-            span.text-danger.fr-fi--lg.fr-fi-arrow-right-s-line aria-hidden="true"
+            span.text-danger.fr-icon--lg.fr-icon-arrow-right-s-line aria-hidden="true"
           - else
-            span.text-danger.fr-fi--lg.fr-fi-arrow-down-s-line aria-hidden="true"
+            span.text-danger.fr-icon--lg.fr-icon-arrow-down-s-line aria-hidden="true"
         .h4.mb-0 name="internship-application-#{internship_application.id}"
           = internship_application.student.name
       .col-sm-4.col-xs-12.d-flex.align-items-center.text-right
@@ -80,23 +80,23 @@
         .d-flex.align-items-baseline.pt-2
           - if internship_application.approved? || internship_application.convention_signed?
             .d-flex.align-items-center.fr-text-with-success
-              span.fr-fi-check-line aria-hidden="true"
+              span.fr-icon-check-line aria-hidden="true"
               = " Candidature acceptée le #{localize(internship_application.approved_at, format: :human_mm_dd_hh)}"
 
           - if internship_application.rejected?
             .d-flex.align-items-center.text-dark
-              span.fr-fi-close-line aria-hidden="true"
+              span.fr-icon-close-line aria-hidden="true"
               = " Réponse négative du #{localize(internship_application.rejected_at, format: :human_mm_dd_hh)}"
 
           - if internship_application.expired?
             .d-flex.align-items-center.text-grey-50
-              span.fr-fi-calendar-fill aria-hidden="true"
+              span.fr-icon-calendar-fill aria-hidden="true"
               = " Candidature expirée le #{localize(internship_application.expired_at, format: :human_mm_dd_hh)}"
 
           - if internship_application.canceled_by_employer?
-            span.fr-fi-close-line aria-hidden="true" Candidature annulée par l'employeur (nous)
+            span.fr-icon-close-line aria-hidden="true" Candidature annulée par l'employeur (nous)
           - if internship_application.canceled_by_student?
-            span.fr-fi-close-line aria-hidden="true"Candidature annulée par l'élève
+            span.fr-icon-close-line aria-hidden="true"Candidature annulée par l'élève
 
       .col-md-6.col-sm-12
         / buttons
