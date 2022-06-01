@@ -94,7 +94,7 @@ class User < ApplicationRecord
   end
 
   def to_s
-    "logged in as : #{type}[##{id}]"
+    name
   end
 
   def name
@@ -204,12 +204,6 @@ class User < ApplicationRecord
 
   def after_confirmation
     super
-  end
-
-  rails_admin do
-    list do
-      scopes [:kept]
-    end
   end
 
   def email_required?

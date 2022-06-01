@@ -2,16 +2,38 @@ module InternshipOffers
   class FreeDate < InternshipOffer
     attr_accessor :week_ids
 
-    # ActiveAdmin index specifics
     rails_admin do
+      weight 12
+      navigation_label "Offres"
+
       list do
+        scopes [:kept, :discarded]
         field :title
+        field :department
         field :zipcode
         field :employer_name
         field :group
         field :is_public
-        field :department
         field :created_at
+      end
+
+      edit do
+        field :title
+        field :description
+        field :sector
+        field :max_candidates
+        field :max_students_per_group
+        field :tutor_name
+        field :tutor_phone
+        field :tutor_email
+        field :employer_website
+        field :discarded_at
+        field :employer_name
+        field :is_public
+        field :group
+        field :employer_description
+        field :published_at
+        field :school
       end
     end
 

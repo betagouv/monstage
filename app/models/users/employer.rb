@@ -2,6 +2,8 @@
 
 module Users
   class Employer < User
+    include EmployerAdmin
+
     has_many :internship_offers, as: :employer,
                                  dependent: :destroy
 
