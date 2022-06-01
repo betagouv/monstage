@@ -1,8 +1,8 @@
-.row.my-3 style="border-bottom: 1px solid #eee"
+.row.my-3.thin-line-below
   .col-12.py-2
     .reboot-trix-content= internship_offer.description_rich_text.to_s.present? ? internship_offer.description_rich_text.to_s : internship_offer.description
 
-.row.py-3.mt-3 style="border-bottom: 1px solid #eee"
+.row.py-3.mt-3.thin-line-below
   .col-12.my-4
     h2.h4.text-dark Informations sur le stage
   .col-12.my-4
@@ -16,24 +16,24 @@
             = image_tag asset_pack_path("media/images/internship_offer_show/#{internship_offer.is_individual? ? 'user' : 'people'}.png"), alt: '', class: 'fr-responsive-img'
 
 
-   
-.row.py-3.mt-3 style="border-bottom: 1px solid #eee"
+
+.row.py-3.mt-3
   .col-12
     .row
       .col-12.my-4
-        h2.h4.text-dark Informations sur l'entreprise 
+        h2.h4.text-dark Informations sur l'entreprise
     .row
-      .col-12 
+      .col-12
         .h4= internship_offer.employer_name
-    
+
     .row
       .col-12
         - if internship_offer.employer_description_rich_text.present? || internship_offer.employer_description.present?
           .reboot-trix-content.mt-2.test-description= internship_offer.employer_description_rich_text.to_s.present? ? internship_offer.employer_description_rich_text.to_s : internship_offer.employer_description
-    
-    .row 
+
+    .row
       .col-12.my-4
-         - if internship_offer.employer_website.present? 
+         - if internship_offer.employer_website.present?
             = link_to internship_offer.employer_website,
                       internship_offer.employer_website,
                       target: "_blank",
@@ -41,8 +41,9 @@
                       title: "#{internship_offer.employer_website} (nouvelle fenêtre)",
                       rel: "external noopener noreferrer"
 
-    .row 
+    .row
       .col-12.my-4
         = Presenters::Address.new(instance: internship_offer).full_address
+.row.thin-line-below.d-none.d-sm-block
 
 

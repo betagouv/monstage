@@ -24,7 +24,7 @@ div data-controller="internship-application-form"
   .row
     .col-sm-3.col-12.mb-4
       .sticky-top.fr-px-1w
-        .row.my-2.fr-pt-2w style="border-bottom: 1px solid #eee"
+        .row.my-2.fr-pt-2w
           .col-12
             .h3.text-dark= @internship_offer.title
             .h4.my-2= @internship_offer.employer_name
@@ -38,13 +38,20 @@ div data-controller="internship-application-form"
                 = @internship_offer.city.capitalize
               .fr-tag.fr-icon-user-fill.fr-tag--icon-left.m-2
                 = I18n.t("enum.school_tracks.#{@internship_offer.school_track}")
-            .my-3= render "internship_offers/apply_cta", internship_offer: @internship_offer
+            .my-3.d-none.d-sm-block
+              = render "internship_offers/apply_cta", internship_offer: @internship_offer
 
 
 
     .col-sm-7.col-12
       .fr-px-1w
         = render "internship_offers/show_details", internship_offer: @internship_offer
+  .row
+    .col-12.text-center.d-block.d-sm-none.fr-pb-1w.thin-line-below
+      - if can?(:renew, @internship_offer) || can?(:duplicate, @internship_offer)
+        = render "internship_offers/duplicate_or_renew", internship_offer: @internship_offer
+      - else 
+        = render "internship_offers/apply_cta", internship_offer: @internship_offer
 
   .row.mt-4
     .col-3

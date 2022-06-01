@@ -2,13 +2,14 @@
   .col-9.col-sm-8
     h1.h1.text-dark role="heading" aria-level="1"
       = internship_offer.title
-   
+
   .col-3.col-sm-4.d-flex.justify-content-end.align-items-start
-    - if can?(:renew, @internship_offer) || can?(:duplicate, @internship_offer)
-      = render "internship_offers/duplicate_or_renew", internship_offer: @internship_offer
-    - else 
-      = render "internship_offers/apply_cta", internship_offer: internship_offer
-  
+    .d-none.d-sm-block
+      - if can?(:renew, @internship_offer) || can?(:duplicate, @internship_offer)
+        = render "internship_offers/duplicate_or_renew", internship_offer: @internship_offer
+      - else
+        = render "internship_offers/apply_cta", internship_offer: internship_offer
+
 .row
   .col-12
     .h3.my-2= internship_offer.employer_name
