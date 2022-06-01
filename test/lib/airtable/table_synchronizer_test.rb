@@ -27,7 +27,7 @@ module Airtable
 
     test '.pull_all delete past record for current operator and reload data' do
       travel_to Time.new(2020, 9, 1) do
-        AirTableRecord.create!(operator: @operator, week: @ref_week)
+        AirTabtestleRecord.create!(operator: @operator, week: @ref_week)
         assert_changes -> { AirTableRecord.count },
                       from: 1,
                       to: @parsed_body["records"].size do

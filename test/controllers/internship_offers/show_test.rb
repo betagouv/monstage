@@ -473,7 +473,7 @@ module InternshipOffers
 
       get internship_offer_path(internship_offer)
       assert_response :success
-      assert_select '.test-renew-button', count: 1
+      assert_select '.test-renew-button', count: 2 # mobile and desktop
     end
 
     test 'GET #show as employer does show duplicate  button when internship_offer has been created durent current_year' do
@@ -483,8 +483,9 @@ module InternshipOffers
 
       get internship_offer_path(internship_offer)
       assert_response :success
-      assert_select '.test-duplicate-button', count: 1
-      assert_select '.test-duplicate-without-location-button', count: 1
+      # count 2 comes from mobile and desktop different location in the view
+      assert_select '.test-duplicate-button',  count: 2
+      assert_select '.test-duplicate-without-location-button', count: 2
       assert_select '.test-renew-button', count: 0
     end
 
