@@ -1,7 +1,7 @@
 div class="hoverable-row-with-btn bb-1 bc-light row"
   .col-12.py-4.d-block
     .row
-      = link_to listable_internship_offer_path(internship_offer, origin: 'search'), class: 'col-12 col-sm-9 text-decoration-none fr-raw-link', data: { test_id: internship_offer.id.to_s } do
+      = link_to listable_internship_offer_path(internship_offer, origin: 'search'), class: 'col-12 col-sm-8 text-decoration-none fr-raw-link', data: { test_id: internship_offer.id.to_s } do
 
         p.h5.font-weight-bold.internship-item-title= internship_offer.title
         p.small.font-weight-bold.mb-3.gray-666= internship_offer.employer_name
@@ -23,7 +23,7 @@ div class="hoverable-row-with-btn bb-1 bc-light row"
             .icon-container.d-inline-block.ml-3
               = react_component("DistanceIcon", props: { radius: internship_offer.relative_distance})
 
-      .d-none.d-sm-block.col-sm-3.text-right.align-self-center
+      .d-none.d-sm-block.col-sm-4.text-right.align-self-center
         - if can?(:apply, internship_offer)
           = render partial: 'internship_offers/apply_cta',
                    locals: {internship_offer: internship_offer}
