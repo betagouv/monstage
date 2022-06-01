@@ -17,6 +17,9 @@ class Operator < ApplicationRecord
   scope :reportable, lambda { where(airtable_reporting_enabled: true) }
 
   rails_admin do
+    weight 15
+    navigation_label 'Divers'
+
     list do
       field :name
       field :target_count

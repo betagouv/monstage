@@ -21,6 +21,8 @@ module FormatableWeek
       ].join("")
     end
 
+    alias_method :to_s, :short_range_as_str
+
     def long_select_text_method
       ['du', beginning_of_week_with_year, 'au', end_of_week_with_years]
         .map(&:to_s)

@@ -13,8 +13,18 @@ module Users
     before_create :set_api_token
 
     rails_admin do
+      weight 7
+      
       list do
-        fields(*UserAdmin::DEFAULTS_FIELDS)
+        fields(*UserAdmin::DEFAULT_FIELDS)
+        field :operator
+        fields(*UserAdmin::ACCOUNT_FIELDS)
+
+        scopes(UserAdmin::DEFAULT_SCOPES)
+      end
+
+      edit do
+        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
         field :operator
       end
     end
