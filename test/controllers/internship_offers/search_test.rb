@@ -7,9 +7,6 @@ class SearchTest < ActionDispatch::IntegrationTest
     get search_internship_offers_path
 
     assert_response :success
-    assert_select 'label', text: 'Filières'
-    ClassRoom.school_tracks.map do |(enum)|
-      assert_select "select option[value=\"#{enum}\"]"
-    end
+    assert_select 'label', text: 'Dates de stage'
   end
 end
