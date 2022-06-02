@@ -5,18 +5,21 @@ module InternshipOffers
     include WeeklyFramable
 
     rails_admin do
+      weight 13
+      navigation_label "Offres"
+      
       configure :created_at, :datetime do
         date_format 'BUGGY'
       end
 
       list do
-        scopes [:from_api]
+        scopes [:kept, :discarded]
 
         field :title
+        field :department
         field :zipcode
         field :employer_name
         field :is_public
-        field :department
         field :created_at
       end
 

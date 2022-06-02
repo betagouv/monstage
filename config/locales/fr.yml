@@ -25,11 +25,11 @@ fr:
   activerecord:
     models:
       email_whitelists/statistician:
-        one: courriel autorisé du référent départemental
-        other: courriels autorisés des référents départementaux
+        one: Courriel autorisé du référent départemental
+        other: Courriels autorisés des référents départementaux
       email_whitelists/ministry:
-        one: courriel autorisé du référent central
-        other: courriels autorisés des référents centraux
+        one: Courriel autorisé du référent central
+        other: Courriels autorisés des référents centraux
       group:
         one: Groupe
         other: Groupes
@@ -45,6 +45,9 @@ fr:
       internship_offers/api:
         one: Offre API
         other: Offres API
+      internship_offer_keyword:
+        one: Mot clé de recherche
+        other: Mots clé de recherche
       internship_application:
         one: Candidature
         other: Candidatures
@@ -61,8 +64,8 @@ fr:
         one: Secteur
         other: Secteurs
       school:
-        one: Etablissement
-        other: Etablissements
+        one: Établissement
+        other: Établissements
       user:
         one: Utilisateur
         other: Utilisateurs
@@ -156,15 +159,18 @@ fr:
         description: Description
         sector: Secteur
         school_track: Filière
-        max_candidates: Nbr. max de candidats
+        max_candidates: Nbr. max de candidats accueillis sur l'année
         max_students_per_group: Effectif max. d'un groupe d'élèves
         sector_id: Secteurs professionnels
+        new_daily_hours: Horaires journaliers
+        daily_lunch_break: Pause déjeuner par jour
+        weekly_lunch_break: Pause déjeuner
 
       tutor: &tutor_fields
         tutor_name: Nom du tuteur
         tutor_phone: Téléphone du tuteur
         tutor_email: Email du tuteur
-      
+
       internship_agreement:
         aasm_state:
           employer:
@@ -194,7 +200,7 @@ fr:
         created_at: "Crée le"
         department: Département
         academy: Académie
-        discarded_at: Supprimée le
+        discarded_at: Dépubliée le
         view_count: Nombre de vues
         published_at: Publiée le
         weeks:
@@ -203,6 +209,9 @@ fr:
         weeks_count: Nbr. de semaines proposées
         first_monday: Premier lundi de stage
         last_monday: Dernier lundi de stage
+        first_date: Premier jour
+        last_date: Dernier jour
+        daterange: Plage de disponibilité
         supplied_applications: Nbr. de candidatures par stages
         submitted_application_count: Nbr. de candidatures soumises
         rejected_application_count: Nbr. de candidatures refusées
@@ -234,21 +243,47 @@ fr:
         full_year: Disponible toute l'année
         full_employer: Employeur
         full_address: Adresse de l'employeur
+        coordinates: Coordonnées GPS
         group_name: Groupe ou institution
+        school: Établissement réservé
+        internship_applications: Candidatures
+
+      internship_application:
+        student: Élève
+        internship_offer: Offre
+        aasm_state:
+          one: État
+          drafted: brouillon
+          submitted: envoyée
+          approved: acceptée
+          rejected: refusée
+          expired: expirée
+          canceled_by_employer: annulée par l'employeur
+          cancel_by_student: annulée par l'élève
+          convention_signed: convention signée
+        week: Semaine
 
       user:
         accept_terms: "Conditions d'utilisation"
         class_room: "Classe"
+        class_room_id: ID de la classe
         confirmed_at: Confirmé le
         first_name: Prénom
         gender: Sexe
+        birth_date: Date de naissance
         last_name: Nom
         main_teacher: "Professeur principal"
         other: "Autres fonctions"
         phone: Téléphone mobile
         school: "Etablissement"
+        school_id: ID de l'établissement
         school_manager: "Chef d'établissement"
         teacher: "Professeur"
+        discarded_at: Supprimé le
+        operator: Association
+        ministry_id: ID de l'institution de tutelle
+        phone_password_reset_count: Compteur de remise à zéro de mot de passe par téléphone
+        anonymized: Anonymisé
 
       identity:
         first_name: Prénom
@@ -455,11 +490,40 @@ fr:
         breadcrumb: KPI
         menu: KPI
     scopes:
-      _all: "Tous"
+      all: "Tous"
       school:
         with_manager: "Avec chef d'établissement"
         without_manager: "Sans chef d'établissement"
-
+      user:
+        kept: Actifs
+        discarded: Supprimés
+      users~employer:
+        kept: Actifs
+        discarded: Supprimés
+      users~operator:
+        kept: Actifs
+        discarded: Supprimés
+      users~school_management:
+        kept: Actifs
+        discarded: Supprimés
+      users~ministry_statistician:
+        kept: Actifs
+        discarded: Supprimés
+      users~statistician:
+        kept: Actifs
+        discarded: Supprimés
+      users~student:
+        kept: Actifs
+        discarded: Supprimés
+      internship_offers~weekly_framed:
+        kept: Actives
+        discarded: Supprimées
+      internship_offers~free_date:
+        kept: Actives
+        discarded: Supprimées
+      internship_offers~api:
+        kept: Actives
+        discarded: Supprimées
   dashboard:
     internship_offer:
       created: Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.
