@@ -10,7 +10,7 @@
     "@gouvfr/dsfr": "^1.4.0",
     "@popperjs/core": "^2.11.2",
     "@rails/actiontext": "^6.0.3-3",
-    "@rails/webpacker": "5.4.3",
+    "@rails/webpacker": "5.1.1",
     "@stimulus/polyfills": "^1.1.1",
     "actioncable": "^5.2.3",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
@@ -54,6 +54,6 @@
     "webpack-dev-server": "3.11.0"
   },
   "engines": {
-    "node": "16.15"
+    "node": "14.x"
   }
 }
