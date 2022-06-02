@@ -2,6 +2,9 @@ module EmailWhitelists
   class Statistician < EmailWhitelist
     validates :zipcode, inclusion: { in: Department::MAP.keys }
     rails_admin do
+      weight 9
+      navigation_label "Listes blanches"
+
       list do
         field :id
         field :email
