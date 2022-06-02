@@ -34,6 +34,6 @@
   - if @alternative_internship_offers.present?
     = image_tag asset_pack_path("media/images/search-no-result.svg"), alt: '', class: 'fr-responsive-img fr-mt-1w'
     - @alternative_internship_offers.each do |internship_offer|
-    = render partial: "internship_offer", locals: { internship_offer: internship_offer }
+      = render partial: "internship_offer", locals: { internship_offer: internship_offer }
 
 
