@@ -25,7 +25,6 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
                                           coordinates: Coordinates.bordeaux)
 
     visit internship_offers_path
-    # sleep 0.1
     fill_in_city_or_zipcode(with: 'Pari ', expect: 'Paris')
     submit_form
 
@@ -83,8 +82,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
   end
 
   test 'search by week works' do
-
-    travel_to(Date.new(2020, 9, 6)) do
+    travel_to(Date.new(2022, 9, 6)) do
       searched_week = Week.selectable_from_now_until_end_of_school_year.first
       not_searched_week = Week.selectable_from_now_until_end_of_school_year.last
 
@@ -93,13 +91,13 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
       not_searched_internship_offer = create(:weekly_internship_offer,
                                              weeks: [not_searched_week])
       visit internship_offers_path
+      select('3e')
       fill_in_week(week: searched_week, open_popover: true)
       submit_form
       assert_presence_of(internship_offer: searched_internship_offer)
       assert_absence_of(internship_offer: not_searched_internship_offer)
       # TODO: ensure weeks navigation and months navigation
     end
-
   end
 
   test 'search by all criteria' do
@@ -138,6 +136,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
 
       fill_in_city_or_zipcode(with: 'Pari', expect: 'Paris')
       fill_in_keyword(keyword: searched_keyword)
+      select('3e')
       fill_in_week(week: searched_week, open_popover: true)
       submit_form
 
