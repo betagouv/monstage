@@ -5,7 +5,6 @@ import { showElement, hideElement } from '../utils/dom';
 export default class extends Controller {
   static targets = [
     'type',
-    'selectType',
     'weeksContainer',
     'studentsMaxGroupGroup',
     'studentsMaxGroupInput',
@@ -88,7 +87,7 @@ export default class extends Controller {
   }
 
   connect() {
-    this.induceType(this.selectTypeTarget.value)
+    this.induceType('troisieme_generale');
     this.checkOnCandidateCount()
   }
 

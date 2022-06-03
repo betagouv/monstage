@@ -5,16 +5,7 @@ fieldset.mt-4 [data-controller='internship-offer-infos'
   .row.mt-3
     .col-lg-6.col-md-12.order-lg-1.order-2
       = form.rg2a_explain_required_asterisk
-      .form-group
-        = form.label :school_track , class: 'fr-label'do
-          = "Filière cible"
-          = form.rg2a_required_content_tag
-          small.form-text.text-muted Sélectionnez la filière scolaire souhaitée
-        = form.select :school_track,
-                      grouped_options_for_select( [ ['Voie générale', [[tr_school_track(:troisieme_generale), :troisieme_generale]]], ['Voie professionnelle', ClassRoom.school_tracks.keys.difference(['troisieme_generale']).collect {|tra| [tr_school_track(tra), tra]}] ], resource.school_track ),
-                      { include_blank: '-- Veuillez choisir une filière --' },
-                      { class: "fr-select", required: true,  data: {action: "change->internship-offer-infos#onInduceType", :"internship-offer-infos-target" => 'selectType'} }
-        = form.hidden_field :type, data: { :"internship-offer-infos-target" => "type" }
+      = form.hidden_field :type, data: { :"internship-offer-infos-target" => "type" }
 
       .form-group
         = form.label :title, class: 'fr-label' do

@@ -5,33 +5,23 @@ const PLACEHOLDER_NO_WEEK_SELECTED_OR_NOT_TROISIEME_GENERALE = '';
 
 export default class extends Controller {
 
-  static targets = [ 'inputCheckboxes',           // many checkboxes, references all inputs
-                     'inputSelect',     // select of current track
-                     'inputPlaceholder',// a placeholder for inline view with a popover
-                     'badgeList' ]      // list of weeks always visible when calendar view
+  static targets = [
+    'inputCheckboxes', // many checkboxes, references all inputs
+    'inputPlaceholder',// a placeholder for inline view with a popover
+    'badgeList'        // list of weeks always visible when calendar view
+  ]
 
 
   onCheckboxChange(changeEvent){
     this.toggleActiveOnParentNode(changeEvent.currentTarget)
   }
 
-  onSchoolTrackChange(changeEvent) {
-   this.updateOnSchoolTrackChange(changeEvent.currentTarget.value)
-   this.propagateChangesToPlaceholder()
-  }
 
-  updateOnSchoolTrackChange(newValue) {
-     if (newValue == 'troisieme_generale') {
-      $(this.inputCheckboxesTargets).map((i, element) => {
-        enableInput($(element));
-        element.parentNode.classList.remove('disabled')
-      });
-    } else {
-      $(this.inputCheckboxesTargets).map((i, element) => {
-        disableInput($(element));
-        element.parentNode.classList.add('disabled')
-      });
-    }
+  enableCheckboxes(newValue) {
+    $(this.inputCheckboxesTargets).map((i, element) => {
+      enableInput($(element));
+      element.parentNode.classList.remove('disabled')
+    });
   }
 
   remove(clickEvent) {
@@ -53,6 +43,7 @@ export default class extends Controller {
     })
     this.propagateChangesToPlaceholder()
     this.propagateChangesToBadgeList()
+    this.enableCheckboxes()
   }
 
   toggleActiveOnParentNode(input) {
@@ -66,7 +57,7 @@ export default class extends Controller {
   // private, ui complexity... do not like this kind of complexe dom manipulation
   propagateChangesToPlaceholder() {
     const selectedWeeksCount = this.getSelectedInputs().length
-    const placeholderValue = this.inputSelectTarget.value != 'troisieme_generale' || selectedWeeksCount == 0 ?
+    const placeholderValue = selectedWeeksCount == 0 ?
                              PLACEHOLDER_NO_WEEK_SELECTED_OR_NOT_TROISIEME_GENERALE:
                              `${selectedWeeksCount} semaine${selectedWeeksCount > 1 ? 's' : ''}`
 

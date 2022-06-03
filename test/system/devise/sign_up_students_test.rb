@@ -15,13 +15,13 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     visit new_user_registration_path(as: 'Student', identity_token: identity.token)
     fill_in 'Adresse électronique', with: 'email@free.fr'
     assert find("#select-channel-email").selected?
-    find("#select-channel-phone", visible: false, count: 1)
+    find("#select-channel-phone", visible: false)
 
     find('label', text: 'Par téléphone (SMS)').click
 
     fill_in 'Numéro de téléphone', with: '0623042525'
     assert find("#select-channel-phone").selected?
-    find("#select-channel-email", visible: false, count: 1)
+    find("#select-channel-email", visible: false)
   end
 
 

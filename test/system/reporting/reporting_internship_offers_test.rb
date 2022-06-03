@@ -24,17 +24,4 @@ class ReportingInternshipOffersTest < ApplicationSystemTestCase
       department: @department
     )
   end
-
-  test 'Offer reporting can be filtered by school_track' do
-    sign_in(@statistician)
-
-    visit reporting_internship_offers_path(department: @department)
-    page.first('td.align-middle.bl-1.text-blue.text-bigger.font-weight-bold.test-total-report', text: "11")
-
-    select '3e'
-    page.first('td.align-middle.bl-1.text-blue.text-bigger.font-weight-bold.test-total-report', text: "1")
-
-    select '3e SEGPA'
-    page.first('td.align-middle.bl-1.text-blue.text-bigger.font-weight-bold.test-total-report', text: "10")
-  end
 end

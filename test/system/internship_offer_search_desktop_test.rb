@@ -25,7 +25,6 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
                                           coordinates: Coordinates.bordeaux)
 
     visit internship_offers_path
-    # sleep 0.1
     fill_in_city_or_zipcode(with: 'Pari ', expect: 'Paris')
     submit_form
 
@@ -59,33 +58,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
     assert_presence_of(internship_offer: internship_offer_at_bordeaux)
   end
 
-  test 'search by school_track works' do
-    weekly_internship_offer = create(:weekly_internship_offer)
-    troisieme_segpa_internship_offer = create(:troisieme_segpa_internship_offer)
-    visit internship_offers_path
 
-    find('#input-search-school-track').select('3e')
-    submit_form
-    assert_presence_of(internship_offer: weekly_internship_offer)
-    assert_absence_of(internship_offer: troisieme_segpa_internship_offer)
-    # ensure selection of school track disable week placeholder input
-    assert_selector("#input-search-by-week[readonly]", count: 0)
-    assert_selector("#input-search-by-week", count: 1)
-    # TODO: ensure selection of school track disable week checkboxes
-
-    # filtered by another
-    find('#input-search-school-track').select('3e SEGPA')
-    submit_form
-    assert_absence_of(internship_offer: weekly_internship_offer)
-    assert_presence_of(internship_offer: troisieme_segpa_internship_offer)
-    assert_selector("#input-search-by-week[readonly]", count: 1)
-
-    # reset search and submit
-    find('#input-search-school-track').select("")
-    submit_form
-    assert_presence_of(internship_offer: weekly_internship_offer)
-    assert_presence_of(internship_offer: troisieme_segpa_internship_offer)
-  end
 
   test 'search by keyword works' do
     searched_keyword = 'helloworld'
@@ -109,8 +82,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
   end
 
   test 'search by week works' do
-
-    travel_to(Date.new(2020, 9, 6)) do
+    travel_to(Date.new(2022, 9, 6)) do
       searched_week = Week.selectable_from_now_until_end_of_school_year.first
       not_searched_week = Week.selectable_from_now_until_end_of_school_year.last
 
@@ -119,14 +91,12 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
       not_searched_internship_offer = create(:weekly_internship_offer,
                                              weeks: [not_searched_week])
       visit internship_offers_path
-      find('#input-search-school-track').select('3e')
       fill_in_week(week: searched_week, open_popover: true)
       submit_form
       assert_presence_of(internship_offer: searched_internship_offer)
       assert_absence_of(internship_offer: not_searched_internship_offer)
       # TODO: ensure weeks navigation and months navigation
     end
-
   end
 
   test 'search by all criteria' do
@@ -156,10 +126,6 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
         :weekly_internship_offer,
         searched_opts.merge(weeks: [not_searched_week])
       )
-      not_found_by_school_track = create(
-        :troisieme_segpa_internship_offer,
-        searched_opts.reject { |k,v| k == :weeks }
-      )
 
       dictionnary_api_call_stub
       SyncInternshipOfferKeywordsJob.perform_now
@@ -169,7 +135,6 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
 
       fill_in_city_or_zipcode(with: 'Pari', expect: 'Paris')
       fill_in_keyword(keyword: searched_keyword)
-      find('#input-search-school-track').select('3e')
       fill_in_week(week: searched_week, open_popover: true)
       submit_form
 
@@ -177,7 +142,6 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
       assert_absence_of(internship_offer: not_found_by_location)
       assert_absence_of(internship_offer: not_found_by_keyword)
       assert_absence_of(internship_offer: not_found_by_week)
-      assert_absence_of(internship_offer: not_found_by_school_track)
     end
   end
 end
