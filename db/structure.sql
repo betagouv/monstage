@@ -1112,6 +1112,43 @@ ALTER SEQUENCE public.sectors_id_seq OWNED BY public.sectors.id;
 
 
 --
+-- Name: signatures; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.signatures (
+    id bigint NOT NULL,
+    ip_student character varying(40) NOT NULL,
+    ip_employer character varying(40) NOT NULL,
+    ip_school_manager character varying(40) NOT NULL,
+    signature_date_employer timestamp(6) without time zone NOT NULL,
+    signature_date_school_manager timestamp(6) without time zone NOT NULL,
+    signature_date_student timestamp(6) without time zone NOT NULL,
+    internship_agreement_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: signatures_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.signatures_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: signatures_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.signatures_id_seq OWNED BY public.signatures.id;
+
+
+--
 -- Name: tutors; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1401,6 +1438,13 @@ ALTER TABLE ONLY public.sectors ALTER COLUMN id SET DEFAULT nextval('public.sect
 
 
 --
+-- Name: signatures id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.signatures ALTER COLUMN id SET DEFAULT nextval('public.signatures_id_seq'::regclass);
+
+
+--
 -- Name: tutors id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1611,6 +1655,14 @@ ALTER TABLE ONLY public.schools
 
 ALTER TABLE ONLY public.sectors
     ADD CONSTRAINT sectors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: signatures signatures_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.signatures
+    ADD CONSTRAINT signatures_pkey PRIMARY KEY (id);
 
 
 --
@@ -1988,6 +2040,13 @@ CREATE INDEX index_schools_on_coordinates ON public.schools USING gist (coordina
 
 
 --
+-- Name: index_signatures_on_internship_agreement_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_signatures_on_internship_agreement_id ON public.signatures USING btree (internship_agreement_id);
+
+
+--
 -- Name: index_users_on_api_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2113,6 +2172,14 @@ ALTER TABLE ONLY public.internship_applications
 
 ALTER TABLE ONLY public.school_internship_weeks
     ADD CONSTRAINT fk_rails_07f908dbef FOREIGN KEY (week_id) REFERENCES public.weeks(id);
+
+
+--
+-- Name: signatures fk_rails_19164d1054; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.signatures
+    ADD CONSTRAINT fk_rails_19164d1054 FOREIGN KEY (internship_agreement_id) REFERENCES public.internship_agreements(id);
 
 
 --
@@ -2553,6 +2620,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220408084653'),
 ('20220511152203'),
 ('20220511152204'),
-('20220511152205');
+('20220511152205'),
+('20220603100433');
 
 
