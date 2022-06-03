@@ -213,6 +213,7 @@ class Ability
     can %i[destroy see_tutor], InternshipOffer
     can %i[read update export], InternshipOffer
     can %i[read update destroy export], InternshipApplication
+    can %i[read update destroy export], InternshipAgreement
     can :manage, EmailWhitelists::Statistician
     can :manage, EmailWhitelists::Ministry
     can :manage, InternshipOfferKeyword
