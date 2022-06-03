@@ -27,32 +27,6 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     end
   end
 
-  test 'Employer can edit school_track of an internship offer back and forth' do
-    employer = create(:employer)
-    internship_offer = create(:troisieme_segpa_internship_offer, employer: employer)
-    internship_offer_id = internship_offer.id
-    sign_in(employer)
-    visit edit_dashboard_internship_offer_path(internship_offer)
-    select '3e', from: 'Filière cible'
-    find("label[for='all_year_long']").click
-    fill_in_trix_editor('internship_offer_description_rich_text', with: 'description')
-    click_on "Modifier l'offre"
-    wait_form_submitted
-    internship_offer = InternshipOffer.find internship_offer_id
-    assert internship_offer.type == 'InternshipOffers::WeeklyFramed'
-
-    visit edit_dashboard_internship_offer_path(internship_offer)
-
-    select '3e SEGPA', from: 'Filière cible'
-    fill_in 'internship_offer_title', with: 'editok'
-    find('#internship_offer_description_rich_text', visible: false).set("On fait des startup d'état qui déchirent")
-    click_on "Modifier l'offre"
-    wait_form_submitted
-    internship_offer = InternshipOffer.find internship_offer_id
-    assert internship_offer.type == 'InternshipOffers::FreeDate'
-    assert_equal 'editok', internship_offer.title
-  end
-
   test 'Employer can see which week is choosen by nearby schools on edit' do
     employer = create(:employer)
     sign_in(employer)
@@ -118,6 +92,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       sign_in(employer)
       visit dashboard_internship_offers_path(internship_offer: internship_offer)
       page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
+      
       click_link("Modifier")
       find('label[for="internship_type_false"]').click # max_candidates can be set to many now
       within('.form-group-select-max-candidates') do
@@ -140,20 +115,6 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       assert_equal 4, internship_offer.reload.max_candidates
       assert_equal 1, internship_offer.reload.max_students_per_group
     end
-  end
-
-  test 'Employer cannot change type if applications are associated' do
-    employer = create(:employer)
-    internship_offer = create(:weekly_internship_offer, employer: employer)
-    create(:weekly_internship_application, internship_offer: internship_offer)
-    sign_in(employer)
-    visit dashboard_internship_offers_path(internship_offer: internship_offer)
-    page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
-    click_link("Modifier")
-    select('3e SEGPA', from: 'Filière cible')
-    click_button('Modifier l\'offre')
-    assert_equal 'InternshipOffers::WeeklyFramed', internship_offer.reload.type
-    find("#error_explanation[role='alert']")
   end
 
   test 'Employer can renew an old internship offer' do

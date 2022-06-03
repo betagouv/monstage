@@ -26,8 +26,6 @@ fieldset
         = render partial: "reporting/filters/typology", locals: {params: params}
       - if filters.dig(view_tab, :by_detailed_typology)
         = render partial: "reporting/filters/detailed_typology", locals: {params: params}
-      - if filters.dig(view_tab, :by_school_track)
-        = render partial: "reporting/filters/school_track", locals: {params: params}
       - if view_tab == :internship_offers
         = render partial: "reporting/filters/group_by", locals: {params: params}
     
