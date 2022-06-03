@@ -2,6 +2,8 @@
 
 module Users
   class Student < User
+    include StudentAdmin
+
     belongs_to :school, optional: true
 
     belongs_to :class_room, optional: true

@@ -320,7 +320,7 @@ module Dashboard::InternshipOffers
       travel_to(Date.new(2022, 3, 1)) do
         employer = create(:employer)
         discarded_internship_offer = create(:weekly_internship_offer,
-                                            :discarded, employer: employer, 
+                                            :discarded, employer: employer,
                                             max_candidates: 10,
                                             max_students_per_group: 5,
                                             weeks: Week.selectable_from_now_until_end_of_school_year.first(10))

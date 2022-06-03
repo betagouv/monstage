@@ -26,12 +26,14 @@ module Airtable
     end
 
     test '.pull_all delete past record for current operator and reload data' do
-      AirTableRecord.create!(operator: @operator, week: @ref_week)
-      assert_changes -> { AirTableRecord.count },
-                    from: 1,
-                    to: @parsed_body["records"].size do
-        Airtable::TableSynchronizer.new(operator: @operator)
-                                   .pull_all
+      travel_to Time.new(2020, 9, 1) do
+        AirTableRecord.create!(operator: @operator, week: @ref_week)
+        assert_changes -> { AirTableRecord.count },
+                      from: 1,
+                      to: @parsed_body["records"].size do
+          Airtable::TableSynchronizer.new(operator: @operator)
+                                    .pull_all
+        end
       end
     end
 

@@ -5,6 +5,9 @@ class Sector < ApplicationRecord
   before_create :set_uuid
 
   rails_admin do
+    weight 15
+    navigation_label 'Divers'
+
     list do
       field :name
       field :uuid
