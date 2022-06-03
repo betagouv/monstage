@@ -1,5 +1,5 @@
 .actions.d-flex.d-sm-block.d-xs-stick.mb-0.justify-content-center
-  .mb-1.text-muted.small
+  .mb-1.text-muted.small.d-none.d-sm-block
     = "Offre publiée par #{operator_name(internship_offer)}"
   - if current_user&.student?
     .actions.d-flex.d-sm-block.d-xs-stick.text-center
@@ -11,6 +11,6 @@
         = "Postuler sur #{operator_name(internship_offer)}"
   - unless user_signed_in?
     = link_to new_internship_offer_internship_application_path(internship_offer_id: internship_offer.id),
-          internship_offer_application_html_opts(internship_offer, class: 'fr-btn') do
+          internship_offer_application_html_opts(internship_offer, class: 'fr-btn btn-block-mobile') do
       = "Postuler sur #{operator_name(internship_offer)}"
   
