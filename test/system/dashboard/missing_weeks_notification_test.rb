@@ -28,34 +28,32 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
 
       school_message = "Etablissement mis à jour avec succès"
 
-        school_message = "Etablissement mis à jour avec succès"
 
-        InternshipOffer.stub :nearby, InternshipOffer.all do
-          sign_in(student)
-          visit internship_offers_path
-          click_link("Voir l'annonce")
-          click_on 'Postuler'
-          find ".fr-label", text: "Quelle semaine ?"
-          find "p.test-missing-school-weeks", text: explanation
-          page.find "input[name='commit']", visible: true
-          sign_out(student)
+      InternshipOffer.stub :nearby, InternshipOffer.all do
+        sign_in(student)
+        visit internship_offers_path
+        click_link("Voir l'annonce")
+        click_on 'Postuler'
+        find "label[for='internship_application_week_id']", text: "Quelle semaine ?"
+        find "p.test-missing-school-weeks", text: explanation
+        page.find "input[name='commit']", visible: true
+        sign_out(student)
 
-          # Back to interfaces /!\ works alone
-          sign_in(school_manager)
-          visit edit_dashboard_school_path(school)
-          all(".fr-checkbox-group.fr-checkbox-group--sm label").first.click
-          find('input[type="submit"]').click
-          find "#alert-text", text: school_message
-          sign_out(school_manager)
+        # Back to interfaces /!\ works alone
+        sign_in(school_manager)
+        visit edit_dashboard_school_path(school)
+        all(".custom-control.custom-checkbox.position-relative label").first.click
+        find('input[type="submit"]').click
+        find "#alert-text", text: school_message
+        sign_out(school_manager)
 
-          sign_in(student)
-          visit internship_offers_path
-          assert_presence_of(internship_offer: internship_offer)
-          page.has_no_content?(message_no_week)
-          click_link("Voir l'annonce")
-          click_on 'Postuler'
-          page.has_no_content?(explanation)
-        end
+        sign_in(student)
+        visit internship_offers_path
+        assert_presence_of(internship_offer: internship_offer)
+        page.has_no_content?(message_no_week)
+        click_link("Voir l'annonce")
+        click_on 'Postuler'
+        page.has_no_content?(explanation)
       end
     end
   end
