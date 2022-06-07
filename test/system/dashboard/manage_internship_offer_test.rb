@@ -14,15 +14,19 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   end
 
   test 'Employer can edit internship offer' do
-    employer = create(:employer)
-    internship_offer = create(:weekly_internship_offer, employer: employer)
-    sign_in(employer)
-    visit edit_dashboard_internship_offer_path(internship_offer)
-    find('input[name="internship_offer[employer_name]"]').fill_in(with: 'NewCompany')
+    travel_to(Date.new(2019, 3, 1)) do
+      employer = create(:employer)
+      internship_offer = create(:weekly_internship_offer, employer: employer)
 
-    click_on "Modifier l'offre"
-    wait_form_submitted
-    assert /NewCompany/.match?(internship_offer.reload.employer_name)
+      sign_in(employer)
+      visit edit_dashboard_internship_offer_path(internship_offer)
+      find('input[name="internship_offer[employer_name]"]').fill_in(with: 'NewCompany')
+
+      click_on "Modifier l'offre"
+
+      wait_form_submitted
+      assert /NewCompany/.match?(internship_offer.reload.employer_name)
+    end
   end
 
   test 'Employer can edit school_track of an internship offer back and forth' do
@@ -78,7 +82,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       visit dashboard_internship_offer_path(internship_offer)
       assert_changes -> { internship_offer.reload.discarded_at } do
         page.find('a[data-target="#discard-internship-offer-modal"]').click
-        page.find('#discard-internship-offer-modal .btn-primary').click
+        page.find("button[data-test-delete-id='delete-#{dom_id(internship_offer)}']").click
       end
     end
   end
@@ -95,11 +99,11 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       visit dashboard_internship_offer_path(internship_offer)
       assert_changes -> { internship_offer.reload.published_at } do
         page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
-        wait_form_submitted
+        sleep 0.2
         assert_nil internship_offer.reload.published_at, 'fail to unpublish'
 
         page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
-        wait_form_submitted
+        sleep 0.2
         assert_in_delta Time.now.utc.to_i,
                         internship_offer.reload.published_at.utc.to_i,
                         delta = 10

@@ -1,7 +1,8 @@
-= form_with({model: @internship_offer,
+= form_with( model: @internship_offer,
              url: (@internship_offer.new_record? ? dashboard_internship_offers_path() : dashboard_internship_offer_path(@internship_offer)),
              scope: :internship_offer,
-             data: { controller: 'internship-form'}, local: true}) do |form|
+             method: "#{@internship_offer.new_record? ? :post : :patch}",
+             data: { turbo: false }) do |form|
   = render "layouts/form_errors", resource: @internship_offer, resource_name: :internship_offer
 
   // used when

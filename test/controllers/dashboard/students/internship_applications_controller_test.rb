@@ -155,8 +155,10 @@ module Dashboard
         get dashboard_students_internship_application_path(student,
                                                            internship_application)
         assert_response :success
-        assert_select "a.btn-primary[href=\"#{internship_offer_internship_application_path(internship_application.internship_offer, internship_application, transition: :submit!)}\"]"
-        assert_select 'a.btn-primary[data-method=patch]'
+        puts dashboard_students_internship_application_path(student,
+                                                           internship_application).to_s
+        assert_select 'button[data-turbo="false"][type="submit"]'
+        assert_select 'input[type="hidden"][name="_method"][value="patch"]'
       end
     end
   end

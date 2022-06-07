@@ -317,7 +317,7 @@ module Dashboard::InternshipOffers
     end
 
     test 'GET #index as Employer displays pending submitted applications for kept internship_offers only' do
-      travel_to Time.zone.local(2020, 1, 1) do
+      travel_to(Date.new(2022, 3, 1)) do
         employer = create(:employer)
         discarded_internship_offer = create(:weekly_internship_offer,
                                             :discarded, employer: employer,

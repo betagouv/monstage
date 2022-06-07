@@ -422,9 +422,6 @@ GEM
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
       railties (>= 6.0.0)
-    turbolinks (5.2.1)
-      turbolinks-source (~> 5.2)
-    turbolinks-source (5.2.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     uglifier (4.2.0)
@@ -513,6 +510,7 @@ DEPENDENCIES
   rails_admin-i18n
   rails_admin_aasm
   react_on_rails
+  redis (~> 4.0)
   redis-namespace
   rest-client
   rubocop
@@ -523,7 +521,7 @@ DEPENDENCIES
   slim-rails
   split
   spring (= 3.0.0)
-  turbolinks
+  turbo-rails
   tzinfo-data
   uglifier
   validates_zipcode

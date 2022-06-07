@@ -1,0 +1,9 @@
+div id="pub_frag_#{dom_id(@internship_offer)}"
+  = link_to dashboard_internship_offer_path(@internship_offer.to_param, internship_offer: {published_at: nil}),
+              class: 'nav-link text-center px-1 px-sm-2 text-sky-blue',
+              method: :patch,
+              data: { :"test-id" => "toggle-publish-#{@internship_offer.id}"} do
+    i.fas.fa-eye-slash
+    small.d-block
+      | Masquer
+

@@ -2,7 +2,7 @@ h1.h2.mb-3 Mon établissement
 = form_with model: current_user,
             scope: :user,
             url: account_path,
-            local: true,
+            data: { turbo: false },
             method: :patch do |f|
   = f.rg2a_explain_required_asterisk
   = render 'layouts/form_errors', resource: current_user, resource_name: :user

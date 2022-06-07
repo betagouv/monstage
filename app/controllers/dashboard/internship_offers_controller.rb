@@ -3,8 +3,6 @@
 module Dashboard
   class InternshipOffersController < ApplicationController
     before_action :authenticate_user!
-    before_action :disable_turbolink_caching_to_force_page_refresh,
-                  only: %i[new edit]
     helper_method :order_direction
 
     def index
@@ -49,20 +47,35 @@ module Dashboard
     def update
       internship_offer_builder.update(instance: InternshipOffer.find(params[:id]),
                                       params: internship_offer_params) do |on|
-        on.success do |updated_internship_offer|
-          redirect_to(internship_offer_path(updated_internship_offer),
-                      flash: { success: 'Votre annonce a bien été modifiée' })
-        end
-        on.failure do |failed_internship_offer|
-          @internship_offer = failed_internship_offer
-          @available_weeks = failed_internship_offer.available_weeks
-          render :edit, status: :bad_request
+
+      on.success do |updated_internship_offer|
+        @internship_offer = updated_internship_offer
+        respond_to do |format|
+          format.turbo_stream
+          format.html do
+            redirect_to(internship_offer_path(updated_internship_offer),
+                        flash: { success: 'Votre annonce a bien été modifiée' })
+          end
         end
       end
-    rescue ActionController::ParameterMissing
-      @internship_offer = InternshipOffer.find(params[:id])
-      @available_weeks = @internship_offer.available_weeks
-      render :edit, status: :bad_request
+      on.failure do |failed_internship_offer|
+        respond_to do |format|
+          format.html do
+            @internship_offer = failed_internship_offer
+            @available_weeks = failed_internship_offer.available_weeks
+            render :edit, status: :bad_request
+          end
+        end
+      end
+      rescue ActionController::ParameterMissing
+        respond_to do |format|
+          format.html do
+            @internship_offer = InternshipOffer.find(params[:id])
+            @available_weeks = @internship_offer.available_weeks
+            render :edit, status: :bad_request
+          end
+        end
+      end
     end
 
     def destroy
@@ -82,8 +95,8 @@ module Dashboard
     def new
       authorize! :create, InternshipOffer
       internship_offer = current_user.internship_offers.find(params[:duplicate_id]).duplicate
-      
-      if params[:without_location].present? 
+
+      if params[:without_location].present?
         @internship_offer = internship_offer.duplicate_without_location
       else
         @internship_offer = internship_offer.duplicate
@@ -162,7 +175,7 @@ module Dashboard
                     :tutor_email, :employer_website, :employer_name, :street,
                     :zipcode, :city, :department, :region, :academy, :renewed,
                     :is_public, :group_id, :published_at, :type,
-                    :employer_id, :employer_type, :school_id,
+                    :employer_id, :employer_type, :school_id, :verb,
                     :employer_description_rich_text, :siret, :employer_manual_enter,
                     :school_track, :weekly_lunch_break, coordinates: {}, week_ids: [],
                     new_daily_hours: {}, daily_lunch_break: {}, weekly_hours:[])

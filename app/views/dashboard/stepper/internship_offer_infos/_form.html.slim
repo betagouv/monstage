@@ -3,11 +3,11 @@
 - unless new_record
   - when_old = dashboard_stepper_internship_offer_info_path(id: @internship_offer_info,
                                                             organisation_id: params[:organisation_id])
-= form_with({ model: @internship_offer_info,
-              url: (new_record ? when_new : when_old),
-              scope: :internship_offer_info,
-              method: (new_record ? 'POST' : 'PATCH' ),
-              local: true }) do |form|
+= form_with( model: @internship_offer_info,
+             url: (new_record ? when_new : when_old),
+             scope: :internship_offer_info,
+             method: (new_record ? 'POST' : 'PATCH' ),
+             data: { turbo: false } ) do |form|
 
   = render "dashboard/stepper/steps"
 

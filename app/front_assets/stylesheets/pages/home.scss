@@ -1,7 +1,10 @@
 :focus-visible {
   border: 2px dotted $blue;
 }
-
+.turbo-progress-bar {
+  height: 5px;
+  background-color: green;
+}
 .homepage {
   overflow-x: hidden;
 }

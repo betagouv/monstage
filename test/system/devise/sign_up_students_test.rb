@@ -269,7 +269,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     # signup as student
     assert_difference('Users::Student.count', 1) do
       find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
-      find('#downshift-2-item-0').click
+      find('#downshift-0-item-0').click
       find("label[for=\"select-school-#{school_1.id}\"]").click
       select(class_room_1.name, from: 'user_class_room_id')
       fill_in 'Prénom', with: 'Coufert'
