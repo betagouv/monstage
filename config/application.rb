@@ -30,6 +30,8 @@ module Monstage
 
     config.action_mailer.delivery_job = "ActionMailer::MailDeliveryJob"
 
+    config.time_zone = 'Europe/Paris'
+
     config.action_view.field_error_proc = Proc.new { |html_tag, instance| html_tag }
 
     config.active_record.schema_format = :sql
