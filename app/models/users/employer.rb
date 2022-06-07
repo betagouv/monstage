@@ -11,7 +11,7 @@ module Users
              class_name: 'InternshipOffer'
 
     has_many :internship_applications, through: :kept_internship_offers
-    has_many :internship_agreements, through: :internship_applications 
+    has_many :internship_agreements, through: :internship_applications
 
     has_many :organisations
     has_many :tutors
@@ -43,6 +43,17 @@ module Users
       super
 
       internship_offers.map(&:anonymize)
+    end
+
+    def signatory_role
+      Signature.signatory_roles[:employer]
+    end
+
+    def already_signed?(internship_agreement_id:)
+      Signature.already_signed?(
+        user_role: signatory_role,
+        internship_agreement_id: internship_agreement_id
+      )
     end
 
     def presenter

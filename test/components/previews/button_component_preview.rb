@@ -1,37 +1,59 @@
 class ButtonComponentPreview < ViewComponent::Preview
   layout "preview"
 
-  def _1_not_signed
-    employer = Users::Employer.first
+  def _1_with_no_validation
+    internship_agreement = InternshipAgreement.draft.first
 
     render(InternshipAgreements::ButtonComponent.new(
-      internship_application: employer.internship_applications
-                                      .approved
-                                      .joins(:internship_agreement)
-                                      .first,
-      current_user: employer)
+      internship_agreement: internship_agreement,
+      current_user: internship_agreement.employer)
     )
   end
 
-  def _2_signed_by_me
-    internship_agreement = InternshipAgreement.where(school_manager_accept_terms: false,
+  def _2_with_employer_validation
+    internship_agreement = InternshipAgreement.completed_by_employer
+                                              .where(school_manager_accept_terms: false,
                                                      employer_accept_terms: true)
                                               .first
 
     render(InternshipAgreements::ButtonComponent.new(
-      internship_application: internship_agreement.internship_application,
-      current_user: internship_agreement.internship_application.internship_offer.employer
+      internship_agreement: internship_agreement,
+      current_user: internship_agreement.employer
     ))
   end
 
-  def _3_signed_by_everyone
+  def _3_with_every_validation
     internship_agreement = InternshipAgreement.where(school_manager_accept_terms: true,
                                                      employer_accept_terms: true)
                                               .first
 
     render(InternshipAgreements::ButtonComponent.new(
-      internship_application: internship_agreement.internship_application,
-      current_user: internship_agreement.internship_application.internship_offer.employer
+      internship_agreement: internship_agreement,
+      current_user: internship_agreement.employer
+    ))
+  end
+
+  def _4_with_signature_started
+    internship_agreement = InternshipAgreement.signatures_started
+                                              .where(school_manager_accept_terms: true,
+                                                     employer_accept_terms: true)
+                                              .first
+
+    render(InternshipAgreements::ButtonComponent.new(
+      internship_agreement: internship_agreement,
+      current_user: internship_agreement.employer
+    ))
+  end
+
+  def _5_with_signature_started
+    internship_agreement = InternshipAgreement.signed_by_all
+                                              .where(school_manager_accept_terms: true,
+                                                     employer_accept_terms: true)
+                                              .first
+
+    render(InternshipAgreements::ButtonComponent.new(
+      internship_agreement: internship_agreement,
+      current_user: internship_agreement.employer
     ))
   end
 end

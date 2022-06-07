@@ -15,6 +15,7 @@ class InternshipAgreement < ApplicationRecord
   include AASM
 
   belongs_to :internship_application
+  has_many :signatures, dependent: :destroy
 
   has_rich_text :activity_scope_rich_text
   has_rich_text :activity_preparation_rich_text
@@ -61,7 +62,8 @@ class InternshipAgreement < ApplicationRecord
           :completed_by_employer,
           :started_by_school_manager,
           :validated,
-          :signed
+          :signatures_started,
+          :signed_by_all
 
     event :start_by_employer do
       transitions from: :draft,
@@ -85,12 +87,29 @@ class InternshipAgreement < ApplicationRecord
         notify_employer_school_manager_completed(self)
       }
     end
+
+    event :sign do
+      transitions from: [:validated, :signatures_started],
+                  to: :signatures_started,
+                  after: proc { |*_args|
+        notify_others_signatures_started(self)
+      }
+    end
+
+    event :signatures_finalize do
+      transitions from: [:signatures_started],
+                  to: :signed_by_all,
+                  after: proc { |*_args|
+        notify_others_signatures_finalized(self)
+      }
+    end
   end
 
+  delegate :student,          to: :internship_application
   delegate :internship_offer, to: :internship_application
-  delegate :employer, to: :internship_offer
-
-
+  delegate :employer,         to: :internship_offer
+  delegate :school,           to: :student
+  delegate :school_manager,   to: :school
 
   def at_least_one_validated_terms
     return true if skip_validations_for_system
@@ -183,5 +202,11 @@ class InternshipAgreement < ApplicationRecord
     EmployerMailer.school_manager_finished_notice_email(
       internship_agreement: agreement
     ).deliver_later
+  end
+
+  def notify_others_signatures_started(agreement)
+  end
+
+  def notify_others_signatures_finished(agreement)
   end
 end

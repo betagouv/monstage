@@ -14,7 +14,8 @@ tr class="d-sm-flex student-application-#{internship_agreement.id} internship-ag
       = I18n.t("activerecord.attributes.internship_agreement.aasm_state.#{current_user.role || 'employer'}.#{internship_agreement.aasm_state}")
 
   td.rg2a-width-100.col-sm-3.d-sm-flex.align-items-center.text-center.actions
-    = render(InternshipAgreements::ButtonComponent.new(internship_agreement: internship_agreement, current_user: current_user))
+    = render(InternshipAgreements::ButtonComponent.new( internship_agreement: internship_agreement,
+                                                        current_user: current_user) )
 
 tr
   td.col-12.p-0 colspan=5

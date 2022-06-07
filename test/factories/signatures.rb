@@ -1,11 +1,16 @@
 FactoryBot.define do
   factory :signature do
-    ip_student { "10.101.12.13" }
-    ip_employer { "103.10.12.14" }
-    ip_school_manager { "20.101.128.135" }
-    signature_date_employer { Datetime.now - 25.days }
-    signature_date_school_manager { Datetime.now - 22.days }
-    signature_date_student { Datetime.now - 21.days }
-    internship_agreement
+    signatory_ip { FFaker::Internet.ip_v4_address }
+    signature_date { DateTime.now - 25.days }
+    signatory_role { Signature::signatory_roles[:employer] }
+    internship_agreement { create(:internship_agreement) }
+
+    trait :employer_signature do
+      signatory_role { Signature::signatory_roles[:employer] }
+    end
+
+    trait :school_manager_signature do
+      signatory_role { Signature::signatory_roles[:school_manager] }
+    end
   end
 end

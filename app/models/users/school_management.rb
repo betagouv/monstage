@@ -78,6 +78,19 @@ module Users
     end
     alias :presenter :role_presenter
 
+    def signatory_role
+      Signature.signatory_roles[:school_manager] if role == 'school_manager'
+    end
+
+    def already_signed?(internship_agreement_id:)
+      return false unless role == 'school_manager'
+
+      Signature.already_signed?(
+        user_role: signatory_role,
+        internship_agreement_id: internship_agreement_id
+      )
+    end
+
     def school_management? ; true end
 
     private
