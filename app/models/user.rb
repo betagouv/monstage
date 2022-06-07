@@ -242,6 +242,9 @@ class User < ApplicationRecord
   def employer? ; false end
   def operator? ; false end
   def school_management?; false end
+  def already_signed?(internship_aggreement_id:); false end
+
+  def signatory_role; nil end
 
   def presenter
     Presenters::User.new(self)

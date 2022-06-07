@@ -43,6 +43,16 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 --
 
 --
+-- Name: agreement_signatory_role; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.agreement_signatory_role AS ENUM (
+    'employer',
+    'school_manager'
+);
+
+
+--
 -- Name: class_room_school_track; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -1117,15 +1127,12 @@ ALTER SEQUENCE public.sectors_id_seq OWNED BY public.sectors.id;
 
 CREATE TABLE public.signatures (
     id bigint NOT NULL,
-    ip_student character varying(40) NOT NULL,
-    ip_employer character varying(40) NOT NULL,
-    ip_school_manager character varying(40) NOT NULL,
-    signature_date_employer timestamp(6) without time zone NOT NULL,
-    signature_date_school_manager timestamp(6) without time zone NOT NULL,
-    signature_date_student timestamp(6) without time zone NOT NULL,
-    internship_agreement_id bigint NOT NULL,
+    signatory_ip character varying(40) NOT NULL,
+    signature_date timestamp(6) without time zone NOT NULL,
+    internship_agreement_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    signatory_role public.agreement_signatory_role
 );
 
 

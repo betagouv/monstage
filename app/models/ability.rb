@@ -83,14 +83,17 @@ class Ability
 
   def school_manager_abilities(user:)
     can :create_remote_internship_request, SupportTicket
+    can :sign, InternshipAgreement do |signature|
+      signature.school_manager.id == user.id
+    end
+
     can_manage_school(user: user) do
       can [:delete], User do |managed_user_from_school|
         managed_user_from_school.school_id == user.school_id
       end
     end
     can %i[
-      update
-      see_intro
+      create
       edit_school_representative_full_name
       edit_school_delegation_to_sign_delivered_at
       edit_student_school
@@ -102,7 +105,9 @@ class Ability
       edit_legal_terms_rich_text
       edit_complementary_terms_rich_text
       edit
-      create
+      see_intro
+      sign
+      update
     ], InternshipAgreement do |agreement|
       agreement.internship_application.student.school_id == user.school_id
     end
@@ -138,9 +143,12 @@ class Ability
     can %i[index update], InternshipApplication
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
 
+    # can :sign, Signature do |signature|
+    #   signature.internship_agreement.internship_offer.employer_id == user.id
+    # end
+
     can %i[
       create
-      update
       edit_organisation_representative_full_name
       edit_tutor_full_name
       edit_date_range
@@ -150,8 +158,10 @@ class Ability
       edit_activity_learnings_rich_text
       edit_complementary_terms_rich_text
       edit
+      sign
+      update
     ], InternshipAgreement do |agreement|
-      agreement.internship_application.internship_offer.employer == user
+      agreement.employer == user
     end
   end
 
