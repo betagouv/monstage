@@ -478,7 +478,7 @@ fr:
               taken: 'Vous ne pouvez pas postuler deux fois à la même offre'
   admin:
     table_headers:
-      last_created: Dernier créé'
+      last_created: Dernier créé
     toggle_navigation: 'toggle_navigation'
 
     misc:
