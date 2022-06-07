@@ -19,6 +19,9 @@ class AutocompleteSchoolTest < ApplicationSystemTestCase
     school_manager = @default_school.school_manager
     sign_in(school_manager)
     visit account_path(section: :school)
+    within(".fr-tabs") do
+      click_on 'Mon établissement'
+    end
 
     assert_equal(find_field('Nom (ou ville) de mon établissement').value,
                  @default_school_city,
@@ -39,28 +42,37 @@ class AutocompleteSchoolTest < ApplicationSystemTestCase
     assert_changes -> { school_manager.reload.school_id },
                    from: @default_school.id,
                    to: @next_school.id do
+      within(".fr-tabs") do
+        click_on 'Mon établissement'
+      end
       fill_in('Nom (ou ville) de mon établissement', with: @next_school_city[0..3])
       all('.autocomplete-school-results .list-group-item-action').first.click
       assert_equal find_field('Nom (ou ville) de mon établissement').value,
                    @next_school_city,
                    "can't find next school.city"
 
-      find("label[for=\"select-school-#{@next_school.id}\"]").click
+      select @next_school.name, from: "user_school_id"
       click_on 'Enregistrer'
     end
   end
+
   test 'reset button works as expected' do
     student = create(:student, school: @default_school)
     sign_in(student)
     visit account_path(section: :school)
+    within(".fr-tabs") do
+      click_on 'Mon établissement'
+    end
+    
+    if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'
+      # default presence of fields
+      assert_equal 1, all('#user_school_name').size, 'default school name missing'
+      assert_equal 1, all('#user_class_room_id').size, 'default class room missing'
 
-    # default presence of fields
-    assert_equal 1, all('#user_school_name').size, 'default school name missing'
-    assert_equal 1, all('#user_class_room_id').size, 'default class room missing'
-
-    all('.btn-clear-city').first.click
-    assert_equal 0, all('#user_school_name').size, 'reset school name fails'
-    assert_equal 0, all('#user_class_room_id').size, 'reset class_room fails'
+      all('.btn-clear-city').first.click
+      assert_equal 0, all('#user_school_name').size, 'reset school name fails'
+      assert_equal 0, all('#user_class_room_id').size, 'reset class_room fails'
+    end
   end
 
   test 'students changes class_room' do
@@ -70,6 +82,9 @@ class AutocompleteSchoolTest < ApplicationSystemTestCase
     student = create(:student, school: @default_school, class_room: default_class_room)
     sign_in(student)
     visit account_path(section: :school)
+    within(".fr-tabs") do
+      click_on 'Mon établissement'
+    end
 
     # default value
     assert_equal(1,
@@ -78,7 +93,7 @@ class AutocompleteSchoolTest < ApplicationSystemTestCase
 
     fill_in('Nom (ou ville) de mon établissement', with: @next_school_city[0..3])
     all('.autocomplete-school-results .list-group-item-action').first.click
-    find("label[for=\"select-school-#{@next_school.id}\"]").click
+    select @next_school.name, from: "user_school_id"
     select(next_class_room.name, from: 'user_class_room_id')
     click_on 'Enregistrer'
 

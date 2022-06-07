@@ -1,9 +1,14 @@
-.col-12.pt-1.pb-2.listview-item.align-items-center
-  - if can?(:delete, school_employee)
-    = link_to dashboard_school_user_path(school_employee.school, school_employee), data: { confirm: "Êtes-vous sur ?"}, method: :delete, class: 'float-right btn btn-link' do
-      i class="fas fa-trash fa-2x"
-      small.d-block
-        | Supprimer
-  = school_employee.presenter.short_name
-  br
-  = "#{school_employee.presenter.role_name} #{school_employee.try(:class_room).try(:name)}"
+tr
+  td
+    = school_employee.presenter.short_name
+  td
+    = school_employee.email
+  td
+    = school_employee.role_presenter.role
+  td
+    = link_to dashboard_school_user_path(school_employee.school, school_employee),
+               data: { confirm: "Confirmez-vous la suppression de #{school_employee.presenter.formal_name} de l'école?" },
+                       method: :delete,
+                       class: 'pt-2 fr-raw-link fr-text--sm red-delete' do
+      | Supprimer
+

@@ -27,19 +27,16 @@
       border-bottom-color: #d8d8d8;
     }
   tr:first-child td {
-    border-top: 0.3rem solid $blue;
+    border-top: 0.1rem solid black;
   }
-  tr:last-child td {
-      border-bottom: 1px solid $blue;
-    }
   tr:hover {
       background-color: #cce4f0;
     }
   }
 
   tfoot {
-    tr {
-      border-bottom: 2px solid $blue;
+    tr, td {
+      background-color: #eee !important;
     }
   }
 }
@@ -151,7 +148,7 @@ p.hero {
   }
 
 .table-statistics .bg-blue-light {
-  background-color: #3f57a7 !important;
+  background-color: $blue-france-light !important;
 }
 
 .table-results {
@@ -166,7 +163,7 @@ p.hero {
     }
 
     tr:last-child {
-      background-color: $bg-less-light-blue;
+      background-color: $blue-france-light;
 
       td:first-child {
         border-bottom-left-radius: 10px;
@@ -182,5 +179,9 @@ p.hero {
   }
 
   .bg-light-blue{
-    background-color: $bg-light-blue;
+    background-color: $blue-france-975;
   }
+
+.fr-btn-bordered {
+  box-shadow: inset 0 0 0 1px $blue-france !important;
+}

@@ -4,10 +4,10 @@ fieldset
   .row
     .col-4
       .form-group
-        = label_tag :school_year, 'Année Scolaire', class: 'text-uppercase'
+        = label_tag :school_year, 'Année Scolaire', class: 'text-uppercase fr-label'
 
         = select_tag :school_year,
                       options_for_select(options, params[:school_year]),
                       include_blank: 'Toutes',
                       data: { action: 'statistics#filterBySchoolYear' },
-                      class: 'form-control'
+                      class: 'fr-select'

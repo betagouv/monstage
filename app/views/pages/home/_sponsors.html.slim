@@ -1,53 +1,39 @@
-.container-monstage.container-xl
-  p.py-4
-  .row.pb-5.px-sm-5.px-3
+
+h2.py-5.fr-mx-2w Un projet porté par
+.d-none.d-lg-block
+  .row
     .col-12
-      h2.h2.py-5.text-dark.text-center-left Un projet porté par
-      .row.d-none.d-lg-block
-        .col-12
-          .d-flex.justify-content-between
-            = image_tag asset_pack_path("media/images/homepage/sponsors/logo-anct.png"),
-                        alt: "Logo anct",
-                        height: '133px'
-            = image_tag asset_pack_path("media/images/homepage/sponsors/Line9.png"),
-                        alt: "barre démarcatrice",
-                        height: '150px'
-            = image_tag asset_pack_path("media/images/homepage/sponsors/Ministère-Éducation-Nationale-Jeunesse.svg"),
-                        alt: "Logo anct",
-                        width: '150px'
-            = image_tag asset_pack_path("media/images/homepage/sponsors/Line9.png"),
-                        alt: "barre démarcatrice",
-                        height: '150px'
-            = image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.svg"),
-                        alt: "Logo ministere de la cohesion des territoire et ministere de l'education nationale",
-                        width: '150px'
-            = image_tag asset_pack_path("media/images/homepage/sponsors/Line9.png"),
-                        alt: "barre démarcatrice",
-                        height: '150px'
-            = image_tag asset_pack_path("media/images/homepage/sponsors/logo-min-ville.png"),
-                        alt: "Logo du ministère de la ville",
-                        height: '150px'
-      .row.d-block.d-lg-none.text-center
-        .col-12.mb-3
-            = image_tag asset_pack_path("media/images/homepage/sponsors/logo-anct.png"),
-                        alt: "Logo anct",
-                        width: '260px',
-                        class: 'px-3'
-        .col-12
-          .row.mb-3
-            .col-6.text-left
-              = image_tag asset_pack_path("media/images/homepage/sponsors/Ministère-Éducation-Nationale-Jeunesse.svg"),
-                          alt: "Logo ministère de l'éducation nationale et de la jeunesse",
-                          width: '140px ',
-                          class: 'pl-2'
-            .col-6.text-right
-              = image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.svg"),
-                          alt: "Logo ministere de la cohesion des territoire et ministere de l'education nationale",
-                          width: '140px ',
-                          class: 'pr-2'
-        .col-12
-            = image_tag asset_pack_path("media/images/homepage/sponsors/logo-min-ville.png"),
-                        alt: "Logo du ministère de la ville",
-                        width: '130px',
-                        class: 'px-3'
-      .row.py-4
+      .d-flex.justify-content-between.fr-pb-8w
+        = image_tag asset_pack_path("media/images/homepage/sponsors/logo-anct.svg"),
+                    alt: "Logo anct",
+                     height: '140px',
+                     class: ''
+        = image_tag asset_pack_path("media/images/homepage/sponsors/logo-ministere-de-la-transition-ecologique.svg"),
+                    alt: "Logo Ministère de la transition écologique et de la cohesion des territoires",
+                     height: '140px',
+                     class: ''
+        = image_tag asset_pack_path("media/images/homepage/sponsors/logo-ministere-education-nationale.svg"),
+                    alt: "Logo ministère de l'éducation nationale et de la jeunesse",
+                     height: '140px',
+                     class: ''
+.d-block.d-lg-none.fr-mt-7w
+  .row.no-gutters.text-left
+    .col-lg-6.col-md-6.col-sm-6.col-xs-12.mb-5
+      .px-5
+        = image_tag asset_pack_path("media/images/homepage/sponsors/logo-anct.svg"),
+                    alt: "Logo anct",
+                    height: '140px',
+                    class: ''
+    .col-lg-6.col-md-6.col-sm-6.col-xs-12.mb-5
+      .px-5
+        = image_tag asset_pack_path("media/images/homepage/sponsors/logo-ministere-de-la-transition-ecologique.svg"),
+                    alt: "Logo Ministère de la transition écologique et de la cohesion des territoires",
+                    height: '140px',
+                    class: ''
+    .col-lg-6.col-md-6.col-sm-6.col-xs-12.mb-5
+      .px-5
+        = image_tag asset_pack_path("media/images/homepage/sponsors/logo-ministere-education-nationale.svg"),
+                    alt: "Logo ministère de l'éducation nationale et de la jeunesse",
+                    height: '140px',
+                    class: ''
+hr

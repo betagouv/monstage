@@ -1,5 +1,5 @@
 div id="internship-application-openform" class="#{@internship_application.new_record? ? '' : 'd-none'}" data-internship-application-form-target='containerShowFormLink'
-  .actions.d-flex.d-sm-block.d-xs-stick= link_to "#internship-application-form", data: {action: 'click->internship-application-form#showForm', turbo: 'false' }, class: 'btn btn-primary rounded-xs-0' do
+  .actions.d-flex.d-sm-block.d-xs-stick= link_to new_internship_offer_internship_application_path(internship_offer_id: internship_offer.id), data: {turbo: 'false' }, class: 'btn btn-primary rounded-xs-0' do
     | Je postule
     i.fas.fa-fw.fa-xs.ml-1.fa-rocket
 

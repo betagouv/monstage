@@ -30,7 +30,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     employer.confirm
     get new_user_session_path(params:{check_confirmation: true, id: employer.id})
     assert_response :success
-    assert_select('h1.h2', text: 'Me connecter')
+    assert_select('h1', text: 'Connexion')
   end
 
   test 'GET with prefilled email works' do

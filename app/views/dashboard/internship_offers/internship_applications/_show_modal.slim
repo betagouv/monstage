@@ -1,4 +1,4 @@
-div.modal.show-modal id="#{show_application_modal_id(application)}" tabindex="-1" role="dialog"
+div.modal.show-modal id="modal-#{(rand * 1000).to_i}-#{show_application_modal_id(application)}" tabindex="-1" role="dialog"
   .modal-dialog.modal-lg role="document"
 
     .modal-content.p-3

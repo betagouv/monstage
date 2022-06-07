@@ -1,0 +1,14 @@
+div class=" #{container_class_name}" data-controller="a11y-date-input"
+  = form.label attribute_name do
+    = form.rg2a_required_content_tag
+    = attribute_label
+  = form.text_field attribute_name,
+                 value: form.object.send(attribute_name).try(:strftime, '%d/%m/%Y'),
+                 class: 'fr-input',
+                 required: true,
+                 placeholder: 'jj/mm/aaaa',
+                 data:{ action: 'blur->a11y-date-input#validate', :"a11y-date-input-target" => 'input' }
+
+  = yield if block_given?
+  small.form-text.text-danger.d-none data-a11y-date-input-target="errorContainer"
+

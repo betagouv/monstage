@@ -5,11 +5,23 @@
   .row
     .col-12
       #nav-tab.nav.nav-tabs role="tablist"
-        = link_to 'Offreur', '#nav-employer', class: "nav-item nav-link active", id: 'nav-employer-tab', data: { 'toggle': "tab" }, role: "tab", 'aria-controls': "nav-employer", 'aria-selected': "true"
-        = link_to "Chef d'établissement", '#nav-school-management', class: "nav-item nav-link", id: 'nav-school-management-tab', data: { 'toggle': "tab" }, role: "tab", 'aria-controls': "nav-school-management", 'aria-selected': "false"
-      
+        = link_to 'Offreur', '#nav-employer',
+                  class: "nav-item nav-link fr-raw-link #{current_user.employer? ? "active" : ""}",
+                  id: 'nav-employer-tab',
+                  data: { 'toggle': "tab" },
+                  role: "tab",
+                  'aria-controls': "nav-employer",
+                  'aria-selected': "#{current_user.employer?}"
+        = link_to "Chef d'établissement",
+                  '#nav-school-management',
+                  class: "nav-item nav-link fr-raw-link #{current_user.school_manager? ? "active" : ""}",
+                  id: 'nav-school-management-tab',
+                  data: { 'toggle': "tab" },
+                  role: "tab",
+                  'aria-controls': "nav-school-management",
+                  'aria-selected': "#{current_user.school_manager?}"
+
       #nav-tabContent.tab-content
-        
         #nav-employer.tab-pane.fade.active role="tabpanel" aria-labelledby="nav-employer-tab"
           table.table-sticky-thead
             = render partial: 'dashboard/internship_agreements/form_header',
@@ -20,14 +32,14 @@
                       resource: @internship_agreement,
                       school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale',
                       disabled: false
-        
+
         #nav-school-management.tab-pane.fade role="tabpanel" aria-labelledby="nav-school-management-tab"
           table.table-sticky-thead
             = render partial: 'dashboard/internship_agreements/form_header',
                 locals: { internship_application: @internship_agreement.internship_application,
                           internship_agreement: form.object }
             = render 'school_management_form_fields',
-                            form: form,
-                            resource: @internship_agreement,
-                            school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale',
-                            disabled: true
+                      form: form,
+                      resource: @internship_agreement,
+                      school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale',
+                      disabled: true

@@ -1,10 +1,10 @@
 - sort_params = forwardable_params.to_h.merge(order: order, direction: direction)
 
 = link_to dashboard_internship_offers_path(sort_params),
-          class: "align-middle text-warning text-decoration-none #{current_sorting_indicator ? 'currently-sorting' : ''} align-bottom #{current_page?(dashboard_internship_offers_path(sort_params)) ? 'active' : ''}", 
-          title: "Trier par #{sort_by_i18n} #{direction.to_s == 'asc' ? 'croissant' : 'décroissant'} " do
+          class: "align-self-center fr-raw-link #{current_sorting_indicator ? 'currently-sorting' : ''} #{current_page?(dashboard_internship_offers_path(sort_params)) ? 'active' : ''}",
+          title: "cliquer pour trier les #{sort_by_i18n.downcase} par ordre #{direction.to_s == 'asc' ? 'croissant' : 'décroissant'} " do
   - if direction.to_s == 'asc'
-    | &#9650;
+    span class="fr-icon-arrow-up-s-line sort-arrow" aria-hidden="true"
   - else
-    | &#9660;
+    span class="fr-icon-arrow-down-s-line sort-arrow" aria-hidden="true"
 

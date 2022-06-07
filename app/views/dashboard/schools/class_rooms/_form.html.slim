@@ -1,34 +1,33 @@
 - url = @class_room.persisted? ? dashboard_school_class_room_path(@school, @class_room, id: @class_room) : dashboard_school_class_rooms_path(@school, @class_room)
-= form_with model: @class_room,
+.my-3= form_with model: @class_room,
             scope: :class_room,
             url: url,
             method: (@class_room.new_record? ? 'POST' : 'PATCH' ),
             data: { turbo: false }  do |form|
 
-  = form.rg2a_explain_required_asterisk
   = render "layouts/form_errors", resource: @class_room, resource_name: :class_room
 
-  .form-group
-    = form.label :name do
+  .form-group.mt-4
+    = form.label :name, class: 'fr-label'  do
       | Nom de la classe
       = form.rg2a_required_content_tag
     = form.text_field :name,
                       required: true,
-                      class: 'form-control col-lg-6',
+                      class: 'fr-input col-lg-6',
                       placeholder: 'Nom de la classe'
 
 
   .form-group
-    = form.label :school_track do
+    = form.label :school_track, class: 'fr-label'  do
       | Filière
       = form.rg2a_required_content_tag
     = form.select :school_track,
                     options_for_select(options_for_school_tracks, @class_room.school_track),
                     { prompt: school_track_options_for_default },
-                    { class: "form-control col-lg-6", required: true }
+                    { class: "fr-select col-lg-6", required: true }
 
-  .actions
-    = form.submit 'Enregistrer', class: 'btn btn-primary'
+  .actions.my-5.fr-mb-15w
+    = form.submit 'Enregistrer', class: 'fr-btn'
     = link_to 'Annuler',
               dashboard_school_class_rooms_path(@school),
-              class: 'btn btn-link'
+              class: 'fr-btn ml-2 fr-btn--secondary'

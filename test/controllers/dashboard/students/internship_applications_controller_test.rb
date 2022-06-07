@@ -30,7 +30,7 @@ module Dashboard
         assert_response :success
         assert_select 'title', 'Mes candidatures | Monstage'
         assert_select 'h1.h2.mb-3', text: student.name
-        assert_select 'a[href=?]', dashboard_school_class_room_path(school, class_room)
+        assert_select 'a[href=?]', dashboard_school_class_room_students_path(school, class_room)
         assert_select 'h2.h4', text: 'Aucun stage sélectionné'
       end
 
@@ -66,7 +66,7 @@ module Dashboard
         assert_template 'dashboard/students/internship_applications/index'
         assert_select 'h1.h2', text: 'Mes candidatures'
         assert_select 'h2.h4', text: 'Aucun stage sélectionné'
-        assert_select 'a.btn.btn-primary[href=?]', student.presenter.default_internship_offers_path
+        assert_select 'a.fr-btn[href=?]', student.presenter.default_internship_offers_path
       end
 
       test 'GET internship_applications#index render internship_applications' do
@@ -86,7 +86,7 @@ module Dashboard
         sign_in(student)
         get dashboard_students_internship_applications_path(student)
         assert_response :success
-        assert_select 'a.btn.btn-primary[href=?]',
+        assert_select 'a.fr-btn[href=?]',
                       student.presenter.default_internship_offers_path
         internship_applications.each do |aasm_state, internship_application|
           assert_select 'a[href=?]', dashboard_students_internship_application_path(student, internship_application)
@@ -155,10 +155,8 @@ module Dashboard
         get dashboard_students_internship_application_path(student,
                                                            internship_application)
         assert_response :success
-        puts dashboard_students_internship_application_path(student,
-                                                           internship_application).to_s
-        assert_select 'button[data-turbo="false"][type="submit"]'
-        assert_select 'input[type="hidden"][name="_method"][value="patch"]'
+        assert_select "a[href=\"#{internship_offer_internship_application_path(internship_application.internship_offer, internship_application, transition: :submit!)}\"]"
+        assert_select 'a[data-method=patch]'
       end
     end
   end

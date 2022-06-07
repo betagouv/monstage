@@ -34,7 +34,7 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
         visit internship_offers_path
         click_link("Voir l'annonce")
         click_on 'Postuler'
-        find "label[for='internship_application_week_id']", text: "Quelle semaine ?"
+        find "label[for='internship_application_internship_offer_week_id']", text: "Quelle semaine ?"
         find "p.test-missing-school-weeks", text: explanation
         page.find "input[name='commit']", visible: true
         sign_out(student)
@@ -42,7 +42,8 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
         # Back to interfaces /!\ works alone
         sign_in(school_manager)
         visit edit_dashboard_school_path(school)
-        all(".custom-control.custom-checkbox.position-relative label").first.click
+        click_link('Renseigner maintenant')
+        find("label[for='school_week_ids_1_checkbox']").click
         find('input[type="submit"]').click
         find "#alert-text", text: school_message
         sign_out(school_manager)
@@ -55,32 +56,6 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
         click_on 'Postuler'
         page.has_no_content?(explanation)
       end
-    end
-  end
-
-  test 'troisieme segpa student try to apply to an offer while school manager has not open any internship week' do
-    internship_offer = create(:troisieme_segpa_internship_offer)
-    school = create(:school, :with_school_manager, weeks: [])
-    class_room = create(:class_room, :troisieme_segpa, school: school)
-    student = create(:student, school: school, class_room: class_room)
-    student_message = "Nous allons prévenir votre chef d'établissement pour que vous puissiez postuler"
-    student_wish_message = "Je souhaite une semaine de stage"
-
-    InternshipOffer.stub :nearby, InternshipOffer.all do
-      sign_in(student)
-      visit internship_offers_path
-      assert_presence_of(internship_offer: internship_offer)
-      click_link("Voir l'annonce")
-      find("a[href='#internship-application-form']").click
-      page.has_no_content? student_wish_message
-      page.has_no_content? student_message
-
-      visit internship_offers_path
-      click_link("Voir l'annonce")
-      find("a[href='#internship-application-form']").click
-      find ".label", text: "Pourquoi ce stage me motive"
-      page.find "input[name='commit']"
-      sign_out(student)
     end
   end
 end

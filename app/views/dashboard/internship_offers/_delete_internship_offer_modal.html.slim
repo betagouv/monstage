@@ -6,10 +6,10 @@ div.modal id="discard-internship-offer-modal" tabindex="-1" role="dialog"
       .modal-footer.actions
         .row.w-100
           .col-6
-            button type="button" class="btn btn-outline-primary btn-block " data-dismiss="modal" Non
+            button type="button" class="fr-btn" data-dismiss="modal" Non
           .col-6
             = button_to "Oui",
                         dashboard_internship_offer_path(internship_offer),
-                        class: "btn btn-primary btn-block",
+                        class: "fr-btn",
                         data: {turbo: false, 'test-delete-id': "delete-#{dom_id(internship_offer)}" },
                         method: :delete

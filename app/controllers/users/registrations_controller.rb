@@ -58,6 +58,9 @@ module Users
 
     # POST /resource
     def create
+      if params.dig(:user, :identity_token)
+        params[:user] = merge_identity(params)
+      end
       if params.dig(:user, :phone) && fetch_user_by_phone && @user
         redirect_to(
           new_user_session_path(phone: fetch_user_by_phone.phone),
@@ -119,21 +122,21 @@ module Users
       devise_parameter_sanitizer.permit(
         :sign_up,
         keys: %i[
-          id
-          type
-          first_name
-          last_name
-          birth_date
-          gender
-          school_id
-          class_room_id
-          operator_id
-          handicap
           accept_terms
-          role
-          phone
+          birth_date
+          class_room_id
           email
+          first_name
+          gender
+          handicap
+          id
+          last_name
+          operator_id
+          phone
+          role
+          school_id
           targeted_offer_id
+          type
         ]
       )
     end
@@ -157,6 +160,19 @@ module Users
       else
         users_registrations_standby_path(id: resource.id)
       end
+    end
+
+    def merge_identity(params)
+      identity = Identity.find_by_token(params[:user][:identity_token])
+
+      params[:user].merge({
+        first_name: identity.first_name,
+        last_name: identity.last_name,
+        birth_date: identity.birth_date,
+        school_id: identity.school_id,
+        class_room_id: identity.class_room_id,
+        gender: identity.gender
+      })
     end
   end
 end

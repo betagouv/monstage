@@ -1,20 +1,10 @@
-.form-group.mb-md-0.col-12.col-md
-  = f.label :school_track, class: "d-inline-block d-md-none", for: 'input-search-school-track' do
-    | Filtrer par filière
-  = f.select :school_track,
-             options_for_select(options_for_school_tracks,
-             default_values[:school_track]),
-             { prompt: 'Filière' },
-             class: 'custom-select shadow-none',
-             'data-action': 'change->search-school-track-select#onSchoolTrackChange change->search-week-checkboxes#onSchoolTrackChange', 'data-search-school-track-select-target': 'schoolTrackInput', 'data-search-week-checkboxes-target': 'inputSelect', id: 'input-search-school-track'
-
 .form-group.mb-md-0.col-12.col-md [data-search-popover-target="searchByDateContainer"
-                                   data-search-school-track-select-target="searchByDateContainer"]
-  .label.d-inline-block.d-md-none Quand se déroule le stage ?
+                                  data-search-school-track-select-target="searchByDateContainer"]
+  label class="#{white_bg ? 'fr-label' : 'font-weight-light'}" Dates de stage
 
-  input.label.d-none.d-md-inline-block.mb-0.form-control.no-border.rounded-0.font-weight-normal.text-decoration-none [data-search-school-track-select-target='inputPlaceholder'
+  input.fr-select.almost-fitting.label.my-0 [data-search-school-track-select-target='inputPlaceholder'
     data-action='focus->search-popover#show'
-    placeholder="Dates de stage"
+    placeholder=""
     type="text"
     data-search-week-checkboxes-target="inputPlaceholder"
     data-search-popover-target="inputPlaceholder"
@@ -38,14 +28,14 @@
                               "#month_#{month_i_left}",
                               data: {turbo: false, "action" => "click->search-form#showWeekOrMonthSelection"},
                               role: "tab",
-                              class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none hover-light-blue'
+                              class: 'border d-block text-center p-3 text-body text-decoration-none hover-light-blue'
               - if month_i_right
                 .col-6.pl-2
                     = link_to month_in_text(month_i_right, format: "%B"),
                               "#month_#{month_i_right}",
                               data: {turbo: false, "action" => "click->search-form#showWeekOrMonthSelection"},
                               role: "tab",
-                              class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none hover-light-blue'
+                              class: 'border d-block text-center p-3 text-body text-decoration-none hover-light-blue'
 
       - list_months_for_search.map do |month_i, weeks|
         - next if weeks.empty?
@@ -71,7 +61,7 @@
                         title: "Afficher tous les mois",
                         data: {turbo: false, "action" => "click->search-form#showWeekOrMonthSelection"},
                         role: "tab",
-                        class: 'border px-3 py-2 rounded-8 text-decoration-none text-body hover-light-blue'  do
+                        class: 'border px-3 py-2 text-decoration-none text-body hover-light-blue'  do
                 = "#{month_in_text(month_i, format: "%B")} #{weeks.first.try(:year)}"
 
             .col-2
@@ -85,7 +75,9 @@
 
           div
             - weeks.map do |week|
-                = f.label :"week_id", for:  "checkbox_#{week.id}", class: "d-flex py-3 custom-checkbox-search mb-0 font-weight-normal" do
+                = f.label :"week_id",
+                          for: "checkbox_#{week.id}",
+                          class: "d-flex py-3 custom-checkbox-search mb-0 font-weight-normal fr-label" do
                   = f.check_box :week_ids,
                                 {multiple: true, checked: default_values.fetch(:week_ids) { {} }.include?(week.id.to_s), id: "checkbox_#{week.id}",
                                 class: 'align-self-start mt-1 mx-2 ',

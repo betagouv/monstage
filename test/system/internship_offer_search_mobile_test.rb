@@ -7,12 +7,12 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
   include ::SearchInternshipOfferHelpers
 
   def submit_form
-    find('input#test-mobile-submit-search').click
+    find('#test-mobile-submit-search').click
   end
 
   def edit_search
     find('a[data-test-id="mobile-search-button"]').click
-    find('.search-container')
+    find('.test-search-container')
   end
 
   test 'USE_IPHONE_EMULATION, search form is hidden, only shows cta to navigate to extracted form in a simple view' do
@@ -68,27 +68,10 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
 
   test 'USE_IPHONE_EMULATION, search by school_track works' do
     weekly_internship_offer = create(:weekly_internship_offer)
-    troisieme_segpa_internship_offer = create(:troisieme_segpa_internship_offer)
     visit search_internship_offers_path
 
-    select('3e')
     submit_form
     assert_presence_of(internship_offer: weekly_internship_offer)
-    assert_absence_of(internship_offer: troisieme_segpa_internship_offer)
-
-    # filtered by another
-    edit_search
-    select('3e SEGPA')
-    submit_form
-    assert_absence_of(internship_offer: weekly_internship_offer)
-    assert_presence_of(internship_offer: troisieme_segpa_internship_offer)
-
-    # reset search and submit
-    edit_search
-    select("Filière")
-    submit_form
-    assert_presence_of(internship_offer: weekly_internship_offer)
-    assert_presence_of(internship_offer: troisieme_segpa_internship_offer)
   end
 
   test 'USE_IPHONE_EMULATION, search by keyword works' do
@@ -124,7 +107,6 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
                                              weeks: [not_searched_week])
       visit search_internship_offers_path
 
-      select('3e')
       fill_in_week(week: searched_week, open_popover: false)
       submit_form
       assert_presence_of(internship_offer: searched_internship_offer)
@@ -135,7 +117,7 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
   end
 
   test 'USE_IPHONE_EMULATION, search by all criteria' do
-    travel_to Date.new(2020,9,6) do
+    travel_to(Date.new(2022,1,10)) do
       searched_keyword = 'helloworld'
       searched_week = Week.selectable_from_now_until_end_of_school_year.first
       searched_location = Coordinates.paris
@@ -161,10 +143,6 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
         :weekly_internship_offer,
         searched_opts.merge(weeks: [not_searched_week])
       )
-      not_found_by_school_track = create(
-        :troisieme_segpa_internship_offer,
-        searched_opts.reject { |k,v| k == :weeks }
-      )
 
       dictionnary_api_call_stub
       SyncInternshipOfferKeywordsJob.perform_now
@@ -174,7 +152,6 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
 
       fill_in_city_or_zipcode(with: 'Pari', expect: 'Paris')
       fill_in_keyword(keyword: searched_keyword)
-      select('3e')
       fill_in_week(week: searched_week, open_popover: false)
       submit_form
 
@@ -182,7 +159,6 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
       assert_absence_of(internship_offer: not_found_by_location)
       assert_absence_of(internship_offer: not_found_by_keyword)
       assert_absence_of(internship_offer: not_found_by_week)
-      assert_absence_of(internship_offer: not_found_by_school_track)
     end
   end
 end

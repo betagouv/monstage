@@ -5,15 +5,14 @@ tr class="test-class-room-#{class_room.id}"
     .row.no-gutters
       .col-8.col-sm-12
         h2.h5.mb-0.d-none.d-sm-block
-          = link_to dashboard_school_class_room_path(school, class_room),
-                    class: 'small' do
+          = link_to dashboard_school_class_room_students_path(school, class_room),
+                    class: 'small fr-raw-link fr-tag fr-tag--sm' do
             = class_room.name
         h2.h5.mb-0.d-block.d-sm-none= class_room.name
       .col-4.d-sm-none.text-right
         = link_to 'Voir le détail',
-                  dashboard_school_class_room_path(school, class_room),
-                  class: 'small'
-
+                  dashboard_school_class_room_students_path(school, class_room),
+                  class: 'small fr-raw-link'
 
   td.align-middle.text-sm-center data-head="#{cols[1]}"
     span class='total_student'= class_room_stats.total_student
@@ -29,18 +28,16 @@ tr class="test-class-room-#{class_room.id}"
   td.align-middle.text-sm-center data-head="#{cols[4]}"
     - if can?(:edit, ClassRoom)
       = link_to edit_dashboard_school_class_room_path(school, class_room),
-                class: 'btn btn-link float-right small',
+                class: 'float-right fr-raw-link fr-text--sm  fr-ml-2w blue-france',
                 aria: {label: "Modifier la classe de #{class_room.name}"} do
-        i.fas.fa-pen
-        br
-        small Editer
+        span.fr-icon-edit-fill<
+        | Éditer
     - if can?(:destroy, ClassRoom) && class_room.students.count.zero?
-      = button_to dashboard_school_class_room_path(school, class_room),
-                  class: 'btn btn-link float-right mr-1 small',
-                  method: :delete,
-                  data: {confirm: 'Etes-vous sûr ?' },
-                  aria: { label: "Supprimer la classe de #{class_room.name}" } do
-        i.fas.fa-trash
-        br
-        small Supprimer
+      = link_to dashboard_school_class_room_path(school, class_room),
+                class: 'float-right fr-raw-link fr-text--sm blue-france',
+                method: :delete,
+                data: {confirm: 'Etes vous sur ?' },
+                aria: { label: "Supprimer la classe de #{class_room.name}" } do
+        span.fr-icon-delete-line<
+        | Supprimer
 

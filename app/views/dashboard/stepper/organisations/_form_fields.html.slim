@@ -8,7 +8,10 @@
       - if current_user.ministry_statistician?
         = render partial: "dashboard/stepper/organisations/form_ministry_statistician_specifics", locals: { form: form }
       - else
-        = react_component("SirenInput", props: { resourceName: form.object_name, currentSiren: resource.siret })
+        = react_component("SirenInput",
+                          props: { resourceName: form.object_name,
+                                   currentSiren: resource.siret,
+                                   railsEnv: Rails.env })
         #manual-input.bloc-tooggle class=('d-none' if request.fullpath.include?('organisations/new'))
           .form-group
             = form.label :employer_name do
@@ -71,5 +74,5 @@
                 i.fas.fa-arrow-right
   - warning_block = true if warning_block.nil?
   - if warning_block
-    .col-md-6.order-md-2.order-1
+    .col-md-6.order-md-2.order-1.employer
       = render partial: 'dashboard/stepper/warning_block'

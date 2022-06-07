@@ -16,21 +16,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap" rel="stylesheet">
   </head>
 
-  <body class="<%= env_class_name %> <%= body_class_name %> homepage">
+  <body class="<%= env_class_name %> <%= body_class_name %>">
     <a name="top" id="top"></a>
-    <div class="content pt-4" data-controller='rg2a'>
-      
-      <%= render 'layouts/flash' %>
-      <div role="main"><%= yield %></div>
-     
-    </div>
-    <footer role="contentinfo" >
-      <div class="footer pb-3"  data-controller='footer'>
-        <div class="container-monstage">
-          <%= render 'layouts/footer' %>
-        </div>
+    <div class="content" data-controller='rg2a'>
+      <%= render "layouts/flash" %>
+      <div role="main">
+        <%= yield %>
       </div>
-    </footer>
-    <%= render partial: "layouts/analytics" %>
+    </div>
+    <div data-controller='footer'>
+      <%= render 'layouts/footer' %>
+      <%= render partial: "layouts/analytics" %>
+    </div>
   </body>
 </html>

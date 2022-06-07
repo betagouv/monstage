@@ -11,15 +11,15 @@
     <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
 
     <div class="form-group">
-      <%= f.label :email do %>
+      <%= f.label :email, class: "fr-label" do %>
         Adresse électronique (e-mail)
         <%= f.rg2a_required_content_tag %>
       <% end %>
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', required: true %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "fr-input", required: true %>
     </div>
 
     <div class="actions d-flex d-sm-block text-center">
-      <%= f.submit t('.resend_unlock_instructions'), class: 'btn btn-primary' %>
+      <%= f.submit t(".resend_unlock_instructions"), class: "fr-btn" %>
     </div>
   <% end %>
 </div>

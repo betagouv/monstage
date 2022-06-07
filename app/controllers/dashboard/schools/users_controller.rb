@@ -18,7 +18,7 @@ module Dashboard
                     flash: { success: "Le #{user.presenter.role_name} #{user.presenter.short_name} a bien été retiré de votre établissement" }
       rescue ActiveRecord::RecordInvalid
         redirect_to dashboard_school_users_path(@school),
-                    flash: { success: "Une erreur est survenue, impossible de supprimé #{user.presenter.human_role} #{user.presenter.short_name} de votre établissement: #{e.record.full_messages}" }
+                    flash: { success: "Une erreur est survenue, impossible de supprimer #{user.presenter.human_role} #{user.presenter.short_name} de votre établissement: #{e.record.full_messages}" }
       end
 
       def update

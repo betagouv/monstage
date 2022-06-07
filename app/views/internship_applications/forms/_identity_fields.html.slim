@@ -1,0 +1,45 @@
+.row
+  .col-6
+    = form.label :first_name, class: 'fr-label' do
+      = 'Prénom'
+      = form.rg2a_required_content_tag
+    = form.text_field :first_name, class: 'fr-input',
+      required: true
+  .col-6
+    = form.label :last_name, class: 'fr-label' do
+      = 'Nom'
+      = form.rg2a_required_content_tag
+    = form.text_field :last_name, class: 'fr-input',
+      required: true
+
+.row.mt-3
+  .col-6
+    = form.label :email, class: 'fr-label' do
+      span data-profile-target="label"= current_user.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'
+      = form.rg2a_required_content_tag
+    = form.text_field :email,
+                   {class: 'fr-input', required: true, data: {action: 'change->profile#onBlurEmailInput', :"profile-target" => 'emailInput'}}.merge(current_user.is_a?(Users::Statistician) ? { readonly: true } : {})
+    small.d-none data-profile-target="emailHint"
+  .col-6
+    .form-group.fr-select-group--disabled
+      = form.label :phone, class: 'fr-label' do
+        = 'Numéro de mobile'
+      = form.text_field :phone, value: current_user.phone, class: 'fr-input', disabled: true
+.row.mt-3
+  .col-6.fr-select-group--disabled
+    = form.label :school, class: 'fr-label' do
+      | Collège
+      = form.rg2a_required_content_tag
+    = form.select :school, [current_user.school.name, current_user.school_id], {}, { class: "fr-select", disabled: true }
+                   
+  .col-6
+    .form-group
+      = form.label :class_room_id, class: 'fr-label' do
+        = 'Classe'
+        = form.rg2a_required_content_tag unless current_user.main_teacher?
+      = form.select :class_room_id,
+                 options_from_collection_for_select(current_user.school.class_rooms, :id, :name, current_user.class_room_id),
+                 { prompt: class_rooms_options_for_default },
+                 class: "fr-select"
+
+  

@@ -35,7 +35,6 @@ FactoryBot.define do
       activity_learnings_rich_text { '<div>Communication orale</div>'}
     end
 
-
     trait :created_by_system do
       skip_validations_for_system { true }
     end

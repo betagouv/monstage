@@ -10,7 +10,11 @@ ul.nav.align-items-center.no-gutters.my-3.nav-link-icons-timeline
       br
       small= "Annonce"
   li.col-4.nav-item
-    = link_to "#tab-internship-application-detail", data: {action: "click->dashboard-students-internship-application#enableInternshipApplicationDetail", turbo: "false", :"dashboard-students-internship-application-target" => 'linkInternshipApplicationDetail'}, class: "nav-link nav-link-icon-with-label #{timeline_step_2_ready?(internship_application) ? 'nav-link-icon-with-label-success' : ''}" do
+    = link_to "#tab-internship-application-detail",
+               data: {action: "click->dashboard-students-internship-application#enableInternshipApplicationDetail",
+                      turbo: "false",
+                      :"dashboard-students-internship-application-target" => 'linkInternshipApplicationDetail'},
+               class: "fr-raw-link nav-link nav-link-icon-with-label #{timeline_step_2_ready?(internship_application) ? 'nav-link-icon-with-label-success' : ''}" do
       span.d-inline-flex.align-items-center.nav-link-icon
         i.far.fa-2x.fa-flag
       br

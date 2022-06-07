@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "sti_preload"
- 
+
 class EmailWhitelist < ApplicationRecord
   include StiPreload
   validates :email,
@@ -16,6 +16,7 @@ class EmailWhitelist < ApplicationRecord
 
   def discard_user
     return if user.blank?
+
     user.discard!
   end
 

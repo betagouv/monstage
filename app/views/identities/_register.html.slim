@@ -1,0 +1,71 @@
+.onboarding-card.register-card-sm.fr-p-3w.fr-my-3w data-controller="signup" data-signup-channel-value="phone"
+  .header-register.fr-mb-2w.fr-pb-2w
+    .row.mx-0
+      .col-12.align-self-end.h-100
+        .row
+          .col-6.fr-pl-0
+            = link_to "Revenir à l'étape précédente", edit_identity_path(params[:identity_token]), class: 'blue-france fr-raw-link fr-icon-arrow-left-line fr-link--icon-left'
+          .col-6.text-right
+            p.fr-tag Etape 2 sur 2
+        .row.fr-mt-1w
+          .col-12.fr-pl-0
+            h1.h1.text-dark Dernière étape...
+  = form_with(model: resource,
+                    scope: resource_name,
+                    data: { turbo: false },
+                    url: registration_path(resource_name, as: resource.type.demodulize, identity_token: params[:identity_token]),
+                    id: 'new_user') do |f|
+    = render "layouts/form_errors", resource: resource, resource_name: :user
+    = f.hidden_field :type
+    = f.hidden_field :targeted_offer_id, value: params[:targeted_offer_id]
+    = f.hidden_field :identity_token, value: params[:identity_token]
+    - if can?(:choose_school, resource)
+      = render "users/select_channel",
+                      label: "Comment souhaitez-vous être contacté(e) ?",
+                      form: f,
+                      resource: resource,
+                      chan: @resource_channel,
+                      phone: "Par téléphone (SMS)" 
+
+    .row
+     .col-md-6.col-xs-12
+       .form-group
+         = f.label 'Créer un mot de passe', class: 'fr-label', for: 'user_password'
+         = f.password_field :password, class: 'fr-input', required: true, autocomplete: "new-password", data: { action: "change->signup#checkPassword", :"signup-target" => "passwordInput" }
+     .col-md-6.col-xs-12
+       .form-group
+         = f.label 'Ressaisir le mot de passe', class: 'fr-label', for: 'user_password_confirmation'
+         = f.password_field :password_confirmation, class: 'fr-input', required: true
+    .row
+      .col-md-12.col-xs-12
+        .form-group
+          .fr-checkbox-group.fr-checkbox-group--sm
+            = f.check_box :handicap_present, data: { action: "change->signup#toggleHandicap" }
+            = f.label :handicap_present, class: "" do
+              | J'aurai besoin d'une aide adaptée pendant mon stage, en raison de mon handicap.
+              small.text-muted
+                | (optionnel)
+
+        .form-group.custom-label-container class="#{resource.handicap_present ? '' : 'd-none'}" data-signup-target="handicapGroup" 
+          = f.label 'Indiquez ce dont vous avez besoin', class: "fr-label"
+          = f.text_area :handicap, class: 'form-control'
+
+    .row
+      .col-12 
+        .form-group.label
+          .fr-checkbox-group.fr-checkbox-group--sm
+            = f.check_box :accept_terms
+            = f.label :accept_terms, class: "fr-label", for: "user_accept_terms" do
+              p
+                ' J'accepte les 
+                = link_to "conditions d'utilisation", conditions_d_utilisation_path, target: "_blank", title: "conditions d'utilisation (nouvelle fenêtre)", rel: "external noopener noreferrer", class: "font-weight-normal"
+                ' . 
+                = link_to "Lire la Politique de confidentialité", politique_de_confidentialite_path, title: "Lire la Politique de confidentialité (nouvelle fenètre)", target: "_blank", rel: "external noopener noreferrer", class: "font-weight-normal"
+                '
+                | pour connaître les modalités d'utilisations de mes informations récoltées."
+
+
+    .row
+      .col-12
+        .actions.d-flex.d-sm-block.mt-2
+          = f.submit "Valider mon inscription", class: "fr-btn btn-block", id: "test-create-user"
