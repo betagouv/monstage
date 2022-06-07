@@ -1,38 +1,34 @@
-.row
+.row.text-left
   .col-md-6.col-sm-12
     - if label[:status] == 'disabled'
       = link_to label[:text],
                 '',
-                class: 'fr-btn ml-2  disabled btn-block btn-sm'
+                class: 'fr-btn ml-2 fr-high-buttons text-center disabled btn-block btn-sm'
     - elsif ['validated', 'signatures_started', 'signed_by_all', 'signed'].include?(internship_agreement.aasm_state)
       = link_to dashboard_internship_agreement_path(internship_agreement, format: :pdf),
                 target: "_blank",
-                class: 'fr-btn ml-2  btn-sm',
+                class: 'fr-btn ml-2 fr-high-buttons text-center btn-sm',
                 data: { test: "active-internship-agreement-progress-#{internship_agreement.id}" } do
         = label[:text]
     - elsif @current_user.employer? || internship_agreement.completed_by_employer? || internship_agreement.started_by_school_manager?
       = link_to edit_dashboard_internship_agreement_path(internship_agreement),
-                class: 'fr-btn ml-2  btn-sm' do
+                class: 'fr-btn ml-2 text-center fr-high-buttons  btn-sm' do
         = label[:text]
     - else
-      = link_to '', class: 'fr-btn ml-2  btn-sm' do
+      = link_to '', class: 'fr-btn ml-2 text-center fr-high-buttons  btn-sm' do
         = "url to define - #{label[:text]}"
 
   .col-md-6.col-sm-12
     - if second_label[:status] == 'disabled'
         = link_to second_label[:text],
                   '',
-                  class: 'fr-btn ml-2 disabled btn-block btn-sm'
-    - elsif internship_agreement.signatures_started?
+                  class: 'fr-btn ml-2 text-center fr-high-buttons disabled btn-block btn-sm'
+    - elsif internship_agreement.validated? || internship_agreement.signatures_started?
       = link_to edit_dashboard_internship_agreement_path(internship_agreement, todo: true),
-                class: 'fr-btn ml-2 btn-sm' do
-        = second_label[:text]
-    - elsif internship_agreement.signed?
-      = link_to edit_dashboard_internship_agreement_path(internship_agreement),
-                class: 'fr-btn ml-2 btn-sm' do
+                class: 'fr-btn ml-2 text-center fr-high-buttons  btn-sm' do
         = second_label[:text]
     - else
-      = link_to '', class: 'fr-btn ml-2 btn-sm' do
+      = link_to '', class: 'fr-btn ml-2 text-center fr-high-buttons  btn-sm' do
         = "url to define - #{second_label[:text]}"
 
 

@@ -24,9 +24,9 @@ module InternshipAgreements
 
     def second_button_label
       case @internship_agreement.aasm_state
-      when 'draft', 'started_by_employer' ,'completed_by_employer', 'started_by_school_manager','validated' then
-        {status: 'disabled', text: 'Signer la convention'}
-      when 'signatures_started' then
+      when 'draft', 'started_by_employer' ,'completed_by_employer', 'started_by_school_manager' then
+        {status: 'disabled', text: 'Partie signature'}
+      when 'validated', 'signatures_started' then
         user_signed_condition = current_user.already_signed?(internship_agreement_id: @internship_agreement.id)
         user_signed_condition ? {status: 'disabled', text: 'Signée, en attente'} :
                                 {status: 'enabled', text: 'Signer la convention'}
