@@ -17,15 +17,18 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     travel_to(Date.new(2019, 3, 1)) do
       employer = create(:employer)
       internship_offer = create(:weekly_internship_offer, employer: employer)
+
       sign_in(employer)
       visit edit_dashboard_internship_offer_path(internship_offer)
       find('input[name="internship_offer[employer_name]"]').fill_in(with: 'NewCompany')
 
       click_on "Modifier l'offre"
+
       wait_form_submitted
       assert /NewCompany/.match?(internship_offer.reload.employer_name)
     end
   end
+
 
   test 'Employer can see which week is choosen by nearby schools on edit' do
     employer = create(:employer)
@@ -71,11 +74,11 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       visit dashboard_internship_offer_path(internship_offer)
       assert_changes -> { internship_offer.reload.published_at } do
         page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
-        wait_form_submitted
+        sleep 0.2
         assert_nil internship_offer.reload.published_at, 'fail to unpublish'
 
         page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
-        wait_form_submitted
+        sleep 0.2
         assert_in_delta Time.now.utc.to_i,
                         internship_offer.reload.published_at.utc.to_i,
                         delta = 10
@@ -128,9 +131,9 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     sign_in(employer)
     visit dashboard_internship_offers_path(internship_offer: old_internship_offer, filter: 'past')
     page.find("a[data-test-id=\"#{old_internship_offer.id}\"]").click
-    click_link("Renouveler")
+    find('.test-renew-button').click
     assert_selector('h1', text: "Renouveler l'offre pour l'année en cours")
-    click_button('Renouveler l\'offre')
+    click_button("Renouveler l'offre")
     assert_selector(
       "#alert-text",
       text: "Votre offre de stage a été renouvelée pour cette année scolaire."
@@ -148,7 +151,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     sign_in(employer)
     visit dashboard_internship_offers_path(internship_offer: current_internship_offer)
     page.find("a[data-test-id=\"#{current_internship_offer.id}\"]").click
-    click_link("Dupliquer cette offre")
+    find(".test-duplicate-button").click
     assert_selector('h1', text: "Dupliquer une offre")
     click_button('Dupliquer l\'offre')
     assert_selector(

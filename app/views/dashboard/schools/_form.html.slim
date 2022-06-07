@@ -1,4 +1,7 @@
-= form_with model: @school, url: dashboard_school_path(@school), scope: :school do |f|
+= form_with model: @school,
+            url: dashboard_school_path(@school),
+            scope: :school,
+            data: {turbo: false} do |f|
   = render "layouts/form_errors", resource: @school, resource_name: :school
 
   - if current_user.is_a?(Users::God)

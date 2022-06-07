@@ -8,7 +8,7 @@
     <%= form_with(model: resource,
                   scope: resource_name,
                   url: password_path(resource_name),
-                  local: true,
+                  data: { turbo: false },
                   html: { method: :post }) do |f| %>
       <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
       <p>Pour changer votre mot de passe, nous devons d’abord vérifier votre identité.</p>

@@ -1,8 +1,7 @@
 = form_with model: @internship_agreement,
-            url: dashboard_internship_agreement_path(@internship_agreement),
-            class: 'form-offset-header',
-            html: {'data-controller': 'internship-agreement-form'},
-            local: true do |form|
+                  url: dashboard_internship_agreement_path(@internship_agreement),
+                  class: 'form-offset-header',
+                  html: {'data-controller': 'internship-agreement-form'}, data: { turbo: false } do |form|
   .row
     .col-12
       #nav-tab.nav.nav-tabs role="tablist"

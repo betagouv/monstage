@@ -4,7 +4,7 @@
   </header>
   <%= form_with(model: resource,
                 scope: resource_name,
-                local: true,
+                data: { turbo: false },
                 url: unlock_path(resource_name),
                 html: { method: :post }) do |f| %>
     <%= f.rg2a_explain_required_asterisk %>

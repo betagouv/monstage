@@ -17,7 +17,7 @@ div data-internship-application-form-target="containerForm" class="#{@internship
         .row
           .col-12.h2.h4.p-3.bg-covid-19-notice.text-white
             span.h1-label.text-white Candidature
-            = link_to "#internship-application-closeform", data: {action: "click->internship-application-form#hideForm", turbolinks: false}, class: 'float-right text-white', aria: { label: 'Ne pas candidater' } do
+            = link_to "#internship-application-closeform", data: {action: "click->internship-application-form#hideForm", turbo: false}, class: 'float-right text-white', aria: { label: 'Ne pas candidater' } do
                 i.fas.fa-times.fa-sm
 
       .col-12
@@ -26,6 +26,7 @@ div data-internship-application-form-target="containerForm" class="#{@internship
           = form_with({model: @internship_application,
                       url: (is_creating ? internship_offer_internship_applications_path(@internship_offer) : internship_offer_internship_application_path(@internship_offer, @internship_application)),
                       scope: :internship_application,
+                      data: {turbo: false },
                       html: {method: is_creating ? :post : :patch, id: 'new_internship_application'} }) do |f|
 
             = render "layouts/form_errors",
@@ -62,7 +63,7 @@ div data-internship-application-form-target="containerForm" class="#{@internship
                       locals: { form: resume_form, phone_mail_disabled: true, disabled: false}
 
             .actions.d-flex.d-sm-block
-              = link_to "#internship-application-closeform", class: 'fr-btn text-center', data: {action: 'click->internship-application-form#hideForm', turbolinks: 'false'} do
+              = link_to "#internship-application-closeform", class: 'fr-btn text-center', data: {action: 'click->internship-application-form#hideForm', turbo: 'false'} do
                 i.fa.fa-chevron-left.mr-1
                 | Annuler
               span.mx-1= " "

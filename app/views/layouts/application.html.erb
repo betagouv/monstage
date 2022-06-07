@@ -9,12 +9,10 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= action_cable_meta_tag %>
-    <% if turbolink_disabled_to_force_page_refresh? %>
-      <meta name="turbolinks-visit-control" content="reload">
-    <% end %>
+    <meta name="turbo-visit-control" content="reload">
     <%= favicon_link_tag asset_pack_path('media/images/favicon.png') %>
-    <%= stylesheet_pack_tag 'application.css', 'data-turbolinks-track': 'reload', media: 'all' %>
-    <%= javascript_pack_tag 'application.js', 'data-turbolinks-track': 'reload', defer: true  %>
+    <%= stylesheet_pack_tag "application.css", media: "all", 'data-turbo-track': "reload" %>
+    <%= javascript_pack_tag "application.js", defer: true, 'data-turbo-track': "reload" %>
   </head>
 
   <body class="<%= env_class_name %> <%= body_class_name %>">

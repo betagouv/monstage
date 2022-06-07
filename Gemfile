@@ -26,8 +26,8 @@ gem 'prawn-styled-text'
 gem 'uglifier'
 gem 'inline_svg'
 gem 'slim-rails'
-gem "view_component"
-gem 'turbolinks'
+gem "view_component", require: "view_component/engine"
+gem "turbo-rails"
 gem "react_on_rails"
 gem 'webpacker'
 gem 'caxlsx_rails'
@@ -36,6 +36,8 @@ gem "split", require: "split/dashboard"
 # background jobs
 gem 'sidekiq'
 gem 'redis-namespace' # plug redis queues on same instance for prod/staging
+# Use Redis for Action Cable
+gem "redis", "~> 4.0"
 
 # admin
 
@@ -57,6 +59,7 @@ gem 'bitly'
 gem 'cancancan'
 gem 'devise'
 gem 'devise-i18n'
+
 
 # model/utils
 gem 'discard'
@@ -114,3 +117,7 @@ end
 group :test, :development, :review do
   gem 'factory_bot_rails'
 end
+
+
+
+

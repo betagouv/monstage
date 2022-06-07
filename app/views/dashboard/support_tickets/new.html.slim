@@ -3,9 +3,10 @@
       Contactez-nous, nous vous mettrons en lien avec nos associations partenaires.
 
 
-= form_with({model: @support_ticket,
-             url: dashboard_support_tickets_path,
-             scope: :support_ticket, local: true}) do |f|
+= form_with(model: @support_ticket,
+            url: dashboard_support_tickets_path,
+            scope: :support_ticket,
+            data: { turbo: false }) do |f|
   = render "layouts/form_errors",
             resource: @support_ticket,
             resource_name: :support_ticket

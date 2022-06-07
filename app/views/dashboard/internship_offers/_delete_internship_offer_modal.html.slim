@@ -4,5 +4,12 @@ div.modal id="discard-internship-offer-modal" tabindex="-1" role="dialog"
       .modal-body
         p Souhaitez-vous réellement supprimer cette annonce ?
       .modal-footer.actions
-        button type="button" class="fr-btn" data-dismiss="modal" Non
-        = link_to "Oui", dashboard_internship_offer_path(internship_offer), class: "fr-btn", method: :delete
+        .row.w-100
+          .col-6
+            button type="button" class="fr-btn" data-dismiss="modal" Non
+          .col-6
+            = button_to "Oui",
+                        dashboard_internship_offer_path(internship_offer),
+                        class: "fr-btn",
+                        data: {turbo: false, 'test-delete-id': "delete-#{dom_id(internship_offer)}" },
+                        method: :delete

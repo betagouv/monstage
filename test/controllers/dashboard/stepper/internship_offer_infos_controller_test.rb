@@ -37,7 +37,7 @@ module Dashboard::Stepper
       sign_in(employer)
       organisation = create(:organisation, employer: employer)
       get new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
-      assert_select 'meta[name="turbolinks-visit-control"][content="reload"]'
+      assert_select 'meta[name="turbo-visit-control"][content="reload"]'
     end
 
     #
@@ -195,7 +195,7 @@ module Dashboard::Stepper
       sign_in(employer)
       organisation = create(:organisation, employer: employer)
       get edit_dashboard_stepper_internship_offer_info_path(id: internship_offer_info.id, organisation_id: organisation.id)
-      assert_select 'meta[name="turbolinks-visit-control"][content="reload"]'
+      assert_select 'meta[name="turbo-visit-control"][content="reload"]'
     end
 
   end

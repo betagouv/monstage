@@ -4,6 +4,7 @@
   = form_with model: current_user,
               scope: :user,
               url: account_path,
+              data: { turbo: false },
               local: true,
               method: :patch do |f|
     = f.rg2a_explain_required_asterisk

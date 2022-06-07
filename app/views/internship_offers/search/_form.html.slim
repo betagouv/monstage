@@ -4,6 +4,7 @@ div [class="test-search-container #{has_white_bg ? 'search-container py-2' : ''}
   = form_with url: url,
               method: :get,
               skip_enforcing_utf8: true,
+              data: { turbo: false },
               local: true,
               html: { class: "#{render_as_partial ? 'd-none d-md-block rounded-6' : ''}", id: form_id } do |form|
     / also used on dashboard_internship_offer, should support external filters

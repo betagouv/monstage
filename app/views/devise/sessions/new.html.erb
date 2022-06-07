@@ -16,6 +16,7 @@
     <div class="mb-2">
       <%= form_with(model: resource,
                    scope: resource_name,
+                   data: {turbo: false},
                    local: true,
                    html: { id: "sign_in_form" },
                    url: session_path(resource_name)) do |f| %>

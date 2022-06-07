@@ -26,14 +26,14 @@
                 .col-6.pr-2
                     = link_to month_in_text(month_i_left, format: "%B"),
                               "#month_#{month_i_left}",
-                              data: {turbolinks: false, "action" => "click->search-form#showWeekOrMonthSelection"},
+                              data: {turbo: false, "action" => "click->search-form#showWeekOrMonthSelection"},
                               role: "tab",
                               class: 'border d-block text-center p-3 text-body text-decoration-none hover-light-blue'
               - if month_i_right
                 .col-6.pl-2
                     = link_to month_in_text(month_i_right, format: "%B"),
                               "#month_#{month_i_right}",
-                              data: {turbolinks: false, "action" => "click->search-form#showWeekOrMonthSelection"},
+                              data: {turbo: false, "action" => "click->search-form#showWeekOrMonthSelection"},
                               role: "tab",
                               class: 'border d-block text-center p-3 text-body text-decoration-none hover-light-blue'
 
@@ -52,14 +52,14 @@
               - unless search_first_month?(month_i)
                 = link_to "#month_#{previous_month(month_i)}",
                           title: "Voir les semaines du mois de #{month_in_text(previous_month(month_i), format: "%B")}",
-                          data: {turbolinks: false, "action" => "click->search-form#showWeekOrMonthSelection"},
+                          data: {turbo: false, "action" => "click->search-form#showWeekOrMonthSelection"},
                           role: "tab",
                           class: "text-decoration-none text-body px-3 py-1 " do
                   i.fas.fa-chevron-left
             .col-8
               = link_to "#year_select",
                         title: "Afficher tous les mois",
-                        data: {turbolinks: false, "action" => "click->search-form#showWeekOrMonthSelection"},
+                        data: {turbo: false, "action" => "click->search-form#showWeekOrMonthSelection"},
                         role: "tab",
                         class: 'border px-3 py-2 text-decoration-none text-body hover-light-blue'  do
                 = "#{month_in_text(month_i, format: "%B")} #{weeks.first.try(:year)}"
@@ -68,7 +68,7 @@
               - unless search_last_month?(month_i)
                 = link_to "#month_#{next_month(month_i)}",
                           title: "Voir les semaines du mois de #{month_in_text(next_month(month_i), format: "%B")}",
-                          data: {turbolinks: false, "action" => "click->search-form#showWeekOrMonthSelection"},
+                          data: {turbo: false, "action" => "click->search-form#showWeekOrMonthSelection"},
                           role: "tab",
                           class: "text-decoration-none text-body px-3 py-1 " do
                   i.fas.fa-chevron-right

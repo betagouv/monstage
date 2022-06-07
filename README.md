@@ -41,7 +41,7 @@ Things you may want to cover:
 We keep things simple and secure :
 
 * a simple monolith mostly based on rails
-* minimals effort for an SPA like feeling while ensuring it works without js (90% based on turbolinks, some react for advanced user inputs [autocomplete, nearby searches], other wise a good old html form is required)
+* minimals effort for an SPA like feeling while ensuring it works without js (90% based on turbo, some react for advanced user inputs [autocomplete, nearby searches], other wise a good old html form is required)
 * we try to avoid stacking technologies over technologies (fewer dependencies makes us happy). 
 * we try to keep our dependencies up to date (bundle update, yarn update... at least once a month).
 

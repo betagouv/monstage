@@ -27,10 +27,13 @@ import '../stylesheets/screen.scss';
 import '../stylesheets/print.scss';
 
 import '@popperjs/core';
-import Alert from 'bootstrap';
-import Dropdown from 'bootstrap';
-import Modal from 'bootstrap';
-import Tooltip from 'bootstrap';
+
+import '@hotwired/turbo-rails';
+
+import Alert from 'bootstrap'
+import Dropdown from 'bootstrap'
+import Modal from 'bootstrap'
+import Tooltip from 'bootstrap'
 
 import "trix";
 import "@rails/actiontext";
@@ -40,3 +43,6 @@ import 'url-search-params-polyfill';
 import '../bootapp';
 
 import '../utils/zammad_form';
+$(document).on("turbo:load", () => {
+  console.log('turbo:load');
+});

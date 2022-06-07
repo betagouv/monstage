@@ -143,6 +143,10 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
         :weekly_internship_offer,
         searched_opts.merge(weeks: [not_searched_week])
       )
+      not_found_by_school_track = create(
+        :troisieme_segpa_internship_offer,
+        searched_opts.reject { |k,v| k == :weeks }
+      )
 
       dictionnary_api_call_stub
       SyncInternshipOfferKeywordsJob.perform_now
@@ -152,6 +156,7 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
 
       fill_in_city_or_zipcode(with: 'Pari', expect: 'Paris')
       fill_in_keyword(keyword: searched_keyword)
+      select('3e')
       fill_in_week(week: searched_week, open_popover: false)
       submit_form
 
@@ -159,17 +164,7 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
       assert_absence_of(internship_offer: not_found_by_location)
       assert_absence_of(internship_offer: not_found_by_keyword)
       assert_absence_of(internship_offer: not_found_by_week)
+      assert_absence_of(internship_offer: not_found_by_school_track)
     end
-  end
-
-  test 'USE_IPHONE_EMULATION, burger button opens a small menu' do
-    employer = create(:employer)
-    sign_in(employer)
-    visit root_path
-
-    find('#fr-btn-menu-mobile').click
-    find('ul li a.fr-link.text-decoration-none.active.mr-4', text: 'Accueil')
-    find('ul li a.fr-link.text-decoration-none.mr-4', text: 'Mon tableau de bord')
-    find('ul li a.fr-link.text-decoration-none.mr-4', text: 'Mon compte')
   end
 end
