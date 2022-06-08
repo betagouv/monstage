@@ -26,8 +26,7 @@ gem 'prawn-styled-text'
 gem 'uglifier'
 gem 'inline_svg'
 gem 'slim-rails'
-gem "view_component", require: "view_component/engine"
-gem "turbo-rails"
+gem "view_component"
 gem "react_on_rails"
 gem 'webpacker'
 gem 'caxlsx_rails'
