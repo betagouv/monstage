@@ -45,7 +45,7 @@ class ButtonComponentPreview < ViewComponent::Preview
     ))
   end
 
-  def _5_with_signature_started
+  def _5_with_signature_process_finished
     internship_agreement = InternshipAgreement.signed_by_all
                                               .where(school_manager_accept_terms: true,
                                                      employer_accept_terms: true)

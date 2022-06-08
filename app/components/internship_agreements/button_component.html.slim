@@ -24,9 +24,12 @@
                   '',
                   class: 'fr-btn ml-2 text-center fr-high-buttons disabled btn-block btn-sm'
     - elsif internship_agreement.validated? || internship_agreement.signatures_started?
-      = link_to edit_dashboard_internship_agreement_path(internship_agreement, todo: true),
-                class: 'fr-btn ml-2 text-center fr-high-buttons  btn-sm' do
+      button.fr-btn.text-center.fr-high-buttons.btn-sm [
+        data-fr-opened="false"
+        aria-controls="fr-modal-signature"]
+
         = second_label[:text]
+      = render partial:'dashboard/internship_agreements/signature/modal_signature', locals: {user: current_user}
     - else
       = link_to '', class: 'fr-btn ml-2 text-center fr-high-buttons  btn-sm' do
         = "url to define - #{second_label[:text]}"
