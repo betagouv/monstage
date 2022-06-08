@@ -5,7 +5,7 @@ jobs: # a collection of steps
   build: # runs not using Workflows must have a `build` job as entry point
     working_directory: ~/project
     docker: # run the steps with Docker
-      - image: circleci/ruby:2.7.2-node-browsers # ...with this image as the primary container; this is where all `steps` will run
+      - image: cimg/ruby:2.7.2-node-browsers # ...with this image as the primary container; this is where all `steps` will run
         environment: # environment variables for primary container
           BUNDLE_JOBS: 3
           BUNDLE_RETRY: 3
@@ -28,6 +28,8 @@ jobs: # a collection of steps
       - node/install:
           install-yarn: true
           node-version: '14.18'
+      - run: ruby --version
+      - run: node --version
       - run:
           name: Update Chromedriver
           command: |
@@ -35,7 +37,7 @@ jobs: # a collection of steps
             sudo apt-get update --allow-releaseinfo-change
             sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
             sudo apt-get upgrade google-chrome-stable
-
+            google-chrome --version
       # Restore bundle cache
       # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
       - restore_cache:
