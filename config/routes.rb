@@ -57,6 +57,7 @@ Rails.application.routes.draw do
     # resources :support_tickets, only: %i[new create] not used anymore since remote internships are off
     resources :internship_agreements,  except: %i[destroy] do
       resources :signatures, only: %i[new create], module: 'internship_agreements'
+      resources :users, only: %i[update], module: 'internship_agreements'
     end
 
     resources :schools, only: %i[index edit update show] do

@@ -29,7 +29,9 @@
         aria-controls="fr-modal-signature"]
 
         = second_label[:text]
-      = render partial:'dashboard/internship_agreements/signature/modal_signature', locals: {user: current_user}
+      = render partial:'dashboard/internship_agreements/signature/modal_signature',
+               locals: { user: current_user,
+                         internship_agreement: internship_agreement}
     - else
       = link_to '', class: 'fr-btn ml-2 text-center fr-high-buttons  btn-sm' do
         = "url to define - #{second_label[:text]}"

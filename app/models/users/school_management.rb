@@ -8,6 +8,7 @@ module Users
   #   other (involve psychologists, teacher assistants etc...)
   class SchoolManagement < User
     include SchoolManagementAdmin
+    include Signaturable
 
     validates :first_name,
               :last_name,
@@ -92,6 +93,7 @@ module Users
     end
 
     def school_management? ; true end
+    def school_manager? ; role == 'school_manager' end
 
     private
 

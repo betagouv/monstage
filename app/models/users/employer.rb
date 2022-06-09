@@ -3,6 +3,8 @@
 module Users
   class Employer < User
     include EmployerAdmin
+    include Signaturable
+
 
     has_many :internship_offers, as: :employer,
                                  dependent: :destroy
@@ -49,17 +51,8 @@ module Users
       Signature.signatory_roles[:employer]
     end
 
-    def already_signed?(internship_agreement_id:)
-      Signature.already_signed?(
-        user_role: signatory_role,
-        internship_agreement_id: internship_agreement_id
-      )
-    end
-
     def presenter
       Presenters::Employer.new(self)
     end
-
-    def employer?; true end
   end
 end
