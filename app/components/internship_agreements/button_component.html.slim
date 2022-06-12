@@ -1,39 +1,41 @@
-.row.text-left
-  .col-md-6.col-sm-12
+ .row.text-left
+  .col-md-6.col-sm-12.mb-1
+    -secondary_button_classes= 'd-flex justify-content-center button-component-cta-button fr-btn--secondary fr-btn ml-2 fr-high-buttons text-center btn-block btn-sm'
     - if label[:status] == 'disabled'
       = link_to label[:text],
                 '',
-                class: 'fr-btn ml-2 fr-high-buttons text-center disabled btn-block btn-sm'
+                class: "#{secondary_button_classes} disabled"
     - elsif ['validated', 'signatures_started', 'signed_by_all', 'signed'].include?(internship_agreement.aasm_state)
       = link_to dashboard_internship_agreement_path(internship_agreement, format: :pdf),
                 target: "_blank",
-                class: 'fr-btn ml-2 fr-high-buttons text-center btn-sm',
+                class: "#{secondary_button_classes}",
                 data: { test: "active-internship-agreement-progress-#{internship_agreement.id}" } do
         = label[:text]
     - elsif @current_user.employer? || internship_agreement.completed_by_employer? || internship_agreement.started_by_school_manager?
       = link_to edit_dashboard_internship_agreement_path(internship_agreement),
-                class: 'fr-btn ml-2 text-center fr-high-buttons  btn-sm' do
+                class: "#{secondary_button_classes} " do
         = label[:text]
     - else
-      = link_to '', class: 'fr-btn ml-2 text-center fr-high-buttons  btn-sm' do
+      = link_to '', class: "#{secondary_button_classes} disabled" do
         = "url to define - #{label[:text]}"
 
-  .col-md-6.col-sm-12
+  .col-md-6.col-sm-12.mb-1
+    - primary_button_classes = "fr-btn button-component-cta-button ml-2 text-center fr-high-buttons btn-block btn-sm"
     - if second_label[:status] == 'disabled'
         = link_to second_label[:text],
                   '',
-                  class: 'fr-btn ml-2 text-center fr-high-buttons disabled btn-block btn-sm'
+                  class: "#{primary_button_classes} disabled"
     - elsif internship_agreement.validated? || internship_agreement.signatures_started?
-      button.fr-btn.text-center.fr-high-buttons.btn-sm [
+      button [
+        class="#{primary_button_classes}"
         data-fr-opened="false"
         aria-controls="fr-modal-signature"]
 
         = second_label[:text]
-      = render partial:'dashboard/internship_agreements/signature/modal_signature',
-               locals: { user: current_user,
-                         internship_agreement: internship_agreement}
+      = render partial:'dashboard/internship_agreements/signature/modal_code_request',
+               locals: { current_user: current_user, internship_agreement: internship_agreement}
     - else
-      = link_to '', class: 'fr-btn ml-2 text-center fr-high-buttons  btn-sm' do
+      = link_to '', class: "#{primary_button_classes} disabled" do
         = "url to define - #{second_label[:text]}"
 
 
