@@ -27,6 +27,7 @@ Rails.application.configure do
 
   config.public_file_server.headers = {
     "Cache-Control" => "public, s-maxage=31536000, max-age=15552000",
+    'Access-Control-Allow-Origin' => '*',
     "Expires"       => 1.year.from_now.to_formatted_s(:rfc822)
   }
 
