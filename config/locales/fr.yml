@@ -180,7 +180,7 @@ fr:
             started_by_school_manager: Votre convention est dans les mains du chef d'établissement.
             validated: Votre convention est prête. Imprimez-la et renvoyez-la signée au chef d'établissement.
             signatures_started: Des signatures ont été apposées, mais pas toutes
-            signed_by_all: Signé par toutes les parties
+            signed_by_all: Signée par toutes les parties
           school_manager:
             draft: En attente de l'offreur.
             started_by_employer: En attente de l'offreur.
@@ -188,7 +188,7 @@ fr:
             started_by_school_manager: Votre convention est remplie mais pas validée.
             validated: Votre convention est prête.
             signatures_started: Des signatures ont été apposées, mais pas toutes
-            signed_by_all: Signé par toutes les parties
+            signed_by_all: Signée par toutes les parties
 
       internship_offer:
         <<: *organisation_fields

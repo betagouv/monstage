@@ -248,6 +248,7 @@ class User < ApplicationRecord
   def create_signature_phone_token; nil end
   def send_signature_sms_token; nil end
   def signatory_role; nil end
+  def obfuscated_phone_number; nil end
 
   def presenter
     Presenters::User.new(self)

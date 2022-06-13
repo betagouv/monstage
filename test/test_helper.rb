@@ -14,6 +14,7 @@ require 'support/email_spam_euristics_assertions'
 require 'support/organisation_form_filler'
 require 'support/internship_offer_info_form_filler'
 require 'support/tutor_form_filler'
+require 'support/turbo_assertions_helper'
 require 'minitest/retry'
 require 'webmock/minitest'
 # these two lines should be withdrawn whenever the ChromeDriver is ok

@@ -27,7 +27,7 @@ Rails.application.routes.draw do
     get '/users/password/edit_by_phone', to: 'users/passwords#edit_by_phone', as: 'phone_edit_password'
     put '/users/password/update_by_phone', to: 'users/passwords#update_by_phone', as: 'phone_update_password'
   end
-  
+
   resources :identities, only: %i[new create edit update]
 
   resources :internship_offer_keywords, only: [] do
@@ -57,7 +57,12 @@ Rails.application.routes.draw do
     # resources :support_tickets, only: %i[new create] not used anymore since remote internships are off
     resources :internship_agreements,  except: %i[destroy] do
       resources :signatures, only: %i[new create], module: 'internship_agreements'
-      resources :users, only: %i[update], module: 'internship_agreements'
+      resources :users, only: %i[update], module: 'internship_agreements' do
+        member do
+          post 'confirm_code'
+          post 'sign'
+        end
+      end
     end
 
     resources :schools, only: %i[index edit update show] do

@@ -34,5 +34,10 @@ module Users
       assert_includes employer.internship_applications, kept_internship_application
       refute_includes employer.internship_applications, discarded_internship_application
     end
+
+    test '#obfuscated_phone_number' do
+      employer = build(:employer, phone: '+330601020304')
+      assert_equal '+33 6 ** ** ** 04', employer.obfuscated_phone_number
+    end
   end
 end

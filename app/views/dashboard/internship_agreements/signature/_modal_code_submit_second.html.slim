@@ -1,0 +1,26 @@
+.fr-modal__body id="internship-agreement-signature-form-#{internship_agreement_id}" data-controller="data-clear-cache"
+  .fr-modal__header
+    button.fr-btn--close.fr-btn aria-controls="fr-modal-signature"  Fermer
+  .fr-modal__content
+    h1#fr-modal-signature-title.fr-modal__title
+      span.fr-fi-arrow-right-line.fr-fi--lg aria-hidden="true"
+      | Nous vous avons envoyé un code de vérification
+    p
+      |
+        Pour confirmer la signature, merci d'indiquer le code envoyé au .
+      = current_user.obfuscated_phone_number
+  .fr-modal__footer
+    = form_with(model: current_user,
+                scope: :user,
+                url:  dashboard_internship_agreement_user_path(internship_agreement_id: internship_agreement_id,
+                                                              id: current_user.id),
+                method: :patch,
+                data: {turbo: false}) do |f|
+      = f.hidden_field :id, value: current_user.id
+      = f.hidden_field :internship_agreement_id, value: internship_agreement_id
+      ul.fr-btns-group.fr-btns-group--right.fr-btns-group--inline-reverse.fr-btns-group--inline-lg.fr-btns-group--icon-left
+        li
+          button.fr-btn.fr-icon-checkbox-line
+            | Signer la convention
+            = current_user.phone_token
+            = current_user.phone_token_validity > Time.now ? ' (valide)' :  ' (moisi)'

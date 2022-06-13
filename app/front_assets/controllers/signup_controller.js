@@ -9,7 +9,6 @@ export default class extends Controller {
     'emailExplanation',
     'emailInput',
     'rolelInput',
-    'phoneInput',
     'label',
     'emailBloc',
     'phoneBloc',
