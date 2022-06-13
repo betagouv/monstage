@@ -1049,7 +1049,7 @@
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
   integrity sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==
 
-"@gouvfr/dsfr@^1.5.0":
+"@gouvfr/dsfr@^1.5.1":
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/@gouvfr/dsfr/-/dsfr-1.5.1.tgz#c5f85f6bfddd9169cfc4a27319a152d872dadcd8"
   integrity sha512-z0o1zD3zAzF3CTGWev2tSLHPv8yk52xq6QOuEuGulGfIze5N/Y3W+ScT+dKyZG8y/aOyX9T+O9wYnNH5XIGb0g==
