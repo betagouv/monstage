@@ -28,7 +28,7 @@ export default function AddressInput({
   const [fullAddressDebounced] = useDebounce(fullAddress, 100);
 
   const inputChange = (event) => {
-    document.getElementById("organisation_street_complement").value = '';
+    document.getElementById(`${resourceName}_street_complement`).value = '';
     setFullAddress(event.target.value);
   };
 
@@ -64,7 +64,7 @@ export default function AddressInput({
 
   useEffect(() => {
     if (fullAddressDebounced && fullAddressDebounced.length > 2) {
-      searchCityByAddress()
+      searchCityByAddress();
     }
   }, [fullAddressDebounced]);
 
