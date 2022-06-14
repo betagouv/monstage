@@ -184,4 +184,17 @@ class InternshipAgreement < ApplicationRecord
       internship_agreement: agreement
     ).deliver_later
   end
+
+  rails_admin do
+    weight 14
+    navigation_label 'Offres'
+
+    list do
+      field :id
+      field :internship_application
+      field :aasm_state, :state
+      field :school_manager_accept_terms
+      field :employer_accept_terms
+    end
+  end
 end
