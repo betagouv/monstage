@@ -282,8 +282,6 @@ GEM
       nio4r (~> 2.0)
     racc (1.6.0)
     rack (2.2.3.1)
-    rack-cors (1.1.1)
-      rack (>= 2.0.0)
     rack-protection (2.2.0)
       rack
     rack-proxy (0.7.2)
@@ -508,7 +506,6 @@ DEPENDENCIES
   prawn-styled-text
   prismic.io
   puma
-  rack-cors
   rails (~> 7.0.3)
   rails-controller-testing
   rails_admin (~> 3.0)

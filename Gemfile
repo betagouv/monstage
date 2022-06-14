@@ -31,7 +31,6 @@ gem "react_on_rails"
 gem 'webpacker'
 gem 'caxlsx_rails'
 gem "split", require: "split/dashboard"
-gem "rack-cors"
 
 # background jobs
 gem 'sidekiq'
