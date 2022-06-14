@@ -165,7 +165,7 @@ export default function SirenInput({
                                 className: `py-2 px-3 listview-item ${
                                   highlightedIndex === index ? 'highlighted-listview-item' : ''
                                 }`,
-                                key: item.siret,
+                                key: index,
                                 index,
                                 item,
                                 style: {
