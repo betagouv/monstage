@@ -24,13 +24,13 @@ Rails.application.configure do
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
+  config.public_file_server.enabled = false #ENV['RAILS_SERVE_STATIC_FILES'].present?
 
-  config.public_file_server.headers = {
-    "Cache-Control" => "public, s-maxage=31536000, max-age=15552000",
-    'Access-Control-Allow-Origin' => ENV.fetch("HOST", '*'),
-    "Expires"       => 1.year.from_now.to_formatted_s(:rfc822)
-  }
+  # config.public_file_server.headers = {
+  #   "Cache-Control" => "public, s-maxage=31536000, max-age=15552000",
+  #   'Access-Control-Allow-Origin' => '*',
+  #   "Expires"       => 1.year.from_now.to_formatted_s(:rfc822)
+  # }
 
 
   # Compress JavaScripts and CSS.
@@ -43,9 +43,9 @@ Rails.application.configure do
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  if ENV['ASSET_HOST']
-    config.action_controller.asset_host = ENV['ASSET_HOST']
-  end
+  # if ENV['ASSET_HOST']
+  #   config.action_controller.asset_host = ENV['ASSET_HOST']
+  # end
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
