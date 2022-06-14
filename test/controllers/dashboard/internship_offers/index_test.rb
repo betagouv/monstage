@@ -52,7 +52,7 @@ module Dashboard::InternshipOffers
       }
       get dashboard_internship_offers_path(filters)
       assert_response :success
-      assert_select '.search-container'
+      assert_select '.test-search-container'
       filters.map do |input_name, input_value|
         assert_select "input[name=\"#{input_name}\"]"
       end
@@ -162,11 +162,11 @@ module Dashboard::InternshipOffers
         direction: 'desc'
       }
       get dashboard_internship_offers_path(forwarded_to_tabs_links)
-      assert_select 'a.nav-link[href=?]',
+      assert_select 'li a[href=?]',
                     dashboard_internship_offers_path({ filter: 'unpublished' }.merge(forwarded_to_tabs_links))
-      assert_select 'a.nav-link[href=?]',
+      assert_select 'li a[href=?]',
                     dashboard_internship_offers_path({ filter: 'past' }.merge(forwarded_to_tabs_links))
-      assert_select 'a.nav-link[href=?]',
+      assert_select 'li a[href=?]',
                     dashboard_internship_offers_path(forwarded_to_tabs_links)
     end
 
@@ -251,7 +251,7 @@ module Dashboard::InternshipOffers
                                                             employer: employer)
       sign_in(employer)
       get dashboard_internship_offers_path(order: :view_count, direction: :desc)
-      assert_select 'a.align-middle.text-warning.text-decoration-none[href=?]',
+      assert_select 'a.fr-raw-link[href=?]',
                     dashboard_internship_offers_path(order: :view_count,
                                                      direction: :asc),
                     count: 1
@@ -289,35 +289,35 @@ module Dashboard::InternshipOffers
     end
 
     test 'GET #index as Employer displays links to internship_application' do
-      employer = create(:employer)
-      void_internship_offer = create(:weekly_internship_offer,
-                                     employer: employer)
-      internship_offer_with_pending_response = create(
-        :weekly_internship_offer, employer: employer
-      )
-      create(:weekly_internship_application, :submitted,
-             internship_offer: internship_offer_with_pending_response)
-      internship_offer_with_application = create(:weekly_internship_offer,
-                                                 employer: employer)
-      create(:weekly_internship_application, :approved,
-             internship_offer: internship_offer_with_application)
+      travel_to(Date.new(2019, 9, 1)) do
+        employer = create(:employer)
+        void_internship_offer = create(:weekly_internship_offer,
+                                      employer: employer)
+        internship_offer_with_pending_response = create(
+          :weekly_internship_offer, employer: employer
+        )
+        create(:weekly_internship_application, :submitted,
+              internship_offer: internship_offer_with_pending_response)
+        internship_offer_with_application = create(:weekly_internship_offer,
+                                                  employer: employer)
+        create(:weekly_internship_application, :approved,
+              internship_offer: internship_offer_with_application)
 
-      sign_in(employer)
-      get dashboard_internship_offers_path
-      assert_response :success
-      assert_select '.test-internship-offer', count: 3
-      assert_select 'a[href=?]',
-                    dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Répondre', count: 0
-      assert_select 'a[href=?]',
-                    dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Afficher', count: 0
-      assert_select 'a[href=?]',
-                    dashboard_internship_offer_internship_applications_path(internship_offer_with_pending_response), text: 'Répondre'
-      assert_select 'a[href=?]',
-                    dashboard_internship_offer_internship_applications_path(internship_offer_with_application)
+        sign_in(employer)
+        get dashboard_internship_offers_path
+        assert_response :success
+        assert_select '.test-internship-offer', count: 3
+        assert_select 'a[href=?]',
+                      dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Répondre', count: 0
+        assert_select 'a[href=?]',
+                      dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Afficher', count: 0
+        assert_select 'a[href=?]',
+                      dashboard_internship_offer_internship_applications_path(internship_offer_with_application)
+      end
     end
 
     test 'GET #index as Employer displays pending submitted applications for kept internship_offers only' do
-      travel_to Time.zone.local(2020, 1, 1) do
+      travel_to(Date.new(2019, 9, 1)) do
         employer = create(:employer)
         discarded_internship_offer = create(:weekly_internship_offer,
                                             :discarded, employer: employer,
@@ -342,10 +342,9 @@ module Dashboard::InternshipOffers
 
         sign_in(employer)
         get dashboard_internship_offers_path
-
-        assert_select '.fa-fw.red-notification-badge',
-                      text: '2',
-                      count: 1
+        assert_select '.fr-tag-rounded',
+                       text: '2',
+                       count: 1
       end
     end
 
@@ -359,12 +358,14 @@ module Dashboard::InternshipOffers
                     count: 1
     end
 
-    test 'GET #index as Operator works with geolocaton params' do
+    test 'GET #index as Operator works with geolocation params' do
       operator = create(:user_operator)
       internship_offer_at_paris = create(:weekly_internship_offer,
-                                         employer: operator, coordinates: Coordinates.paris)
+                                         employer: operator,
+                                         coordinates: Coordinates.paris)
       internship_offer_at_bordeaux = create(:weekly_internship_offer,
-                                            employer: operator, coordinates: Coordinates.bordeaux)
+                                            employer: operator,
+                                            coordinates: Coordinates.bordeaux)
       sign_in(operator)
 
       location_params_forwarded_to_sort_links = {
@@ -379,9 +380,10 @@ module Dashboard::InternshipOffers
       assert_absence_of(internship_offer: internship_offer_at_paris)
       assert_presence_of(internship_offer: internship_offer_at_bordeaux)
 
+      # Check sorting links on column header, like ... on title column
       sort_params = { order: :title, direction: :desc }
       ordonencer_params = sort_params.merge(location_params_forwarded_to_sort_links)
-      assert_select "a.align-middle.text-warning.text-decoration-none[href=\"#{dashboard_internship_offers_path(ordonencer_params)}\"]",
+      assert_select "a.fr-raw-link[href='#{dashboard_internship_offers_path(ordonencer_params)}']",
                     1,
                     'ordonencer links should contain geo filters'
     end

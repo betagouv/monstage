@@ -1,16 +1,16 @@
-= f.label :class_rooms_quantity do
+= f.label :class_rooms_quantity, class: 'fr-label' do
   = f.rg2a_required_content_tag
   = "Vos élèves"
   br
 = f.select :class_rooms_quantity,
            options_for_select((1..10).to_a.map { |a| ["#{a} #{'classe'.pluralize(a)}", a] }),
            { prompt: 'Nombre de classes' },
-           class: "form-control col-12 mb-3"
+           class: "fr-select col-12 mb-3"
 .form-group.custom-label-container
   = f.text_field :students_quantity,
-                 class: "form-control col-12",
+                 class: "fr-input col-12",
                  required: true,
                  'aria-label': "Nombre d'élèves"
-  = f.label :students_quantity
+  = f.label :students_quantity, class: 'fr-label'
     |Nombre d'élèves
     = f.rg2a_required_content_tag

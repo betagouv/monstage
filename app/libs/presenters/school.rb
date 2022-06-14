@@ -1,13 +1,20 @@
 module Presenters
   class School
     def select_text_method
-      "#{school.name} - #{school.city} - #{school.zipcode}"
+      "#{school_name} - #{school.city} - #{school.zipcode}"
+    end
+    alias_method :agreement_address, :select_text_method
+
+    def school_name
+      return school.name if school.name.match(/^\s*Collège.*/)
+
+      "Collège #{school.name}"
     end
 
-    def agreement_address
-      return select_text_method if select_text_method.match(/^\s*Collège.*/)
+    def school_name_in_sentence
+      return school.name if school.name.match(/^\s*Collège.*/)
 
-      "Collège #{select_text_method}"
+      "collège #{school.name}"
     end
 
     private

@@ -22,7 +22,7 @@ module Users
     end
 
     def custom_agreements_path
-      url_helpers.dashboard_internship_applications_path
+      url_helpers.dashboard_internship_agreements_path
     end
 
     def dashboard_name
@@ -37,10 +37,18 @@ module Users
       SupportTickets::Employer.new(params.merge(user_id: self.id))
     end
 
+    def employer? ; true end
+
     def anonymize(send_email: true)
       super
 
       internship_offers.map(&:anonymize)
     end
+
+    def presenter
+      Presenters::Employer.new(self)
+    end
+
+    def employer?; true end
   end
 end

@@ -5,17 +5,42 @@
   }
 }
 
+.header-register {
+  border-bottom: 1px solid grey;
+}
 
 @include media-breakpoint-up(sm) {
   .onboarding-card-sm{
-    width: 400px
+    width: 400px;
+  }
+  .register-card-sm{
+    width: 640px
   }
 }
 @include media-breakpoint-up(sm) {
   .onboarding-card{
-    background-color: #fff;
+    // background-color: #fff;
   }
   .onboarding-card{
+    box-shadow: 0 7px 64px 0 rgba(0, 0, 0, 0.2);
+    border: 1px solid #d8d8d8;
+
+    margin: 0 auto;
+    .body {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      padding-bottom: 1rem;
+      // padding-top: 1rem;
+      input[type="radio"]:checked+label {
+        color: $blue
+      }
+    }
+  }
+
+  .register-card{
+    background-color: #fff;
+  }
+  .register-card{
     box-shadow: 0 7px 64px 0 rgba(0, 0, 0, 0.2);
     border: 1px solid #d8d8d8;
 
@@ -34,17 +59,17 @@
     box-shadow: 0 7px 64px 0 rgba(0, 0, 0, 0.2);
     border: 1px solid #d8d8d8;
     border-radius: 16px;
-    padding: 2rem;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+    padding-bottom: 1.5rem;
     height: 100%;
   }
 }
 
 .header-onboarding-card {
   padding: 0;
-  background: #F6F8FC 0% 0% no-repeat padding-box;
+  // background: #F6F8FC 0% 0% no-repeat padding-box;
 }
-
-
 
 @include media-breakpoint-down(xs) {
 }

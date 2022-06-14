@@ -9,7 +9,7 @@
   .small
     - if student_internship_application.approved? && can?(:validate_convention, student_internship_application)
       p.actions.d-flex.d-sm-block.py-0.mt-2.mb-0
-        = button_tag type: "button", data: { toggle: 'modal', target: "##{sign_application_modal_id(student_internship_application)}", turbolinks: false }, class: 'btn btn-success btn-sm mx-1' do
+        = button_tag type: "button", data: { toggle: 'modal', target: "##{sign_application_modal_id(student_internship_application)}", turbo: false }, class: 'fr-btn btn-success btn-sm mx-1' do
           = "Valider la convention"
 
   = render "dashboard/internship_offers/internship_applications/convention_signed_modal", internship_application:student_internship_application

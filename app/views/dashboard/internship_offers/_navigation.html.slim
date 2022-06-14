@@ -1,64 +1,57 @@
 .row.mt-n4.bb-1.bc-light
   .col-12.d-print-none
     ul.nav.navbar.px-0
-      - if @internship_offer.published_at.present?
-        li.d-flex-inline.align-items-center.text-success.br-1.bc-light.pr-3
-          span.d-inline= "Annonce publiée"
-          br
-          span.d-inline.internship_offer-published_at= "depuis le #{l(@internship_offer.published_at, format: :human_mm_dd)}"
-      - else
-        li.d-flex.align-items-center.br-1.bc-light.pr-3
-          = "Annonce dé-publiée"
-
+      = render partial: "dashboard/internship_offers/publish_status",
+                   locals: { internship_offer: @internship_offer }
 
       - if can?(:read, @internship_offer) && can?(:index, InternshipApplication)
         - if current_page?(dashboard_internship_offer_internship_applications_path(@internship_offer))
           li.nav-item
-            .nav-link.px-0.px-lg-3= "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
+            .nav-link.px-0.px-lg-3
+              = "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
         - else
           li.nav-item
-            = link_to dashboard_internship_offer_internship_applications_path(@internship_offer), class: 'nav-link px-0 px-lg-3' do
+            = link_to dashboard_internship_offer_internship_applications_path(@internship_offer),
+                      class: 'nav-link px-0 px-lg-3 fr-raw-link' do
               = "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
 
       li.ml-auto.d-flex
         - if can?(:discard, @internship_offer)
-          a.nav-link.px-1.px-sm-2.ml-auto.text-center data-toggle="modal" data-target="#discard-internship-offer-modal" href=javascript_required_path
+          a.nav-link.px-1.px-sm-2.ml-auto.text-center.fr-raw-link data-toggle="modal" data-target="#discard-internship-offer-modal" href=javascript_required_path
             i.fas.fa-trash
             small.d-block
               | Supprimer
 
-        - if can?(:update, @internship_offer) && @internship_offer.published_at?
-          = link_to dashboard_internship_offer_path(@internship_offer.to_param, internship_offer: {published_at: nil}), class: 'nav-link text-center px-1 px-sm-2', method: :patch, data: { :"test-id" => "toggle-publish-#{internship_offer.id}"} do
-            i.fas.fa-eye-slash
-            small.d-block
-              | Masquer
+        - if can?(:update, @internship_offer) && @internship_offer.reload.published_at?
+          = render partial: 'dashboard/internship_offers/unpublish_form',
+                  locals: { internship_offer: @internship_offer }
 
-        - if can?(:update, @internship_offer) && !@internship_offer.published_at?
-          = link_to dashboard_internship_offer_path(@internship_offer.to_param, internship_offer: {published_at: Time.now.iso8601(0)}), class: 'nav-link text-center px-1 px-sm-2', method: :patch, data: { :"test-id" => "toggle-publish-#{internship_offer.id}"} do
-            i.fas.fa-check
-            small.d-block
-              | Publier
+        - if can?(:update, @internship_offer) && !@internship_offer.reload.published_at?
+          = render partial: 'dashboard/internship_offers/publish_form',
+                  locals: { internship_offer: @internship_offer }
 
         - if can?(:update, @internship_offer)
-          a.nav-link.px-1.px-sm-2.text-center href=edit_dashboard_internship_offer_path(@internship_offer.to_param)
-            i.fas.fa-pen
-            small.d-block
-              | Modifier
+          div data-turbo="false"
+            a.nav-link.px-1.px-sm-2.text-center.fr-raw-link href=edit_dashboard_internship_offer_path(@internship_offer.to_param)
+              i.fas.fa-pen
+              small.d-block
+                | Modifier
 
         - if can?(:read, @internship_offer)
-          a.nav-link.px-1.px-sm-2.text-center.d-none.d-md-block href=javascript_required_path onclick='window.print();return false;'
-            i.fas.fa-print
-            small.d-block
-              | Imprimer
+          div data-turbo="false"
+            a.nav-link.px-1.px-sm-2.text-center.d-none.d-md-block.fr-raw-link href=javascript_required_path onclick='window.print();return false;'
+              i.fas.fa-print
+              small.d-block
+                | Imprimer
 
-
-          a.nav-link.pl-1.pr-0.pr-sm-0.pl-sm-2.text-center href=new_dashboard_stepper_organisation_path
-            i.fas.fa-plus
-            small.d-none.d-sm-block
-              | Déposer une offre
-            small.d-block.d-sm-none
-              | Ajouter
+          div data-turbo="false"
+            a.nav-link.pl-1.pr-0.pr-sm-0.pl-sm-2.text-center.fr-raw-link href=new_dashboard_stepper_organisation_path
+              i.fas.fa-plus
+              small.d-none.d-sm-block
+                | Déposer une offre
+              small.d-block.d-sm-none
+                | Ajouter
 
 .row.mt-3
   .col-12
-    = render "internship_offers/breadcrumb", internship_offer: @internship_offer
+    = render "internship_offers/header", internship_offer: @internship_offer

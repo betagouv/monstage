@@ -1,0 +1,35 @@
+#internship-agreements-panel.fr-tabs__panel.fr-tabs__panel--selected [
+  aria-labelledby="tabpanel-404"
+  role="tabpanel"
+  tabindex="0"]
+
+  .row
+    .col-12
+      h1.h3
+        | Editer, imprimer et bientôt signer les conventions dématérialisées
+
+  .row
+    .col-12
+      .fr-mt-3w.row-fluid
+        - if current_user.school.internship_agreement_preset.filled?
+          .dark-notice.py-3.my-3.d-flex.align-items-center.justify-content-center
+            .fr-mx-4w.d-none.d-sm-block
+              = image_tag asset_pack_path('media/images/notice_people.svg'),
+                          alt: 'Gérez les informations récurrentes à vos conventions',
+                          class: 'fr-ml-1w'
+            .fr-mx-2w.notice-label.font-weight-normal
+              h6 Renseignez ces informations une fois pour toutes vos conventions de stage !
+              p Afin de vous faire gagner du temps, vous avez la possibilité de renseigner certaines informations récurrentes à toutes vos conventions de stage.
+            .fr-mx-4w
+              = link_to "Renseigner les informations récurrentes",
+                        edit_dashboard_school_internship_agreement_preset_path(current_user.school, current_user.school.internship_agreement_preset),
+                        class: 'fr-btn'
+        - else
+          = render partial: "dashboard/schools/internship_agreement_presets/short_form",
+                    locals: { school: current_user.school, internship_agreement_preset: current_user.school.internship_agreement_preset }
+
+  - if @internship_agreements.empty?
+    = render partial: 'empty_agreement_list'
+
+  = render partial: 'dashboard/internship_agreements/internship_agreements_list',
+             locals: {internship_agreements: @internship_agreements}

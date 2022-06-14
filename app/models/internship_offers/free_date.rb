@@ -37,7 +37,7 @@ module InternshipOffers
       end
     end
 
-    # scope  to request internship offers
+    # scope to request internship offers
     scope :ignore_already_applied, lambda { |user:|
       where.not(
         id: joins(:internship_applications).merge(InternshipApplication.where(user_id: user.id))

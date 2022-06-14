@@ -1,10 +1,12 @@
-h1.h2.mb-3 Mon CV
-p Le CV n'est pas obligatoire, mais c'est un plus. Il est envoyé à l'employeur avec votre candidature. Sauf si vous le laissez vide.
+#resume-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0" 
+  .fr-callout.my-3
+    h5.text-dark.fr-callout__text
+      | Le CV n'est pas obligatoire, mais c'est un plus. 
+    p.fr-callout__text
+      | Il est envoyé à l'employeur avec votre candidature. Sauf si vous le laissez vide.
+    p.fr-callout__text
+      | Le CV aide l'employeur à découvrir votre parcours, vos talents et compétences. Il lui permettra aussi de vous recontacter afin d'avancer sur votre candidature au sein de son entreprise.
 
-p Le CV aide l'employeur à découvrir votre parcours, vos talents et compétences. Il lui permettra aussi de vous recontacter afin d'avancer sur votre candidature au sein de son entreprise.
-
-= form_with model: current_user, scope: :user, url: account_path, local: true, method: :patch do |f|
-  = render "layouts/form_errors", resource: current_user, resource_name: :user
-  = render partial: "users/resume_fields", locals: { form: f, disabled: false, phone_mail_disabled: false}
-
-  .actions.d-flex.d-sm-block= f.submit 'Enregistrer', class: 'btn btn-primary'
+  = form_with model: current_user, scope: :user, url: account_path, data: { turbo: false }, local: true, method: :patch do |f|
+    = render "layouts/form_errors", resource: current_user, resource_name: :user
+    = render partial: "users/account_resume_fields", locals: { form: f, disabled: false, phone_mail_disabled: false}

@@ -1,12 +1,12 @@
-tr.tr-white
+tr
   - cols.map do |sort_column, i18n|
-    th class="align-middle sortable-th #{sort_column == :view_count ? 'd-none d-md-table-cell' : ''}"
+    th class="align-middle bg-blue sortable-th #{sort_column == :view_count ? 'd-none d-md-table-cell' : ''}"
       .row.no-gutters
         .col-auto
-          small.breakable-word= i18n.html_safe
-        .col.min-width-20= render partial: "dashboard/internship_offers/sort_links",
-                                  locals: { order: sort_column, sort_by_i18n: i18n, direction: order_direction}
-- if params[:filter].in? ['past','unpublished']
-  tr.bg-secondary.border-less
-    td class="align-middle" colspan="#{cols.count}"
-      .row.no-gutters = render partial: "dashboard/internship_offers/school_years_filter"
+          .col-label-sorting
+            .fr-text--xs.pl-1 = i18n.html_safe
+        .col
+          = render partial: "dashboard/internship_offers/sort_links",
+                   locals: { order: sort_column,
+                             sort_by_i18n: i18n,
+                             direction: order_direction }

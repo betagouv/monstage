@@ -29,32 +29,6 @@ module Dashboard::InternshipAgreements
       assert_redirected_to root_path
     end
 
-    test 'GET #edit as Main teacher owning application student application is successful' do
-      school = create(:school, :with_school_manager)
-      student = create(:student, :troisieme_segpa, school: school)
-      main_teacher = create(:main_teacher, school: school, class_room: student.class_room)
-      internship_application = create(:weekly_internship_application, :submitted, user_id: student.id)
-      internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
-                                    internship_application: internship_application)
-
-      new_main_teacher_full_name = 'Odile Dus'
-      params = {
-        'internship_agreement' => {
-          main_teacher_full_name: new_main_teacher_full_name,
-          main_teacher_accept_terms: true,
-          event: 'start_by_employer'
-        }
-      }
-      sign_in(main_teacher)
-
-      patch dashboard_internship_agreement_path(internship_agreement.id, params)
-
-      assert_redirected_to(dashboard_internship_agreements_path,
-                           'redirection should point to updated agreement')
-      assert_equal(new_main_teacher_full_name,
-                  internship_agreement.reload.main_teacher_full_name,
-                  'can\'t update internship_agreement main_teacher_full_name full name')
-    end
 
 
     # As Employer

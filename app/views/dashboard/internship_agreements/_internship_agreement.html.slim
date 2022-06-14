@@ -3,7 +3,11 @@ tr class="d-sm-flex student-application-#{internship_agreement.id} internship-ag
     .align-self-center= internship_agreement.internship_application.student.name
 
   td.pt-0.pb-3.py-sm-2.rg2a-width-100.col-sm-3.d-sm-flex.align-items-center data-head="#{internship_agreement.internship_application.internship_offer.title}"
-    = link_to '#', data: { toggle: 'modal', target: "##{show_application_modal_id(internship_agreement.internship_application)}", turbolinks: false } do
+    = link_to '#',
+              class: 'fr-raw-link',
+              data: { toggle: 'modal',
+                      target: "##{show_application_modal_id(internship_agreement.internship_application)}",
+                      turbo: false } do
       span= internship_agreement.internship_application.internship_offer.title
 
   td.rg2a-width-50.col-sm-2.d-sm-flex.align-items-center data-head="Organisme d'accueil"

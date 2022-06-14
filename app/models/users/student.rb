@@ -136,5 +136,9 @@ module Users
         errors.add(:school, :blank)
       end
     end
+
+    def presenter
+      Presenters::Student.new(self)
+    end
   end
 end

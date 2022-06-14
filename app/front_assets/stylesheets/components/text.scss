@@ -5,10 +5,19 @@ html body{
   .text-blue-dark{
     color: $blue_dark;
   }
-  // darken colors based on a11y feed
-  .text-sky-blue{
-    // color: $blue_sky;
-    color: $blue;
+  .text-blue-france {
+    color: $blue-france;
+  }
+
+  .text-grey-50 {
+    color: $grey-50;
+  }
+
+  .text-grey-disabled {
+    color: $grey-disabled;
+  }
+  .text-grey-200 {
+    color: $grey-200;
   }
   .text-warning-custom{
     color: $warning_custom;
@@ -40,6 +49,12 @@ html body{
   }
   .text-border-color{
      color: $nav-tabs-border-color;
+  }
+  .blue-france {
+    color: $blue-france;
+  }
+  .fr-text-with-success {
+    color: $fr-text-with-success;
   }
 
 }

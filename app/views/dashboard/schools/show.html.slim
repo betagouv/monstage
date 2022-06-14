@@ -1,11 +1,16 @@
-= render partial: 'dashboard/schools/navbar', locals: { school: @school }
+- content_for :page_title, "#{t(".page_title", name: @school.name)} | Monstage"
+- badge_counter = Finders::TabSchoolManager.new(school: @school) if current_user.school_manager?
+- badge_counter = Finders::TabMainTeacher.new(main_teacher: current_user) if current_user.main_teacher?
+- badge_counter = Finders::TabNull.new if badge_counter.nil?
 
+h1.h2.mb-4
+  .fr-raw-link= link_to account_path do
+    = @school.name
+    span.fr-icon-edit-fill<
 
-h1.h2.my-3 Les informations de mon établissement
-- if (can? :edit, @current_user.try(:school))
-  = form_with(model: @current_user.school, url: dashboard_school_path(@current_user.school), method: :patch) do |f|
-    .form-group.mt-3
-      = f.label "Annexe par défault liée au financement du stage des élèves"
-      = f.rich_text_area :agreement_conditions_rich_text, class: 'form-control'
-    .actions.d-flex.d-sm-block
-      = f.submit 'Enregistrer', class: 'btn btn-primary'
+.fr-tabs.mb-5
+  = render partial: "dashboard/schools/tablist", locals: { badge_counter: badge_counter }
+  = render "dashboard/schools/class_rooms/index"
+  = render "dashboard/schools/users/index"
+  = render "dashboard/schools/manage_weeks"
+  = render "dashboard/schools/manager_school"  if current_user.school_manager?

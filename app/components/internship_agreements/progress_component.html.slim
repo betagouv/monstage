@@ -1,5 +1,0 @@
-- required_signatures.map do |signature_type_expected|
-  div class="dot mx-1 #{internship_agreement.try(signature_type_expected) ? 'dot-success' : 'dot-warning'}" data-toggle="tooltip" data-placement="top" title=I18n.t("agreement_roles.#{curret_role(role_attribute_name: signature_type_expected)}") data-controller='tooltip'
-    i.fas.fa-user.fa-lg
-p class="mb-0 mt-1 #{custom_classes}"= "#{signed_count} #{'personne'.pluralize( signed_count)} sur #{required_signatures_count}"
-

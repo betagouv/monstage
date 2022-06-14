@@ -1,5 +1,6 @@
 {
   "name": "monstage",
+  "version": "0.0.0",
   "private": true,
   "dependencies": {
     "@babel/core": "^7.7.2",
@@ -7,13 +8,15 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.18",
     "@fortawesome/free-regular-svg-icons": "^5.8.2",
     "@fortawesome/free-solid-svg-icons": "^5.8.2",
+    "@gouvfr/dsfr": "^1.5.1",
+    "@hotwired/turbo-rails": "^7.1.1",
     "@popperjs/core": "^2.11.2",
     "@rails/actiontext": "^6.0.3-3",
     "@rails/webpacker": "5.1.1",
     "@stimulus/polyfills": "^1.1.1",
     "actioncable": "^5.2.3",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-    "bootstrap": "^4.3.1",
+    "bootstrap": "^4.6.1",
     "clever-tools": "^2.9.1",
     "core-js": "^3.4.1",
     "d3": "^6.7.0",
@@ -30,9 +33,8 @@
     "react-on-rails": "12.0.5-beta.0",
     "react-phone-input-2": "mfo/react-phone-input-2",
     "regenerator-runtime": "^0.13.3",
-    "stimulus": "2",
+    "stimulus": "3",
     "trix": "^1.2.0",
-    "turbolinks": "^5.2.0",
     "url-search-params-polyfill": "^8.0.0",
     "use-debounce": "5",
     "whatwg-fetch": "^3.2.0"
@@ -53,6 +55,6 @@
     "webpack-dev-server": "3.11.0"
   },
   "engines": {
-    "node": "14.x"
+    "node": "^14.18"
   }
 }

@@ -2,17 +2,19 @@
   padding: 4px 11px;
 }
 
+.custom-label-container .input-group-append input {
+  flex: 0 auto !important;
+}
+
 .custom-select{
   box-shadow: 0px 1px 3px rgba(0,0,0,.2);
   border-radius: 5px;
 }
 .custom-control-checkbox-list{
-  height: 180px;
+  height: 380px;
   overflow: scroll;
+  background-color: $blue-france-975;
 
-  border: 1px solid $input-border-color;
-  border-top-left-radius: $input-border-radius;
-  border-top-right-radius: $input-border-radius;
   padding: $input-btn-padding-x/2 $input-btn-padding-y;
   &.is-invalid{
     box-shadow: 0 0 2px rgba(255,0,0,.5);
@@ -48,6 +50,10 @@
 .custom-checkbox .custom-control-input:disabled:checked ~ .custom-control-label::before {
   background-color: #585858;
   border: #585858;
+}
+
+.bg-light-grey {
+  background-color: $beige-975;
 }
 
 .toggle-radio {
@@ -130,11 +136,9 @@
       }
 
     button.btn-clear-city {
-      background-color: $bg-light-blue;
-      border-top-right-radius: 10px;
-      border-bottom-right-radius: 10px;
-      border-left: 0px;
-      width: 3rem;
+      background-color: $grey-200;
+      color: $grey-200 !important;
+      border-color: $grey-200 !important;
     }
 
     label.chosen-name {
@@ -176,6 +180,11 @@
   border-right: 1px solid $input-border-color;
   border-bottom: 1px solid $input-border-color;
   border-top: 1px solid transparent;
+  input {
+    appearance: revert;
+    width: 15px;
+    height: 15px;
+  }
   &:first-child{
     border-top: 1px solid  $input-border-color;
     border-top-left-radius: 8px;
@@ -197,12 +206,54 @@
   &:hover, &:focus{
     cursor: pointer;
     background:$blue_50;
-    border-colro: $gray_200;
+    border-color: $gray_200;
+
   }
   &.disabled {
     background: $input-disabled-bg;
     &:hover{
       cursor: not-allowed;
     }
+  }
+}
+
+trix-toolbar {
+  display: none;
+}
+
+trix-editor {
+  border-top: 0px !important;
+  border-left: 0px !important;
+  border-right: 0px !important;
+  font-size: 1rem;
+}
+
+.fr-callout__text {
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+.fr-card__img {
+  .fr-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 100;
+  }
+}
+
+.fr-btn-danger {
+  background-color: $red-marianne !important;
+}
+.fr-btn-danger:hover {
+  background-color: $red-marianne-active !important;
+  --blend-full-size: 0%;
+}
+
+.fr-callout-blue {
+  background-color: $blue-france;
+  color: #fff !important;
+  .fr-label {
+    color: #fff !important;
   }
 }

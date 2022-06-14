@@ -206,13 +206,17 @@ fr:
             started_by_employer: Votre convention est remplie mais pas envoyée au chef d'établissement.
             completed_by_employer: Votre convention est dans les mains du chef d'établissement.
             started_by_school_manager: Votre convention est dans les mains du chef d'établissement.
-            validated: Votre convention est prête. Imprimez la et renvoyez la signée au chef d'établissement.
+            validated: Votre convention est prête. Imprimez-la et renvoyez-la signée au chef d'établissement.
+            signatures_started: Des signatures ont été apposées, mais pas toutes
+            signed_by_all: Signé par toutes les parties
           school_manager:
             draft: En attente de l'offreur.
             started_by_employer: En attente de l'offreur.
             completed_by_employer: Votre convention est remplie par l'offreur mais vous ne l'avez pas validée.
             started_by_school_manager: Votre convention est remplie mais pas validée.
             validated: Votre convention est prête.
+            signatures_started: Des signatures ont été apposées, mais pas toutes
+            signed_by_all: Signé par toutes les parties
 
       internship_offer:
         <<: *organisation_fields
@@ -312,6 +316,15 @@ fr:
         ministry_id: ID de l'institution de tutelle
         phone_password_reset_count: Compteur de remise à zéro de mot de passe par téléphone
         anonymized: Anonymisé
+
+      identity:
+        first_name: Prénom
+        last_name: Nom
+        gender: Sexe
+        school: "Etablissement"
+        class_room: "Classe"
+        birth_date: Date de naissance
+
       week:
         number: Numéro de semaine
         year: Année
@@ -445,6 +458,21 @@ fr:
               taken: "Un compte est déjà associé à ce numéro de téléphone"
             reset_password_token:
               invalid: 'Veuillez faire une nouvelle demande de changement de mot de passe, cette demande a expirée'
+
+        identity:
+          attributes:
+            first_name:
+              blank: Veuillez saisir un prénom
+            last_name:
+              blank: Veuillez saisir un nom de famille
+            birth_date:
+              blank: "Veuillez saisir votre date de naissance"
+            school:
+              blank: 'Veuillez saisir votre établissement scolaire'
+              required: 'Veuillez saisir votre établissement scolaire'
+            gender:
+              blank: Veuillez faire un choix parmi les options de genres proposés
+
         users/user_management:
           attributes:
             school_manager:

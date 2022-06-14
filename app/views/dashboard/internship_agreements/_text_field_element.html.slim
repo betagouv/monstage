@@ -1,12 +1,12 @@
 - edit_enable = can?("edit_#{field}".to_sym, form.object)
 
-- hint = hint || ''
-- title = title || ''
-- content = content || ''
+- hint ||= ''
+- title ||= ''
+- content ||= ''
 .col-12.pt-3
   .form-group.mb-0.form-group-tooltip
     = form.label field do
-      span.mb-2= text_label
+      span.mb-2.fr-label= text_label
       = form.rg2a_required_content_tag
 
     span.float-right.tool-tip data-toggle="tooltip" data-html='true' data-placement="top" title="<b>#{title}</b><p>#{content}</p>" data-controller='tooltip'
@@ -15,7 +15,7 @@
     .input-group-custom data-controller="internship-agreement-field"
       - if edit_enable && !disabled
         = form.text_field field,
-                          class: 'form-control',
+                          class: 'fr-input',
                           required: true
 
       - else

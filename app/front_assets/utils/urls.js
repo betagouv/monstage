@@ -1,4 +1,4 @@
-import Turbolinks from 'turbolinks';
+import { Turbo } from "@hotwired/turbo-rails";
 import $ from 'jquery';
 
 export const changeURLFromEvent = (event, param) => {
@@ -23,12 +23,20 @@ export const visitURLWithOneParam = (param, paramValue) => {
   turboVisitsWithSearchParams(searchParams);
 }
 
+export const searchParamsFromHash = (hash) => {
+  const searchParams = clearAllParams();
+  Object.keys(hash).forEach((key) => {
+    searchParams.set(key, hash[key]);
+  });
+  return searchParams;
+}
+
 export const clearSearch = () => {
   turboVisitsWithSearchParams(clearAllParams());
 }
 
 export const turboVisitsWithSearchParams = (searchParams) => {
-  Turbolinks.visit(
+  Turbo.visit(
     `${window.location.origin}${window.location.pathname}?${searchParams.toString()}`,
   );
 }

@@ -1,0 +1,35 @@
+= render 'layouts/breadcrumb', links: [ [current_user.presenter.dashboard_name_link, current_user.dashboard_name],
+                                        ['', @class_room.name]]
+= render layout: 'dashboard/schools/common_head' do
+  .fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0"
+    .mb-4
+      = form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', data: {controller: 'students'}) do
+        .row
+          .col-8
+            h2.h3.mb-0= "#{@class_room.name}"
+
+        .row
+          .col-12.fr-table.fr-table--white
+            table
+              thead
+                tr.tr-blue
+                  th.col-3.align-self-end
+                    small Élève
+                  th.col-2.align-self-end
+                    small Confirmé
+                  th.col-2.align-self-end
+                    small Cordée de réussite / Parcours d'excellence
+                  th.col-2.align-self-end
+                    small Candidatures
+                  th.col-1.text-center.align-self-end
+                    small Réponses
+                  th.col-2
+              tbody= render partial: "dashboard/schools/users/student",
+                            collection: @students, locals: {}
+
+        .row
+          .col-12.text-right
+            = button_tag 'Enregistrer les modifications',
+                        disabled: true,
+                        class: 'fr-btn fr-icon-save-line fr-btn--icon-left',
+                        data: { 'target': 'students.submitButton' }

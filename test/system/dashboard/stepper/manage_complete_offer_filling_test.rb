@@ -11,7 +11,7 @@ class ManageCompleteOfferFillingTest < ApplicationSystemTestCase
   end
 
   test 'can create navigate back and forth while creating an offer' do
-    if ENV['RUN_BRITTLE_TEST']
+    if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'
       2.times { create(:school) }
       employer              = create(:employer)
       group                 = create(:group, name: 'hello', is_public: true)
@@ -23,12 +23,13 @@ class ManageCompleteOfferFillingTest < ApplicationSystemTestCase
         sign_in(employer)
         visit employer.custom_dashboard_path
         find('#test-create-offer').click
-        # organisation = Organisation.all.last
         fill_in_organisation_form(is_public: true, group: group)
         click_on "Suivant"
         click_link "Précédent"
-        find('legend', text: 'Informations sur l\'entreprise')
+        sleep 0.2
+        find('legend', text: "Informations sur l'entreprise")
         click_on "Suivant"
+        sleep 0.2
         find('fieldset legend', text: 'Offre de stage')
         fill_in_internship_offer_info_form(school_track: :troisieme_generale,
                                           sector: sector,
@@ -37,10 +38,12 @@ class ManageCompleteOfferFillingTest < ApplicationSystemTestCase
         click_on "Suivant"
         find('legend', text: 'Informations sur le tuteur')
         click_on "Précédent"
+        sleep 0.2
         find('legend', text: 'Offre de stage')
         click_on 'Précédent'
         find('legend', text: 'Informations sur l\'entreprise')
         click_on 'Suivant'
+        sleep 0.3
         find('legend', text: 'Offre de stage')
         click_on "Suivant"
         find('legend', text: 'Informations sur le tuteur')
