@@ -98,7 +98,7 @@ Rails.application.configure do
     password: ENV['SMTP_PASSWORD'],
     domain: 'monstagedetroisieme.fr',
     address: ENV['SMTP_ADDRESS'],
-    port: '465',
+    port: 587,
     authentication: :plain,
     enable_starttls_auto: true,
     tls: true,
