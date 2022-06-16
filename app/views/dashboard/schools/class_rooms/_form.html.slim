@@ -17,14 +17,14 @@
                       placeholder: 'Nom de la classe'
 
 
-  .form-group
-    = form.label :school_track, class: 'fr-label'  do
-      | Filière
-      = form.rg2a_required_content_tag
-    = form.select :school_track,
-                    options_for_select(options_for_school_tracks, @class_room.school_track),
-                    { prompt: school_track_options_for_default },
-                    { class: "fr-select col-lg-6", required: true }
+  / .form-group
+  /   = form.label :school_track, class: 'fr-label'  do
+  /     | Filière
+  /     = form.rg2a_required_content_tag
+  /   = form.select :school_track,
+  /                   options_for_select(options_for_school_tracks, @class_room.school_track),
+  /                   { prompt: school_track_options_for_default },
+  /                   { class: "fr-select col-lg-6", required: true }
 
   .actions.my-5.fr-mb-15w
     = form.submit 'Enregistrer', class: 'fr-btn'

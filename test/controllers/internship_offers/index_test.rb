@@ -179,7 +179,7 @@ class IndexTest < ActionDispatch::IntegrationTest
 
     weeks = internship_offer_without_application.weeks
     school = create(:school, weeks: weeks)
-    class_room = create(:class_room, :troisieme_generale, school: school)
+    class_room = create(:class_room,  school: school)
     student = create(:student, school: school, class_room: class_room)
     internship_offer_with_application = create(
       :weekly_internship_offer,
@@ -206,25 +206,6 @@ class IndexTest < ActionDispatch::IntegrationTest
         get internship_offers_path(school_track: :troisieme_generale)
         assert_absence_of(internship_offer: internship_offer_with_application)
         assert_presence_of(internship_offer: internship_offer_without_application)
-      end
-    end
-  end
-
-  test 'GET #index as student ignores internship_offers of another school_track than his' do
-    internship_offer_3em = create(:weekly_internship_offer, title: '3e')
-    internship_offer_troisieme_segpa = create(
-      :troisieme_segpa_internship_offer, title: 'segpa'
-    )
-    school = create(:school, weeks: internship_offer_3em.weeks)
-    student = create(:student, school: school,
-                               class_room: create(:class_room, :troisieme_generale, school: school))
-
-    sign_in(student)
-    InternshipOffer.stub :nearby, InternshipOffer.all do
-      InternshipOffer.stub :by_weeks, InternshipOffer.all do
-        get internship_offers_path(school_track: :troisieme_generale)
-        assert_presence_of(internship_offer: internship_offer_3em)
-        assert_absence_of(internship_offer: internship_offer_troisieme_segpa)
       end
     end
   end
@@ -275,20 +256,17 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_absence_of(internship_offer: not_published_internship_offer)
   end
 
-  test 'GET #index as visitor or student default shows both middle school and high school offers' do
+  test 'GET #index as visitor or student default shows offers' do
     internship_offer_weekly = create(:weekly_internship_offer)
-    internship_offer_free   = create(:free_date_internship_offer)
     # Visitor
     get internship_offers_path
     assert_presence_of(internship_offer: internship_offer_weekly)
-    assert_presence_of(internship_offer: internship_offer_free)
     # Student
     school = create(:school, weeks: [])
     student = create(:student, school: school)
     sign_in(student)
     get internship_offers_path
     assert_presence_of(internship_offer: internship_offer_weekly)
-    assert_presence_of(internship_offer: internship_offer_free)
   end
 
 
@@ -300,15 +278,14 @@ class IndexTest < ActionDispatch::IntegrationTest
     school = create(:school)
     student = create(:student, school: school,
                                class_room: create(:class_room,
-                                                  :troisieme_generale,
                                                   school: school))
     internship_offer = create(:weekly_internship_offer,
                               max_candidates: max_candidates,
                               weeks: [week]
                               )
-    internship_application = create(:internship_application,
-                                    internship_offer: internship_offer,
-                                    week: week)
+   create(:internship_application,
+          internship_offer: internship_offer,
+          week: week)
 
 
     sign_in(student)
@@ -473,7 +450,6 @@ class IndexTest < ActionDispatch::IntegrationTest
           longitude: 1,
           page: 1,
           radius: 1_000,
-          school_track: 'troisieme_generale',
           week_ids: [1, 2, 3]
         }
         get internship_offers_path, params: forwarded_params
@@ -487,15 +463,14 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'GET #index as student includes ' \
-       'forwardable_params and takes an implicit param with school_track' do
+  test 'GET #index as student includes forwardable_params ' do
     school     = create(:school)
     class_room = create(:class_room, school: school)
     sign_in(create(:student, school: school, class_room: class_room))
     # default school_track is troisieme_generale
     # and it's an implicit filter for student's search
     internship_1 = create(:weekly_internship_offer)
-    internship_free = create(:free_date_internship_offer)
+    internship_2 = create(:weekly_internship_offer)
 
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
@@ -518,9 +493,9 @@ class IndexTest < ActionDispatch::IntegrationTest
         assert_select(
           'a[href=?]',
           internship_offer_path(
-            forwarded_params.merge( id: internship_free, origin: 'search' )
+            forwarded_params.merge( id: internship_2, origin: 'search' )
           ),
-          count: 0
+          count: 2
         )
       end
     end
@@ -591,7 +566,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     week = Week.find_by(year: 2019, number: 10)
     school = create(:school, weeks: [week])
     student = create(:student, school: school,
-                               class_room: create(:class_room, :troisieme_generale, school: school))
+                               class_room: create(:class_room, school: school))
     offer_overlaping_school_weeks = create(:weekly_internship_offer,
                                            weeks: [week])
     offer_not_overlaping_school_weeks = create(:weekly_internship_offer,
@@ -612,7 +587,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     week = Week.find_by(year: 2019, number: 10)
     school = create(:school, weeks: [week])
     student = create(:student, school: school,
-                               class_room: create(:class_room, :troisieme_generale, school: school))
+                               class_room: create(:class_room, school: school))
     offer_overlaping_school_weeks = create(:weekly_internship_offer,
                                            weeks: [week])
     offer_not_overlaping_school_weeks = create(:weekly_internship_offer,

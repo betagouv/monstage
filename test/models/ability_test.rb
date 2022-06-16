@@ -16,7 +16,7 @@ class AbilityTest < ActiveSupport::TestCase
   test 'Student' do
     internship_offer = create(:weekly_internship_offer)
     school = create(:school, weeks: [internship_offer.weeks.first])
-    student = create(:student, class_room: create(:class_room, :troisieme_generale, school: school))
+    student = create(:student, class_room: create(:class_room, school: school))
     ability = Ability.new(student)
     internship_application = create(:weekly_internship_application,
                                     student: student,
@@ -59,12 +59,8 @@ class AbilityTest < ActiveSupport::TestCase
     internship_offer = create(:weekly_internship_offer, employer: employer)
     alt_internship_offer = create(:weekly_internship_offer, employer: another_employer)
     internship_offer_api = create(:api_internship_offer, employer: employer)
-    free_date_internship_offer = create(:free_date_internship_offer, employer: employer)
-    free_date_internship_offer.update_columns(first_date: Date.new(2020, 9 ,1), last_date: Date.new(2020, 9,2))
-    alt_free_date_internship_offer = create(:free_date_internship_offer, employer: another_employer)
-    alt_free_date_internship_offer.update_columns(first_date: Date.new(2020, 9 ,1), last_date: Date.new(2020, 9,2))
     internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
-    internship_agreement   = create(:troisieme_generale_internship_agreement, :created_by_system,
+    internship_agreement   = create(:internship_agreement, :created_by_system,
                                     internship_application: internship_application)
     ability = Ability.new(employer)
 
@@ -90,19 +86,8 @@ class AbilityTest < ActiveSupport::TestCase
            'employers should be able to renew offer on 1st sept. date comparission less or equal')
     end
 
-    assert(ability.can?(:renew, free_date_internship_offer),
-           'employers should be able to renew offer that is a FreeDate one')
-    assert(ability.cannot?(:renew, alt_free_date_internship_offer),
-           'employers should not be able to renew offer that do not belong to him')
-    travel_to(Date.new(2020, 9, 1)) do
-          assert(ability.cannot?(:renew, free_date_internship_offer, user: employer),
-           'employers should be able to renew free_date offer are not in the passed')
-    end
-
     #duplicating
     # -------------------
-    assert(ability.cannot?(:duplicate, InternshipOffers::FreeDate.new, user: employer),
-           'employers should not be able to duplicate a not persisted offer')
     assert(ability.cannot?(:duplicate, alt_internship_offer),
            'employers should not be able to duplicate offers that do not belong to them')
     assert(ability.can?(:duplicate, internship_offer),
@@ -110,14 +95,6 @@ class AbilityTest < ActiveSupport::TestCase
     travel_to(internship_offer.internship_offer_weeks.last.week.week_date.to_date + 1.year) do
       assert(ability.cannot?(:duplicate, internship_offer),
             'employers should not be able to duplicate offer of the passed')
-    end
-    travel_to(Date.new(2020,10, 1)) do
-      assert(ability.can?(:duplicate, free_date_internship_offer),
-            'employers should be able to duplicate offer that is a FreeDate one')
-    end
-    travel_to(Date.new(2021,8, 1)) do
-      assert(ability.cannot?(:duplicate, free_date_internship_offer),
-            'employers should be able to duplicate offer that is a FreeDate one')
     end
     # -------------------
 
@@ -160,7 +137,6 @@ class AbilityTest < ActiveSupport::TestCase
     assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
     assert ability.can?(:index, Acl::Reporting.new(user: god, params: {}))
     refute ability.can?(:apply, create(:weekly_internship_offer))
-    refute ability.can?(:apply, create(:free_date_internship_offer))
     refute ability.can?(:apply, create(:api_internship_offer))
     assert ability.can?(:new, InternshipAgreement)
     assert ability.can?(:see_reporting_dashboard, User)
@@ -195,7 +171,6 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:index, Acl::Reporting, &:allowed?))
 
     refute ability.can?(:apply, create(:weekly_internship_offer))
-    refute ability.can?(:apply, create(:free_date_internship_offer))
     refute ability.can?(:apply, create(:api_internship_offer))
 
     assert ability.can?(:see_reporting_dashboard, User)
@@ -233,7 +208,6 @@ class AbilityTest < ActiveSupport::TestCase
     )
 
     refute ability.can?(:apply, create(:weekly_internship_offer))
-    refute ability.can?(:apply, create(:free_date_internship_offer))
     refute ability.can?(:apply, create(:api_internship_offer))
 
     assert ability.can?(:see_reporting_dashboard, User)
@@ -249,7 +223,7 @@ class AbilityTest < ActiveSupport::TestCase
     another_school = create(:school)
     school_manager = create(:school_manager, school: school)
     internship_application = create(:weekly_internship_application, student: student)
-    internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+    internship_agreement = create(:internship_agreement, :created_by_system,
                                   internship_application: internship_application)
     ability = Ability.new(school_manager)
 
@@ -306,7 +280,7 @@ class AbilityTest < ActiveSupport::TestCase
     class_room = create(:class_room, school: school)
     main_teacher = create(:main_teacher, school: school, class_room: class_room)
     internship_application = create(:weekly_internship_application, student: student)
-    internship_agreement   = create(:troisieme_generale_internship_agreement, :created_by_system,
+    internship_agreement   = create(:internship_agreement, :created_by_system,
                                     internship_application: internship_application)
     ability = Ability.new(main_teacher)
 

@@ -22,12 +22,6 @@ module Users
     has_rich_text :resume_other
     has_rich_text :resume_languages
 
-    delegate :school_track,
-             :troisieme_generale?,
-             :troisieme_prepa_metiers?,
-             :troisieme_segpa?,
-             to: :class_room,
-             allow_nil: true
     delegate :school_manager,
              to: :school
 
@@ -49,8 +43,8 @@ module Users
 
     def internship_applications_type
       return nil unless class_room.present?
-      return InternshipApplications::WeeklyFramed.name if class_room.troisieme_generale?
-      return InternshipApplications::FreeDate.name
+
+      return InternshipApplications::WeeklyFramed.name
     end
 
     def has_zero_internship_application?

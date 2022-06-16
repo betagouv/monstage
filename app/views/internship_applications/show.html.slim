@@ -18,7 +18,7 @@
         p.fr-card__detail
           = @internship_offer.employer_name
       .fr-card__img
-        .fr-tag= I18n.t("enum.school_tracks.#{@internship_offer.school_track}")
+        .fr-tag 3e
         = image_tag asset_pack_path("media/images/internship_offer_show/offer_default_img.jpg"), alt: '', class: 'fr-responsive-img'
 
   .col-8
