@@ -13,14 +13,12 @@ module Interceptors
       Rails.logger.info "================================================================="
       Rails.logger.info "Mail rerouté vers '#{original_to}' to '#{rerouted_email_address}'."
       Rails.logger.info "================================================================="
+      super(mail)
     end
 
     def self.rerouted_email_address
-      return @rerouted_email_address unless @rerouted_email_address.nil?
-
       destination = 'recette' if Rails.env.staging?
       destination = 'review'  if Rails.env.review?
-      destination ||= nil
 
       @rerouted_email_address = "#{destination}@monstagedetroisieme.fr"
     end
