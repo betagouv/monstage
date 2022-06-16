@@ -218,7 +218,7 @@ class Ability
       true
     end
     can %i[index_and_filter], Reporting::InternshipOffer
-    can %i[new], InternshipAgreement
+    can :manage, InternshipAgreement
     can :reset_cache, User
     can %i[ switch_user
             read
