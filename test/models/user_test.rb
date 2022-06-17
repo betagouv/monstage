@@ -112,22 +112,6 @@ class UserTest < ActiveSupport::TestCase
     assert_equal ['Le format de votre email semble incorrect'], user.errors.messages[:email]
   end
   
-  # Remove following tests after 2022/01/01 if Newsletter is already implemented
-
-  # test '#add_to_contacts is called whenever a user is created' do
-  #   assert_enqueued_jobs 1, only: AddContactToSyncEmailDeliveryJob do
-  #     student = create(:student, confirmed_at: nil)
-  #     student.confirm
-  #   end
-  # end
-
-  # test '#RemoveContactFromSyncEmailDeliveryJob is called whenever a user is anonymized' do
-  #   student = create(:student)
-  #   assert_enqueued_jobs 1, only: RemoveContactFromSyncEmailDeliveryJob do
-  #     student.anonymize
-  #   end
-  # end
-
   test "when updating one's email both removing and adding contact jobs are enqueued" do
     student = create(:student)
 

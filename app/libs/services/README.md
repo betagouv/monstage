@@ -1,13 +1,8 @@
 # 3rd Parties specifics
 
-## mailjet
+## tipimail
 
 ### Usage
-Jobs synchronize monstage db with mailjet's on every environment. Please take care when considering a full extract of mailjer contacts db of the different environments data come from.
-Custom fields are the following :
-* monstage_id
-* role
-* type
-* environment (development, test, review, staging, production)
-* confirmed_at
+Jobs synchronize monstage db with tipimail's on every environment. Please take care when considering a full extract of tipimail contacts db of the different environments data come from.
+
 
