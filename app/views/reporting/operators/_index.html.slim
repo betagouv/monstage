@@ -1,4 +1,6 @@
 #offers-panel.fr-tabs__panel.fr-tabs__panel--selected role="tabpanel" aria-labelledby="associations" tabindex="0"
+  .rounded.p-3[data-controller='statistics']
+    = render partial: 'reporting/filters', locals: {view_tab: :associations}
 
   .row.mt-3
     .col-12
@@ -20,11 +22,11 @@
         .tr class="font-weight-bold text-blue"
           .td.align-middle.bl-1.bc-light Total
           .td.align-middle.bl-1.bc-light.text-blue.font-weight-bold= @operators.sum(&:target_count)
-          .td.align-middle.bl-1.bc-light= AirTableRecord.current_year.countable_in_grand_total.sum(:nb_spot_used)
-          .td.align-middle.bl-1.bc-light= AirTableRecord.current_year.onsite.sum(:nb_spot_used)
-          .td.align-middle.bl-1.bc-light= AirTableRecord.current_year.hybrid.sum(:nb_spot_used)
-          .td.align-middle.bl-1.bc-light= AirTableRecord.current_year.remote.sum(:nb_spot_used)
-          .td.align-middle.bl-1.bc-light= AirTableRecord.current_year.workshop.sum(:nb_spot_used)
+          .td.align-middle.bl-1.bc-light= AirTableRecord.during_year(school_year: params[:school_year]).countable_in_grand_total.sum(:nb_spot_used)
+          .td.align-middle.bl-1.bc-light= AirTableRecord.during_year(school_year: params[:school_year]).onsite.sum(:nb_spot_used)
+          .td.align-middle.bl-1.bc-light= AirTableRecord.during_year(school_year: params[:school_year]).hybrid.sum(:nb_spot_used)
+          .td.align-middle.bl-1.bc-light= AirTableRecord.during_year(school_year: params[:school_year]).remote.sum(:nb_spot_used)
+          .td.align-middle.bl-1.bc-light= AirTableRecord.during_year(school_year: params[:school_year]).workshop.sum(:nb_spot_used)
           .td.align-middle.bl-1.bc-light= AirTableRecord.last_modified_at.try(:strftime, '%d-%m-%Y') || '-'
           .td.align-middle.bl-1.bc-light
 
