@@ -20,7 +20,6 @@ module Finders
 
     def kept_published_future_offers_query
       InternshipOffer.kept
-                     .includes(:employer, :school)
                      .published
                      .in_the_future
     end

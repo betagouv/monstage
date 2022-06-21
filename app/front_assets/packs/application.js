@@ -21,6 +21,7 @@ import '@gouvfr/dsfr/dist/utility/icons/icons-user/icons-user.css';
 import '@gouvfr/dsfr/dist/utility/icons/icons-business/icons-business.css';
 import '@gouvfr/dsfr/dist/utility/icons/icons-design/icons-design.css';
 import '@gouvfr/dsfr/dist/utility/icons/icons-document/icons-document.css';
+import '@gouvfr/dsfr/dist/utility/icons/icons-media/icons-media.css';
 
 import '@gouvfr/dsfr/dist/fonts/Marianne-Bold_Italic.woff'
 import '@gouvfr/dsfr/dist/fonts/Marianne-Bold_Italic.woff2'
@@ -63,6 +64,7 @@ import "@rails/actiontext";
 import 'url-search-params-polyfill';
 
 import '../bootapp';
+import '../leaflet-providers';
 
 import '../utils/zammad_form';
 $(document).on("turbo:load", () => {

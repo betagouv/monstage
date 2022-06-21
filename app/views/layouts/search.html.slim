@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+html lang="fr"
+  head
+    - if content_for?(:canonical_url)
+      link rel="canonical" href="#{yield(:canonical_url)}"
+
+    title= page_title
+    = csrf_meta_tags
+    = csp_meta_tag
+    = action_cable_meta_tag
+    meta name="turbo-visit-control" content="reload"
+    = favicon_link_tag asset_pack_path('media/images/favicon.png')
+    = stylesheet_pack_tag "application.css", media: "all", 'data-turbo-track': "reload"
+    = stylesheet_link_tag "https://unpkg.com/leaflet@1.8.0/dist/leaflet.css", media: "all"
+    = javascript_pack_tag "application.js", defer: true, 'data-turbo-track': "reload"
+    = javascript_include_tag "https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+
+  body class="#{env_class_name} #{body_class_name}"
+    a name="top" id="top"
+    .content data-controller='rg2a'
+      header.custom-navbar role="banner"
+        .col.px-0
+          = render "layouts/navbar"
+      = content_for(:custom_header)
+      .container-x
+        = render 'layouts/flash'
+        div role="main"= yield
+        
+    div  data-controller='footer'
+      = render 'layouts/footer'
+    = render partial: "layouts/analytics"
+
+

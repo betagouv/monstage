@@ -71,4 +71,13 @@ export const endpoints = {
     const endpoint = new URL(`${host}/api/schools/search`);
     return endpoint;
   },
+
+  // @get
+  searchInternshipOffers: () => {
+    const endpoint = new URL(`${host}/internship_offers.json`);
+    const searchParams = new URLSearchParams();
+
+    endpoint.search = searchParams.toString();
+    return endpoint;
+  },
 };

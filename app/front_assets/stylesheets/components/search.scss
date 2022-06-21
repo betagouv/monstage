@@ -1,5 +1,5 @@
 @include media-breakpoint-up(md) {
-  .search-container {
+  .container-homepage .search-container {
     background-color: $input-bg;
     box-shadow: 0px 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
@@ -25,6 +25,45 @@
   }
 }
 
+.search-bar {
+  background: #FFFFFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  z-index: 1021;
+}
+
+.results-container {
+  overflow: scroll;
+
+  // .row:first-child {
+  //   position: -webkit-sticky;
+  //   position: sticky;
+  //   top: 0;
+  // }
+
+  .results-col {
+    max-width: 600px !important;
+    // float: right
+    // position: -webkit-sticky;
+    // position: sticky;
+    // height: calc(100vh - 117px);
+    top: 56px;
+  }
+
+  .results-row {
+    // float: right
+    // position: -webkit-sticky;
+    // position: sticky;
+    // height: calc(100vh - 117px);
+    overflow-y: scroll;
+    height: 100vh;
+  }
+
+  .map-container {
+    position: sticky;
+    // top: 86px;
+    height: calc(100vh - 0px);
+  }
+}
 
 
 // left for example

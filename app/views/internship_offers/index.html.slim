@@ -1,13 +1,11 @@
 - content_for(:canonical_url, params[:page] ? internship_offers_url(page: params[:page]) : internship_offers_url)
 
 - content_for(:custom_header) do
-  h1.fr-h1.text-white.text-center.pt-5.pb-5.pb-md-4.my-0.bg-blue
-    = "Postulez à des offres de stage"
-  .position-sticky.sticky-top.bg-custom-blue.wrapper-sticky-with-offset
+  .position-sticky.sticky-top.wrapper-sticky-with-offset.search-bar
     .container-monstage.d-none.d-md-block
       .row
         .col-12
-          .pt-3
+          .fr-py-2w
             = render partial: "internship_offers/search/form",
                               locals: { render_as_partial: true,
                                         url: internship_offers_path,
@@ -21,16 +19,23 @@
             data: { :"test-id" => 'mobile-search-button' }
     = search_button_label
 
-.row.mx-0
-  .col-12 = render "internship_offers/title",
-                   internship_offers: @internship_offers
+/ .row.mx-0
+/   .col-12 = render "internship_offers/title",
+/                    internship_offers: @internship_offers
 
-.fr-container
-  - if @internship_offers.present?
-    = render partial: "internship_offer", collection: @internship_offers
-    .row.d-flex
-      ul.col-12.d-none.d-flex.order-3.mt-2.mb-sm-3.justify-content-end
-        = paginate(@internship_offers, views_prefix: 'internship_offers', window: 2)
+.fr-containerr
+  / - if @internship_offers.present?
+    / = render partial: "internship_offer", collection: @internship_offers
+    / = image_tag asset_pack_path("media/images/sector-image.svg" ), alt: ''
+
+  = react_component("InternshipOfferResults",
+                          props: { sectors: @sectors.to_a,
+                                  params: @params })
+
+
+    / .row.d-flex
+    /   ul.col-12.d-none.d-flex.order-3.mt-2.mb-sm-3.justify-content-end
+    /     = paginate(@internship_offers, views_prefix: 'internship_offers', window: 2)
   - if @alternative_internship_offers.present?
     = image_tag asset_pack_path("media/images/search-no-result.svg"), alt: '', class: 'fr-responsive-img fr-mt-1w'
     - @alternative_internship_offers.each do |internship_offer|

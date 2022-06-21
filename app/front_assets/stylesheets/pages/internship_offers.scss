@@ -258,3 +258,59 @@ $sortLinkOffset: 15px;
   color: red;
   background-color: rgb(255, 188, 188);
 }
+
+.leaflet-container {
+  height: 100vh;
+  // min-height: 500px;
+}
+
+.popup-custom {
+  .leaflet-popup-content-wrapper {
+    padding: 0px !important;
+    border-radius: 0 !important;
+  }
+  
+  .leaflet-popup-tip-container,
+  a.leaflet-popup-close-button {
+    display: none !important;
+  }
+  
+  .leaflet-popup-content {
+    width: 250px;
+    margin: 0 !important;
+  }
+
+  .title a {
+    color: black;
+    font-size: 1.375rem;
+    line-height: 1.75rem;
+  }
+}
+
+.modal-filter {
+  .fr-modal__header,
+  .fr-modal__footer {
+    display: block
+  }
+
+  .fr-checkbox-group {
+    .fr-label {
+      font-weight: 400;
+      margin-bottom: 0;
+    }
+  }
+  .fr-checkbox-group:first-child {
+    margin-top: 0;
+  }
+  .hidden-checkbox {
+    display: none;
+  }
+}
+
+.modal-section {
+  border-bottom: 1px solid grey;
+}
+
+.fr-responsive-img {
+  aspect-ratio: auto !important;
+}

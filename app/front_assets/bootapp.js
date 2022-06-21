@@ -18,6 +18,8 @@ application.load(definitionsFromContext(context))
 const componentRequireContext = require.context("components", true);
 
 import ReservedSchoolInput from "components/ReservedSchoolInput";
+import InternshipOfferResults from "components/InternshipOfferResults";
+import InternshipOfferCard from "components/InternshipOfferCard";
 import SearchSchool from "components/SearchSchool";
 import SearchSchoolByName from "components/SearchSchoolByName";
 import CityInput from "components/search_internship_offer/CityInput";
@@ -31,6 +33,8 @@ import DistanceIcon from "components/icons/DistanceIcon";
 
 ReactOnRails.register({
   ReservedSchoolInput,
+  InternshipOfferResults,
+  InternshipOfferCard,
   SearchSchool,
   SearchSchoolByName,
   DistanceIcon,
