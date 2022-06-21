@@ -454,9 +454,9 @@ module InternshipOffers
                     { text: '0 candidatures', count: 1 },
                     'missing link to internship_applications for employer'
 
-      # assert_select 'a[href=?][data-method=delete]', dashboard_internship_offer_path(internship_offer),
-      #               { count: 1 },
-      #               'missing discard link for employer'
+      assert_select 'a[data-target="#discard-internship-offer-modal"]',
+                    { count: 1 },
+                    'missing discard link for employer'
 
       assert_select 'span.internship_offer-published_at',
                     { text: "depuis le #{I18n.l(internship_offer.published_at, format: :human_mm_dd)}" },

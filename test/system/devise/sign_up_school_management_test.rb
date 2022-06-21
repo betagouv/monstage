@@ -81,7 +81,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       fill_in 'Adresse électronique', with: "another@#{school_1.email_domain_name}"
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      # find('label[for="user_accept_terms"]').click
+      all('label[for="user_accept_terms"]')[1].click
       click_on "Je m'inscris"
     end
 

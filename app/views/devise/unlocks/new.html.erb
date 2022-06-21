@@ -1,10 +1,10 @@
-<div class='onboarding-card onboarding-card-sm mb-4'>
+<div class='onboarding-card onboarding-card-sm my-4'>
   <header class="header-account">
     <h1 class="h2 text-center mb-0"><%= t('.resend_unlock_instructions') %></h1>
   </header>
   <%= form_with(model: resource,
                 scope: resource_name,
-                local: true,
+                data: { turbo: false },
                 url: unlock_path(resource_name),
                 html: { method: :post }) do |f| %>
     <%= f.rg2a_explain_required_asterisk %>

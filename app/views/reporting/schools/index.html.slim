@@ -43,5 +43,5 @@
               .col-12
                 = link_to reporting_schools_path(reporting_cross_view_params.merge(format: :xlsx)),
                         class: 'ml-auto fr-btn fr-btn-danger fr-icon-mail-line fr-btn--icon-left',
-                        data: {turbolinks: false} do
+                        data: {turbo: false} do
                   | Exporter la liste des établissements

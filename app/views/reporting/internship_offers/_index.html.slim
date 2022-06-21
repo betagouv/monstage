@@ -25,7 +25,7 @@
                 class: 'fr-btn btn-danger',
                 data: {turbolinks: false} do
         i.fas.fa-download
-        span =" Exporter les statistiques des offres"
+        span =" Exporter les statistiques des offrffffes"
       - if params[:department] || can?(:export_reporting_dashboard_data, current_user)
         = link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)),
                   class: 'ml-3 fr-btn btn-danger',

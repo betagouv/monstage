@@ -7,7 +7,11 @@
       | Déposer une offre de stage
 .row
   .col-12
-    = form_with({model: @tutor, url: dashboard_stepper_tutors_path(organisation_id: params[:organisation_id], internship_offer_info_id: params[:internship_offer_info_id]), scope: :tutor, local: true}) do |form|
+    = form_with(model: @tutor,
+                url: dashboard_stepper_tutors_path(organisation_id: params[:organisation_id],
+                internship_offer_info_id: params[:internship_offer_info_id]),
+                scope: :tutor,
+                data: { turbo: false }) do |form|
       = render "dashboard/stepper/steps"
       = render "layouts/form_errors", resource: @tutor, resource_name: :tutor
 

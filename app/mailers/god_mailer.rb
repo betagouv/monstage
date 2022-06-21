@@ -5,9 +5,7 @@ class GodMailer < ApplicationMailer
   default from: proc { EmailUtils.formatted_from }
 
   def weekly_kpis_email
-    current_week = Week.selectable_from_now_until_end_of_school_year.first
-    last_week = Week.find(current_week.id.to_i - 2)
-    @last_monday = last_week.week_date
+    @last_monday = Date.today - Date.today.wday.days - 6
     @last_sunday = @last_monday + 6.days
     @kpis = Reporting::Kpi.new.last_week_kpis(
       last_monday: @last_monday,

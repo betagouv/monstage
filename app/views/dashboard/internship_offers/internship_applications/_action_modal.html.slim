@@ -9,6 +9,7 @@
 = form_with({ model: internship_application,
               url: dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
               scope: :internship_application,
+              data: {turbo: false},
               html: {method: 'patch', class:'modal', 'id': modal_id, tabindex: "-1", role: "dialog"} }) do |f|
   = hidden_field_tag :transition, aasm_target
 
@@ -26,6 +27,9 @@
               - unless message.blank?
                 .px-4.py-0
                   p= message
+              - unless subtitle.blank?
+                .px-4.pb-2.h6.text-dark
+                  = subtitle
               - if rich_text
                 .modal-body.px-4.py-0
                   = f.rich_text_area aasm_notifier.assigned_rich_text_attribute

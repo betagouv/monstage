@@ -161,15 +161,4 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
       assert_absence_of(internship_offer: not_found_by_week)
     end
   end
-
-  test 'USE_IPHONE_EMULATION, burger button opens a small menu' do
-    employer = create(:employer)
-    sign_in(employer)
-    visit root_path
-
-    find('#fr-btn-menu-mobile').click
-    find('ul li a.fr-link.text-decoration-none.active.mr-4', text: 'Accueil')
-    find('ul li a.fr-link.text-decoration-none.mr-4', text: 'Mon tableau de bord')
-    find('ul li a.fr-link.text-decoration-none.mr-4', text: 'Mon compte')
-  end
 end

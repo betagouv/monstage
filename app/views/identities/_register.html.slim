@@ -12,7 +12,7 @@
             h1.h1.text-dark Dernière étape...
   = form_with(model: resource,
                     scope: resource_name,
-                    local: true,
+                    data: { turbo: false },
                     url: registration_path(resource_name, as: resource.type.demodulize, identity_token: params[:identity_token]),
                     id: 'new_user') do |f|
     = render "layouts/form_errors", resource: resource, resource_name: :user

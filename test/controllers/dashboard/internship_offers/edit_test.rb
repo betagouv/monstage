@@ -58,7 +58,7 @@ module Dashboard::InternshipOffers
       sign_in(employer)
       internship_offer = create(:weekly_internship_offer, employer: employer)
       get edit_dashboard_internship_offer_path(internship_offer.to_param)
-      assert_select 'meta[name="turbolinks-visit-control"][content="reload"]'
+      assert_select 'meta[name="turbo-visit-control"][content="reload"]'
     end
 
     test 'GET #edit with disabled fields if applications exist' do

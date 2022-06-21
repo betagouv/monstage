@@ -9,7 +9,7 @@ module ApplicationHelper
   end
 
   def helpdesk_url
-    'https://monstage.zammad.com/help/fr'
+    'https://monstage.zammad.com/help/fr-fr'
   end
 
   def custom_dashboard_controller?(user:)

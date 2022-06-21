@@ -16,13 +16,11 @@ module Interceptors
     end
 
     def self.rerouted_email_address
-      return @rerouted_email_address unless @rerouted_email_address.nil?
-
       destination = 'recette' if Rails.env.staging?
       destination = 'review'  if Rails.env.review?
       destination ||= nil
 
-      @rerouted_email_address = "#{destination}@monstagedetroisieme.fr"
+      "#{destination}@monstagedetroisieme.fr"
     end
   end
 end
