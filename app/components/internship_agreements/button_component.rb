@@ -2,14 +2,18 @@ module InternshipAgreements
   class ButtonComponent < BaseComponent
     attr_reader :internship_agreement, :current_user, :label, :second_label
 
-    def initialize(internship_agreement:, current_user:, label: {status: 'enabled', text: 'Editer'}, second_label: {status: 'disabled', text: 'En attente'})
+    def initialize(internship_agreement:,
+                   current_user:,
+                   label: {status: 'enabled', text: 'Editer'},
+                   second_label: {status: 'disabled', text: 'En attente'})
       @internship_agreement = internship_agreement
       @current_user         = current_user
-      @label              ||= button_label(employer: current_user.employer?)
+      @label              ||= button_label(bool_employer: current_user.employer?)
       @second_label       ||= second_button_label
     end
 
-    def button_label(employer:)
+    def button_label(bool_employer:)
+      # when not employer then school_manager
       case @internship_agreement.aasm_state
       when 'draft', 'started_by_employer' then
         employer ? {status: 'enabled', text: 'Remplir ma convention'} :
