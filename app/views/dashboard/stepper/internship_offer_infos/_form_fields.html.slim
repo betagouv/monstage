@@ -1,9 +1,10 @@
 - klass = resource.class.to_s.split("s::").first
-fieldset.mt-4 [data-controller='internship-offer-infos'
-               data-internship-offer-infos-base-type-value="#{klass}"]
-  legend.my-4 Offre de stage
-  .row.mt-3
-    .col-md-6.order-md-1.order-2
+
+.row
+  .col-md-6.order-md-1.order-2
+    fieldset [data-controller='internship-offer-infos' data-internship-offer-infos-base-type-value="#{klass}"]
+      legend Offre de stage
+
       = form.rg2a_explain_required_asterisk
       = form.hidden_field :type, data: { :"internship-offer-infos-target" => "type" }
 
@@ -100,7 +101,7 @@ fieldset.mt-4 [data-controller='internship-offer-infos'
                                                   resourceName: form.object_name,
                                                   selectClassRoom: false,
                                                   existingSchool: resource.school.as_json})
-     
+
       .form-group
         = render partial: "weeks/checkbox_inputs",
                           locals: {current_weeks: @available_weeks,
@@ -131,7 +132,7 @@ fieldset.mt-4 [data-controller='internship-offer-infos'
             = button_tag :submit, class: 'fr-btn' do
               = 'Suivant '
               i.fas.fa-arrow-right
-    - warning_block = true if warning_block.nil?
-    - if warning_block
-      .col-md-6.order-md-2.order-1
-        = render partial: 'dashboard/stepper/warning_block'
+  - warning_block = true if warning_block.nil?
+  - if warning_block
+    .col-md-6.order-md-2.order-1
+      = render partial: 'dashboard/stepper/warning_block'
