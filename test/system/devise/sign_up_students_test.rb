@@ -220,9 +220,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     find('label', text: 'Par téléphone').click
     execute_script("document.getElementById('phone-input').value = '#{student.phone}';")
     find("input[name='user[password]']").fill_in with: password
-    puts current_path
     find("input[type='submit'][value='Connexion']").click
-    puts current_path
     page.find('h1', text: 'Votre candidature')
     # redirected page is a show of targeted internship_offer
     assert_equal "/internship_offers/#{offer.id}/internship_applications/new", current_path
