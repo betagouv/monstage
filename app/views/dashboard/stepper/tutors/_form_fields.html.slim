@@ -39,9 +39,8 @@ fieldset.mt-4
 
             .col-8.text-left style="display: flex;align-items: center"
               = link_to 'Précédent', edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]), title: 'Revenir à la modification de l\'offre'
-              
+
     - warning_block = true if warning_block.nil?
     - if warning_block
-      .col-lg-6.col-md-12.order-md-2.order-1.employer
+      .col-md-6.order-md-2.order-1
         = render partial: 'dashboard/stepper/warning_block'
-  .row.my-5
