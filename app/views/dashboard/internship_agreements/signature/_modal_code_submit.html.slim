@@ -8,9 +8,11 @@
     .d-flex.flex-row
       div.fr-pt-1v Pour confirmer la signature, merci d'indiquer le code envoyé au
       div.fr-pt-1v.test-phone-signature = current_user.obfuscated_phone_number
-      .fr-pl-1v= button_to reset_phone_number_dashboard_internship_agreement_user_path(user: {internship_agreement_id: internship_agreement_id,
-                                                                                       id: current_user.id}),
+      -parameters = {internship_agreement_id: internship_agreement_id, id: current_user.id}
+      -user_params = {user: parameters}
+      .fr-pl-1v= button_to reset_phone_number_dashboard_internship_agreement_user_path(parameters),
                             method: :post,
+                            data: {turbo: false},
                             class: 'float-right fr-raw-link fr-text--sm  fr-ml-2w blue-france',
                             aria: {label: "Modifier le numero de téléphone"} do
         span.fr-icon-edit-fill.fr-icon--sm.fr-mb-1v

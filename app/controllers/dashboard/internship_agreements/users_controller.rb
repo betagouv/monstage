@@ -6,12 +6,12 @@ module Dashboard
 
       def update
         authorize! :update, current_user
-        if save_phone_user(current_user) && current_user.send_signature_sms_token
+        if save_phone_user(current_user) && current_user.reload.send_signature_sms_token
           @internship_agreement_id = params.permit[:internship_agreement_id]
           respond_to do |format|
             format.turbo_stream do
               id = user_params[:internship_agreement_id]
-              path = 'dashboard/internship_agreements/signature/modal_code_submit_second'
+              path = 'dashboard/internship_agreements/signature/modal_code_submit'
               render turbo_stream:
                 turbo_stream.replace("internship-agreement-signature-form-#{id}",
                                       partial: path,
