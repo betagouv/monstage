@@ -6,7 +6,8 @@ export default class extends Controller {
 
   onKeyUp(event) {
     event.preventDefault();
-    (event.key == 'Backspace') ? this.eraseBack(event) : this.enterKey(event);
+    (event.key == 'Backspace' || event.key == 'ArrowLeft') ?
+      this.eraseBack(event) : this.enterKey(event);
     this.setFocus(event);
   }
 
@@ -14,18 +15,18 @@ export default class extends Controller {
 
   eraseBack(event) {
     this.eraseCurrentKey(event)
-    if (!this.firstPosition()) {
-      this.positionMove(-1);
-      this.enableCurrent(event);
-      this.eraseCurrentKey(event); // yes : twice
-    }
+    if (this.firstPosition()) { return; }
+
+    this.positionMove(-1);
+    this.enableCurrent(event);
+    this.eraseCurrentKey(event);
   }
 
   enterKey(event) {
-    this.isNumericKey(event.key) ? this.withGoodKey(event) : this.eraseCurrentKey();
+    this.isNumericKey(event.key) ? this.withNumericKey(event) : this.eraseCurrentKey();
   }
 
-  withGoodKey(event) {
+  withNumericKey(event) {
     this.validateEnteredValue(event);
     if (this.lastPosition()) {
       this.enableAll();
