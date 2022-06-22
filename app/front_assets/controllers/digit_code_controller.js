@@ -14,13 +14,15 @@ export default class extends Controller {
 
   eraseBack(event) {
     this.eraseCurrentKey(event)
-    if (!this.firstPosition()) { this.positionMove(-1); }
-    this.enableCurrent(event);
-    this.eraseCurrentKey(event);
+    if (!this.firstPosition()) {
+      this.positionMove(-1);
+      this.enableCurrent(event);
+      this.eraseCurrentKey(event); // yes : twice
+    }
   }
 
   enterKey(event) {
-    this.validKey(event.key) ? this.withGoodKey(event) : this.eraseCurrentKey();
+    this.isNumericKey(event.key) ? this.withGoodKey(event) : this.eraseCurrentKey();
   }
 
   withGoodKey(event) {
@@ -62,7 +64,7 @@ export default class extends Controller {
   lastPosition() { return this.positionValue == this.codeTargets.length - 1; }
   positionMove(val) { this.positionValue += val; }
 
-  validKey(val) { return (parseInt(val, 10) >= 0 && parseInt(val, 10) <= 9) }
+  isNumericKey(val) { return (parseInt(val, 10) >= 0 && parseInt(val, 10) <= 9) }
   validateForm() {
     this.buttonTarget.removeAttribute('disabled');
     this.codeTarget.form.submit();
