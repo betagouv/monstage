@@ -1,3 +1,24 @@
-.button-component-cta-button{
+.button-component-cta-button {
   width: 104px;
+}
+
+.digit-code-size input:not(textarea) {
+  max-height: 5rem !important;
+}
+
+.digit-code-size {
+  width: 60px;
+  height: 60px;
+  background: #F6F6F6;
+  border: 1px solid #E5E5E5;
+  /* focus-light */
+
+  box-shadow: 0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #0A76F6;
+  border-radius: 7px;
+  margin-left: 20px;
+  font-family: 'Marianne';
+  font-style: 'Marianne';
+  font-size: 24px;
+  line-height: 24px;
+  padding-left: 20px
 }

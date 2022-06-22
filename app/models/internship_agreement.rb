@@ -111,6 +111,10 @@ class InternshipAgreement < ApplicationRecord
   delegate :school,           to: :student
   delegate :school_manager,   to: :school
 
+  def signatures
+    Signature.where(internship_agreement_id: id)
+  end
+
   def at_least_one_validated_terms
     return true if skip_validations_for_system
     return true if [school_manager_accept_terms, employer_accept_terms, main_teacher_accept_terms].any?
@@ -205,11 +209,21 @@ class InternshipAgreement < ApplicationRecord
   end
 
   def notify_others_signatures_started(agreement)
+    Rails.logger.debug(
+      "=====================================\n" \
+      "Notify others signatures started\n" \
+      "=====================================\n"
+    )
   end
 
   def notify_others_signatures_finished(agreement)
+    Rails.logger.debug(
+      "=====================================\n" \
+      "Notify others signatures finished\n" \
+      "=====================================\n"
+    )
   end
-  
+
   rails_admin do
     weight 14
     navigation_label 'Offres'

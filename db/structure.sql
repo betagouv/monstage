@@ -1132,7 +1132,8 @@ CREATE TABLE public.signatures (
     internship_agreement_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    signatory_role public.agreement_signatory_role
+    signatory_role public.agreement_signatory_role,
+    signature_phone_number character varying(20) NOT NULL
 );
 
 
@@ -1235,7 +1236,9 @@ CREATE TABLE public.users (
     anonymized boolean DEFAULT false NOT NULL,
     banners jsonb DEFAULT '{}'::jsonb,
     ministry_id bigint,
-    targeted_offer_id integer
+    targeted_offer_id integer,
+    signature_phone_token character varying(6),
+    signature_phone_token_validity timestamp(6) without time zone
 );
 
 
@@ -2628,6 +2631,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220511152203'),
 ('20220511152204'),
 ('20220511152205'),
-('20220603100433');
+('20220603100433'),
+('20220616131010'),
+('20220621105148');
 
 

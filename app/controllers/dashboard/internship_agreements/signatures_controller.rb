@@ -29,8 +29,11 @@ module Dashboard
       end
 
       def signature_builder
-        @builder ||= Builders::SignatureBuilder.new(user: current_user,
-                                                    context: :web)
+        @builder ||= Builders::SignatureBuilder.new(
+          user: current_user,
+          params: internship_signature_params,
+          context: :web
+        )
       end
     end
   end

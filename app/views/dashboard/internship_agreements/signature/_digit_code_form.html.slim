@@ -1,3 +1,30 @@
-.fr-mb-1w.d-flex.flex-row data-controller='digit-code' data-digit-code-position-value="0"
-  - 6.times do 
-    input.digit-code-size data-digit-code-target='code' data-action='keyup->digit-code#onKeyUp'
+div data-controller='digit-code' data-digit-code-position-value="0"
+  .fr-mb-1w.d-flex.flex-row
+    = f.hidden_field :internship_agreement_id,
+                      name: '[user]internship_agreement_id',
+                      value: internship_agreement_id
+    - 6.times do |i|
+      = f.text_field :code,
+                     class: 'digit-code-size',
+                     id: "user-code-#{i}",
+                     name: "[user]digit-code-target-#{i}",
+                     data: {:"digit-code-target" => 'code',
+                            :action =>'keyup->digit-code#onKeyUp'}
+  br
+  ul.fr-btns-group.fr-btns-group--inline-reverse.fr-btns-group--inline-lg.fr-btns-group--icon-left
+    li
+      button.fr-btn.fr-icon-checkbox-line data-digit-code-target="button"
+        | Signer la convention
+        = " "
+        / = current_user.signature_presenter.show_code
+        / = current_user.signature_phone_token_validity > DateTime.now ? ' (valide)' :  ' (moisi)'
+      = turbo_frame_tag 'code-resend' do
+        #code-request.fr-ml-1v.fr-mt-3v
+          = "Vous n'avez pas reçu le code ? "
+          = link_to 'Renvoyer le code',
+                    resend_sms_code_dashboard_internship_agreement_user_path(internship_agreement_id: internship_agreement_id,
+                                                                            id: current_user.id ),
+                    method: :post,
+                    id: 'code-validation-button'
+
+

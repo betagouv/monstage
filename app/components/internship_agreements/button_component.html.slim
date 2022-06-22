@@ -1,4 +1,4 @@
- .row.text-left
+.row.text-left
   .col-md-6.col-sm-12.mb-1
     -secondary_button_classes= 'd-flex justify-content-center button-component-cta-button fr-btn--secondary fr-btn ml-2 fr-high-buttons text-center btn-block btn-sm'
     - if label[:status] == 'disabled'
@@ -19,7 +19,7 @@
       = link_to '', class: "#{secondary_button_classes} disabled" do
         = "url to define - #{label[:text]}"
 
-  .col-md-6.col-sm-12.mb-1
+  .col-md-6.col-sm-12.mb-1 data-controller='modal-opener'
     - primary_button_classes = "fr-btn button-component-cta-button ml-2 text-center fr-high-buttons btn-block btn-sm"
     - if second_label[:status] == 'disabled'
         = link_to second_label[:text],
@@ -28,12 +28,22 @@
     - elsif internship_agreement.validated? || internship_agreement.signatures_started?
       button [
         class="#{primary_button_classes}"
+        data-modal-opener-target='button'
         data-fr-opened="false"
         aria-controls="fr-modal-signature"]
 
         = second_label[:text]
-      = render partial:'dashboard/internship_agreements/signature/modal_code_request',
-               locals: { current_user: current_user, internship_agreement: internship_agreement}
+      dialog#fr-modal-signature.fr-modal [
+        aria-labelledby="fr-modal-signature-title"
+        role="dialog"]
+
+        .fr-container.fr-container--fluid.fr-container-md
+          .fr-grid-row.fr-grid-row--center
+            .fr-col-10.fr-col-md-8
+              = turbo_frame_tag internship_agreement do
+                = render partial:'dashboard/internship_agreements/signature/modal_code_request',
+                        locals: { current_user: current_user,
+                                  internship_agreement_id: internship_agreement.id}
     - else
       = link_to '', class: "#{primary_button_classes} disabled" do
         = "url to define - #{second_label[:text]}"

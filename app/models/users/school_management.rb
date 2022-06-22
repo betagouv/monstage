@@ -86,10 +86,15 @@ module Users
     def already_signed?(internship_agreement_id:)
       return false unless role == 'school_manager'
 
-      Signature.already_signed?(
-        user_role: signatory_role,
-        internship_agreement_id: internship_agreement_id
-      )
+      internship_agreement = InternshipAgreement.joins(:signatures)
+                                                .where(id: internship_agreement_id)
+                                                .where(signatures: {signatory_role: signatory_role})
+      internship_agreement.any? &&
+        internship_agreement.first
+                            .try(:student)
+                            .try(:school)
+                            .try(:school_manager)
+                            .try(:id) == id
     end
 
     def school_management? ; true end

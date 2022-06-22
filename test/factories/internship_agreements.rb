@@ -39,6 +39,28 @@ FactoryBot.define do
       skip_validations_for_system { true }
     end
 
+    trait :draft do
+      aasm_state { 'draft' }
+    end
+    trait :started_by_employer do
+      aasm_state { 'started_by_employer' }
+    end
+    trait :completed_by_employer do
+      aasm_state { 'completed_by_employer' }
+    end
+    trait :started_by_school_manager do
+      aasm_state { 'started_by_school_manager' }
+    end
+    trait :validated do
+      aasm_state { 'validated' }
+    end
+    trait :signatures_started do
+      aasm_state { 'signatures_started' }
+    end
+    trait :signed_by_all do
+      aasm_state { 'signed_by_all' }
+    end
+
     factory :troisieme_generale_internship_agreement, traits: [:troisieme_generale_internship_agreement],
                                                       parent: :internship_agreement
     factory :troisieme_prepa_metier_internship_agreement, traits: [:troisieme_prepa_metier_internship_agreement],

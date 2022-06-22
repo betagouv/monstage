@@ -1,38 +1,34 @@
-dialog#fr-modal-signature.fr-modal [
-  aria-labelledby="fr-modal-signature-title"
-  role="dialog"]
-
-  .fr-container.fr-container--fluid.fr-container-md
-    .fr-grid-row.fr-grid-row--center
-      .fr-col-10.fr-col-md-8
-        .fr-modal__body id="internship-agreement-signature-form-#{internship_agreement.id}"
-          .fr-modal__header
-            button.fr-btn--close.fr-btn aria-controls="fr-modal-signature"  Fermer
-          .fr-modal__content
-            h1#fr-modal-signature-title.fr-modal__title
-              span.fr-fi-arrow-right-line.fr-fi--lg aria-hidden="true"
-              | Vous vous apprêtez à signer la convention de stage
-            p
-              |
-                Pour signer la convention, veuillez renseigner votre numéro de téléphone.
-                Vous recevrez un code de vérification à rentrer à
-                l’étape suivante pour finaliser la signature.
-          .fr-modal__footer
-            = form_with(model: current_user,
-                        scope: :user,
-                        url:  dashboard_internship_agreement_user_path(internship_agreement_id: internship_agreement.id,
-                                                                      id: current_user.id),
-                        method: :patch) do |f|
-              = f.hidden_field :id, value: current_user.id, name: 'user[id]'
-              = f.hidden_field :internship_agreement_id, value: internship_agreement.id, name: 'user[internship_agreement_id]'
-              ul.fr-btns-group.fr-btns-group--right.fr-btns-group--inline-reverse.fr-btns-group--inline-lg.fr-btns-group--icon-left
-                li
-                  button.fr-btn.fr-icon-checkbox-line
-                    | Recevoir un code
-                li
-                  - if current_user.formatted_phone.present?
-                    = f.hidden_field :user_phone, value: current_user.phone, name: 'user[phone]'
-                  - else
-                    = react_component("CountryPhoneSelect", props: { name: 'user[phone]',
-                                                                     value: current_user.phone,
-                                                                     withTarget: false })
+.fr-modal__body id="internship-agreement-signature-form-#{internship_agreement_id}"
+  .fr-modal__header
+    button.fr-btn--close.fr-btn aria-controls="fr-modal-signature"  Fermer
+  .fr-modal__content
+    h1#fr-modal-signature-title.fr-modal__title
+      span.fr-fi-arrow-right-line.fr-fi--lg aria-hidden="true"
+      | Vous vous apprêtez à signer la convention de stage
+    p
+      |
+        Pour signer la convention, veuillez renseigner votre numéro de téléphone.
+        Vous recevrez un code de vérification à rentrer à
+        l’étape suivante pour finaliser la signature.
+  .fr-modal__footer
+    = form_with(model: current_user,
+                scope: :user,
+                url:  dashboard_internship_agreement_user_path(internship_agreement_id: internship_agreement_id,
+                                                              id: current_user.id),
+                method: :patch) do |f|
+      = f.hidden_field :id, value: current_user.id, name: 'user[id]'
+      = f.hidden_field :internship_agreement_id,
+                        value: internship_agreement_id,
+                        name: 'user[internship_agreement_id]'
+      ul.fr-btns-group.fr-btns-group--right.fr-btns-group--inline-reverse.fr-btns-group--inline-lg.fr-btns-group--icon-left
+        li
+          button.fr-btn.fr-icon-checkbox-line
+            | Recevoir un code
+        li
+          - if current_user.reload.formatted_phone.present?
+            = f.hidden_field :user_phone,
+                              value: current_user.phone, name: 'user[phone]'
+          - else
+            = react_component("CountryPhoneSelect", props: { name: 'user[phone]',
+                                                             value: current_user.phone,
+                                                             withTarget: false })

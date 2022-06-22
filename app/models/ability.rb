@@ -105,6 +105,7 @@ class Ability
       edit_legal_terms_rich_text
       edit_complementary_terms_rich_text
       edit
+      resend_sms_code
       see_intro
       sign
       update
@@ -114,8 +115,10 @@ class Ability
     can %i[edit update], InternshipAgreementPreset do |internship_agreement_preset|
       internship_agreement_preset.school_id == user.school_id
     end
+    can :create, Signature do |signature|
+      signature.internship_agreement.school_manager == user.id
+    end
   end
-
 
 
   def employer_abilities(user:)
@@ -143,9 +146,9 @@ class Ability
     can %i[index update], InternshipApplication
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
 
-    # can :sign, Signature do |signature|
-    #   signature.internship_agreement.internship_offer.employer_id == user.id
-    # end
+    can :create, Signature do |signature|
+      signature.internship_agreement.internship_offer.employer_id == user.id
+    end
 
     can %i[
       create
@@ -158,6 +161,7 @@ class Ability
       edit_activity_learnings_rich_text
       edit_complementary_terms_rich_text
       edit
+      resend_sms_code
       sign
       update
     ], InternshipAgreement do |agreement|
@@ -239,7 +243,6 @@ class Ability
   end
 
   def statistician_abilities(user:)
-
     common_to_all_statisticians(user: user)
 
     can :show, :api_token

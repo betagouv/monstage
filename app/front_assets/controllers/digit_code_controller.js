@@ -1,77 +1,78 @@
 import { Controller } from 'stimulus';
 
 export default class extends Controller {
-  static targets = ['code'];
+  static targets = ['code', 'button'];
   static values = { position: Number }
 
   onKeyUp(event) {
     event.preventDefault();
-    (event.key == 'Backspace') ? this.eraseBack() : this.enterKey(event);
+    (event.key == 'Backspace') ? this.eraseBack(event) : this.enterKey(event);
+    this.setFocus(event);
   }
 
   // private
 
-  eraseBack() {
-    this.eraseCurrentKey()
+  eraseBack(event) {
+    this.eraseCurrentKey(event)
     if (!this.firstPosition()) { this.positionMove(-1); }
-    this.enableCurrent();
-    this.eraseCurrentKey();
-    this.setFocus();
+    this.enableCurrent(event);
+    this.eraseCurrentKey(event);
   }
 
   enterKey(event) {
-    this.validKey(event.key) ? this.withGoodKey(event.key) : this.eraseCurrentKey();
+    this.validKey(event.key) ? this.withGoodKey(event) : this.eraseCurrentKey();
   }
 
-  withGoodKey(key) {
-    this.validateEnteredValue(key);
+  withGoodKey(event) {
+    this.validateEnteredValue(event);
     if (this.lastPosition()) {
       this.enableAll();
       this.validateForm();
     } else {
       this.positionMove(+1);
-      this.enableCurrent();
+      this.enableCurrent(event);
     }
-    this.setFocus();
   }
 
-  parseCodes(fn, key = '') {
-    this.codeTargets.forEach((element, index) => {
-      if (index === this.positionValue) { fn(element, key); }
-    });
-    return;
-  }
+  currentCodeTarget() { return this.codeTargets[parseInt(this.positionValue, 10)]; }
+  parseCodes(fn, event = undefined) { fn(this.currentCodeTarget(), event); }
 
-  assignKey(element, key) { element.value = key; }
-  validateEnteredValue(key) { this.parseCodes(this.assignKey, key); }
+  assignKey(element, event) { element.value = event.key; }
+  validateEnteredValue(event) { this.parseCodes(this.assignKey, event); }
 
   clearKey(element) { element.value = ''; }
-  eraseCurrentKey() { this.parseCodes(this.clearKey); }
+  eraseCurrentKey(event) { this.parseCodes(this.clearKey, event); }
 
   enableField(element) { element.removeAttribute('disabled'); }
-  enableCurrent() { this.disableAll(); this.parseCodes(this.enableField); }
+  enableCurrent(event) {
+    this.disableAll(); this.parseCodes(this.enableField, event);
+  }
 
   fieldFocus(element) { element.focus(); }
-  setFocus() { this.parseCodes(this.fieldFocus); }
+  setFocus(event) { this.parseCodes(this.fieldFocus, event); }
 
   disableAll() {
     this.codeTargets.forEach(element => { element.setAttribute('disabled', true); });
   }
-
   enableAll() {
     this.codeTargets.forEach(element => { element.removeAttribute('disabled') });
   }
-  positionMove(i) { this.positionValue += i }
+
   firstPosition() { return this.positionValue == 0; }
   lastPosition() { return this.positionValue == this.codeTargets.length - 1; }
-  validKey(val) { return (parseInt(val, 10) >= 0 && parseInt(val, 10) <= 9) }
+  positionMove(val) { this.positionValue += val; }
 
-  validateForm() { this.codeTargets[0].closest('form').submit(); }
+  validKey(val) { return (parseInt(val, 10) >= 0 && parseInt(val, 10) <= 9) }
+  validateForm() {
+    this.buttonTarget.removeAttribute('disabled');
+    this.codeTarget.form.submit();
+  }
 
   connect() {
     this.codeTargets.forEach((element, index) => {
       element.value = '';
       index === 0 ? element.focus() : element.setAttribute('disabled', true);
     });
+    this.buttonTarget.setAttribute('disabled', true);
   }
 }

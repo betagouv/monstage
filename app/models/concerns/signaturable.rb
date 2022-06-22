@@ -1,45 +1,51 @@
 module Signaturable
   extend ActiveSupport::Concern
   included do
-    def create_signature_phone_token
-      return if school_management? && !school_manager?
+    SIGNATURE_PHONE_TOKEN_VALIDITY = 2 # minutes
 
-      update(phone_token: format('%06d', rand(999_999)),
-             phone_token_validity: 2.minute.from_now)
+    def create_signature_phone_token
+      return false if school_management? && !school_manager?
+
+      update(signature_phone_token: format('%06d', rand(999_999)),
+             signature_phone_token_validity: SIGNATURE_PHONE_TOKEN_VALIDITY.minute.from_now)
+    end
+
+    def signature_phone_confirmable?
+      signature_phone_token.present? && signature_phone_token_still_ok?
     end
 
     def send_signature_sms_token
-      return unless phone.present?
+      return false unless phone.present?
 
-      create_signature_phone_token
-      message = "Votre code de signature : #{self.phone_token} - valide pendant 2 minutes"
-      # SendSmsJob.perform_later(user: self, message: message) TODO : uncomment at commit time
+      token_created = create_signature_phone_token
+      message = "Votre code de signature : #{signature_presenter.show_code} " \
+                "- Validité : #{SIGNATURE_PHONE_TOKEN_VALIDITY} minutes"
+      token_created && SendSmsJob.perform_later(user: self, message: message) && true
     end
 
-    def already_signed?(internship_agreement_id:)
-      Signature.already_signed?(
-        user_role: signatory_role,
-        internship_agreement_id: internship_agreement_id
-      )
+    def signature_phone_token_still_ok?
+      Time.zone.now < signature_phone_token_validity
     end
 
-    def signs(internship_agreement_id:, code: )
-      return unless allow_signature?(internship_agreement_id: internship_agreement_id, code: code)
-
-      Signature.create(
-        user_role: signatory_role,
-        internship_agreement_id: internship_agreement_id
-      )
+    def nullify_phone_number
+      self.phone = nil
+      self.signature_phone_token_validity = nil
+      self.phone_token_validity = nil
+      save!
     end
 
     def allow_signature?(internship_agreement_id: , code:)
       return false if already_signed?(internship_agreement_id: internship_agreement_id)
 
-      phone_confirmable? && phone_token == code
+      signature_phone_confirmable? && signature_phone_token == code
     end
 
     def obfuscated_phone_number
       phone.gsub(/(\+\d{2})(\d{1})(\d{1})(\d{6})(\d{2})/, '\1 \3 ** ** ** \5')
+    end
+
+    def signature_presenter
+      @signature_presenter ||= Presenters::Signature.new(self)
     end
   end
 end
