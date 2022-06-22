@@ -85,7 +85,7 @@ As a public french service, we try to keep most data hosted by french service pr
 
 ### Tooling
 * Infra management
-* Mail: [mailjet](https://mailjet.com)
+* Mail: [tipimail](https://app.tipimail.com)
 * Monit [monit](monit.monstagedetroisieme.fr) : website up/down (pingdom like)
 
 # Build: test, dev

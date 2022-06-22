@@ -150,7 +150,6 @@ class User < ApplicationRecord
 
     unless email_for_job.blank?
       AnonymizeUserJob.perform_later(email: email_for_job) if send_email
-      RemoveContactFromSyncEmailDeliveryJob.perform_later(email: email_for_job)
     end
   end
 
