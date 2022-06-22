@@ -16,11 +16,11 @@ module InternshipAgreements
       # when not employer then school_manager
       case @internship_agreement.aasm_state
       when 'draft', 'started_by_employer' then
-        employer ? {status: 'enabled', text: 'Remplir ma convention'} :
-                   {status: 'disabled', text: 'En attente'}
+        bool_employer ? {status: 'enabled', text: 'Remplir ma convention'} :
+                        {status: 'disabled', text: 'En attente'}
       when 'completed_by_employer', 'started_by_school_manager' then
-        employer ? {status: 'enabled', text: 'Vérifier ma convention'} :
-                   {status: 'enabled', text: 'Remplir ma convention'}
+        bool_employer ? {status: 'enabled', text: 'Vérifier ma convention'} :
+                        {status: 'enabled', text: 'Remplir ma convention'}
       when 'validated', 'signatures_started', 'signed_by_all' then
         {status: 'enabled', text: 'Imprimer'}
       end
