@@ -23,9 +23,12 @@ class AirTableRecord < ApplicationRecord
   }
 
 
-  # where clauses
+  # where clauses  
   scope :during_year, lambda { |school_year:|
-    where(week_id: Week.selectable_for_school_year(school_year: school_year.next_year))
+    unless school_year.blank?
+      school_year = SchoolYear::Floating.new_by_year(year: school_year.to_i + 1) unless school_year.is_a?(SchoolYear::Floating)
+      where(week_id: Week.selectable_for_school_year(school_year: school_year))
+    end
   }
 
   scope :current_year, -> {

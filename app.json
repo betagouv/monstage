@@ -26,7 +26,7 @@
         }
       },
       "scripts": {
-        "postdeploy": "bundle exec bin/rails db:structure:load db:migrate db:seed infra:notify_deployed"
+        "postdeploy": "bundle exec bin/rails db:schema:load db:migrate db:seed infra:notify_deployed"
       },
       "env": {
         "RAILS_ENV": "review",

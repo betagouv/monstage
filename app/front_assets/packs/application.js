@@ -15,10 +15,43 @@ import 'raf/polyfill';
 import 'core-js/es/map';
 import 'core-js/es/set';
 
+import '@gouvfr/dsfr/dist/dsfr.css';
+import '@gouvfr/dsfr/dist/utility/icons/icons-system/icons-system.css';
+import '@gouvfr/dsfr/dist/utility/icons/icons-user/icons-user.css';
+import '@gouvfr/dsfr/dist/utility/icons/icons-business/icons-business.css';
+import '@gouvfr/dsfr/dist/utility/icons/icons-design/icons-design.css';
+import '@gouvfr/dsfr/dist/utility/icons/icons-document/icons-document.css';
+
+import '@gouvfr/dsfr/dist/fonts/Marianne-Bold_Italic.woff'
+import '@gouvfr/dsfr/dist/fonts/Marianne-Bold_Italic.woff2'
+import '@gouvfr/dsfr/dist/fonts/Marianne-Light_Italic.woff'
+import '@gouvfr/dsfr/dist/fonts/Marianne-Light_Italic.woff2'
+import '@gouvfr/dsfr/dist/fonts/Marianne-Medium_Italic.woff'
+import '@gouvfr/dsfr/dist/fonts/Marianne-Medium_Italic.woff2'
+import '@gouvfr/dsfr/dist/fonts/Marianne-Regular_Italic.woff'
+import '@gouvfr/dsfr/dist/fonts/Marianne-Regular_Italic.woff2'
+import '@gouvfr/dsfr/dist/fonts/Marianne-Regular.woff'
+import '@gouvfr/dsfr/dist/fonts/Marianne-Regular.woff2'
+import '@gouvfr/dsfr/dist/fonts/Marianne-Medium.woff'
+import '@gouvfr/dsfr/dist/fonts/Marianne-Medium.woff2'
+import '@gouvfr/dsfr/dist/fonts/Marianne-Light.woff'
+import '@gouvfr/dsfr/dist/fonts/Marianne-Light.woff2'
+import '@gouvfr/dsfr/dist/fonts/Marianne-Bold.woff'
+import '@gouvfr/dsfr/dist/fonts/Marianne-Bold.woff2'
+import '@gouvfr/dsfr/dist/fonts/Spectral-Regular.woff'
+import '@gouvfr/dsfr/dist/fonts/Spectral-Regular.woff2'
+import '@gouvfr/dsfr/dist/fonts/Spectral-ExtraBold.woff'
+import '@gouvfr/dsfr/dist/fonts/Spectral-ExtraBold.woff2'
+
+import '@gouvfr/dsfr/dist/dsfr.module.js';
+
 import '../stylesheets/screen.scss';
 import '../stylesheets/print.scss';
 
 import '@popperjs/core';
+
+import '@hotwired/turbo-rails';
+
 import Alert from 'bootstrap'
 import Dropdown from 'bootstrap'
 import Modal from 'bootstrap'
@@ -32,3 +65,6 @@ import 'url-search-params-polyfill';
 import '../bootapp';
 
 import '../utils/zammad_form';
+$(document).on("turbo:load", () => {
+  console.log('turbo:load');
+});

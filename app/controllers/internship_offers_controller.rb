@@ -13,6 +13,7 @@ class InternshipOffersController < ApplicationController
 
   def index
     @internship_offers = finder.all.order(id: :desc)
+    @alternative_internship_offers = alternative_internship_offers if @internship_offers.to_a.count == 0
   end
 
   def show
@@ -77,6 +78,29 @@ class InternshipOffersController < ApplicationController
       ),
       user: current_user_or_visitor
     )
+  end
+
+  def alternative_internship_offers
+    priorities = [
+      [:week_ids], #1
+      [:latitude, :longitude, :radius], #2
+      [:keyword] #3
+    ]
+
+    alternative_internship_offers = []
+    priorities.each do |priority|
+      next unless priority.any? { |p| params[p].present? && params[p] != Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER.to_s }
+
+      alternative_internship_offers << Finders::InternshipOfferConsumer.new(
+        params: params.permit(*priority),
+        user: current_user_or_visitor
+      ).all.to_a
+
+      alternative_internship_offers = alternative_internship_offers.flatten
+      break if alternative_internship_offers.count > 5
+      alternative_internship_offers
+    end
+    alternative_internship_offers.first(5)
   end
 
   def increment_internship_offer_view_count

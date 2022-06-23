@@ -1,0 +1,10 @@
+div id="pub_status_#{dom_id @internship_offer}"
+  - if internship_offer.reload.published_at.present?
+    li.d-flex-inline.align-items-center.text-success.br-1.bc-light.pr-3
+      span.d-inline= "Annonce publiée"
+      br
+      span.d-inline.internship_offer-published_at
+        = "depuis le #{l(internship_offer.published_at, format: :human_mm_dd)}"
+  - else
+    li.d-flex.align-items-center.br-1.bc-light.pr-3
+      = "Annonce dé-publiée"

@@ -1,42 +1,35 @@
-.row
+= render 'layouts/breadcrumb', links: [ ['', 'Mes offres de stage'] ]
+.row.no-gutters.employer
   .col-6
-    h1.h3 Mes offres de stages
+    h1.h3.fr-mb-8w Mes offres de stages
   - if can?(:create, InternshipOffer)
     .col-6.text-right
       = link_to new_dashboard_stepper_organisation_path,
-                class: 'ml-auto rounded-xs-0 btn btn-primary px-4',
-                id: 'test-create-offer'
-        i.fas.fa-plus
-        span.px-3 Déposer une offre
-- if current_user.is_a?(Users::Employer) && current_user.internship_applications.submitted.count.positive?
+                class: 'ml-auto',
+                id: 'test-create-offer' do
+        button.fr-icon-add-line.fr-btn.fr-btn--icon-left Déposer une offre
+.fr-tabs.fr-mb-9w.w-100
+  .row
+    = render partial: "dashboard/internship_offers/tabs",
+              locals: { internship_offers: @internship_offers,
+                        all_states_counter: @all_states_counter }
 
-.fake-table
-  .row= render partial: "dashboard/internship_offers/tabs",
-               locals: { internship_offers: @internship_offers,
-                         all_states_counter: @all_states_counter }
-  .tab-content
-    .tab-pane.show.active
-      = render partial: 'dashboard/internship_offers/offers_and_aggreements_content',
-               locals: {params: params}
+  .fr-tabs__panel.fr-tabs__panel--selected.internships
+    = render partial: 'dashboard/internship_offers/offers_and_agreements_content',
+            locals: { params: params }
 
   - if @internship_offers.total_pages > @internship_offers.current_page
     .row.d-flex.d-sm-none
       .col-12.mt-3
         .actions.d-flex.d-sm-block
           = link_to path_to_next_page(@internship_offers),
-                    class: 'btn btn-outline-primary' do
+                    class: 'fr-btn' do
             | Plus de resultats
 
   .row.d-none.d-sm-flex
     .col-12.mt-3= paginate(@internship_offers)
 
-
 - if @internship_offers.empty?
-  .row
+  .row.fr-mb-2w
     .col-12
       h1.h2.mt-4 Aucune offre n'a été publiée selon ces critères
-      p.d-sm-block.d-none
-        = link_to new_dashboard_stepper_organisation_path,
-                  class: 'btn btn-primary' do
-          = "Déposer une offre "
-          i.fas.fa-plus

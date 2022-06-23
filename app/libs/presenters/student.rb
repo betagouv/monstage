@@ -40,6 +40,5 @@ module Presenters
     def anonymized_message
       "Non communiqué (Donnée anonymisée)"
     end
-
   end
 end

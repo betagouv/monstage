@@ -90,19 +90,19 @@ export default class extends Controller {
         switch (data.status) {
           case 'valid':
             $hint.attr('class', 'valid-feedback');
-            $input.attr('class', 'form-control is-valid');
+            $input.attr('class', 'fr-input is-valid');
             emailHintElement.innerText = 'Votre email semble correct!';
             break;
           case 'invalid':
             $hint.attr('class', 'invalid-feedback');
-            $input.attr('class', 'form-control is-invalid');
+            $input.attr('class', 'fr-input is-invalid');
 
             emailHintElement.innerText =
               'Cette adresse éléctronique ne nous semble pas valide, veuillez vérifier';
             break;
           case 'hint':
             $hint.attr('class', 'invalid-feedback');
-            $input.attr('class', 'form-control is-invalid');
+            $input.attr('class', 'fr-input is-invalid');
             emailHintElement.innerText = `Peut être avez-vous fait une erreur de frappe ? ${data.replacement}`;
             break;
           default:

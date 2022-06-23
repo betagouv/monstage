@@ -10,8 +10,8 @@ $gray-900: #3F3256;    // body text color
 
 // s'assurer d'un contrast fort entre la couleur du body #fff et les alerts
 // $primary:
-$blue: #1E40AF;
-$blue_light: rgb(247,248,252);
+$blue: #000091;
+$blue_light: rgb(247, 248, 252);
 $blue_sky: rgb(46,134,255);
 $blue_dark: rgb(47,94,167);
 $blue_800: #1E40AF;
@@ -28,9 +28,12 @@ $cyan_custom: #62CAC6;
 $yellow:  #feb620;
 // darken colors based on a11y feed
 $red:     darken(#dc3545, 3); // do not change
+$error-425:#CE0500;
 $green:   darken(#28a745, 8); // do not change
 
 $green_lime: rgb(18,199,123);
+$fr-text-with-success: #00A851;
+
 $custom_cyan:    rgb(90,202,198);
 $secondary: #DEE2E6;
 

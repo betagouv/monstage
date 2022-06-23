@@ -1,4 +1,7 @@
 - content_for :page_title, "#{t(".page_title", name: @internship_application.internship_offer.title)} | Monstage"
+= render 'layouts/breadcrumb',
+          links: [ [current_user.presenter.dashboard_name_link, current_user.dashboard_name],
+                   ['', @internship_application.internship_offer.title]]
 h1.h2.mb-3 = @internship_application.internship_offer.title
 
 div data-controller="dashboard-students-internship-application" data-dashboard-students-internship-application-state-value=@internship_application.aasm_state
@@ -23,7 +26,7 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
       .col-12.py-2
         = link_to "#tab-internship-application-detail",
                   class: '',
-                  data: {action: "click->dashboard-students-internship-application#toggleInternshipApplicationContent", :"dashboard-students-internship-application-target" => "linkIconContainer", turbolinks: false } do
+                  data: {action: "click->dashboard-students-internship-application#toggleInternshipApplicationContent", :"dashboard-students-internship-application-target" => "linkIconContainer", turbo: false } do
           i.fas.fa-chevron-right.mr-1
           = "Afficher ma candidature"
 
@@ -31,25 +34,24 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
       = render "internship_applications/show_details", internship_application: @internship_application
       - if @internship_application.drafted?
         .actions.d-flex.d-sm-block.d-xs-stick
-          = link_to internship_offer_path(@internship_application.internship_offer), class: 'btn btn-outline-primary' do
-            i.fas.fa-chevron-left
-
-            = " Modifier"
-          span.mx-1= " "
+          = link_to "Modifier",
+                    internship_offer_path(@internship_application.internship_offer),
+                    class: 'fr-btn fr-icon-arrow-left-s-line fr-btn--icon-left fr-mr-4w'
           = link_to "Envoyer",
                     internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application, transition: "submit!"),
                     method: :patch,
-                    class: 'btn btn-primary'
+                    data: {turbo: false},
+                    class: 'fr-btn'
       - if @internship_application.submitted? || @internship_application.approved?
-          = render "dashboard/internship_offers/internship_applications/action_modal",
-              internship_application: @internship_application,
-              aasm_target: :cancel_by_student!,
-              modal_opener_label: 'Annuler',
-              subtitle: "Motif de l'annulation",
-              message: "Une fois la candidature annulée, un email de notification va être envoyé à l'employeur avec le motif de l'annulation",
-              rich_text: true,
-              modal_id: "cancel-by-student-internship-application-#{@internship_application.id}",
-              fa_icon: "fa-ban"
+        = render "dashboard/internship_offers/internship_applications/action_modal",
+                  internship_application: @internship_application,
+                  aasm_target: :cancel_by_student!,
+                  modal_opener_label: 'Annuler',
+                  subtitle: "Motif de l'annulation",
+                  message: "Une fois la candidature annulée, un email de notification va être envoyé à l'employeur avec le motif de l'annulation",
+                  rich_text: true,
+                  modal_id: "cancel-by-student-internship-application-#{@internship_application.id}",
+                  fa_icon: "fa-ban"
 
   #tab-convention-detail data-dashboard-students-internship-application-target='conventionDetail'
     .row

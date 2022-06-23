@@ -1,3 +1,6 @@
+= render 'layouts/breadcrumb',
+          links: [ [dashboard_internship_offers_path, 'Mes offres de stage'],
+                   ['', 'Déposer une offre de stage']]
 .row
   .col
     h1.h2.mb-3 Déposer une offre de stage
@@ -5,8 +8,8 @@
 
 = form_with model: @organisation,
             url: dashboard_stepper_organisations_path(@organisation),
-            method: :post,
-            local: true do |form|
+            data: {turbo: false},
+            method: :post do |form|
   = render "dashboard/stepper/steps"
   = render "layouts/form_errors", resource: @organisation, resource_name: :internship_offer
   = render 'dashboard/stepper/organisations/form_fields', { resource: @organisation,

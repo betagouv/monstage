@@ -19,13 +19,13 @@ class EmailUpdateFlowTest < ApplicationSystemTestCase
     assert_changes -> { user.reload.unconfirmed_email } do
       visit account_path
       fill_in('Adresse électronique (ex : mon@exemple.fr)', with: alt_email)
-      click_on('Enregistrer')
+      click_on('Enregistrer mon CV')
       success_message = find('#alert-text').text
-      assert_equal success_message,
-                  "Compte mis à jour avec succès. Un courriel a été envoyé " \
-                  "à l'ancienne adresse électronique (e-mail). Veuillez " \
-                  "cliquer sur le lien contenu dans le courriel pour confirmer" \
-                  " votre nouvelle adresse électronique (e-mail)."
+      expected_message = "Compte mis à jour avec succès. Un courriel a été envoyé " \
+                         "à l'ancienne adresse électronique (e-mail). Veuillez " \
+                         "cliquer sur le lien contenu dans le courriel pour confirmer" \
+                         " votre nouvelle adresse électronique (e-mail)."
+      assert_equal expected_message, success_message
     end
     visit account_path
     assert_equal alt_email, find('#user_unconfirmed_email').value
@@ -39,6 +39,6 @@ class EmailUpdateFlowTest < ApplicationSystemTestCase
     click_on('Renvoyer')
     user.confirm
     visit account_path
-    assert_equal alt_email, find('#user_email').value
+    assert_equal alt_email, find('#user_email_1').value
   end
 end

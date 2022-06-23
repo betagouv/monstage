@@ -63,12 +63,36 @@ tr:hover a.trash-user{
 .dark-notice {
   background: $bg-light-blue 0% 0% no-repeat padding-box;
   box-shadow: 0px 3px 6px #0000001A;
-  border-radius: 14px;
+  .notice-label{
+    max-width: 532px;
+  }
 }
 
 .btn .disabled {
   background: $input-disabled-bg;
   &:hover{
     cursor: not-allowed;
+  }
+}
+
+.bg-blue-950 {
+  background-color: $blue-france-950;
+}
+
+.bg-blue-975 {
+  background-color: $blue-france-975;
+}
+
+ul.class-room {
+  list-style-type: none;
+  height:200px;
+  overflow:hidden;
+  overflow-y:scroll;
+  .student-action {
+    color: $grey-925
+  }
+  li:hover, li:hover .student-action  {
+    color: $blue-france !important;
+    cursor: pointer;
   }
 }

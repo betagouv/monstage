@@ -1,13 +1,19 @@
-= form_with(model: internship_agreement_preset, url: dashboard_school_internship_agreement_preset_path(school, internship_agreement_preset), data: {:"test-id" => 'internship_agreement_preset_form'}, class: 'py-3') do |f|
-    .row.align-items-center
-      .col-auto
-        = image_tag asset_pack_path('media/images/danger_sign_blue.svg'), alt: 'Précaution importante'
-      .col-6.text-primary.font-weight-bold
-        | Avant de pouvoir signer les conventions de stages, vous devez indiquer et valider la date d’autorisation de signatures par le conseil d’administration de votre établissement.
-      .col-4.col-offset-2.pt-3.pt-sm-0
-        = render layout: "inputs/date_input", locals: { form: f, container_class_name: "input-group", attribute_name: :school_delegation_to_sign_delivered_at, attribute_label: 'Date de délégation' } do
-          .input-group-append.rounded
-            = f.button class: 'bg-primary text-white b-none rounded-circle-right-input' do
-              .fa.fa-check
-              br
-              small Valider
+= form_with(model: internship_agreement_preset,
+            url: dashboard_school_internship_agreement_preset_path(school, internship_agreement_preset),
+            data: {:"test-id" => 'internship_agreement_preset_form'}, class: 'py-3') do |f|
+  .row.align-items-center
+    .col-auto
+      = image_tag asset_pack_path('media/images/danger_sign_blue.svg'), alt: 'Précaution importante'
+    .col-7.text-primary.font-weight-bold
+      |
+        Avant de pouvoir signer les conventions de stages, vous devez indiquer
+        et valider la date d’autorisation de signatures par le conseil
+        d’administration de votre établissement.
+    .col-4.col-offset-2.pt-sm-0
+      = render layout: "inputs/date_input_dsfr",
+               locals: { form: f,
+                         container_class_name: "input-group",
+                         attribute_name: :school_delegation_to_sign_delivered_at,
+                         attribute_label: 'Date de délégation' } do
+        button.fr-btn.fr-icon-checkbox-circle-line.fr-btn--icon-left.fr-mt-2w type='submit'
+          small Valider

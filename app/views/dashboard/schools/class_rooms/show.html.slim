@@ -1,39 +1,67 @@
-- content_for :page_title, "#{t(".page_title", name: @class_room.name)} | Monstage"
-= render partial: 'dashboard/schools/navbar', locals: { school: @school }
+- content_for :page_title, "#{t(".page_title", name: @school.name)} | Monstage"
+- badge_counter = Finders::TabSchoolManager.new(school: @school) if current_user.school_manager?
+- badge_counter = Finders::TabMainTeacher.new(main_teacher: current_user) if current_user.main_teacher?
+- badge_counter = Finders::TabNull.new if badge_counter.nil?
 
-.row.my-3.pl-0
-  .col-8
-    small
-      = link_to dashboard_school_class_rooms_path(@school), class: 'text-danger' do
-        i.fa.fa-chevron-left
-        |  Retour
+h1.h2.mb-4
+  .fr-raw-link= link_to account_path do 
+    = @school.name
+    span.fr-icon-edit-fill<
 
-= form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', data: {controller: 'students'}) do
-  .row
-    .col-8
-      h2.h5.mb-0= "#{@class_room.name}"
-      - unless @class_room.school_managements.main_teachers.size.zero?
-        p.text-muted.small
-          = "PP : "
-          = @class_room.school_managements.main_teachers.map { |main_teacher| main_teacher.presenter.full_name }.join(", ")
-    .col-4.text-right
-      = submit_tag 'Enregistrer les modifications', disabled: true, class: 'btn-primary btn', data: { 'target': 'students.submitButton' }
+.fr-tabs.mb-5
+  ul.fr-tabs__list aria-label=("school-tab") role="tablist" 
+      
+    li role="presentation" 
+      button#classes.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left> aria-controls="classes-panel" aria-selected="true" role="tab" tabindex="0"
+        | Classes
+        - if badge_counter.student_without_class_room_count.size.positive?
+          = " (#{badge_counter.student_without_class_room_count})"
+    li
+      = link_to dashboard_school_path(@school) do
+        button#users.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-controls="users-panel" aria-selected="false" role="tab" tabindex="1"  Personnels
+    li
+      = link_to dashboard_school_path(@school) do 
+        button#weeks.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-controls="weeks-panel" aria-selected="false" role="tab" tabindex="2"  Semaines
+    - if current_user.school.internship_agreement_open?
+      li
+        = link_to dashboard_school_path(@school) do
+          button#internship-agreements.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-controls="internship-agreements-panel" aria-selected="false" role="tab" tabindex="3"  Mes conventions de stage
+      li
+        = link_to dashboard_school_path(@school) do
+          button#manage-school.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-controls="manage-school-panel" aria-selected="false" role="tab" tabindex="4"  Gérer mon établissement
 
-  .row
-    .col-12
-        table.table.table-hover.table-rg2a.table-sticky-thead
-          thead
-            tr.d-flex.tr-white
-              th.col-3.align-self-end
-                small.font-weight-bold Élève
-              th.col-2.align-self-end
-                small.font-weight-bold Confirmé
-              th.col-2.align-self-end
-                small.font-weight-bold Cordée de réussite / Parcours d'excellence
-              th.col-2.align-self-end
-                small.font-weight-bold Nombre de candidatures
-              th.col-1.text-center.align-self-end
-                small.font-weight-bold Réponses
-              th.col-2
-          tbody= render partial: "dashboard/schools/users/student", collection: @class_room.students.includes([:school, :internship_applications]).order(:last_name, :first_name), locals: {}
+  #classes-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0"
+    .row.mt-3.pl-0
+      .col-8
+        = link_to dashboard_school_path(@school), class: 'text-danger fr-raw-link' do
+          span.fr-icon-arrow-left-line
+          |  Retour
+    .mb-4
+      = form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', data: {controller: 'students'}) do
+        .row
+          .col-8
+            h2.h3.mb-0= "#{@class_room.name}"
+          
+
+        .row
+          .col-12.fr-table.fr-table--white
+            table
+              thead
+                tr.tr-blue
+                  th.col-3.align-self-end
+                    small Élève
+                  th.col-2.align-self-end
+                    small Confirmé
+                  th.col-2.align-self-end
+                    small Cordée de réussite / Parcours d'excellence
+                  th.col-2.align-self-end
+                    small Candidatures
+                  th.col-1.text-center.align-self-end
+                    small Réponses
+                  th.col-2
+              tbody= render partial: "dashboard/schools/users/student", collection: @class_room.students.includes([:school, :internship_applications]).order(:last_name, :first_name), locals: {}
+        
+        .row
+          .col-12.text-right
+            = button_tag 'Enregistrer les modifications', disabled: true, class: 'fr-btn fr-icon-save-line fr-btn--icon-left', data: { 'target': 'students.submitButton' }
 

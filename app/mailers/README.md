@@ -16,6 +16,6 @@ Ongoing active measures :
 * send from existing email (best practice)
 * every email are send with well crafted html & text part (best practice)
 * every email are previewable via /rails/mailers (for team email review)
-* ensure subject line between 35/50 chars (https://www.mailjet.com/blog/news/avoid-email-spam-filters/)
-* ensure body does not contains upcase words (https://www.mailjet.com/blog/news/avoid-email-spam-filters/)
+* ensure subject line between 35/50 chars
+* ensure body does not contains upcase words
 * mails a previewable in development,review,staging using `$HOST/rails/mailers`

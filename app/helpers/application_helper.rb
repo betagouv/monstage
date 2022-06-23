@@ -29,7 +29,7 @@ module ApplicationHelper
   end
 
   def onboarding_flow?
-    devise_controller?
+    devise_controller? && request.path.include?('identity_id')
   end
 
   def body_class_name

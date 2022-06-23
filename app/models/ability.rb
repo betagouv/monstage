@@ -16,7 +16,6 @@ class Ability
       when 'Users::SchoolManagement'
         common_school_management_abilities(user: user)
         school_manager_abilities(user: user) if user.school_manager?
-        main_teacher_abilities(user: user)   if user.main_teacher?
       end
 
       shared_signed_in_user_abilities(user: user)
@@ -112,23 +111,7 @@ class Ability
     end
   end
 
-  def main_teacher_abilities(user:)
-    can %i[
-      create
-      update
-      see_intro
-      edit_student_class_room
-      edit_main_teacher_full_name
-      edit_activity_rating_rich_text
-      edit_activity_preparation_rich_text
-      edit
-        ], InternshipAgreement do |agreement|
-      is_student_in_school = agreement.internship_application.student.school_id == user.school_id
-      is_student_in_class_room = agreement.internship_application.student.class_room_id == user.class_room_id
 
-      is_student_in_school && is_student_in_class_room
-    end
-  end
 
   def employer_abilities(user:)
     can :supply_offers, User
@@ -225,7 +208,7 @@ class Ability
       true
     end
     can %i[index_and_filter], Reporting::InternshipOffer
-    can %i[new], InternshipAgreement
+    can :manage, InternshipAgreement
     can :reset_cache, User
     can %i[ switch_user
             read
@@ -246,7 +229,7 @@ class Ability
   end
 
   def statistician_abilities(user:)
-    
+
     common_to_all_statisticians(user: user)
 
     can :show, :api_token

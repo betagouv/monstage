@@ -106,6 +106,7 @@ fr:
         we_need_your_current_password_to_confirm_your_changes: nous avons besoin de votre mot de passe actuel pour valider ces modifications
       new:
         sign_up: Inscription
+      second_step: Informations bien enregistrées
       signed_up: Bienvenue ! Vous vous êtes bien enregistré(e).
       signed_up_but_inactive: Vous vous êtes bien enregistré(e). Cependant, nous n’avons pas pu vous connecter car votre compte n’a pas encore été activé.
       signed_up_but_locked: Vous vous êtes bien enregistré(e). Cependant, nous n’avons pas pu vous connecter car votre compte est verrouillé.

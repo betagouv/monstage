@@ -1,0 +1,11 @@
+nav.fr-breadcrumb.fr-px-2w aria-label=("vous êtes ici :") role="navigation" 
+  button.fr-breadcrumb__button aria-controls="breadcrumb-1" aria-expanded="false"  Voir le fil d’Ariane
+  #breadcrumb-1.fr-collapse
+    ol.fr-breadcrumb__list
+      li= link_to 'Accueil', root_path, class: 'fr-breadcrumb__link'
+      - links.each_with_index do |link, i|
+        - if i < links.size - 1
+          li= link_to link[1], link[0], class: 'fr-breadcrumb__link'
+        - else
+          li
+            a.fr-breadcrumb__link aria-current="page" #{link[1]}

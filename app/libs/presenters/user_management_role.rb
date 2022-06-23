@@ -59,6 +59,15 @@ module Presenters
       end
     end
 
+    def dashboard_name_link
+      if user.school && user.role == 'main_teacher'
+        return url_helpers.dashboard_school_class_room_students_path(school_id: user.school.id, class_room_id: user.class_room.id)
+      elsif user.school
+        return url_helpers.dashboard_school_path(user.school)
+      end
+      url_helpers.root_path
+    end
+
     private
 
     attr_reader :user

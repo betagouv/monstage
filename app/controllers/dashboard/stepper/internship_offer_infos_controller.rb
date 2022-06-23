@@ -4,7 +4,6 @@ module Dashboard::Stepper
   # Step 2 of internship offer creation: fill in offer details/info
   class InternshipOfferInfosController < ApplicationController
     before_action :authenticate_user!
-    before_action :disable_turbolink_caching_to_force_page_refresh, only: %i[new edit]
 
     # render step 2
     def new
@@ -73,6 +72,7 @@ module Dashboard::Stepper
               :max_candidates,
               :max_students_per_group,
               :school_track,
+              :siret,
               :weekly_lunch_break,
               weekly_hours: [],
               new_daily_hours: {},

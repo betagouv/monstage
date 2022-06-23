@@ -40,7 +40,14 @@ module Dashboard
 
     def show
       authorize! :edit, School
+      @available_weeks = Week.selectable_on_school_year
+      redirect_to dashboard_school_class_rooms_path(@school)
     end
+
+    def information
+      @school = School.find(params.require(:school_id))
+    end
+
 
     private
 

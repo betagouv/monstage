@@ -1,29 +1,47 @@
-.container.mt-3
+.container-monstage.my-3
   = render partial: 'reporting/navigation'
-  div.rounded[data-controller='statistics']
-    = render partial: 'reporting/filters',
-             locals: {view_tab: :schools}
-
-  .row.mt-3
-    .col-lg-8.col-12.mb-2
-      = link_to reporting_schools_path(reporting_cross_view_params.merge(format: :xlsx)),
-                class: 'btn btn-danger ml-auto ',
-                data: {turbolinks: false} do
-        i.fas.fa-download
-        span =" Exporter la liste des établissements"
-  .row.mt-3
+  .row
     .col-12
-      table.table.table-statistics.table-sticky-thead
-        thead
-          tr.tr-white
-            th.bc-light.font-weight-light.text-black-50= "Établissements"
-            th.bc-light.font-weight-light.text-black-50= "Semaines de stage"
-            th.bc-light.font-weight-light.text-black-50= "E-mails confirmés"
-            th.bc-light.font-weight-light.text-black-50= "Chef établissement"
-            th.bc-light.font-weight-light.text-black-50= "Professeurs principaux"
-        tbody
-          = render partial: 'reporting/schools/school', collection: @schools
+      .fr-tabs 
+        = render partial: 'reporting/tabs'
 
-  .row.mt-3
-    .col-12= paginate(@schools, params: params[:department] ? {department: params[:department]} : {})
+        #offers-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0" 
 
+          div.rounded[data-controller='statistics']
+            = render partial: 'reporting/filters',
+                    locals: {view_tab: :schools}
+              
+          .row.mt-3
+            .col-12.fr-table.fr-table--white.wrapper-scroll-y.table-scrollbar
+              table.table-scrollable
+                thead
+                  tr.tr-blue
+                    th
+                      small= "Établissements"
+                    th
+                      small= "Semaines de stage"
+                    th
+                      small= "E-mails confirmés"
+                    th
+                      small= "Chef établissement"
+                    th
+                      small= "Professeurs principaux"
+                tbody
+                  = render partial: 'reporting/schools/school', collection: @schools
+
+          .row.mt-3
+            .col-12= paginate(@schools, params: params[:department] ? {department: params[:department]} : {})
+
+        div data-controller="footer"
+          div  [
+            data-footer-target="placeholder"
+            data-action="resize@window->footer#resize"
+            ]
+
+          .sticky-footer.bg-light data-footer-target="fixedContent"
+            .row.p-4
+              .col-12
+                = link_to reporting_schools_path(reporting_cross_view_params.merge(format: :xlsx)),
+                        class: 'ml-auto fr-btn fr-btn-danger fr-icon-mail-line fr-btn--icon-left',
+                        data: {turbo: false} do
+                  | Exporter la liste des établissements

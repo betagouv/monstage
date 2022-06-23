@@ -1,13 +1,36 @@
-= render "edit_#{current_section}"
+.row
+  .col.d-flex.align-items-start
+    = render 'layouts/breadcrumb', links: [ ['', current_user.account_link_name] ]
+  .col.text-right
+    = link_to destroy_user_session_path,
+              class: "fr-btn fr-btn-danger fr-mx-w fr-mt-2w",
+              data: { turbo: false },
+              method: :delete do
+      | Déconnexion
+.fr-tabs
+  ul.fr-tabs__list aria-label=("user-tab") role="tablist"
 
-.list-group.nav.mt-5
-  - if current_user.student?
-    = link_to 'Mon CV', account_path(section: 'resume'), class: "list-group-item list-group-item-action #{'active' if current_section == 'resume'}"
-  = link_to 'Mon identité', account_path(section: 'identity'), class: "list-group-item list-group-item-action #{'active' if current_section == 'identity'}"
-  = link_to 'Mon mot de passe', account_path(section: 'password'), class: "list-group-item list-group-item-action #{'active' if current_section == 'password'}"
-  - if can?(:choose_school, current_user)
-    = link_to 'Mon établissement', account_path(section: 'school'), class: "list-group-item list-group-item-action #{'active' if current_section == 'school'}"
-  - if can?(:show, :api_token)
-    = link_to 'API', account_path(section: 'api'), class: "list-group-item list-group-item-action #{'active' if current_section == 'api'}"
-  = link_to destroy_user_session_path, class: "list-group-item list-group-item-action text-danger", method: :delete do
-    | Déconnexion
+    - if current_user.student?
+      li role="presentation"
+        button#resume.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-controls="resume-panel" aria-selected="true" role="tab" tabindex="0"  Mon CV
+    li role="presentation"
+      button#identity.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-controls="identity-panel" aria-selected="#{!current_user.student?}" role="tab" tabindex="1"  Mon identité
+    li role="presentation"
+      button#password.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-controls="password-panel" aria-selected="false" role="tab" tabindex="2"  Mon mot de passe
+    - if can?(:choose_school, current_user)
+      li role="presentation"
+        button#school.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-controls="school-panel" aria-selected="false" role="tab" tabindex="3"  Mon établissement
+    - if can?(:show, :api_token)
+      li role="presentation"
+        button#api.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-controls="api-panel" aria-selected="false" role="tab" tabindex="4"  API
+
+  = render "edit_resume" if current_user.student?
+
+  = render "edit_identity"
+
+  = render "edit_password"
+
+  = render "edit_school"
+
+  = render "edit_api" if can?(:show, :api_token)
+

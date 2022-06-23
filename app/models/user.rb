@@ -150,7 +150,6 @@ class User < ApplicationRecord
 
     unless email_for_job.blank?
       AnonymizeUserJob.perform_later(email: email_for_job) if send_email
-      RemoveContactFromSyncEmailDeliveryJob.perform_later(email: email_for_job)
     end
   end
 
@@ -239,6 +238,9 @@ class User < ApplicationRecord
   def statistician? ; false end
   def ministry_statistician? ; false end
   def student? ; false end
+  def employer? ; false end
+  def operator? ; false end
+  def school_management?; false end
 
   def presenter
     Presenters::User.new(self)

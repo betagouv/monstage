@@ -1,0 +1,83 @@
+.row.align-items-center.fr-my-4w
+  .col-md-6.col-sm-12
+    .fr-px-2w
+      = image_tag asset_pack_path('media/images/homepage/01.svg'),
+                  alt: "Premièrement",
+                  height: '47px',
+                  'aria-hidden': "true"
+      h3.text-grey-50.my-4
+        | Trouver un stage
+
+      p.mt-3.fr-text.mb-lg-5.mb-md-5.mb-sm-4.mb-3
+        |
+          Consultez de nombreuses offres, soignez votre candidature 
+          et postulez à vos stages préférés.
+      p.mt-4.text-center-left
+        = link_to 'Rechercher un stage', internship_offers_path(current_user_or_visitor.default_search_options),
+                  class: 'fr-raw-link fr-btn fr-btn--secondary fr-px-9w',
+                  data: { :"test-id" => 'mobile-search-button-first' }
+
+  .col-md-6.col-sm-12.text-center.d-none.d-md-block
+    .fr-px-2w
+      = image_tag asset_pack_path('media/images/homepage/trouver-un-stage.svg'),
+                    alt: "Trouver un stage",
+                    width: '100%'
+
+  / 2
+.row.align-items-center.fr-mb-4w
+  .col-md-6.col-sm-12.text-center.d-none.d-md-block
+    = image_tag asset_pack_path('media/images/homepage/link-step-1-2.svg'),
+                    alt: "lien",
+                    class: 'link-step-1-2 d-none d-lg-block'
+    .fr-px-2w
+      = image_tag asset_pack_path('media/images/homepage/accompagner-vos-eleves.svg'),
+                    alt: "Accompagner vos élèves",
+                    width: '100%'
+  .col-md-6.col-sm-12
+    .fr-px-2w
+      = image_tag asset_pack_path('media/images/homepage/02.svg'),
+                  alt: "Premièrement",
+                  height: '47px',
+                  'aria-hidden': "true"
+      h3.text-grey-50.my-4
+        | Accompagner vos élèves
+
+      p.mt-3.fr-text.mb-lg-5.mb-md-5.mb-sm-4.mb-3
+        |
+          Suivez vos élèves dans leur parcours de stage d’observation, 
+          de la recherche à la semaine de stage.
+      p.mt-4.text-center-left
+        = link_to 'Accompagner mes élèves', internship_offers_path(current_user_or_visitor.default_search_options),
+                  class: 'fr-raw-link fr-btn fr-btn--secondary fr-px-6w',
+                  data: { :"test-id" => 'mobile-search-button-first' }
+
+  / 3
+.row.align-items-center.fr-mb-4w
+  .col-md-6.col-sm-12
+    = image_tag asset_pack_path('media/images/homepage/link-step-2-3.svg'),
+                    alt: "lien",
+                    class: 'link-step-2-3 d-none d-lg-block'
+    .fr-px-2w
+      = image_tag asset_pack_path('media/images/homepage/03.svg'),
+                  alt: "Premièrement",
+                  height: '47px',
+                  'aria-hidden': "true"
+      h3.text-grey-50.my-4
+        | Accueillir un stagiaire
+
+      p.mt-3.fr-text.mb-lg-5.mb-md-5.mb-sm-4.mb-3
+        |
+          Du dépôt d’offres via votre espace personnalisé aux conseils 
+          pour bien vous préparer à l’arrivée du stagiaire.
+      p.mt-4.text-center-left
+        - if !user_signed_in? || can?(:supply_offers, current_user)
+          - target_link = current_user&.custom_dashboard_path || new_user_registration_path
+          = link_to "Accueillir un stagiaire", target_link,
+                    class: 'fr-raw-link fr-btn fr-btn--secondary fr-px-8w',
+                    data: { :"test-id" => 'mobile-search-button-first' }
+
+  .col-md-6.col-sm-12.text-center.d-none.d-md-block
+    .fr-px-2w
+      = image_tag asset_pack_path('media/images/homepage/accueillir-un-stagiaire.svg'),
+                    alt: "Accueillir un stagiaire",
+                    width: '100%'

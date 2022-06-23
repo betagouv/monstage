@@ -270,7 +270,6 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     end
   end
 
-
   test 'transition from submited to rejected send rejected email to student' do
     internship_application = create(:weekly_internship_application, :submitted)
     freeze_time do

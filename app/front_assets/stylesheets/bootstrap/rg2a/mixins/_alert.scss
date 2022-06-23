@@ -9,7 +9,7 @@
   .alert-link {
     color: darken($alert-text-color, 5%)!important;
     &:hover{
-      color: darken($alert-text-color, 10%)!important;
+      color: darken($alert-text-color, 60%) !important;
     }
   }
 

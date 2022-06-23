@@ -8,7 +8,8 @@ import { endpoints } from '../../utils/api';
 // see: https://geo.api.gouv.fr/adresse
 export default function SirenInput({
   resourceName,
-  currentSiret
+  currentSiret,
+  railsEnv
 }) {
   const [siret, setSiret] = useState(currentSiret || '');
   const [searchResults, setSearchResults] = useState([]);
@@ -129,7 +130,7 @@ export default function SirenInput({
                     htmlFor: `${resourceName}_siren`,
                   })}
                 >
-                  Rechercher votre société dans l’Annuaire des Entreprises
+                  Rechercher votre société dans l’Annuaire des Entreprises {railsEnv === 'development' ? '(dev only : 90943224700015)' : ''}
                 </label>
                 <div className="input-group input-siren">
                   <input
@@ -164,7 +165,7 @@ export default function SirenInput({
                                 className: `py-2 px-3 listview-item ${
                                   highlightedIndex === index ? 'highlighted-listview-item' : ''
                                 }`,
-                                key: item.siret,
+                                key: index,
                                 index,
                                 item,
                                 style: {
