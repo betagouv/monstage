@@ -50,7 +50,8 @@ module Dashboard::InternshipAgreements::Users
 
       Users::Employer.stub_any_instance(:school_management?, true) do #error
         click_link('Renvoyer le code')
-        find('#alert-text', text: "Une erreur est survenue et votre demande n'a pas été traitée")
+        find('span#alert-text',
+             text: "Une erreur est survenue et votre demande n'a pas été traitée")
       end
     end
   end

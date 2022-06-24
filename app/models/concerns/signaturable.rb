@@ -27,6 +27,11 @@ module Signaturable
       Time.zone.now < signature_phone_token_validity
     end
 
+    def expire_signature_token
+      self.signature_phone_token_validity = Time.zone.now - 1.second
+      save!
+    end
+
     def nullify_phone_number
       self.phone = nil
       self.signature_phone_token_validity = nil

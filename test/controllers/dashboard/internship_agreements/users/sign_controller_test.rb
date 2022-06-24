@@ -70,7 +70,7 @@ module Dashboard::InternshipAgreements::Users
     test 'employer creates succeeds with every params ok' do
       internship_agreement = create(:troisieme_generale_internship_agreement, aasm_state: :validated)
       employer = internship_agreement.employer
-      employer.update(phone: '+33612345678')
+      employer.update(phone: '+330612345678')
       sign_in(employer)
       date = DateTime.new(2020, 1, 1,12,0,0)
       travel_to date do
@@ -174,7 +174,7 @@ module Dashboard::InternshipAgreements::Users
     test 'school_manager creates succeeds with every params ok' do
       internship_agreement = create(:troisieme_generale_internship_agreement, aasm_state: :validated)
       school_manager = internship_agreement.school_manager
-      school_manager.update(phone: '+33612345678')
+      school_manager.update(phone: '+330612345678')
       sign_in(school_manager)
       date = DateTime.new(2020, 1, 1,12,0,0)
       travel_to date do
@@ -189,6 +189,7 @@ module Dashboard::InternshipAgreements::Users
                 :'digit-code-target-3' => '4',
                 :'digit-code-target-4' => '5',
                 :'digit-code-target-5' => '6',
+                phone: school_manager.reload.phone
               }
             }
             assert_difference('Signature.count', 1) do

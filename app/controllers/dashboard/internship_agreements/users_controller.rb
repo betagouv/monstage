@@ -2,7 +2,12 @@ module Dashboard
   module InternshipAgreements
     class UsersController < ApplicationController
       include Phonable
-      before_action :fetch_internship_agreement, only:[:sign, :resend_sms_code]
+      before_action :fetch_internship_agreement
+
+      def start_signing
+        authorize! :sign, @internship_agreement
+        current_user.send_signature_sms_token if current_user.formatted_phone.present?
+      end
 
       def update
         authorize! :update, current_user
@@ -22,12 +27,11 @@ module Dashboard
         else
           redirect_to dashboard_internship_agreements_path,
                       alert: "Une erreur est survenue et le SMS n'a pas été envoyé"
-                      # status: :unprocessable_entity,
         end
       end
 
       def reset_phone_number
-        authorize! :update, current_user
+        authorize! :sign, @internship_agreement
         if current_user.nullify_phone_number
           redirect_to dashboard_internship_agreements_path(opened_modal: true),
                       notice: 'Votre numéro de téléphone a été supprimé'
@@ -39,7 +43,7 @@ module Dashboard
       end
 
       def resend_sms_code
-        authorize! :resend_sms_code, @internship_agreement
+        authorize! :sign, @internship_agreement
         if current_user.send_signature_sms_token
           respond_to do |format|
             format.turbo_stream do

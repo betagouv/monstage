@@ -105,7 +105,6 @@ class Ability
       edit_legal_terms_rich_text
       edit_complementary_terms_rich_text
       edit
-      resend_sms_code
       see_intro
       sign
       update
@@ -161,7 +160,6 @@ class Ability
       edit_activity_learnings_rich_text
       edit_complementary_terms_rich_text
       edit
-      resend_sms_code
       sign
       update
     ], InternshipAgreement do |agreement|

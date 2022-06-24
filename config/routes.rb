@@ -59,6 +59,7 @@ Rails.application.routes.draw do
       resources :signatures, only: %i[new create], module: 'internship_agreements'
       resources :users, only: %i[update], module: 'internship_agreements' do
         member do
+          post 'start_signing'
           post 'reset_phone_number'
           post 'sign'
           post 'resend_sms_code'

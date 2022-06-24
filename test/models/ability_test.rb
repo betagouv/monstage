@@ -144,7 +144,6 @@ class AbilityTest < ActiveSupport::TestCase
     end
     internship_agreement.update_columns(aasm_state: :started_to_sign)
     assert(ability.can?(:sign, internship_agreement.reload), "Signature fails")
-    assert(ability.can?(:resend_sms_code, internship_agreement.reload), "Asking for SMS code fails")
   end
 
   test 'God' do
@@ -301,7 +300,6 @@ class AbilityTest < ActiveSupport::TestCase
       assert(ability.can?(meth, internship_agreement))
     end
     internship_agreement.update_columns(aasm_state: :validated)
-    assert(ability.can?(:resend_sms_code, internship_agreement.reload), "Ability : Asking for SMS code fails")
     assert(ability.can?(:sign, internship_agreement.reload), "Ability : Signature fails")
   end
 

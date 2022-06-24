@@ -6,6 +6,7 @@ module Builders
       yield callback if block_given?
       authorize :create, Signature # only school_managers and employers can create
       code = make_code_from_params
+
       if (user.signature_phone_token != code)
         raise ArgumentError, 'Erreur de code, veuillez recommencer'
       end
@@ -15,8 +16,11 @@ module Builders
       )
         raise ArgumentError, 'Code périmé, veuillez vous en réclamer un autre'
       end
+
       signature = Signature.new(prepare_attributes)
-      signature.save! && sign(signature)
+      signature.save! &&
+        sign(signature) &&
+        user.expire_signature_token
 
       callback.on_success.try(:call, signature)
     rescue ActiveRecord::RecordInvalid => e
@@ -51,6 +55,7 @@ module Builders
       else
         internship_agreement.sign!
       end
+      true
     end
 
     def initialize(user:, context:, params:)
