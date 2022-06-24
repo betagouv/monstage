@@ -1238,7 +1238,8 @@ CREATE TABLE public.users (
     ministry_id bigint,
     targeted_offer_id integer,
     signature_phone_token character varying(6),
-    signature_phone_token_validity timestamp(6) without time zone
+    signature_phone_token_validity timestamp(6) without time zone,
+    signature_phone_token_checked_at timestamp(6) without time zone
 );
 
 
@@ -2633,6 +2634,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220511152205'),
 ('20220603100433'),
 ('20220616131010'),
-('20220621105148');
+('20220621105148'),
+('20220624092113');
 
 
