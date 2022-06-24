@@ -7,6 +7,8 @@ module Dashboard::InternshipAgreements::Users
     test 'employer signing fails when using wrong_code' do
       internship_agreement = create(:troisieme_generale_internship_agreement)
       employer = internship_agreement.employer
+      employer.update(phone: '+330623456789')
+      employer.create_signature_phone_token
       sign_in(employer)
 
       params = {
@@ -20,12 +22,10 @@ module Dashboard::InternshipAgreements::Users
           :'digit-code-target-5' => '1',
         }
       }
-      assert_no_difference('Signature.count') do
-        post sign_dashboard_internship_agreement_user_path(
+      post signature_code_validate_dashboard_internship_agreement_user_path(
               internship_agreement_id: internship_agreement.id,
               id: employer.id),
              params: params
-      end
 
       assert_redirected_to dashboard_internship_agreements_path
       follow_redirect!
@@ -36,6 +36,8 @@ module Dashboard::InternshipAgreements::Users
     test 'employer signing fails when using too old a code params ' do
       internship_agreement = create(:troisieme_generale_internship_agreement)
       employer = internship_agreement.employer
+      employer.update(phone: '+330623456789')
+      employer.create_signature_phone_token
       sign_in(employer)
 
       Users::Employer.stub_any_instance(:signature_phone_token_still_ok?, false) do
@@ -52,7 +54,7 @@ module Dashboard::InternshipAgreements::Users
             }
           }
           assert_no_difference('Signature.count') do
-            post sign_dashboard_internship_agreement_user_path(
+            post signature_code_validate_dashboard_internship_agreement_user_path(
                   internship_agreement_id: internship_agreement.id,
                   id: employer.id),
                  params: params
@@ -61,7 +63,7 @@ module Dashboard::InternshipAgreements::Users
           follow_redirect!
           assert_response :success
           assert_select '#alert-text',
-                        text: "Code périmé, veuillez vous en réclamer un autre"
+                        text: "Code périmé, veuillez en réclamer un autre"
 
         end
       end
@@ -71,6 +73,7 @@ module Dashboard::InternshipAgreements::Users
       internship_agreement = create(:troisieme_generale_internship_agreement, aasm_state: :validated)
       employer = internship_agreement.employer
       employer.update(phone: '+330612345678')
+      employer.create_signature_phone_token
       sign_in(employer)
       date = DateTime.new(2020, 1, 1,12,0,0)
       travel_to date do
@@ -87,22 +90,20 @@ module Dashboard::InternshipAgreements::Users
                 :'digit-code-target-5' => '6',
               }
             }
-            assert_difference('Signature.count', 1) do
-              post sign_dashboard_internship_agreement_user_path(
-                     internship_agreement_id: internship_agreement.id,
-                     id: employer.id),
-                   params: params
-            end
+            post signature_code_validate_dashboard_internship_agreement_user_path(
+                    internship_agreement_id: internship_agreement.id,
+                    id: employer.id),
+                  params: params
             assert_redirected_to dashboard_internship_agreements_path
             follow_redirect!
             assert_response :success
-            assert_select '#alert-text', text: "Votre signature a été enregistrée"
-            signature = Signature.first
-            assert_equal signature.internship_agreement.id, internship_agreement.id
-            assert_equal signature.employer.id, employer.id
-            assert_equal signature.signature_phone_number, employer.phone
-            assert_equal 'employer', signature.signatory_role
-            assert_equal date, signature.signature_date
+            assert_select '#alert-text', text: "Votre code est valide"
+            # signature = Signature.first
+            # assert_equal signature.internship_agreement.id, internship_agreement.id
+            # assert_equal signature.employer.id, employer.id
+            # assert_equal signature.signature_phone_number, employer.phone
+            # assert_equal 'employer', signature.signatory_role
+            # assert_equal date, signature.signature_date
           end
         end
       end
@@ -111,6 +112,7 @@ module Dashboard::InternshipAgreements::Users
     test 'school_manager signing fails when using wrong_code' do
       internship_agreement = create(:troisieme_generale_internship_agreement)
       school_manager = internship_agreement.school_manager
+      school_manager.create_signature_phone_token
       sign_in(school_manager)
 
       params = {
@@ -125,7 +127,7 @@ module Dashboard::InternshipAgreements::Users
         }
       }
       assert_no_difference('Signature.count') do
-        post sign_dashboard_internship_agreement_user_path(
+        post signature_code_validate_dashboard_internship_agreement_user_path(
               internship_agreement_id: internship_agreement.id,
               id: school_manager.id),
              params: params
@@ -140,6 +142,8 @@ module Dashboard::InternshipAgreements::Users
     test 'school_manager signing fails when using too old a code params ' do
       internship_agreement = create(:troisieme_generale_internship_agreement)
       school_manager = internship_agreement.school_manager
+      school_manager.update(phone: '+330612345678')
+      school_manager.create_signature_phone_token
       sign_in(school_manager)
 
       Users::SchoolManagement.stub_any_instance(:signature_phone_token_still_ok?, false) do
@@ -156,7 +160,7 @@ module Dashboard::InternshipAgreements::Users
             }
           }
           assert_no_difference('Signature.count') do
-            post sign_dashboard_internship_agreement_user_path(
+            post signature_code_validate_dashboard_internship_agreement_user_path(
                   internship_agreement_id: internship_agreement.id,
                   id: school_manager.id),
                  params: params
@@ -165,7 +169,7 @@ module Dashboard::InternshipAgreements::Users
           follow_redirect!
           assert_response :success
           assert_select '#alert-text',
-                        text: "Code périmé, veuillez vous en réclamer un autre"
+                        text: "Code périmé, veuillez en réclamer un autre"
 
         end
       end
@@ -192,8 +196,8 @@ module Dashboard::InternshipAgreements::Users
                 phone: school_manager.reload.phone
               }
             }
-            assert_difference('Signature.count', 1) do
-              post sign_dashboard_internship_agreement_user_path(
+            assert_difference('Signature.count', 0) do
+              post signature_code_validate_dashboard_internship_agreement_user_path(
                      internship_agreement_id: internship_agreement.id,
                      id: school_manager.id),
                    params: params
@@ -201,13 +205,16 @@ module Dashboard::InternshipAgreements::Users
             assert_redirected_to dashboard_internship_agreements_path
             follow_redirect!
             assert_response :success
-            assert_select '#alert-text', text: "Votre signature a été enregistrée"
-            signature = Signature.first
-            assert_equal signature.internship_agreement.id, internship_agreement.id
-            assert_equal signature.school_manager.id, school_manager.id
-            assert_equal signature.signature_phone_number, school_manager.phone
-            assert_equal 'school_manager', signature.signatory_role
-            assert_equal date, signature.signature_date
+            assert_equal date, school_manager.signature_phone_token_checked_at
+            target_date = Time.zone.now + Users::SchoolManagement::SIGNATURE_PHONE_TOKEN_VALIDITY.minutes
+            assert_equal target_date, school_manager.signature_phone_token_validity
+            # assert_select '#alert-text', text: "Votre signature a été enregistrée"
+            # signature = Signature.first
+            # assert_equal signature.internship_agreement.id, internship_agreement.id
+            # assert_equal signature.school_manager.id, school_manager.id
+            # assert_equal signature.signature_phone_number, school_manager.phone
+            # assert_equal 'school_manager', signature.signatory_role
+            # assert_equal date, signature.signature_date
           end
         end
       end

@@ -19,7 +19,7 @@
   .fr-modal__footer
     = form_with(model: current_user,
                 scope: :user,
-                url:  sign_dashboard_internship_agreement_user_path(internship_agreement_id: internship_agreement_id,
+                url:  signature_code_validate_dashboard_internship_agreement_user_path(internship_agreement_id: internship_agreement_id,
                                                                id: current_user.id),
                 method: :post) do |f|
       = f.hidden_field :id, value: current_user.id

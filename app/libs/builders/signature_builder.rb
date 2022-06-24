@@ -2,27 +2,41 @@
 
 module Builders
   class SignatureBuilder < BuilderBase
-    def create
+    def sign
+      yield callback if block_given?
+      authorize :create, Signature # only school_managers and employers can create
+
+      signature = Signature.new(prepare_attributes)
+      signature.save! && agreement_sign(signature)
+
+      callback.on_success.try(:call, signature)
+    rescue ActiveRecord::RecordInvalid => e
+      callback.on_failure.try(:call, e.record)
+    rescue ArgumentError => e
+      callback.on_argument_error.try(:call, e)
+    end
+
+    def signature_code_validate
       yield callback if block_given?
       authorize :create, Signature # only school_managers and employers can create
       code = make_code_from_params
+      return false if user.already_signed?(internship_agreement_id: params[:internship_agreement_id])
 
-      if (user.signature_phone_token != code)
-        raise ArgumentError, 'Erreur de code, veuillez recommencer'
-      end
-      unless user.allow_signature?(
+      code_expired = user.code_expired?(
         internship_agreement_id: params[:internship_agreeement_id],
         code: code
       )
-        raise ArgumentError, 'Code périmé, veuillez vous en réclamer un autre'
-      end
+      raise ArgumentError, 'Code périmé, veuillez en réclamer un autre' if code_expired
 
-      signature = Signature.new(prepare_attributes)
-      signature.save! &&
-        sign(signature) &&
-        user.expire_signature_token
+      code_valid = user.code_valid?(
+        internship_agreement_id: params[:internship_agreeement_id],
+        code: code
+      )
+      raise ArgumentError, 'Erreur de code, veuillez recommencer' unless code_valid
 
-      callback.on_success.try(:call, signature)
+      user.check_and_expire_token!
+
+      callback.on_success.try(:call, user)
     rescue ActiveRecord::RecordInvalid => e
       callback.on_failure.try(:call, e.record)
     rescue ArgumentError => e
@@ -48,7 +62,7 @@ module Builders
             .join('')
     end
 
-    def sign(signature)
+    def agreement_sign(signature)
       internship_agreement = signature.internship_agreement
       if signature.all_signed?
         internship_agreement.signatures_finalize!

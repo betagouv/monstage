@@ -42,6 +42,20 @@ module Dashboard
         end
       end
 
+      def handwrite_sign
+        authorize! :sign, @internship_agreement
+        signature_builder.sign do |on|
+          on.success do |signature|
+            redirect_to dashboard_internship_agreements_path,
+                        notice: 'Votre signature a été enregistrée'
+          end
+          on.failure do |error|
+            redirect_to dashboard_internship_agreements_path,
+                        alert: error.errors.full_messages
+          end
+        end
+      end
+
       def resend_sms_code
         authorize! :sign, @internship_agreement
         if current_user.send_signature_sms_token
@@ -62,12 +76,12 @@ module Dashboard
         end
       end
 
-      def sign
+      def signature_code_validate
         authorize! :sign, @internship_agreement
-        signature_builder.create do |on|
+        signature_builder.signature_code_validate do |on|
           on.success do |signature|
             redirect_to dashboard_internship_agreements_path,
-                        notice: 'Votre signature a été enregistrée'
+                        notice: 'Votre code est valide'
           end
           on.failure do |error|
             redirect_to dashboard_internship_agreements_path,
