@@ -3,7 +3,7 @@ import { Controller } from 'stimulus';
 
 export default class extends Controller {
   openModal() {
-    $('#notice-school-manager-empty-weeks').modal('show');
+    $('#notice-school-manager-empty-weeks').modal({ show: true, backdrop: false });
   }
 
   closeNotice() {
