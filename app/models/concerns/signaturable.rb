@@ -7,7 +7,7 @@ module Signaturable
       return false if school_management? && !school_manager?
 
       update(signature_phone_token: format('%06d', rand(999_999)),
-             signature_phone_token_validity: SIGNATURE_PHONE_TOKEN_VALIDITY.minute.from_now)
+             signature_phone_token_validity: SIGNATURE_PHONE_TOKEN_VALIDITY.minutes.from_now)
     end
 
     def send_signature_sms_token

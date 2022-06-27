@@ -1,0 +1,49 @@
+.fr-modal__body.w-100 id="internship-agreement-signature-form-#{internship_agreement_id}"
+  .fr-modal__header
+    button.fr-btn--close.fr-btn aria-controls="fr-modal-signature"  Fermer
+  .fr-modal__content
+    h1#fr-modal-signature-title.fr-modal__title
+      span.fr-fi-arrow-right-line.fr-fi--lg aria-hidden="true"
+      | Apposez votre signature
+    .d-flex.flex-row
+      div.fr-pt-1v Pour finaliser la signature, merci d'apposer votre signature manuscrite ci-dessous.
+  .fr-modal__footer.w-100
+    = form_with(model: current_user,
+                scope: :user,
+                data: {turbo: false},
+                url: handwrite_sign_dashboard_internship_agreement_user_path(internship_agreement_id: internship_agreement_id, id: current_user.id),
+                method: :post) do |f|
+      = f.hidden_field :id, value: current_user.id, name: 'user[id]'
+      = f.hidden_field :internship_agreement_id,
+                       value: internship_agreement_id,
+                       name: 'user[internship_agreement_id]'
+
+      div data-controller='handwrite-sign'
+        .row
+          .col-12
+            .signature-pad-wrapper
+              canvas#signature-pad data-handwrite-sign-target='pad'
+            .text-muted Inscrivez votre signature dans le cadre ci-dessous
+        .row
+          .col-12.fr-mt-1w
+            button [ id='save'
+              class='fr-btn fr-mr-2v'
+              data-handwrite-sign-target='save'
+              data-action='handwrite-sign#save']
+              |Valider la signature
+            button [ id='clear'
+              class='fr-btn fr-btn--secondary fr-mx-2v'
+              data-handwrite-sign-target='clear'
+              data-action='handwrite-sign#clear']
+              |Effacer
+
+        .fr-mt-1w.text-right
+          = f.hidden_field :handwrite_signature,
+                           type: 'text',
+                           data: {:'handwrite-sign-target'=> 'signature'},
+                           id: "handwrite_signature_#{internship_agreement_id}"
+          = f.submit "Signer la convention",
+                      disabled: true,
+                      class: 'fr-btn',
+                      id: "submit-#{internship_agreement_id}",
+                      data: {:"handwrite-sign-target" => 'submitter' }

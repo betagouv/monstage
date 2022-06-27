@@ -176,7 +176,6 @@ $position-form-field-helper: 55px;
     background-color: white;
     border-left: 2px solid $light-grey;
     border-right: 2px solid $light-grey;
-    
   }
   .end-form {
     border-bottom: 2px solid $light-grey;
@@ -187,4 +186,17 @@ $position-form-field-helper: 55px;
 .internship-agreement input:invalid {
   border: 1px solid red;
   background-color: rgb(255, 188, 188);
+}
+
+// SIGNATURES MODAL
+.signature-pad-wrapper{
+  width: 735px;
+  margin: 0 auto;
+}
+
+#signature-pad {
+  width: 400px;
+  height: 150px;
+  border: 1px solid $light-grey;
+  margin:5px;
 }

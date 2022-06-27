@@ -13,12 +13,15 @@ div data-controller='digit-code' data-digit-code-position-value="0"
   br
   ul.fr-btns-group.fr-btns-group--inline-reverse.fr-btns-group--inline-lg.fr-btns-group--icon-left
     li
-      button.fr-btn.fr-icon-checkbox-line data-digit-code-target="button"
+      button.fr-btn.fr-icon-checkbox-line [
+        id="button-code-submit-#{internship_agreement_id}"
+        data-digit-code-target="button"
+        data-turbo-track="reload"]
         | Signer la convention
         = " "
         / - if current_user.signature_phone_token.present?
-        /   = current_user.signature_presenter.show_code
-        /   = current_user.signature_phone_token_validity > DateTime.now ? ' (valide)' :  ' (moisi)'
+          / = current_user.signature_presenter.show_code
+          / = current_user.signature_phone_token_validity > DateTime.now ? ' (valide)' :  ' (moisi)'
       = turbo_frame_tag 'code-resend' do
         #code-request.fr-ml-1v.fr-mt-3v
           = "Vous n'avez pas reçu le code ? "

@@ -42,20 +42,6 @@ module Dashboard
         end
       end
 
-      def handwrite_sign
-        authorize! :sign, @internship_agreement
-        signature_builder.sign do |on|
-          on.success do |signature|
-            redirect_to dashboard_internship_agreements_path,
-                        notice: 'Votre signature a été enregistrée'
-          end
-          on.failure do |error|
-            redirect_to dashboard_internship_agreements_path,
-                        alert: error.errors.full_messages
-          end
-        end
-      end
-
       def resend_sms_code
         authorize! :sign, @internship_agreement
         if current_user.send_signature_sms_token
@@ -78,18 +64,49 @@ module Dashboard
 
       def signature_code_validate
         authorize! :sign, @internship_agreement
-        signature_builder.signature_code_validate do |on|
+        respond_to do |format|
+          signature_builder.signature_code_validate do |on|
+            on.success do
+              id = @internship_agreement.id
+              path = 'dashboard/internship_agreements/signature/modal_handwrite_sign'
+              format.turbo_stream do
+                render turbo_stream:
+                  turbo_stream.replace("internship-agreement-signature-form-#{id}",
+                                        partial: path,
+                                        locals: { current_user: current_user,
+                                                  internship_agreement_id: id})
+              end
+              format.html do
+                redirect_to dashboard_internship_agreements_path,
+                            notice: 'Votre code est valide'
+              end
+            end
+            on.failure do |error|
+              format.html do
+                redirect_to dashboard_internship_agreements_path,
+                            alert: error.errors.full_messages
+              end
+            end
+            on.argument_error do |error_msg|
+              format.html do
+                redirect_to dashboard_internship_agreements_path,
+                            alert: error_msg
+              end
+            end
+          end
+        end
+      end
+
+      def handwrite_sign
+        authorize! :sign, @internship_agreement
+        signature_builder.handwrite_sign do |on|
           on.success do |signature|
             redirect_to dashboard_internship_agreements_path,
-                        notice: 'Votre code est valide'
+                        notice: 'Votre signature a été enregistrée'
           end
           on.failure do |error|
             redirect_to dashboard_internship_agreements_path,
                         alert: error.errors.full_messages
-          end
-          on.argument_error do |error_msg|
-            redirect_to dashboard_internship_agreements_path,
-                        alert: error_msg
           end
         end
       end
@@ -116,7 +133,7 @@ module Dashboard
       end
 
       def user_params
-        allowed_params = %i[id phone internship_agreement_id]
+        allowed_params = %i[id phone internship_agreement_id handwrite_signature]
         allowed_params += (0..5).map {|i| "digit-code-target-#{i}".to_sym}
         params.require(:user).permit(*allowed_params)
       end

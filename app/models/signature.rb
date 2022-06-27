@@ -10,6 +10,7 @@ class Signature < ApplicationRecord
   validates :signatory_ip,
             :signature_date,
             :signature_phone_number,
+            :handwrite_signature,
             presence: true
   validates :signatory_role, inclusion: { in: signatory_roles.values }
   validate :no_double_signature?

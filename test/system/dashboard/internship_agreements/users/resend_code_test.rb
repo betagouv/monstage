@@ -48,7 +48,7 @@ module Dashboard::InternshipAgreements::Users
       click_button('Recevoir un code')
       find('h1#fr-modal-signature-title', text: 'Nous vous avons envoyé un code de vérification')
 
-      Users::Employer.stub_any_instance(:school_management?, true) do #error
+      Users::Employer.stub_any_instance(:create_signature_phone_token, false) do #error
         click_link('Renvoyer le code')
         find('span#alert-text',
              text: "Une erreur est survenue et votre demande n'a pas été traitée")

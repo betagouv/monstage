@@ -61,8 +61,8 @@ Rails.application.routes.draw do
         member do
           post 'start_signing'
           post 'reset_phone_number'
-          post 'signature_code_validate'
           post 'resend_sms_code'
+          post 'signature_code_validate'
           post 'handwrite_sign'
         end
       end

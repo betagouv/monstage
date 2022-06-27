@@ -68,7 +68,6 @@ export default class extends Controller {
   isNumericKey(val) { return (parseInt(val, 10) >= 0 && parseInt(val, 10) <= 9) }
   validateForm() {
     this.buttonTarget.removeAttribute('disabled');
-    this.codeTarget.form.submit();
   }
 
   connect() {

@@ -13,7 +13,7 @@
   .fr-modal__footer
     = form_with(model: current_user,
                 scope: :user,
-                url:  dashboard_internship_agreement_user_path(internship_agreement_id: internship_agreement_id,
+                url: dashboard_internship_agreement_user_path(internship_agreement_id: internship_agreement_id,
                                                               id: current_user.id),
                 method: :patch) do |f|
       = f.hidden_field :id, value: current_user.id, name: 'user[id]'
