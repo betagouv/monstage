@@ -5,7 +5,7 @@ FactoryBot.define do
     signature_date { DateTime.now - 25.days }
     signatory_role { Signature::signatory_roles[:employer] }
     internship_agreement { create(:internship_agreement) }
-
+    handwrite_signature { File.read( Rails.root.join('test', 'fixtures', 'files', 'signature.json')).to_json}
     trait :employer_signature do
       signatory_role { Signature::signatory_roles[:employer] }
     end
