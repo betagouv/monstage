@@ -98,12 +98,6 @@ module Dashboard::InternshipAgreements::Users
             follow_redirect!
             assert_response :success
             assert_select '#alert-text', text: "Votre code est valide"
-            # signature = Signature.first
-            # assert_equal signature.internship_agreement.id, internship_agreement.id
-            # assert_equal signature.employer.id, employer.id
-            # assert_equal signature.signature_phone_number, employer.phone
-            # assert_equal 'employer', signature.signatory_role
-            # assert_equal date, signature.signature_date
           end
         end
       end
@@ -198,19 +192,9 @@ module Dashboard::InternshipAgreements::Users
                     internship_agreement_id: internship_agreement.id,
                     id: school_manager.id),
                   params: params
-            # assert_redirected_to dashboard_internship_agreements_path
-            # follow_redirect!
-            # assert_response :success
             assert_equal date, school_manager.signature_phone_token_checked_at
             target_date = Time.zone.now + Users::SchoolManagement::SIGNATURE_PHONE_TOKEN_VALIDITY.minutes
             assert_equal target_date, school_manager.signature_phone_token_validity
-            # assert_select '#alert-text', text: "Votre signature a été enregistrée"
-            # signature = Signature.first
-            # assert_equal signature.internship_agreement.id, internship_agreement.id
-            # assert_equal signature.school_manager.id, school_manager.id
-            # assert_equal signature.signature_phone_number, school_manager.phone
-            # assert_equal 'school_manager', signature.signatory_role
-            # assert_equal date, signature.signature_date
           end
         end
       end
