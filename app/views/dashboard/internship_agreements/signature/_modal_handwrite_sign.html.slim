@@ -39,7 +39,6 @@
 
         .fr-mt-1w.text-right
           = f.hidden_field :handwrite_signature,
-                           type: 'text',
                            data: {:'handwrite-sign-target'=> 'signature'},
                            id: "handwrite_signature_#{internship_agreement_id}"
           = f.submit "Signer la convention",
