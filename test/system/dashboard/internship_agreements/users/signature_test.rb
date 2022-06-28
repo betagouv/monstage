@@ -10,9 +10,6 @@ module Dashboard::InternshipAgreements::Users
     def code_script_assign(signature_phone_tokens, index)
       "document.getElementById('user-code-#{index}').value=#{signature_phone_tokens[index]}"
     end
-    def script_assign(id, value)
-      "document.getElementById('#{id}').value=#{value}"
-    end
     def enable_validation_button(id)
       "document.getElementById('#{id}').removeAttribute('disabled');"
     end
@@ -39,16 +36,14 @@ module Dashboard::InternshipAgreements::Users
           execute_script(code_script_assign(signature_phone_tokens, index))
         end
         execute_script(enable_validation_button("button-code-submit-#{internship_agreement.id}"))
-        str_signature = File.read(
-          Rails.root.join( *%w[test fixtures files signature.json] )
-        )
+        find("#button-code-submit-#{internship_agreement.id}").click
         within "dialog" do
-          find("#button-code-submit-#{internship_agreement.id}").click
-          find("input#handwrite_signature_#{internship_agreement.id}").set(JSON.parse(str_signature).to_json)
-          execute_script(enable_validation_button("submit-#{internship_agreement.id}"))
+          find('canvas').click
+          find('button[data-action="handwrite-sign#save"]').click
+          click_button('Valider la signature')
         end
         assert_difference 'Signature.count', 1 do
-          find("#submit-#{internship_agreement.id}").click
+          find('input[type="submit"]').click
         end
 
         signature = Signature.last
