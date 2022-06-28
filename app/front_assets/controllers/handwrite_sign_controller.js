@@ -23,6 +23,6 @@ export default class extends Controller {
   save(event) {
     event.preventDefault();
     this.signatureTarget.value = JSON.stringify(this.signaturePad.toData());
-    this.submitterTarget.removeActtribute('disabled');
+    this.submitterTarget.removeAttribute('disabled');
   }
 }
