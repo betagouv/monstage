@@ -5,8 +5,6 @@ export default class extends Controller {
 
   connect() {
     Turbo.setConfirmMethod((message, element) => {
-      console.log('message')
-      console.log('element')
       let dialog = document.getElementById("turbo-confirm")
       dialog.querySelector('p').textContent = message;
       dialog.showModal();

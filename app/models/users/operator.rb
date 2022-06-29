@@ -2,7 +2,6 @@
 
 module Users
   class Operator < User
-    include Signaturable
     belongs_to :operator, foreign_key: :operator_id,
                           class_name: '::Operator'
 
