@@ -86,10 +86,10 @@ Rails.application.configure do
   ActionMailer::Base.smtp_settings = {
     user_name: ENV['SMTP_USERNAME'],
     password: ENV['SMTP_PASSWORD'],
-    domain: ENV.fetch('HOST'),
-    address: ENV['SMTP_ADDRESS'],
-    port: 587,
-    authentication: :plain,
+    domain: ENV['SMTP_DOMAIN'] || 'smtp.mailtrap.io',
+    address: ENV['SMTP_ADDRESS'] || 'smtp.mailtrap.io',
+    port: ENV['SMTP_PORT'] || '2525',
+    authentication: ENV['SMTP_AUTHENTICATION'] || 'cram_md5',
     enable_starttls_auto: true
   }
 
