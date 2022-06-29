@@ -32,6 +32,16 @@ module Signaturable
       save!
     end
 
+    def signature_code_checked?
+      time_check = signature_phone_token_checked_at
+      return if time_check.nil?
+
+      validity = signature_phone_token_validity
+      duration = SIGNATURE_PHONE_TOKEN_VALIDITY.minutes
+
+      validity - duration < time_check
+    end
+
     def code_expired?(internship_agreement_id: , code:)
       signature_phone_token.nil? ||
         !signature_phone_token_still_ok?
@@ -44,6 +54,10 @@ module Signaturable
 
     def signature_phone_token_still_ok?
       Time.zone.now < signature_phone_token_validity
+    end
+
+    def other_roles_than_mine
+      Signature.signatory_roles.keys - [signatory_role]
     end
 
     def obfuscated_phone_number

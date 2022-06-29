@@ -36,6 +36,11 @@ module Builders
       yield callback if block_given?
 
       signature = Signature.new(prepare_attributes)
+      unless user.signature_code_checked?
+        signature.errors.add('id', 'Le code n\'a pas été validé ')
+        raise ActiveRecord::RecordInvalid, signature
+      end
+
       signature.save! && agreement_sign(signature)
 
       callback.on_success.try(:call, signature)

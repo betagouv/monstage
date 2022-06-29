@@ -200,6 +200,10 @@ class InternshipAgreement < ApplicationRecord
     new_daily_hours.except('samedi').values.all? { |v| !v.blank? } && daily_lunch_break.except('samedi').values.all? { |v| !v.blank? }
   end
 
+  def roles_not_signed_yet
+    Signature.signatory_roles.keys - roles_already_signed
+  end
+
   private
 
   def notify_employer_school_manager_completed(agreement)
@@ -209,19 +213,38 @@ class InternshipAgreement < ApplicationRecord
   end
 
   def notify_others_signatures_started(agreement)
-    Rails.logger.debug(
-      "=====================================\n" \
-      "Notify others signatures started\n" \
-      "=====================================\n"
-    )
+    roles_not_signed_yet.each do |role|
+      mailer_map[role.to_sym].notify_others_signatures_started_email(
+        internship_agreement: agreement,
+      ).deliver_later
+    end
   end
 
   def notify_others_signatures_finished(agreement)
-    Rails.logger.debug(
-      "=====================================\n" \
-      "Notify others signatures finished\n" \
-      "=====================================\n"
-    )
+    every_signature_but_mine.each do |signature|
+      role = signature.signatory_role.to_sym
+      mailer_map[role].notify_others_signatures_finished_email(
+        internship_agreement: agreement,
+        signature: signature,
+      ).deliver_later
+    end
+  end
+
+  def every_signature_but_mine
+    # every signature role but mine (and I'm the last one to have signed)
+    signatures.order(created_at: :asc).to_a[0..-2]
+  end
+
+  def roles_already_signed
+    Signature.where(internship_agreement_id: id)
+             .pluck(:signatory_role)
+  end
+
+  def mailer_map
+    {
+      school_manager: SchoolManagerMailer,
+      employer: EmployerMailer
+    }
   end
 
   rails_admin do

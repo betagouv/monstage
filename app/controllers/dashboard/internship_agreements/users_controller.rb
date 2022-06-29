@@ -106,7 +106,7 @@ module Dashboard
           end
           on.failure do |error|
             redirect_to dashboard_internship_agreements_path,
-                        alert: error.errors.full_messages
+                        alert: 'Votre signature n\'a pas été enregistrée'
           end
         end
       end

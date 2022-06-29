@@ -32,10 +32,7 @@ class Signature < ApplicationRecord
     signatures_count == Signature.signatory_roles_count
   end
 
-  def roles_already_signed(internship_agreement_id:)
-    Signature.where(internship_agreement_id: internship_agreement_id)
-             .pluck(:signatory_role)
-  end
+
 
   private
 

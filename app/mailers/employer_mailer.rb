@@ -45,12 +45,49 @@ class EmployerMailer < ApplicationMailer
     student                = internship_application.student
     @prez_stud             = student.presenter
     @employer              = @internship_offer.employer
+    @school_manager        = internship_agreement.school_manager
     @url = dashboard_internship_agreements_url(
       id: internship_agreement.id,
       mtm_campaign: 'Offreur - Convention Ready to Print'
     ).html_safe
 
     mail(to: @employer.email, subject: 'Imprimez et signez la convention de stage.')
+  end
+
+  def notify_others_signatures_started_email(internship_agreement:)
+    internship_application = internship_agreement.internship_application
+    @internship_offer      = internship_application.internship_offer
+    student                = internship_application.student
+    @prez_stud             = student.presenter
+    @employer              = @internship_offer.employer
+    @school_manager        = internship_agreement.school_manager
+    @url = dashboard_internship_agreements_url(
+      id: internship_agreement.id,
+      mtm_campaign: 'Offreur - Convention Ready to Sign'
+    ).html_safe
+
+    mail(
+      to: @employer.email,
+      subject: 'Une convention de stage attend votre signature'
+    )
+  end
+  
+  def notify_others_signatures_finished_email(internship_agreement:)
+    internship_application = internship_agreement.internship_application
+    @internship_offer      = internship_application.internship_offer
+    student                = internship_application.student
+    @prez_stud             = student.presenter
+    @employer              = @internship_offer.employer
+    @school_manager        = internship_agreement.school_manager
+    @url = dashboard_internship_agreements_url(
+      id: internship_agreement.id,
+      mtm_campaign: 'Offreur - Convention Ready to Sign'
+    ).html_safe
+
+    mail(
+      to: @employer.email,
+      subject: 'Une convention de stage attend votre signature'
+    )
   end
 
 end
