@@ -23,17 +23,17 @@ export default class extends Controller {
   }
 
   enterKey(event) {
-    this.isNumericKey(event.key) ? this.withNumericKey(event) : this.eraseCurrentKey();
+    this.isNumericKeyOrShiftKey(event) ? this.withNumericKey(event) : this.eraseCurrentKey();
   }
 
   withNumericKey(event) {
-    this.validateEnteredValue(event);
+    if (!event.shiftKey) { this.validateEnteredValue(event); }
     if (this.lastPosition()) {
-      this.enableAll();
-      this.validateForm();
+      this.enableForm();
     } else {
       this.positionMove(+1);
       this.enableCurrent(event);
+      this.setFocus(event);
     }
   }
 
@@ -65,16 +65,23 @@ export default class extends Controller {
   lastPosition() { return this.positionValue == this.codeTargets.length - 1; }
   positionMove(val) { this.positionValue += val; }
 
-  isNumericKey(val) { return (parseInt(val, 10) >= 0 && parseInt(val, 10) <= 9) }
-  validateForm() {
+  isNumericKeyOrShiftKey(event) {
+    const isInteger = /^\d+$/.test(event.key);
+    const isShiftKey = event.shiftKey;
+    const capitals = /^[A-Z]$/.test(event.key);
+    return (isInteger || isShiftKey) && !capitals;
+  }
+
+  enableForm() {
     this.buttonTarget.removeAttribute('disabled');
   }
 
-  connect() {
+  codeTargetConnected() {
     this.codeTargets.forEach((element, index) => {
       element.value = '';
-      index === 0 ? element.focus() : element.setAttribute('disabled', true);
+      index === 0 ? element.focus() : element.setAttribute('disabled', true); 
     });
     this.buttonTarget.setAttribute('disabled', true);
+    this.connect();
   }
 }

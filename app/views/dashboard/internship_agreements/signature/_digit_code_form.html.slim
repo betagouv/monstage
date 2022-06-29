@@ -8,6 +8,7 @@ div data-controller='digit-code' data-digit-code-position-value="0"
                      class: 'digit-code-size',
                      id: "user-code-#{i}",
                      name: "[user]digit-code-target-#{i}",
+                     maxlength: 1,
                      data: {:"digit-code-target" => 'code',
                             :action =>'keyup->digit-code#onKeyUp'}
   br
@@ -19,9 +20,6 @@ div data-controller='digit-code' data-digit-code-position-value="0"
         data-turbo-track="reload"]
         | Signer la convention
         = " "
-        / - if current_user.signature_phone_token.present?
-          / = current_user.signature_presenter.show_code
-          / = current_user.signature_phone_token_validity > DateTime.now ? ' (valide)' :  ' (moisi)'
       = turbo_frame_tag 'code-resend' do
         #code-request.fr-ml-1v.fr-mt-3v
           = "Vous n'avez pas reçu le code ? "
