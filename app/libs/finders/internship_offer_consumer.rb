@@ -34,7 +34,6 @@ module Finders
     end
 
     def school_members_query
-      @params = implicit_conditions(params: @params, user: user)
       school_management_query.ignore_already_applied(user: user)
     end
 
@@ -50,13 +49,6 @@ module Finders
 
     def visitor_query
       common_filter { kept_published_future_offers_query}
-    end
-
-    def implicit_conditions(params: , user: )
-      if user.student? && user&.class_room.present?
-        params.merge!(school_track: user.school_track)
-      end
-      params
     end
   end
 end

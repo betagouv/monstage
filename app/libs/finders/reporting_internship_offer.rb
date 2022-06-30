@@ -52,7 +52,6 @@ module Finders
       query = Reporting::InternshipOffer.all
       query = query.during_year(school_year: school_year) if school_year_param?
       query = query.by_department(department: params[:department]) if department_param?
-      query = query.by_school_track(school_track: params[:school_track]) if school_track?
       query = query.by_group(group_id: params[:group]) if group_param?
       query = query.by_academy(academy: params[:academy]) if academy_param?
       query = query.where(is_public: params[:is_public]) if public_param?
@@ -62,10 +61,6 @@ module Finders
 
     def school_year
       SchoolYear::Floating.new_by_year(year: params[:school_year].to_i)
-    end
-
-    def school_track?
-      params.key?(:school_track)
     end
 
     def school_year_param?

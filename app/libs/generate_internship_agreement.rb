@@ -461,11 +461,6 @@ class GenerateInternshipAgreement < Prawn::Document
     # label_form "Activités prévues :"
     # field_form @internship_agreement.activity_scope_rich_text.body.html_safe, html: true
 
-    # unless @internship_agreement.troisieme_generale?
-    #   label_form "Compétences visées :"
-    #   field_form @internship_agreement.activity_learnings_rich_text.body.html_safe, html: true
-    # end
-
     # if @internship_agreement.activity_rating_rich_text.present?
     #   label_form "Modalités d’évaluation de la séquence d’observation en milieu professionnel :"
     #   field_form @internship_agreement.activity_rating_rich_text.body.html_safe, html: true

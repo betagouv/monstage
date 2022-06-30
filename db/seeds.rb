@@ -62,9 +62,9 @@ end
 def populate_class_rooms
   school = find_default_school_during_test
 
-  ClassRoom.create(name: '3e A – troisieme_generale', school_track: :troisieme_generale, school: school)
-  ClassRoom.create(name: '3e B – troisieme_prepa_metier', school_track: :troisieme_prepa_metiers, school: school)
-  ClassRoom.create(name: '3e C – troisieme_segpa', school_track: :troisieme_segpa, school: school)
+  ClassRoom.create(name: '3e A – troisieme_generale', school: school)
+  ClassRoom.create(name: '3e B – troisieme_generale', school: school)
+  ClassRoom.create(name: '3e C – troisieme_generale', school: school)
 end
 
 def with_class_name_for_defaults(object)

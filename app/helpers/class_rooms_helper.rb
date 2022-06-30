@@ -2,7 +2,7 @@
 
 module ClassRoomsHelper
   def school_track_options_for_default
-    '-- Veuillez choisir la filière de cette classe --'
+    '-- Veuillez choisir la classe --'
   end
 
   def options_for_school_tracks
@@ -12,12 +12,8 @@ module ClassRoomsHelper
               current_user.class_room.present? &&
               current_user.school_track != key
 
-      school_tracks_hash_translated[tr_school_track(key)] = val
+      school_tracks_hash_translated['3e'] = val
     end
     school_tracks_hash_translated
-  end
-
-  def tr_school_track(school_track)
-    I18n.t("enum.school_tracks.#{school_track}")
   end
 end
