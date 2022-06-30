@@ -45,12 +45,5 @@ FactoryBot.define do
     trait :signed_by_all do
       aasm_state { 'signed_by_all' }
     end
-
-    factory :troisieme_generale_internship_agreement, traits: [:troisieme_generale_internship_agreement],
-                                                      parent: :internship_agreement
-    factory :troisieme_prepa_metier_internship_agreement, traits: [:troisieme_prepa_metier_internship_agreement],
-                                                          parent: :internship_agreement
-    factory :troisieme_segpa_internship_agreement, traits: [:troisieme_segpa_internship_agreement],
-                                                   parent: :internship_agreement
   end
 end
