@@ -6,16 +6,4 @@ FactoryBot.define do
     name { '3e A' }
     school_track { 'troisieme_generale' }
   end
-
-  trait :troisieme_generale do
-    school_track { 'troisieme_generale' }
-  end
-
-  trait :troisieme_segpa do
-    school_track { 'troisieme_segpa' }
-  end
-
-  trait :troisieme_prepa_metiers do
-    school_track { 'troisieme_prepa_metiers' }
-  end
 end

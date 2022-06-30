@@ -7,7 +7,7 @@ class SchoolTest < ActiveSupport::TestCase
     school = create(:school, :with_agreement_presets)
     student = create(:student, :troisieme_generale, school: school)
     internship_application = create(:weekly_internship_application, user_id: student.id)
-    internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+    internship_agreement = create(:internship_agreement, :created_by_system,
                                   internship_application: internship_application)
     internship_agreement_presets = school.internship_agreement_preset
 
@@ -18,7 +18,7 @@ class SchoolTest < ActiveSupport::TestCase
     school = create(:school, :with_agreement_presets_missing_date)
     student = create(:student, :troisieme_generale, school: school)
     internship_application = create(:weekly_internship_application, user_id: student.id)
-    internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+    internship_agreement = create(:internship_agreement, :created_by_system,
                                   internship_application: internship_application)
     internship_agreement_presets = school.internship_agreement_preset
     new_date = 3.weeks.ago.to_date

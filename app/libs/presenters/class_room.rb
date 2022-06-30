@@ -10,21 +10,15 @@ module Presenters
     end
 
     def self.school_tracks_options
-      general_track = ['Voie générale', [[self.tr_school_track('troisieme_generale'), :troisieme_generale]]]
-      professional_track = ['Voie professionnelle', ::ClassRoom.school_tracks.keys.difference(['troisieme_generale']).collect {|tra| [self.tr_school_track(tra), tra]}]
-      [general_track, professional_track]
+       [['3e', :troisieme_generale]]
     end
 
-    def self.tr_school_track(track)
-      I18n.t("enum.school_tracks.#{track}")
-    end
 
-    def self.with_school_tracks(school)
+    def self.with_class_rooms(school)
       school.class_rooms
             .current
             .includes([:students])
             .order(:name)
-            .group_by { |c| c.school_track }
     end
 
     def self.students_without_class_room(school)

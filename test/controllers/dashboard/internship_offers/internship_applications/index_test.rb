@@ -78,33 +78,6 @@ module InternshipApplications
       assert_response :success
     end
 
-    test 'GET #index succeed with free_date_internship_application when logged in as employer, shows default fields' do
-      school = create(:school, city: 'Paris', name: 'Mon établissement')
-      student = create(:student, school: school,
-                                 phone: '+330665656565',
-                                 email: 'student@edu.school',
-                                 birth_date: 14.years.ago,
-                                 resume_educational_background: 'resume_educational_background',
-                                 resume_other: 'resume_other',
-                                 resume_languages: 'resume_languages')
-      internship_application = create(:free_date_internship_application, :submitted, student: student)
-      sign_in(internship_application.internship_offer.employer)
-      get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
-      assert_response :success
-
-      assert_select '.h4.mb-0', internship_application.student.name
-      assert_select '.font-weight-bold', "le #{I18n.localize(internship_application.created_at, format: '%d %B')}"
-      assert_select '.student-name', student.name
-      assert_select '.school-name', school.name
-      assert_select '.school-city', school.city
-      assert_select '.student-age', "#{student.age} ans"
-      assert_select '.student-email', student.email
-      assert_select '.student-phone', student.phone
-      assert_select '.reboot-trix-content', student.resume_educational_background.to_plain_text
-      assert_select '.reboot-trix-content', student.resume_other.to_plain_text
-      assert_select '.reboot-trix-content', student.resume_languages.to_plain_text
-    end
-
     test 'GET #index succeed when logged in as employer, shows handicap field when present' do
       school = create(:school, city: 'Paris', name: 'Mon établissement')
       student = create(:student, school: school,
