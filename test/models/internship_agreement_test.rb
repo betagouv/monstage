@@ -5,17 +5,6 @@ class InternshipAgreementTest < ActiveSupport::TestCase
     assert build(:internship_agreement).valid?
   end
 
-  test "validates school_track" do
-    internship_agreement = InternshipAgreement.new(school_track: nil)
-    internship_agreement.valid?
-    assert internship_agreement.errors.include?(:school_track)
-  end
-
-  test 'skip validation of fields with when school_track is troisieme_generale' do
-    internship_agreement = InternshipAgreement.new(school_track: :troisieme_generale)
-    internship_agreement.valid?
-  end
-
   test '#roles_not_signed_yet' do
     internship_agreement = create(:internship_agreement, aasm_state: :validated)
     assert_equal ['school_manager', 'employer'],
