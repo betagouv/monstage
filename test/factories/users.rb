@@ -30,7 +30,7 @@ FactoryBot.define do
         gender { 'f' }
       end
       factory :student_with_class_room_3e, class: 'Users::Student', parent: :student do
-        class_room { create(:class_room, school: school, school_track: 'troisieme_generale') }
+        class_room { create(:class_room, school: school) }
       end
       trait :not_precised do
         gender { 'np' }
@@ -112,15 +112,7 @@ FactoryBot.define do
     #
     # traits to create a student[with a school] having a specific class_rooms
     trait :troisieme_generale do
-      class_room { build(:class_room, :troisieme_generale, school: school) }
-    end
-
-    trait :troisieme_segpa do
-      class_room { build(:class_room, :troisieme_segpa, school: school) }
-    end
-
-    trait :troisieme_prepa_metiers do
-      class_room { build(:class_room, :troisieme_prepa_metiers, school: school) }
+      class_room { build(:class_room, school: school) }
     end
   end
 end

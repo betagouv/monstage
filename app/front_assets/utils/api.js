@@ -65,7 +65,7 @@ export const endpoints = {
     endpoint.search = searchParams.toString();
     return endpoint;
   },
-  
+
   // @post
   apiSearchSchool: () => {
     const endpoint = new URL(`${host}/api/schools/search`);
