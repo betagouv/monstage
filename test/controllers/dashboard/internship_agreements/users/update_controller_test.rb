@@ -5,7 +5,7 @@ module Dashboard::InternshipAgreements::Users
     include Devise::Test::IntegrationHelpers
 
     test 'employer updates his account with a phone number with ok params' do
-      internship_agreement = create(:troisieme_generale_internship_agreement)
+      internship_agreement = create(:internship_agreement)
       employer = internship_agreement.employer
       sign_in(employer)
 
@@ -29,7 +29,7 @@ module Dashboard::InternshipAgreements::Users
     end
 
     test 'employer updates his account with a phone number with bad params' do
-      internship_agreement = create(:troisieme_generale_internship_agreement)
+      internship_agreement = create(:internship_agreement)
       employer = internship_agreement.employer
       sign_in(employer)
 
