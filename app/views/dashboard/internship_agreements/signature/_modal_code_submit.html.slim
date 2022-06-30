@@ -2,6 +2,7 @@
   .fr-modal__header
     button.fr-btn--close.fr-btn aria-controls="fr-modal-signature"  Fermer
   .fr-modal__content
+
     h1#fr-modal-signature-title.fr-modal__title
       span.fr-fi-arrow-right-line.fr-fi--lg aria-hidden="true"
       | Nous vous avons envoyé un code de vérification
@@ -12,15 +13,17 @@
       -user_params = {user: parameters}
       .fr-pl-1v= button_to reset_phone_number_dashboard_internship_agreement_user_path(parameters),
                             method: :post,
-                            data: {turbo: false},
+                            data: { turbo: false },
                             class: 'float-right fr-raw-link fr-text--sm  fr-ml-2w blue-france',
                             aria: {label: "Modifier le numero de téléphone"} do
         span.fr-icon-edit-fill.fr-icon--sm.fr-mb-1v
+    div id="#error_messages_#{internship_agreement_id}"
   .fr-modal__footer
     = form_with(model: current_user,
                 scope: :user,
                 url: signature_code_validate_dashboard_internship_agreement_user_path(internship_agreement_id: internship_agreement_id, id: current_user.id),
                 method: :post) do |f|
+
       = f.hidden_field :id, value: current_user.id, name: 'user[id]'
       = f.hidden_field :internship_agreement_id,
                        value: internship_agreement_id,
@@ -29,3 +32,4 @@
                locals: {f: f,
                         current_user: current_user,
                         internship_agreement_id: internship_agreement_id}
+

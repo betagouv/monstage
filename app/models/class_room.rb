@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ClassRoom < ApplicationRecord
-  include SchoolTrackable
 
   belongs_to :school
   has_many :students, class_name: 'Users::Student',
@@ -14,21 +13,6 @@ class ClassRoom < ApplicationRecord
   end
 
   scope :current, -> {where(anonymized: false)}
-
-  def fit_to_weekly?
-    try(:troisieme_generale?)
-  end
-
-  def fit_to_free_date?
-    !fit_to_weekly?
-  end
-
-  def applicable?(internship_offer)
-    return true if internship_offer.free_date? && fit_to_free_date?
-    return true if internship_offer.weekly? && fit_to_weekly?
-
-    false
-  end
 
   def to_s
     name

@@ -15,7 +15,7 @@
                                         form_id: :desktop_internship_offers_index_search_form }
 
 .actions.d-flex.d-stick.d-md-none.py-2
-  = link_to search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])),
+  = link_to search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, week_ids: [])),
             class: 'fr-btn btn-block-mobile',
             title: "Lancer la recherche",
             data: { :"test-id" => 'mobile-search-button' }

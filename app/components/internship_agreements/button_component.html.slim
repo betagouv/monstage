@@ -29,7 +29,6 @@
       = form_with(model: @internship_offer_info,
                   url: start_signing_dashboard_internship_agreement_user_path(id: current_user.id, internship_agreement_id: internship_agreement.id),
                   scope: current_user,
-                  data: { turbo: false },
                   method: :post)  do |f|
         = f.button second_label[:text],
           type: 'submit',
@@ -46,7 +45,7 @@
           .fr-container.fr-container--fluid.fr-container-md
             .fr-grid-row.fr-grid-row--center
               .fr-col-10.fr-col-md-8
-                = turbo_frame_tag internship_agreement do 
+                = turbo_frame_tag internship_agreement do
                   = render partial:'dashboard/internship_agreements/signature/modal_code_submit',
                            locals: { current_user: current_user,
                                      internship_agreement_id: internship_agreement.id}
@@ -62,8 +61,8 @@
               .fr-col-10.fr-col-md-8
                 = turbo_frame_tag internship_agreement do
                   = render partial:'dashboard/internship_agreements/signature/modal_phone_request',
-                          locals: { current_user: current_user,
-                                    internship_agreement_id: internship_agreement.id}
+                           locals: { current_user: current_user,
+                                     internship_agreement_id: internship_agreement.id}
     - else
       = link_to '', class: "#{primary_button_classes} disabled" do
         = "url to define - #{second_label[:text]}"

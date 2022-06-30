@@ -112,7 +112,6 @@ module Builders
         sector_id: internship_offer_info.sector_id,
         daily_lunch_break: internship_offer_info.daily_lunch_break,
         weekly_lunch_break: internship_offer_info.weekly_lunch_break,
-        school_track: internship_offer_info.school_track,
         type: internship_offer_info.type.gsub('Info', ''),
       }
       params[:week_ids] = internship_offer_info.week_ids if internship_offer_info.weekly?

@@ -1,5 +1,3 @@
-
-
 = form_with(model: internship_agreement_preset, url: dashboard_school_internship_agreement_preset_path(school, internship_agreement_preset), data: {:"test-id" => 'internship_agreement_preset_form'}, class: 'py-3') do |f|
   .row.pt-3
     .col-12
@@ -7,41 +5,73 @@
         = render partial: "inputs/date_input", locals: { form: f, container_class_name: "input-group", attribute_name: :school_delegation_to_sign_delivered_at, attribute_label: 'Date de délégation' }
         small.form-text.text-muted Date de décision du conseil d'administration de l'établissement donnant le droit au chef d'établissement de signer les conventions
 
-  .row 
+  .row
     .col-12
       .form-group.form-group-tooltip
         - title = "Note au chef d'établissement :"
         - content = "Dispositions communes par défaut pour tous les élèves. Si vous avez des spécificités locales vous pouvez nous les faire remonter."
-        #label_internship_agreement_preset_legal_terms_rich_text.label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{f.object_name}_legal_terms_rich_text" data-controller="rich-text-label"
+        #label_internship_agreement_preset_legal_terms_rich_text.label [
+          data-rich-text-label-enable-value=true
+          data-rich-text-label-for-value="#{f.object_name}_legal_terms_rich_text"
+          data-controller="rich-text-label"]
+
           = "Dispositions générales des conventions"
-          span.float-right.tool-tip data-toggle="tooltip" data-html='true' data-placement="top" title="<b>#{title}</b><p>#{content}</p>" data-controller='tooltip'
+          span.float-right.tool-tip [
+            data-toggle="tooltip"
+            data-html='true'
+            data-placement="top" title="<b>#{title}</b><p>#{content}</p>"
+            data-controller='tooltip']
             i.fa.fa-info-circle
           = f.rg2a_required_content_tag
-        = f.rich_text_area :legal_terms_rich_text, class: "form-control col-lg-12", required: true, data: { :"maxlength-input-target" => 'trixElement' }, aria: {labelledby: 'label_internship_agreement_preset_legal_terms_rich_text'}
+        = f.rich_text_area :legal_terms_rich_text,
+                            class: "form-control col-lg-12",
+                            required: true,
+                            data: { :"maxlength-input-target" => 'trixElement' },
+                            aria: {labelledby: 'label_internship_agreement_preset_legal_terms_rich_text'}
 
-  .row 
+  .row
     .col-12
       .form-group.form-group-tooltip
         - title = "Note au chef d'établissement :"
         - content = "Toutes les modalités pratiques du stage."
-        #label_internship_agreement_preset_complementary_terms_rich_text.label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{f.object_name}_complementary_terms_rich_text" data-controller="rich-text-label"
+        #label_internship_agreement_preset_complementary_terms_rich_text.label [
+          data-rich-text-label-enable-value=true
+          data-rich-text-label-for-value="#{f.object_name}_complementary_terms_rich_text"
+          data-controller="rich-text-label"]
+
           = "Annexe complémentaire des conventions"
-          span.float-right.tool-tip data-toggle="tooltip" data-html='true' data-placement="top" title="<b>#{title}</b><p>#{content}</p>" data-controller='tooltip'
+          span.float-right.tool-tip [
+            data-toggle="tooltip"
+            data-html='true'
+            data-placement="top" title="<b>#{title}</b><p>#{content}</p>"
+            data-controller='tooltip']
             i.fa.fa-info-circle
           = f.rg2a_required_content_tag
           small.form-text.text-muted Renseigner les dispositions spécifiques à insérer sur les conventions éditées via la plateforme monstagedetroisieme.fr
-        = f.rich_text_area :complementary_terms_rich_text, class: "form-control col-lg-12", required: true, data: { :"maxlength-input-target" => 'trixElement' }, aria: {labelledby: 'label_internship_agreement_preset_complementary_terms_rich_text'}
+        = f.rich_text_area :complementary_terms_rich_text,
+                           class: "form-control col-lg-12",
+                           required: true,
+                           data: { :"maxlength-input-target" => 'trixElement' },
+                           aria: {labelledby: 'label_internship_agreement_preset_complementary_terms_rich_text'}
 
-  .row 
+  .row
     .col-12
       .form-group.form-group-tooltip
         - title = "Note au chef d'établissement :"
         - content = "Critères d'évaluations."
-        #label_internship_agreement_preset_troisieme_generale_activity_rating_rich_text.label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{f.object_name}_troisieme_generale_activity_rating_rich_text" data-controller="rich-text-label"
+        #label_internship_agreement_preset_troisieme_generale_activity_rating_rich_text.label [
+          data-rich-text-label-enable-value=true
+          data-rich-text-label-for-value="#{f.object_name}_troisieme_generale_activity_rating_rich_text"
+          data-controller="rich-text-label"]
+
           = "Modalités d’évaluation de la séquence d’observation en milieu professionnel :"
           = f.rg2a_required_content_tag
-        = f.rich_text_area :troisieme_generale_activity_rating_rich_text, class: "form-control col-lg-12", required: true, data: { :"maxlength-input-target" => 'trixElement' }, aria: {labelledby: 'label_internship_agreement_preset_troisieme_generale_activity_rating_rich_text'}
-    
+        = f.rich_text_area :troisieme_generale_activity_rating_rich_text,
+                            class: "form-control col-lg-12",
+                            required: true,
+                            data: { :"maxlength-input-target" => 'trixElement' },
+                            aria: {labelledby: 'label_internship_agreement_preset_troisieme_generale_activity_rating_rich_text'}
+
   .row
     .col-12= f.button :submit, class: 'fr-btn' do
       i.fas.fa-check

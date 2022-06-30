@@ -1,13 +1,15 @@
-module Signaturable
+module Signatorable
   extend ActiveSupport::Concern
   included do
-    SIGNATURE_PHONE_TOKEN_VALIDITY = 2 # minutes
+    SIGNATURE_PHONE_TOKEN_LIFETIME ||= 2 # minutes
 
     def create_signature_phone_token
       return false if school_management? && !school_manager?
 
       update(signature_phone_token: format('%06d', rand(999_999)),
-             signature_phone_token_validity: SIGNATURE_PHONE_TOKEN_VALIDITY.minutes.from_now)
+             signature_phone_token_validity: SIGNATURE_PHONE_TOKEN_LIFETIME.minutes.from_now)
+      # update(signature_phone_token: format('%06d', 111_111),
+      #        signature_phone_token_validity: SIGNATURE_PHONE_TOKEN_LIFETIME.minutes.from_now)
     end
 
     def send_signature_sms_token
@@ -15,8 +17,9 @@ module Signaturable
 
       token_created = create_signature_phone_token
       message = "Votre code de signature : #{signature_presenter.show_code} " \
-                "- Validité : #{SIGNATURE_PHONE_TOKEN_VALIDITY} minutes"
+                "- Validité : #{SIGNATURE_PHONE_TOKEN_LIFETIME} minutes"
       token_created && SendSmsJob.perform_later(user: self, message: message) && true
+      # true
     end
 
     def nullify_phone_number

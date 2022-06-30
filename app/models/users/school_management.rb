@@ -8,7 +8,7 @@ module Users
   #   other (involve psychologists, teacher assistants etc...)
   class SchoolManagement < User
     include SchoolManagementAdmin
-    include Signaturable
+    include Signatorable
 
     validates :first_name,
               :last_name,

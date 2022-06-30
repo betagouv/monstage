@@ -56,8 +56,6 @@ module Reporting
       assert_select  'tr.test-school-count', count: 1
     end
 
-
-
     test 'GET #index as operator works' do
       user_operator = create(:user_operator)
       sign_in(user_operator)

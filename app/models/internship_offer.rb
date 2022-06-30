@@ -79,10 +79,6 @@ class InternshipOffer < ApplicationRecord
   #   all # TODO : specs for FreeDate required
   # }
 
-  scope :school_track, lambda { |school_track:|
-    where(school_track: school_track)
-  }
-
   scope :unpublished, -> { where(published_at: nil) }
   scope :published, -> { where.not(published_at: nil) }
 
@@ -192,7 +188,7 @@ class InternshipOffer < ApplicationRecord
                     tutor_name tutor_phone tutor_email employer_website
                     employer_name street zipcode city department region academy
                     is_public group school_id coordinates first_date last_date
-                    school_track siret employer_manual_enter
+                    siret employer_manual_enter
                     internship_offer_info_id organisation_id tutor_id
                     weekly_hours new_daily_hours]
 
@@ -202,8 +198,8 @@ class InternshipOffer < ApplicationRecord
   def duplicate_without_location
     white_list_without_location = %w[type title sector_id max_candidates
                     tutor_name tutor_phone tutor_email employer_website
-                    employer_name is_public group school_id coordinates 
-                    first_date last_date school_track siret employer_manual_enter
+                    employer_name is_public group school_id coordinates
+                    first_date last_date siret employer_manual_enter
                     internship_offer_info_id organisation_id tutor_id
                     weekly_hours new_daily_hours]
 

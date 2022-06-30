@@ -2,6 +2,17 @@
 
 module Builders
   class SignatureBuilder < BuilderBase
+    def post_signature_sms_token
+      yield callback if block_given?
+      authorize :create, Signature
+      user.send_signature_sms_token
+      callback.on_success.try(:call, user.reload)
+    rescue ActiveRecord::RecordInvalid => e
+      callback.on_failure.try(:call, e.record)
+    rescue ArgumentError => e
+      callback.on_failure.try(:call, e)
+    end
+
     def signature_code_validate
       yield callback if block_given?
       authorize :create, Signature # only school_managers and employers can create
@@ -24,8 +35,7 @@ module Builders
       raise ArgumentError, 'Erreur de code, veuillez recommencer' unless code_valid
 
       user.check_and_expire_token!
-
-      callback.on_success.try(:call, user)
+      callback.on_success.try(:call, user.reload)
     rescue ActiveRecord::RecordInvalid => e
       callback.on_failure.try(:call, e.record)
     rescue ArgumentError => e
