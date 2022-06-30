@@ -40,7 +40,7 @@ module Signatorable
       return if time_check.nil?
 
       validity = signature_phone_token_validity
-      duration = SIGNATURE_PHONE_TOKEN_VALIDITY.minutes
+      duration = SIGNATURE_PHONE_TOKEN_LIFETIME.minutes
 
       validity - duration < time_check
     end
