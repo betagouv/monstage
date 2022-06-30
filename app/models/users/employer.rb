@@ -3,7 +3,7 @@
 module Users
   class Employer < User
     include EmployerAdmin
-    include Signaturable
+    include Signatorable
 
 
     has_many :internship_offers, as: :employer,
