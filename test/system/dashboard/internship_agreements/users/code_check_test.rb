@@ -12,7 +12,7 @@ module Dashboard::InternshipAgreements::Users
 
 
     test 'employer signs and everything is ok' do
-      internship_agreement = create(:troisieme_generale_internship_agreement, :validated)
+      internship_agreement = create(:internship_agreement, :validated)
       employer = internship_agreement.employer
       sign_in(employer)
 
@@ -30,15 +30,15 @@ module Dashboard::InternshipAgreements::Users
         execute_script(code_script_enables(index))
         execute_script(code_script_assign(signature_phone_tokens, index))
       end
-      execute_script("document.getElementById('user-code-5').closest('form').submit()")
-    end
-
-    test 'school_manager signs and everything is ok' do
-      # see signature_test.rb
+      find("#button-code-submit-#{internship_agreement.id}")
+      execute_script("document.getElementById('button-code-submit-#{internship_agreement.id}').removeAttribute('disabled')")
+      within('dialog') do
+        click_button('Signer la convention')
+      end
     end
 
     test 'employer signs and code is wrong' do
-      internship_agreement = create(:troisieme_generale_internship_agreement, :validated)
+      internship_agreement = create(:internship_agreement, :validated)
       school_manager = internship_agreement.school_manager
       sign_in(school_manager)
 
@@ -52,14 +52,17 @@ module Dashboard::InternshipAgreements::Users
       find('button.fr-btn[disabled]')
       (0..5).to_a.each do |index|
         execute_script(code_script_enables(index))
-        execute_script(code_script_assign(index, index))
+        execute_script(code_script_assign(index, index)) # wrong code
       end
-      execute_script("document.getElementById('user-code-5').closest('form').submit()")
-      sleep 0.5
+      find("#button-code-submit-#{internship_agreement.id}")
+      execute_script("document.getElementById('button-code-submit-#{internship_agreement.id}').removeAttribute('disabled')")
+      within('dialog') do
+        click_button('Signer la convention')
+      end
 
       find('h1', text: 'Editer, imprimer et bientôt signer les conventions dématérialisées')
       assert_equal 0, Signature.all.count
-      find('span#alert-text', text: 'Erreur de code, veuillez recommencer')
+      find('.fr-alert p', text: 'Erreur de code, veuillez recommencer')
     end
   end
 end

@@ -18,31 +18,25 @@
                        value: internship_agreement_id,
                        name: 'user[internship_agreement_id]'
 
-      div data-controller='handwrite-sign'
-        .row
-          .col-12
-            .signature-pad-wrapper
-              canvas#signature-pad data-handwrite-sign-target='pad'
-            .text-muted Inscrivez votre signature dans le cadre ci-dessous
-        .row
-          .col-12.fr-mt-1w
-            button [ id='save'
-              class='fr-btn fr-mr-2v'
-              data-handwrite-sign-target='save'
-              data-action='handwrite-sign#save']
-              |Valider la signature
-            button [ id='clear'
-              class='fr-btn fr-btn--secondary fr-mx-2v'
-              data-handwrite-sign-target='clear'
-              data-action='handwrite-sign#clear']
-              |Effacer
+      .row data-controller='handwrite-sign'
+        .col-5
+          .signature-pad-wrapper
+            canvas#signature-pad data-handwrite-sign-target='pad'
+          = link_to "#",
+                    id: 'clear',
+                    class: 'fr-mx-2v fr-raw-link',
+                    data: {:'handwrite-sign-target' => 'clear', action: 'handwrite-sign#clear'} do
 
-        .fr-mt-1w.text-right
-          = f.hidden_field :handwrite_signature,
-                           data: {:'handwrite-sign-target'=> 'signature'},
-                           id: "handwrite_signature_#{internship_agreement_id}"
-          = f.submit "Signer la convention",
-                      disabled: true,
-                      class: 'fr-btn',
-                      id: "submit-#{internship_agreement_id}",
-                      data: {:"handwrite-sign-target" => 'submitter' }
+            span.fr-icon-delete-line.small aria-hidden="true" Effacer
+        .col-5.h-100
+          .fr-m-2w.d-flex.flex-column
+            .d-block.text-muted.fr-mb-1w.fr-pb-1w.fr-mt-9v Votre signature sera apposée sur la convention de stage
+            = f.hidden_field :handwrite_signature,
+                            data: {:'handwrite-sign-target'=> 'signature'},
+                            id: "handwrite_signature_#{internship_agreement_id}"
+            = f.submit "Confirmer la signature",
+                        disabled: true,
+                        class: 'fr-btn',
+                        id: "submit-#{internship_agreement_id}",
+                        data: {:"handwrite-sign-target" => 'submitter',
+                              :action => 'handwrite-sign#save' }

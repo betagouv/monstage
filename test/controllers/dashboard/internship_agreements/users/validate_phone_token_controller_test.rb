@@ -5,7 +5,7 @@ module Dashboard::InternshipAgreements::Users
     include Devise::Test::IntegrationHelpers
 
     test 'employer signing fails when using wrong_code' do
-      internship_agreement = create(:troisieme_generale_internship_agreement)
+      internship_agreement = create(:internship_agreement)
       employer = internship_agreement.employer
       employer.update(phone: '+330623456789')
       employer.create_signature_phone_token
@@ -17,24 +17,25 @@ module Dashboard::InternshipAgreements::Users
           :'digit-code-target-0' => '1',
           :'digit-code-target-1' => '1',
           :'digit-code-target-2' => '1',
-          :'digit-code-target-3' => '1',
+          :'digit-code-target-3' => '0',
           :'digit-code-target-4' => '1',
           :'digit-code-target-5' => '1',
+          id: employer.id
         }
       }
       post signature_code_validate_dashboard_internship_agreement_user_path(
               internship_agreement_id: internship_agreement.id,
+              format: :turbo_stream,
               id: employer.id),
              params: params
 
-      assert_redirected_to dashboard_internship_agreements_path
-      follow_redirect!
       assert_response :success
-      assert_select '#alert-text', text: "Erreur de code, veuillez recommencer"
+      puts response.body
+      assert_select '.fr-alert p', text: "Erreur de code, veuillez recommencer"
     end
 
     test 'employer signing fails when using too old a code params ' do
-      internship_agreement = create(:troisieme_generale_internship_agreement)
+      internship_agreement = create(:internship_agreement)
       employer = internship_agreement.employer
       employer.update(phone: '+330623456789')
       employer.create_signature_phone_token
@@ -56,21 +57,20 @@ module Dashboard::InternshipAgreements::Users
           assert_no_difference('Signature.count') do
             post signature_code_validate_dashboard_internship_agreement_user_path(
                   internship_agreement_id: internship_agreement.id,
+                  format: :turbo_stream,
                   id: employer.id),
                  params: params
           end
-          assert_redirected_to dashboard_internship_agreements_path
-          follow_redirect!
           assert_response :success
-          assert_select '#alert-text',
+          assert_select '.fr-alert p',
                         text: "Code périmé, veuillez en réclamer un autre"
 
         end
       end
     end
 
-    test 'employer creates succeeds with every params ok' do
-      internship_agreement = create(:troisieme_generale_internship_agreement, aasm_state: :validated)
+    test 'employer creates token succeeds with every params ok' do
+      internship_agreement = create(:internship_agreement, aasm_state: :validated)
       employer = internship_agreement.employer
       employer.update(phone: '+330612345678')
       employer.create_signature_phone_token
@@ -78,7 +78,7 @@ module Dashboard::InternshipAgreements::Users
       date = DateTime.new(2020, 1, 1,12,0,0)
       travel_to date do
         Users::Employer.stub_any_instance(:signature_phone_token, '123456') do
-          Users::Employer.stub_any_instance(:signature_phone_token_validity, Users::Employer::SIGNATURE_PHONE_TOKEN_VALIDITY.minute.from_now) do
+          Users::Employer.stub_any_instance(:signature_phone_token_validity, Users::Employer::SIGNATURE_PHONE_TOKEN_LIFETIME.minute.from_now) do
             params = {
               user: {
                 internship_agreement_id: internship_agreement.id,
@@ -92,19 +92,17 @@ module Dashboard::InternshipAgreements::Users
             }
             post signature_code_validate_dashboard_internship_agreement_user_path(
                     internship_agreement_id: internship_agreement.id,
+                    format: :turbo_stream,
                     id: employer.id),
                   params: params
-            assert_redirected_to dashboard_internship_agreements_path
-            follow_redirect!
             assert_response :success
-            assert_select '#alert-text', text: "Votre code est valide"
           end
         end
       end
     end
 
     test 'school_manager signing fails when using wrong_code' do
-      internship_agreement = create(:troisieme_generale_internship_agreement)
+      internship_agreement = create(:internship_agreement)
       school_manager = internship_agreement.school_manager
       school_manager.create_signature_phone_token
       sign_in(school_manager)
@@ -123,18 +121,17 @@ module Dashboard::InternshipAgreements::Users
       assert_no_difference('Signature.count') do
         post signature_code_validate_dashboard_internship_agreement_user_path(
               internship_agreement_id: internship_agreement.id,
+              format: :turbo_stream,
               id: school_manager.id),
              params: params
       end
 
-      assert_redirected_to dashboard_internship_agreements_path
-      follow_redirect!
       assert_response :success
-      assert_select '#alert-text', text: "Erreur de code, veuillez recommencer"
+      assert_select '.fr-alert p', text: "Erreur de code, veuillez recommencer"
     end
 
     test 'school_manager signing fails when using too old a code params ' do
-      internship_agreement = create(:troisieme_generale_internship_agreement)
+      internship_agreement = create(:internship_agreement)
       school_manager = internship_agreement.school_manager
       school_manager.update(phone: '+330612345678')
       school_manager.create_signature_phone_token
@@ -155,12 +152,11 @@ module Dashboard::InternshipAgreements::Users
           }
           post signature_code_validate_dashboard_internship_agreement_user_path(
                 internship_agreement_id: internship_agreement.id,
+                format: :turbo_stream,
                 id: school_manager.id),
                 params: params
-          assert_redirected_to dashboard_internship_agreements_path
-          follow_redirect!
           assert_response :success
-          assert_select '#alert-text',
+          assert_select '.fr-alert p',
                         text: "Code périmé, veuillez en réclamer un autre"
 
         end
@@ -168,14 +164,14 @@ module Dashboard::InternshipAgreements::Users
     end
 
     test 'school_manager creates succeeds with every params ok' do
-      internship_agreement = create(:troisieme_generale_internship_agreement, aasm_state: :validated)
+      internship_agreement = create(:internship_agreement, aasm_state: :validated)
       school_manager = internship_agreement.school_manager
       school_manager.update(phone: '+330612345678')
       sign_in(school_manager)
       date = DateTime.new(2020, 1, 1,12,0,0)
       travel_to date do
         Users::SchoolManagement.stub_any_instance(:signature_phone_token, '123456') do
-          Users::SchoolManagement.stub_any_instance(:signature_phone_token_validity, Users::Employer::SIGNATURE_PHONE_TOKEN_VALIDITY.minute.from_now) do
+          Users::SchoolManagement.stub_any_instance(:signature_phone_token_validity, Users::Employer::SIGNATURE_PHONE_TOKEN_LIFETIME.minute.from_now) do
             params = {
               user: {
                 internship_agreement_id: internship_agreement.id,
@@ -190,10 +186,11 @@ module Dashboard::InternshipAgreements::Users
             }
             post signature_code_validate_dashboard_internship_agreement_user_path(
                     internship_agreement_id: internship_agreement.id,
+                    format: :turbo_stream,
                     id: school_manager.id),
                   params: params
             assert_equal date, school_manager.signature_phone_token_checked_at
-            target_date = Time.zone.now + Users::SchoolManagement::SIGNATURE_PHONE_TOKEN_VALIDITY.minutes
+            target_date = Time.zone.now + Users::SchoolManagement::SIGNATURE_PHONE_TOKEN_LIFETIME.minutes
             assert_equal target_date, school_manager.signature_phone_token_validity
           end
         end

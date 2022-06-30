@@ -5,7 +5,7 @@ module Dashboard::InternshipAgreements::Users
     include Devise::Test::IntegrationHelpers
 
     test 'employer resets his phone_number' do
-      internship_agreement = create(:troisieme_generale_internship_agreement)
+      internship_agreement = create(:internship_agreement)
       employer = internship_agreement.employer
       employer.update(phone: '+330602030405')
       sign_in(employer)
@@ -22,7 +22,7 @@ module Dashboard::InternshipAgreements::Users
     end
 
     test 'school_manager resets his phone_number' do
-      internship_agreement = create(:troisieme_generale_internship_agreement)
+      internship_agreement = create(:internship_agreement)
       school_manager = internship_agreement.school_manager
       school_manager.update(phone: '+330602030405')
       sign_in(school_manager)
@@ -39,7 +39,7 @@ module Dashboard::InternshipAgreements::Users
     end
 
     test 'employer is redirected to dashboard_internship_agreements_path when resetting his phone number fails' do
-      internship_agreement = create(:troisieme_generale_internship_agreement)
+      internship_agreement = create(:internship_agreement)
       employer = internship_agreement.employer
       employer.update(phone: '+330602030405')
       klass = Users::Employer
@@ -59,7 +59,7 @@ module Dashboard::InternshipAgreements::Users
     end
 
     test 'school_manager is redirected to dashboard_internship_agreements_path when resetting his phone number fails' do
-      internship_agreement = create(:troisieme_generale_internship_agreement)
+      internship_agreement = create(:internship_agreement)
       school_manager = internship_agreement.school_manager
       school_manager.update(phone: '+330602030405')
       klass = Users::SchoolManagement

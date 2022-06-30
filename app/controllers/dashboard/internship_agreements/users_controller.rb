@@ -44,53 +44,69 @@ module Dashboard
 
       def resend_sms_code
         authorize! :sign, @internship_agreement
-        if current_user.send_signature_sms_token
-          respond_to do |format|
-            format.turbo_stream do
-              flash_path = 'dashboard/internship_agreements/signature/flash_new_code'
-              render turbo_stream:
-                turbo_stream.replace("code-request",
-                                    partial: flash_path,
-                                    locals: { notice: 'Un nouveau code a été envoyé'})
+        signature_builder.post_signature_sms_token do |on|
+          on.success do
+            flash_path = 'dashboard/internship_agreements/signature/flash_new_code'
+            respond_to do |format|
+              format.turbo_stream do
+                render turbo_stream:
+                  turbo_stream.replace("code-request",
+                                      partial: flash_path,
+                                      locals: { notice: 'Un nouveau code a été envoyé'})
+              end
             end
           end
-        else
-          err_msg = "Une erreur est survenue et votre demande n'a pas été traitée"
-          redirect_to dashboard_internship_agreements_path,
-                      status: :unprocessable_entity,
-                      alert: err_msg
+          on.failure do |error|
+            err_msg = "Une erreur est survenue et votre demande n'a pas été traitée"
+            flash_path = 'dashboard/internship_agreements/signature/flash_new_code'
+            respond_to do |format|
+              format.turbo_stream do
+                render turbo_stream:
+                  turbo_stream.replace("code-request",
+                                        partial: flash_path,
+                                        locals: { alert: err_msg })
+              end
+            end
+          end
         end
       end
 
       def signature_code_validate
         authorize! :sign, @internship_agreement
-        respond_to do |format|
-          signature_builder.signature_code_validate do |on|
-            on.success do
-              id = @internship_agreement.id
-              path = 'dashboard/internship_agreements/signature/modal_handwrite_sign'
+        id = @internship_agreement.id
+        err_path = 'dashboard/internship_agreements/signature/code_error_messages'
+        ok_path = 'dashboard/internship_agreements/signature/modal_handwrite_sign'
+        signature_builder.signature_code_validate do |on|
+          on.success do
+            respond_to do |format|
               format.turbo_stream do
                 render turbo_stream:
                   turbo_stream.replace("internship-agreement-signature-form-#{id}",
-                                        partial: path,
+                                        partial: ok_path,
                                         locals: { current_user: current_user,
                                                   internship_agreement_id: id})
               end
-              format.html do
-                redirect_to dashboard_internship_agreements_path,
-                            notice: 'Votre code est valide'
+            end
+          end
+          on.failure do |error|
+            respond_to do |format|
+              format.turbo_stream do
+                render turbo_stream:
+                  turbo_stream.replace("#error_messages_#{id}",
+                                       partial: err_path,
+                                       locals: { error_message: error.errors.full_messages,
+                                                 internship_agreement_id: id})
               end
             end
-            on.failure do |error|
-              format.html do
-                redirect_to dashboard_internship_agreements_path,
-                            alert: error.errors.full_messages
-              end
-            end
-            on.argument_error do |error_msg|
-              format.html do
-                redirect_to dashboard_internship_agreements_path,
-                            alert: error_msg
+          end
+          on.argument_error do |error_msg|
+            respond_to do |format|
+              format.turbo_stream do
+                render turbo_stream:
+                  turbo_stream.replace("#error_messages_#{id}",
+                                      partial: err_path,
+                                      locals: { error_message: error_msg.message,
+                                                internship_agreement_id: id})
               end
             end
           end

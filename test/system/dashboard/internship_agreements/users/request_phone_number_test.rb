@@ -8,7 +8,7 @@ module Dashboard::InternshipAgreements::Users
     end
 
     test 'employer with phone number starts the signing process' do
-      internship_agreement = create(:troisieme_generale_internship_agreement, :validated)
+      internship_agreement = create(:internship_agreement, :validated)
       employer = internship_agreement.employer
       employer.update(phone: '+330622554411')
       sign_in(employer.reload)
@@ -20,7 +20,7 @@ module Dashboard::InternshipAgreements::Users
     end
 
     test 'school_manager with phone number starts the signing process' do
-      internship_agreement = create(:troisieme_generale_internship_agreement, :validated)
+      internship_agreement = create(:internship_agreement, :validated)
       school_manager = internship_agreement.school_manager
       school_manager.update(phone: '+330622554411')
       sign_in(school_manager.reload)

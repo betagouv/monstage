@@ -35,6 +35,10 @@
   min-height: 55px;
 }
 
+.red-marianne{
+  color: $red-marianne;
+}
+
 $custom-grey: rgb(51,51,51);
 
 .tool-note {
@@ -190,13 +194,28 @@ $position-form-field-helper: 55px;
 
 // SIGNATURES MODAL
 .signature-pad-wrapper{
-  width: 735px;
+  width: 350px;
   margin: 0 auto;
 }
 
 #signature-pad {
-  width: 400px;
-  height: 150px;
+  width: 287px;
+  height: 142px;
   border: 1px solid $light-grey;
   margin:5px;
+}
+.digit-code-size{
+	width: 60px;
+	height: 60px;
+	background: #F6F6F6;
+	border: 1px solid #E5E5E5;
+	border-radius: 7px;
+	margin-left: 20px;
+	font-family: 'Marianne';
+	font-size: 24px;
+	line-height: 24px;
+	padding-left: 20px;
+  &:focus{
+  	box-shadow: 0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #0A76F6;
+  }
 }
