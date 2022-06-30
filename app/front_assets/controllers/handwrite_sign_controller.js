@@ -2,7 +2,7 @@ import { Controller } from 'stimulus';
 import SignaturePad from 'signature_pad/dist/signature_pad';
 
 export default class extends Controller {
-  static targets = ['pad', 'clear', 'save', 'submitter', 'signature'];
+  static targets = ['pad', 'clear', 'submitter', 'signature'];
 
   padTargetConnected(element) {
     const options = {
@@ -11,7 +11,12 @@ export default class extends Controller {
       penColor: "rgb(0,0,91)"
     }
     this.signaturePad = new SignaturePad(element, options)
+    this.signaturePad.addEventListener("beginStroke", () => {
+      this.submitterTarget.removeAttribute('disabled');
+    });
   }
+
+
 
   clear(event) {
     event.preventDefault();
@@ -21,7 +26,6 @@ export default class extends Controller {
   }
 
   save(event) {
-    event.preventDefault();
     this.signatureTarget.value = JSON.stringify(this.signaturePad.toData());
     this.submitterTarget.removeAttribute('disabled');
   }
