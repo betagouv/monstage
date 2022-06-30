@@ -29,6 +29,7 @@ export default class extends Controller {
   withNumericKey(event) {
     if (!event.shiftKey) { this.validateEnteredValue(event); }
     if (this.lastPosition()) {
+      this.enableAll();
       this.enableForm();
     } else {
       this.positionMove(+1);
