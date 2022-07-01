@@ -1,7 +1,17 @@
-#agreement-button-panel.fr-tabs__panel.fr-tabs__panel--selected [
+#agreement-button-panel.fr-tabs__panel--selected [
   aria-labelled-by="agreement-button"
+  class="margin-to-header"
   role="tabpanel"
   tabindex="0"]
+
+  .fr-callout.fr-fi-information-line
+    p.fr-callout__title Signez votre convention en ligne
+    p.fr-callout__text
+      |
+        La signature en ligne de la convention est désormais disponible.
+        Cela vous permet de signer en ligne, sans avoir à imprimer le document.
+        Vous pouvez, si vous le souhaitez, conserver la signature
+        papier, en cliquant sur Imprimer.
 
   - if @internship_agreements.empty?
     = render partial: 'empty_agreement_list'
