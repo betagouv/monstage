@@ -41,12 +41,6 @@ module Users
       :phone
     end
 
-    # def internship_applications_type
-    #   return nil unless class_room.present?
-
-    #   return InternshipApplications::WeeklyFramed.name
-    # end
-
     def has_zero_internship_application?
       internship_applications.all
                              .size
