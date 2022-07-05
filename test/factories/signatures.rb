@@ -1,4 +1,3 @@
-include ActionDispatch::TestProcess
 FactoryBot.define do
   factory :signature do
     signatory_ip { FFaker::Internet.ip_v4_address }
