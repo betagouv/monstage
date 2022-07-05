@@ -1,4 +1,5 @@
-#agreement-button-panel.fr-tabs__panel--selected [
+#agreement-button-panel [
+  class="#{current_user.employer? ? 'fr-tabs__panel fr-tabs__panel--selected' : ''}"
   aria-labelled-by="agreement-button"
   class="margin-to-header"
   role="tabpanel"
