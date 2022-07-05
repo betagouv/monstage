@@ -101,7 +101,7 @@ class InternshipAgreement < ApplicationRecord
       transitions from: [:signatures_started],
                   to: :signed_by_all,
                   after: proc { |*_args|
-        notify_others_signatures_finalized(self)
+        notify_others_signatures_finished(self)
       }
     end
   end
@@ -194,6 +194,10 @@ class InternshipAgreement < ApplicationRecord
 
   def roles_not_signed_yet
     Signature.signatory_roles.keys - roles_already_signed
+  end
+
+  def presenter
+    Presenters::InternshipAgreement.new(self)
   end
 
   private
