@@ -9,10 +9,9 @@
                 id: 'test-create-offer' do
         button.fr-icon-add-line.fr-btn.fr-btn--icon-left Déposer une offre
 .fr-tabs.fr-mb-9w.w-100
-  .row
-    = render partial: "dashboard/internship_offers/tabs",
-              locals: { internship_offers: @internship_offers,
-                        all_states_counter: @all_states_counter }
+  = render partial: "dashboard/internship_offers/tabs",
+                locals: { internship_offers: @internship_offers,
+                          all_states_counter: @all_states_counter }
 
   .fr-tabs__panel.fr-tabs__panel--selected.internships
     = render partial: 'dashboard/internship_offers/offers_and_agreements_content',
