@@ -46,13 +46,11 @@ module Builders
     def handwrite_sign
       yield callback if block_given?
 
-      signature_file_name = "signature-#{user.signatory_role}" \
-                            "-#{params[:internship_agreement_id]}.png"
       signature = Signature.new(prepare_attributes)
       signature.signature_image
-               .attach(io: File.open("storage/signatures/#{signature_file_name}"),
-                       filename: signature_file_name,
-                       content_type: "image/jpeg")
+               .attach(io: File.open("storage/signatures/#{signature.signature_file_name}"),
+                       filename: signature.signature_file_name,
+                       content_type: "image/png")
       unless user.signature_code_checked?
         signature.errors.add('id', 'Le code n\'a pas été validé ')
         raise ActiveRecord::RecordInvalid, signature
@@ -66,9 +64,7 @@ module Builders
     end
 
     def prepare_attributes
-      return false if params[:signature_image].blank?
-
-      make_image
+      make_image &&
       {
         internship_agreement_id: params[:internship_agreement_id],
         signatory_role: user.signatory_role,
@@ -88,6 +84,8 @@ module Builders
     end
 
     def make_image
+      return false if params[:signature_image].blank?
+
       encoded_image = params[:signature_image].split(",")[1]
       decoded_image = Base64.decode64(encoded_image)
       image_name = "storage/signatures/signature-#{user.signatory_role}" \

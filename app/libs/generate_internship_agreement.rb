@@ -161,11 +161,12 @@ class GenerateInternshipAgreement < Prawn::Document
       "L'entreprise ou l'organisme d'accueil",
       "Le représentant de l'établissement d'enseignement scolaire",
       "L'élève",
-      "Les parents (responsables légaux)" ]]
+      "Les parents       (responsables légaux)".html_safe ]]
     @pdf.table(
       table_data,
       row_colors: ["F0F0F0"],
-      column_widths: [PAGE_WIDTH / 4] * 4
+      column_widths: [PAGE_WIDTH / 4] * 4,
+      cell_style: {size: 10}
     ) do |t|
         t.cells.border_color="cccccc"
         t.cells.align=:center

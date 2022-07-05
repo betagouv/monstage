@@ -36,6 +36,12 @@ class Signature < ApplicationRecord
     Presenters::Signature.new(signature: self)
   end
 
+  def signature_file_name
+    return if signatory_role.nil? || internship_agreement_id.nil?
+
+    "signature-#{signatory_role}-#{internship_agreement_id}.png"
+  end
+
   private
 
   def no_double_signature?
