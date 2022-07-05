@@ -220,8 +220,7 @@ class InternshipAgreement < ApplicationRecord
     every_signature_but_mine.each do |signature|
       role = signature.signatory_role.to_sym
       mailer_map[role].notify_others_signatures_finished_email(
-        internship_agreement: agreement,
-        signature: signature,
+        internship_agreement: agreement
       ).deliver_later
     end
   end
