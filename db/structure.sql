@@ -1133,8 +1133,7 @@ CREATE TABLE public.signatures (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     signatory_role public.agreement_signatory_role,
-    signature_phone_number character varying(20) NOT NULL,
-    handwrite_signature jsonb DEFAULT '{}'::jsonb
+    signature_phone_number character varying(20) NOT NULL
 );
 
 
@@ -2637,6 +2636,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220616131010'),
 ('20220621105148'),
 ('20220624092113'),
-('20220626074601');
+('20220626074601'),
+('20220704132020');
 
 
