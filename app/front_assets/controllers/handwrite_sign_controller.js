@@ -26,7 +26,7 @@ export default class extends Controller {
   }
 
   save(event) {
-    this.signatureTarget.value = JSON.stringify(this.signaturePad.toData());
+    this.signatureTarget.value = this.signaturePad.toDataURL(); // default is png
     this.submitterTarget.removeAttribute('disabled');
   }
 }

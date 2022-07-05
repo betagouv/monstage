@@ -1,3 +1,4 @@
+include ActionDispatch::TestProcess
 FactoryBot.define do
   factory :signature do
     signatory_ip { FFaker::Internet.ip_v4_address }
@@ -5,7 +6,7 @@ FactoryBot.define do
     signature_date { DateTime.now - 25.days }
     signatory_role { Signature::signatory_roles[:employer] }
     internship_agreement { create(:internship_agreement) }
-    handwrite_signature { File.read( Rails.root.join('test', 'fixtures', 'files', 'signature.json')).to_json}
+    signature_image {Rack::Test::UploadedFile.new("test/fixtures/files/signature.png", "image/png") }
     trait :employer_signature do
       signatory_role { Signature::signatory_roles[:employer] }
     end
