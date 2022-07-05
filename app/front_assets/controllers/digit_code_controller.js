@@ -14,6 +14,7 @@ export default class extends Controller {
   // private
 
   eraseBack(event) {
+    if (this.positionValue >= this.codeTargets.length) { this.positionMove(-1) }
     this.eraseCurrentKey(event)
     if (this.firstPosition()) { return; }
 
@@ -28,11 +29,11 @@ export default class extends Controller {
 
   withNumericKey(event) {
     if (!event.shiftKey) { this.validateEnteredValue(event); }
-    if (this.lastPosition()) {
+    this.positionMove(+1); //trick to keep last digit
+    if (this.pastLastPosition()) {
       this.enableAll();
       this.enableForm();
     } else {
-      this.positionMove(+1);
       this.enableCurrent(event);
       this.setFocus(event);
     }
@@ -63,7 +64,7 @@ export default class extends Controller {
   }
 
   firstPosition() { return this.positionValue == 0; }
-  lastPosition() { return this.positionValue == this.codeTargets.length - 1; }
+  pastLastPosition() { return this.positionValue == this.codeTargets.length; }
   positionMove(val) { this.positionValue += val; }
 
   isNumericKeyOrShiftKey(event) {
