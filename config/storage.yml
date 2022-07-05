@@ -1,5 +1,8 @@
 production:
-  service: Disk
+  service: CLEVER_CLOUD_CELLAR
+  host: 'cellar-c2.services.clever-cloud.com'
+  access_key_id: <%= ENV.fetch('CELLAR_ADDON_KEY_ID') %>
+  secret_access_key: <%= ENV.fetch('CELLAR_ADDON_KEY_SECRET') %>
   root: <%= Rails.root.join("tmp/storage") %>
 
 test:
@@ -8,7 +11,7 @@ test:
 
 local:
   service: Disk
-  root: <%= Rails.root.join("storage") %>
+  root: <%= Rails.root.join("storage/signatures") %>
 
 # Use rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 # amazon:

@@ -1,9 +1,15 @@
 module Presenters
-  class Signature < User
-    def show_code
-      return "" if user.signature_phone_token.nil?
+  class Signature
+    def signed_at
+      "Signé le #{I18n.l signature.signature_date, format: '%d %B %Y à %Hh%M'}"
+    end
 
-      [user.signature_phone_token[0..2], user.signature_phone_token[3..-1]].join(' ')
+    private
+
+    attr_reader :signature
+
+    def initialize(signature: )
+      @signature = signature
     end
   end
 end

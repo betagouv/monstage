@@ -149,7 +149,7 @@ module Dashboard
       end
 
       def user_params
-        allowed_params = %i[id phone internship_agreement_id handwrite_signature]
+        allowed_params = %i[id phone internship_agreement_id signature_image]
         allowed_params += (0..5).map {|i| "digit-code-target-#{i}".to_sym}
         params.require(:user).permit(*allowed_params)
       end

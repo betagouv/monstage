@@ -21,6 +21,7 @@ gem "activerecord-postgis-adapter"; ">= 8.0.1"
 gem 'pg_search', '2.3.2'                    # pg search for autocomplete
 gem 'prawn'
 gem 'prawn-styled-text'
+gem 'prawn-table'
 
 # front end
 gem 'uglifier'

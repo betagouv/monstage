@@ -31,7 +31,7 @@
         .col-5.h-100
           .fr-m-2w.d-flex.flex-column
             .d-block.text-muted.fr-mb-1w.fr-pb-1w.fr-mt-9v Votre signature sera apposée sur la convention de stage
-            = f.hidden_field :handwrite_signature,
+            = f.hidden_field :signature_image,
                             data: {:'handwrite-sign-target'=> 'signature'},
                             id: "handwrite_signature_#{internship_agreement_id}"
             = f.submit "Confirmer la signature",
@@ -39,4 +39,4 @@
                         class: 'fr-btn',
                         id: "submit-#{internship_agreement_id}",
                         data: {:"handwrite-sign-target" => 'submitter',
-                              :action => 'handwrite-sign#save' }
+                               :action => 'handwrite-sign#save' }

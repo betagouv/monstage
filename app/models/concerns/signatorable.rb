@@ -16,7 +16,7 @@ module Signatorable
       return false unless phone.present?
 
       token_created = create_signature_phone_token
-      message = "Votre code de signature : #{signature_presenter.show_code} " \
+      message = "Votre code de signature : #{show_code} " \
                 "- Validité : #{SIGNATURE_PHONE_TOKEN_LIFETIME} minutes"
       token_created && SendSmsJob.perform_later(user: self, message: message) && true
       # true
@@ -67,8 +67,10 @@ module Signatorable
       phone.gsub(/(\+\d{2})(\d{1})(\d{1})(\d{6})(\d{2})/, '\1 \3 ** ** ** \5')
     end
 
-    def signature_presenter
-      @signature_presenter ||= Presenters::Signature.new(self)
+    def show_code
+      return "" if signature_phone_token.nil?
+
+      [signature_phone_token[0..2], signature_phone_token[3..-1]].join(' ')
     end
   end
 end

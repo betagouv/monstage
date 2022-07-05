@@ -1,4 +1,5 @@
 class Signature < ApplicationRecord
+  has_one_attached :signature_image
 
   enum signatory_role: {
     school_manager: 'school_manager',
@@ -10,7 +11,6 @@ class Signature < ApplicationRecord
   validates :signatory_ip,
             :signature_date,
             :signature_phone_number,
-            :handwrite_signature,
             presence: true
   validates :signatory_role, inclusion: { in: signatory_roles.values }
   validate :no_double_signature?
@@ -32,7 +32,9 @@ class Signature < ApplicationRecord
     signatures_count == Signature.signatory_roles_count
   end
 
-
+  def presenter
+    Presenters::Signature.new(signature: self)
+  end
 
   private
 

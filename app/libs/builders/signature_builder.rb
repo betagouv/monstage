@@ -16,12 +16,13 @@ module Builders
     def signature_code_validate
       yield callback if block_given?
       authorize :create, Signature # only school_managers and employers can create
-      code = make_code_from_params
+
       if user.already_signed?(internship_agreement_id: params[:internship_agreement_id])
         user.errors.add(:id, 'Vous avez déjà signé cette convention')
         raise ActiveRecord::RecordInvalid, user
       end
 
+      code = make_code_from_params
       code_expired = user.code_expired?(
         internship_agreement_id: params[:internship_agreeement_id],
         code: code
@@ -45,7 +46,13 @@ module Builders
     def handwrite_sign
       yield callback if block_given?
 
+      signature_file_name = "signature-#{user.signatory_role}" \
+                            "-#{params[:internship_agreement_id]}.png"
       signature = Signature.new(prepare_attributes)
+      signature.signature_image
+               .attach(io: File.open("storage/signatures/#{signature_file_name}"),
+                       filename: signature_file_name,
+                       content_type: "image/jpeg")
       unless user.signature_code_checked?
         signature.errors.add('id', 'Le code n\'a pas été validé ')
         raise ActiveRecord::RecordInvalid, signature
@@ -59,14 +66,15 @@ module Builders
     end
 
     def prepare_attributes
-      return false if params[:handwrite_signature].blank?
+      return false if params[:signature_image].blank?
+
+      make_image
       {
         internship_agreement_id: params[:internship_agreement_id],
         signatory_role: user.signatory_role,
         signatory_ip: user.current_sign_in_ip,
         signature_date: DateTime.now,
-        signature_phone_number: user.phone,
-        handwrite_signature: JSON.parse(params[:handwrite_signature])
+        signature_phone_number: user.phone
       }
     end
 
@@ -77,6 +85,14 @@ module Builders
     def make_code_from_params
       (0..5).inject([]) {|acc, i| acc << params["digit-code-target-#{i}".to_sym] }
             .join('')
+    end
+
+    def make_image
+      encoded_image = params[:signature_image].split(",")[1]
+      decoded_image = Base64.decode64(encoded_image)
+      image_name = "storage/signatures/signature-#{user.signatory_role}" \
+                   "-#{params[:internship_agreement_id]}.png"
+      File.open(image_name, "wb") { |f| f.write(decoded_image) }
     end
 
     def agreement_sign(signature)
