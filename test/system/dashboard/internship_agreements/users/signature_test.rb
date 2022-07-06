@@ -101,6 +101,12 @@ module Dashboard::InternshipAgreements::Users
         find('h1', text: 'Editer, imprimer et bientôt signer les conventions dématérialisées')
         find('a.fr-btn.disabled', text: 'Signée, en attente')
         find('span[id="alert-text"]', text: 'Votre signature a été enregistrée')
+        refute File.exist? 'Convention_de_stage_RICK_ROLL.pdf'
+        find("a.fr-btn--secondary.button-component-cta-button").click # Imprimer
+        sleep 2
+        assert File.exist? 'Convention_de_stage_RICK_ROLL.pdf'
+        File.unlink 'Convention_de_stage_RICK_ROLL.pdf'
+        refute File.exist? 'Convention_de_stage_RICK_ROLL.pdf'
       end
     end
   end
