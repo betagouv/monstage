@@ -46,6 +46,8 @@ module Builders
     def handwrite_sign
       yield callback if block_given?
 
+
+
       signature = Signature.new(prepare_attributes)
       signature.signature_image
                .attach(io: File.open("storage/signatures/#{signature.signature_file_name}"),
@@ -61,6 +63,8 @@ module Builders
       callback.on_success.try(:call, signature)
     rescue ActiveRecord::RecordInvalid => e
       callback.on_failure.try(:call, e.record)
+    rescue ArgumentError => e
+      callback.on_argument_error.try(:call, e)
     end
 
     def prepare_attributes
@@ -84,13 +88,15 @@ module Builders
     end
 
     def make_image
-      return false if params[:signature_image].blank?
+      if params[:signature_image].blank?
+        raise ArgumentError, 'Missing signature'
+      end 
 
       encoded_image = params[:signature_image].split(",")[1]
       decoded_image = Base64.decode64(encoded_image)
       image_name = "storage/signatures/signature-#{user.signatory_role}" \
                    "-#{params[:internship_agreement_id]}.png"
-      File.open(image_name, "wb") { |f| f.write(decoded_image) }
+      File.open(image_name, "wb") { |f| f.write(decoded_image) } && true
     end
 
     def agreement_sign(signature)

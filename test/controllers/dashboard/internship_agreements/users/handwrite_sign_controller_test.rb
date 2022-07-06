@@ -8,7 +8,6 @@ module Dashboard::InternshipAgreements::Users
       user.update(signature_phone_token_checked_at: DateTime.now)
     end
 
-
     test 'employer handwrite_sign_dashboard_internship_agreement_user_path with success' do
       internship_agreement = create(:internship_agreement, aasm_state: :validated)
       employer = internship_agreement.employer
@@ -21,7 +20,7 @@ module Dashboard::InternshipAgreements::Users
         user:{
           id: employer.id,
           internship_agreement_id: internship_agreement.id,
-          handwrite_signature: [{point: '0,0'}, {point: '100,100'}].to_json
+          signature_image: File.read(Rails.root.join(*%w[test fixtures files signature]))
         }
       }
 
@@ -54,7 +53,7 @@ module Dashboard::InternshipAgreements::Users
             id: employer.id), params: params
       follow_redirect!
       assert_response :success
-      assert_equal 'Votre signature n\'a pas été enregistrée', flash[:alert]
+      assert_equal 'Votre signature n\'a pas été détectée', flash[:alert]
       assert_equal 0, Signature.count
     end
 
@@ -70,7 +69,7 @@ module Dashboard::InternshipAgreements::Users
         user:{
           id: employer.id,
           internship_agreement_id: internship_agreement.id,
-          handwrite_signature: [{point: '0,0'}, {point: '100,100'}].to_json
+          signature_image: File.read(Rails.root.join(*%w[test fixtures files signature]))
         }
       }
 

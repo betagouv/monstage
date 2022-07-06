@@ -112,10 +112,6 @@ class InternshipAgreement < ApplicationRecord
   delegate :school,           to: :student
   delegate :school_manager,   to: :school
 
-  def signatures
-    Signature.where(internship_agreement_id: id)
-  end
-
   def at_least_one_validated_terms
     return true if skip_validations_for_system
     return true if [school_manager_accept_terms, employer_accept_terms, main_teacher_accept_terms].any?
@@ -194,6 +190,19 @@ class InternshipAgreement < ApplicationRecord
 
   def roles_not_signed_yet
     Signature.signatory_roles.keys - roles_already_signed
+  end
+
+  def signature_by_role(signatory_role:)
+    return nil if signatures.blank?
+
+    signatures.find_by(signatory_role: signatory_role)
+  end
+
+  def signature_image_attached?(signatory_role:)
+    signature = signature_by_role(signatory_role:signatory_role)
+    return signature.signature_image.attached? if signature && signature.signature_image
+
+    false
   end
 
   def presenter

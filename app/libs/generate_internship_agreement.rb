@@ -234,29 +234,15 @@ class GenerateInternshipAgreement < Prawn::Document
 
   private
 
-  def signature_by_role(signatory_role:)
-    signatures =  @internship_agreement.signatures
-    return false if signatures.blank?
-
-    signatures.find_by(signatory_role: signatory_role)
-  end
-
-  def signature_image_attached?(signatory_role:)
-    signature = signature_by_role(signatory_role:signatory_role)
-    return signature.signature_image.attached? if signature && signature.signature_image
-
-    false
-  end
-
   def signature_image_path(signatory_role:)
-    return '' unless signature_image_attached?(signatory_role: signatory_role)
+    return '' unless @internship_agreement.signature_by_role(signatory_role: signatory_role)
 
     "storage/signatures/signature-#{signatory_role}-#{@internship_agreement.id}.png"
   end
 
   def signature_date_str(signatory_role:)
-    if signature_image_attached?(signatory_role: signatory_role)
-      return signature_by_role(signatory_role: signatory_role).presenter.signed_at
+    if @internship_agreement.signature_image_attached?(signatory_role: signatory_role)
+      return @internship_agreement.signature_by_role(signatory_role: signatory_role).presenter.signed_at
     end
 
     ''

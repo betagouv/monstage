@@ -30,7 +30,6 @@ module Dashboard::InternshipAgreements::Users
              params: params
 
       assert_response :success
-      puts response.body
       assert_select '.fr-alert p', text: "Erreur de code, veuillez recommencer"
     end
 

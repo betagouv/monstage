@@ -124,6 +124,10 @@ module Dashboard
             redirect_to dashboard_internship_agreements_path,
                         alert: 'Votre signature n\'a pas été enregistrée'
           end
+          on.argument_error do |error|
+            redirect_to dashboard_internship_agreements_path,
+                        alert: 'Votre signature n\'a pas été détectée'
+          end
         end
       end
 
