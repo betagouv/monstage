@@ -23,7 +23,6 @@ class InternshipOffersController < ApplicationController
         @params = query_params
       end
       format.json do
-        sleep 3
         internship_offers = finder.all.includes([:sector, :employer, :school]).order(id: :desc)
         formatted_internship_offers = format_internship_offers(internship_offers)
         # alternative_internship_offers = alternative_internship_offers if internship_offers.to_a.count == 0

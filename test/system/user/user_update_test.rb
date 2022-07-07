@@ -66,12 +66,10 @@ class UserUpdateTest < ApplicationSystemTestCase
     click_button('Enregistrer')
 
     visit internship_offers_path
-    find('h1', text: 'Postulez à des offres de stage')
     sign_out(student)
 
     employer = create(:employer)
     sign_in(employer)
     visit internship_offers_path
-    find('h1', text: 'Postulez à des offres de stage')
   end
 end
