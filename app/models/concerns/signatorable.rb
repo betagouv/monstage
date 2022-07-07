@@ -22,10 +22,10 @@ module Signatorable
       # true
     end
 
-    def nullify_phone_number
-      self.phone = nil
+    def nullify_phone_number!
+      self.phone                          = nil
       self.signature_phone_token_validity = nil
-      self.phone_token_validity = nil
+      self.phone_token_validity           = nil
       save!
     end
 

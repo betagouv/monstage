@@ -45,7 +45,7 @@ module Dashboard::InternshipAgreements::Users
       klass = Users::Employer
       sign_in(employer)
 
-      klass.stub_any_instance(:nullify_phone_number, false) do
+      klass.stub_any_instance(:nullify_phone_number!, false) do
         post reset_phone_number_dashboard_internship_agreement_user_path(
                 internship_agreement_id: internship_agreement.id,
                 id: employer.id),
@@ -65,7 +65,7 @@ module Dashboard::InternshipAgreements::Users
       klass = Users::SchoolManagement
       sign_in(school_manager)
 
-      klass.stub_any_instance(:nullify_phone_number, false) do
+      klass.stub_any_instance(:nullify_phone_number!, false) do
         post reset_phone_number_dashboard_internship_agreement_user_path(
                 internship_agreement_id: internship_agreement.id,
                 id: school_manager.id),
