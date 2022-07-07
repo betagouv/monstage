@@ -1,3 +1,4 @@
+require 'open-uri'
 include ApplicationHelper
 
 class GenerateInternshipAgreement < Prawn::Document
@@ -161,7 +162,7 @@ class GenerateInternshipAgreement < Prawn::Document
       "L'entreprise ou l'organisme d'accueil",
       "Le représentant de l'établissement d'enseignement scolaire",
       "L'élève",
-      "Les parents       (responsables légaux)".html_safe ]]
+      "Les parents       (responsables légaux)"]]
     @pdf.table(
       table_data,
       row_colors: ["F0F0F0"],
@@ -170,12 +171,12 @@ class GenerateInternshipAgreement < Prawn::Document
     ) do |t|
         t.cells.border_color="cccccc"
         t.cells.align=:center
-      end
+    end
   end
 
   def signature_table
-    img_empl = employer_image_path.blank? ? "" : {image: employer_image_path}.merge(SIGNATURE_OPTIONS)
-    img_s_manager = school_manager_image_path.blank? ? "" : {image: school_manager_image_path}.merge(SIGNATURE_OPTIONS)
+    img_empl      = image_from signature: download_image_and_signature(signatory_role: 'employer')
+    img_s_manager = image_from signature: download_image_and_signature(signatory_role: 'school_manager')
 
     table_data = [[img_empl, img_s_manager, "", ""]]
     @pdf.table(
@@ -234,10 +235,19 @@ class GenerateInternshipAgreement < Prawn::Document
 
   private
 
-  def signature_image_path(signatory_role:)
-    return '' unless @internship_agreement.signature_by_role(signatory_role: signatory_role)
+  def image_from(signature: )
+    signature.nil? ? "" : {image: signature.local_signature_image_file_path}.merge(SIGNATURE_OPTIONS)
+  end
 
-    "storage/signatures/signature-#{signatory_role}-#{@internship_agreement.id}.png"
+  def download_image_and_signature(signatory_role:)
+    signature = @internship_agreement.signature_by_role(signatory_role: signatory_role)
+    return nil if signature.nil?
+
+    img = signature.signature_image.download if signature.signature_image.present?
+    return nil if img.nil?
+
+    File.open(signature.local_signature_image_file_path, "wb") { |f| f.write(img) }
+    signature
   end
 
   def signature_date_str(signatory_role:)
@@ -246,14 +256,6 @@ class GenerateInternshipAgreement < Prawn::Document
     end
 
     ''
-  end
-
-  def employer_image_path
-    signature_image_path(signatory_role: 'employer')
-  end
-
-  def school_manager_image_path
-    signature_image_path(signatory_role: 'school_manager')
   end
 
   def subtitle(string)

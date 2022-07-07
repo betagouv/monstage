@@ -1,17 +1,16 @@
-production:
-  service: CLEVER_CLOUD_CELLAR
-  host: 'cellar-c2.services.clever-cloud.com'
+clevercloud:
+  service: S3
   access_key_id: <%= ENV.fetch('CELLAR_ADDON_KEY_ID') %>
   secret_access_key: <%= ENV.fetch('CELLAR_ADDON_KEY_SECRET') %>
-  root: <%= Rails.root.join("tmp/storage") %>
+  region: 'us-west-1'
+  bucket: <%= ENV['CELLAR_ADDON_BUCKET_NAME'] %>
+  endpoint: <%= ENV.fetch('CELLAR_ADDON_ENDPOINT') %>
+  force_path_style: true
 
-test:
-  service: Disk
-  root: <%= Rails.root.join("tmp/storage") %>
 
 local:
   service: Disk
-  root: <%= Rails.root.join("storage/signatures") %>
+  root: <%= Rails.root.join("storage/tmp/signatures") %>
 
 # Use rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 # amazon:

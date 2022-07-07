@@ -53,7 +53,7 @@ module Dashboard
       render :edit
     end
 
-    def show # TODO : test
+    def show
       @internship_agreement = InternshipAgreement.find(params[:id])
       respond_to do |format|
         format.html
@@ -67,7 +67,9 @@ module Dashboard
             filename: "Convention_de_stage_#{ext_file_name}.pdf",
             type: 'application/pdf',
             disposition: 'inline'
-          )
+          ) && @internship_agreement.signatures.each do |signature|
+              signature.clean_local_signature_file
+            end
         end
       end
     end

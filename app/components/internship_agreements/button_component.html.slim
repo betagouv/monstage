@@ -38,8 +38,6 @@
       - if current_user.phone.present?
         dialog#fr-modal-signature.fr-modal [
           aria-labelledby="fr-modal-signature-title"
-          data-controller="outside-click"
-          data-outside-click-url-value="#{dashboard_internship_agreements_path}"
           role="dialog"]
 
           .fr-container.fr-container--fluid.fr-container-md
@@ -48,11 +46,9 @@
                 = turbo_frame_tag internship_agreement do
                   = render partial:'dashboard/internship_agreements/signature/modal_code_submit',
                            locals: { current_user: current_user,
-                                     internship_agreement_id: internship_agreement.id}
+                                     internship_agreement_id: internship_agreement.id }
       - else
         dialog#fr-modal-signature.fr-modal [
-          data-controller="outside-click"
-          data-outside-click-url-value="#{dashboard_internship_agreements_path}"
           aria-labelledby="fr-modal-signature-title"
           role="dialog"]
 
@@ -63,8 +59,5 @@
                   = render partial:'dashboard/internship_agreements/signature/modal_phone_request',
                            locals: { current_user: current_user,
                                      internship_agreement_id: internship_agreement.id}
-    - else
-      = link_to '', class: "#{primary_button_classes} disabled" do
-        = "url to define - #{second_label[:text]}"
 
 

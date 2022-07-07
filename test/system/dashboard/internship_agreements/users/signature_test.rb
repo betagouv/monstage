@@ -57,6 +57,10 @@ module Dashboard::InternshipAgreements::Users
           find('h1', text: 'Editer, imprimer et bientôt signer les conventions dématérialisées')
           find('a.fr-btn.disabled', text: 'Signée, en attente')
           find('span[id="alert-text"]', text: 'Votre signature a été enregistrée')
+          find("a.fr-btn--secondary.button-component-cta-button").click # Imprimer
+          sleep 0.5
+          assert File.exists?('Convention_de_stage_RICK_ROLL.pdf')
+          File.delete('Convention_de_stage_RICK_ROLL.pdf')
         end
       end
     end
@@ -104,12 +108,11 @@ module Dashboard::InternshipAgreements::Users
           find('h1', text: 'Editer, imprimer et bientôt signer les conventions dématérialisées')
           find('a.fr-btn.disabled', text: 'Signée, en attente')
           find('span[id="alert-text"]', text: 'Votre signature a été enregistrée')
-          refute File.exist? 'Convention_de_stage_RICK_ROLL.pdf'
+          refute File.exists?('Convention_de_stage_RICK_ROLL.pdf')
           find("a.fr-btn--secondary.button-component-cta-button").click # Imprimer
-          sleep 2
-          assert File.exist? 'Convention_de_stage_RICK_ROLL.pdf'
-          File.unlink 'Convention_de_stage_RICK_ROLL.pdf'
-          refute File.exist? 'Convention_de_stage_RICK_ROLL.pdf'
+          sleep 0.5
+          assert File.exists?('Convention_de_stage_RICK_ROLL.pdf')
+          File.delete('Convention_de_stage_RICK_ROLL.pdf')
         end
       end
     end

@@ -38,6 +38,7 @@ gem 'sidekiq'
 gem 'redis-namespace' # plug redis queues on same instance for prod/staging
 # Use Redis for Action Cable
 gem "redis", "~> 4.0"
+gem "aws-sdk-s3", require: false
 
 # admin
 

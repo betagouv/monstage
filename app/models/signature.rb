@@ -37,9 +37,17 @@ class Signature < ApplicationRecord
   end
 
   def signature_file_name
-    return if signatory_role.nil? || internship_agreement_id.nil?
+    "signature-#{Rails.env}-#{signatory_role}-#{internship_agreement_id}.png"
+  end
 
-    "signature-#{signatory_role}-#{internship_agreement_id}.png"
+  def local_signature_image_file_path
+    "storage/signatures/#{signature_file_name}"
+  end
+
+  def clean_local_signature_file
+    if signature_image.attached? && File.exists?(self.local_signature_image_file_path)
+      File.delete(self.local_signature_image_file_path)
+    end
   end
 
   private

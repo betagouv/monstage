@@ -46,8 +46,6 @@ module Builders
     def handwrite_sign
       yield callback if block_given?
 
-
-
       signature = Signature.new(prepare_attributes)
       signature.signature_image
                .attach(io: File.open("storage/signatures/#{signature.signature_file_name}"),
@@ -58,7 +56,9 @@ module Builders
         raise ActiveRecord::RecordInvalid, signature
       end
 
-      signature.save! && agreement_sign(signature)
+      signature.save! &&
+        agreement_sign(signature.reload) &&
+        signature.clean_local_signature_file
 
       callback.on_success.try(:call, signature)
     rescue ActiveRecord::RecordInvalid => e
@@ -68,14 +68,15 @@ module Builders
     end
 
     def prepare_attributes
-      make_image &&
-      {
-        internship_agreement_id: params[:internship_agreement_id],
-        signatory_role: user.signatory_role,
-        signatory_ip: user.current_sign_in_ip,
-        signature_date: DateTime.now,
-        signature_phone_number: user.phone
-      }
+      make_image(params: params, user: user) &&
+        File.readable?(temp_signature_file_path(params: params)) &&
+        {
+          internship_agreement_id: params[:internship_agreement_id],
+          signatory_role: user.signatory_role,
+          signatory_ip: user.current_sign_in_ip,
+          signature_date: DateTime.now,
+          signature_phone_number: user.phone,
+        }
     end
 
     private
@@ -87,15 +88,22 @@ module Builders
             .join('')
     end
 
-    def make_image
+    def temp_signature_file_path(params: )
+      image_name = "signature-#{Rails.env}" \
+                   "-#{user.signatory_role}" \
+                   "-#{params[:internship_agreement_id]}.png"
+      "storage/signatures/#{image_name}"
+    end
+
+    def make_image(params:, user:)
       if params[:signature_image].blank?
         raise ArgumentError, 'Missing signature'
-      end 
+      end
 
       encoded_image = params[:signature_image].split(",")[1]
       decoded_image = Base64.decode64(encoded_image)
-      image_name = "storage/signatures/signature-#{user.signatory_role}" \
-                   "-#{params[:internship_agreement_id]}.png"
+      image_name = "storage/signatures/signature-#{Rails.env}-" \
+                   "#{user.signatory_role}-#{params[:internship_agreement_id]}.png"
       File.open(image_name, "wb") { |f| f.write(decoded_image) } && true
     end
 
