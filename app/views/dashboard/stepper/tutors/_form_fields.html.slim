@@ -1,7 +1,8 @@
-fieldset.mt-4
-  legend.my-4 Informations sur le tuteur
-  .row.mt-3.d-flex.flex-row-reverse
-    .col-12.col-md-6
+.row
+  .col-12.col-md-6
+    fieldset
+      legend Informations sur le tuteur
+
       = form.rg2a_explain_required_asterisk
       p.small.text-muted Les coordonnées du tuteur seront uniquement transmises aux accompagnants de l'élève et à l'équipe éducative de son établissement scolaire.
       .form-group
@@ -39,9 +40,8 @@ fieldset.mt-4
 
             .col-8.text-left style="display: flex;align-items: center"
               = link_to 'Précédent', edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]), title: 'Revenir à la modification de l\'offre'
-              
-    - warning_block = true if warning_block.nil?
-    - if warning_block
-      .col-lg-6.col-md-12.order-md-2.order-1.employer
-        = render partial: 'dashboard/stepper/warning_block'
-  .row.my-5
+
+  - warning_block = true if warning_block.nil?
+  - if warning_block
+    .col-md-6.order-md-2.order-1
+      = render partial: 'dashboard/stepper/warning_block'

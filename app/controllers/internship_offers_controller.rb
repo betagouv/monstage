@@ -42,8 +42,7 @@ class InternshipOffersController < ApplicationController
                                                  .where(user_id: current_user_id)
                                                  .first
     end
-    module_type = 'InternshipApplications::FreeDate' if @internship_offer.type == 'InternshipOffers::FreeDate'
-    type = current_user.try(:internship_applications_type) || module_type || "InternshipApplications::WeeklyFramed"
+    type = current_user.try(:internship_applications_type) || "InternshipApplications::WeeklyFramed"
     @internship_application ||= @internship_offer.internship_applications
                                                  .build(user_id: current_user_id, type: type)
   end

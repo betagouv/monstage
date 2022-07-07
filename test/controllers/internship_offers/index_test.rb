@@ -182,7 +182,7 @@ class IndexTest < ActionDispatch::IntegrationTest
 
     weeks = internship_offer_without_application.weeks
     school = create(:school, weeks: weeks)
-    class_room = create(:class_room, :troisieme_generale, school: school)
+    class_room = create(:class_room,  school: school)
     student = create(:student, school: school, class_room: class_room)
     internship_offer_with_application = create(
       :weekly_internship_offer,
@@ -206,10 +206,16 @@ class IndexTest < ActionDispatch::IntegrationTest
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
         assert_equal 2, InternshipOffers::WeeklyFramed.uncompleted_with_max_candidates.count
+<<<<<<< HEAD
         get internship_offers_path, params: { format: :json }
         assert_response :success
         assert_equal 1, json_response.count
         assert_json_presence_of(json_response, internship_offer_without_application)
+=======
+        get internship_offers_path(school_track: :troisieme_generale)
+        assert_absence_of(internship_offer: internship_offer_with_application)
+        assert_presence_of(internship_offer: internship_offer_without_application)
+>>>>>>> staging
       end
     end
   end
@@ -259,20 +265,29 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_json_absence_of(json_response, not_published_internship_offer)
   end
 
-  test 'GET #index as visitor or student default shows both middle school and high school offers' do
+  test 'GET #index as visitor or student default shows offers' do
     internship_offer_weekly = create(:weekly_internship_offer)
-    internship_offer_free   = create(:free_date_internship_offer)
     # Visitor
+<<<<<<< HEAD
     get internship_offers_path, params: { format: :json }
     assert_json_presence_of(json_response, internship_offer_weekly)
     assert_json_presence_of(json_response, internship_offer_free)
+=======
+    get internship_offers_path
+    assert_presence_of(internship_offer: internship_offer_weekly)
+>>>>>>> staging
     # Student
     school = create(:school, weeks: [])
     student = create(:student, school: school)
     sign_in(student)
+<<<<<<< HEAD
     get internship_offers_path, params: { format: :json }
     assert_json_presence_of(json_response, internship_offer_weekly)
     assert_json_presence_of(json_response, internship_offer_free)
+=======
+    get internship_offers_path
+    assert_presence_of(internship_offer: internship_offer_weekly)
+>>>>>>> staging
   end
 
 
@@ -284,15 +299,14 @@ class IndexTest < ActionDispatch::IntegrationTest
     school = create(:school)
     student = create(:student, school: school,
                                class_room: create(:class_room,
-                                                  :troisieme_generale,
                                                   school: school))
     internship_offer = create(:weekly_internship_offer,
                               max_candidates: max_candidates,
                               weeks: [week]
                               )
-    internship_application = create(:internship_application,
-                                    internship_offer: internship_offer,
-                                    week: week)
+   create(:internship_application,
+          internship_offer: internship_offer,
+          week: week)
 
 
     sign_in(student)
@@ -440,6 +454,74 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+<<<<<<< HEAD
+=======
+  test 'GET #index as student ' \
+       'includes forwardable_params for listable behaviour on show page' do
+    sign_in(create(:student))
+    internship_1 = create(:weekly_internship_offer)
+
+    InternshipOffer.stub :nearby, InternshipOffer.all do
+      InternshipOffer.stub :by_weeks, InternshipOffer.all do
+        forwarded_params = {
+          city: 'Paris',
+          latitude: 1,
+          longitude: 1,
+          page: 1,
+          radius: 1_000,
+          week_ids: [1, 2, 3]
+        }
+        get internship_offers_path, params: forwarded_params
+        assert_select(
+          'a[href=?]',
+          internship_offer_path(
+            forwarded_params.merge(id: internship_1, origin: 'search')
+          )
+        )
+      end
+    end
+  end
+
+  test 'GET #index as student includes forwardable_params ' do
+    school     = create(:school)
+    class_room = create(:class_room, school: school)
+    sign_in(create(:student, school: school, class_room: class_room))
+    # default school_track is troisieme_generale
+    # and it's an implicit filter for student's search
+    internship_1 = create(:weekly_internship_offer)
+    internship_2 = create(:weekly_internship_offer)
+
+    InternshipOffer.stub :nearby, InternshipOffer.all do
+      InternshipOffer.stub :by_weeks, InternshipOffer.all do
+        forwarded_params = {
+          city: 'Paris',
+          latitude: 1,
+          longitude: 1,
+          page: 1,
+          radius: 1_000,
+          week_ids: [1, 2, 3]
+        }
+        get internship_offers_path, params: forwarded_params
+        assert_select(
+          'a[href=?]',
+          internship_offer_path(
+            forwarded_params.merge( id: internship_1, origin: 'search' )
+          ),
+          count: 2 #Voir l'annonce and availibility link
+        )
+        assert_select(
+          'a[href=?]',
+          internship_offer_path(
+            forwarded_params.merge( id: internship_2, origin: 'search' )
+          ),
+          count: 2
+        )
+      end
+    end
+  end
+
+
+>>>>>>> staging
   test 'search by location (radius) works' do
     internship_offer_at_paris = create(:weekly_internship_offer,
                                        coordinates: Coordinates.paris)
@@ -507,7 +589,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     week = Week.find_by(year: 2019, number: 10)
     school = create(:school, weeks: [week])
     student = create(:student, school: school,
-                               class_room: create(:class_room, :troisieme_generale, school: school))
+                               class_room: create(:class_room, school: school))
     offer_overlaping_school_weeks = create(:weekly_internship_offer,
                                            weeks: [week])
     offer_not_overlaping_school_weeks = create(:weekly_internship_offer,
@@ -528,7 +610,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     week = Week.find_by(year: 2019, number: 10)
     school = create(:school, weeks: [week])
     student = create(:student, school: school,
-                               class_room: create(:class_room, :troisieme_generale, school: school))
+                               class_room: create(:class_room, school: school))
     offer_overlaping_school_weeks = create(:weekly_internship_offer,
                                            weeks: [week])
     offer_not_overlaping_school_weeks = create(:weekly_internship_offer,

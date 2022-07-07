@@ -8,11 +8,11 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.18",
     "@fortawesome/free-regular-svg-icons": "^5.8.2",
     "@fortawesome/free-solid-svg-icons": "^5.8.2",
-    "@gouvfr/dsfr": "^1.5.1",
+    "@gouvfr/dsfr": "1.5.1",
     "@hotwired/turbo-rails": "^7.1.1",
     "@popperjs/core": "^2.11.2",
     "@rails/actiontext": "^6.0.3-3",
-    "@rails/webpacker": "5.1.1",
+    "@rails/webpacker": "5.4.3",
     "@stimulus/polyfills": "^1.1.1",
     "actioncable": "^5.2.3",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
@@ -59,6 +59,6 @@
     "webpack-dev-server": "3.11.0"
   },
   "engines": {
-    "node": "^14.18"
+    "node": "16.x"
   }
 }

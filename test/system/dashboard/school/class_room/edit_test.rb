@@ -15,9 +15,8 @@ module Dashboard
       click_button('Enregistrer')
       assert new_class_room_name, class_room.reload.name
       click_link('Éditer')
-      select('3e SEGPA', from: 'Filière')
       click_button('Enregistrer')
-      assert 'troisieme_segpa', class_room.school_track
+      assert 'troisieme_generale', class_room.school_track
     end
 
     test 'teacher can edit and update school weeks' do

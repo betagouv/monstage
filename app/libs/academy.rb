@@ -37,7 +37,7 @@ class Academy
 
   MAP_EMAIL_DOMAIN = {
     'Académie de Clermont-Ferrand' => 'ac-clermont.fr',
-    'Académie de Grenoble' => 'ac-genoble.fr',
+    'Académie de Grenoble' => 'ac-grenoble.fr',
     'Académie de Lyon' => 'ac-lyon.fr',
     'Académie de Besançon' => 'ac-besancon.fr',
     'Académie de Dijon' => 'ac-dijon.fr',
