@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet';
 
-import newMarker from '../images/pin.png';
-import defaultMarker from '../images/default_pin.png';
+import activeMarker from '../images/active_pin.svg';
+import defaultMarker from '../images/default_pin.svg';
 import InternshipOfferCard from './InternshipOfferCard';
 import CardLoader from './CardLoader';
 import FilterModal from './FilterModal';
@@ -12,7 +12,7 @@ import { endpoints } from '../utils/api';
 const center = [48.866669, 2.33333]; // ANCT
 
 const pointerIcon = new L.Icon({
-  iconUrl: newMarker,
+  iconUrl: activeMarker,
   iconSize: [50, 58], // size of the icon
   iconAnchor: [20, 58], // changed marker icon position
   popupAnchor: [0, -60], // changed popup position
