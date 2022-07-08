@@ -23,13 +23,8 @@ const InternshipOfferCard = ({ internshipOffer, handleMouseOver, handleMouseOut 
     onMouseOut={handleMouseOut}
     data-internship-offer-id={internshipOffer.id}
     >
-      <div
-        className="fr-card fr-enlarge-link"
-        data-test-id={internshipOffer.id}
-      >
-        <div className="fr-card__body"
-         
-        >
+      <div className="fr-card fr-enlarge-link" data-test-id={internshipOffer.id}>
+        <div className="fr-card__body">
           <div className="fr-card__content">
             <h4 className="fr-card__title">
               <a href={internshipOffer.link} className="row-link text-dark">{ internshipOffer.title }</a>
