@@ -30,8 +30,8 @@ module Signatorable
     end
 
     def check_and_expire_token!
-      self.signature_phone_token_checked_at =  Time.zone.now
-      self.signature_phone_token_validity = Time.zone.now - 1.second
+      self.signature_phone_token_checked_at = Time.zone.now
+      self.signature_phone_token_validity   = Time.zone.now - 1.second
       save!
     end
 

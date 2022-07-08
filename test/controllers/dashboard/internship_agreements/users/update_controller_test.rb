@@ -70,10 +70,8 @@ module Dashboard::InternshipAgreements::Users
               id: employer.id),
             params: params
 
-      assert_redirected_to dashboard_internship_agreements_path
-      follow_redirect!
       assert_response :success
-      assert_select '#alert-text', text: "Une erreur est survenue et le SMS n'a pas été envoyé"
+      assert_select '.fr-alert p', text: "Veuillez modifier le numéro de téléphone mobile"
     end
   end
 end

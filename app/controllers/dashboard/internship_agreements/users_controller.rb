@@ -11,28 +11,43 @@ module Dashboard
 
       def update
         authorize! :update, current_user
+        @internship_agreement_id = params.permit[:internship_agreement_id]
+        id = user_params[:internship_agreement_id]
         if save_phone_user(current_user) && current_user.reload.send_signature_sms_token
-          @internship_agreement_id = params.permit[:internship_agreement_id]
           respond_to do |format|
             format.turbo_stream do
-              id = user_params[:internship_agreement_id]
               path = 'dashboard/internship_agreements/signature/modal_code_submit'
               render turbo_stream:
                 turbo_stream.replace("internship-agreement-signature-form-#{id}",
                                       partial: path,
-                                      locals: {current_user: current_user,
-                                               internship_agreement_id: id})
+                                      locals: { current_user: current_user,
+                                                internship_agreement_id: id })
             end
           end
         else
-          redirect_to dashboard_internship_agreements_path,
-                      alert: "Une erreur est survenue et le SMS n'a pas été envoyé"
+          if current_user.errors.any?
+            respond_to do |format|
+              format.turbo_stream do
+                err_path = 'dashboard/internship_agreements/signature/code_error_messages'
+                err_msg = current_user.errors.messages.values.flatten.join(',')
+                render turbo_stream:
+                  turbo_stream.replace("update-error-messages-#{id}",
+                                        partial: err_path,
+                                        locals: { error_message: err_msg,
+                                                  internship_agreement_id: id })
+              end
+            end
+          else
+            redirect_to dashboard_internship_agreements_path,
+                        alert: "Une erreur est survenue et le SMS n'a pas été envoyé"
+          end
         end
       end
 
       def reset_phone_number
+        # opened_modal will wake up either the phone_number_modal or the code typing one
         authorize! :sign, @internship_agreement
-        if current_user.nullify_phone_number
+        if current_user.nullify_phone_number!
           redirect_to dashboard_internship_agreements_path(opened_modal: true),
                       notice: 'Votre numéro de téléphone a été supprimé'
         else
@@ -44,15 +59,17 @@ module Dashboard
 
       def resend_sms_code
         authorize! :sign, @internship_agreement
+        id = @internship_agreement.id
         signature_builder.post_signature_sms_token do |on|
           on.success do
             flash_path = 'dashboard/internship_agreements/signature/flash_new_code'
             respond_to do |format|
               format.turbo_stream do
                 render turbo_stream:
-                  turbo_stream.replace("code-request",
+                  turbo_stream.replace("code-request-#{id}",
                                       partial: flash_path,
-                                      locals: { notice: 'Un nouveau code a été envoyé'})
+                                      locals: { notice: 'Un nouveau code a été envoyé',
+                                                id: id })
               end
             end
           end
@@ -62,9 +79,9 @@ module Dashboard
             respond_to do |format|
               format.turbo_stream do
                 render turbo_stream:
-                  turbo_stream.replace("code-request",
+                  turbo_stream.replace("code-request-#{id}",
                                         partial: flash_path,
-                                        locals: { alert: err_msg })
+                                        locals: { alert: err_msg , id: id})
               end
             end
           end
@@ -92,9 +109,9 @@ module Dashboard
             respond_to do |format|
               format.turbo_stream do
                 render turbo_stream:
-                  turbo_stream.replace("#error_messages_#{id}",
+                  turbo_stream.replace("error-messages-#{id}",
                                        partial: err_path,
-                                       locals: { error_message: error.errors.full_messages,
+                                       locals: { error_message: error.errors.full_messages.join(','),
                                                  internship_agreement_id: id})
               end
             end
@@ -103,7 +120,7 @@ module Dashboard
             respond_to do |format|
               format.turbo_stream do
                 render turbo_stream:
-                  turbo_stream.replace("#error_messages_#{id}",
+                  turbo_stream.replace("error-messages-#{id}",
                                       partial: err_path,
                                       locals: { error_message: error_msg.message,
                                                 internship_agreement_id: id})
@@ -137,7 +154,8 @@ module Dashboard
         return true if user.phone && user.phone == clean_phone_number
         return false if clean_phone_number.blank?
 
-        user.update(phone: clean_phone_number)
+        user.phone = clean_phone_number
+        user.save
       end
 
       def clean_phone_number

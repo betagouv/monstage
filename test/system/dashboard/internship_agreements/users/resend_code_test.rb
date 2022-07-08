@@ -17,7 +17,7 @@ module Dashboard::InternshipAgreements::Users
       find('button.fr-btn[disabled]')
       click_link('Renvoyer le code')
       sleep 0.1
-      find('#code-request', text: 'Un nouveau code a été envoyé')
+      find("#code-request-#{internship_agreement.id}", text: 'Un nouveau code a été envoyé')
     end
 
     test 'school_manager requests a new code and everything is ok' do
@@ -34,7 +34,7 @@ module Dashboard::InternshipAgreements::Users
       find('button.fr-btn[disabled]')
       click_link('Renvoyer le code')
       sleep 0.1
-      find('#code-request', text: 'Un nouveau code a été envoyé')
+      find("#code-request-#{internship_agreement.id}", text: 'Un nouveau code a été envoyé')
     end
 
     test 'employer requests a new code and it fails for almost no reason' do
@@ -52,7 +52,7 @@ module Dashboard::InternshipAgreements::Users
       raises_exception = -> { raise ArgumentError.new('This is a test') }
       Users::Employer.stub_any_instance(:send_signature_sms_token, raises_exception) do #error
         click_link('Renvoyer le code')
-        find('#code-request',
+        find("#code-request-#{internship_agreement.id}",
              text: "Une erreur est survenue et votre demande n'a pas été traitée")
       end
     end

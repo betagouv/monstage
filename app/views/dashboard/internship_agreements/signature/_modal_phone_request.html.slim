@@ -10,6 +10,7 @@
         Pour signer la convention, veuillez renseigner votre numéro de téléphone.
         Vous recevrez un code de vérification à rentrer à
         l’étape suivante pour finaliser la signature.
+    div id="update-error-messages-#{internship_agreement_id}"
   .fr-modal__footer
     = form_with(model: current_user,
                 scope: :user,
@@ -32,4 +33,4 @@
             = react_component("CountryPhoneSelect", props: { name: 'user[phone]',
                                                              value: current_user.phone,
                                                              withTarget: false })
-        div id="error_messages_#{internship_agreement_id}"
+        

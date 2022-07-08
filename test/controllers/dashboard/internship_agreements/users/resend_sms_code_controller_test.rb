@@ -5,8 +5,8 @@ module Dashboard::InternshipAgreements::Users
     include Devise::Test::IntegrationHelpers
 
     test 'when employer request for a sms code resend succeeds' do
+      internship_agreement = create(:internship_agreement)
       assert_enqueued_jobs 1, only: SendSmsJob do
-        internship_agreement = create(:internship_agreement)
         employer = internship_agreement.employer
         employer.update(phone: '+330602030405')
         sign_in(employer)
@@ -19,7 +19,7 @@ module Dashboard::InternshipAgreements::Users
       
       end
       assert_response :success
-      assert_select '#code-request', text: 'Un nouveau code a été envoyé'
+      assert_select "#code-request-#{internship_agreement.id}", text: 'Un nouveau code a été envoyé'
     end
 
     test 'when employer requests for a sms code resend fails' do
@@ -39,7 +39,7 @@ module Dashboard::InternshipAgreements::Users
         end
       end
       assert_response :success
-      assert_select '#code-request', text: "Une erreur est survenue et votre demande n'a pas été traitée"
+      assert_select "#code-request-#{internship_agreement.id}", text: "Une erreur est survenue et votre demande n'a pas été traitée"
     end
 
     test 'school manager requests for a sms code resend succeeds' do
@@ -55,7 +55,7 @@ module Dashboard::InternshipAgreements::Users
                 id: school_manager.id),
             params: {user: {id: school_manager.id}}
         assert_response :success
-        assert_select '#code-request', text: 'Un nouveau code a été envoyé'
+        assert_select "#code-request-#{internship_agreement.id}", text: 'Un nouveau code a été envoyé'
       end
     end
 
@@ -75,7 +75,7 @@ module Dashboard::InternshipAgreements::Users
         end
       end
       assert_response :success
-      assert_select '#code-request', text: "Une erreur est survenue et votre demande n'a pas été traitée"
+      assert_select "#code-request-#{internship_agreement.id}", text: "Une erreur est survenue et votre demande n'a pas été traitée"
     end
   end
 end

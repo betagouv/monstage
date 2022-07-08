@@ -21,7 +21,7 @@ div data-controller='digit-code' data-digit-code-position-value="0"
         | Signer la convention
         = " "
       = turbo_frame_tag 'code-resend' do
-        #code-request.fr-ml-1v.fr-mt-3v
+        .fr-ml-1v.fr-mt-3v id="code-request-#{internship_agreement_id}"
           = "Vous n'avez pas reçu le code ? "
           = link_to 'Renvoyer le code',
                     resend_sms_code_dashboard_internship_agreement_user_path(internship_agreement_id: internship_agreement_id,
