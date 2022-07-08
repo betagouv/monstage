@@ -34,30 +34,5 @@
           type: 'submit',
           class: "#{primary_button_classes}",
           'data-fr-opened': false,
-          'aria-controls': "fr-modal-signature"
-      - if current_user.phone.present?
-        dialog#fr-modal-signature.fr-modal [
-          aria-labelledby="fr-modal-signature-title"
-          role="dialog"]
-
-          .fr-container.fr-container--fluid.fr-container-md
-            .fr-grid-row.fr-grid-row--center
-              .fr-col-10.fr-col-md-8
-                = turbo_frame_tag internship_agreement do
-                  = render partial:'dashboard/internship_agreements/signature/modal_code_submit',
-                           locals: { current_user: current_user,
-                                     internship_agreement_id: internship_agreement.id }
-      - else
-        dialog#fr-modal-signature.fr-modal [
-          aria-labelledby="fr-modal-signature-title"
-          role="dialog"]
-
-          .fr-container.fr-container--fluid.fr-container-md
-            .fr-grid-row.fr-grid-row--center
-              .fr-col-10.fr-col-md-8
-                = turbo_frame_tag internship_agreement do
-                  = render partial:'dashboard/internship_agreements/signature/modal_phone_request',
-                           locals: { current_user: current_user,
-                                     internship_agreement_id: internship_agreement.id}
-
+          'aria-controls': "fr-modal-signature-#{internship_agreement.id}"
 
