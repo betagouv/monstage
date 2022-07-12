@@ -1133,7 +1133,8 @@ CREATE TABLE public.signatures (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     signatory_role public.agreement_signatory_role,
-    signature_phone_number character varying(20) NOT NULL
+    signature_phone_number character varying(20) NOT NULL,
+    user_id bigint
 );
 
 
@@ -2058,6 +2059,13 @@ CREATE INDEX index_signatures_on_internship_agreement_id ON public.signatures US
 
 
 --
+-- Name: index_signatures_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_signatures_on_user_id ON public.signatures USING btree (user_id);
+
+
+--
 -- Name: index_users_on_api_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2637,6 +2645,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220621105148'),
 ('20220624092113'),
 ('20220626074601'),
-('20220704132020');
+('20220704132020'),
+('20220711083028');
 
 

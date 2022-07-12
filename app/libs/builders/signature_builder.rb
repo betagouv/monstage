@@ -74,8 +74,9 @@ module Builders
           internship_agreement_id: params[:internship_agreement_id],
           signatory_role: user.signatory_role,
           signatory_ip: user.current_sign_in_ip,
-          signature_date: DateTime.now,
+          user_id: user.id,
           signature_phone_number: user.phone,
+          signature_date: DateTime.now
         }
     end
 

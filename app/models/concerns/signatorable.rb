@@ -35,6 +35,11 @@ module Signatorable
       save!
     end
 
+    def signature_role
+      return 'employer' if employer?
+      return 'school_manager' if school_manager?
+    end
+
     def signature_code_checked?
       time_check = signature_phone_token_checked_at
       return if time_check.nil?

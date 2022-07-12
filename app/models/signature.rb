@@ -32,10 +32,6 @@ class Signature < ApplicationRecord
     signatures_count == Signature.signatory_roles_count
   end
 
-  def presenter
-    Presenters::Signature.new(signature: self)
-  end
-
   def signature_file_name
     "signature-#{Rails.env}-#{signatory_role}-#{internship_agreement_id}.png"
   end
@@ -48,6 +44,10 @@ class Signature < ApplicationRecord
     if signature_image.attached? && File.exists?(self.local_signature_image_file_path)
       File.delete(self.local_signature_image_file_path)
     end
+  end
+
+  def presenter
+    Presenters::Signature.new(signature: self)
   end
 
   private
