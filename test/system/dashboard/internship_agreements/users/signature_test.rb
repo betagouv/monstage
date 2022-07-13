@@ -13,8 +13,12 @@ module Dashboard::InternshipAgreements::Users
     def enable_validation_button(id)
       "document.getElementById('#{id}').removeAttribute('disabled');"
     end
+    def clean_pdf_file
+      File.unlink('Convention_de_stage_RICK_ROLL.pdf') if File.exists?('Convention_de_stage_RICK_ROLL.pdf')
+    end
 
     test 'employer signs and everything is ok' do
+      clean_pdf_file
       if ENV['RUN_BRITTLE_TEST']
         travel_to Time.zone.local(2020, 1, 1, 12, 0, 0) do
           internship_agreement = create(:internship_agreement, :validated)
@@ -60,12 +64,13 @@ module Dashboard::InternshipAgreements::Users
           find("a.fr-btn--secondary.button-component-cta-button").click # Imprimer
           sleep 0.5
           assert File.exists?('Convention_de_stage_RICK_ROLL.pdf')
-          File.delete('Convention_de_stage_RICK_ROLL.pdf')
+          File.unlink('Convention_de_stage_RICK_ROLL.pdf')
         end
       end
     end
 
     test 'school_manager signs and everything is ok' do
+      clean_pdf_file
       if ENV['RUN_BRITTLE_TEST']
         travel_to Time.zone.local(2020, 1, 1, 12, 0, 0) do
           internship_agreement = create(:internship_agreement, :validated)
@@ -112,7 +117,7 @@ module Dashboard::InternshipAgreements::Users
           find("a.fr-btn--secondary.button-component-cta-button").click # Imprimer
           sleep 0.5
           assert File.exists?('Convention_de_stage_RICK_ROLL.pdf')
-          File.delete('Convention_de_stage_RICK_ROLL.pdf')
+          File.unlink('Convention_de_stage_RICK_ROLL.pdf')
         end
       end
     end
