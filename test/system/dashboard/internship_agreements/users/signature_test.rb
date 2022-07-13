@@ -30,7 +30,7 @@ module Dashboard::InternshipAgreements::Users
           click_button('Recevoir un code')
 
           find('h1#fr-modal-signature-title', text: 'Nous vous avons envoyé un code de vérification')
-          find('button.fr-btn[disabled]')
+          find("button#button-code-submit-#{internship_agreement.id}.fr-btn[disabled]")
           signature_phone_tokens = employer.reload.signature_phone_token.split('')
           (0..5).to_a.each do |index|
             execute_script(code_script_enables(index))
@@ -66,7 +66,7 @@ module Dashboard::InternshipAgreements::Users
     end
 
     test 'school_manager signs and everything is ok' do
-      if ENV['RUN_BRITTLE_TEST']
+      if ENV['RUN_BRITTLE_TEST'] # Brittle because of CI but working allright localy
         travel_to Time.zone.local(2020, 1, 1, 12, 0, 0) do
           internship_agreement = create(:internship_agreement, :validated)
           school_manager = internship_agreement.school_manager
@@ -81,7 +81,7 @@ module Dashboard::InternshipAgreements::Users
           click_button('Recevoir un code')
 
           find('h1#fr-modal-signature-title', text: 'Nous vous avons envoyé un code de vérification')
-          find('button.fr-btn[disabled]')
+          find("button#button-code-submit-#{internship_agreement.id}.fr-btn[disabled]")
           signature_phone_tokens = school_manager.reload.signature_phone_token.split('')
           (0..5).to_a.each do |index|
             execute_script(code_script_enables(index))

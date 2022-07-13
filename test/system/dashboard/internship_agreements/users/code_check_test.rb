@@ -24,7 +24,7 @@ module Dashboard::InternshipAgreements::Users
       click_button('Recevoir un code')
 
       find('h1#fr-modal-signature-title', text: 'Nous vous avons envoyé un code de vérification')
-      find('button.fr-btn[disabled]')
+      find("button#button-code-submit-#{internship_agreement.id}.fr-btn[disabled]")
       signature_phone_tokens = employer.reload.signature_phone_token.split('')
       (0..5).to_a.each do |index|
         execute_script(code_script_enables(index))
@@ -49,7 +49,7 @@ module Dashboard::InternshipAgreements::Users
       click_button('Recevoir un code')
 
       find('h1', text: 'Nous vous avons envoyé un code de vérification')
-      find('button.fr-btn[disabled]')
+      find("button#button-code-submit-#{internship_agreement.id}.fr-btn[disabled]")
       (0..5).to_a.each do |index|
         execute_script(code_script_enables(index))
         execute_script(code_script_assign(index, index)) # wrong code

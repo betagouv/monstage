@@ -14,7 +14,7 @@ module Dashboard::InternshipAgreements::Users
       click_button('Recevoir un code')
 
       find('h1#fr-modal-signature-title', text: 'Nous vous avons envoyé un code de vérification')
-      find('button.fr-btn[disabled]')
+      find("button#button-code-submit-#{internship_agreement.id}.fr-btn[disabled]")
       click_link('Renvoyer le code')
       sleep 0.1
       find("#code-request-#{internship_agreement.id}", text: 'Un nouveau code a été envoyé')
@@ -31,7 +31,7 @@ module Dashboard::InternshipAgreements::Users
       click_button('Recevoir un code')
 
       find('h1#fr-modal-signature-title', text: 'Nous vous avons envoyé un code de vérification')
-      find('button.fr-btn[disabled]')
+      find("button#button-code-submit-#{internship_agreement.id}.fr-btn[disabled]")
       click_link('Renvoyer le code')
       sleep 0.1
       find("#code-request-#{internship_agreement.id}", text: 'Un nouveau code a été envoyé')
