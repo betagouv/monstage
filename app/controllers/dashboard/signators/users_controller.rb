@@ -1,13 +1,12 @@
 module Dashboard
-  module InternshipAgreements
+  module Signators
     class UsersController < ApplicationController
       include Phonable
-      before_action :fetch_internship_agreement
 
       def start_signing
         # javascript opens the right modal according to the fact
         # we have current_user phone number
-        authorize! :sign, @internship_agreement
+        authorize! :sign, InternshipAgreement
         current_user.send_signature_sms_token if current_user.formatted_phone.present?
       end
 
@@ -176,15 +175,11 @@ module Dashboard
         allowed_params = %i[
           id
           phone
-          internship_agreement_id
           signature_image
+          internship_agreement_ids: []
         ]
         allowed_params += (0..5).map {|i| "digit-code-target-#{i}".to_sym}
         params.require(:user).permit(*allowed_params)
-      end
-
-      def fetch_internship_agreement
-        @internship_agreement = InternshipAgreement.find(params[:internship_agreement_id])
       end
     end
   end

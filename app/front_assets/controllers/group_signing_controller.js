@@ -48,13 +48,14 @@ export default class extends Controller {
   }
 
   connect() {
+
     this.addCheckBoxTargets.forEach(element => {
+      element.checked = false;
       if (element.getAttribute('data-group-signing-signed-param') === 'readyToSign') {
         element.removeAttribute('disabled');
       } else {
         element.setAttribute('disabled', 'disabled');
       }
-      if (element.checked) { this.addCounter(1); }
     });
     this.onCheckboxChecked();
   }

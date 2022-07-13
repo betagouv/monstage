@@ -4,15 +4,18 @@ tr class="d-sm-flex student-application-#{internship_agreement.id} internship-ag
       fieldset.fr-fieldset.fr-fieldset--inline
       .fr-fieldset__content
         .fr-checkbox-group
-          input.check-agreement-sign [
-            type="checkbox"
-            id="check-agreement-sign-#{internship_agreement.id}"
-            data-action="group-signing#toggle"
-            data-group-signing-id-param="#{internship_agreement.id}"
-            data-group-signing-signed-param="#{internship_agreement.ready_to_sign?(user: current_user) ? 'readyToSign' : 'notReadyToSign'}"
-            data-group-signing-target="addCheckBox"
-          ]
-          label.fr-label.align-self-center for="check-agreement-sign-#{internship_agreement.id}"
+          - id = "#{fg.object_name}_internship_agreement_ids_#{internship_agreement.id}_checkbox"
+          = fg.check_box :internship_agreement_ids,{ id: id,
+                                                    class: 'check-agreement-sign',
+                                                    data: { action: "group-signing#toggle",
+                                                            :'group-signing-id-param' => internship_agreement.id,
+                                                            :'group-signing-signed-param' => "#{internship_agreement.ready_to_sign?(user: current_user) ? 'readyToSign' : 'notReadyToSign'}",
+                                                            :'group-signing-target' => 'addCheckBox' }},
+                                                    internship_agreement.id,
+                                                    false
+
+
+          label.fr-label.align-self-center for="#{id}"
             = internship_agreement.internship_application.student.name
   td.pt-0.pb-3.py-sm-2.rg2a-width-100.col-sm-2.d-sm-flex.align-items-center data-head="#{internship_agreement.internship_application.internship_offer.title}"
     = link_to '#',

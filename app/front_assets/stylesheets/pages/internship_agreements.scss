@@ -219,3 +219,36 @@ $position-form-field-helper: 55px;
   	box-shadow: 0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #0A76F6;
   }
 }
+
+thead tr.leight-grey{
+  background-color: $warm-neutral;
+  padding: 10px 0;
+  border-bottom: 1px solid $grey-200;
+}
+
+tr.internship-agreement-to-sign {
+  td{
+    margin: 0;
+  }
+  input[type='checkbox']{
+    margin: 0px 20px 0 0;
+  }
+}
+
+input.select-general-internship-agreements{
+  margin: 0 20px 0 15px;
+}
+
+.internship-agreements-list{
+  th    .fr-checkbox-group input[type="checkbox"] + label,
+  tbody .fr-checkbox-group input[type="checkbox"] + label {
+    padding: 0.75rem 1rem;
+  }
+  .fr-form-group {
+    margin-bottom: -10px;
+  }
+  input[type="checkbox"]+ label,  input[type="checkbox"]:disabled + label{
+    color: $grey-200;
+    font-weight: 400;
+  }
+}
