@@ -32,8 +32,8 @@
             = render 'school_management_form_fields',
                             form: form,
                             resource: @internship_agreement,
-                            school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale',
                             disabled: false
+                            / school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale',
 
         #nav-employer.tab-pane.fade.show role="tabpanel" aria-labelledby="nav-employer-tab"
           table.table-sticky-thead
@@ -43,5 +43,5 @@
             = render 'employer_form_fields',
                       form: form,
                       resource: @internship_agreement,
-                      school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale',
                       disabled: true
+                      / school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale',

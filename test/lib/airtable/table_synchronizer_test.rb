@@ -4,7 +4,8 @@ require 'test_helper'
 module Airtable
   class SynchronizerTest < ActiveSupport::TestCase
     def setup
-      @ref_week = Week.selectable_on_school_year.first
+      ref_school_year = SchoolYear::Floating.new_by_year(year: ENV['AIRTABLE_OPEN_YEAR'].split('-').first.to_i)
+      @ref_week = Week.selectable_for_school_year(school_year: ref_school_year).first
       template= File.read(Rails.root.join(*%w[test fixtures files airtable-request.json.erb]))
       @request_body = ERB.new(template)
                          .result(OpenStruct.new(week: @ref_week).instance_eval { binding })
@@ -30,9 +31,10 @@ module Airtable
         AirTableRecord.create!(operator: @operator, week: @ref_week)
         assert_changes -> { AirTableRecord.count },
                       from: 1,
-                      to: @parsed_body["records"].size do
+                      to: @parsed_body["records"].size do   
+
           Airtable::TableSynchronizer.new(operator: @operator)
-                                    .pull_all
+                         .pull_all
         end
       end
     end

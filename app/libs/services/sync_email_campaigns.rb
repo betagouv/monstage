@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Services
-  # https://dev.mailjet.com/email/reference/overview/
   class SyncEmailCampaigns
     require 'net/https'
 

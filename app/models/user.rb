@@ -61,9 +61,7 @@ class User < ApplicationRecord
     opts = {}
 
     opts = opts.merge(school.default_search_options) if has_relationship?(:school)
-    opts = opts.merge(school_track: school_track) if has_relationship?(:school_track)
-    opts = opts.merge(school_track: :troisieme_generale) if self.is_a?(Users::SchoolManagement)
-    if (has_relationship?(:class_room) && class_room.troisieme_generale?) || self.is_a?(Users::SchoolManagement)
+    if has_relationship?(:class_room) || self.is_a?(Users::SchoolManagement)
       week_ids = school.weeks
                        .where(id: Week.selectable_on_school_year.pluck(:id))
                        .pluck(:id)
@@ -150,7 +148,6 @@ class User < ApplicationRecord
 
     unless email_for_job.blank?
       AnonymizeUserJob.perform_later(email: email_for_job) if send_email
-      RemoveContactFromSyncEmailDeliveryJob.perform_later(email: email_for_job)
     end
   end
 

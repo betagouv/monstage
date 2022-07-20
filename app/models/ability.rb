@@ -208,7 +208,7 @@ class Ability
       true
     end
     can %i[index_and_filter], Reporting::InternshipOffer
-    can %i[new], InternshipAgreement
+    can :manage, InternshipAgreement
     can :reset_cache, User
     can %i[ switch_user
             read
@@ -363,7 +363,7 @@ class Ability
 
     return false if offer_is_reserved_to_another_school
     return true if student.try(:class_room).nil?
-    return true if student.try(:class_room).try(:applicable?, internship_offer)
+    return true if student.try(:class_room)
 
     false
   end

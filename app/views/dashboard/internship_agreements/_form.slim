@@ -13,7 +13,7 @@ tbody.internship-agreement
           fieldset
             legend.h4.px-0 Convention relative à l’organisation de séquence d’observation en milieu professionnel
             = form.hidden_field :internship_application_id, value: resource.internship_application_id
-            = form.hidden_field :school_track, value: resource.school_track
+            / = form.hidden_field :school_track, value: resource.school_track
             = form.hidden_field current_user_agreement_terms(current_user), value: true
         .col-3.offset-2.mt-3
 
@@ -163,24 +163,6 @@ tbody.internship-agreement
         - filled_by = ["l'entreprise"]
         = render partial: 'dashboard/internship_agreements/trix_form_element',
                  locals: { field: :activity_scope_rich_text, form: form, text_label: label, title: title, content: content, filled_by: filled_by}
-      - if school_track != 'troisieme_generale'
-        .row.mt-0
-          - label = "Modalités de la concertation qui sera assurée pour organiser " \
-                    "la préparation, contrôler le déroulement de la période en vue " \
-                    "d’une véritable complémentarité des enseignements reçus"
-          - title = "Note destinée au professeur principal :"
-          - content = "Objet pédagogique"
-          - filled_by = ["l'entreprise"]
-          = render partial: 'dashboard/internship_agreements/trix_form_element',
-                   locals: { field: :activity_preparation_rich_text, form: form, text_label: label, title: title, content: content , filled_by: filled_by}
-
-        .row.mt-0
-          - label = "Compétences visées"
-          - title = "Note destinée à l'entreprise"
-          - ccontent = "Apprentissages en entreprise"
-          - filled_by = ["l'entreprise"]
-          = render partial: 'dashboard/internship_agreements/trix_form_element',
-                   locals: { field: :activity_learnings_rich_text, form: form, text_label: label, title: title, content: content , filled_by: filled_by}
       .row.mt-0
         - label = "Modalités d’évaluation de la séquence d’observation " \
                   "en milieu professionnel :"

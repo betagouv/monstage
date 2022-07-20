@@ -1,7 +1,4 @@
 fr:
-  admin:
-    table_headers:
-      last_created: 'Dernier créé'
   errors:
     messages:
       accept_terms: "Veuillez accepter les conditions d'utilisation"
@@ -172,7 +169,38 @@ fr:
         tutor_email: Email du tuteur
 
       internship_agreement:
+        internship_application: Candidature
+        school_manager_accept_terms: Validée par CE
+        employer_accept_terms: Validée par l'employeur
+        main_teacher_accept_terms: Validée par le professeur principal
+        date_range: Dates du stage
+        organisation_representative_full_name: Nom de l'employeur
+        school_representative_full_name: Nom du chef d'établissement
+        student_full_name: Nom de l'élève
+        tutor_full_name: Nom du tuteur
+        main_teacher_full_name: Nom du professeur principal
+        new_daily_hours: Horaires journaliers
+        weekly_hours: Horaires
+        daily_lunch_break: Horaires journaliers pause déjeuner
+        weekly_lunch_break: Horaires pause déjeuner
+        school_delegation_to_sign_delivered_at: Date de déléguation
+        activity_rating_rich_text: Modalités d'évaluation
+        activity_scope_rich_text: Objectifs du stage
+        activity_preparation_rich_text: Modalités de concertation
+        activity_learnings_rich_text: Compétences visées
+        complementary_terms_rich_text: Dispositions générales
+        legal_terms_rich_text: Conditions complémentaires
+        student_school: Établissement de l'élève
+        doc_date: Date du document
         aasm_state:
+          one: Statut
+          draft: brouillon
+          started_by_employer: À remplir par l'employeur
+          completed_by_employer: Remplie par l'employeur
+          started_by_school_manager: À remplir par le chef d'établissement
+          validated: Validée
+          signed: Signée
+        status:
           employer:
             draft: À remplir par les deux parties.
             started_by_employer: Votre convention est remplie mais pas envoyée au chef d'établissement.
@@ -478,7 +506,7 @@ fr:
               taken: 'Vous ne pouvez pas postuler deux fois à la même offre'
   admin:
     table_headers:
-      last_created: 'last_created'
+      last_created: Dernier créé
     toggle_navigation: 'toggle_navigation'
 
     misc:
@@ -493,6 +521,8 @@ fr:
         title: 'Key Performance Indicators'
         breadcrumb: KPI
         menu: KPI
+      index:
+        no_records: Aucun résultat
     scopes:
       all: "Tous"
       school:
@@ -553,8 +583,5 @@ fr:
 
     school_tracks:
       troisieme_generale: '3e'
-      troisieme_prepa_metiers: '3e prépa métiers'
-      troisieme_segpa: '3e SEGPA'
-      bac_pro: 'Bac pro'
   date:
     day_names: [Dimanche, Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi]
