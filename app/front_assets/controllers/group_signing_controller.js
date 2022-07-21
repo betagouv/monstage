@@ -12,30 +12,50 @@ export default class extends Controller {
     counter: Number
   };
 
+  connect() {
+    this.addCheckBoxTargets.forEach(element => {
+      element.checked = false;
+      elReadyToSign = (element.getAttribute('data-group-signing-signed-param') === 'readyToSign')
+        (elReadyToSign) ? this.enable(element) : this.disable(element)
+    });
+    this.onCheckboxChecked();
+  }
+
   toggle(event) {
+    this.commonToggle(event, this.withCheckbox.bind(this));
+  }
+
+  toggleFromButton(event) {
+    this.commonToggle(event, this.withButton.bind(this));
+  }
+
+  // private functions
+
+  commonToggle(event, fnRef) {
     const agreementId = event.params.id;
     this.addCheckBoxTargets.forEach(element => {
       if (element.getAttribute('data-group-signing-id-param') == agreementId) {
-        (element.checked) ? this.addToList(agreementId) : this.removeFromList(agreementId);
+        fnRef(element, agreementId);
       }
     });
     this.onCheckboxChecked(event);
   }
 
-  toggleFromButton(event) {
-    const agreementId = event.params.id;
-    this.addCheckBoxTargets.forEach(element => {
-      if (element.getAttribute('data-group-signing-id-param') == agreementId) {
-        if (element.checked) { //let's uncheck it
-          element.checked = false
-          this.removeFromList(agreementId);
-        } else {
-          element.checked = true;
-          this.addToList(agreementId);
-        }
+
+  withCheckbox(element, agreementId) {
+    (element.checked) ? this.addToList(agreementId) : this.removeFromList(agreementId);
+  }
+
+  withButton(element, agreementId) {
+    if (element.getAttribute('data-group-signing-id-param') == agreementId) {
+      if (element.checked) { //let's uncheck it
+        element.checked = false
+        this.removeFromList(agreementId);
+      } else {
+        element.checked = true;
+        this.addToList(agreementId);
       }
-    });
-    this.onCheckboxChecked(event);
+    }
   }
 
   addToList(agreementId) {
@@ -55,39 +75,17 @@ export default class extends Controller {
     });
   }
 
-  disable(el) {
-    el.setAttribute('disabled', 'disabled');
-  }
-
-  enable(el) {
-    el.removeAttribute('disabled');
-  }
-
-  addCounter(val) { this.counterValue += val }
-
   onCheckboxChecked() {
-    if (this.counterValue === 0) {
-      this.generalCtaTarget.setAttribute('disabled', 'disabled')
-    } else {
-      this.generalCtaTarget.removeAttribute('disabled')
-    }
-    this.paintButtonLabel();
-  }
-
-  paintButtonLabel() {
+    const target = this.generalCtaTarget;
+    (this.counterValue === 0) ? this.disable(target) : this.enable(target)
+    //paintButtonLabel
     const extraHTML = (this.counterValue > 1) ? " en groupe (" + this.counterValue + ")" : '';
     this.generalCtaTarget.innerHTML = "Signer" + extraHTML;
   }
 
-  connect() {
-    this.addCheckBoxTargets.forEach(element => {
-      element.checked = false;
-      if (element.getAttribute('data-group-signing-signed-param') === 'readyToSign') {
-        element.removeAttribute('disabled');
-      } else {
-        element.setAttribute('disabled', 'disabled');
-      }
-    });
-    this.onCheckboxChecked();
-  }
+  disable(el) { el.setAttribute('disabled', 'disabled'); }
+
+  enable(el) { el.removeAttribute('disabled'); }
+
+  addCounter(val) { this.counterValue += val }
 }
