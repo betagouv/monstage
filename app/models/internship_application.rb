@@ -313,6 +313,11 @@ class InternshipApplication < ApplicationRecord
     UrlShortener.short_url(target)
   end
 
+  # Used for prettier links in rails_admin
+  def title
+    student_name + ", le " + submitted_at.to_formatted_s(:short)
+  end
+
   rails_admin do
     weight 14
     navigation_label 'Offres'
