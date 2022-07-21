@@ -13,42 +13,73 @@ export default class extends Controller {
   };
 
   toggle(event) {
+    const agreementId = event.params.id;
     this.addCheckBoxTargets.forEach(element => {
-      if (element.getAttribute('data-group-signing-id-param') == event.params.id) {
-        (element.checked) ? this.addCounter(1) : this.addCounter(-1);
+      if (element.getAttribute('data-group-signing-id-param') == agreementId) {
+        (element.checked) ? this.addToList(agreementId) : this.removeFromList(agreementId);
       }
     });
-    this.onCheckboxChecked();
+    this.onCheckboxChecked(event);
+  }
+
+  toggleFromButton(event) {
+    const agreementId = event.params.id;
+    this.addCheckBoxTargets.forEach(element => {
+      if (element.getAttribute('data-group-signing-id-param') == agreementId) {
+        if (element.checked) { //let's uncheck it
+          element.checked = false
+          this.removeFromList(agreementId);
+        } else {
+          element.checked = true;
+          this.addToList(agreementId);
+        }
+      }
+    });
+    this.onCheckboxChecked(event);
+  }
+
+  addToList(agreementId) {
+    this.addCounter(1);
+    this.signingButtonsAction(agreementId, this.disable);
+  }
+  removeFromList(agreementId) {
+    this.addCounter(-1);
+    this.signingButtonsAction(agreementId, this.enable);
+  }
+
+  signingButtonsAction(agreementId, fn) {
+    this.signingButtonTargets.forEach(element => {
+      if (element.getAttribute('data-group-signing-id-param') == agreementId) {
+        fn(element);
+      }
+    });
+  }
+
+  disable(el) {
+    el.setAttribute('disabled', 'disabled');
+  }
+
+  enable(el) {
+    el.removeAttribute('disabled');
   }
 
   addCounter(val) { this.counterValue += val }
 
-  paintButtonLabel() {
-    const extraHML = (this.counterValue === 0) ? '' : " (" + this.counterValue + ")";
-    this.generalCtaTarget.innerHTML = "Signer en groupe" + extraHML;
-  }
-
-  toggleSigningButtons(value) {
-    if (value == 'disable') {
-      this.signingButtonTargets.forEach((el) => { el.setAttribute('disabled', 'disabled'); })
-    } else {
-      this.signingButtonTargets.forEach((el) => { el.removeAttribute('disabled'); })
-    }
-  }
-
   onCheckboxChecked() {
     if (this.counterValue === 0) {
       this.generalCtaTarget.setAttribute('disabled', 'disabled')
-      this.toggleSigningButtons('enable');
     } else {
       this.generalCtaTarget.removeAttribute('disabled')
-      this.toggleSigningButtons('disable');
     }
     this.paintButtonLabel();
   }
 
-  connect() {
+  paintButtonLabel() {
+    const extraHTML = (this.counterValue > 1) ? " en groupe (" + this.counterValue + ")" : '';
+    this.generalCtaTarget.innerHTML = "Signer" + extraHTML;
+  }
 
+  connect() {
     this.addCheckBoxTargets.forEach(element => {
       element.checked = false;
       if (element.getAttribute('data-group-signing-signed-param') === 'readyToSign') {
