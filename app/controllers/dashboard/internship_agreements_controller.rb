@@ -64,11 +64,11 @@ module Dashboard
                                                .full_name_camel_case
           send_data(
             GenerateInternshipAgreement.new(@internship_agreement.id).call.render,
-            filename: "Convention_de_stage_#{ext_file_name}.pdf",
-            type: 'application/pdf',
-            disposition: 'inline'
+              filename: "Convention_de_stage_#{ext_file_name}.pdf",
+              type: 'application/pdf',
+              disposition: 'inline'
           ) && @internship_agreement.signatures.each do |signature|
-              signature.clean_local_signature_file
+              signature.config_clean_local_signature_file
             end
         end
       end
@@ -78,7 +78,7 @@ module Dashboard
       authorize! :create, InternshipAgreement
       @internship_agreements = current_user.internship_agreements
                                            .includes([:internship_application])
-      @school = current_user.school if current_user.is_a?(Users::SchoolManagement)
+      @school = current_user.school if current_user.is_a?(::Users::SchoolManagement)
     end
 
     private

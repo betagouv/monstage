@@ -26,14 +26,6 @@
                   '',
                   class: "#{primary_button_classes} disabled"
     - elsif internship_agreement.validated? || internship_agreement.signatures_started?
-      = form_with(model: @internship_offer_info,
-                  url: start_signing_dashboard_internship_agreement_user_path(id: current_user.id, internship_agreement_id: internship_agreement.id),
-                  scope: current_user,
-                  method: :post)  do |f|
-        = f.button second_label[:text],
-          type: 'submit',
-          class: "#{primary_button_classes}",
-          'data-fr-opened': false,
-          'aria-controls': "fr-modal-signature-#{internship_agreement.id}",
-          'data-group-signing-target': "signingButton"
+      button class="#{primary_button_classes}"  data-group-signing-target="signingButton" data-group-signing-id-param="#{internship_agreement.id}" data-action="group-signing#toggleFromButton"
+        = second_label[:text]
 

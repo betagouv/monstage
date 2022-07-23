@@ -32,18 +32,37 @@ class Signature < ApplicationRecord
     signatures_count == Signature.signatory_roles_count
   end
 
-  def signature_file_name
-    "signature-#{Rails.env}-#{signatory_role}-#{internship_agreement_id}.png"
-  end
+  def config_clean_local_signature_file
+    return true if Rails.application.config.active_storage.service == :local
 
-  def local_signature_image_file_path
-    "storage/signatures/#{signature_file_name}"
+    clean_local_signature_file
   end
 
   def clean_local_signature_file
     if signature_image.attached? && File.exists?(self.local_signature_image_file_path)
       File.delete(self.local_signature_image_file_path)
     end
+  end
+
+  def attach_signature!
+    unless File.exists?(local_signature_image_file_path) &&
+      MIME::Types.type_for(local_signature_image_file_path).first.try(:media_type) ==  'image'
+
+      raise ArgumentError , "L'image au format png n'a pas été trouvée"
+    end
+
+    signature_image.attach(io: File.open(local_signature_image_file_path),
+                           filename: signature_file_name,
+                           content_type: "image/png",
+                           identify: false)
+  end
+
+  def signature_file_name
+    "signature-#{Rails.env}-#{signatory_role}-#{internship_agreement_id}.png"
+  end
+
+  def local_signature_image_file_path
+    "storage/signatures/#{signature_file_name}"
   end
 
   def presenter

@@ -242,8 +242,9 @@ class GenerateInternshipAgreement < Prawn::Document
   def download_image_and_signature(signatory_role:)
     signature = @internship_agreement.signature_by_role(signatory_role: signatory_role)
     return nil if signature.nil?
+    return signature if Rails.application.config.active_storage.service == :local
 
-    img = signature.signature_image.download if signature.signature_image.present?
+    img = signature.signature_image.download if signature.signature_image.attached?
     return nil if img.nil?
 
     File.open(signature.local_signature_image_file_path, "wb") { |f| f.write(img) }

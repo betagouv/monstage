@@ -8,15 +8,13 @@ export default class extends Controller {
   ];
 
   static values = {
-    id: String,
     counter: Number
   };
 
   connect() {
     this.addCheckBoxTargets.forEach(element => {
       element.checked = false;
-      elReadyToSign = (element.getAttribute('data-group-signing-signed-param') === 'readyToSign')
-        (elReadyToSign) ? this.enable(element) : this.disable(element)
+      (element.getAttribute('data-group-signing-signed-param') === 'readyToSign') ? this.enable(element) : this.disable(element)
     });
     this.onCheckboxChecked();
   }
@@ -40,7 +38,6 @@ export default class extends Controller {
     });
     this.onCheckboxChecked(event);
   }
-
 
   withCheckbox(element, agreementId) {
     (element.checked) ? this.addToList(agreementId) : this.removeFromList(agreementId);
@@ -78,6 +75,7 @@ export default class extends Controller {
   onCheckboxChecked() {
     const target = this.generalCtaTarget;
     (this.counterValue === 0) ? this.disable(target) : this.enable(target)
+
     //paintButtonLabel
     const extraHTML = (this.counterValue > 1) ? " en groupe (" + this.counterValue + ")" : '';
     this.generalCtaTarget.innerHTML = "Signer" + extraHTML;

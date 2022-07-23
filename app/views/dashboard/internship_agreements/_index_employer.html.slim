@@ -8,6 +8,4 @@
               locals: { internship_offers: @internship_offers }
     = render partial: 'dashboard/internship_agreements/internship_agreements_list',
               locals: {internship_agreements: @internship_agreements}
-  = render partial: 'dashboard/internship_agreements/signature/modal_dialogs',
-            locals: { internship_agreements: @internship_agreements  || []  }
-  = render partial: 'dashboard/internship_agreements/signature/group_modal_dialog'
+  = render partial: 'dashboard/internship_agreements/signature/modal_dialog'

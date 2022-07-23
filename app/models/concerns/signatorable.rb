@@ -7,9 +7,9 @@ module Signatorable
       return false if school_management? && !school_manager?
 
       update(signature_phone_token: format('%06d', rand(999_999)),
-             signature_phone_token_validity: SIGNATURE_PHONE_TOKEN_LIFETIME.minutes.from_now)
+             signature_phone_token_expires_at: SIGNATURE_PHONE_TOKEN_LIFETIME.minutes.from_now)
       # update(signature_phone_token: format('%06d', 111_111),
-      #        signature_phone_token_validity: SIGNATURE_PHONE_TOKEN_LIFETIME.minutes.from_now)
+      #        signature_phone_token_expires_at: SIGNATURE_PHONE_TOKEN_LIFETIME.minutes.from_now)
     end
 
     def send_signature_sms_token
@@ -23,15 +23,15 @@ module Signatorable
     end
 
     def nullify_phone_number!
-      self.phone                          = nil
-      self.signature_phone_token_validity = nil
-      self.phone_token_validity           = nil
+      self.phone                            = nil
+      self.signature_phone_token_expires_at = nil
+      self.phone_token_validity             = nil
       save!
     end
 
     def check_and_expire_token!
       self.signature_phone_token_checked_at = Time.zone.now
-      self.signature_phone_token_validity   = Time.zone.now - 1.second
+      self.signature_phone_token_expires_at = Time.zone.now - 1.second
       save!
     end
 
@@ -41,27 +41,22 @@ module Signatorable
     end
 
     def signature_code_checked?
-      time_check = signature_phone_token_checked_at
-      return if time_check.nil?
-
-      validity = signature_phone_token_validity
-      duration = SIGNATURE_PHONE_TOKEN_LIFETIME.minutes
-
-      validity - duration < time_check
+      signature_phone_token_checked_at.present? &&
+        signature_phone_token_checked_at <= Time.zone.now
     end
 
-    def code_expired?(internship_agreement_id: , code:)
+    def code_expired?(code:)
       signature_phone_token.nil? ||
         !signature_phone_token_still_ok?
     end
 
-    def code_valid?(internship_agreement_id: , code:)
+    def code_valid?(code:)
       signature_phone_token.present? &&
         signature_phone_token == code
     end
 
     def signature_phone_token_still_ok?
-      Time.zone.now < signature_phone_token_validity
+      Time.zone.now < signature_phone_token_expires_at
     end
 
     def other_roles_than_mine

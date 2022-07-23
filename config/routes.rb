@@ -54,15 +54,14 @@ Rails.application.routes.draw do
   end
 
   namespace :dashboard, path: 'dashboard' do
-    resources :internship_agreements,  except: %i[destroy] do
-      resources :users, only: %i[update], module: 'internship_agreements' do
-        member do
-          post 'start_signing'
-          post 'reset_phone_number'
-          post 'resend_sms_code'
-          post 'signature_code_validate'
-          post 'handwrite_sign'
-        end
+    resources :internship_agreements,  except: %i[destroy] 
+    resources :users, only: %i[update], module: 'group_signing' do
+      member do
+        post 'start_signing'
+        post 'reset_phone_number'
+        post 'resend_sms_code'
+        post 'signature_code_validate'
+        post 'handwrite_sign'
       end
     end
 

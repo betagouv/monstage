@@ -4,9 +4,9 @@ FactoryBot.define do
 
     student_school { internship_application.student.school.name }
     school_representative_full_name { internship_application.student.school.name }
-    student_full_name { 'Jean-Claude Dus' }
+    student_full_name { internship_application.student.presenter.full_name }
     student_class_room { '3e A'}
-    main_teacher_full_name { 'Paul Lefevbre' }
+    main_teacher_full_name { FFaker::NameFR.name }
     organisation_representative_full_name { 'DGSE' }
     tutor_full_name { 'Julie Mentor' }
     date_range { "du 10/10/2020 au 15/10/2020" }

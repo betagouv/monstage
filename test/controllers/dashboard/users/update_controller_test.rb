@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module Dashboard::InternshipAgreements::Users
+module Dashboard::Users
   class UpdateTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
@@ -11,16 +11,13 @@ module Dashboard::InternshipAgreements::Users
 
       params = {
         user: {
-          phone: '+330602030405',
-          internship_agreement_id: internship_agreement.id,
+          phone_prefix: '+33',
+          phone_suffix: '0602030405',
           user_id: employer.id
         }
       }
       assert_enqueued_jobs 1, only: SendSmsJob do
-        patch dashboard_internship_agreement_user_path(
-                format: :turbo_stream,
-                internship_agreement_id: internship_agreement.id,
-                id: employer.id),
+        patch dashboard_user_path( format: :turbo_stream, id: employer.id),
               params: params
       end
 
@@ -35,16 +32,13 @@ module Dashboard::InternshipAgreements::Users
 
       params = {
         user: {
-          phone: '+330602030405',
-          internship_agreement_id: internship_agreement.id,
+          phone_prefix: '+33',
+          phone_suffix: '0602030405',
           user_id: school_manager.id
         }
       }
       assert_enqueued_jobs 1, only: SendSmsJob do
-        patch dashboard_internship_agreement_user_path(
-                format: :turbo_stream,
-                internship_agreement_id: internship_agreement.id,
-                id: school_manager.id),
+        patch dashboard_user_path( format: :turbo_stream, id: school_manager.id),
               params: params
       end
 
@@ -59,15 +53,13 @@ module Dashboard::InternshipAgreements::Users
 
       params = {
         user: {
-          phone: '+33060405', # bad phone number
+          phone_prefix: '+33',
+          phone_suffix: '0600405', # bad phone number
           internship_agreement_id: internship_agreement.id,
           user_id: employer.id
         }
       }
-      patch dashboard_internship_agreement_user_path(
-              format: :turbo_stream,
-              internship_agreement_id: internship_agreement.id,
-              id: employer.id),
+      patch dashboard_user_path( format: :turbo_stream, id: employer.id),
             params: params
 
       assert_response :success

@@ -1,5 +1,5 @@
 require 'application_system_test_case'
-module Dashboard::InternshipAgreements::Users
+module Dashboard::Users
   class RequestPhoneNumberTest < ApplicationSystemTestCase
     include Devise::Test::IntegrationHelpers
 
@@ -15,6 +15,8 @@ module Dashboard::InternshipAgreements::Users
 
       visit dashboard_internship_agreements_path
       click_on 'Signer la convention'
+      find('button.fr-btn.button-component-cta-button[disabled]')
+      click_on 'Signer'
 
       find('h1#fr-modal-signature-title', text: 'Nous vous avons envoyé un code de vérification')
     end
@@ -27,6 +29,7 @@ module Dashboard::InternshipAgreements::Users
 
       visit dashboard_internship_agreements_path
       click_on 'Signer la convention'
+      click_on 'Signer'
 
       find('h1#fr-modal-signature-title', text: 'Nous vous avons envoyé un code de vérification')
     end

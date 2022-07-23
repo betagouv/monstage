@@ -252,3 +252,16 @@ input.select-general-internship-agreements{
     font-weight: 400;
   }
 }
+li#phone-validate{
+  height: 25px;
+}
+#phone_suffix{
+  margin-right: 25px;
+  &:focus{
+    margin-right: 21px;
+  }
+}
+#phone_prefix{
+  min-width: 100px;
+}
+

@@ -4,9 +4,10 @@ tr class="d-sm-flex student-application-#{internship_agreement.id} internship-ag
       fieldset.fr-fieldset.fr-fieldset--inline
       .fr-fieldset__content
         .fr-checkbox-group
-          - id = "#{fg.object_name}_internship_agreement_ids_#{internship_agreement.id}_checkbox"
+          - id = "#{fg.object_name}_internship_agreement_id_#{internship_agreement.id}_checkbox"
           = fg.check_box :internship_agreement_ids,{ id: id,
                                                     class: 'check-agreement-sign',
+                                                    multiple: true,
                                                     data: { action: "group-signing#toggle",
                                                             :'group-signing-id-param' => internship_agreement.id,
                                                             :'group-signing-signed-param' => "#{internship_agreement.ready_to_sign?(user: current_user) ? 'readyToSign' : 'notReadyToSign'}",

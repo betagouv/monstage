@@ -1,10 +1,7 @@
 div data-controller='digit-code' data-digit-code-position-value="0"
   .fr-mb-1w.d-flex.flex-row
-    = f.hidden_field :internship_agreement_id,
-                      name: '[user]internship_agreement_id',
-                      value: internship_agreement_id
     - 6.times do |i|
-      = f.text_field :code,
+      = form.text_field :code,
                      class: 'digit-code-size',
                      id: "user-code-#{i}",
                      name: "[user]digit-code-target-#{i}",
@@ -15,18 +12,17 @@ div data-controller='digit-code' data-digit-code-position-value="0"
   ul.fr-btns-group.fr-btns-group--inline-reverse.fr-btns-group--inline-lg.fr-btns-group--icon-left
     li
       button.fr-btn.fr-icon-checkbox-line [
-        id="button-code-submit-#{internship_agreement_id}"
+        id="button-code-submit"
         data-digit-code-target="button"
         data-turbo-track="reload"]
         | Signer la convention
         = " "
       = turbo_frame_tag 'code-resend' do
-        .fr-ml-1v.fr-mt-3v id="code-request-#{internship_agreement_id}"
+        .fr-ml-1v.fr-mt-3v id="code-request"
           = "Vous n'avez pas reçu le code ? "
           = link_to 'Renvoyer le code',
-                    resend_sms_code_dashboard_internship_agreement_user_path(internship_agreement_id: internship_agreement_id,
-                                                                            id: current_user.id, user: {id: current_user.id} ),
+                    resend_sms_code_dashboard_user_path(id: current_user.id, user: {id: current_user.id} ),
                     method: :post,
-                    id: "code-validation-button-#{internship_agreement_id}"
+                    id: 'code-validation-button'
 
 

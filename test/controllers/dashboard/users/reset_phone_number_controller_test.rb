@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module Dashboard::InternshipAgreements::Users
+module Dashboard::Users
   class ResetPhoneNumberControllerTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
@@ -10,9 +10,7 @@ module Dashboard::InternshipAgreements::Users
       employer.update(phone: '+330602030405')
       sign_in(employer)
 
-      post reset_phone_number_dashboard_internship_agreement_user_path(
-              internship_agreement_id: internship_agreement.id,
-              id: employer.id),
+      post reset_phone_number_dashboard_user_path( id: employer.id),
            params: {}
 
       assert_redirected_to dashboard_internship_agreements_path(opened_modal: true)
@@ -27,10 +25,7 @@ module Dashboard::InternshipAgreements::Users
       school_manager.update(phone: '+330602030405')
       sign_in(school_manager)
 
-      post reset_phone_number_dashboard_internship_agreement_user_path(
-              internship_agreement_id: internship_agreement.id,
-              id: school_manager.id),
-           params: {}
+      post reset_phone_number_dashboard_user_path( id: school_manager.id), params: {}
 
       assert_redirected_to dashboard_internship_agreements_path(opened_modal: true)
       follow_redirect!
@@ -46,10 +41,7 @@ module Dashboard::InternshipAgreements::Users
       sign_in(employer)
 
       klass.stub_any_instance(:nullify_phone_number!, false) do
-        post reset_phone_number_dashboard_internship_agreement_user_path(
-                internship_agreement_id: internship_agreement.id,
-                id: employer.id),
-             params: {}
+        post reset_phone_number_dashboard_user_path( id: employer.id), params: {}
       end
       assert_redirected_to dashboard_internship_agreements_path
       follow_redirect!
@@ -66,10 +58,7 @@ module Dashboard::InternshipAgreements::Users
       sign_in(school_manager)
 
       klass.stub_any_instance(:nullify_phone_number!, false) do
-        post reset_phone_number_dashboard_internship_agreement_user_path(
-                internship_agreement_id: internship_agreement.id,
-                id: school_manager.id),
-             params: {}
+        post reset_phone_number_dashboard_user_path( id: school_manager.id), params: {}
       end
       assert_redirected_to dashboard_internship_agreements_path
       follow_redirect!

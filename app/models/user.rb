@@ -240,6 +240,7 @@ class User < ApplicationRecord
   def operator? ; false end
   def school_management?; false end
   def school_manager?; false end
+  def god?; false end
 
   def already_signed?(internship_aggreement_id:); true end
   def create_signature_phone_token; nil end

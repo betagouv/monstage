@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module Dashboard::InternshipAgreements::Users
+module Dashboard::Users
   class ValidatePhoneTokenControllerTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
@@ -23,8 +23,7 @@ module Dashboard::InternshipAgreements::Users
           id: employer.id
         }
       }
-      post signature_code_validate_dashboard_internship_agreement_user_path(
-              internship_agreement_id: internship_agreement.id,
+      post signature_code_validate_dashboard_user_path(
               format: :turbo_stream,
               id: employer.id),
              params: params
@@ -44,7 +43,6 @@ module Dashboard::InternshipAgreements::Users
         Users::Employer.stub_any_instance(:signature_phone_token, '123456') do
           params = {
             user: {
-              internship_agreement_id: internship_agreement.id,
               :'digit-code-target-0' => '1',
               :'digit-code-target-1' => '2',
               :'digit-code-target-2' => '3',
@@ -54,16 +52,13 @@ module Dashboard::InternshipAgreements::Users
             }
           }
           assert_no_difference('Signature.count') do
-            post signature_code_validate_dashboard_internship_agreement_user_path(
-                  internship_agreement_id: internship_agreement.id,
+            post signature_code_validate_dashboard_user_path(
                   format: :turbo_stream,
                   id: employer.id),
                  params: params
           end
           assert_response :success
-          assert_select '.fr-alert p',
-                        text: "Code périmé, veuillez en réclamer un autre"
-
+          assert_select '.fr-alert p', text: "Code périmé, veuillez en réclamer un autre"
         end
       end
     end
@@ -77,7 +72,7 @@ module Dashboard::InternshipAgreements::Users
       date = DateTime.new(2020, 1, 1,12,0,0)
       travel_to date do
         Users::Employer.stub_any_instance(:signature_phone_token, '123456') do
-          Users::Employer.stub_any_instance(:signature_phone_token_validity, Users::Employer::SIGNATURE_PHONE_TOKEN_LIFETIME.minute.from_now) do
+          Users::Employer.stub_any_instance(:signature_phone_token_expires_at, Users::Employer::SIGNATURE_PHONE_TOKEN_LIFETIME.minute.from_now) do
             params = {
               user: {
                 internship_agreement_id: internship_agreement.id,
@@ -89,8 +84,7 @@ module Dashboard::InternshipAgreements::Users
                 :'digit-code-target-5' => '6',
               }
             }
-            post signature_code_validate_dashboard_internship_agreement_user_path(
-                    internship_agreement_id: internship_agreement.id,
+            post signature_code_validate_dashboard_user_path(
                     format: :turbo_stream,
                     id: employer.id),
                   params: params
@@ -103,6 +97,7 @@ module Dashboard::InternshipAgreements::Users
     test 'school_manager signing fails when using wrong_code' do
       internship_agreement = create(:internship_agreement)
       school_manager = internship_agreement.school_manager
+      school_manager.update(phone: '+330612345678')
       school_manager.create_signature_phone_token
       sign_in(school_manager)
 
@@ -118,7 +113,7 @@ module Dashboard::InternshipAgreements::Users
         }
       }
       assert_no_difference('Signature.count') do
-        post signature_code_validate_dashboard_internship_agreement_user_path(
+        post signature_code_validate_dashboard_user_path(
               internship_agreement_id: internship_agreement.id,
               format: :turbo_stream,
               id: school_manager.id),
@@ -149,8 +144,7 @@ module Dashboard::InternshipAgreements::Users
               :'digit-code-target-5' => '6',
             }
           }
-          post signature_code_validate_dashboard_internship_agreement_user_path(
-                internship_agreement_id: internship_agreement.id,
+          post signature_code_validate_dashboard_user_path(
                 format: :turbo_stream,
                 id: school_manager.id),
                 params: params
@@ -170,7 +164,7 @@ module Dashboard::InternshipAgreements::Users
       date = DateTime.new(2020, 1, 1,12,0,0)
       travel_to date do
         Users::SchoolManagement.stub_any_instance(:signature_phone_token, '123456') do
-          Users::SchoolManagement.stub_any_instance(:signature_phone_token_validity, Users::Employer::SIGNATURE_PHONE_TOKEN_LIFETIME.minute.from_now) do
+          Users::SchoolManagement.stub_any_instance(:signature_phone_token_expires_at, Users::Employer::SIGNATURE_PHONE_TOKEN_LIFETIME.minute.from_now) do
             params = {
               user: {
                 internship_agreement_id: internship_agreement.id,
@@ -183,14 +177,13 @@ module Dashboard::InternshipAgreements::Users
                 :'digit-code-target-5' => '6'
               }
             }
-            post signature_code_validate_dashboard_internship_agreement_user_path(
-                    internship_agreement_id: internship_agreement.id,
+            post signature_code_validate_dashboard_user_path(
                     format: :turbo_stream,
                     id: school_manager.id),
                   params: params
             assert_equal date, school_manager.signature_phone_token_checked_at
             target_date = Time.zone.now + Users::SchoolManagement::SIGNATURE_PHONE_TOKEN_LIFETIME.minutes
-            assert_equal target_date, school_manager.signature_phone_token_validity
+            assert_equal target_date, school_manager.signature_phone_token_expires_at
           end
         end
       end
