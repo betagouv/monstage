@@ -60,23 +60,6 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     end
   end
 
-  test 'class room is filters archived clas_rooms' do
-    school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515')
-    class_room_0 = create(:class_room, name: '3e A', school: school_1)
-    class_room_0.archive
-    existing_email = 'fourcade.m@gmail.com'
-    student = create(:student, email: existing_email)
-
-    # go to signup as student Step 1
-    visit new_identity_path(as: 'Student')
-
-    # fails to find a class_room though there's an anonymized one
-    find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
-    find('#downshift-0-item-0').click
-    select school_1.name, from: "identity_school_id"
-    page.find("input[name='identity[class_room_id]'][placeholder='Aucune classe disponible']")
-  end
-
   test 'select other class room' do
     school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515')
     class_room_0 = create(:class_room, name: '3e A', school: school_1)
@@ -178,7 +161,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     # within('.onboarding-card.onboarding-card-sm') do
     #   click_link 'Me connecter'
     # end
-    
+
     # TO DO FIX TEST
     #
 
