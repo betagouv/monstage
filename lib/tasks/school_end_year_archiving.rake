@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'lib/pretty_console.rb'
+require 'pretty_console.rb'
 
 desc "School is over. Let's clean and prepare next year"
 task school_end_year_archiving: :environment do
