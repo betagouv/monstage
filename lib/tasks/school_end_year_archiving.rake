@@ -10,6 +10,5 @@ task school_end_year_archiving: :environment do
     end
   end
 
-  PrettyConsole.say_in_green 'all students are archived. Email data base ' \
-                 '(mailjet currently) updated with jobs'
+  PrettyConsole.say_in_green 'All students are archived.'
 end
