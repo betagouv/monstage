@@ -41,12 +41,19 @@
   // }
 
   .results-col {
-    max-width: 600px !important;
+    max-width: 700px !important;
     // float: right
     // position: -webkit-sticky;
     // position: sticky;
     // height: calc(100vh - 117px);
     top: 56px;
+    .row {
+      overflow-x: hidden;
+    }
+  }
+
+  .no-x-scroll {
+    overflow-x: hidden !important;
   }
 
   .results-row {
@@ -65,6 +72,14 @@
   }
 }
 
+.clear-button {
+  cursor: pointer
+}
+
+a.leaflet-control-zoom-in,
+a.leaflet-control-zoom-out {
+  background-image: none;
+}
 
 // left for example
 //#input-search-by-week[readonly=readonly]{

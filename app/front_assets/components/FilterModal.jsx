@@ -1,8 +1,6 @@
 import React from "react";
 
-
-
-const FilterModal = ({ sectors, showSectors, requestInternshipOffers, displaySectors }) => (
+const FilterModal = ({ sectors, showSectors, requestInternshipOffers, displaySectors, clearSectors }) => (
   <dialog aria-labelledby="fr-modal-title-modal-filter" role="dialog" id="fr-modal-filter" className="fr-modal modal-filter">
   <div className="fr-container fr-container--fluid fr-container-md">
     <div className="fr-grid-row fr-grid-row--center">
@@ -46,11 +44,11 @@ const FilterModal = ({ sectors, showSectors, requestInternshipOffers, displaySec
 
             <div className="fr-modal__footer">
               <div className="row">
-                <div className="col-4 text-left">
+                <div className="col-4 text-left align-self-center clear-button" onClick={clearSectors}>
                   Tout effacer
                 </div>
 
-                <div className="col-8 text-right">
+                <div className="col-8 text-right align-self-center">
                   <button className="fr-btn" >
                     Appliquer ces filtres
                   </button>

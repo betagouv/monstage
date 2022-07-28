@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const InternshipOfferCard = ({ internshipOffer, handleMouseOver, handleMouseOut }) => {
+const InternshipOfferCard = ({ internshipOffer, handleMouseOver, handleMouseOut, index }) => {
   useEffect(() => {
     console.log('InternshipOfferCard');
   }, []);
@@ -17,7 +17,7 @@ const InternshipOfferCard = ({ internshipOffer, handleMouseOver, handleMouseOut 
   // };
 
   return (
-    <div className="col-6 fr-my-2w"
+    <div className={`col-6 fr-my-2w ${(index % 2) == 0 ? 'fr-pl-0-5v' : 'fr-pr-0-5v'}`}
     key={internshipOffer.id}
     onMouseOver={(e) => handleMouseOver(internshipOffer.id)}
     onMouseOut={handleMouseOut}

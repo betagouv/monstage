@@ -139,7 +139,7 @@ class InternshipOffersController < ApplicationController
     internship_offers.map { |internship_offer| 
       {
         id: internship_offer.id,
-        title: internship_offer.title,
+        title: internship_offer.title.truncate(35),
         description: internship_offer.description.to_s,
         employer_name: internship_offer.employer_name,
         link: internship_offer_path(internship_offer),

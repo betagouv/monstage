@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet';
+import MarkerClusterGroup from 'react-leaflet-cluster';
 
 import activeMarker from '../images/active_pin.svg';
 import defaultMarker from '../images/default_pin.svg';
@@ -45,7 +46,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
   const [internshipOffers, setInternshipOffers] = useState([]);
   const [showSectors, setShowSectors] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  // const [selectedSectors, setSelectedSectors] = useState([]);
+  const [selectedSectors, setSelectedSectors] = useState([]);
 
   useEffect(() => {
     console.log('hello');
@@ -54,12 +55,10 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
   }, []);
 
   const handleMouseOver = (data) => {
-    console.log('over in result : id : %s', data);
     setSelectedOffer(data);
   };
 
   const handleMouseOut = () => {
-    console.log('out');
     setSelectedOffer(null);
   };
 
@@ -71,12 +70,11 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
         sectors.push(clist[i].getAttribute('data-sector-id'));
       };
     };
-   
-    return sectors
+    setSelectedSectors(sectors);
+    return sectors;
   }
 
   const requestInternshipOffers = () => {
-
     console.log('request offers');
     setIsLoading(true);
     document.getElementById("fr-modal-filter").classList.remove("fr-modal--opened")
@@ -133,33 +131,45 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
 
   const displaySectors = () => {
     setShowSectors(true);
-    console.log('sectors');
+  };
+
+  const clearSectors = () => {
+    setShowSectors(false);
+    var checkboxes = document.getElementsByClassName("checkbox-sector");
+    for (var checkbox of checkboxes) {
+      checkbox.checked = false;
+    }
   };
 
   return (
-    <div className="results-container">
+    <div className="results-container no-x-scroll">
       
-      <div className="row">
-        <div className="col-6 d-flex flex-row-reverse" style={{ overflow: 'scroll' }}>
+      <div className="row no-x-scroll">
+        <div className="col-7 d-flex flex-row-reverse" style={{ overflowY: 'scroll' }}>
           
-          <div className="results-col results-row">
+          <div className="results-col results-row no-x-scroll">
             <div className="row fr-p-2w ">
-              <div className="col-8">
+              <div className="col-8 px-0">
                 { 
                   isLoading ? (
                     <div className="row fr-mb-2w">
                       <TitleLoader/>
                     </div>
                   ) : (
-                    <h2 className="h2 mb-0 " id="internship-offers-count">
+                    <h2 className="h2 mb-0" id="internship-offers-count">
                       <span className="strong">{internshipOffers.length} Offres de stage</span>
                     </h2>
                   )
                 }
               </div>
-              <div className="col-4 text-right">
+              <div className="col-4 text-right px-0">
                 <button className="fr-btn fr-btn--secondary fr-icon-equalizer-line fr-btn--icon-left" data-fr-opened="false" aria-controls="fr-modal-filter">
                   Filtrer
+                  {
+                    selectedSectors.length > 0 ? (
+                      <p className="fr-badge fr-badge--success fr-badge--no-icon fr-m-1w">{selectedSectors.length}</p>
+                    ) : ''
+                  } 
                 </button>
               </div>
               
@@ -180,13 +190,14 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
                   </div>
                 </div>
                 ) : (
-                  <div className="row ">
+                  <div className="row mx-0">
                     {
                       internshipOffers.length ? (
-                        internshipOffers.map((internshipOffer) => (
+                        internshipOffers.map((internshipOffer, i) => (
                           <InternshipOfferCard 
                             internshipOffer={internshipOffer} 
                             key={internshipOffer.id}
+                            index={i}
                             handleMouseOut={handleMouseOut}
                             handleMouseOver={(value) => {handleMouseOver(value)}}
                             />
@@ -206,13 +217,13 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
           </div>
         </div>
 
-        <div className="col-6 map-container position-sticky sticky-top">
+        <div className="col-5 map-container position-sticky sticky-top">
           <div className="">
             <MapContainer center={center} zoom={13} scrollWheelZoom={false}>
               <TileLayer
                 url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
               />
-
+              <MarkerClusterGroup>
               {
                 internshipOffers.length ? (
                   internshipOffers.map((internshipOffer) => (
@@ -237,6 +248,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
                   ))
                 ) : ('')
               }
+              </MarkerClusterGroup>
             
               
               <ClickMap internshipOffers={internshipOffers} />
@@ -250,6 +262,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
         showSectors={showSectors}
         requestInternshipOffers={requestInternshipOffers}
         displaySectors={displaySectors}
+        clearSectors={clearSectors}
       />
     </div>
   );
