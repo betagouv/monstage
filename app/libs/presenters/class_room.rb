@@ -16,7 +16,6 @@ module Presenters
 
     def self.with_class_rooms(school)
       school.class_rooms
-            .current
             .includes([:students])
             .order(:name)
     end
