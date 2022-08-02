@@ -3,12 +3,12 @@ require "test_helper"
 class SignatureTest < ActiveSupport::TestCase
 
   test 'factory' do
-    signature = build(:signature, :employer) 
+    signature = build(:signature, :employer)
     assert signature.valid?
     assert signature.save
     assert_equal signature.user_id, Signature.last.employer.id
 
-    signature = build(:signature, :school_manager) 
+    signature = build(:signature, :school_manager)
     assert signature.valid?
     assert signature.save
     assert_equal signature.user_id, Signature.last.school_manager.id
@@ -32,5 +32,21 @@ class SignatureTest < ActiveSupport::TestCase
     refute other_signature.valid?
     another_signature = build(:signature, :school_manager, internship_agreement_id: signature.internship_agreement_id)
     assert another_signature.valid?
+  end
+
+  test '#file_path' do
+    signature = create(:signature, :employer)
+    expected = "storage/signatures/signature-test-employer-#{signature.internship_agreement_id}.png"
+    assert_equal expected, signature.local_signature_image_file_path
+  end
+
+  test '.file_path' do
+    signature = create(:signature, :employer)
+    expected = "storage/signatures/signature-test-employer-#{signature.internship_agreement_id}.png"
+    assert_equal expected,
+                 Signature.file_path(user: signature.employer, internship_agreement_id: signature.internship_agreement_id)
+
+    assert_equal Signature.file_path(user: signature.employer, internship_agreement_id: signature.internship_agreement_id),
+                 signature.local_signature_image_file_path
   end
 end
