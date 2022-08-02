@@ -419,8 +419,7 @@ CREATE TABLE public.class_rooms (
     school_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
-    anonymized boolean DEFAULT false
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
 );
 
 
@@ -1751,13 +1750,6 @@ CREATE INDEX index_air_table_records_on_week_id ON public.air_table_records USIN
 
 
 --
--- Name: index_class_rooms_on_anonymized; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_class_rooms_on_anonymized ON public.class_rooms USING btree (anonymized);
-
-
---
 -- Name: index_class_rooms_on_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2647,6 +2639,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220626074601'),
 ('20220704132020'),
 ('20220711083028'),
-('20220722081417');
-
-
+('20220722081417'),
+('20220726123520');

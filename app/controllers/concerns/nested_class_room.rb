@@ -8,7 +8,7 @@ module NestedClassRoom
     before_action :authenticate_user!
 
     def set_class_room
-      @class_room = @school.class_rooms.where(anonymized: false).find(params.require(:class_room_id))
+      @class_room = @school.class_rooms.find(params.require(:class_room_id))
     end
   end
 end
