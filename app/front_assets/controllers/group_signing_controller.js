@@ -5,18 +5,23 @@ export default class extends Controller {
     'generalCta',
     'signingButton',
     'addCheckBox',
+    'generalCtaSelectBox',
   ];
 
   static values = {
-    counter: Number
+    counter: Number,
+    maxCounter: Number
   };
 
   connect() {
     this.addCheckBoxTargets.forEach(element => {
       element.checked = false;
-      (element.getAttribute('data-group-signing-signed-param') === 'readyToSign') ? this.enable(element) : this.disable(element)
+      if (this.isReadyToSign(element)) {
+        this.enable(element);
+        this.maxCounterValue++;
+      } else { this.disable(element) }
     });
-    this.onCheckboxChecked();
+    this.repaintGeneralCta();
   }
 
   toggle(event) {
@@ -25,6 +30,26 @@ export default class extends Controller {
 
   toggleFromButton(event) {
     this.commonToggle(event, this.withButton.bind(this));
+  }
+
+  toggleSignThemAll(event) {
+    const target = event.target;
+    if (target.checked) {
+      this.addCheckBoxTargets.forEach(element => {
+        if (this.isReadyToSign(element) && (!element.checked)) {
+          element.checked = true;
+          this.addToList(element.getAttribute('data-group-signing-id-param'));
+        }
+      });
+    } else {
+      this.addCheckBoxTargets.forEach(element => {
+        if (this.isReadyToSign(element) && (element.checked)) {
+          element.checked = false;
+          this.removeFromList(element.getAttribute('data-group-signing-id-param'));
+        }
+      });
+    }
+    this.repaintGeneralCta();
   }
 
   // private functions
@@ -36,7 +61,7 @@ export default class extends Controller {
         fnRef(element, agreementId);
       }
     });
-    this.onCheckboxChecked(event);
+    this.repaintGeneralCta(event);
   }
 
   withCheckbox(element, agreementId) {
@@ -72,16 +97,21 @@ export default class extends Controller {
     });
   }
 
-  onCheckboxChecked() {
+  repaintGeneralCta() {
     const target = this.generalCtaTarget;
     (this.counterValue === 0) ? this.disable(target) : this.enable(target)
 
     //paintButtonLabel
     const extraHTML = (this.counterValue > 1) ? " en groupe (" + this.counterValue + ")" : '';
     this.generalCtaTarget.innerHTML = "Signer" + extraHTML;
+
+    const allChecked = (this.counterValue === this.maxCounterValue);
+    this.generalCtaSelectBoxTarget.checked = allChecked;
   }
 
   disable(el) { el.setAttribute('disabled', 'disabled'); }
+
+  isReadyToSign(el) { return el.getAttribute('data-group-signing-signed-param') === 'readyToSign' }
 
   enable(el) { el.removeAttribute('disabled'); }
 

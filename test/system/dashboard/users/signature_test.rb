@@ -178,5 +178,68 @@ module Dashboard
         end
       end
     end
+
+    test 'school_manager multiple clicks on interface' do
+      internship_agreement = create(:internship_agreement, :validated)
+      student1 = internship_agreement.student
+
+      school_manager = internship_agreement.school_manager
+      weeks = [Week.find_by(number: 5, year: 2020), Week.find_by(number: 6, year: 2020)]
+      internship_offer = create(:weekly_internship_offer, weeks: weeks)
+      school = school_manager.school
+      student2 = create(:student, school: school, class_room: create(:class_room, school: school))
+      internship_application = create(:weekly_internship_application,
+                                      :approved,
+                                      motivation: 'au taquet',
+                                      student: student2,
+                                      internship_offer: internship_offer)
+      internship_application.validate!
+      internship_agreement_2 = InternshipAgreement.last
+      internship_agreement_2.complete!
+      internship_agreement_2.validate!
+
+      travel_to(weeks[0].week_date - 1.week) do
+        sign_in(school_manager)
+
+        visit dashboard_internship_agreements_path
+        general_check_box = find("table input[data-action='group-signing#toggleSignThemAll']", visible: false)
+        find("button.fr-btn[data-group-signing-id-param='#{internship_agreement.id}']")
+        find("button.fr-btn[data-group-signing-id-param='#{internship_agreement_2.id}']")
+        refute general_check_box.checked?
+
+        find('label', text: student1.presenter.full_name).click
+        find('button.fr-btn[data-group-signing-target="generalCta"]', text: 'Signer')
+        first_right_button = find("button.fr-btn[data-group-signing-id-param='#{internship_agreement.id}']")
+        assert first_right_button.disabled?
+        second_right_button = find("button.fr-btn[data-group-signing-id-param='#{internship_agreement_2.id}']")
+        refute second_right_button.disabled?
+
+        find('label', text: student2.presenter.full_name).click
+        find('button.fr-btn[data-group-signing-target="generalCta"]', text: 'Signer en groupe (2)')
+        assert general_check_box.checked?
+        first_right_button = find("button.fr-btn[data-group-signing-id-param='#{internship_agreement.id}']")
+        assert first_right_button.disabled?
+        second_right_button = find("button.fr-btn[data-group-signing-id-param='#{internship_agreement_2.id}']")
+        assert second_right_button.disabled?
+
+        find("label[for='select-general-internship-agreements']").click
+        general_button = find('button.fr-btn[data-group-signing-target="generalCta"]', text: 'Signer')
+        assert general_button.disabled?
+        refute general_check_box.checked?
+        first_right_button = find("button.fr-btn[data-group-signing-id-param='#{internship_agreement.id}']")
+        refute first_right_button.disabled?
+        second_right_button = find("button.fr-btn[data-group-signing-id-param='#{internship_agreement_2.id}']")
+        refute second_right_button.disabled?
+        checkbox_1 = find("input[id='user_internship_agreement_id_#{internship_agreement.id}_checkbox']", visible: false)
+        refute checkbox_1.checked?
+        checkbox_2 = find("input[id='user_internship_agreement_id_#{internship_agreement_2.id}_checkbox']", visible: false)
+        refute checkbox_2.checked?
+
+        find('label', text: student1.presenter.full_name).click
+        find('label', text: student2.presenter.full_name).click
+        find('button.fr-btn[data-group-signing-target="generalCta"]', text: 'Signer en groupe (2)')
+        assert general_check_box.checked?
+      end
+    end
   end
 end
