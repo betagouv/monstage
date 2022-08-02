@@ -30,12 +30,14 @@
                         options_for_select(prefixes.map{|k| [k,k]}),
                         { include_blank: false},
                         { id: "phone_prefix",
-                          class: 'fr-select'}
+                          class: 'fr-select',
+                          :'aria-label' => '[préfix internationaux de téléphone]'}
 
           = f.text_field :phone_suffix,
                          class: 'fr-input',
                          id: 'phone_suffix',
                          placeholder: 'ex : 0623456789',
-                         name:'user[phone_suffix]'
+                         name: 'user[phone_suffix]',
+                         :'aria-label' => '[Numéro de téléphone]'
         li#phone-validate
           = f.submit "Recevoir un code", class: 'fr-btn input-small'

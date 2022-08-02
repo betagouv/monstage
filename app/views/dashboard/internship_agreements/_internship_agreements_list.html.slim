@@ -33,11 +33,14 @@
           tr.d-flex.leight-grey.row
             th.col-sm-3
               .fr-form-group.fr-ml-2w
-                fieldset.fr-fieldset.fr-fieldset--inline
+                .fr-fieldset.fr-fieldset--inline
                   .fr-fieldset__content
                     .fr-checkbox-group
-                      input.select-general-internship-agreements type='checkbox'
-                      label Elève
+                      input.select-general-internship-agreements [
+                          type='checkbox'
+                          name='select-general-internship-agreements'
+                          id='select-general-internship-agreements']
+                      label for='select-general-internship-agreements' Elève
             th.col-sm-2.fr-pl-3w Offre de stage
             th.col-sm-2 Organisme d'accueil
             th.col-sm-2 Statut
