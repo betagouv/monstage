@@ -59,16 +59,6 @@ def populate_class_rooms
   ClassRoom.create(name: '3e A – troisieme_generale', school: school)
   ClassRoom.create(name: '3e B – troisieme_generale', school: school)
   ClassRoom.create(name: '3e C – troisieme_generale', school: school)
-  create_a_discarded_class_room
-end
-
-def create_a_discarded_class_room
-  school = find_default_school_during_test
-
-  ClassRoom.create(name: '3e D – troisieme',
-                   school_track: :troisieme_generale,
-                   school: school)
-           .archive
 end
 
 def with_class_name_for_defaults(object)
@@ -227,24 +217,40 @@ def populate_students
   class_room_3e_generale     = ClassRoom.first
   class_room_3e_prepa_metier = ClassRoom.second
   class_room_3e_segpa        = ClassRoom.third
-  class_room_archived        = ClassRoom.fourth
 
   school = class_room_3e_generale.school
 
   # sans classe
   with_class_name_for_defaults(Users::Student.new(email: 'enzo@ms3e.fr', password: 'review', first_name: 'Enzo', last_name: 'Clerc', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 3.days.ago)).save!
   # 3e générale
-  with_class_name_for_defaults(Users::Student.new(email: 'abdelaziz@ms3e.fr', password: 'review', first_name: 'Mohsen', last_name: 'Yahyaoui', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_3e_generale)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'alfred@ms3e.fr', password: 'review', first_name: 'Kilian', last_name: 'Ploquin', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_3e_generale)).save!
+  5.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_3e_generale)).save! }
   # 3e prepa métier
+  2.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_3e_prepa_metier)).save! }
   with_class_name_for_defaults(Users::Student.new(email: 'louis@ms3e.fr', password: 'review', first_name: 'Louis', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'np', confirmed_at: 2.days.ago, class_room: class_room_3e_prepa_metier)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'leon@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Luanco', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_3e_prepa_metier)).save!
   # 3e segpa
+  2.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_3e_segpa)).save! }
   with_class_name_for_defaults(Users::Student.new(email: 'raphaelle@ms3e.fr', password: 'review',first_name: 'Raphaëlle', last_name: 'Mesnard',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3e_segpa)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Chotin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3e_segpa)).save!
-  # archived class_room
-  with_class_name_for_defaults(Users::Student.new(email: 'frederique@ms3e.fr', password: 'review', first_name: 'Frédérique', last_name: 'Dupin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_archived)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'karima@ms3e.fr', password: 'review', first_name: 'Karima', last_name: 'Belgarde',  school: school, birth_date: 14.years.ago, gender: 'np', confirmed_at: 2.days.ago, class_room: class_room_archived)).save!
+end
+
+def student_maker (school: ,class_room: )
+  first_name = FFaker::NameFR.first_name
+  first_name = 'Kilian' if first_name.include?(' ')
+  last_name = FFaker::NameFR.last_name
+  last_name = 'Ploquin' if last_name.include?(' ')
+  email = "#{first_name}@ms3e.fr"
+  Users::Student.new(
+    first_name: first_name,
+    last_name: last_name,
+    email: email,
+    password: 'review',
+    school: school,
+    birth_date: 14.years.ago,
+    gender: (['m']*4 + ['f']*4 + ['np']).shuffle.first,
+    confirmed_at: 2.days.ago,
+    class_room: class_room
+  )
 end
 
 def populate_internship_offers
@@ -545,20 +551,19 @@ end
 
 def populate_applications
   trois_gene_studs = Users::Student.joins(:class_room)
+                                   .where(class_rooms: { school_track: :troisieme_generale })
                                    .to_a
-                                   .shuffle
-                                   .first(5)
   troisieme_generale_offers = InternshipOffers::WeeklyFramed.all
-  puts "every 3e generale offers receives an application first 3e generale stud"
-  troisieme_generale_offers.first(4).each do |io_trois_gene|
-    if io_trois_gene.id.to_i.even?
+  puts "every 3e generale offers receives an application from first 3e generale stud"
+  troisieme_generale_offers.first(4).each do |offer|
+    if offer.id.to_i.even?
       InternshipApplications::WeeklyFramed.create!(
         aasm_state: :submitted,
         submitted_at: 10.days.ago,
         student: trois_gene_studs.first,
         motivation: 'Au taquet',
-        internship_offer: io_trois_gene,
-        week: io_trois_gene.internship_offer_weeks.sample.week
+        internship_offer: offer,
+        week: offer.internship_offer_weeks.sample.week
       )
     else
       InternshipApplications::WeeklyFramed.create!(
@@ -566,8 +571,8 @@ def populate_applications
         submitted_at: 10.days.ago,
         student: trois_gene_studs.first,
         motivation: 'Au taquet',
-        internship_offer: io_trois_gene,
-        week: io_trois_gene.internship_offer_weeks.sample.week
+        internship_offer: offer,
+        week: offer.internship_offer_weeks.sample.week
       )
     end
   end
@@ -616,7 +621,7 @@ def populate_applications
     canceled_at: 1.day.ago,
     student: trois_gene_studs.third,
     motivation: 'Au taquet',
-    internship_offer: troisieme_generale_offers.first,
+    internship_offer: troisieme_generale_offers.fourth,
     week: troisieme_generale_offers.second.internship_offer_weeks.second.week
   )
   #-----------------
@@ -626,7 +631,7 @@ def populate_applications
     aasm_state: :approved,
     submitted_at: 10.days.ago,
     approved_at: 2.days.ago,
-    student: trois_gene_studs.fourth,
+    student: trois_gene_studs[5],
     motivation: 'Au taquet',
     internship_offer: troisieme_generale_offers.fourth,
     week: troisieme_generale_offers.first.internship_offer_weeks.third.week
@@ -635,7 +640,7 @@ def populate_applications
     aasm_state: :approved,
     submitted_at: 9.days.ago,
     approved_at: 3.days.ago,
-    student: trois_gene_studs.third,
+    student: trois_gene_studs[6],
     motivation: 'Assez motivé pour ce stage',
     internship_offer: troisieme_generale_offers.fifth,
     week: troisieme_generale_offers.fifth.internship_offer_weeks.third.week
@@ -644,19 +649,19 @@ def populate_applications
     aasm_state: :approved,
     submitted_at: 19.days.ago,
     approved_at: 13.days.ago,
-    student: trois_gene_studs.first,
+    student: trois_gene_studs[7],
     motivation: 'motivé moyennement pour ce stage, je vous préviens',
-    internship_offer: troisieme_generale_offers[8],
-    week: troisieme_generale_offers.fifth.internship_offer_weeks.first.week
+    internship_offer: troisieme_generale_offers[6],
+    week: troisieme_generale_offers[6].internship_offer_weeks.first.week
   )
   InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
     submitted_at: 29.days.ago,
     approved_at: 23.days.ago,
-    student: trois_gene_studs.first,
+    student: trois_gene_studs[8],
     motivation: 'motivé moyennement pour ce stage, je vous préviens',
-    internship_offer: troisieme_generale_offers.first,
-    week: troisieme_generale_offers.first.internship_offer_weeks.second.week
+    internship_offer: troisieme_generale_offers[7],
+    week: troisieme_generale_offers[7].internship_offer_weeks.second.week
   )
 end
 
