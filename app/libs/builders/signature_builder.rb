@@ -28,35 +28,35 @@ module Builders
     def handwrite_sign
       yield callback if block_given?
       signatures = []
-      Signature.transaction do
-        params[:agreement_ids].split(',').each do |internship_agreement_id|
 
-          if user.already_signed?(internship_agreement_id: internship_agreement_id)
-            user.errors.add(:id, 'Vous avez déjà signé cette convention')
-            raise ActiveRecord::RecordInvalid, user
-          end
-
-          unless (internship_agreement_id !~ /\D+/)
-            Rails.logger.error("internship_agreement_ids " \
-                               "list wrong : #{internship_agreement_id}")
-          end
-
-          signature = Signature.new(prepare_attributes(internship_agreement_id))
-
-          unless user.signature_code_checked?
-            signature.errors.add('id', 'Le code n\'a pas été validé ')
-            raise ActiveRecord::RecordInvalid, signature
-          end
-
-          signature.attach_signature!
-
-          signature.save! &&
-            agreement_sign(signature.reload) &&
-            signatures << signature
+      # Signature.transaction do .... no : DON'T, because attachments will fail
+      # see https://stackoverflow.com/questions/61484082/activestoragefilenotfounderror-activestoragefilenotfounderror-in-server-lo/71081755#71081755
+      params[:agreement_ids].split(',').each do |internship_agreement_id|
+        if user.already_signed?(internship_agreement_id: internship_agreement_id)
+          user.errors.add(:id, 'Vous avez déjà signé cette convention')
+          raise ActiveRecord::RecordInvalid, user
         end
-        # signatures.last.config_clean_local_signature_file
-        callback.on_success.try(:call, signatures)
+
+        unless (internship_agreement_id !~ /\D+/)
+          Rails.logger.error("internship_agreement_ids " \
+                              "list is wrong : #{internship_agreement_id}")
+        end
+
+        signature = Signature.new(prepare_attributes(internship_agreement_id))
+
+        unless user.signature_code_checked?
+          signature.errors.add('id', 'Le code n\'a pas été validé ')
+          raise ActiveRecord::RecordInvalid, signature
+        end
+
+        signature.attach_signature! &&
+          signature.save! &&
+          agreement_sign(signature.reload) &&
+          signature.config_clean_local_signature_file &&
+          signatures << signature
       end
+
+      callback.on_success.try(:call, signatures)
     rescue ActiveRecord::RecordInvalid => e
       callback.on_failure.try(:call, e.record)
     rescue ArgumentError => e
@@ -64,7 +64,7 @@ module Builders
     end
 
     def prepare_attributes(internship_agreement_id)
-      make_image(image: params[:signature_image],
+      make_image(params: params,
                  internship_agreement_id: internship_agreement_id,
                  user: user) &&
         {
@@ -83,6 +83,7 @@ module Builders
 
     def code_checks
       code = (0..5).inject([]) { |acc, i| acc << params["digit-code-target-#{i}".to_sym] }.join('')
+
       code_valid = user.code_valid?( code: code )
       raise ArgumentError, 'Erreur de code, veuillez recommencer' unless code_valid
 
@@ -90,16 +91,22 @@ module Builders
       raise ArgumentError, 'Code périmé, veuillez en réclamer un autre' if code_expired
     end
 
-    def make_image(image:, internship_agreement_id: , user:)
-      if image.blank?
-        raise ArgumentError, 'Missing signature'
-      end
+    def make_image(params:, internship_agreement_id: , user:)
+      raise ArgumentError, 'Missing signature' if params[:signature_image].blank?
 
-      encoded_image = image.split(",")[1]
-      decoded_image = Base64.decode64(encoded_image)
-      image_name = "storage/signatures/signature-#{Rails.env}-" \
-                   "#{user.signatory_role}-#{internship_agreement_id}.png"
-      File.open(image_name, "wb") { |f| f.write(decoded_image) } && true
+      signature_file_path = Signature.file_path(
+        internship_agreement_id: internship_agreement_id,
+        user: user
+      )
+      img = (params[:signature_image]).split(",")[1]
+      img = Base64.decode64 img
+
+      File.open(signature_file_path, "wb") { |f| f.write img } && true
+    end
+
+    def image_from(params:)
+      img = (params[:signature_image]).split(",")[1]
+      Base64.decode64 img
     end
 
     def agreement_sign(signature)
