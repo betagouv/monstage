@@ -12,7 +12,7 @@
   = form_for @identity, id: 'new_user' do |f|
     = render "layouts/form_errors", resource: @identity, resource_name: :identity
     = f.hidden_field :targeted_offer_id, value: params[:targeted_offer_id]
-
+    
     = react_component("SearchSchool", props: { classes: 'col-12 fr-input',
                                                 label:"Nom (ou ville) de mon établissement",
                                                 required: true,

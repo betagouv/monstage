@@ -27,7 +27,7 @@ Rails.application.routes.draw do
     get '/users/password/edit_by_phone', to: 'users/passwords#edit_by_phone', as: 'phone_edit_password'
     put '/users/password/update_by_phone', to: 'users/passwords#update_by_phone', as: 'phone_update_password'
   end
-
+  
   resources :identities, only: %i[new create edit update]
 
   resources :internship_offer_keywords, only: [] do

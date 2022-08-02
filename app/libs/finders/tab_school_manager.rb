@@ -6,6 +6,7 @@ module Finders
       # internship_agreement approved with internship_agreement without terms_accepted
       @pending_internship_agreement_count ||= school.internship_applications
                                                     .approved
+                                                    .troisieme_generale
                                                     .joins(:internship_agreement)
                                                     .where(internship_agreement: {aasm_state: :completed_by_employer})
                                                     .count

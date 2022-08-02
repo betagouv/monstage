@@ -11,6 +11,7 @@
 #
 # only use dedicated builder to CRUD those objects
 class InternshipAgreement < ApplicationRecord
+  include SchoolTrackable
   include AASM
 
   belongs_to :internship_application
@@ -34,6 +35,7 @@ class InternshipAgreement < ApplicationRecord
   with_options if: :enforce_main_teacher_validations? do
     validates :student_class_room, presence: true
     validates :main_teacher_full_name, presence: true
+    validate :valid_trix_main_teacher_fields
   end
 
   with_options if: :enforce_school_manager_validations? do
@@ -50,9 +52,6 @@ class InternshipAgreement < ApplicationRecord
     validate :valid_trix_employer_fields
     validate :valid_working_hours_fields
   end
-
-  # validates :school_track, presence: true # legacy: school_track remains
-  # a field in the database
 
   # validate :at_least_one_validated_terms
 
@@ -134,13 +133,22 @@ class InternshipAgreement < ApplicationRecord
   def valid_trix_employer_fields
     errors.add(:activity_scope_rich_text, "Veuillez compléter les objectifs du stage") if activity_scope_rich_text.blank?
     errors.add(:complementary_terms_rich_text, "Veuillez compléter les conditions complémentaires du stage (hebergement, transport, securité)...") if complementary_terms_rich_text.blank?
+    if !troisieme_generale? && activity_learnings_rich_text.blank?
+      errors.add(:activity_learnings_rich_text, "Veuillez compléter les compétences visées")
+    end
   end
 
   def valid_trix_school_manager_fields
     errors.add(:complementary_terms_rich_text, "Veuillez compléter les conditions complémentaires du stage (hebergement, transport, securité)...") if complementary_terms_rich_text.blank?
+    if !troisieme_generale? && activity_rating_rich_text.blank?
+      errors.add(:activity_rating_rich_text, "Veuillez compléter les modalités d’évaluation du stage")
+    end
   end
 
   def valid_trix_main_teacher_fields
+    if !troisieme_generale? && activity_preparation_rich_text.blank?
+      errors.add(:activity_preparation_rich_text, "Veuillez compléter les modalités de concertation")
+    end
   end
 
   def valid_working_hours_fields
