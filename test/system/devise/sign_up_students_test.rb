@@ -111,13 +111,10 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     # real signup as student
     if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'
       assert_difference('Users::Student.count', 1) do
-        fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
-        find('label[for="select-gender-boy"]', text: 'Masculin').click
-        find('label[for="select-gender-girl"]', text: 'Féminin').click
-
-        # fill_in 'Créer un mot de passe', with: ''
+        fill_in 'Adresse électronique (e-mail)', with: email
         fill_in 'Créer un mot de passe', with: password
         fill_in 'Ressaisir le mot de passe', with: password
+        find('label[for="user_accept_terms"]').click
         sleep 0.2
         find("input[type='submit']").click
       end
