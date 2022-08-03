@@ -16,6 +16,7 @@ class SignUpEmployersTest < ApplicationSystemTestCase
       find("input[name='user[last_name]']").fill_in with: 'Accor'
       fill_in 'Adresse électronique', with: existing_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
+      fill_in "Fonction au sein de l'entreprise", with: "chef d'entreprise"
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       find('label[for="user_accept_terms"]').click
       click_on "Je m'inscris"

@@ -43,6 +43,7 @@ FactoryBot.define do
 
     factory :employer, class: 'Users::Employer', parent: :user do
       type { 'Users::Employer' }
+      employer_role { 'PDG' }
     end
 
     factory :god, class: 'Users::God', parent: :user do

@@ -1190,7 +1190,8 @@ CREATE TABLE public.users (
     anonymized boolean DEFAULT false NOT NULL,
     banners jsonb DEFAULT '{}'::jsonb,
     ministry_id bigint,
-    targeted_offer_id integer
+    targeted_offer_id integer,
+    employer_role character varying
 );
 
 
@@ -2546,4 +2547,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220511152203'),
 ('20220511152204'),
 ('20220511152205'),
-('20220726123520');
+('20220726123520'),
+('20220803131022');
+
+

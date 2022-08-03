@@ -114,6 +114,7 @@ class Ability
 
 
   def employer_abilities(user:)
+    can :choose_function, User
     can :supply_offers, User
     can :show, :account
 

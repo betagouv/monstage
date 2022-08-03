@@ -64,6 +64,8 @@ class AbilityTest < ActiveSupport::TestCase
                                     internship_application: internship_application)
     ability = Ability.new(employer)
 
+    assert(ability.can?(:choose_function, User.new),
+          'employers can declare their role in their organisation')
     assert(ability.can?(:supply_offers, employer), 'employers are to be able to supply offers')
     assert(ability.can?(:create, InternshipOffer.new),
            'employers should be able to create internships')
