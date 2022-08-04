@@ -3,7 +3,7 @@
 require 'test_helper'
 module SchoolYear
   class ArchiverTest < ActiveSupport::TestCase
-    test '.archive_class_rooms ' do
+    test '.school_end_year_archiving ' do
       school = create(:school)
       student = create(:student, school_id: school.id, first_name: 'test', last_name: 'test', phone: '+330611223344', current_sign_in_ip: "0.0.0.0", last_sign_in_ip: '0.0.0.0', birth_date: 14.years.ago, handicap: 'handicap', resume_educational_background: 'resume_educational_background', resume_other: 'resume_other', resume_languages: 'resume_languages')
       create(:weekly_internship_application, motivation: 'Motivation')

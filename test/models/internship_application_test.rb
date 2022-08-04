@@ -231,7 +231,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   test 'transition from submited to approved create internship_agreement for student in troisieme_generale.class_room' do
     internship_offer = create(:weekly_internship_offer)
     school = create(:school, :with_school_manager, weeks: internship_offer.weeks)
-    class_room = create(:class_room,  school: school)
+    class_room = create(:class_room, :troisieme_generale, school: school)
     student = create(:student, class_room: class_room)
     internship_application = create(:weekly_internship_application, :submitted, student: student)
 
@@ -239,6 +239,32 @@ class InternshipApplicationTest < ActiveSupport::TestCase
                    'Expected to have created agreement',
                    from: 0,
                    to: 1 do
+      internship_application.save
+      internship_application.approve!
+    end
+  end
+
+  test 'transition from submited to approved does not create internship_agreemennt for student in troisieme_prepa_metiers.class_room' do
+    internship_offer = create(:free_date_internship_offer)
+    school = create(:school, :with_school_manager)
+    class_room = create(:class_room, :troisieme_prepa_metiers, school: school)
+    student = create(:student, class_room: class_room)
+    internship_application = create(:free_date_internship_application, :submitted, student: student)
+
+    assert_no_changes -> { InternshipAgreement.count } do
+      internship_application.save
+      internship_application.approve!
+    end
+  end
+
+  test 'transition from submited to approved does not create internship_agreemennt for student in troisieme_segpa.class_room' do
+    internship_offer = create(:free_date_internship_offer)
+    school = create(:school, :with_school_manager)
+    class_room = create(:class_room, :troisieme_segpa, school: school)
+    student = create(:student, class_room: class_room)
+    internship_application = create(:free_date_internship_application, :submitted, student: student)
+
+    assert_no_changes -> { InternshipAgreement.count } do
       internship_application.save
       internship_application.approve!
     end

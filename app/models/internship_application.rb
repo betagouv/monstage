@@ -97,7 +97,7 @@ class InternshipApplication < ApplicationRecord
   scope :not_by_id, ->(id:) { where.not(id: id) }
 
   scope :weekly_framed, -> { where(type: InternshipApplications::WeeklyFramed.name) }
-  # singleton_class.send(:alias_method, :troisieme_generale, :weekly_framed)
+  singleton_class.send(:alias_method, :troisieme_generale, :weekly_framed)
 
   scope :free_date, -> { where(type: InternshipApplications::FreeDate.name) }
   singleton_class.send(:alias_method, :voie_pro, :free_date)
@@ -234,6 +234,8 @@ class InternshipApplication < ApplicationRecord
 
 
   def create_agreement
+    return if internship_offer.school_track != 'troisieme_generale'
+
     agreement = Builders::InternshipAgreementBuilder.new(user: Users::God.new)
                                                     .new_from_application(self)
     agreement.skip_validations_for_system = true
@@ -311,6 +313,11 @@ class InternshipApplication < ApplicationRecord
                     Rails.configuration.action_mailer.default_url_options
                   )
     UrlShortener.short_url(target)
+  end
+
+  # Used for prettier links in rails_admin
+  def title
+    student_name + ", le " + submitted_at.to_formatted_s(:short)
   end
 
   rails_admin do

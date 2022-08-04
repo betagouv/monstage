@@ -209,7 +209,7 @@ def populate_users
   with_class_name_for_defaults(Users::MinistryStatistician.new(email: ministry_statistician, password: 'review', ministry: last_public_group)).save!
 
   with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Abdelaziz', last_name: 'Benzedine', school: find_default_school_during_test, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: find_default_school_during_test, class_room: ClassRoom.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: find_default_school_during_test, class_room: ClassRoom.troisieme_generale.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: "teacher@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
 end
 
@@ -239,7 +239,7 @@ def student_maker (school: ,class_room: )
   first_name = 'Kilian' if first_name.include?(' ')
   last_name = FFaker::NameFR.unique.last_name
   last_name = 'Ploquin' if last_name.include?(' ')
-  email = "#{first_name}@ms3e.fr"
+  email = "#{first_name}.#{last_name}@ms3e.fr"
   Users::Student.new(
     first_name: first_name,
     last_name: last_name,

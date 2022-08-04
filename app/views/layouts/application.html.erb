@@ -33,8 +33,9 @@
         </div>
       <% end %>
     </div>
-    <div class="<%= agreement_form? ? "d-none" : "" %>">
-      <%= render 'layouts/footer' %>
+    <div class="<%= agreement_form? ? "d-none" : "" %>" >
+      <%= render "layouts/footer" %>
+      <%= render partial: "layouts/analytics" %>
     </div>
     <dialog id="turbo-confirm">
       <form method="dialog">
@@ -45,6 +46,5 @@
         </div>
       </form>
     </dialog>
-    <%= render partial: "layouts/analytics" %>
   </body>
 </html>

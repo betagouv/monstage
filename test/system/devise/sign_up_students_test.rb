@@ -111,10 +111,26 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     # real signup as student
     assert_difference('Users::Student.count', 1) do
-      fill_in 'Adresse électronique (e-mail)', with: email
-      fill_in 'Créer un mot de passe', with: password
-      fill_in 'Ressaisir le mot de passe', with: password
-      find('label[for="user_accept_terms"]').click
+      assert_difference('Users::Student.count', 1) do
+        fill_in 'Adresse électronique (e-mail)', with: email
+        fill_in 'Créer un mot de passe', with: password
+        fill_in 'Ressaisir le mot de passe', with: password
+        find('label[for="user_accept_terms"]').click
+        sleep 0.2
+        find("input[type='submit']").click
+      end
+
+      created_student = Users::Student.find_by(email: email)
+
+      # confirmation mail under the hood
+      created_student.confirm
+      created_student.reload
+      assert created_student.confirmed?
+      # assert_equal offer.id, created_student.targeted_offer_id
+
+      # visit login mail from confirmation mail
+      visit new_user_session_path
+      # find('label', text: 'Email').click
       sleep 0.2
       find("input[type='submit']").click
     end
