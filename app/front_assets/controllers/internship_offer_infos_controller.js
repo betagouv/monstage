@@ -22,18 +22,26 @@ export default class extends Controller {
   }
 
   onInduceType(event) {
-    this.induceType()
-  } //TODO remove this type test
+    this.induceType(event.target.value)
+  }
 
-  induceType() {
-    const inducedType = `${this.baseTypeValue}s::WeeklyFramed`
+  induceType(value){
+    const inducedType = (value == 'troisieme_generale') ? `${this.baseTypeValue}s::WeeklyFramed` : `${this.baseTypeValue}s::FreeDate`;
     $(this.typeTarget).attr('value', inducedType)
     this.chooseType(inducedType);
   }
 
   chooseType(value) {
-    showElement($(this.weeksContainerTarget))
-    $(this.weeksContainerTarget).attr('data-select-weeks-skip-validation-value', false)
+    switch (value) {
+      case `${this.baseTypeValue}s::WeeklyFramed`:
+        showElement($(this.weeksContainerTarget))
+        $(this.weeksContainerTarget).attr('data-select-weeks-skip-validation-value', false)
+        break;
+      case `${this.baseTypeValue}s::FreeDate`:
+        hideElement($(this.weeksContainerTarget));
+        $(this.weeksContainerTarget).attr('data-select-weeks-skip-validation-value', true)
+        break;
+    }
   }
 
   checkOnCandidateCount() {
@@ -79,7 +87,7 @@ export default class extends Controller {
   }
 
   connect() {
-    this.induceType();
+    this.induceType('troisieme_generale');
     this.checkOnCandidateCount()
   }
 

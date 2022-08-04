@@ -109,24 +109,24 @@ class GenerateInternshipAgreement < Prawn::Document
       field_form "Tous les jours : #{daily_schedule.join(', ')}."
     end
 
-    # unless @internship_agreement.troisieme_generale?
-    #   label_form "Objectifs assignés à la séquence d’observation en milieu professionnel :"
-    #   field_form @internship_agreement.activity_learnings_rich_text.body.html_safe, html: true
-    # end
+    unless @internship_agreement.troisieme_generale?
+      label_form "Objectifs assignés à la séquence d’observation en milieu professionnel :"
+      field_form @internship_agreement.activity_learnings_rich_text.body.html_safe, html: true
+    end
 
-    # unless @internship_agreement.troisieme_generale?
-    #   label_form "Modalités de la concertation qui sera assurée pour organiser la préparation, contrôler le déroulement de la période en vue d’une véritable complémentarité des enseignements reçus :"
-    #   field_form @internship_agreement.activity_preparation_rich_text.body.html_safe, html: true
-    # end
+    unless @internship_agreement.troisieme_generale?
+      label_form "Modalités de la concertation qui sera assurée pour organiser la préparation, contrôler le déroulement de la période en vue d’une véritable complémentarité des enseignements reçus :"
+      field_form @internship_agreement.activity_preparation_rich_text.body.html_safe, html: true
+    end
 
 
     label_form "Activités prévues :"
     field_form @internship_agreement.activity_scope_rich_text.body.html_safe, html: true
 
-    # unless @internship_agreement.troisieme_generale?
-    #   label_form "Compétences visées :"
-    #   field_form @internship_agreement.activity_learnings_rich_text.body.html_safe, html: true
-    # end
+    unless @internship_agreement.troisieme_generale?
+      label_form "Compétences visées :"
+      field_form @internship_agreement.activity_learnings_rich_text.body.html_safe, html: true
+    end
 
     if @internship_agreement.activity_rating_rich_text.present?
       label_form "Modalités d’évaluation de la séquence d’observation en milieu professionnel :"

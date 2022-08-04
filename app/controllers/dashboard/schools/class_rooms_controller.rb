@@ -63,7 +63,7 @@ module Dashboard
 
       def class_rooms_params
         params.require(:class_room)
-              .permit(:name)
+              .permit(:name, :school_track)
       end
     end
   end
