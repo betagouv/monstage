@@ -65,6 +65,7 @@ module Dashboard
       def extra_message
         extra_message_text = 'Vous pouvez renseigner la convention dès maintenant.'
         extra_message_condition = @internship_application.approved? &&
+                                  @internship_application.student.school_track == 'troisieme_generale' &&
                                   can?(:edit, @internship_application.internship_agreement)
         extra_message_condition ? extra_message_text : ''
       end

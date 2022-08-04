@@ -16,7 +16,7 @@ module Finders
 
     private
 
-    attr_accessor :params
+    attr_accessor :params # since school_track can be an implicit filter
     attr_reader :user, :listable_query_builder
 
     def initialize(user:, params:)
@@ -57,6 +57,7 @@ module Finders
       query = yield
       %i[
         keyword
+        school_track
         week_ids
       ].each do |sym_key|
         query = self.send("#{sym_key}_query", query) if use_params(sym_key)
@@ -85,6 +86,22 @@ module Finders
                              .with_distance_from(latitude: coordinate_params.latitude,
                                                  longitude: coordinate_params.longitude)
       query.merge(proximity_query)
+    end
+
+    def school_track_query(query)
+      query = query.merge(InternshipOffer.school_track(school_track: use_params(:school_track)))
+
+      if use_params(:school_track) == 'troisieme_generale'
+        query = query.merge(
+          weekly_framed_scopes(:ignore_already_applied, {user: user})
+        )
+        query = query.merge(
+          weekly_framed_scopes(:uncompleted_with_max_candidates)
+        )
+      else
+        query = query.merge(InternshipOffers::FreeDate.ignore_already_applied(user: user))
+      end
+      query
     end
 
     protected
