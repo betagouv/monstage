@@ -126,6 +126,10 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
         :weekly_internship_offer,
         searched_opts.merge(weeks: [not_searched_week])
       )
+      not_found_by_school_track = create(
+        :troisieme_segpa_internship_offer,
+        searched_opts.reject { |k,v| k == :weeks }
+      )
 
       dictionnary_api_call_stub
       SyncInternshipOfferKeywordsJob.perform_now

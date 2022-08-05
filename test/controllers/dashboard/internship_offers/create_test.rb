@@ -15,7 +15,7 @@ module Dashboard::InternshipOffers
       school = create(:school)
       employer = create(:employer)
       weeks = [weeks(:week_2019_1)]
-      internship_offer = build(:weekly_internship_offer, employer: employer)
+      internship_offer = build(:troisieme_segpa_internship_offer, employer: employer)
       sign_in(internship_offer.employer)
       params = internship_offer
                .attributes
@@ -41,11 +41,38 @@ module Dashboard::InternshipOffers
       assert_redirected_to internship_offer_path(created_internship_offer)
     end
 
+    test 'POST #create (duplicate) /InternshipOffers::FreeDate as employer creates the post' do
+      school = create(:school)
+      employer = create(:employer)
+      internship_offer = build(:free_date_internship_offer, employer: employer)
+      sign_in(internship_offer.employer)
+      params = internship_offer
+               .attributes
+               .merge('type' => InternshipOffers::FreeDate.name,
+                      'coordinates' => { latitude: 1, longitude: 1 },
+                      'school_id' => school.id,
+                      'description_rich_text' => '<div>description</div>',
+                      'employer_description_rich_text' => '<div>hop+employer_description</div>',
+                      'employer_id' => internship_offer.employer_id,
+                      'employer_type' => 'Users::Employer')
+
+      assert_difference('InternshipOffer.count', 1) do
+        post(dashboard_internship_offers_path, params: { internship_offer: params })
+      end
+      created_internship_offer = InternshipOffer.last
+      assert_equal InternshipOffers::FreeDate.name, created_internship_offer.type
+      assert_equal employer, created_internship_offer.employer
+      assert_equal school, created_internship_offer.school
+      assert_equal 'troisieme_segpa', created_internship_offer.school_track
+      assert_equal params['max_candidates'], created_internship_offer.max_candidates
+      assert_redirected_to internship_offer_path(created_internship_offer)
+    end
+
     test 'POST #create (duplicate) /InternshipOffers::WeeklyFramed as ministry statistican creates the post' do
       school = create(:school)
       employer = create(:ministry_statistician)
       weeks = [weeks(:week_2019_1)]
-      internship_offer = build(:weekly_internship_offer, employer: employer)
+      internship_offer = build(:troisieme_segpa_internship_offer, employer: employer)
       sign_in(internship_offer.employer)
       params = internship_offer
                .attributes

@@ -57,19 +57,10 @@ end
 def populate_class_rooms
   school = find_default_school_during_test
 
-  ClassRoom.create(name: '3e A – troisieme_generale', school: school)
-  ClassRoom.create(name: '3e B – troisieme_generale', school: school)
-  ClassRoom.create(name: '3e C – troisieme_generale', school: school)
+  ClassRoom.create(name: '3e A – troisieme_generale', school_track: :troisieme_generale, school: school)
+  ClassRoom.create(name: '3e B – troisieme_prepa_metier', school_track: :troisieme_prepa_metiers, school: school)
+  ClassRoom.create(name: '3e C – troisieme_segpa', school_track: :troisieme_segpa, school: school)
   create_a_discarded_class_room
-end
-
-def create_a_discarded_class_room
-  school = find_default_school_during_test
-
-  ClassRoom.create(name: '3e D – troisieme',
-                   school_track: :troisieme_generale,
-                   school: school)
-           .archive
 end
 
 def with_class_name_for_defaults(object)
@@ -220,7 +211,7 @@ def populate_users
   with_class_name_for_defaults(Users::MinistryStatistician.new(email: ministry_statistician, password: 'review', ministry: last_public_group)).save!
 
   with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Abdelaziz', last_name: 'Benzedine', school: find_default_school_during_test, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: find_default_school_during_test, class_room: ClassRoom.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: find_default_school_during_test, class_room: ClassRoom.troisieme_generale.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: "teacher@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
 end
 
@@ -228,7 +219,6 @@ def populate_students
   class_room_3e_generale     = ClassRoom.first
   class_room_3e_prepa_metier = ClassRoom.second
   class_room_3e_segpa        = ClassRoom.third
-  class_room_archived        = ClassRoom.fourth
 
   school = class_room_3e_generale.school
 
@@ -243,9 +233,6 @@ def populate_students
   # 3e segpa
   with_class_name_for_defaults(Users::Student.new(email: 'martine@ms3e.fr', password: 'review',first_name: 'Martine', last_name: 'Perchot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3e_segpa)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Gidonot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3e_segpa)).save!
-  # archived class_room
-  with_class_name_for_defaults(Users::Student.new(email: 'frederique@ms3e.fr', password: 'review', first_name: 'Frédérique', last_name: 'Dupin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_archived)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'karima@ms3e.fr', password: 'review', first_name: 'Karima', last_name: 'Belgarde',  school: school, birth_date: 14.years.ago, gender: 'np', confirmed_at: 2.days.ago, class_room: class_room_archived)).save!
 end
 
 def populate_internship_offers

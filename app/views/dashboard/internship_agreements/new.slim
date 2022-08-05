@@ -10,6 +10,5 @@
                        internship_agreement: form.object }
     = render "form",
              form: form,
-             resource: @internship_agreement
-            /  ,
-            /  school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale'
+             resource: @internship_agreement,
+             school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale'

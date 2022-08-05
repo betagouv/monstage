@@ -33,6 +33,7 @@ module Finders
 
       conditions = internship_offers[:group_id].eq(groups[:id])
       conditions = conditions.and(internship_offers[:is_public]).eq(is_public) unless is_public.nil?
+      conditions = conditions.and(internship_offers[:school_track]).eq(params[:school_track]) if school_track_param?
       conditions = conditions.and(groups[:is_public]).eq(is_public) unless is_public.nil?
       conditions = conditions.and(internship_offers[:department]).eq(params[:department]) if department_param?
       if school_year_param?
@@ -46,6 +47,10 @@ module Finders
 
     def department_param?
       params.key?(:department)
+    end
+
+    def school_track_param?
+      params.key?(:school_track)
     end
 
     def school_year_param?

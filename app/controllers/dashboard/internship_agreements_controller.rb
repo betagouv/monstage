@@ -79,6 +79,7 @@ module Dashboard
               :student_school,
               :school_representative_full_name,
               :school_delegation_to_sign_delivered_at,
+              :school_track,
               :student_full_name,
               :student_class_room,
               :main_teacher_full_name,

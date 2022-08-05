@@ -3,6 +3,7 @@ module InternshipAgreements
     delegate :main_teacher_accept_terms?,
              :school_manager_accept_terms?,
              :employer_accept_terms?,
+             :troisieme_generale?,
              to: :internship_agreement,
              allow_nil: true
 
@@ -21,10 +22,12 @@ module InternshipAgreements
     end
 
     def required_signatures
-      [
+      signatures = [
         :employer_accept_terms?,
         :school_manager_accept_terms?
       ]
+      signatures = signatures.push(:main_teacher_accept_terms?) unless troisieme_generale?
+      signatures
     end
 
 

@@ -55,6 +55,7 @@ module InternshipOffersHelper
       :page,
       :filter,
       :school_year,
+      :school_track,
       :order,
       :direction,
       week_ids: [],
