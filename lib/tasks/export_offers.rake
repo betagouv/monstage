@@ -1,10 +1,11 @@
 require 'fileutils'
+require 'pretty_console.rb'
 # usage : rails users:extract_email_data_csv
 
 namespace :offers do
   desc 'Export offers et requests by week'
   task :extract_offers_success_csv, [] => :environment do
-    say_in_green "Starting extracting offers and applications metadata"
+    PrettyConsole.say_in_green "Starting extracting offers and applications metadata"
 
     require 'csv'
 
@@ -38,14 +39,10 @@ namespace :offers do
                 'production']
       end
     end
-    say_in_green 'task is finished'
+    PrettyConsole.say_in_green 'task is finished'
   end
 
   def fetch_weeks
     Week.selectable_for_school_year(school_year: SchoolYear::Current.new)
-  end
-
-  def say_in_green(str)
-    puts "\e[32m=====> #{str} <=====\e[0m"
   end
 end
