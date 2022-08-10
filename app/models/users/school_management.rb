@@ -79,6 +79,10 @@ module Users
     alias :presenter :role_presenter
 
     def school_management? ; true end
+    
+    def school_manager
+      try(:school).try(:school_manager)
+    end
 
     private
 

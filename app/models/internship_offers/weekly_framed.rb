@@ -43,6 +43,7 @@ module InternshipOffers
         field :tutor_name
         field :tutor_phone
         field :tutor_email
+        field :tutor_role
         field :employer_website
         field :discarded_at
         field :employer_name
@@ -67,6 +68,7 @@ module InternshipOffers
         field :tutor_name
         field :tutor_phone
         field :tutor_email
+        field :tutor_role
         field :street
         field :zipcode
         field :departement

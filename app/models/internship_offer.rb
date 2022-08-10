@@ -172,6 +172,7 @@ class InternshipOffer < ApplicationRecord
       tutor_name: 'NA',
       tutor_phone: 'NA',
       tutor_email: 'NA',
+      tutor_role: 'NA',
       title: 'NA',
       description: 'NA',
       employer_website: 'NA',
@@ -185,7 +186,7 @@ class InternshipOffer < ApplicationRecord
 
   def duplicate
     white_list = %w[type title sector_id max_candidates max_students_per_group
-                    tutor_name tutor_phone tutor_email employer_website
+                    tutor_name tutor_phone tutor_email tutor_role employer_website
                     employer_name street zipcode city department region academy
                     is_public group school_id coordinates first_date last_date
                     siret employer_manual_enter
@@ -197,7 +198,7 @@ class InternshipOffer < ApplicationRecord
 
   def duplicate_without_location
     white_list_without_location = %w[type title sector_id max_candidates
-                    tutor_name tutor_phone tutor_email employer_website
+                    tutor_name tutor_phone tutor_email tutor_role employer_website
                     employer_name is_public group school_id coordinates
                     first_date last_date siret employer_manual_enter
                     internship_offer_info_id organisation_id tutor_id

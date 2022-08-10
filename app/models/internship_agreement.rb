@@ -31,22 +31,37 @@ class InternshipAgreement < ApplicationRecord
   attr_accessor :skip_validations_for_system
 
   # todo flip based on current switch/branch
-  with_options if: :enforce_main_teacher_validations? do
-    validates :student_class_room, presence: true
-    validates :main_teacher_full_name, presence: true
-  end
+  # with_options if: :enforce_main_teacher_validations? do
+  #   validates :student_class_room, presence: true
+  #   validates :main_teacher_full_name, presence: true
+  # end
 
   with_options if: :enforce_school_manager_validations? do
-    validates :student_school, presence: true
-    validates :school_representative_full_name, presence: true
-    validates :student_full_name, presence: true
+    validates :school_representative_full_name,
+              :school_representative_phone,
+              :student_full_name,
+              :student_school,
+              :student_refering_teacher_full_name,
+              :student_refering_teacher_email,
+              :student_refering_teacher_phone,
+              :student_address,
+              :student_phone,
+              :student_legal_representative_full_name,
+              :student_legal_representative_email,
+              :student_legal_representative_phone,
+              presence: true
     validate :valid_trix_school_manager_fields
   end
 
   with_options if: :enforce_employer_validations? do
-    validates :organisation_representative_full_name, presence: true
-    validates :tutor_full_name, presence: true
-    validates :date_range, presence: true
+    validates :organisation_representative_full_name,
+              :organisation_representative_role,
+              :date_range,
+              :siret,
+              :tutor_full_name,
+              :tutor_role,
+              :tutor_email,
+              presence: true
     validate :valid_trix_employer_fields
     validate :valid_working_hours_fields
   end

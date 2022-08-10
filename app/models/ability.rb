@@ -89,20 +89,29 @@ class Ability
       end
     end
     can %i[
-      update
-      see_intro
-      edit_school_representative_full_name
-      edit_school_delegation_to_sign_delivered_at
-      edit_student_school
-      edit_student_full_name
-      edit_student_class_room
-      edit_main_teacher_full_name
+      create
+      edit
       edit_activity_rating_rich_text
+      edit_complementary_terms_rich_text
       edit_financial_conditions_rich_text
       edit_legal_terms_rich_text
-      edit_complementary_terms_rich_text
-      edit
-      create
+      edit_main_teacher_full_name
+      edit_school_representative_full_name
+      edit_school_representative_phone
+      edit_school_delegation_to_sign_delivered_at
+      edit_student_refering_teacher_full_name
+      edit_student_refering_teacher_email
+      edit_student_refering_teacher_phone
+      edit_student_address
+      edit_student_class_room
+      edit_student_full_name
+      edit_student_phone
+      edit_student_legal_representative_email
+      edit_student_legal_representative_full_name
+      edit_student_legal_representative_phone
+      edit_student_school
+      see_intro
+      update
     ], InternshipAgreement do |agreement|
       agreement.internship_application.student.school_id == user.school_id
     end
@@ -141,16 +150,20 @@ class Ability
 
     can %i[
       create
-      update
-      edit_organisation_representative_full_name
-      edit_tutor_full_name
-      edit_date_range
-      edit_weekly_hours
+      edit
+      edit_organisation_representative_role
+      edit_tutor_email
+      edit_tutor_role
       edit_activity_scope_rich_text
       edit_activity_preparation_rich_text
       edit_activity_learnings_rich_text
       edit_complementary_terms_rich_text
-      edit
+      edit_date_range
+      edit_organisation_representative_full_name
+      edit_siret
+      edit_tutor_full_name
+      edit_weekly_hours
+      update
     ], InternshipAgreement do |agreement|
       agreement.internship_application.internship_offer.employer == user
     end

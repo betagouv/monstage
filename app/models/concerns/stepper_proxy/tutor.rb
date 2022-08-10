@@ -7,6 +7,7 @@ module StepperProxy
       validates :tutor_name,
                 :tutor_phone,
                 :tutor_email,
+                :tutor_role,
                 presence: true,
                 unless: :from_api?
     end

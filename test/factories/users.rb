@@ -21,16 +21,13 @@ FactoryBot.define do
       last_name { 'Roll' }
       gender { 'm' }
       birth_date { 14.years.ago }
-
       school { create(:school, :with_school_manager) }
+
       trait :male do
         gender { 'm' }
       end
       trait :female do
         gender { 'f' }
-      end
-      factory :student_with_class_room_3e, class: 'Users::Student', parent: :student do
-        class_room { create(:class_room, school: school) }
       end
       trait :not_precised do
         gender { 'np' }
@@ -38,6 +35,13 @@ FactoryBot.define do
       trait :registered_with_phone do
         email { nil }
         phone { '+330637607756' }
+      end
+
+      factory :student_with_class_room_3e, class: 'Users::Student', parent: :student do
+        class_room { create(:class_room, school: school) }
+        after(:create) do |student|
+          create(:main_teacher, class_room: student.class_room, school: student.school)
+        end
       end
     end
 

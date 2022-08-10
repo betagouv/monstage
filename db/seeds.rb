@@ -23,6 +23,11 @@ def populate_week_reference
   end
 end
 
+def siret
+  siret = FFaker::CompanyFR.siret
+  siret.gsub(/[^0-9]/, '')
+end
+
 def populate_month_reference
   next_month = 3.years.ago.beginning_of_month
   loop do
@@ -60,16 +65,6 @@ def populate_class_rooms
   ClassRoom.create(name: '3e A – troisieme_generale', school: school)
   ClassRoom.create(name: '3e B – troisieme_generale', school: school)
   ClassRoom.create(name: '3e C – troisieme_generale', school: school)
-  create_a_discarded_class_room
-end
-
-def create_a_discarded_class_room
-  school = find_default_school_during_test
-
-  ClassRoom.create(name: '3e D – troisieme',
-                   school_track: :troisieme_generale,
-                   school: school)
-           .archive
 end
 
 def with_class_name_for_defaults(object)
@@ -200,7 +195,7 @@ end
 def populate_users
   troisieme_generale_class_room = ClassRoom.find_by(school_track: :troisieme_generale)
   troisieme_segpa_class_room = ClassRoom.find_by(school_track: :troisieme_segpa)
-  with_class_name_for_defaults(Users::Employer.new(email: 'employer@ms3e.fr', password: 'review')).save!
+  with_class_name_for_defaults(Users::Employer.new(email: 'employer@ms3e.fr', password: 'review', employer_role: 'PDG')).save!
   with_class_name_for_defaults(Users::God.new(email: 'god@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', operator: Operator.first)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'school_manager', email: "ce.1234567X@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
@@ -228,30 +223,47 @@ def populate_students
   class_room_3e_generale     = ClassRoom.first
   class_room_3e_prepa_metier = ClassRoom.second
   class_room_3e_segpa        = ClassRoom.third
-  class_room_archived        = ClassRoom.fourth
 
   school = class_room_3e_generale.school
 
   # sans classe
   with_class_name_for_defaults(Users::Student.new(email: 'enzo@ms3e.fr', password: 'review', first_name: 'Enzo', last_name: 'Mesnard', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 3.days.ago)).save!
   # 3e générale
-  with_class_name_for_defaults(Users::Student.new(email: 'abdelaziz@ms3e.fr', password: 'review', first_name: 'Mohsen', last_name: 'Yahyaoui', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_3e_generale)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'alfred@ms3e.fr', password: 'review', first_name: 'Alfred', last_name: 'Cali', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_3e_generale)).save!
+  5.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_3e_generale)).save! }
   # 3e prepa métier
+  2.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_3e_prepa_metier)).save! }
   with_class_name_for_defaults(Users::Student.new(email: 'louis@ms3e.fr', password: 'review', first_name: 'Louis', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'np', confirmed_at: 2.days.ago, class_room: class_room_3e_prepa_metier)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'leon@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Dupre', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_3e_prepa_metier)).save!
   # 3e segpa
-  with_class_name_for_defaults(Users::Student.new(email: 'martine@ms3e.fr', password: 'review',first_name: 'Martine', last_name: 'Perchot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3e_segpa)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Gidonot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3e_segpa)).save!
-  # archived class_room
-  with_class_name_for_defaults(Users::Student.new(email: 'frederique@ms3e.fr', password: 'review', first_name: 'Frédérique', last_name: 'Dupin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_archived)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'karima@ms3e.fr', password: 'review', first_name: 'Karima', last_name: 'Belgarde',  school: school, birth_date: 14.years.ago, gender: 'np', confirmed_at: 2.days.ago, class_room: class_room_archived)).save!
+  2.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_3e_segpa)).save! }
+  with_class_name_for_defaults(Users::Student.new(email: 'raphaelle@ms3e.fr', password: 'review',first_name: 'Raphaëlle', last_name: 'Mesnard',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3e_segpa)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Chotin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3e_segpa)).save!
+end
+
+def student_maker (school: ,class_room: )
+  first_name = FFaker::NameFR.first_name
+  first_name = 'Kilian' if first_name.include?(' ')
+  last_name = FFaker::NameFR.last_name
+  last_name = 'Ploquin' if last_name.include?(' ')
+  email = "#{first_name}.#{last_name}@ms3e.fr"
+  Users::Student.new(
+    first_name: first_name,
+    last_name: last_name,
+    email: email,
+    password: 'review',
+    school: school,
+    birth_date: 14.years.ago,
+    gender: (['m']*4 + ['f']*4 + ['np']).shuffle.first,
+    confirmed_at: 2.days.ago,
+    class_room: class_room
+  )
 end
 
 def populate_internship_offers
   # 3eme_generale: public sector
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
+    siret: siret,
     weeks: Week.selectable_on_school_year,
     sector: Sector.first,
     group: Group.is_paqte.first,
@@ -262,6 +274,7 @@ def populate_internship_offers
     employer_website: 'http://www.dtpm.fr/',
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
+    tutor_role: 'Chef comptable',
     tutor_phone: '+33637607756',
     street: '128 rue brancion',
     zipcode: '75015',
@@ -271,29 +284,32 @@ def populate_internship_offers
     school_track: :troisieme_generale
   )
   InternshipOffers::WeeklyFramed.create!(
-      employer: Users::Employer.first,
-      weeks: [].concat(Week.selectable_on_school_year[0..1], Week.selectable_on_school_year[3..5]),
-      sector: Sector.first,
-      group: Group.is_paqte.first,
-      is_public: false,
-      title: 'Stage avec deux segments de date, bugfix',
-      description_rich_text: 'Scanner metrology est une entreprise unique en son genre'.truncate(249),
-      employer_description_rich_text: "Scanner metrology a été fondée par le laureat Recherche et Company 2016".truncate(249),
-      employer_website: 'https://www.asml.com/en/careers',
-      tutor_name: 'John smith',
-      tutor_email: 'fourcade.m@gmail.com',
-      tutor_phone: '+33637607756',
-      street: '128 rue brancion',
-      zipcode: '75015',
-      city: 'paris',
-      coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
-      employer_name: Group.is_paqte.first.name,
-      school_track: :troisieme_generale
-    )
+    employer: Users::Employer.first,
+    siret: siret,
+    weeks: [].concat(Week.selectable_on_school_year[0..1], Week.selectable_on_school_year[3..5]),
+    sector: Sector.first,
+    group: Group.is_paqte.first,
+    is_public: false,
+    title: 'Stage avec deux segments de date, bugfix',
+    description_rich_text: 'Scanner metrology est une entreprise unique en son genre'.truncate(249),
+    employer_description_rich_text: "Scanner metrology a été fondée par le laureat Recherche et Company 2016".truncate(249),
+    employer_website: 'https://www.asml.com/en/careers',
+    tutor_name: 'John smith',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    tutor_role: 'Chef comptable',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
+    employer_name: Group.is_paqte.first.name,
+    school_track: :troisieme_generale
+  )
 
     # 3eme generale public
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
+    siret: siret,
     weeks: Week.selectable_on_school_year,
     sector: Sector.second,
     group: Group.is_public.last,
@@ -304,6 +320,7 @@ def populate_internship_offers
     employer_description_rich_text: "De multiples méthodes de travail et de prises de décisions seront observées",
     tutor_name: 'Etienne Weil',
     tutor_email: 'etienne@free.fr',
+    tutor_role: 'Chef comptable',
     tutor_phone: '+33637697756',
     street: '18 rue Damiens',
     zipcode: '75012',
@@ -314,6 +331,7 @@ def populate_internship_offers
   )
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
+    siret: siret,
     weeks: Week.selectable_on_school_year,
     sector: Sector.first,
     group: Group.is_private.first,
@@ -325,6 +343,7 @@ def populate_internship_offers
     tutor_name: 'Gilles Charles',
     tutor_email: 'fourcade.m@gmail.com',
     tutor_phone: '+33637607756',
+    tutor_role: 'Chef comptable',
     street: '128 rue brancion',
     zipcode: '75015',
     city: 'paris',
@@ -335,6 +354,7 @@ def populate_internship_offers
   # dépubliée
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
+    siret: siret,
     weeks: Week.selectable_on_school_year,
     sector: Sector.first,
     group: Group.is_private.first,
@@ -346,6 +366,7 @@ def populate_internship_offers
     tutor_name: 'Gilles Charles',
     tutor_email: 'fourcadex.m@gmail.com',
     tutor_phone: '+33637607756',
+    tutor_role: 'Chef comptable',
     street: '128 rue brancion',
     zipcode: '75015',
     city: 'paris',
@@ -362,6 +383,7 @@ def populate_internship_offers
   # 3eme_generale-2019:
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
+    siret: siret,
     weeks: Week.weeks_of_school_year(school_year: SchoolYear::Base::YEAR_START),
     sector: Sector.first,
     group: Group.is_private.first,
@@ -372,6 +394,7 @@ def populate_internship_offers
     employer_website: 'http://www.dtpm.fr/',
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
+    tutor_role: 'Chef magasinier',
     tutor_phone: '+33637677756',
     street: '129 rue brancion',
     zipcode: '75015',
@@ -383,6 +406,7 @@ def populate_internship_offers
   # 3eme generale API
   InternshipOffers::Api.create!(
     employer: Users::Operator.first,
+    siret: siret,
     weeks: Week.selectable_on_school_year,
     sector: Sector.first,
     group: Group.is_private.first,
@@ -393,6 +417,7 @@ def populate_internship_offers
     employer_description_rich_text: "Le centre de service IBM de Lille délivre des services d'infrastructure informatique.",
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
+    tutor_role: 'Chef magasinier',
     tutor_phone: '+33637607756',
     street: '128 rue brancion',
     zipcode: '75015',
@@ -405,6 +430,7 @@ def populate_internship_offers
   # 3eme generale API
   InternshipOffers::Api.create!(
     employer: Users::Operator.first,
+    siret: siret,
     weeks: Week.of_previous_school_year,
     sector: Sector.first,
     group: Group.is_public.first,
@@ -416,6 +442,7 @@ def populate_internship_offers
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
     tutor_phone: '+33637607756',
+    tutor_role: 'Chef magasinier',
     street: '128 rue brancion',
     zipcode: '75015',
     city: 'paris',
@@ -426,85 +453,85 @@ def populate_internship_offers
   )
 
   # 3eme prépa métier multi-line
-  multiline_description = <<-MULTI_LINE
-- Présentation des services de la direction régionale de Valenciennes (service contentieux, pôle action économique).
-- Présentation de la recette interrégionale (service de perception).
-- Immersion au sein d’un bureau de douane (gestion des procédures, déclarations en douane, dédouanement, contrôles des déclarations et des marchandises).
-MULTI_LINE
-  InternshipOffers::FreeDate.create!(
-    employer: Users::Employer.first,
-    sector: Sector.first,
-    group: Group.is_private.first,
-    is_public: false,
-    title: 'Découverte des services douaniers de Valenciennes',
-    description_rich_text: multiline_description,
-    employer_description_rich_text: 'La douane assure des missions fiscales et de lutte contre les trafics illicites et la criminalité organisée.',
-    employer_website: "http://www.prefectures-regions.gouv.fr/hauts-de-france/Region-et-institutions/Organisation-administrative-de-la-region/Les-services-de-l-Etat-en-region/Direction-interregionale-des-douanes/Direction-interregionale-des-douanes",
-    tutor_name: 'Martin Fourcade',
-    tutor_email: 'fourcade.m@gmail.com',
-    tutor_phone: '+33637607756',
-    street: '2 rue jean moulin',
-    zipcode: '95160',
-    city: 'Montmorency',
-    coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
-    employer_name: 'Douanes Assistance Corp.',
-    school_track: :troisieme_prepa_metiers
-  )
+#   multiline_description = <<-MULTI_LINE
+# - Présentation des services de la direction régionale de Valenciennes (service contentieux, pôle action économique).
+# - Présentation de la recette interrégionale (service de perception).
+# - Immersion au sein d’un bureau de douane (gestion des procédures, déclarations en douane, dédouanement, contrôles des déclarations et des marchandises).
+# MULTI_LINE
+#   InternshipOffers::FreeDate.create!(
+#     employer: Users::Employer.first,
+#     sector: Sector.first,
+#     group: Group.is_private.first,
+#     is_public: false,
+#     title: 'Découverte des services douaniers de Valenciennes',
+#     description_rich_text: multiline_description,
+#     employer_description_rich_text: 'La douane assure des missions fiscales et de lutte contre les trafics illicites et la criminalité organisée.',
+#     employer_website: "http://www.prefectures-regions.gouv.fr/hauts-de-france/Region-et-institutions/Organisation-administrative-de-la-region/Les-services-de-l-Etat-en-region/Direction-interregionale-des-douanes/Direction-interregionale-des-douanes",
+#     tutor_name: 'Martin Fourcade',
+#     tutor_email: 'fourcade.m@gmail.com',
+#     tutor_phone: '+33637607756',
+#     street: '2 rue jean moulin',
+#     zipcode: '95160',
+#     city: 'Montmorency',
+#     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
+#     employer_name: 'Douanes Assistance Corp.',
+#     school_track: :troisieme_prepa_metiers
+#   )
   # 3eme segpa multi-line
-  multiline_description = <<-MULTI_LINE
-- Présentation des services de la succursale MetaBoutShop
-- Présentation des principes fondamentaux du métier.
-- Immersion au sein d’une équipe de gestionnaire de la boutique. Proposition de gestion de portefeuille de boutiques et de stands fictifs en fin de stage, avec les conseils du tuteur'.
-MULTI_LINE
-  InternshipOffers::FreeDate.create!(
-    employer: Users::Employer.first,
-    sector: Sector.first,
-    group: Group.is_private.first,
-    is_public: false,
-    title: 'Découverte du travail de gestionnaire en ligne',
-    description_rich_text: multiline_description,
-    employer_description_rich_text: 'Le métier de gestionnaire consiste à optimiser les ressources de la MetaBoutShop en spéculant sur des valeurs mobilières',
-    tutor_name: 'Martin Fourcade',
-    tutor_email: 'fourcade.m@gmail.com',
-    tutor_phone: '+33637607756',
-    street: '128 rue brancion',
-    zipcode: '75015',
-    city: 'paris',
-    coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
-    employer_name: 'MetaBoutShop',
-    school_track: :troisieme_segpa
-  )
+#   multiline_description = <<-MULTI_LINE
+# - Présentation des services de la succursale MetaBoutShop
+# - Présentation des principes fondamentaux du métier.
+# - Immersion au sein d’une équipe de gestionnaire de la boutique. Proposition de gestion de portefeuille de boutiques et de stands fictifs en fin de stage, avec les conseils du tuteur'.
+# MULTI_LINE
+#   InternshipOffers::FreeDate.create!(
+#     employer: Users::Employer.first,
+#     sector: Sector.first,
+#     group: Group.is_private.first,
+#     is_public: false,
+#     title: 'Découverte du travail de gestionnaire en ligne',
+#     description_rich_text: multiline_description,
+#     employer_description_rich_text: 'Le métier de gestionnaire consiste à optimiser les ressources de la MetaBoutShop en spéculant sur des valeurs mobilières',
+#     tutor_name: 'Martin Fourcade',
+#     tutor_email: 'fourcade.m@gmail.com',
+#     tutor_phone: '+33637607756',
+#     street: '128 rue brancion',
+#     zipcode: '75015',
+#     city: 'paris',
+#     coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
+#     employer_name: 'MetaBoutShop',
+#     school_track: :troisieme_segpa
+#   )
   # 3eme segpa multi-line
-  multiline_description = <<-MULTI_LINE
-- Présentation des services de la direction régionale de la banque Acme Corp. (banque de dépôt).
-- Présentation des principes secondaires du métier.
-- Immersion au sein d’une équipe d'admiistrateurs de comptes de la banque. Proposition de gestion de portefeuille de clients en fin de stage, avec les conseils du tuteur'.
-MULTI_LINE
-  acme = InternshipOffers::FreeDate.create!(
-    employer: Users::Employer.first,
-    sector: Sector.first,
-    group: Group.is_private.first,
-    is_public: false,
-    title: 'Découverte du travail de trader',
-    description_rich_text: multiline_description,
-    employer_description_rich_text: 'Le métier de trader consiste à optimiser les ressources de la banque Oyonnax Corp. en spéculant sur des valeurs mobilières',
-    tutor_name: 'Martin Fourcade',
-    tutor_email: 'fourcade.m@gmail.com',
-    tutor_phone: '+33637607756',
-    street: '128 rue brancion',
-    zipcode: '75015',
-    city: 'paris',
-    coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
-    employer_name: 'Oyonnax Corp.',
-    school_track: :troisieme_segpa,
-    created_at: Date.today - 1.year,
-    updated_at: Date.today - 1.year
-  )
-  school_year = SchoolYear::Floating.new(date: Date.today - 1.year)
-  acme.update_columns(
-    last_date: school_year.end_of_period,
-    first_date: school_year.beginning_of_period
-  )
+#   multiline_description = <<-MULTI_LINE
+# - Présentation des services de la direction régionale de la banque Acme Corp. (banque de dépôt).
+# - Présentation des principes secondaires du métier.
+# - Immersion au sein d’une équipe d'admiistrateurs de comptes de la banque. Proposition de gestion de portefeuille de clients en fin de stage, avec les conseils du tuteur'.
+# MULTI_LINE
+#   acme = InternshipOffers::FreeDate.create!(
+#     employer: Users::Employer.first,
+#     sector: Sector.first,
+#     group: Group.is_private.first,
+#     is_public: false,
+#     title: 'Découverte du travail de trader',
+#     description_rich_text: multiline_description,
+#     employer_description_rich_text: 'Le métier de trader consiste à optimiser les ressources de la banque Oyonnax Corp. en spéculant sur des valeurs mobilières',
+#     tutor_name: 'Martin Fourcade',
+#     tutor_email: 'fourcade.m@gmail.com',
+#     tutor_phone: '+33637607756',
+#     street: '128 rue brancion',
+#     zipcode: '75015',
+#     city: 'paris',
+#     coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
+#     employer_name: 'Oyonnax Corp.',
+#     school_track: :troisieme_segpa,
+#     created_at: Date.today - 1.year,
+#     updated_at: Date.today - 1.year
+#   )
+  # school_year = SchoolYear::Floating.new(date: Date.today - 1.year)
+  # acme.update_columns(
+  #   last_date: school_year.end_of_period,
+  #   first_date: school_year.beginning_of_period
+  # )
 end
 
 def find_default_school_during_test
@@ -529,21 +556,19 @@ end
 
 def populate_applications
   trois_gene_studs = Users::Student.joins(:class_room)
-                                   .where('class_rooms.school_track = ?', :troisieme_generale)
+                                   .where(class_rooms: { school_track: :troisieme_generale })
                                    .to_a
-                                   .shuffle
-                                   .first(4)
-  troisieme_generale_offers = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
-  puts "every 3e generale offers receives an application first 3e generale stud"
-  troisieme_generale_offers.each do |io_trois_gene|
-    if io_trois_gene.id.to_i.even?
+  troisieme_generale_offers = InternshipOffers::WeeklyFramed.all
+  puts "every 3e generale offers receives an application from first 3e generale stud"
+  troisieme_generale_offers.first(4).each do |offer|
+    if offer.id.to_i.even?
       InternshipApplications::WeeklyFramed.create!(
         aasm_state: :submitted,
         submitted_at: 10.days.ago,
         student: trois_gene_studs.first,
         motivation: 'Au taquet',
-        internship_offer: io_trois_gene,
-        week: io_trois_gene.internship_offer_weeks.sample.week
+        internship_offer: offer,
+        week: offer.internship_offer_weeks.sample.week
       )
     else
       InternshipApplications::WeeklyFramed.create!(
@@ -551,8 +576,8 @@ def populate_applications
         submitted_at: 10.days.ago,
         student: trois_gene_studs.first,
         motivation: 'Au taquet',
-        internship_offer: io_trois_gene,
-        week: io_trois_gene.internship_offer_weeks.sample.week
+        internship_offer: offer,
+        week: offer.internship_offer_weeks.sample.week
       )
     end
   end
@@ -601,7 +626,7 @@ def populate_applications
     canceled_at: 1.day.ago,
     student: trois_gene_studs.third,
     motivation: 'Au taquet',
-    internship_offer: troisieme_generale_offers.first,
+    internship_offer: troisieme_generale_offers.fourth,
     week: troisieme_generale_offers.second.internship_offer_weeks.second.week
   )
   #-----------------
@@ -611,44 +636,38 @@ def populate_applications
     aasm_state: :approved,
     submitted_at: 10.days.ago,
     approved_at: 2.days.ago,
-    student: trois_gene_studs.fourth,
+    student: trois_gene_studs[4],
     motivation: 'Au taquet',
     internship_offer: troisieme_generale_offers.fourth,
     week: troisieme_generale_offers.first.internship_offer_weeks.third.week
   )
-end
-
-def populate_aggreements
-  application = InternshipApplication.find_by(aasm_state: 'approved')
-  FactoryBot.create(
-    :internship_agreement,
-    internship_application: application,
-    employer_accept_terms: true
+  InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :approved,
+    submitted_at: 9.days.ago,
+    approved_at: 3.days.ago,
+    student: trois_gene_studs[5],
+    motivation: 'Assez motivé pour ce stage',
+    internship_offer: troisieme_generale_offers.fifth,
+    week: troisieme_generale_offers.fifth.internship_offer_weeks.third.week
   )
-  # 3eme segpa multi-line
-  multiline_description = <<-MULTI_LINE
-- Présentation des services de la direction régionale de Fender Corp. (service ingénierie musicale).
-- Présentation des principes fondamentaux du métier.
-- Immersion au sein d’une équipe de réparateurs de guitares. Proposition de gestion de guimbardes en fin de stage, avec les conseils du tuteur'.
-MULTI_LINE
-  InternshipOffers::FreeDate.create!(
-    employer: Users::Employer.first,
-    sector: Sector.first,
-    group: Group.is_private.first,
-    is_public: false,
-    title: 'Découverte du travail de luthier',
-    description_rich_text: multiline_description,
-    employer_description_rich_text: "Le métier de réparateur consiste à trouver le son juste et la musicalité de l'instrument d'origine.",
-    tutor_name: 'Martin Fourcade',
-    tutor_email: 'fourcade.m@gmail.com',
-    tutor_phone: '+33637607756',
-    street: '128 rue brancion',
-    zipcode: '75015',
-    city: 'Paris',
-    coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
-    employer_name: 'Fender Europe',
-    school_track: :troisieme_segpa
+  InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :approved,
+    submitted_at: 19.days.ago,
+    approved_at: 13.days.ago,
+    student: trois_gene_studs[6],
+    motivation: 'motivé moyennement pour ce stage, je vous préviens',
+    internship_offer: troisieme_generale_offers[5],
+    week: troisieme_generale_offers[5].internship_offer_weeks.first.week
   )
+  # InternshipApplications::WeeklyFramed.create!(
+  #   aasm_state: :approved,
+  #   submitted_at: 29.days.ago,
+  #   approved_at: 23.days.ago,
+  #   student: trois_gene_studs[8],
+  #   motivation: 'motivé moyennement pour ce stage, je vous préviens',
+  #   internship_offer: troisieme_generale_offers[7],
+  #   week: troisieme_generale_offers[7].internship_offer_weeks.second.week
+  # )
 end
 
 def populate_internship_weeks
@@ -752,7 +771,7 @@ if Rails.env == 'review' || Rails.env.development?
     :populate_students,
     :populate_school_weeks,
     :populate_applications,
-    :populate_aggreements,
+    :populate_agreements,
     :populate_airtable_records
   ])
   School.update_all(updated_at: Time.now)

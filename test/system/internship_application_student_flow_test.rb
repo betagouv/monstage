@@ -71,7 +71,6 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       sign_in(student)
       visit internship_offer_path(internship_offer)
       # check application form opener and check form is hidden by default
-      
       all('a', text: 'Postuler').first.click
       select(week.human_select_text_method)
       click_button('Valider')
@@ -88,8 +87,8 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   end
 
   test 'student can browse his internship_applications' do
-    school = create(:school)
-    student = create(:student, school: school, class_room: create(:class_room, school: school))
+    school = create(:school, :with_school_manager)
+    student = create(:student, school: school)
     internship_applications = {
       drafted: create(:weekly_internship_application, :drafted, student: student),
       submitted: create(:weekly_internship_application, :submitted, student: student),
@@ -162,11 +161,9 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   end
 
   test 'student with approved application can see employer\'s address' do
-    school = create(:school)
+    school = create(:school, :with_school_manager)
     student = create(:student,
-                     school: school,
-                     class_room: create(:class_room, school: school)
-    )
+                     school: school)
     internship_application = create(
       :weekly_internship_application,
       :approved,

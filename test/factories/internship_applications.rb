@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :internship_application do
-    student { create(:student) }
+    student { create(:student_with_class_room_3e) }
     motivation { 'Suis hyper motivé' }
 
     trait :drafted do

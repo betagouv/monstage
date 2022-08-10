@@ -10,6 +10,7 @@ FactoryBot.define do
     tutor_name { 'Eric Dubois' }
     tutor_phone { '0123456789' }
     tutor_email { 'eric@dubois.fr' }
+    tutor_role { 'comptable' }
     is_public { true }
     group { create(:group, is_public: true) }
     employer_description { 'on envoie du parpaing' }

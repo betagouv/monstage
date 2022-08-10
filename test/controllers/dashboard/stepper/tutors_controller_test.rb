@@ -70,7 +70,10 @@ module Dashboard::Stepper
                                           internship_offer_info_id: internship_offer_info.id),
             params: {
               tutor: {
-                tutor_name: 'mfo', tutor_email: 'mf@oo.com', tutor_phone: '0123456789'
+                tutor_name: 'mfo',
+                tutor_email: 'mf@oo.com',
+                tutor_phone: '0123456789',
+                tutor_role: 'opérateur de saisie'
               }
             }
           )

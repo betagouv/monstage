@@ -45,6 +45,7 @@ class ManageTutorsTest < ApplicationSystemTestCase
         fill_in 'Nom du tuteur/trice', with: 'Brice Durand'
         fill_in 'Adresse électronique / Email', with: 'le@brice.durand'
         fill_in 'Numéro de téléphone', with: ' ' # there is the error
+        fill_in "Fonction du tuteur dans l'entreprise", with: 'ministre délégué'
         click_on "Publier l'offre !"
         # wait_form_submitted
         find(
