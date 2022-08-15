@@ -375,10 +375,10 @@ class GenerateInternshipAgreement < Prawn::Document
 
 
   # def parties
-  #   subtitle "ENTRE"
+    # subtitle "ENTRE"
   #   @pdf.text "L’entreprise ou l’organisme d’accueil, #{internship_offer.employer_name} représentée par #{@internship_agreement.organisation_representative_full_name}, en qualité de chef d’entreprise ou de responsable de l’organisme d’accueil d’une part,"
   #   @pdf.move_down 10
-  #   subtitle "ET"
+    # subtitle "ET"
   #   @pdf.text "L’établissement d’enseignement scolaire, #{@internship_agreement.student_school} représenté par #{@internship_agreement.school_representative_full_name}, en qualité de chef d’établissement, a été nommé apte à signer les conventions par le conseil d'administration de l'établissement en date du #{@internship_agreement.school_delegation_to_sign_delivered_at.strftime("%d/%m/%Y")} d’autre part, "
   #   @pdf.move_down 20
   # end
@@ -386,7 +386,7 @@ class GenerateInternshipAgreement < Prawn::Document
   # def terms
   #   subtitle "il a été convenu ce qui suit :"
   #   subtitle "TITRE PREMIER : DISPOSITIONS GÉNÉRALES"
-  #   html_formating @internship_agreement.legal_terms_rich_text.body.to_s
+    # html_formating @internship_agreement.legal_terms_rich_text.body.to_s
   #   @pdf.move_down 20
   # end
 
@@ -439,24 +439,24 @@ class GenerateInternshipAgreement < Prawn::Document
   #     field_form "Tous les jours : #{daily_schedule.join(', ')}."
   #   end
 
-    unless @internship_agreement.troisieme_generale?
-      label_form "Objectifs assignés à la séquence d’observation en milieu professionnel :"
-      field_form @internship_agreement.activity_learnings_rich_text.body.html_safe, html: true
-    end
+    # unless @internship_agreement.troisieme_generale?
+    #   label_form "Objectifs assignés à la séquence d’observation en milieu professionnel :"
+    #   field_form @internship_agreement.activity_learnings_rich_text.body.html_safe, html: true
+    # end
 
-    unless @internship_agreement.troisieme_generale?
-      label_form "Modalités de la concertation qui sera assurée pour organiser la préparation, contrôler le déroulement de la période en vue d’une véritable complémentarité des enseignements reçus :"
-      field_form @internship_agreement.activity_preparation_rich_text.body.html_safe, html: true
-    end
+    # unless @internship_agreement.troisieme_generale?
+    #   label_form "Modalités de la concertation qui sera assurée pour organiser la préparation, contrôler le déroulement de la période en vue d’une véritable complémentarité des enseignements reçus :"
+    #   field_form @internship_agreement.activity_preparation_rich_text.body.html_safe, html: true
+    # end
 
 
     # label_form "Activités prévues :"
     # field_form @internship_agreement.activity_scope_rich_text.body.html_safe, html: true
 
-    unless @internship_agreement.troisieme_generale?
-      label_form "Compétences visées :"
-      field_form @internship_agreement.activity_learnings_rich_text.body.html_safe, html: true
-    end
+    # unless @internship_agreement.troisieme_generale?
+    #   label_form "Compétences visées :"
+    #   field_form @internship_agreement.activity_learnings_rich_text.body.html_safe, html: true
+    # end
 
     # if @internship_agreement.activity_rating_rich_text.present?
     #   label_form "Modalités d’évaluation de la séquence d’observation en milieu professionnel :"
@@ -466,14 +466,7 @@ class GenerateInternshipAgreement < Prawn::Document
     # @pdf.move_down 20
   # end
 
-  def pointing(text, len = 35)
-    text.nil? ? '.' * len : text
-  end
 
-
-  def signatures
-    @pdf.text "Fait à #{internship_application.student.school.city.capitalize}, le .................."
-  end
 
   def page_number
     string = '<page> / <total>'
@@ -499,6 +492,15 @@ class GenerateInternshipAgreement < Prawn::Document
                     :width => @pdf.bounds.width,
                     color: 'cccccc')
     end
+  end
+
+  def pointing(text, len = 35)
+    text.nil? ? '.' * len : text
+  end
+
+
+  def signatures
+    @pdf.text "Fait à #{internship_application.student.school.city.capitalize}, le .................."
   end
 
   def subtitle(string)
@@ -542,12 +544,4 @@ class GenerateInternshipAgreement < Prawn::Document
   def student
     internship_application.student
   end
-
-  # def framing(first, *texts)
-  #   html = "<div>#{first}</div>"
-  #   texts.each do |text|
-  #     html = "#{html}<br/><div>#{text}</div>"
-  #   end
-  #   @pdf.table [[html]], {cell_style: {width: PAGE_WIDTH, padding: 5}}
-  # end
 end
