@@ -19,12 +19,28 @@ tbody.internship-agreement
                  locals: { field: :school_representative_full_name, form: form, text_label: label, title: title, content: content, filled_by: filled_by, disabled: disabled }
 
       .row.mt-0
+        - label = "Courriel du chef d'établissement ou de son représentant"
+        - title = "Note au chef d'établissement :"
+        - content = "Courriel du chef d'établissement ou de son représentant"
+        - filled_by = ["le chef d'établissement"]
+        = render partial: 'dashboard/internship_agreements/text_field_element',
+                 locals: { field: :school_representative_email, form: form, text_label: label, title: title, content: content, filled_by: filled_by, disabled: disabled }
+
+      .row.mt-0
         - label = "Numéro de téléphone du chef d'établissement"
         - title = "Note au chef d'établissement :"
         - content = "Numéro de téléphone du chef d'établissement"
         - filled_by = ["le chef d'établissement"]
         = render partial: 'dashboard/internship_agreements/text_field_element',
                  locals: { field: :school_representative_phone, form: form, text_label: label, title: title, content: content, filled_by: filled_by, disabled: disabled }
+
+      .row.mt-0
+        - label = "Fonction du chef d'établissement ou de son représentant"
+        - title = "Note au chef d'établissement :"
+        - content = "Fonction du chef d'établissement ou de son représentant"
+        - filled_by = ["le chef d'établissement"]
+        = render partial: 'dashboard/internship_agreements/text_field_element',
+                 locals: { field: :school_representative_role, form: form, text_label: label, title: title, content: content, filled_by: filled_by, disabled: disabled }
 
       .row.mt-0
         - label = "Nom et prénom du professeur référent (professeur principal par défaut)"
@@ -113,14 +129,31 @@ tbody.internship-agreement
         - filled_by = ["le chef d'établissement"]
         = render partial: 'dashboard/internship_agreements/text_field_element',
                  locals: { field: :student_legal_representative_phone, form: form, text_label: label, content: content, title: title, filled_by: filled_by, disabled: disabled }
-
+     
       .row.mt-0
-        - label = "Établissement d’origine"
+        - label = "Nom et prénom du second représentant légal de l'élève (facultatif)"
         - title = "Note au chef d'établissement :"
-        - content = "Adresse de l'etablissement d'origine de(e) élève(s)"
+        - content = "Représentant légal (ou personne responsable) n°2 (nom et prénom)"
         - filled_by = ["le chef d'établissement"]
         = render partial: 'dashboard/internship_agreements/text_field_element',
-                 locals: { field: :student_school, form: form, text_label: label, content: content, title: title, filled_by: filled_by, disabled: disabled }
+                 locals: { field: :student_legal_representative_full_name2, form: form, text_label: label, content: content, title: title, filled_by: filled_by, disabled: disabled, required: false}
+
+      .row.mt-0
+        - label = "Email du second représentant légal de l'élève (facultatif)"
+        - title = "Note au chef d'établissement :"
+        - content = "Email du représentant légal (ou personne responsable) n°2"
+        - filled_by = ["le chef d'établissement"]
+        = render partial: 'dashboard/internship_agreements/text_field_element',
+                 locals: { field: :student_legal_representative_email2, form: form, text_label: label, content: content, title: title, filled_by: filled_by, disabled: disabled, required: false}
+
+      .row.mt-0
+        - label = "Numéro de téléphone du second représentant légal de l'élève (facultatif)"
+        - title = "Note au chef d'établissement :"
+        - content = "Numéro de télphone du représentant légal (ou personne responsable) n°2 (nom et prénom)"
+        - filled_by = ["le chef d'établissement"]
+        = render partial: 'dashboard/internship_agreements/text_field_element',
+                 locals: { field: :student_legal_representative_phone2, form: form, text_label: label, content: content, title: title, filled_by: filled_by, disabled: disabled, required: false}
+
       .row.mt-0
         - label = "Établissement d’origine"
         - title = "Note au chef d'établissement :"

@@ -79,11 +79,11 @@ module Builders
     def preprocess_internship_offer_params(internship_offer)
       {
         organisation_representative_full_name: internship_offer.employer.presenter.full_name,
-        siret: internship_offer.employer.try(:siret),
+        organisation_representative_role: internship_offer.employer.employer_role,
+        siret: internship_offer.try(:siret),
         tutor_full_name: internship_offer.tutor_name,
         tutor_role: internship_offer.try(:tutor_role),
         tutor_email: internship_offer.try(:tutor_email),
-        activity_scope_rich_text: internship_offer.title,
         activity_preparation_rich_text: internship_offer.description_rich_text.body,
         new_daily_hours: internship_offer.new_daily_hours,
         weekly_hours: internship_offer.weekly_hours,
@@ -106,6 +106,8 @@ module Builders
         student_school: "#{student.school} à #{student.school.city} (Code UAI: #{student.school.code_uai})",
         school_representative_full_name: school_manager.name,
         school_representative_phone: school_manager.try(:phone),
+        school_representative_role: "Chef d'établissement",
+        school_representative_email: school_manager.email,
         student_refering_teacher_full_name: main_teacher&.presenter&.full_name,
         student_refering_teacher_email: main_teacher&.email,
         student_refering_teacher_phone: main_teacher&.phone,

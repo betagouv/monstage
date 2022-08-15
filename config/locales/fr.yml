@@ -175,7 +175,10 @@ fr:
         main_teacher_accept_terms: Validée par le professeur principal
         date_range: Dates du stage
         organisation_representative_full_name: Nom de l'employeur
-        school_representative_full_name: Nom du chef d'établissement
+        school_representative_full_name: Nom du chef d'établissement ou de son représentant
+        school_representative_email: Courriel du chef d'établissement ou de son représentant
+        school_representative_phone: Numéro de téléphone du chef d'établissement ou de son représentant
+        school_representative_role: Fonction du chef d'établissement ou de son représentant
         student_full_name: Nom de l'élève
         tutor_full_name: Nom du tuteur
         main_teacher_full_name: Nom du professeur principal
@@ -351,6 +354,12 @@ fr:
               blank: "Veuillez saisir l'établissement de l'élève"
             school_representative_full_name:
               blank: "Veuillez saisir le nom du représentant de l'établissement scolaire"
+            school_representative_email:
+              blank: "Veuillez saisir le courriel du représentant de l'établissement scolaire"
+            school_representative_phone:
+              blank: "Veuillez saisir le numéro de téléphone du représentant de l'établissement scolaire"
+            school_representative_role:
+              blank: "Veuillez saisir la fonction du représentant de l'établissement scolaire"
             student_class_room:
               blank: "Veuillez saisir la classe de l'élève"
             main_teacher_full_name:

@@ -67,10 +67,11 @@ tbody.internship-agreement
       .row.mt-0.backwards
         .col-12
           .form-group.schedules.mt-3
-            .fr-label
-               = "Horaires journaliers de l’élève"
-               = form.rg2a_required_content_tag
-            = render partial: "dashboard/stepper/internship_offer_infos/daily_hours", locals: { form: form, disabled: disabled }
+            = form.label "same_daily_hours" do
+              span.mb-2.fr-label = "Horaires journaliers de l’élève"
+              = form.rg2a_required_content_tag
+            = render partial: "dashboard/stepper/internship_offer_infos/daily_hours",
+                     locals: { form: form, disabled: disabled }
 
       .row.mt-0
         - label = "Objectifs assignés à la séquence d’observation en milieu professionnel"
@@ -89,7 +90,7 @@ tbody.internship-agreement
           - content = "Toutes les modalités pratiques du stage."
           - filled_by = ["l'entreprise"]
           = render partial: 'dashboard/internship_agreements/trix_form_element',
-                   locals: { field: :complementary_terms_rich_text, form: form, text_label: label, title: title, content: content , filled_by: filled_by, disabled: disabled }
+                   locals: { field: :complementary_terms_rich_text, form: form, text_label: label, title: title, content: content , filled_by: filled_by, disabled: disabled}
 
         .row.mt-0
           .col-7

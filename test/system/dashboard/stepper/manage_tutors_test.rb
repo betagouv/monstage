@@ -57,12 +57,10 @@ class ManageTutorsTest < ApplicationSystemTestCase
     new_phone_number = '+330625441145'
     assert_difference 'InternshipOffer.count' do
       travel_to(Date.new(2019, 3, 1)) do
-        visit new_dashboard_stepper_tutor_path(organisation_id: organisation.id,
-                                               internship_offer_info_id: internship_offer_info.id)
         fill_in 'Numéro de téléphone', with: new_phone_number
         click_on "Publier l'offre !"
-        assert_equal new_phone_number, Tutor.last.tutor_phone, 'Tutor s phone number is not updated'
       end
     end
+    assert_equal new_phone_number, Tutor.last.tutor_phone, 'Tutor s phone number is not updated'
   end
 end

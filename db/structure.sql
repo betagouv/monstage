@@ -622,7 +622,12 @@ CREATE TABLE public.internship_agreements (
     student_refering_teacher_email character varying(60),
     student_legal_representative_full_name character varying(120),
     student_refering_teacher_full_name character varying(120),
-    student_legal_representative_phone character varying(20)
+    student_legal_representative_phone character varying(20),
+    student_legal_representative_full_name2 character varying(120),
+    student_legal_representative_email2 character varying(70),
+    student_legal_representative_phone2 character varying(20),
+    school_representative_role character varying(60),
+    school_representative_email character varying(100)
 );
 
 
@@ -2660,6 +2665,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220803131022'),
 ('20220803140408'),
 ('20220803143024'),
-('20220804155217');
+('20220804155217'),
+('20220811103937');
 
 

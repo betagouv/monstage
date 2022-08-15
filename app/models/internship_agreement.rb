@@ -39,6 +39,8 @@ class InternshipAgreement < ApplicationRecord
   with_options if: :enforce_school_manager_validations? do
     validates :school_representative_full_name,
               :school_representative_phone,
+              :school_representative_role,
+              :school_representative_email,
               :student_full_name,
               :student_school,
               :student_refering_teacher_full_name,

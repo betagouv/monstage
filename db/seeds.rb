@@ -68,8 +68,8 @@ def populate_class_rooms
 end
 
 def with_class_name_for_defaults(object)
-  object.first_name ||= "Utilisateur"
-  object.last_name ||= "(#{Presenters::UserManagementRole.new(user: object).role})"
+  object.first_name ||= FFaker::NameFR.first_name
+  object.last_name ||= "#{FFaker::NameFR.last_name}-#{Presenters::UserManagementRole.new(user: object).role}"
   object.accept_terms = true
   object.confirmed_at = Time.now.utc
   object.current_sign_in_at = 2.days.ago
@@ -195,37 +195,51 @@ end
 def populate_users
   troisieme_generale_class_room = ClassRoom.find_by(school_track: :troisieme_generale)
   troisieme_segpa_class_room = ClassRoom.find_by(school_track: :troisieme_segpa)
-  with_class_name_for_defaults(Users::Employer.new(email: 'employer@ms3e.fr', password: 'review', employer_role: 'PDG')).save!
+  
+  with_class_name_for_defaults(
+    Users::Employer.new(
+      email: 'employer@ms3e.fr',
+      password: 'review',
+      employer_role: 'PDG',
+      phone: '+330622554144'
+    )
+  ).save!
   with_class_name_for_defaults(Users::God.new(email: 'god@ms3e.fr', password: 'review')).save!
-  with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', operator: Operator.first)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'school_manager', email: "ce.1234567X@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
+  
+  with_class_name_for_defaults(Users::SchoolManagement.new(
+    role: 'school_manager',
+    email: "ce.1234567X@#{find_default_school_during_test.email_domain_name}",
+    password: 'review',
+    school: find_default_school_during_test,
+    phone: '+330623655541')).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_generale_class_room, email: "main_teacher@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: "other@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: "teacher@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
+  
   Operator.reportable.map do |operator|
     with_class_name_for_defaults(Users::Operator.new(email: "#{operator.name.parameterize}@ms3e.fr", password: 'review', operator: operator)).save!
   end
+  with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', operator: Operator.first)).save!
 
   statistician_email = 'statistician@ms3e.fr'
   ministry_statistician = 'ministry_statistician@ms3e.fr'
   last_public_group = Group.where(is_public: true).last
-
   EmailWhitelists::Statistician.create!(email: statistician_email, zipcode: 75)
   EmailWhitelists::Ministry.create!(email: ministry_statistician, group_id: last_public_group.id)
   with_class_name_for_defaults(Users::Statistician.new(email: statistician_email, password: 'review')).save!
   with_class_name_for_defaults(Users::MinistryStatistician.new(email: ministry_statistician, password: 'review', ministry: last_public_group)).save!
 
-  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Abdelaziz', last_name: 'Benzedine', school: find_default_school_during_test, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: find_default_school_during_test, class_room: ClassRoom.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: "teacher@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
 end
 
 def populate_students
   class_room_3e_generale     = ClassRoom.first
   class_room_3e_prepa_metier = ClassRoom.second
   class_room_3e_segpa        = ClassRoom.third
-
+  
   school = class_room_3e_generale.school
-
+  
+  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Abdelaziz', last_name: 'Benzedine', school: find_default_school_during_test, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: find_default_school_during_test, class_room: ClassRoom.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   # sans classe
   with_class_name_for_defaults(Users::Student.new(email: 'enzo@ms3e.fr', password: 'review', first_name: 'Enzo', last_name: 'Mesnard', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 3.days.ago)).save!
   # 3e générale

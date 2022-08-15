@@ -17,6 +17,14 @@ module Presenters
       "collège #{school.name}"
     end
 
+    def address
+      if school.street.nil?
+        "#{'.' * 75}, #{school.zipcode} #{school.city}"
+      else
+        "#{school.street}, #{school.zipcode} #{school.city}"
+      end
+    end
+
     private
 
     attr_accessor :school

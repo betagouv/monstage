@@ -98,6 +98,8 @@ class Ability
       edit_main_teacher_full_name
       edit_school_representative_full_name
       edit_school_representative_phone
+      edit_school_representative_email
+      edit_school_representative_role
       edit_school_delegation_to_sign_delivered_at
       edit_student_refering_teacher_full_name
       edit_student_refering_teacher_email
@@ -109,6 +111,9 @@ class Ability
       edit_student_legal_representative_email
       edit_student_legal_representative_full_name
       edit_student_legal_representative_phone
+      edit_student_legal_representative_email2
+      edit_student_legal_representative_full_name2
+      edit_student_legal_representative_phone2
       edit_student_school
       see_intro
       update
