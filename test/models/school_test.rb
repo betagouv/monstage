@@ -18,7 +18,7 @@ class SchoolTest < ActiveSupport::TestCase
     school = create(:school, :with_agreement_presets, :with_school_manager)
     student = create(:student, :troisieme_generale, school: school)
     internship_application = create(:weekly_internship_application, user_id: student.id)
-    internship_agreement = create(:internship_agreement, :created_by_system,
+    internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
                                   internship_application: internship_application)
 
     assert school.internship_agreements.include?(internship_agreement)

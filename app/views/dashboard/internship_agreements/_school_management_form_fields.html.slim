@@ -2,7 +2,7 @@ tbody.internship-agreement
   tr
     td
       = form.hidden_field :internship_application_id, value: resource.internship_application_id
-      / = form.hidden_field :school_track, value: resource.school_track
+      = form.hidden_field :school_track, value: resource.school_track
       = form.hidden_field current_user_agreement_terms(current_user), value: true
       .row.mt-4.align-items-center
         .col-12= form.rg2a_explain_required_asterisk(p_class_name: "mb-0")

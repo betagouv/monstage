@@ -62,9 +62,9 @@ end
 def populate_class_rooms
   school = find_default_school_during_test
 
-  ClassRoom.create(name: '3e A – troisieme_generale', school: school)
-  ClassRoom.create(name: '3e B – troisieme_generale', school: school)
-  ClassRoom.create(name: '3e C – troisieme_generale', school: school)
+  ClassRoom.create(name: '3e A – troisieme_generale', school_track: :troisieme_generale, school: school)
+  ClassRoom.create(name: '3e B – troisieme_prepa_metier', school_track: :troisieme_prepa_metiers, school: school)
+  ClassRoom.create(name: '3e C – troisieme_segpa', school_track: :troisieme_segpa, school: school)
 end
 
 def with_class_name_for_defaults(object)
@@ -229,13 +229,16 @@ def populate_users
   with_class_name_for_defaults(Users::Statistician.new(email: statistician_email, password: 'review')).save!
   with_class_name_for_defaults(Users::MinistryStatistician.new(email: ministry_statistician, password: 'review', ministry: last_public_group)).save!
 
+  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Abdelaziz', last_name: 'Benzedine', school: find_default_school_during_test, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: find_default_school_during_test, class_room: ClassRoom.troisieme_generale.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: "teacher@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
 end
 
 def populate_students
   class_room_3e_generale     = ClassRoom.first
   class_room_3e_prepa_metier = ClassRoom.second
   class_room_3e_segpa        = ClassRoom.third
-  
+
   school = class_room_3e_generale.school
   
   with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Abdelaziz', last_name: 'Benzedine', school: find_default_school_during_test, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
@@ -249,28 +252,8 @@ def populate_students
   with_class_name_for_defaults(Users::Student.new(email: 'louis@ms3e.fr', password: 'review', first_name: 'Louis', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'np', confirmed_at: 2.days.ago, class_room: class_room_3e_prepa_metier)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'leon@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Dupre', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_3e_prepa_metier)).save!
   # 3e segpa
-  2.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_3e_segpa)).save! }
-  with_class_name_for_defaults(Users::Student.new(email: 'raphaelle@ms3e.fr', password: 'review',first_name: 'Raphaëlle', last_name: 'Mesnard',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3e_segpa)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Chotin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3e_segpa)).save!
-end
-
-def student_maker (school: ,class_room: )
-  first_name = FFaker::NameFR.first_name
-  first_name = 'Kilian' if first_name.include?(' ')
-  last_name = FFaker::NameFR.last_name
-  last_name = 'Ploquin' if last_name.include?(' ')
-  email = "#{first_name}.#{last_name}@ms3e.fr"
-  Users::Student.new(
-    first_name: first_name,
-    last_name: last_name,
-    email: email,
-    password: 'review',
-    school: school,
-    birth_date: 14.years.ago,
-    gender: (['m']*4 + ['f']*4 + ['np']).shuffle.first,
-    confirmed_at: 2.days.ago,
-    class_room: class_room
-  )
+  with_class_name_for_defaults(Users::Student.new(email: 'martine@ms3e.fr', password: 'review',first_name: 'Martine', last_name: 'Perchot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3e_segpa)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Gidonot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3e_segpa)).save!
 end
 
 def populate_internship_offers

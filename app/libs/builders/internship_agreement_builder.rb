@@ -72,7 +72,7 @@ module Builders
         legal_terms_rich_text: internship_agreement_preset.legal_terms_rich_text.body,
         complementary_terms_rich_text: internship_agreement_preset.complementary_terms_rich_text.body
       }
-      params[:activity_rating_rich_text] = internship_agreement_preset.troisieme_generale_activity_rating_rich_text if internship_application.student.class_room
+      params[:activity_rating_rich_text] = internship_agreement_preset.troisieme_generale_activity_rating_rich_text if internship_application.student.class_room.try(:troisieme_generale?)
       params
     end
 
@@ -112,6 +112,7 @@ module Builders
         student_refering_teacher_email: main_teacher&.email,
         student_refering_teacher_phone: main_teacher&.phone,
         student_phone: student.phone,
+        school_track: student.school_track || 'troisieme_generale',
         student_full_name: student.name,
         student_class_room: student_class_room,
         main_teacher_full_name: main_teacher_full_name

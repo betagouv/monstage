@@ -117,7 +117,15 @@ FactoryBot.define do
     #
     # traits to create a student[with a school] having a specific class_rooms
     trait :troisieme_generale do
-      class_room { build(:class_room, school: school) }
+      class_room { build(:class_room, :troisieme_generale, school: school) }
+    end
+
+    trait :troisieme_segpa do
+      class_room { build(:class_room, :troisieme_segpa, school: school) }
+    end
+
+    trait :troisieme_prepa_metiers do
+      class_room { build(:class_room, :troisieme_prepa_metiers, school: school) }
     end
   end
 end

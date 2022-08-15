@@ -294,7 +294,7 @@ fr:
           rejected: refusée
           expired: expirée
           canceled_by_employer: annulée par l'employeur
-          cancel_by_student: annulée par l'élève
+          canceled_by_student: annulée par l'élève
           convention_signed: convention signée
         week: Semaine
 
@@ -592,5 +592,8 @@ fr:
 
     school_tracks:
       troisieme_generale: '3e'
+      troisieme_prepa_metiers: '3e prépa métiers'
+      troisieme_segpa: '3e SEGPA'
+      bac_pro: 'Bac pro'
   date:
     day_names: [Dimanche, Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi]

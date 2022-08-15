@@ -136,6 +136,7 @@ module Dashboard
           :latitude,
           :longitude,
           :radius,
+          :school_track,
           :school_type,
           :keyword,
           :school_year,
@@ -176,9 +177,8 @@ module Dashboard
                     :is_public, :group_id, :published_at, :type,
                     :employer_id, :employer_type, :school_id, :verb,
                     :employer_description_rich_text, :siret, :employer_manual_enter,
-                    :weekly_lunch_break,
-                    coordinates: {}, week_ids: [], new_daily_hours: {},
-                    daily_lunch_break: {}, weekly_hours:[])
+                    :school_track, :weekly_lunch_break, coordinates: {}, week_ids: [],
+                    new_daily_hours: {}, daily_lunch_break: {}, weekly_hours:[])
     end
   end
 end

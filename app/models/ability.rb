@@ -382,7 +382,7 @@ class Ability
 
     return false if offer_is_reserved_to_another_school
     return true if student.try(:class_room).nil?
-    return true if student.try(:class_room)
+    return true if student.try(:class_room).try(:applicable?, internship_offer)
 
     false
   end
