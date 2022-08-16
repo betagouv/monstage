@@ -110,7 +110,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
 
   test 'student can browse his internship_applications' do
     school = create(:school, :with_school_manager, :with_troisieme_generale)
-    create(:student, school: school)
+    student = create(:student, school: school)
     internship_applications = {
       drafted: create(:weekly_internship_application, :drafted, student: student),
       submitted: create(:weekly_internship_application, :submitted, student: student),
