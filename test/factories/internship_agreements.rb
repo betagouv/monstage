@@ -18,9 +18,9 @@ FactoryBot.define do
     student_legal_representative_full_name {  FFaker::NameFR.name }
     student_legal_representative_phone { FFaker::PhoneNumberFR.mobile_phone_number }
     student_legal_representative_email{ FFaker::Internet.email }
-    student_legal_representative_full_name2 {  FFaker::NameFR.name }
-    student_legal_representative_phone2 { FFaker::PhoneNumberFR.mobile_phone_number }
-    student_legal_representative_email2{ FFaker::Internet.email }
+    student_legal_representative_2_full_name {  FFaker::NameFR.name }
+    student_legal_representative_2_phone { FFaker::PhoneNumberFR.mobile_phone_number }
+    student_legal_representative_2_email{ FFaker::Internet.email }
     student_class_room { '3e A'}
     main_teacher_full_name { FFaker::NameFR.name }
     organisation_representative_full_name { 'DGSE' }

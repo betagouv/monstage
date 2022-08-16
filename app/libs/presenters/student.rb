@@ -13,6 +13,11 @@ module Presenters
       student.school.name
     end
 
+    def formal_name
+      school = student.school
+      "#{school.name} à #{school.city} (Code U.A.I: #{school.code_uai})"
+    end
+
     def school_city
       return anonymized_message if student.anonymized?
 

@@ -111,9 +111,9 @@ class Ability
       edit_student_legal_representative_email
       edit_student_legal_representative_full_name
       edit_student_legal_representative_phone
-      edit_student_legal_representative_email2
-      edit_student_legal_representative_full_name2
-      edit_student_legal_representative_phone2
+      edit_student_legal_representative_2_email
+      edit_student_legal_representative_2_full_name
+      edit_student_legal_representative_2_phone
       edit_student_school
       see_intro
       update

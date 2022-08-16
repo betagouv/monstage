@@ -156,11 +156,11 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.text "Téléphone : #{@internship_agreement.student_legal_representative_phone} "
     @pdf.move_down 10
     @pdf.text "Le cas échéant, représentant légal n°2 (nom et prénom) : " \
-              "#{pointing(@internship_agreement.student_legal_representative_full_name2,  70)} "
+              "#{pointing(@internship_agreement.student_legal_representative_2_full_name,  70)} "
     @pdf.move_down 7
-    @pdf.text "Courriel : #{pointing(@internship_agreement.student_legal_representative_email2,  70)} "
+    @pdf.text "Courriel : #{pointing(@internship_agreement.student_legal_representative_2_email,  70)} "
     @pdf.move_down 7
-    @pdf.text "Téléphone : #{pointing(@internship_agreement.student_legal_representative_phone2,  70)} "
+    @pdf.text "Téléphone : #{pointing(@internship_agreement.student_legal_representative_2_phone,  70)} "
 
     @pdf.move_down 20
 

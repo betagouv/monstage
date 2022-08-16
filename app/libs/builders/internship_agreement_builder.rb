@@ -103,7 +103,7 @@ module Builders
         student_class_room = ""
       end
       {
-        student_school: "#{student.school} à #{student.school.city} (Code UAI: #{student.school.code_uai})",
+        student_school: student.presenter.formal_name,
         school_representative_full_name: school_manager.name,
         school_representative_phone: school_manager.try(:phone),
         school_representative_role: "Chef d'établissement",
