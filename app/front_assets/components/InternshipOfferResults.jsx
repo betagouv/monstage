@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
+import debounce from 'lodash.debounce';
 
 import activeMarker from '../images/active_pin.svg';
 import defaultMarker from '../images/default_pin.svg';
@@ -49,17 +50,23 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
   const [selectedSectors, setSelectedSectors] = useState([]);
 
   useEffect(() => {
-    console.log('hello');
     requestInternshipOffers();
-    console.log('internshipOffers : %S', internshipOffers);
   }, []);
 
-  const handleMouseOver = (data) => {
+  const debouncedhandleMouseOver = debounce((data) => {
     setSelectedOffer(data);
+  }, 100);
+
+  const debouncedhandleMouseOut = debounce(() => {
+    // setSelectedOffer(null);
+  }, 500);
+
+  const handleMouseOver = (data) => {
+    debouncedhandleMouseOver(data);
   };
 
   const handleMouseOut = () => {
-    setSelectedOffer(null);
+    debouncedhandleMouseOut();
   };
 
   const getSectors = () => {
@@ -75,21 +82,10 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
   }
 
   const requestInternshipOffers = () => {
-    console.log('request offers');
     setIsLoading(true);
     document.getElementById("fr-modal-filter").classList.remove("fr-modal--opened")
 
-    // console.log('params :  %s', params);
-    // console.log(params);
-    // updateSectors();
-
-    // console.log("target checked : %s", selectedSectors);
-    // console.log('fetch InternshipOffers');
     params['sector_ids'] = getSectors();
-    // const data = params;
-
-    // console.log('data');
-    // console.log(data);
 
     setInternshipOffers(
       $.ajax({ type: 'GET', url: endpoints['searchInternshipOffers'](), data: params })
@@ -99,7 +95,6 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
   };
 
   const fetchDone = (result) => {
-    console.log(result);
     setInternshipOffers(result);
     setIsLoading(false);
     if (internshipOffers.length) {
@@ -108,25 +103,16 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
         internshipOffer.lat,
         internshipOffer.lon,
       ]);
-      // console.log(bounds);
       map.fitBounds(bounds);
       L.tileLayer.provider('CartoDB.Positron').addTo(map);
     }
   };
 
   const fetchFail = (xhr, textStatus) => {
-    console.log('error');
     if (textStatus === 'abort') {
       return;
     }
     // setRequestError('Une erreur est survenue, veuillez ré-essayer plus tard.');
-  };
-
-  const handleCheck = (e) => {
-    // setSelectedSectors(selectedSectors.push('cows'));
-    console.log('check');
-    console.log("target: %s",e.target.value);
-    console.log("target checked : %s", e.target.checked);
   };
 
   const displaySectors = () => {
@@ -228,7 +214,9 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
                 internshipOffers.length ? (
                   internshipOffers.map((internshipOffer) => (
                     <Marker
-                      icon={internshipOffer.id === selectedOffer ? pointerIcon : defaultPointerIcon}
+                        icon={
+                          internshipOffer.id === selectedOffer ? pointerIcon : defaultPointerIcon
+                        }
                       position={[internshipOffer.lat, internshipOffer.lon]}
                       key={internshipOffer.id}
                     >
