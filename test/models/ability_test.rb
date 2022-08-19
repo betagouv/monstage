@@ -144,6 +144,7 @@ class AbilityTest < ActiveSupport::TestCase
     end
     internship_agreement.update_columns(aasm_state: :started_to_sign)
     assert(ability.can?(:sign, internship_agreement.reload), "Signature fails")
+    assert(ability.can?(:be_reached_with_phone, User))
   end
 
   test 'God' do
@@ -259,6 +260,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:choose_class_room, User))
     assert(ability.can?(:choose_role, User))
     assert(ability.can?(:choose_class_room, User))
+    assert(ability.can?(:be_reached_with_phone, User))
     assert(ability.can?(:dashboard_index, student))
     assert(ability.can?(:delete, student))
 

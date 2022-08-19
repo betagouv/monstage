@@ -51,11 +51,7 @@ class User < ApplicationRecord
 
   MAX_DAILY_PHONE_RESET = 3
 
-  def channel
-    return :phone if phone.present?
-
-    :email
-  end
+  def channel ; :email end
 
   def default_search_options
     opts = {}
@@ -174,7 +170,7 @@ class User < ApplicationRecord
   end
 
   def send_sms_token
-    return unless phone.present?
+    return unless phone.present? && student?
 
     create_phone_token
     message = "Votre code de validation : #{self.phone_token}"
@@ -240,15 +236,15 @@ class User < ApplicationRecord
   def student? ; false end
   def employer? ; false end
   def operator? ; false end
-  def school_management?; false end
-  def school_manager?; false end
-  def god?; false end
+  def school_management? ; false end
+  def school_manager? ; false end
+  def god? ; false end
 
   def already_signed?(internship_aggreement_id:); true end
-  def create_signature_phone_token; nil end
-  def send_signature_sms_token; nil end
-  def signatory_role; nil end
-  def obfuscated_phone_number; nil end
+  def create_signature_phone_token ; nil end
+  def send_signature_sms_token ; nil end
+  def signatory_role ; nil end
+  def obfuscated_phone_number ; nil end
 
   def presenter
     Presenters::User.new(self)

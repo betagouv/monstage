@@ -8,7 +8,6 @@ import './search-no-result.svg';
 
 import './onboarding/confirm-desktop-2.svg';
 import './onboarding/confirm-mobile-2.svg';
-import './onboarding/student.svg';
 
 import './internship_offers_new/fast_time.svg';
 import './internship_offers_new/paper.svg';

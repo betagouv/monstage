@@ -53,8 +53,10 @@ class Ability
   end
 
   def common_school_management_abilities(user:)
-    can :welcome_students, User
-    can :choose_role, User
+    can %i[
+      welcome_students
+      choose_role
+      be_reached_with_phone], User
     can_create_and_manage_account(user: user) do
       can [:choose_class_room], User
     end
@@ -121,7 +123,7 @@ class Ability
 
 
   def employer_abilities(user:)
-    can :supply_offers, User
+    can %i[supply_offers be_reached_with_phone] , User
     can :show, :account
 
     can :create_remote_internship_request, SupportTicket

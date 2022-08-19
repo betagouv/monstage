@@ -130,6 +130,11 @@ fr:
       index:
         page_title: "Statistiques sur les établissements"
     
+  identities:
+    new:
+      page_title: "Inscription élève - etape 1 sur 2"
+    edit:
+      page_title: "Modification inscription élève"
   users:
     confirmations:
       new:
