@@ -133,7 +133,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
       <div className="row no-x-scroll">
         <div className="col-7 d-flex flex-row-reverse" style={{ overflowY: 'scroll' }}>
           
-          <div className="results-col results-row no-x-scroll">
+          <div className="results-col results-row no-x-scroll fr-mt-2w">
             <div className="row fr-p-2w ">
               <div className="col-8 px-0">
                 { 
@@ -221,6 +221,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
                       key={internshipOffer.id}
                     >
                       <Popup className='popup-custom'>
+                      <a href={internshipOffer.link}>
                         <div className="img">
                           <img className="fr-responsive-img" src={internshipOffer.image} alt="image"></img>
                         </div>
@@ -228,9 +229,10 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
                         <div className="content fr-p-2w">
                           <p className="fr-card__detail">{ internshipOffer.employer_name }</p>
                           <h6 className="title">
-                            <a href={internshipOffer.link}>{ internshipOffer.title }</a>
+                            { internshipOffer.title }
                           </h6>
                         </div>
+                      </a>
                       </Popup>
                     </Marker>
                   ))

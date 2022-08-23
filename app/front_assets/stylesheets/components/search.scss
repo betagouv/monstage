@@ -32,44 +32,7 @@
 }
 
 .results-container {
-  overflow: scroll;
 
-  // .row:first-child {
-  //   position: -webkit-sticky;
-  //   position: sticky;
-  //   top: 0;
-  // }
-
-  .results-col {
-    max-width: 700px !important;
-    // float: right
-    // position: -webkit-sticky;
-    // position: sticky;
-    // height: calc(100vh - 117px);
-    top: 56px;
-    .row {
-      overflow-x: hidden;
-    }
-  }
-
-  .no-x-scroll {
-    overflow-x: hidden !important;
-  }
-
-  .results-row {
-    // float: right
-    // position: -webkit-sticky;
-    // position: sticky;
-    // height: calc(100vh - 117px);
-    overflow-y: scroll;
-    height: 100vh;
-  }
-
-  .map-container {
-    position: sticky;
-    // top: 86px;
-    height: calc(100vh - 0px);
-  }
 }
 
 .clear-button {
@@ -94,3 +57,20 @@ a.leaflet-control-zoom-out {
   background-repeat: no-repeat;
 }
 
+.fr-card {
+  background-color: #f6f6f6;
+}
+
+.fr-card:hover {
+  background-color: #f2f2f2;
+}
+
+.fr-card::before {
+  content: none !important;
+}
+
+.container-x {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+}
