@@ -7,14 +7,15 @@ const FilterModal = ({ sectors, showSectors, requestInternshipOffers, displaySec
       <div className="fr-col-12 fr-col-md-8 fr-col-lg-6">
         <div className="fr-modal__body">
           <div className="fr-modal__header modal-section">
-            <div className="row">
-              <div className="col-12 text-right">
-                <button className="fr-btn--close fr-btn" title="Fermer la fenêtre modale" aria-controls="fr-modal-filter">Fermer</button>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-12 text-center fr-text--bold">
+            <div className="row d-flex align-items-center">
+                <div
+                  className="text-center fr-text--bold"
+                  style={{ margin: '4px auto 0 auto', width: 200 + 'px' }}
+                >
                 Tous les filtres
+              </div>
+              <div className="float-right text-right" style={{float: 'right'}}>
+                <button className="fr-btn--close fr-btn" title="Fermer la fenêtre modale" aria-controls="fr-modal-filter">Fermer</button>
               </div>
             </div>
           </div>
