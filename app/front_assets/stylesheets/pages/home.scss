@@ -34,10 +34,10 @@ a:hover {
 
 .visible-smaller-md {}
 
-.turbo-progress-bar {
-  height: 5px;
-  background-color: green;
-}
+// .turbo-progress-bar {
+//   height: 5px;
+//   background-color: green;
+// }
 .homepage {
   overflow-x: hidden;
 }
@@ -119,10 +119,10 @@ img.covering {
   object-fit: cover;
   width: 100%
 }
-.img-almost-fluid {
-  max-width: 90%;
-  height: auto;
-}
+// .img-almost-fluid {
+//   max-width: 90%;
+//   height: auto;
+// }
 
 .link-step-1-2 {
   position: absolute;
@@ -138,18 +138,18 @@ img.covering {
   z-index: -1;
 }
 
-.right-flying-email {
-  position: absolute;
-  width: 118.41px;
-  height: 106.41px;
-  right : 10%;
-  top: -44px;
-  z-index: 1;
+// .right-flying-email {
+//   position: absolute;
+//   width: 118.41px;
+//   height: 106.41px;
+//   right : 10%;
+//   top: -44px;
+//   z-index: 1;
 
-  background: url("../images/homepage/courrier.png");
-  transform: rotate(15deg);
-  border-radius: 1rem;
-}
+//   background: url("../images/homepage/courrier.png");
+//   transform: rotate(15deg);
+//   border-radius: 1rem;
+// }
 
 
 .nav-link.active {
@@ -164,14 +164,14 @@ img.covering {
   max-height: 475px;
 }
 
-.video-shadow-frame {
-  position: absolute;
-  margin: 0 auto;
-  top: 0px;
-  left: 0px;
-  width: 450px;
-  height: 450px;
-}
+// .video-shadow-frame {
+//   position: absolute;
+//   margin: 0 auto;
+//   top: 0px;
+//   left: 0px;
+//   width: 450px;
+//   height: 450px;
+// }
 
 .video-shadow {
   background-color: $blue;
@@ -243,10 +243,10 @@ img.covering {
 }
 
 @include media-breakpoint-up(sm) {
-  .big-tagline {
-    font-size: 20px;
-    line-height: 30px;
-  }
+  // .big-tagline {
+  //   font-size: 20px;
+  //   line-height: 30px;
+  // }
   .flex-md-column {
     flex-direction: column !important;
   }
@@ -273,14 +273,14 @@ img.covering {
   .ms3e-blurry-badge {
     background: none;
   }
-  .subtitle-hero,
+  // .subtitle-hero,
   .h1-text-hero {
     line-height: 150%;
     padding: 1rem;
   }
-  .navbar-nav-scroll a {
-    text-align: right;
-  }
+  // .navbar-nav-scroll a {
+  //   text-align: right;
+  // }
 
   .flex-md-reverse-column {
     flex-direction: column-reverse;
@@ -345,9 +345,9 @@ img.covering {
     background-color: rgba(17, 0, 145, 0.13);
   }
 }
-.partners-height {
-  min-height: 450px;
-}
+// .partners-height {
+//   min-height: 450px;
+// }
 .fr-header__tools-links .fr-links-group> :not(:last-child)>.fr-link::after {
   right: -1.5rem;
 }

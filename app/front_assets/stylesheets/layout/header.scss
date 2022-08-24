@@ -34,12 +34,12 @@
   }
 }
 
-@include media-breakpoint-down(xs) {
-  .nav-banner{
-    font-size: .8em;
-    .nav-link{
-      padding-left: .5rem;
-      padding-right: .5rem;
-    }
-  }
-}
+// @include media-breakpoint-down(xs) {
+//   .nav-banner{
+//     font-size: .8em;
+//     .nav-link{
+//       padding-left: .5rem;
+//       padding-right: .5rem;
+//     }
+//   }
+// }

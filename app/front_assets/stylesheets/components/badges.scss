@@ -2,15 +2,15 @@
   font-weight: normal!important;
   font-size: 1rem!important;
 }
-.badge-cyan {
-  background-color: rgba(0, 102, 153, 0.1);
-  color: $blue;
-  border-radius: 14px;
-}
-.badge-light-blue{
-  background-color: rgb(224,223,241);
-  color: $blue;
-}
+// .badge-cyan {
+//   background-color: rgba(0, 102, 153, 0.1);
+//   color: $blue;
+//   border-radius: 14px;
+// }
+// .badge-light-blue{
+//   background-color: rgb(224,223,241);
+//   color: $blue;
+// }
 .badge-light{
   border: 1px solid $gray-300;
 }
@@ -36,28 +36,28 @@
   background-color: $blue_dark;
   color: white;
 }
-.bac_pro{
-  background-color: $blue;
-  color: white;
-}
-.badge-line{
-  line-height: $line-height-base * 1.2;
-}
-.red-notification-badge{
-  background-color:$red;
-  color: white;
-  text-align: center;
-  border-radius: 50%;
-  padding: 0.2rem 0.5rem;
-  font-weight: bolder;
-  font-size: smaller;
-}
+// .bac_pro{
+//   background-color: $blue;
+//   color: white;
+// }
+// .badge-line{
+//   line-height: $line-height-base * 1.2;
+// }
+// .red-notification-badge{
+//   background-color:$red;
+//   color: white;
+//   text-align: center;
+//   border-radius: 50%;
+//   padding: 0.2rem 0.5rem;
+//   font-weight: bolder;
+//   font-size: smaller;
+// }
 // This has to be temporary
-.red-x-badge {
-  text-align: center;
-  border-radius: 50%;
-  padding: 0.2rem 0.4rem;
-}
-.no-border{
-  border : 0
-}
+// .red-x-badge {
+//   text-align: center;
+//   border-radius: 50%;
+//   padding: 0.2rem 0.4rem;
+// }
+// .no-border{
+//   border : 0
+// }

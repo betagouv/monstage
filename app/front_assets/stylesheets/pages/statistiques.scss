@@ -1,13 +1,13 @@
-.bg-cover-image-statistiques {
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mM0TgMAANIAm3/ipYoAAAAASUVORK5CYII='),
-    url('../images/homepage/mon-stage-de-3e-illustration.jpg');
-  background-position: bottom left, right -80px;
-  background-repeat: repeat, no-repeat;
-  background-size: contain, cover;
-}
-.wrapper-breadcrumb {
-  background-image: linear-gradient(to bottom, #f6f6f6, #eaeaea);
-}
+// .bg-cover-image-statistiques {
+//   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mM0TgMAANIAm3/ipYoAAAAASUVORK5CYII='),
+//     url('../images/homepage/mon-stage-de-3e-illustration.jpg');
+//   background-position: bottom left, right -80px;
+//   background-repeat: repeat, no-repeat;
+//   background-size: contain, cover;
+// }
+// .wrapper-breadcrumb {
+//   background-image: linear-gradient(to bottom, #f6f6f6, #eaeaea);
+// }
 
 .bg-stats-filter {
   background-color: #eaeaea;
@@ -16,10 +16,10 @@
   border-bottom: 1px dotted #4CA2CD;
   cursor: help;
 }
-.custom-stats-checkbox {
-  padding-top: $input-btn-padding-y;
-  padding-bottom: $input-btn-padding-y;
-}
+// .custom-stats-checkbox {
+//   padding-top: $input-btn-padding-y;
+//   padding-bottom: $input-btn-padding-y;
+// }
 
 .table-statistics {
   tbody {
@@ -182,6 +182,6 @@ p.hero {
     background-color: $blue-france-975;
   }
 
-.fr-btn-bordered {
-  box-shadow: inset 0 0 0 1px $blue-france !important;
-}
+// .fr-btn-bordered {
+//   box-shadow: inset 0 0 0 1px $blue-france !important;
+// }

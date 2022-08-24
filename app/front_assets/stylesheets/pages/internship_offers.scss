@@ -59,14 +59,14 @@ a.heavy-blue-link {
   background-color: white;
 }
 
-.white-mask {
-  position: absolute;
-  text-align: left;
-  width: 100%;
-  height: 50px;
-  background-color: white;
-  top: -58px;
-}
+// .white-mask {
+//   position: absolute;
+//   text-align: left;
+//   width: 100%;
+//   height: 50px;
+//   background-color: white;
+//   top: -58px;
+// }
 .red-up {
   position: absolute;
 
@@ -102,9 +102,9 @@ a.white {
     ;
   }
 
-  .know-more {
-    font-size: 1rem;
-  }
+  // .know-more {
+  //   font-size: 1rem;
+  // }
 }
 
 .tutors .warning-bloc {
@@ -148,12 +148,12 @@ $sortLinkOffset: 15px;
     opacity: 1;
 
   }
-  .sort-link-up{
-    top: 0;
-  }
-  .sort-link-down{
-    top: $sort-arrow-height;
-  }
+  // .sort-link-up{
+  //   top: 0;
+  // }
+  // .sort-link-down{
+  //   top: $sort-arrow-height;
+  // }
 }
 
 // sort links container
@@ -180,9 +180,9 @@ $sortLinkOffset: 15px;
   text-decoration: none;
 }
 
-.list-item-label{
-  font-size: .8rem;
-}
+// .list-item-label{
+//   font-size: .8rem;
+// }
 .list-item .fa,
 .list-item .svg-inline--fa{
   font-size: 2rem;
