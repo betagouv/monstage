@@ -26,7 +26,7 @@
         }
       },
       "scripts": {
-        "postdeploy": "infra/review/post_deploy.sh"
+        "postdeploy": "chmod +x infra/review/post_deploy.sh && infra/review/post_deploy.sh"
       },
       "env": {
         "RAILS_ENV": "review",
