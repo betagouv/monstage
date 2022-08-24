@@ -1,10 +1,10 @@
 // imported from http://design.tetue.net/public-style-guide/
-$enable-print-style: false;
+// $enable-print-style: false;
 
 // Le gris #767676 est le plus pâle qui puisse être utilisé sur fond blanc (RGAA Critère 3.3 [AA]).
 $gray-600: #767676; // text muted color
 $gray_200: #E5E7EB;
-$gray_300: #D1D5DB;
+// $gray_300: #D1D5DB;
 // Éviter les contrastes maximum (tel que noir #000000 sur blanc #FFFFFF).
 $gray-900: #3F3256;    // body text color
 
@@ -25,10 +25,10 @@ $blue_custom: #160D91;
 $warning_custom: #FCA000;
 $purple_custom: #8E62CA;
 $cyan_custom: #62CAC6;
-$yellow:  #feb620;
+// $yellow:  #feb620;
 // darken colors based on a11y feed
 $red:     darken(#dc3545, 3); // do not change
-$error-425:#CE0500;
+// $error-425:#CE0500;
 $green:   darken(#28a745, 8); // do not change
 
 $green_lime: rgb(18,199,123);
@@ -38,16 +38,16 @@ $custom_cyan:    rgb(90,202,198);
 $secondary: #DEE2E6;
 
 // liens soulignés
-$link-decoration: underline;
+// $link-decoration: underline;
 // font lisible
 // $font-family-sans-serif: 'Nunito', Helvetica, Arial, sans-serif;
 
 
 // override alert styles, otherwise bootstrap do color manipulation
 // which return non optimized contrast
-$alert-bg-level: 1;
-$alert-border-level: 1;
-$alert-color-level: 1;
+// $alert-bg-level: 1;
+// $alert-border-level: 1;
+// $alert-color-level: 1;
 
 $grid-breakpoints: (
   xs: 0,
@@ -56,36 +56,36 @@ $grid-breakpoints: (
   lg: 1024px
 );
 
-$container-max-widths: (
-  sm: 768px,
-  md: 1023px,
-  lg: 1024px
-);
+// $container-max-widths: (
+//   sm: 768px,
+//   md: 1023px,
+//   lg: 1024px
+// );
 
 $line-height-base: 1.25;
 $input-bg: #fbfbfb;
 $input-border-color: #dddddd;
 $input-border-radius: 7px;
-$input-border-radius-lg: 0;
-$input-border-radius-sm: 0;
+// $input-border-radius-lg: 0;
+// $input-border-radius-sm: 0;
 
-$custom-select-border-radius: 0;
+// $custom-select-border-radius: 0;
 // $input-focus-box-shadow:
 
 $input-btn-padding-x: .75rem;
 $input-btn-padding-y: .75rem;
-$border-radius-lg: 1.25rem;
-$box-shadow-lg: 0 7px 64px 0 rgba(0, 0, 0, 0.2);
+// $border-radius-lg: 1.25rem;
+// $box-shadow-lg: 0 7px 64px 0 rgba(0, 0, 0, 0.2);
 
 // pagination
-$pagination-color: $red;
-$pagination-border-width: 0;
-$form-group-margin-bottom: 2rem;
+// $pagination-color: $red;
+// $pagination-border-width: 0;
+// $form-group-margin-bottom: 2rem;
 // pagination:active
-$pagination-active-color: $gray-900;
-$pagination-active-bg: transparent;
+// $pagination-active-color: $gray-900;
+// $pagination-active-bg: transparent;
 
 // pagination:hover
-$pagination-hover-bg: transparent;
+// $pagination-hover-bg: transparent;
 
-$table-hover-bg:  #F6F8FC;
+// $table-hover-bg:  #F6F8FC;
