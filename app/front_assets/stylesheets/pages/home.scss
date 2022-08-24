@@ -142,7 +142,16 @@ img.covering {
   max-height: 475px;
 }
 
-.video-shadow {
+.video-shadow-frame {
+  position: absolute;
+  margin: 0 auto;
+  top: 0px;
+  left: 0px;
+  width: 450px;
+  height: 450px;
+}
+
+.video-shadow { //is used in video iframe do not remove
   background-color: $blue;
   margin: 25px 0 0 25px;
   z-index: 2;
@@ -238,7 +247,6 @@ img.covering {
   .ms3e-blurry-badge {
     background: none;
   }
-  // .subtitle-hero,
   .h1-text-hero {
     line-height: 150%;
     padding: 1rem;

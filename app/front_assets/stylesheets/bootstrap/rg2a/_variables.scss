@@ -1,14 +1,11 @@
 // imported from http://design.tetue.net/public-style-guide/
-// $enable-print-style: false;
 
 // Le gris #767676 est le plus pâle qui puisse être utilisé sur fond blanc (RGAA Critère 3.3 [AA]).
 $gray-600: #767676; // text muted color
 $gray_200: #E5E7EB;
 // Éviter les contrastes maximum (tel que noir #000000 sur blanc #FFFFFF).
-$gray-900: #3F3256;    // body text color
 
 // s'assurer d'un contrast fort entre la couleur du body #fff et les alerts
-// $primary:
 $blue: #000091;
 $blue_light: rgb(247, 248, 252);
 $blue_sky: rgb(46,134,255);
