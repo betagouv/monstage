@@ -9,33 +9,15 @@
   }
 }
 
-// .bg-light-warning{
-//   background-color: rgba(
-//       red($warning),
-//       green($warning),
-//       blue($warning),
-//       .2
-//     );
-// }
 .bg-less-light-blue{
   background-color: $blue-france-light;
 }
-
-// .bg-light-green{
-//   background-color: rgb(82,201,160);
-// }
-// @include media-breakpoint-down(xs) {
-//   .bg-light-gray-sm{
-//     background-color: $gray-200;
-//   }
-// }
 
 @for $i from 1 through 9 {
   .bg-success-#{$i}0 {
     background-color: lighten($success, $i * 10%);
   }
 }
-
 
 @for $i from 1 through 9 {
   .bg-dark-#{$i}0 {

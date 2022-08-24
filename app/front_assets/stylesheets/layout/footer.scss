@@ -36,15 +36,6 @@ body {
   letter-spacing: 0px;
   flex-shrink: 0;
 
-  // .footer-content {
-  //   color: $gray-900;
-
-  //   a {
-  //     text-decoration: none;
-  //     color: $gray-900;
-  //   }
-  // }
-
   background-color: $bg-light-blue;
   .social_network{
     $height: 64px;
@@ -64,27 +55,12 @@ body {
 
 @include media-breakpoint-down(xs) {
 
-  // .content {
-  //   min-height: 100%;
-  // }
   .footer {
     font-size: 12px;
   }
 
-  // .font-weight-bold-sm {
-  //   font-weight: bold;
-  // }
 }
 
-// @include media-breakpoint-up(sm) {
-//   .sticky-footer-illustration {
-//     background-image: url('../images/homepage/explications.svg');
-//     background-position: top right;
-//     background-color: transparent;
-//     background-repeat: no-repeat;
-//     background-size: contain;
-//   }
-// }
 
 .fixed-footer {
   box-shadow: 0 2px 20px rgba(0, 0, 0, .2);
@@ -103,9 +79,3 @@ body {
     line-height: 1.1rem;
   }
 }
-
-// .close-top-right {
-//   position: absolute;
-//   top: 5px;
-//   right: 5px;
-// }
