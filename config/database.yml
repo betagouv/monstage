@@ -64,6 +64,7 @@ test:
 
 review:
   <<: *default
+  schema_search_path: public, heroku_ext
   url: <%= ENV.fetch('DATABASE_URL', '').sub(/^postgres(ql)?/, "postgis") %>
 
 staging:
