@@ -83,7 +83,8 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
 
   const requestInternshipOffers = () => {
     setIsLoading(true);
-    document.getElementById("fr-modal-filter").classList.remove("fr-modal--opened")
+    document.getElementById("fr-modal-filter").classList.remove("fr-modal--opened");
+    document.getElementById("filter-sectors-button").setAttribute('data-fr-opened', false);
 
     params['sector_ids'] = getSectors();
 
@@ -113,10 +114,6 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
       return;
     }
     // setRequestError('Une erreur est survenue, veuillez ré-essayer plus tard.');
-  };
-
-  const displaySectors = () => {
-    setShowSectors(true);
   };
 
   const clearSectors = () => {
@@ -149,7 +146,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
                 }
               </div>
               <div className="col-4 text-right px-0">
-                <button className="fr-btn fr-btn--secondary fr-icon-equalizer-line fr-btn--icon-left" data-fr-opened="false" aria-controls="fr-modal-filter">
+                <button className="fr-btn fr-btn--secondary fr-icon-equalizer-line fr-btn--icon-left" data-fr-opened="false" aria-controls="fr-modal-filter" id="filter-sectors-button">
                   Filtrer
                   {
                     selectedSectors.length > 0 ? (
@@ -203,7 +200,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
           </div>
         </div>
 
-        <div className="col-5 map-container position-sticky sticky-top">
+        <div className="col-5 map-container">
           <div className="">
             <MapContainer center={center} zoom={13} scrollWheelZoom={false}>
               <TileLayer
@@ -249,9 +246,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
 
       <FilterModal
         sectors={sectors}
-        showSectors={showSectors}
         requestInternshipOffers={requestInternshipOffers}
-        displaySectors={displaySectors}
         clearSectors={clearSectors}
       />
     </div>
