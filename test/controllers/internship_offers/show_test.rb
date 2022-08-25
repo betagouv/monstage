@@ -462,8 +462,8 @@ module InternshipOffers
                     { text: "depuis le #{I18n.l(internship_offer.published_at, format: :human_mm_dd)}" },
                     'invalid published_at'
 
-      # assert_template 'dashboard/internship_offers/_delete_internship_offer_modal',
-      #                 'missing discard modal for employer'
+      assert_template 'dashboard/internship_offers/_delete_internship_offer_modal',
+                      'missing discard modal for employer'
     end
 
     test "GET #show as employer have duplicate/renew button for last year's internship offer" do
