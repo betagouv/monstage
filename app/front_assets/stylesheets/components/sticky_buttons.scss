@@ -28,16 +28,4 @@
     display: block;
   }
 }
-@include media-breakpoint-down(sm) {
-  .d-sm-stick {
-    z-index: 10000;
-    background-color: #fff;
-    padding: 1rem;
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    box-shadow: 0 -2px 20px rgba(0,0,0,.2);
-  }
-}
 
