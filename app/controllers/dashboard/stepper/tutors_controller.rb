@@ -42,7 +42,7 @@ module Dashboard::Stepper
 
     def tutor_params
       params.require(:tutor)
-            .permit(:tutor_name, :tutor_phone, :tutor_email)
+            .permit(:tutor_name, :tutor_phone, :tutor_email, :tutor_role)
             .merge(employer_id: current_user.id)
     end
 

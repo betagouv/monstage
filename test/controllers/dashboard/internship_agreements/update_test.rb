@@ -45,7 +45,7 @@ module Dashboard::InternshipAgreements
       school = create(:school, :with_school_manager)
       class_room = create(:class_room, school: school)
       student = create(:student, school: school, class_room: class_room)
-      main_teacher = create(:main_teacher, school: school, class_room: class_room)
+      create(:main_teacher, school: school, class_room: class_room)
       internship_application = create(:weekly_internship_application, :submitted, user_id: student.id)
       internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
                                     internship_application: internship_application)
@@ -54,6 +54,9 @@ module Dashboard::InternshipAgreements
         'internship_agreement' => {
           employer_accept_terms: true,
           organisation_representative_full_name: new_organisation_representative_full_name,
+          organisation_representative_role: 'chef de projet',
+          tutor_email:  FFaker::Internet.email,
+          siret: FFaker::CompanyFR.siret,
           event: 'start_by_employer'
         }
       }

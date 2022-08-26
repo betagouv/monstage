@@ -107,6 +107,7 @@ module Api
       street = "Avenue de l'opéra"
       zipcode = '75002'
       city = 'Paris'
+      siret = FFaker::CompanyFR.siret
       sector_uuid = sector.uuid
       week_params = [
         "#{week_instances.first.year}-W#{week_instances.first.number}",
@@ -125,6 +126,7 @@ module Api
                 employer_name: employer_name,
                 employer_description: employer_description,
                 employer_website: employer_website,
+                siret: siret,
                 'coordinates' => coordinates,
                 street: street,
                 zipcode: zipcode,
@@ -180,6 +182,7 @@ module Api
                 employer_name: 'employer_name',
                 employer_description: 'employer_description',
                 employer_website: 'http://employer_website.com',
+                siret: FFaker::CompanyFR.siret,
                 coordinates: { latitude: 1, longitude: 1 },
                 street: 'street',
                 zipcode: '60580',
@@ -220,6 +223,7 @@ module Api
                   employer_name: 'employer_name',
                   employer_description: 'employer_description',
                   employer_website: 'http://employer_website.com',
+                  siret: FFaker::CompanyFR.siret,
                   coordinates: { latitude: 1, longitude: 1 },
                   street: 'street',
                   zipcode: '60580',
@@ -305,6 +309,7 @@ module Api
                   coordinates: { latitude: 48.8566383, longitude: 2.3211761 },
                   street: '',
                   zipcode: '',
+                  siret: FFaker::CompanyFR.siret,
                   city: 'Paris',
                   sector_uuid: sector.uuid,
                   remote_id: 'remote_id',
@@ -347,6 +352,7 @@ module Api
                   coordinates: { latitude: 48.8566383, longitude: 2.3211761 },
                   zipcode: '75007',
                   city: 'Paris',
+                  siret: FFaker::CompanyFR.siret,
                   sector_uuid: sector.uuid,
                   remote_id: 'remote_id',
                   permalink: 'http://google.fr/permalink'
@@ -383,6 +389,7 @@ module Api
                   employer_name: 'Ministere',
                   employer_description: 'employer_description',
                   employer_website: 'http://employer_website.com',
+                  siret: FFaker::CompanyFR.siret,
                   coordinates: { latitude: 148, longitude: 14 },
                   zipcode: '75007',
                   city: 'Paris',

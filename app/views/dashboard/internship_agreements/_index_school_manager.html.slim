@@ -30,8 +30,6 @@
         - else
           = render partial: "dashboard/schools/internship_agreement_presets/short_form",
                     locals: { school: current_user.school, internship_agreement_preset: current_user.school.internship_agreement_preset }
-  - if @internship_agreements.empty?
-    = render partial: 'empty_agreement_list'
-  - else
-    = render partial: 'dashboard/internship_agreements/internship_agreements_list',
+
+  = render partial: 'dashboard/internship_agreements/internship_agreements_list',
              locals: {internship_agreements: @internship_agreements}

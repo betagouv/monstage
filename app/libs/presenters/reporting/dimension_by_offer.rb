@@ -22,6 +22,7 @@ module Presenters
                    tutor_name
                    tutor_email
                    tutor_phone
+                   tutor_role
                    full_employer
                    full_address
                    full_school
@@ -67,6 +68,10 @@ module Presenters
 
       def tutor_email
         instance.tutor_email
+      end
+
+      def tutor_role
+        instance.tutor_role
       end
 
       def tutor_phone

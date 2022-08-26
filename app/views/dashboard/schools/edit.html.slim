@@ -1,7 +1,7 @@
 = render 'layouts/breadcrumb', links: [ [current_user.presenter.dashboard_name_link, current_user.dashboard_name],
                                         ['', 'Semaines']]
 = render layout: 'dashboard/schools/common_head' do
-  #weeks-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0"
+  #weeks-panel.fr-tabs__panel aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0"
     = render "form"
 
 - if current_user.is_a?(Users::SchoolManagement) && !current_user.school.has_weeks_on_current_year?

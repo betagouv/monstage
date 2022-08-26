@@ -59,6 +59,15 @@
             <%= f.rg2a_required_content_tag %>
           <% end %>
         </div>
+        <% if can?(:choose_function, resource) %>
+          <div class="form-group custom-label-container">
+          <%= f.text_field :employer_role, class: "fr-input", required: true %>
+          <%= f.label :employer_role, class: "fr-label" do %>
+            Fonction au sein de l'entreprise
+            <%= f.rg2a_required_content_tag %>
+          <% end %>
+        </div>
+        <% end %>
         <% if can?(:choose_role, resource) %>
           <div class="form-group custom-label-container">
             <%= f.select :role,

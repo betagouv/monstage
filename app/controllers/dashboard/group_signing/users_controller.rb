@@ -6,7 +6,7 @@ module Dashboard
       def start_signing
         # javascript opens the right modal according to
         # current_user phone number existence
-        authorize! :sign, InternshipAgreement
+        authorize! :sign_internship_agreements, InternshipAgreement
         @internship_agreement_ids = user_params[:internship_agreement_ids] || []
         @counter = @internship_agreement_ids.size
         @agreement_ids = @internship_agreement_ids.join(',')
@@ -25,7 +25,7 @@ module Dashboard
 
 
       def update
-        authorize! :sign, InternshipAgreement
+        authorize! :sign_internship_agreements, InternshipAgreement
         @agreement_ids = user_params[:agreement_ids]
         if save_phone_user(current_user) && current_user.reload.send_signature_sms_token
           respond_to do |format|
@@ -60,7 +60,7 @@ module Dashboard
 
       def reset_phone_number
         # opened_modal will wake up either the phone_number_modal or the code typing one
-        authorize! :sign, InternshipAgreement
+        authorize! :sign_internship_agreements, InternshipAgreement
         if current_user.nullify_phone_number!
           redirect_to dashboard_internship_agreements_path(opened_modal: true),
                       notice: 'Votre numéro de téléphone a été supprimé'
@@ -72,7 +72,7 @@ module Dashboard
       end
 
       def resend_sms_code
-        authorize! :sign, InternshipAgreement
+        authorize! :sign_internship_agreements, InternshipAgreement
         @agreement_ids = user_params[:agreement_ids]
         signature_builder.post_signature_sms_token do |on|
           on.success do
@@ -102,7 +102,7 @@ module Dashboard
       end
 
       def signature_code_validate
-        authorize! :sign, InternshipAgreement
+        authorize! :sign_internship_agreements, InternshipAgreement
 
 
         @agreement_ids = user_params[:agreement_ids]
@@ -146,7 +146,7 @@ module Dashboard
       end
 
       def handwrite_sign
-        authorize! :sign, InternshipAgreement
+        authorize! :sign_internship_agreements, InternshipAgreement
         signature_builder.handwrite_sign do |on|
           on.success do |signatures|
             redirect_to dashboard_internship_agreements_path,

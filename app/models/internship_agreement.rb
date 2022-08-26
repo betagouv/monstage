@@ -27,12 +27,12 @@ class InternshipAgreement < ApplicationRecord
   has_rich_text :complementary_terms_rich_text
   has_rich_text :legal_terms_rich_text
 
-  attr_accessor :enforce_school_manager_validations
-  attr_accessor :enforce_employer_validations
-  attr_accessor :enforce_main_teacher_validations
-  attr_accessor :skip_validations_for_system
+  attr_accessor :enforce_school_manager_validations,
+                :enforce_employer_validations,
+                :enforce_main_teacher_validations,
+                :skip_validations_for_system
 
-  # todo flip based on current switch/branch
+  # TODO: flip based on current switch/branch
   with_options if: :enforce_main_teacher_validations? do
     validates :student_class_room, presence: true
     validates :main_teacher_full_name, presence: true
@@ -40,16 +40,33 @@ class InternshipAgreement < ApplicationRecord
   end
 
   with_options if: :enforce_school_manager_validations? do
-    validates :student_school, presence: true
-    validates :school_representative_full_name, presence: true
-    validates :student_full_name, presence: true
+    validates :school_representative_full_name,
+              :school_representative_phone,
+              :school_representative_role,
+              :school_representative_email,
+              :student_full_name,
+              :student_school,
+              :student_refering_teacher_full_name,
+              :student_refering_teacher_email,
+              :student_refering_teacher_phone,
+              :student_address,
+              :student_phone,
+              :student_legal_representative_full_name,
+              :student_legal_representative_email,
+              :student_legal_representative_phone,
+              presence: true
     validate :valid_trix_school_manager_fields
   end
 
   with_options if: :enforce_employer_validations? do
-    validates :organisation_representative_full_name, presence: true
-    validates :tutor_full_name, presence: true
-    validates :date_range, presence: true
+    validates :organisation_representative_full_name,
+              :organisation_representative_role,
+              :date_range,
+              :siret,
+              :tutor_full_name,
+              :tutor_role,
+              :tutor_email,
+              presence: true
     validate :valid_trix_employer_fields
     validate :valid_working_hours_fields
   end
@@ -81,7 +98,7 @@ class InternshipAgreement < ApplicationRecord
     end
 
     event :validate do
-      transitions from: [:completed_by_employer, :started_by_school_manager],
+      transitions from: %i[completed_by_employer started_by_school_manager],
                   to: :validated,
                   after: proc { |*_args|
         notify_employer_school_manager_completed(self)
@@ -89,7 +106,7 @@ class InternshipAgreement < ApplicationRecord
     end
 
     event :sign do
-      transitions from: [:validated, :signatures_started],
+      transitions from: %i[validated signatures_started],
                   to: :signatures_started,
                   after: proc { |*_args|
         notify_others_signatures_started(self)
@@ -117,8 +134,7 @@ class InternshipAgreement < ApplicationRecord
 
     if [enforce_employer_validations?,
         enforce_main_teacher_validations?,
-        enforce_school_manager_validations?
-       ].none?
+        enforce_school_manager_validations?].none?
       %i[
         main_teacher_accept_terms
         school_manager_accept_terms
@@ -145,38 +161,53 @@ class InternshipAgreement < ApplicationRecord
     return school_manager_accept_terms? if user.school_manager?
     return main_teacher_accept_terms? if user.main_teacher?
     return employer_accept_terms? if user.employer?
+
     raise ArgumentError, "#{user.type} does not support accept terms yet "
   end
 
-
   def valid_trix_employer_fields
-    errors.add(:activity_scope_rich_text, "Veuillez compléter les objectifs du stage") if activity_scope_rich_text.blank?
-    errors.add(:complementary_terms_rich_text, "Veuillez compléter les conditions complémentaires du stage (hebergement, transport, securité)...") if complementary_terms_rich_text.blank?
+    if activity_scope_rich_text.blank?
+      errors.add(:activity_scope_rich_text,
+                 'Veuillez compléter les objectifs du stage')
+    end
+    if complementary_terms_rich_text.blank?
+      errors.add(:complementary_terms_rich_text,
+                 'Veuillez compléter les conditions complémentaires du stage (hebergement, transport, securité)...')
+    end
     if !troisieme_generale? && activity_learnings_rich_text.blank?
-      errors.add(:activity_learnings_rich_text, "Veuillez compléter les compétences visées")
+      errors.add(:activity_learnings_rich_text, 'Veuillez compléter les compétences visées')
     end
   end
 
   def valid_trix_school_manager_fields
-    errors.add(:complementary_terms_rich_text, "Veuillez compléter les conditions complémentaires du stage (hebergement, transport, securité)...") if complementary_terms_rich_text.blank?
+    if complementary_terms_rich_text.blank?
+      errors.add(:complementary_terms_rich_text,
+                 'Veuillez compléter les conditions complémentaires du stage (hebergement, transport, securité)...')
+    end
     if !troisieme_generale? && activity_rating_rich_text.blank?
-      errors.add(:activity_rating_rich_text, "Veuillez compléter les modalités d’évaluation du stage")
+      errors.add(:activity_rating_rich_text, 'Veuillez compléter les modalités d’évaluation du stage')
     end
   end
 
   def valid_trix_main_teacher_fields
     if !troisieme_generale? && activity_preparation_rich_text.blank?
-      errors.add(:activity_preparation_rich_text, "Veuillez compléter les modalités de concertation")
+      errors.add(:activity_preparation_rich_text, 'Veuillez compléter les modalités de concertation')
     end
   end
 
   def valid_working_hours_fields
     if weekly_planning?
-      errors.add(:same_daily_planning, "Veuillez compléter les horaires et repas de la journée de stage") unless valid_weekly_planning?
+      unless valid_weekly_planning?
+        errors.add(:same_daily_planning,
+                   'Veuillez compléter les horaires et repas de la journée de stage')
+      end
     elsif daily_planning?
-      errors.add(:weekly_planning, "Veuillez compléter les horaires et repas de la semaine de stage") unless valid_daily_planning?
+      unless valid_daily_planning?
+        errors.add(:weekly_planning,
+                   'Veuillez compléter les horaires et repas de la semaine de stage')
+      end
     else
-      errors.add(:weekly_planning, "Veuillez compléter les horaires du stage")
+      errors.add(:weekly_planning, 'Veuillez compléter les horaires du stage')
     end
   end
 
@@ -189,11 +220,44 @@ class InternshipAgreement < ApplicationRecord
   end
 
   def daily_planning?
-    new_daily_hours.except('samedi').values.flatten.any? { |v| ! v.blank? }
+    new_daily_hours.except('samedi').values.flatten.any? { |v| !v.blank? }
   end
 
   def valid_daily_planning?
-    new_daily_hours.except('samedi').values.all? { |v| !v.blank? } && daily_lunch_break.except('samedi').values.all? { |v| !v.blank? }
+    new_daily_hours.except('samedi').values.all? do |v|
+      !v.blank?
+    end && daily_lunch_break.except('samedi').values.all? do |v|
+             !v.blank?
+           end
+  end
+
+  def roles_not_signed_yet
+    Signature.signatory_roles.keys - roles_already_signed
+  end
+
+  def signature_by_role(signatory_role:)
+    return nil if signatures.blank?
+
+    signatures.find_by(signatory_role: signatory_role)
+  end
+
+  def signature_image_attached?(signatory_role:)
+    signature = signature_by_role(signatory_role: signatory_role)
+    return signature.signature_image.attached? if signature && signature.signature_image
+
+    false
+  end
+
+  def ready_to_sign?(user:)
+    aasm_state.to_s.in?(%w[validated signatures_started]) && !signed_by?(user: user)
+  end
+
+  def signed_by?(user:)
+    signatures.pluck(:user_id).include?(user.id)
+  end
+
+  def presenter
+    Presenters::InternshipAgreement.new(self)
   end
 
   def roles_not_signed_yet
@@ -236,7 +300,7 @@ class InternshipAgreement < ApplicationRecord
   def notify_others_signatures_started(agreement)
     roles_not_signed_yet.each do |role|
       mailer_map[role.to_sym].notify_others_signatures_started_email(
-        internship_agreement: agreement,
+        internship_agreement: agreement
       ).deliver_later
     end
   end

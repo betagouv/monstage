@@ -109,8 +109,8 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   end
 
   test 'student can browse his internship_applications' do
-    school = create(:school)
-    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
+    school = create(:school, :with_school_manager, :with_troisieme_generale)
+    student = create(:student, school: school)
     internship_applications = {
       drafted: create(:weekly_internship_application, :drafted, student: student),
       submitted: create(:weekly_internship_application, :submitted, student: student),
@@ -183,7 +183,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   end
 
   test 'student with approved application can see employer\'s address' do
-    school = create(:school)
+    school = create(:school, :with_school_manager)
     student = create(:student,
                      school: school,
                      class_room: create(

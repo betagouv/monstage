@@ -21,8 +21,8 @@ module Dashboard
         employer = internship_agreement.employer
         weeks = [Week.find_by(number: 5, year: 2020), Week.find_by(number: 6, year: 2020)]
         internship_offer = create(:weekly_internship_offer, weeks: weeks, employer: employer)
-        school = create(:school, weeks: weeks)
-        student = create(:student, school: school, class_room: create(:class_room, school: school))
+        student = create(:student, school: create(:school, weeks: weeks))
+        create(:school_manager, school: student.school)
         internship_application = create(:weekly_internship_application,
                                         :approved,
                                         motivation: 'au taquet',

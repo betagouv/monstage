@@ -72,6 +72,12 @@
                                 options_from_collection_for_select(user_roles_to_select, :value, :text, current_user.role),
                                 { include_blank: false},
                                 { class: 'fr-select', data: {action: 'change->profile#refreshEmailFieldLabel'} }
+        - if can?(:choose_function, current_user)
+          .form-group
+            = f.label :employer_role, class: 'fr-label', for: 'user_employer_role' do
+              = "Fonction au sein de l'entrerprise"
+              = f.rg2a_required_content_tag
+            = f.text_field :employer_role, class: 'fr-input', required: true
 
     .row
       .col-md-6.col-xs-12
