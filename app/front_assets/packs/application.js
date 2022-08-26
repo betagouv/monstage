@@ -65,6 +65,7 @@ import 'url-search-params-polyfill';
 import '../bootapp';
 
 import '../utils/zammad_form';
-$(document).on("turbo:load", () => {
-  console.log('turbo:load');
-});
+
+import '../utils/confirm'
+
+

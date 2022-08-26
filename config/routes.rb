@@ -54,8 +54,16 @@ Rails.application.routes.draw do
   end
 
   namespace :dashboard, path: 'dashboard' do
-    # resources :support_tickets, only: %i[new create] not used anymore since remote internships are off
-    resources :internship_agreements,  except: %i[destroy]
+    resources :internship_agreements,  except: %i[destroy] 
+    resources :users, only: %i[update], module: 'group_signing' do
+      member do
+        post 'start_signing'
+        post 'reset_phone_number'
+        post 'resend_sms_code'
+        post 'signature_code_validate'
+        post 'handwrite_sign'
+      end
+    end
 
     resources :schools, only: %i[index edit update show] do
       resources :users, only: %i[destroy update index], module: 'schools'

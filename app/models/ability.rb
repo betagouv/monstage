@@ -91,6 +91,7 @@ class Ability
     can %i[
       create
       edit
+      sign_internship_agreements
       edit_activity_rating_rich_text
       edit_complementary_terms_rich_text
       edit_financial_conditions_rich_text
@@ -123,8 +124,10 @@ class Ability
     can %i[edit update], InternshipAgreementPreset do |internship_agreement_preset|
       internship_agreement_preset.school_id == user.school_id
     end
+    can :create, Signature do |signature|
+      signature.internship_agreement.school_manager == user.id
+    end
   end
-
 
 
   def employer_abilities(user:)
@@ -153,6 +156,10 @@ class Ability
     can %i[index update], InternshipApplication
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
 
+    can :create, Signature do |signature|
+      signature.internship_agreement.internship_offer.employer_id == user.id
+    end
+
     can %i[
       create
       edit
@@ -168,9 +175,10 @@ class Ability
       edit_siret
       edit_tutor_full_name
       edit_weekly_hours
+      sign_internship_agreements
       update
     ], InternshipAgreement do |agreement|
-      agreement.internship_application.internship_offer.employer == user
+      agreement.employer == user
     end
   end
 
@@ -248,7 +256,6 @@ class Ability
   end
 
   def statistician_abilities(user:)
-
     common_to_all_statisticians(user: user)
 
     can :show, :api_token

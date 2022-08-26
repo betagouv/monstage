@@ -24,8 +24,8 @@ FactoryBot.define do
       aasm_state { :approved }
       submitted_at { 3.days.ago }
       approved_at { 2.days.ago }
-      after(:create) do |application|
-        create(:internship_agreement, internship_application: application)
+      after(:create) do |internship_application|
+        create(:internship_agreement, internship_application: internship_application)
       end
     end
 

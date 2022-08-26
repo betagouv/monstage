@@ -1,4 +1,5 @@
 require 'cgi'
+require 'open-uri'
 include ApplicationHelper
 
 class GenerateInternshipAgreement < Prawn::Document
@@ -39,6 +40,9 @@ class GenerateInternshipAgreement < Prawn::Document
     article_9
     article_10
     signatures
+    signature_table_header
+    signature_table
+    signature_table_footer
     footer
     page_number
     @pdf
@@ -124,9 +128,9 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.move_down 2
     @pdf.text "Fonction  : #{@internship_agreement.school_representative_role} "
     @pdf.move_down 2
-    @pdf.text "Courriel  : #{pointing student.school.school_manager.email} "
+    @pdf.text "Courriel  : #{dotting student.school.school_manager.email} "
     @pdf.move_down 2
-    @pdf.text "N° de téléphone  : #{pointing student.school.school_manager&.phone} "
+    @pdf.text "N° de téléphone  : #{dotting student.school.school_manager&.phone} "
 
     @pdf.move_down 20
   end
@@ -140,13 +144,13 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.move_down 2
     @pdf.text "Date de naissance : #{student.presenter.birth_date} "
     @pdf.move_down 2
-    @pdf.text "Adresse personnelle : #{pointing @internship_agreement.student_address, 75} "
+    @pdf.text "Adresse personnelle : #{dotting @internship_agreement.student_address, 75} "
     @pdf.move_down 2
     @pdf.text "Courriel : #{student.email} "
     @pdf.move_down 2
-    @pdf.text "N° de téléphone de l’élève : #{pointing student&.phone} "
+    @pdf.text "N° de téléphone de l’élève : #{dotting student&.phone} "
     @pdf.move_down 2
-    @pdf.text "Classe : #{pointing student&.class_room&.name}"
+    @pdf.text "Classe : #{dotting student&.class_room&.name}"
     @pdf.move_down 10
     @pdf.text "Représentant légal (ou personne responsable) n°1 (nom et prénom) :" \
               "#{@internship_agreement.student_legal_representative_full_name} "
@@ -156,11 +160,11 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.text "Téléphone : #{@internship_agreement.student_legal_representative_phone} "
     @pdf.move_down 10
     @pdf.text "Le cas échéant, représentant légal n°2 (nom et prénom) : " \
-              "#{pointing(@internship_agreement.student_legal_representative_2_full_name,  70)} "
+              "#{dotting(@internship_agreement.student_legal_representative_2_full_name,  70)} "
     @pdf.move_down 7
-    @pdf.text "Courriel : #{pointing(@internship_agreement.student_legal_representative_2_email,  70)} "
+    @pdf.text "Courriel : #{dotting(@internship_agreement.student_legal_representative_2_email,  70)} "
     @pdf.move_down 7
-    @pdf.text "Téléphone : #{pointing(@internship_agreement.student_legal_representative_2_phone,  70)} "
+    @pdf.text "Téléphone : #{dotting(@internship_agreement.student_legal_representative_2_phone,  70)} "
 
     @pdf.move_down 20
 
@@ -228,7 +232,7 @@ class GenerateInternshipAgreement < Prawn::Document
            "D. 331-1 D. 331-3, D. 331-6, D. 331-8, D. 331-9, D. 332 14 et"
     @pdf.text text
     text = "Vu la délibération du conseil d’administration du collège en date du " \
-           "#{pointing @internship_agreement.school_delegation_to_sign_delivered_at } " \
+           "#{dotting @internship_agreement.school_delegation_to_sign_delivered_at } " \
            " approuvant la convention-type dématérialisée et autorisant le chef " \
            "d’établissement à conclure au nom de l’établissement toute " \
            "convention relative à la séquence en milieu professionnel conforme " \
@@ -350,7 +354,6 @@ class GenerateInternshipAgreement < Prawn::Document
       "sur leur lieu de stage avant huit heures du matin et après dix-huit " \
       "heures le soir. Pour l’élève de moins de seize ans, le travail de nuit " \
       "est interdit. Cette disposition ne souffre aucune dérogation.")
-
   end
 
   def article_9
@@ -466,6 +469,62 @@ class GenerateInternshipAgreement < Prawn::Document
     # @pdf.move_down 20
   # end
 
+  def signatures
+    @pdf.text "Fait en trois exemplaires à #{@internship_agreement.school_manager.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
+
+    @pdf.move_down 20
+  end
+
+  def signature_table_header
+    table_data= [[
+      "L'entreprise ou l'organisme d'accueil",
+      "Le représentant de l'établissement d'enseignement scolaire",
+      "L'élève",
+      "Les parents       (responsables légaux)"]]
+    @pdf.table(
+      table_data,
+      row_colors: ["F0F0F0"],
+      column_widths: [PAGE_WIDTH / 4] * 4,
+      cell_style: {size: 10}
+    ) do |t|
+        t.cells.border_color="cccccc"
+        t.cells.align=:center
+    end
+  end
+
+  def signature_table
+    img_empl      = image_from signature: download_image_and_signature(signatory_role: 'employer')
+    img_s_manager = image_from signature: download_image_and_signature(signatory_role: 'school_manager')
+
+    table_data = [[img_empl, img_s_manager, "", ""]]
+    @pdf.table(
+      table_data,
+      row_colors: ["FFFFFF"],
+      column_widths: [PAGE_WIDTH / 4] * 4
+    )  do |t|
+      t.cells.borders = [:left, :right]
+      t.cells.border_color="cccccc"
+      t.cells.height= 100
+    end
+  end
+
+  def signature_table_footer
+    table_data = [[
+      signature_date_str(signatory_role:'employer'),
+      signature_date_str(signatory_role:'school_manager'),
+      "",
+      "" ]]
+    @pdf.table(
+      table_data,
+      row_colors: ["FFFFFF"],
+      column_widths: [PAGE_WIDTH / 4] * 4,
+      cell_style: {size: 8, color: '555555'}
+    )  do |t|
+      t.cells.borders = [:left, :right, :bottom]
+      t.cells.border_color="cccccc"
+    end
+  end
+
 
 
   def page_number
@@ -494,13 +553,36 @@ class GenerateInternshipAgreement < Prawn::Document
     end
   end
 
-  def pointing(text, len = 35)
+  def dotting(text, len = 35)
     text.nil? ? '.' * len : text
   end
 
+  private
 
-  def signatures
-    @pdf.text "Fait à #{internship_application.student.school.city.capitalize}, le .................."
+  def image_from(signature: )
+    signature.nil? ? "" : {image: signature.local_signature_image_file_path}.merge(SIGNATURE_OPTIONS)
+  end
+
+  def download_image_and_signature(signatory_role:)
+    signature = @internship_agreement.signature_by_role(signatory_role: signatory_role)
+    return nil if signature.nil?
+    # When local images stay in the configurated storage directory
+    return signature if Rails.application.config.active_storage.service == :local
+
+    # When on external storage service , they are to be donwloaded
+    img = signature.signature_image.download if signature.signature_image.attached?
+    return nil if img.nil?
+
+    File.open(signature.local_signature_image_file_path, "wb") { |f| f.write(img) }
+    signature
+  end
+
+  def signature_date_str(signatory_role:)
+    if @internship_agreement.signature_image_attached?(signatory_role: signatory_role)
+      return @internship_agreement.signature_by_role(signatory_role: signatory_role).presenter.signed_at
+    end
+
+    ''
   end
 
   def subtitle(string)

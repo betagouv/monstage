@@ -2,14 +2,13 @@ FactoryBot.define do
   factory :internship_agreement do
     internship_application { create(:weekly_internship_application) }
 
-    school_representative_full_name { internship_application.student.school_manager.presenter.full_name }
+    school_representative_full_name { internship_application.student.school.school_manager.last_name }
     school_representative_phone { FFaker::PhoneNumberFR.mobile_phone_number }
     school_representative_email { FFaker::Internet.email }
     school_representative_role { 'Principal de collège' }
     student_school { internship_application.student.school.name }
     student_address { "#{FFaker::Address.street_address} #{internship_application.student.school.zipcode} #{internship_application.student.school.city}" }
     student_refering_teacher_full_name { FFaker::NameFR.name }
-    # student_refering_teacher_full_name { internship_application.student.main_teacher.presenter.full_name }
     student_refering_teacher_email { FFaker::Internet.email }
     student_refering_teacher_phone { FFaker::PhoneNumberFR.mobile_phone_number }
     student_phone { '+330325254575' }
@@ -56,6 +55,28 @@ FactoryBot.define do
       skip_validations_for_system { true }
     end
 
+    trait :draft do
+      aasm_state { 'draft' }
+    end
+    trait :started_by_employer do
+      aasm_state { 'started_by_employer' }
+    end
+    trait :completed_by_employer do
+      aasm_state { 'completed_by_employer' }
+    end
+    trait :started_by_school_manager do
+      aasm_state { 'started_by_school_manager' }
+    end
+    trait :validated do
+      aasm_state { 'validated' }
+    end
+    trait :signatures_started do
+      aasm_state { 'signatures_started' }
+    end
+    trait :signed_by_all do
+      aasm_state { 'signed_by_all' }
+    end
+    
     factory :troisieme_generale_internship_agreement, traits: [:troisieme_generale_internship_agreement],
                                                       parent: :internship_agreement
     factory :troisieme_prepa_metier_internship_agreement, traits: [:troisieme_prepa_metier_internship_agreement],

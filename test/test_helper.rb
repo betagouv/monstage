@@ -14,15 +14,12 @@ require 'support/email_spam_euristics_assertions'
 require 'support/organisation_form_filler'
 require 'support/internship_offer_info_form_filler'
 require 'support/tutor_form_filler'
+require 'support/turbo_assertions_helper'
 require 'minitest/retry'
 require 'webmock/minitest'
 # these two lines should be withdrawn whenever the ChromeDriver is ok
 # https://stackoverflow.com/questions/70967207/selenium-chromedriver-cannot-construct-keyevent-from-non-typeable-key/70971698#70971698
 require 'webdrivers/chromedriver'
-# Webdrivers::Chromedriver.required_version = '98.0.4758.80' # not working locally because of @ char
-# Webdrivers::Chromedriver.required_version = '97.0.4692.71' # works ok locally TODO
-# Webdrivers::Chromedriver.required_version = '101.0.4951.41' # works ok locally
-# Webdrivers::Chromedriver.required_version = '89.0.4389.114' # declared on CI but not working locally with that line
 
 Capybara.save_path = Rails.root.join('tmp/screenshots')
 
@@ -56,4 +53,14 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+end
+
+class ActionDispatch::IntegrationTest
+  def after_teardown
+    super
+    FileUtils.rm_rf(ActiveStorage::Blob.service.root)
+  end
+  parallelize_setup do |i|
+    ActiveStorage::Blob.service.root = "#{ActiveStorage::Blob.service.root}-#{i}"
+  end
 end

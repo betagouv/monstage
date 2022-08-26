@@ -1,0 +1,43 @@
+.fr-modal__body.w-100 id="internship-agreement-signature-form"
+  .fr-modal__header
+    button.fr-btn--close.fr-btn aria-controls="fr-modal-signatures"  Fermer
+  .fr-modal__content
+    h1#fr-modal-signature-title.fr-modal__title
+      span.fr-fi-arrow-right-line.fr-fi--lg aria-hidden="true"
+      | Apposez votre signature
+    .d-flex.flex-row
+      div.fr-pt-1v Pour finaliser la signature, merci d'apposer votre signature manuscrite ci-dessous.
+  .fr-modal__footer.w-100
+    = form_with(model: current_user,
+                scope: :user,
+                data: {turbo: false},
+                url: handwrite_sign_dashboard_user_path(id: current_user.id),
+                method: :post) do |f|
+      = f.hidden_field :id, value: current_user.id, name: 'user[id]'
+
+
+      .row data-controller='handwrite-sign'
+        .col-5
+          .signature-pad-wrapper
+            canvas#signature-pad data-handwrite-sign-target='pad'
+          = link_to "#",
+                    id: 'clear',
+                    class: 'fr-mx-2v fr-raw-link',
+                    data: {:'handwrite-sign-target' => 'clear', action: 'handwrite-sign#clear'} do
+
+            span.fr-icon-delete-line.small aria-hidden="true" Effacer
+        .col-5.h-100
+          .fr-m-2w.d-flex.flex-column
+            .d-block.text-muted.fr-mb-1w.fr-pb-1w.fr-mt-9v Votre signature sera apposée sur la convention de stage
+            = f.hidden_field :agreement_ids,
+                             value: @agreement_ids,
+                             name: 'user[agreement_ids]'
+            = f.hidden_field :signature_image,
+                            data: {:'handwrite-sign-target'=> 'signature'},
+                            id: "handwrite_signature"
+            = f.submit "Confirmer la signature",
+                        disabled: true,
+                        class: 'fr-btn',
+                        id: "submit",
+                        data: {:"handwrite-sign-target" => 'submitter',
+                               :action => 'handwrite-sign#save' }

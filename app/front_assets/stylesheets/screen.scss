@@ -27,7 +27,6 @@
 @import './components/p';
 @import './components/pagination';
 @import './components/pre';
-@import './components/progress';
 @import './components/richtext';
 @import './components/search';
 @import './components/sticky_alert';
@@ -50,5 +49,6 @@
 @import './pages/error';
 
 @import 'app/components/user_hideable_component.scss';
+@import 'app/components/internship_agreements/button_component.scss';
 @import 'trix';
 

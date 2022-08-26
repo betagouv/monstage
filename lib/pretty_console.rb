@@ -3,7 +3,7 @@ module PrettyConsole
     puts "\e[31m=====> #{str} <=====\e[0m"
   end
   def self.say_in_green(str)
-    puts "\e[32m=====> #{str} <=====\e[0m"
+    puts "\e[32m=====>  #{str} <=====\e[0m"
   end
   def self.say_in_yellow(str)
     puts "\e[33m=====> #{str} <=====\e[0m"

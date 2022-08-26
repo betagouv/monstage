@@ -1,0 +1,21 @@
+p style=head_styles
+  = "Convention de stage de #{@prez_stud.full_name}"
+
+p style=p_styles
+  | Bonjour,
+
+p style=p_styles
+  = "La convention de stage de #{@prez_stud.full_name} pour le stage '" \
+    "#{@internship_offer.title}' au sein de votre entreprise vient d'être " \
+    "signée par le chef d'établissement, #{@school_manager.presenter.formal_name}"
+p style=p_styles
+  |
+    Elle est donc signée par toutes les parties. Elle est disponible à la lecture ou l'impression avec ses signatures
+= render partial: "mailers/call_to_action",
+          locals: { href: @url,
+                    label: "Voir la convention signée" }
+
+p style=p_styles
+  | Excellente journée,
+p style=p_styles
+  | L’équipe Monstagedetroisieme.fr

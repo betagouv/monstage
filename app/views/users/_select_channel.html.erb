@@ -47,7 +47,8 @@
     <%= react_component("CountryPhoneSelect",
       props: {
         name: 'user[phone]',
-        value: resource.phone || params[:phone]
+        value: resource.phone || params[:phone],
+        withTarget: true
       })
     %>
     <small class="text-muted">(+33 puis 06 11 22 33 44 par exemple)</small>

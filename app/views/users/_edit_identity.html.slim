@@ -5,7 +5,7 @@
               scope: :user,
               url: account_path,
               method: :patch,
-              data: {controller: "profile"} do |f|
+              data: {controller: "profile", turbo: false} do |f|
     = f.rg2a_explain_required_asterisk
     = render 'layouts/form_errors', resource: current_user, resource_name: :user
 
