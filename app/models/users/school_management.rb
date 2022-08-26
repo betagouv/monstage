@@ -98,6 +98,7 @@ module Users
     end
 
     def school_management? ; true end
+    def school_manager? ; role == 'school_manager' end
 
     def school_manager
       try(:school).try(:school_manager)

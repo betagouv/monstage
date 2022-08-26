@@ -22,7 +22,7 @@ module PrettyConsole
   end
 
   # with backgrounds
-  
+
   def self.say_with_leight_background(str)
     puts "\e[40m=====> #{str} <=====\e[0m"
   end

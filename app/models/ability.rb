@@ -83,6 +83,10 @@ class Ability
 
   def school_manager_abilities(user:)
     can :create_remote_internship_request, SupportTicket
+    can :sign, InternshipAgreement do |internship_agreement|
+      internship_agreement.school_manager.id == user.id
+    end
+
     can_manage_school(user: user) do
       can [:delete], User do |managed_user_from_school|
         managed_user_from_school.school_id == user.school_id
