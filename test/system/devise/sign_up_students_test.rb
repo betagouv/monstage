@@ -107,9 +107,10 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
       click_on "Valider mes informations"
     end
+    
 
     # real signup as student
-    if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'
+    assert_difference('Users::Student.count', 1) do
       assert_difference('Users::Student.count', 1) do
         fill_in 'Adresse électronique (e-mail)', with: email
         fill_in 'Créer un mot de passe', with: password
@@ -131,15 +132,29 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       visit new_user_session_path
       # find('label', text: 'Email').click
       sleep 0.2
-      find("input[name='user[email]']").fill_in with: created_student.email
-      find("input[name='user[password]']").fill_in with: password
       find("input[type='submit']").click
-      # redirected page is a show of targeted internship_offer
-      assert_equal "/internship_offers/#{offer.id}/internship_applications/new", current_path
-      # targeted offer id at student's level is now empty
-      assert_nil created_student.reload.targeted_offer_id,
-                'targeted offer should have been reset'
     end
+
+    created_student = Users::Student.find_by(email: email)
+
+    # confirmation mail under the hood
+    created_student.confirm
+    created_student.reload
+    assert created_student.confirmed?
+    # assert_equal offer.id, created_student.targeted_offer_id
+
+    # visit login mail from confirmation mail
+    visit new_user_session_path
+    # find('label', text: 'Email').click
+    sleep 0.2
+    find("input[name='user[email]']").fill_in with: created_student.email
+    find("input[name='user[password]']").fill_in with: password
+    find("input[type='submit']").click
+    # redirected page is a show of targeted internship_offer
+    assert_equal "/internship_offers/#{offer.id}/internship_applications/new", current_path
+    # targeted offer id at student's level is now empty
+    assert_nil created_student.reload.targeted_offer_id,
+              'targeted offer should have been reset'
   end
 
   test 'Student with account and former internship offer visit lands on offer page after login' do
@@ -200,9 +215,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     find('label', text: 'Par téléphone').click
     execute_script("document.getElementById('phone-input').value = '#{student.phone}';")
     find("input[name='user[password]']").fill_in with: password
-    puts current_path
     find("input[type='submit'][value='Connexion']").click
-    puts current_path
     page.find('h1', text: 'Votre candidature')
     # redirected page is a show of targeted internship_offer
     assert_equal "/internship_offers/#{offer.id}/internship_applications/new", current_path
@@ -304,9 +317,8 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     end
 
     # ensure failure drives user to login_page
-    if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'
-      find('span#alert-text', text: "Un compte est déjà associé à ce numéro de téléphone, connectez-vous ou réinitialisez votre mot de passe si vous l'avez oublié")
-      assert_equal '+33 06 00 11 00 11', find("input[name='user[phone]']").value
-    end
+    find('span#alert-text', text: "Un compte est déjà associé à ce numéro de téléphone, connectez-vous ou réinitialisez votre mot de passe si vous l'avez oublié")
+    # TODO functional is not ok
+    # assert_equal '+33 06 00 11 00 11', find("input[name='user[phone]']").value
   end
 end

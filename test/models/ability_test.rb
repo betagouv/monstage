@@ -142,6 +142,8 @@ class AbilityTest < ActiveSupport::TestCase
     ].each do |meth|
       assert(ability.can?(meth, internship_agreement), "Employer fail: #{meth}")
     end
+    internship_agreement.update_columns(aasm_state: :started_to_sign)
+    assert(ability.can?(:sign, internship_agreement.reload), "Signature fails")
   end
 
   test 'God' do
@@ -284,8 +286,6 @@ class AbilityTest < ActiveSupport::TestCase
 
     assert(ability.can?(:create, InternshipAgreement))
     %i[create
-       update
-       see_intro
        edit_school_representative_full_name
        edit_legal_terms_rich_text
        edit_student_full_name
@@ -293,9 +293,14 @@ class AbilityTest < ActiveSupport::TestCase
        edit_legal_terms_rich_text
        edit_school_representative_full_name
        edit_student_school
-       edit_complementary_terms_rich_text].each do |meth|
+       edit_complementary_terms_rich_text
+       sign
+       see_intro
+       update].each do |meth|
       assert(ability.can?(meth, internship_agreement))
     end
+    internship_agreement.update_columns(aasm_state: :validated)
+    assert(ability.can?(:sign, internship_agreement.reload), "Ability : Signature fails")
   end
 
   test 'MainTeacher' do
@@ -343,6 +348,8 @@ class AbilityTest < ActiveSupport::TestCase
           'school_manager should be able manage school')
     assert(ability.cannot?(:manage_school_users, another_school))
     assert(ability.cannot?(:manage_school_students, another_school))
+    refute(ability.can?(:sign, internship_agreement.reload),
+          "Ability : Signature should not be possible for teachers")
   end
 
   test 'Teacher' do

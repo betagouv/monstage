@@ -8,6 +8,7 @@ module Users
   #   other (involve psychologists, teacher assistants etc...)
   class SchoolManagement < User
     include SchoolManagementAdmin
+    include Signatorable
 
     validates :first_name,
               :last_name,
@@ -78,7 +79,26 @@ module Users
     end
     alias :presenter :role_presenter
 
+    def signatory_role
+      Signature.signatory_roles[:school_manager] if role == 'school_manager'
+    end
+
+    def already_signed?(internship_agreement_id:)
+      return false unless role == 'school_manager'
+
+      internship_agreement = InternshipAgreement.joins(:signatures)
+                                                .where(id: internship_agreement_id)
+                                                .where(signatures: {signatory_role: signatory_role})
+      internship_agreement.any? &&
+        internship_agreement.first
+                            .try(:student)
+                            .try(:school)
+                            .try(:school_manager)
+                            .try(:id) == id
+    end
+
     def school_management? ; true end
+    def school_manager? ; role == 'school_manager' end
 
     private
 

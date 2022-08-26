@@ -1,4 +1,7 @@
 #internship-agreements-panel.fr-tabs__panel.fr-tabs__panel--selected [
+  data-controller='group-signing'
+  data-group-signing-counter-value='0'
+  data-group-signing-max-counter-value='0'
   aria-labelledby="tabpanel-404"
   role="tabpanel"
   tabindex="0"]
@@ -27,9 +30,8 @@
         - else
           = render partial: "dashboard/schools/internship_agreement_presets/short_form",
                     locals: { school: current_user.school, internship_agreement_preset: current_user.school.internship_agreement_preset }
-
   - if @internship_agreements.empty?
     = render partial: 'empty_agreement_list'
-
-  = render partial: 'dashboard/internship_agreements/internship_agreements_list',
+  - else
+    = render partial: 'dashboard/internship_agreements/internship_agreements_list',
              locals: {internship_agreements: @internship_agreements}

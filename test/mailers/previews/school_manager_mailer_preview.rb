@@ -17,6 +17,18 @@ class SchoolManagerMailerPreview < ActionMailer::Preview
     )
   end
 
+  def notify_others_signatures_started_email
+    SchoolManagerMailer.notify_others_signatures_started_email(
+      internship_agreement: InternshipAgreement.first
+    )
+  end
+
+  def notify_others_signatures_finished_email
+    SchoolManagerMailer.notify_others_signatures_finished_email(
+      internship_agreement: InternshipAgreement.first
+    )
+  end
+
 
   private
 

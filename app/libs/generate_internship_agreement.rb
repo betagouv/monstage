@@ -1,3 +1,4 @@
+require 'open-uri'
 include ApplicationHelper
 
 class GenerateInternshipAgreement < Prawn::Document
@@ -5,6 +6,14 @@ class GenerateInternshipAgreement < Prawn::Document
     @internship_agreement = InternshipAgreement.find(internship_agreement_id)
     @pdf = Prawn::Document.new(margin: [40, 40, 100, 40])
   end
+
+  PAGE_WIDTH = 532
+  SIGNATURE_OPTIONS = {
+    position: :center,
+    vposition: :center,
+    fit: [PAGE_WIDTH / 4, PAGE_WIDTH / 4]
+  }
+
 
   def call
     header
@@ -15,6 +24,9 @@ class GenerateInternshipAgreement < Prawn::Document
     part_two
     form
     signatures
+    signature_table_header
+    signature_table
+    signature_table_footer
     footer
     page_number
     @pdf
@@ -46,10 +58,13 @@ class GenerateInternshipAgreement < Prawn::Document
 
   def parties
     subtitle "ENTRE"
-    @pdf.text "L’entreprise ou l’organisme d’accueil, #{@internship_agreement.internship_application.internship_offer.employer_name} représentée par #{@internship_agreement.organisation_representative_full_name}, en qualité de chef d’entreprise ou de responsable de l’organisme d’accueil d’une part,"
+    @pdf.text "L’entreprise ou l’organisme d’accueil, #{@internship_agreement.internship_offer.employer_name} représentée par #{@internship_agreement.organisation_representative_full_name}, en qualité de chef d’entreprise ou de responsable de l’organisme d’accueil d’une part,"
     @pdf.move_down 10
     subtitle "ET"
-    @pdf.text "L’établissement d’enseignement scolaire, #{@internship_agreement.student_school} représenté par #{@internship_agreement.school_representative_full_name}, en qualité de chef d’établissement, a été nommé apte à signer les conventions par le conseil d'administration de l'établissement en date du #{@internship_agreement.school_delegation_to_sign_delivered_at.strftime("%d/%m/%Y")} d’autre part, "
+    @pdf.text "L’établissement d’enseignement scolaire, #{@internship_agreement.student_school} représenté par " \
+              "#{@internship_agreement.school_representative_full_name}, en qualité de chef d’établissement, a été nommé " \
+              "apte à signer les conventions par le conseil d'administration de l'établissement en date du " \
+              "#{@internship_agreement.presenter.delegation_date} d’autre part, "
     @pdf.move_down 20
   end
 
@@ -137,7 +152,59 @@ class GenerateInternshipAgreement < Prawn::Document
   end
 
   def signatures
-    @pdf.text "Fait en trois exemplaires à #{@internship_agreement.internship_application.student.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
+    @pdf.text "Fait en trois exemplaires à #{@internship_agreement.school_manager.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
+
+    @pdf.move_down 20
+  end
+
+  def signature_table_header
+    table_data= [[
+      "L'entreprise ou l'organisme d'accueil",
+      "Le représentant de l'établissement d'enseignement scolaire",
+      "L'élève",
+      "Les parents       (responsables légaux)"]]
+    @pdf.table(
+      table_data,
+      row_colors: ["F0F0F0"],
+      column_widths: [PAGE_WIDTH / 4] * 4,
+      cell_style: {size: 10}
+    ) do |t|
+        t.cells.border_color="cccccc"
+        t.cells.align=:center
+    end
+  end
+
+  def signature_table
+    img_empl      = image_from signature: download_image_and_signature(signatory_role: 'employer')
+    img_s_manager = image_from signature: download_image_and_signature(signatory_role: 'school_manager')
+
+    table_data = [[img_empl, img_s_manager, "", ""]]
+    @pdf.table(
+      table_data,
+      row_colors: ["FFFFFF"],
+      column_widths: [PAGE_WIDTH / 4] * 4
+    )  do |t|
+      t.cells.borders = [:left, :right]
+      t.cells.border_color="cccccc"
+      t.cells.height= 100
+    end
+  end
+
+  def signature_table_footer
+    table_data = [[
+      signature_date_str(signatory_role:'employer'),
+      signature_date_str(signatory_role:'school_manager'),
+      "",
+      "" ]]
+    @pdf.table(
+      table_data,
+      row_colors: ["FFFFFF"],
+      column_widths: [PAGE_WIDTH / 4] * 4,
+      cell_style: {size: 8, color: '555555'}
+    )  do |t|
+      t.cells.borders = [:left, :right, :bottom]
+      t.cells.border_color="cccccc"
+    end
   end
 
   def page_number
@@ -164,6 +231,34 @@ class GenerateInternshipAgreement < Prawn::Document
                     :width => @pdf.bounds.width,
                     color: 'cccccc')
     end
+  end
+
+  private
+
+  def image_from(signature: )
+    signature.nil? ? "" : {image: signature.local_signature_image_file_path}.merge(SIGNATURE_OPTIONS)
+  end
+
+  def download_image_and_signature(signatory_role:)
+    signature = @internship_agreement.signature_by_role(signatory_role: signatory_role)
+    return nil if signature.nil?
+    # When local images stay in the configurated storage directory
+    return signature if Rails.application.config.active_storage.service == :local
+
+    # When on external storage service , they are to be donwloaded
+    img = signature.signature_image.download if signature.signature_image.attached?
+    return nil if img.nil?
+
+    File.open(signature.local_signature_image_file_path, "wb") { |f| f.write(img) }
+    signature
+  end
+
+  def signature_date_str(signatory_role:)
+    if @internship_agreement.signature_image_attached?(signatory_role: signatory_role)
+      return @internship_agreement.signature_by_role(signatory_role: signatory_role).presenter.signed_at
+    end
+
+    ''
   end
 
   def subtitle(string)

@@ -23,17 +23,22 @@ class ManageCompleteOfferFillingTest < ApplicationSystemTestCase
         sign_in(employer)
         visit employer.custom_dashboard_path
         find('#test-create-offer').click
+        # 1
         fill_in_organisation_form(is_public: true, group: group)
         click_on "Suivant"
+        find('legend', text: 'Offre de stage')
+        # 2
+        sleep 0.3
         click_link "Précédent"
-        sleep 0.2
+        # 1
+        sleep 0.3
         find('legend', text: "Informations sur l'entreprise")
         click_on "Suivant"
-        sleep 0.2
-        find('fieldset legend', text: 'Offre de stage')
-        fill_in_internship_offer_info_form(school_track: :troisieme_generale,
-                                          sector: sector,
-                                          weeks: available_weeks)
+        # 2
+        sleep 0.3
+        find('legend', text: 'Offre de stage')
+        fill_in_internship_offer_info_form(sector: sector,
+                                           weeks: available_weeks)
 
         click_on "Suivant"
         find('legend', text: 'Informations sur le tuteur')

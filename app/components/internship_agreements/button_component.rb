@@ -1,39 +1,41 @@
 module InternshipAgreements
   class ButtonComponent < BaseComponent
-    attr_reader :internship_agreement, :current_user, :label
+    attr_reader :internship_agreement, :current_user, :label, :second_label
 
-    def initialize(internship_agreement:, current_user:, label: "Editer")
+    def initialize(internship_agreement:,
+                   current_user:,
+                   label: {status: 'enabled', text: 'Editer'},
+                   second_label: {status: 'disabled', text: 'En attente'})
       @internship_agreement = internship_agreement
-      @current_user = current_user
-      @label = button_label
+      @current_user         = current_user
+      @label              ||= button_label(bool_employer: current_user.employer?)
+      @second_label       ||= second_button_label
     end
 
-    def button_label
-      if @current_user.is_a?(Users::SchoolManagement)
-        return school_management_button_label 
-      else
-        return employer_button_label
+    def button_label(bool_employer:)
+      # when not employer then school_manager
+      case @internship_agreement.aasm_state
+      when 'draft', 'started_by_employer' then
+        bool_employer ? {status: 'enabled', text: 'Remplir ma convention'} :
+                        {status: 'disabled', text: 'En attente'}
+      when 'completed_by_employer', 'started_by_school_manager' then
+        bool_employer ? {status: 'enabled', text: 'Vérifier ma convention'} :
+                        {status: 'enabled', text: 'Remplir ma convention'}
+      when 'validated', 'signatures_started', 'signed_by_all' then
+        {status: 'enabled', text: 'Imprimer'}
       end
     end
 
-    def school_management_button_label
+    def second_button_label
       case @internship_agreement.aasm_state
-      when 'draft' then 'En attente'
-      when 'started_by_employer' then 'En attente'
-      when 'completed_by_employer' then 'Vérifier ma convention'
-      when 'started_by_school_manager' then 'Vérifier ma convention'
-      else 'Imprimer'
-      end  
-    end
-
-    def employer_button_label
-      case @internship_agreement.aasm_state
-      when 'draft' then 'Remplir ma convention'
-      when 'started_by_employer' then 'Remplir ma convention'
-      when 'completed_by_employer' then 'Voir ma convention'
-      when 'started_by_school_manager' then 'Voir ma convention'
-      else 'Imprimer'
-      end  
+      when 'draft', 'started_by_employer' ,'completed_by_employer', 'started_by_school_manager' then
+        {status: 'disabled', text: 'Partie signature'}
+      when 'validated', 'signatures_started' then
+        user_signed_condition = current_user.already_signed?(internship_agreement_id: @internship_agreement.id)
+        user_signed_condition ? {status: 'disabled', text: 'Signée, en attente'} :
+                                {status: 'enabled', text: 'Signer la convention'}
+      when 'signed_by_all' then {status: 'disabled', text: 'Signée de tous'}
+      end
     end
   end
 end

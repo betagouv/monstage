@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'test_helper'
+require 'fileutils'
 
 # this app is BUILT FOR TWO PLATFORM : web/mobile
 #
@@ -38,5 +39,14 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
                                                                   fixtures
                                                                   files
                                                                   api-address-paris-13.json])))
+  end
+
+  def after_teardown
+    super
+    FileUtils.rm_rf(ActiveStorage::Blob.service.root)
+  end
+
+  parallelize_setup do |i|
+    ActiveStorage::Blob.service.root = "#{ActiveStorage::Blob.service.root}-#{i}"
   end
 end

@@ -3,6 +3,8 @@
 module Users
   class Employer < User
     include EmployerAdmin
+    include Signatorable
+
 
     has_many :internship_offers, as: :employer,
                                  dependent: :destroy
@@ -11,7 +13,7 @@ module Users
              class_name: 'InternshipOffer'
 
     has_many :internship_applications, through: :kept_internship_offers
-    has_many :internship_agreements, through: :internship_applications 
+    has_many :internship_agreements, through: :internship_applications
 
     has_many :organisations
     has_many :tutors
@@ -45,10 +47,20 @@ module Users
       internship_offers.map(&:anonymize)
     end
 
+    def signatory_role
+      Signature.signatory_roles[:employer]
+    end
+
+    def already_signed?(internship_agreement_id:)
+      internship_agreement = InternshipAgreement.joins(:signatures)
+                                                .where(id: internship_agreement_id)
+                                                .where(signatures: {signatory_role: signatory_role})
+      internship_agreement.any? &&
+        internship_agreement.first.internship_offer.employer_id == id
+    end
+
     def presenter
       Presenters::Employer.new(self)
     end
-
-    def employer?; true end
   end
 end

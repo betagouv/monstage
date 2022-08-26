@@ -5,12 +5,20 @@ import 'react-phone-input-2/lib/bootstrap.css';
 
 class CountryPhoneSelect extends React.Component {
   static propTypes = {
+    withTarget: PropTypes.bool,
     name: PropTypes.string,
     value: PropTypes.string,
     disabled: PropTypes.bool,
   };
 
   render() {
+    let inputProps = {
+      name: this.props.name,
+      id: 'phone-input'
+    }
+    if (this.props.withTarget) {
+      inputProps = { ...inputProps, 'data-signup-target': 'phoneInput' };
+    }
     return (
       <PhoneInput
         country="fr"
@@ -28,11 +36,7 @@ class CountryPhoneSelect extends React.Component {
         masks={{ fr: '.. .. .. .. ..' }}
         inputStyle={{ width: '100%', borderRadius: '3px 3px 0 0', borderTop: 0, borderLeft: 0, borderRight: 0, backgroundColor: '#eeeeee' }}
         inputClass="fr-input"
-        inputProps={{
-          name: this.props.name,
-          id: 'phone-input',
-          'data-signup-target': 'phoneInput',
-        }}
+        inputProps={inputProps}
       />
     );
   }

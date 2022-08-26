@@ -1,8 +1,12 @@
-.row.no-gutters.employer
-  .col-12
-    h1.h3.fr-mb-8w Editer, imprimer et bientôt signer les conventions dématérialisées
-.fr-tabs.fr-mb-9w.w-100
-  = render partial: "dashboard/internship_offers/tabs",
-             locals: { internship_offers: @internship_offers }
-  = render partial: 'dashboard/internship_agreements/internship_agreements_list',
-             locals: {internship_agreements: @internship_agreements}
+.employer [data-controller='group-signing'
+           data-group-signing-counter-value='0'
+           data-group-signing-max-counter-value='0']
+  .row.no-gutters
+    .col-12
+      h1.h3.fr-mb-8w Editer, imprimer et bientôt signer les conventions dématérialisées
+  .fr-tabs
+    = render partial: "dashboard/internship_offers/tabs",
+              locals: { internship_offers: @internship_offers }
+    = render partial: 'dashboard/internship_agreements/internship_agreements_list',
+              locals: {internship_agreements: @internship_agreements}
+  = render partial: 'dashboard/internship_agreements/signature/modal_dialog'

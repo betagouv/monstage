@@ -95,7 +95,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       sign_in(employer)
       visit dashboard_internship_offers_path(internship_offer: internship_offer)
       page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
-      
+
       click_link("Modifier")
       find('label[for="internship_type_false"]').click # max_candidates can be set to many now
       within('.form-group-select-max-candidates') do
@@ -208,12 +208,11 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       select('2019/2020')
       assert page.has_css?('p.internship-item-title.mb-0', count: 1)
       assert_text('2019/2020 unpublished')
+
       select('2020/2021')
       assert page.has_css?('p.internship-item-title.mb-0', count: 0)
-      page.find("a[href=\"/dashboard/internship_agreements\"]", text: 'Mes Conventions de stage')
-      page.find("a[href=\"/dashboard/internship_agreements\"] ", text: '1')
-      click_link('Conventions de stage')
-      page.find("a[href=\"/dashboard/internship_agreements\"] ", text: '1')
+      page.find("a[href=\"/dashboard/internship_agreements\"]", text: 'Mes conventions de stage')
+      page.find("a[href=\"/dashboard/internship_agreements\"]", text: '1')
     end
   end
 end

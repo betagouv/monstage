@@ -14,7 +14,7 @@ module Users
 
     rails_admin do
       weight 7
-      
+
       list do
         fields(*UserAdmin::DEFAULT_FIELDS)
         field :operator

@@ -37,4 +37,16 @@ class EmployerMailerPreview < ActionMailer::Preview
       internship_agreement: InternshipAgreement.first
     )
   end
+
+  def notify_others_signatures_started_email
+    EmployerMailer.notify_others_signatures_started_email(
+      internship_agreement: InternshipAgreement.first
+    )
+  end
+
+  def notify_others_signatures_finished_email
+    EmployerMailer.notify_others_signatures_finished_email(
+      internship_agreement: InternshipAgreement.first
+    )
+  end
 end

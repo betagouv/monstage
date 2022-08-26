@@ -20,6 +20,10 @@ module Users
       refute_includes employer.kept_internship_offers, discarded_internship_offer
     end
 
+    test '#obfuscated_phone_number' do
+      employer = build(:employer, phone: '+330601020304')
+      assert_equal '+33 6 ** ** ** 04', employer.obfuscated_phone_number
+    end
 
     test '(rails6.1 upgrade) employer.internship_applications' do
       employer = create(:employer)

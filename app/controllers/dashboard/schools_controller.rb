@@ -23,7 +23,7 @@ module Dashboard
     def update
       authorize! :update, School
       @school.update!(internship_weeks_params)
-      if current_user.is_a?(Users::God)
+      if current_user.god?
         redirect_to(dashboard_schools_path(anchor: "school_#{@school.id}"),
                     flash: { success: 'Etablissement mis à jour avec succès' })
       else
@@ -56,7 +56,7 @@ module Dashboard
     end
 
     def internship_weeks_params
-      if current_user.is_a?(Users::God)
+      if current_user.god?
         god_internship_weeks_params
       else
         school_manager_internship_weeks_params
