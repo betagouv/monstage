@@ -33,6 +33,7 @@
 
 .DS_Store
 .idea
+.vscode
 /public/packs
 /public/packs-test
 /node_modules
