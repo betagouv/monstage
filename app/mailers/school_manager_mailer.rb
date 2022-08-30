@@ -41,7 +41,6 @@ class SchoolManagerMailer < ApplicationMailer
     ).html_safe
 
     subject = "Un de vos élèves a été accepté à un stage"
-    @message = "La convention dématérialisée peut être renseignée dès maintenant par le chef d'établissement ou le professeur principal"
 
     send_email(to: to, subject: subject)
   end
