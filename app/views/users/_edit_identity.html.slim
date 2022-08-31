@@ -72,11 +72,11 @@
                                 options_from_collection_for_select(user_roles_to_select, :value, :text, current_user.role),
                                 { include_blank: false},
                                 { class: 'fr-select', data: {action: 'change->profile#refreshEmailFieldLabel'} }
-    - if can?(:be_reached_with_phone, current_user)
+    - if can?(:sign_with_sms, current_user)
       .row
         .col-md-6.col-xs-12
           .form-group.custom-label-container
-            = f.label :be_reached_with_phone,
+            = f.label :sign_with_sms,
                       class: "fr-label",
                       for: "user_phone_suffix" do
               span

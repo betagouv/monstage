@@ -56,7 +56,7 @@ class Ability
     can %i[
       welcome_students
       choose_role
-      be_reached_with_phone], User
+      sign_with_sms], User
     can_create_and_manage_account(user: user) do
       can [:choose_class_room], User
     end
@@ -134,7 +134,7 @@ class Ability
 
 
   def employer_abilities(user:)
-    can %i[supply_offers be_reached_with_phone choose_function] , User
+    can %i[supply_offers sign_with_sms choose_function] , User
     can :show, :account
 
     can :create_remote_internship_request, SupportTicket
