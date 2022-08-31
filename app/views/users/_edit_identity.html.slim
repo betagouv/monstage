@@ -33,8 +33,8 @@
           small.d-none data-profile-target="emailHint"
           = f.text_field :email,
                         {class: 'fr-input', required: true, data: {action: 'change->profile#onBlurEmailInput', :"profile-target" => 'emailInput'}}.merge(current_user.is_a?(Users::Statistician) ? { readonly: true } : {})
-      .col-md-6.col-xs-12
-        - if current_user.ministry_statistician?
+      - if current_user.ministry_statistician?
+        .col-md-6.col-xs-12
           .form-group
             = f.label :ministry, class: 'fr-label', for: 'user_ministry' do
               = "Administration centrale"
@@ -42,7 +42,8 @@
                             value: current_user.ministry.name,
                             class: "fr-input",
                             disabled: true
-        - if can?(:change, :department) || can?(:view, :department)
+      - if can?(:change, :department) || can?(:view, :department)
+        .col-md-6.col-xs-12
           .form-group
             = f.label :department, class: 'fr-label', for: 'user_department' do
               = "Département d'intervention"
@@ -52,7 +53,8 @@
                       {  },
                       { class: "fr-select" }.merge(can?(:change, :department) ? {} : {disabled: true})
 
-        - if can?(:change, :class_room) && current_user.school
+      - if can?(:change, :class_room) && current_user.school
+        .col-md-6.col-xs-12
           .form-group
             = f.label :class_room_id, class: 'fr-label', for: 'user_class_room_id_1' do
               = 'Classe'
@@ -63,7 +65,8 @@
                        id: 'user_class_room_id_1',
                        class: "fr-select"
 
-        - if can?(:choose_role, current_user)
+      - if can?(:choose_role, current_user)
+        .col-md-6.col-xs-12
           .form-group
             = f.label :role, class: 'fr-label' , for: 'user_role' do
               = 'Fonction'
@@ -72,8 +75,15 @@
                                 options_from_collection_for_select(user_roles_to_select, :value, :text, current_user.role),
                                 { include_blank: false},
                                 { class: 'fr-select', data: {action: 'change->profile#refreshEmailFieldLabel'} }
-    - if can?(:sign_with_sms, current_user)
-      .row
+      - if can?(:choose_function, current_user)
+        .col-md-6.col-xs-12
+          .form-group
+            = f.label :employer_role, class: 'fr-label', for: 'user_employer_role' do
+              = "Fonction au sein de l'entreprise"
+              = f.rg2a_required_content_tag
+            = f.text_field :employer_role, class: 'fr-input', required: true
+
+      - if can?(:sign_with_sms, current_user)
         .col-md-6.col-xs-12
           .form-group.custom-label-container
             = f.label :sign_with_sms,
@@ -95,18 +105,13 @@
                                 :'aria-label' => "[préfix internationaux de téléphone]" }
               .fr-col-9
                 = f.text_field :phone_suffix,
-                               class: "fr-input",
-                               id: "user_phone_suffix",
-                               name: "user[phone_suffix]",
-                               placeholder: "ex : 0623456789",
-                               required: true,
-                               :'aria-label' => "[Numéro de téléphone]"
-        - if can?(:choose_function, current_user)
-          .form-group
-            = f.label :employer_role, class: 'fr-label', for: 'user_employer_role' do
-              = "Fonction au sein de l'entrerprise"
-              = f.rg2a_required_content_tag
-            = f.text_field :employer_role, class: 'fr-input', required: true
+                                class: "fr-input",
+                                id: "user_phone_suffix",
+                                name: "user[phone_suffix]",
+                                placeholder: "ex : 0623456789",
+                                required: true,
+                                :'aria-label' => "[Numéro de téléphone]"
+
 
     .row
       .col-md-6.col-xs-12
