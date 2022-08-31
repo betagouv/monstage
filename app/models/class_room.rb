@@ -13,6 +13,10 @@ class ClassRoom < ApplicationRecord
     end
   end
 
+  def main_teacher
+    school_managements&.main_teachers&.last
+  end
+
   def fit_to_weekly?
     try(:troisieme_generale?)
   end
