@@ -62,4 +62,13 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
     page.find_link('Je postule')
   end
 
+  test "visitor is redirected to patner's website to submit an application" do
+    operator = create(:operator, name: 'ViensVoirMonTaf')
+    user_operator = create(:user_operator, operator: operator)
+    create(:api_internship_offer, permalink: 'https://viensvoirmontaf.fr', employer: user_operator)
+
+    visit internship_offers_path
+    page.find_link('Je postule sur ViensVoirMonTaf')
+  end
+
 end

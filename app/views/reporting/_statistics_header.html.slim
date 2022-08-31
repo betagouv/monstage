@@ -13,32 +13,32 @@
           - if can?(:see_reporting_dashboard, current_user)
             li
               = link_to reporting_dashboards_path(default_reporting_url_options(current_user))
-                button#dashboard.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-selected="#{current_page?(reporting_dashboards_path)}" Tableau de bord
+                button#dashboard.fr-tabs__tab aria-selected="#{current_page?(reporting_dashboards_path)}" Tableau de bord
 
           - if can?(:see_reporting_internship_offers, current_user)
             li
               = link_to reporting_internship_offers_path(default_reporting_url_options(current_user))
-                button#offers.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-selected="#{current_page?(reporting_internship_offers_path)}" Offres
+                button#offers.fr-tabs__tab aria-selected="#{current_page?(reporting_internship_offers_path)}" Offres
 
           - if can?(:see_reporting_schools, current_user)
             li
               = link_to reporting_schools_path(default_reporting_url_options(current_user))
-                button#schools.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-selected="#{current_page?(reporting_schools_path)}" Établissements
+                button#schools.fr-tabs__tab aria-selected="#{current_page?(reporting_schools_path)}" Établissements
 
           - if can?(:see_reporting_associations, current_user)
             li
               = link_to reporting_operators_path()
-                button#associations.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-selected="#{current_page?(reporting_operators_path)}" Associations
+                button#associations.fr-tabs__tab aria-selected="#{current_page?(reporting_operators_path)}" Associations
 
           - if can?(:see_reporting_enterprises, current_user)
             li
               = link_to reporting_employers_internship_offers_path(default_reporting_url_options(current_user, dimension: 'group'))
-                button#entreprises.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-selected="#{current_page?(reporting_employers_internship_offers_path)}" Entreprises
+                button#entreprises.fr-tabs__tab aria-selected="#{current_page?(reporting_employers_internship_offers_path)}" Entreprises
 
           - if can?(:import_data, Acl::Reporting) && current_user.operator? && current_user.operator.airtable_reporting_enabled && current_user.operator.airtable_link
             li
               = link_to reporting_import_data_path
-                button#import.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-selected="#{current_page?(reporting_import_data_path)}" Importer des données
+                button#import.fr-tabs__tab aria-selected="#{current_page?(reporting_import_data_path)}" Importer des données
         
         
         = render partial: "reporting/#{path}", locals: options

@@ -12,17 +12,17 @@
 
     - if current_user.student?
       li role="presentation"
-        button#resume.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-controls="resume-panel" aria-selected="true" role="tab" tabindex="0"  Mon CV
+        button#resume.fr-tabs__tab aria-controls="resume-panel" aria-selected="true" role="tab" tabindex="0"  Mon CV
     li role="presentation"
-      button#identity.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-controls="identity-panel" aria-selected="#{!current_user.student?}" role="tab" tabindex="1"  Mon identité
+      button#identity.fr-tabs__tab aria-controls="identity-panel" aria-selected="#{!current_user.student?}" role="tab" tabindex="1"  Mon identité
     li role="presentation"
-      button#password.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-controls="password-panel" aria-selected="false" role="tab" tabindex="2"  Mon mot de passe
+      button#password.fr-tabs__tab aria-controls="password-panel" aria-selected="false" role="tab" tabindex="2"  Mon mot de passe
     - if can?(:choose_school, current_user)
       li role="presentation"
-        button#school.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-controls="school-panel" aria-selected="false" role="tab" tabindex="3"  Mon établissement
+        button#school.fr-tabs__tab aria-controls="school-panel" aria-selected="false" role="tab" tabindex="3"  Mon établissement
     - if can?(:show, :api_token)
       li role="presentation"
-        button#api.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left aria-controls="api-panel" aria-selected="false" role="tab" tabindex="4"  API
+        button#api.fr-tabs__tab aria-controls="api-panel" aria-selected="false" role="tab" tabindex="4"  API
 
   = render "edit_resume" if current_user.student?
 

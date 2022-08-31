@@ -132,6 +132,7 @@ module Users
           class_room_id
           email
           first_name
+          employer_role
           gender
           handicap
           id

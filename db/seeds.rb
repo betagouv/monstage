@@ -23,6 +23,11 @@ def populate_week_reference
   end
 end
 
+def siret
+  siret = FFaker::CompanyFR.siret
+  siret.gsub(/[^0-9]/, '')
+end
+
 def populate_month_reference
   next_month = 3.years.ago.beginning_of_month
   loop do
@@ -56,14 +61,15 @@ end
 
 def populate_class_rooms
   school = find_default_school_during_test
-  ClassRoom.create(name: '3e A – troisieme_generale', school: school)
-  ClassRoom.create(name: '3e B – troisieme_generale', school: school)
-  ClassRoom.create(name: '3e C – troisieme_generale', school: school)
+
+  ClassRoom.create(name: '3e A – troisieme_generale', school_track: :troisieme_generale, school: school)
+  ClassRoom.create(name: '3e B – troisieme_prepa_metier', school_track: :troisieme_prepa_metiers, school: school)
+  ClassRoom.create(name: '3e C – troisieme_segpa', school_track: :troisieme_segpa, school: school)
 end
 
 def with_class_name_for_defaults(object)
-  object.first_name ||= "Utilisateur"
-  object.last_name ||= "(#{Presenters::UserManagementRole.new(user: object).role})"
+  object.first_name ||= FFaker::NameFR.first_name
+  object.last_name ||= "#{FFaker::NameFR.last_name}-#{Presenters::UserManagementRole.new(user: object).role}"
   object.accept_terms = true
   object.confirmed_at = Time.now.utc
   object.current_sign_in_at = 2.days.ago
@@ -188,29 +194,41 @@ end
 
 def populate_users
   troisieme_generale_class_room = ClassRoom.find_by(school_track: :troisieme_generale)
-  another_troisieme_generale_class_room = ClassRoom.find_by(school_track: :troisieme_generale)
-  with_class_name_for_defaults(Users::Employer.new(email: 'employer@ms3e.fr', password: 'review')).save!
+  troisieme_segpa_class_room = ClassRoom.find_by(school_track: :troisieme_segpa)
+
+  with_class_name_for_defaults(
+    Users::Employer.new(
+      email: 'employer@ms3e.fr',
+      password: 'review',
+      employer_role: 'PDG',
+      phone: '+330622554144'
+    )
+  ).save!
   with_class_name_for_defaults(Users::God.new(email: 'god@ms3e.fr', password: 'review')).save!
-  with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', operator: Operator.first)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'school_manager', email: "ce.1234567X@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
+
+  school_manager = with_class_name_for_defaults(Users::SchoolManagement.new(
+    role: 'school_manager',
+    email: "ce.1234567X@#{find_default_school_during_test.email_domain_name}",
+    password: 'review',
+    school: find_default_school_during_test,
+    phone: '+330623655541'))
+  school_manager.save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_generale_class_room, email: "main_teacher@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: "other@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: "teacher@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
+
   Operator.reportable.map do |operator|
     with_class_name_for_defaults(Users::Operator.new(email: "#{operator.name.parameterize}@ms3e.fr", password: 'review', operator: operator)).save!
   end
+  with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', operator: Operator.first)).save!
 
   statistician_email = 'statistician@ms3e.fr'
   ministry_statistician = 'ministry_statistician@ms3e.fr'
   last_public_group = Group.where(is_public: true).last
-
   EmailWhitelists::Statistician.create!(email: statistician_email, zipcode: 75)
   EmailWhitelists::Ministry.create!(email: ministry_statistician, group_id: last_public_group.id)
   with_class_name_for_defaults(Users::Statistician.new(email: statistician_email, password: 'review')).save!
   with_class_name_for_defaults(Users::MinistryStatistician.new(email: ministry_statistician, password: 'review', ministry: last_public_group)).save!
-
-  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Abdelaziz', last_name: 'Benzedine', school: find_default_school_during_test, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: find_default_school_during_test, class_room: ClassRoom.troisieme_generale.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: "teacher@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
 end
 
 def populate_students
@@ -220,6 +238,8 @@ def populate_students
 
   school = class_room_3e_generale.school
 
+  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Abdelaziz', last_name: 'Benzedine', school: find_default_school_during_test, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: find_default_school_during_test, class_room: ClassRoom.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   # sans classe
   with_class_name_for_defaults(Users::Student.new(email: 'enzo@ms3e.fr', password: 'review', first_name: 'Enzo', last_name: 'Clerc', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 3.days.ago)).save!
   # 3e générale
@@ -257,6 +277,7 @@ def populate_internship_offers
   # 3eme_generale: public sector
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
+    siret: siret,
     max_candidates: 5,
     max_students_per_group: 5,
     weeks: Week.selectable_on_school_year,
@@ -269,6 +290,7 @@ def populate_internship_offers
     employer_website: 'http://www.dtpm.fr/',
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
+    tutor_role: 'Chef comptable',
     tutor_phone: '+33637607756',
     street: '128 rue brancion',
     zipcode: '75015',
@@ -278,9 +300,10 @@ def populate_internship_offers
     school_track: :troisieme_generale
   )
   InternshipOffers::WeeklyFramed.create!(
+    employer: Users::Employer.first,
+    siret: siret,
     max_candidates: 5,
     max_students_per_group: 5,
-    employer: Users::Employer.first,
     weeks: [].concat(Week.selectable_on_school_year[0..1], Week.selectable_on_school_year[3..5]),
     sector: Sector.first,
     group: Group.is_paqte.first,
@@ -292,6 +315,7 @@ def populate_internship_offers
     tutor_name: 'John smith',
     tutor_email: 'fourcade.m@gmail.com',
     tutor_phone: '+33637607756',
+    tutor_role: 'Chef comptable',
     street: '128 rue brancion',
     zipcode: '75015',
     city: 'paris',
@@ -305,6 +329,7 @@ def populate_internship_offers
     max_candidates: 5,
     max_students_per_group: 5,
     employer: Users::Employer.first,
+    siret: siret,
     weeks: Week.selectable_on_school_year,
     sector: Sector.second,
     group: Group.is_public.last,
@@ -315,6 +340,7 @@ def populate_internship_offers
     employer_description_rich_text: "De multiples méthodes de travail et de prises de décisions seront observées",
     tutor_name: 'Etienne Weil',
     tutor_email: 'etienne@free.fr',
+    tutor_role: 'Chef comptable',
     tutor_phone: '+33637697756',
     street: '18 rue Damiens',
     zipcode: '75012',
@@ -327,6 +353,7 @@ def populate_internship_offers
     max_candidates: 5,
     max_students_per_group: 5,
     employer: Users::Employer.first,
+    siret: siret,
     weeks: Week.selectable_on_school_year,
     sector: Sector.first,
     group: Group.is_private.first,
@@ -338,6 +365,7 @@ def populate_internship_offers
     tutor_name: 'Gilles Charles',
     tutor_email: 'fourcade.m@gmail.com',
     tutor_phone: '+33637607756',
+    tutor_role: 'Chef comptable',
     street: '128 rue brancion',
     zipcode: '75015',
     city: 'paris',
@@ -348,6 +376,7 @@ def populate_internship_offers
   # dépubliée
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
+    siret: siret,
     weeks: Week.selectable_on_school_year,
     sector: Sector.first,
     group: Group.is_private.first,
@@ -359,6 +388,7 @@ def populate_internship_offers
     tutor_name: 'Gilles Charles',
     tutor_email: 'fourcadex.m@gmail.com',
     tutor_phone: '+33637607756',
+    tutor_role: 'Chef comptable',
     street: '128 rue brancion',
     zipcode: '75015',
     city: 'paris',
@@ -375,6 +405,7 @@ def populate_internship_offers
   # 3eme_generale-2019:
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
+    siret: siret,
     weeks: Week.weeks_of_school_year(school_year: SchoolYear::Base::YEAR_START),
     sector: Sector.first,
     group: Group.is_private.first,
@@ -385,6 +416,7 @@ def populate_internship_offers
     employer_website: 'http://www.dtpm.fr/',
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
+    tutor_role: 'Chef magasinier',
     tutor_phone: '+33637677756',
     street: '129 rue brancion',
     zipcode: '75015',
@@ -396,6 +428,7 @@ def populate_internship_offers
   # 3eme generale API
   InternshipOffers::Api.create!(
     employer: Users::Operator.first,
+    siret: siret,
     weeks: Week.selectable_on_school_year,
     sector: Sector.first,
     group: Group.is_private.first,
@@ -406,6 +439,7 @@ def populate_internship_offers
     employer_description_rich_text: "Le centre de service IBM de Lille délivre des services d'infrastructure informatique.",
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
+    tutor_role: 'Chef magasinier',
     tutor_phone: '+33637607756',
     street: '128 rue brancion',
     zipcode: '75015',
@@ -418,6 +452,7 @@ def populate_internship_offers
   # 3eme generale API
   InternshipOffers::Api.create!(
     employer: Users::Operator.first,
+    siret: siret,
     weeks: Week.of_previous_school_year,
     sector: Sector.first,
     group: Group.is_public.first,
@@ -429,6 +464,7 @@ def populate_internship_offers
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
     tutor_phone: '+33637607756',
+    tutor_role: 'Chef magasinier',
     street: '128 rue brancion',
     zipcode: '75015',
     city: 'paris',
@@ -459,6 +495,7 @@ MULTI_LINE
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
     tutor_phone: '+33637607756',
+    tutor_role: 'Bibliothécaire',
     street: '2 rue jean moulin',
     zipcode: '95160',
     city: 'Montmorency',
@@ -486,6 +523,7 @@ MULTI_LINE
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
     tutor_phone: '+33637607756',
+    tutor_role: 'Chef de service',
     street: '128 rue brancion',
     zipcode: '75015',
     city: 'paris',
@@ -513,6 +551,7 @@ MULTI_LINE
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
     tutor_phone: '+33637607756',
+    tutor_role: 'Chef de service',
     street: '128 rue brancion',
     zipcode: '75015',
     city: 'paris',
@@ -631,7 +670,7 @@ def populate_applications
     aasm_state: :approved,
     submitted_at: 10.days.ago,
     approved_at: 2.days.ago,
-    student: trois_gene_studs[5],
+    student: trois_gene_studs[4],
     motivation: 'Au taquet',
     internship_offer: troisieme_generale_offers.fourth,
     week: troisieme_generale_offers.first.internship_offer_weeks.third.week
@@ -640,7 +679,7 @@ def populate_applications
     aasm_state: :approved,
     submitted_at: 9.days.ago,
     approved_at: 3.days.ago,
-    student: trois_gene_studs[6],
+    student: trois_gene_studs[5],
     motivation: 'Assez motivé pour ce stage',
     internship_offer: troisieme_generale_offers.fifth,
     week: troisieme_generale_offers.fifth.internship_offer_weeks.third.week
@@ -649,20 +688,29 @@ def populate_applications
     aasm_state: :approved,
     submitted_at: 19.days.ago,
     approved_at: 13.days.ago,
-    student: trois_gene_studs[7],
+    student: trois_gene_studs[3],
     motivation: 'motivé moyennement pour ce stage, je vous préviens',
-    internship_offer: troisieme_generale_offers[6],
-    week: troisieme_generale_offers[6].internship_offer_weeks.first.week
+    internship_offer: troisieme_generale_offers[5],
+    week: troisieme_generale_offers[5].internship_offer_weeks.first.week
   )
   InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
     submitted_at: 29.days.ago,
     approved_at: 23.days.ago,
-    student: trois_gene_studs[8],
+    student: trois_gene_studs[2],
     motivation: 'motivé moyennement pour ce stage, je vous préviens',
-    internship_offer: troisieme_generale_offers[7],
-    week: troisieme_generale_offers[7].internship_offer_weeks.second.week
+    internship_offer: troisieme_generale_offers[6],
+    week: troisieme_generale_offers[6].internship_offer_weeks.second.week
   )
+  # InternshipApplications::WeeklyFramed.create!(
+  #   aasm_state: :approved,
+  #   submitted_at: 29.days.ago,
+  #   approved_at: 23.days.ago,
+  #   student: trois_gene_studs[8],
+  #   motivation: 'motivé moyennement pour ce stage, je vous préviens',
+  #   internship_offer: troisieme_generale_offers[7],
+  #   week: troisieme_generale_offers[7].internship_offer_weeks.second.week
+  # )
 end
 
 def populate_internship_weeks

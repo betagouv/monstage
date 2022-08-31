@@ -9,6 +9,7 @@ FactoryBot.define do
     city { 'Paris' }
     coordinates { Coordinates.paris }
     is_public { true }
+    siret { FFaker::CompanyFR.siret }
     group { create(:group, is_public: true) }
 
     trait :public do

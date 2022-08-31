@@ -1,10 +1,11 @@
 require 'fileutils'
+require 'pretty_console.rb'
 # usage : rails users:extract_email_data_csv
 
 namespace :users do
   desc 'Export monstage DB users emails to Sendgrid contact DB'
   task :extract_email_data_csv, [] => :environment do
-    say_in_green "Starting extracting emails metadata"
+    PrettyConsole.say_in_green "Starting extracting emails metadata"
 
     require 'csv'
 
@@ -29,10 +30,6 @@ namespace :users do
       end
     end
     puts "File is written in #{dirname}/#{now}_email_users.csv"
-    say_in_green 'task is finished'
-  end
-
-  def say_in_green(str)
-    puts "\e[32m=====> #{str} <=====\e[0m"
+    PrettyConsole.say_in_green 'task is finished'
   end
 end

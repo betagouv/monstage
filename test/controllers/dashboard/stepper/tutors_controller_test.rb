@@ -70,7 +70,10 @@ module Dashboard::Stepper
                                           internship_offer_info_id: internship_offer_info.id),
             params: {
               tutor: {
-                tutor_name: 'mfo', tutor_email: 'mf@oo.com', tutor_phone: '0123456789'
+                tutor_name: 'mfo',
+                tutor_email: 'mf@oo.com',
+                tutor_phone: '0123456789',
+                tutor_role: 'opérateur de saisie'
               }
             }
           )
@@ -176,7 +179,7 @@ module Dashboard::Stepper
                                         internship_offer_info_id: internship_offer_info.id),
           params: {
             tutor: {
-              tutor_name: 'mfo', tutor_email: 'mf@oo.com', tutor_phone: '0123456789'
+              tutor_name: 'mfo', tutor_email: 'mf@oo.com', tutor_phone: '0123456789', tutor_role: 'Fonctionnaire des impots'
             }
           }
         )
@@ -204,7 +207,7 @@ module Dashboard::Stepper
                                         internship_offer_info_id: internship_offer_info.id),
           params: {
             tutor: {
-              tutor_name: 'mfo', tutor_email: 'mf@oo.com', tutor_phone: '0123456789'
+              tutor_name: 'mfo', tutor_email: 'mf@oo.com', tutor_phone: '0123456789', tutor_role: 'Fonctionnaire de police'
             }
           }
         )
@@ -232,7 +235,7 @@ module Dashboard::Stepper
                                         internship_offer_info_id: internship_offer_info.id),
           params: {
             tutor: {
-              tutor_name: 'mfo', tutor_email: 'mf@oo.com', tutor_phone: '0123456789'
+              tutor_name: 'mfo', tutor_email: 'mf@oo.com', tutor_phone: '0123456789', tutor_role: 'Chargé de mission'
             }
           }
         )

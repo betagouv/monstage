@@ -19,6 +19,7 @@ class SignUpEmployersTest < ApplicationSystemTestCase
       fill_in 'Adresse électronique (e-mail)', with: existing_email
       find("input[name='user[phone_suffix]']").fill_in with: a_phone_number
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
+      fill_in "Fonction au sein de l'entreprise", with: "chef d'entreprise"
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       find('input[type="checkbox"]', visible: false).check
       click_on "Valider mes informations"

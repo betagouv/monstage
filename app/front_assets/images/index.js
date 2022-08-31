@@ -5,6 +5,7 @@ import './beta-gouv-logo.png';
 import './danger_sign_blue.svg';
 import './notice_people.svg';
 import './search-no-result.svg';
+import './checkbox.png';
 
 import './onboarding/confirm-desktop-2.svg';
 import './onboarding/confirm-mobile-2.svg';

@@ -101,6 +101,13 @@
                                placeholder: "ex : 0623456789",
                                required: true,
                                :'aria-label' => "[Numéro de téléphone]"
+        - if can?(:choose_function, current_user)
+          .form-group
+            = f.label :employer_role, class: 'fr-label', for: 'user_employer_role' do
+              = "Fonction au sein de l'entrerprise"
+              = f.rg2a_required_content_tag
+            = f.text_field :employer_role, class: 'fr-input', required: true
+
     .row
       .col-md-6.col-xs-12
         .actions.d-flex.d-sm-block

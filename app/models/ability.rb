@@ -85,9 +85,6 @@ class Ability
 
   def school_manager_abilities(user:)
     can :create_remote_internship_request, SupportTicket
-    can :sign, InternshipAgreement do |internship_agreement|
-      internship_agreement.school_manager.id == user.id
-    end
 
     can_manage_school(user: user) do
       can [:delete], User do |managed_user_from_school|
@@ -96,19 +93,33 @@ class Ability
     end
     can %i[
       create
-      edit_school_representative_full_name
-      edit_school_delegation_to_sign_delivered_at
-      edit_student_school
-      edit_student_full_name
-      edit_student_class_room
-      edit_main_teacher_full_name
+      edit
+      sign_internship_agreements
       edit_activity_rating_rich_text
+      edit_complementary_terms_rich_text
       edit_financial_conditions_rich_text
       edit_legal_terms_rich_text
-      edit_complementary_terms_rich_text
-      edit
+      edit_main_teacher_full_name
+      edit_school_representative_full_name
+      edit_school_representative_phone
+      edit_school_representative_email
+      edit_school_representative_role
+      edit_school_delegation_to_sign_delivered_at
+      edit_student_refering_teacher_full_name
+      edit_student_refering_teacher_email
+      edit_student_refering_teacher_phone
+      edit_student_address
+      edit_student_class_room
+      edit_student_full_name
+      edit_student_phone
+      edit_student_legal_representative_email
+      edit_student_legal_representative_full_name
+      edit_student_legal_representative_phone
+      edit_student_legal_representative_2_email
+      edit_student_legal_representative_2_full_name
+      edit_student_legal_representative_2_phone
+      edit_student_school
       see_intro
-      sign
       update
     ], InternshipAgreement do |agreement|
       agreement.internship_application.student.school_id == user.school_id
@@ -123,7 +134,7 @@ class Ability
 
 
   def employer_abilities(user:)
-    can %i[supply_offers be_reached_with_phone] , User
+    can %i[supply_offers be_reached_with_phone choose_function] , User
     can :show, :account
 
     can :create_remote_internship_request, SupportTicket
@@ -153,16 +164,20 @@ class Ability
 
     can %i[
       create
-      edit_organisation_representative_full_name
-      edit_tutor_full_name
-      edit_date_range
-      edit_weekly_hours
+      edit
+      edit_organisation_representative_role
+      edit_tutor_email
+      edit_tutor_role
       edit_activity_scope_rich_text
       edit_activity_preparation_rich_text
       edit_activity_learnings_rich_text
       edit_complementary_terms_rich_text
-      edit
-      sign
+      edit_date_range
+      edit_organisation_representative_full_name
+      edit_siret
+      edit_tutor_full_name
+      edit_weekly_hours
+      sign_internship_agreements
       update
     ], InternshipAgreement do |agreement|
       agreement.employer == user

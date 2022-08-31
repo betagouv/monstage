@@ -105,7 +105,7 @@ export default class extends Controller {
     const extraHTML = (this.counterValue > 1) ? " en groupe (" + this.counterValue + ")" : '';
     this.generalCtaTarget.innerHTML = "Signer" + extraHTML;
 
-    const allChecked = (this.counterValue === this.maxCounterValue);
+    const allChecked = (this.counterValue === this.maxCounterValue) && (this.counterValue > 0);
     this.generalCtaSelectBoxTarget.checked = allChecked;
   }
 

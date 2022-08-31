@@ -80,6 +80,7 @@ group :development, :test do
   gem 'ffaker'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
+  gem "ffaker"
 end
 
 group :development do
@@ -110,6 +111,7 @@ group :test do
   gem 'rails-controller-testing'
   gem 'capybara-screenshot'
 gem "minitest-stub_any_instance"
+
 end
 
 group :review do

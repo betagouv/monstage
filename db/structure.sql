@@ -609,7 +609,25 @@ CREATE TABLE public.internship_agreements (
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
     school_delegation_to_sign_delivered_at date,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
-    weekly_lunch_break text
+    weekly_lunch_break text,
+    siret character varying(16),
+    tutor_role character varying(100),
+    tutor_email character varying(80),
+    organisation_representative_role character varying(100),
+    student_address character varying(250),
+    student_phone character varying(20),
+    school_representative_phone character varying(20),
+    student_refering_teacher_phone character varying(20),
+    student_legal_representative_email character varying(60),
+    student_refering_teacher_email character varying(60),
+    student_legal_representative_full_name character varying(120),
+    student_refering_teacher_full_name character varying(120),
+    student_legal_representative_phone character varying(20),
+    student_legal_representative_2_full_name character varying(120),
+    student_legal_representative_2_email character varying(70),
+    student_legal_representative_2_phone character varying(20),
+    school_representative_role character varying(60),
+    school_representative_email character varying(100)
 );
 
 
@@ -889,7 +907,8 @@ CREATE TABLE public.internship_offers (
     total_female_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
     total_female_approved_applications_count integer DEFAULT 0,
     max_students_per_group integer DEFAULT 1 NOT NULL,
-    employer_manual_enter boolean DEFAULT false
+    employer_manual_enter boolean DEFAULT false,
+    tutor_role character varying(70)
 );
 
 
@@ -1167,7 +1186,8 @@ CREATE TABLE public.tutors (
     tutor_phone character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    employer_id bigint NOT NULL
+    employer_id bigint NOT NULL,
+    tutor_role character varying NOT NULL
 );
 
 
@@ -1239,7 +1259,8 @@ CREATE TABLE public.users (
     targeted_offer_id integer,
     signature_phone_token character varying(6),
     signature_phone_token_expires_at timestamp(6) without time zone,
-    signature_phone_token_checked_at timestamp(6) without time zone
+    signature_phone_token_checked_at timestamp(6) without time zone,
+    employer_role character varying
 );
 
 
@@ -2640,4 +2661,12 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220704132020'),
 ('20220711083028'),
 ('20220722081417'),
-('20220726123520');
+('20220726123520'),
+('20220803131022'),
+('20220803140408'),
+('20220803143024'),
+('20220804155217'),
+('20220811103937'),
+('20220816105807');
+
+

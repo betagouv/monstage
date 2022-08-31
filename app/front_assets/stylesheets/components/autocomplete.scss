@@ -50,13 +50,6 @@ $handleWidth: '60px';
   }
 }
 
-@include media-breakpoint-up(sm) {
-  .autocomplete-list-element:hover{
-    cursor: pointer;
-    background-color: $blue_light;
-  }
-}
-
 
 input#radius_slider {
   border: none;

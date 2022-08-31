@@ -46,8 +46,9 @@ div data-controller="daily-hours"
                         { :include_blank => '--', class: "fr-select", aria: { label: "Selectionner une heure de debut de stage pour tous les jours de la semaine" }, id: "#{form.object_name}_weekly_hours_end" }
       .col-12.mt-2
         .form-group
-          = form.label :weekly_lunch_break, class: 'fr-label' do
-            = "Pause déjeuner"
+          = form.label :weekly_lunch_break  do
+            span.mb-2.fr-label = "Pause déjeuner"
+            = form.rg2a_required_content_tag
             small.form-text.text-muted
               | Indiquez ci-dessous les détails concernant les horaires, le lieu, si l'élève doit apporter son déjeuner et qui sera responsable de l'élève durant cette pause.
 
@@ -82,11 +83,11 @@ div data-controller="daily-hours"
 
         .col-12.mt-2
           .form-group
-            = form.label :"daily_lunch_break[#{weekday}]" , class: 'fr-label' do
-              = "Pause déjeuner"
+            = form.label :"daily_lunch_break[#{weekday}]"  do
+              span.mb-2.fr-label = "Pause déjeuner"
+              = form.rg2a_required_content_tag
               small.form-text.text-muted
                 | Indiquez les horaires et qui est responsable de l'élève.
-
             = form.text_area :"daily_lunch_break[#{weekday}]",
                              value: form.object.daily_lunch_break[weekday],
                              class: "form-control",

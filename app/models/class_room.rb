@@ -28,6 +28,10 @@ class ClassRoom < ApplicationRecord
     false
   end
 
+  def main_teacher
+    school_managements&.main_teachers&.first
+  end
+
   def to_s
     name
   end

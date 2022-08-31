@@ -68,6 +68,8 @@ class AbilityTest < ActiveSupport::TestCase
                                     internship_application: internship_application)
     ability = Ability.new(employer)
 
+    assert(ability.can?(:choose_function, User.new),
+          'employers can declare their role in their organisation')
     assert(ability.can?(:supply_offers, employer), 'employers are to be able to supply offers')
     assert(ability.can?(:create, InternshipOffer.new),
            'employers should be able to create internships')
@@ -131,20 +133,26 @@ class AbilityTest < ActiveSupport::TestCase
            'employers should be able to ask how ask for remote internships support')
     %i[
     create
-    update
-    edit_weekly_hours
-    edit_organisation_representative_full_name
-    edit_tutor_full_name
-    edit_date_range
-    edit_activity_scope_rich_text
-    edit_activity_learnings_rich_text
-    edit_complementary_terms_rich_text
+      edit
+      edit_organisation_representative_role
+      edit_tutor_email
+      edit_tutor_role
+      edit_activity_scope_rich_text
+      edit_activity_preparation_rich_text
+      edit_activity_learnings_rich_text
+      edit_complementary_terms_rich_text
+      edit_date_range
+      edit_organisation_representative_full_name
+      edit_siret
+      edit_tutor_full_name
+      edit_weekly_hours
+      update
     ].each do |meth|
       assert(ability.can?(meth, internship_agreement), "Employer fail: #{meth}")
     end
     internship_agreement.update_columns(aasm_state: :started_to_sign)
-    assert(ability.can?(:sign, internship_agreement.reload), "Signature fails")
     assert(ability.can?(:be_reached_with_phone, User))
+    assert(ability.can?(:sign_internship_agreements, internship_agreement.reload), "Signature fails")
   end
 
   test 'God' do
@@ -288,21 +296,37 @@ class AbilityTest < ActiveSupport::TestCase
 
     assert(ability.can?(:create, InternshipAgreement))
     %i[create
-       edit_school_representative_full_name
-       edit_legal_terms_rich_text
-       edit_student_full_name
-       edit_student_school
-       edit_legal_terms_rich_text
-       edit_school_representative_full_name
-       edit_student_school
-       edit_complementary_terms_rich_text
-       sign
-       see_intro
-       update].each do |meth|
-      assert(ability.can?(meth, internship_agreement))
-    end
+      edit
+      edit_activity_rating_rich_text
+      edit_complementary_terms_rich_text
+      edit_financial_conditions_rich_text
+      edit_legal_terms_rich_text
+      edit_main_teacher_full_name
+      edit_school_representative_full_name
+      edit_school_representative_phone
+      edit_school_representative_email
+      edit_school_representative_role
+      edit_school_delegation_to_sign_delivered_at
+      edit_student_refering_teacher_full_name
+      edit_student_refering_teacher_email
+      edit_student_refering_teacher_phone
+      edit_student_address
+      edit_student_class_room
+      edit_student_full_name
+      edit_student_phone
+      edit_student_legal_representative_email
+      edit_student_legal_representative_full_name
+      edit_student_legal_representative_phone
+      edit_student_legal_representative_2_email
+      edit_student_legal_representative_2_full_name
+      edit_student_legal_representative_2_phone
+      edit_student_school
+      see_intro
+      update ].each do |dedicated_ability|
+        assert(ability.can?(dedicated_ability, internship_agreement))
+      end
     internship_agreement.update_columns(aasm_state: :validated)
-    assert(ability.can?(:sign, internship_agreement.reload), "Ability : Signature fails")
+    assert(ability.can?(:sign_internship_agreements, internship_agreement.reload), "Ability : Signature fails")
   end
 
   test 'MainTeacher' do
@@ -350,7 +374,7 @@ class AbilityTest < ActiveSupport::TestCase
           'school_manager should be able manage school')
     assert(ability.cannot?(:manage_school_users, another_school))
     assert(ability.cannot?(:manage_school_students, another_school))
-    refute(ability.can?(:sign, internship_agreement.reload),
+    refute(ability.can?(:sign_internship_agreements, internship_agreement.reload),
           "Ability : Signature should not be possible for teachers")
   end
 
