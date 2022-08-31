@@ -39,7 +39,7 @@ export default class extends Controller {
     if (["school_manager", "teacher", "main_teacher", "other"].includes(event.target.value)) {
       labelText = "Adresse électronique académique";
       // margin adjusting
-      this.phoneLabelTarget.classList.add('fr-mb-6v');
+      this.phoneLabelTarget.classList.add('fr-mb-1w');
 
       this.specificExplanation(event)
       this.compulsaryPhoneLabel(event)

@@ -17,7 +17,7 @@
                 local: true,
                 url: registration_path(resource_name, as: resource.type.demodulize),
                 id: "new_user") do |f| %>
-      <div class="body mb-3 registration fr-grid-row ">
+      <div class="body registration fr-grid-row ">
         <div class="col-12">
           <%= f.rg2a_explain_required_asterisk %>
           <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
@@ -56,21 +56,12 @@
             <%= f.text_field :last_name, class: "fr-input", required: true %>
           </div>
         </div>
-        <div class='fr-col-12 fr-col-md-6 fr-px-2w'>
-          <% if can?(:choose_function, resource) %>
-            <div class="form-group custom-label-container">
-              <%= f.label :employer_role, class: "fr-label" do %>
-                Fonction au sein de l'entreprise
-                <%= f.rg2a_required_content_tag %>
-              <% end %>
-              <%= f.text_field :employer_role, class: "fr-input", required: true %>
-            </div>
-          <% end %>
-        </div>
+      </div>
+      <div class="body mb-3 registration fr-grid-row ">
         <% if can?(:choose_role, resource) %>
-          <div class='fr-col-sm-12 fr-px-2w' >
+          <div class='fr-col-sm-12 fr-col-md-6 fr-px-2w' >
             <div class="form-group custom-label-container">
-              <%= f.label :role, class: "fr-label", data: {:'signup-target' => 'skill'} do %>
+              <%= f.label :role, class: "fr-label fr-mb-6w", data: {:'signup-target' => 'skill'} do %>
                 Fonction
                 <%= f.rg2a_required_content_tag %>
               <% end %>
@@ -81,52 +72,22 @@
             </div>
           </div>
         <% end %>
-
-
-
-        <% if can?(:register_with_phone, resource) %>
-          <div class='fr-col-12 fr-col-md-6 fr-px-2w'>
-            <%= render "users/select_channel",
-                       label: "Comment vous contacter ?",
-                       form: f,
-                       resource: resource,
-                       chan: @resource_channel,
-                       phone: "SMS" do %>
-              <small class="small form-text text-muted">Recevoir une réponse à une candidature, réinitialiser votre mot de passe, être contacté par un employeur…</small>
-            <% end %>
-          </div>
-        <% else %>
-          <div class="fr-col-sm-12 fr-px-2w <%= params[:as].present? && params[:as].match?(/.*Statistician$/) ? "" : "fr-col-md-6 " %>"">
-            <% # <% following avoids javascript errors %>
-            <span data-signup-target="emailBloc"></span>
-            <span data-signup-target="emailRadioButton"></span>
-            <span data-signup-target="phoneInput"></span>
-            <span data-signup-target="phoneBloc"></span>
+        <% if can?(:choose_function, resource) %>
+          <div class='fr-col-12 fr-col-md-6 fr-px-2w '>
             <div class="form-group custom-label-container">
-              <%= f.label :email, class: "fr-label" do %>
-                <span data-signup-target="label"><%= resource.school_manager? ? "Adresse électronique académique" : "Adresse électronique (e-mail)" %></span>
+              <%= f.label :employer_role, class: "fr-label fr-mb-6w" do %>
+                Fonction au sein de l'entreprise
                 <%= f.rg2a_required_content_tag %>
               <% end %>
-              <small class="form-text text-muted fr-mb-2v" data-signup-target="emailExplanation">
-                <% unless resource.school_manager?  %>
-                  Cette adresse sera utilisée uniquement pour communiquer avec vous
-                <% end %>
-              </small>
-              <%= f.email_field :email,
-                                class: "fr-input",
-                                value: resource.email.blank? ? params[:email] : resource.email,
-                                required: true,
-                                placeholder: "ex: nom@exemple.fr",
-                                data: { action: "change->signup#onBlurEmailInput", :"signup-target" => "emailInput" } %>
-
-              <small class="d-none" data-signup-target="emailHint"></small>
+              <%= f.text_field :employer_role, class: "fr-input", required: true %>
             </div>
           </div>
         <% end %>
-        <% if can?(:be_reached_with_phone, resource) %>
+        
+        <% if can?(:sign_with_sms, resource) %>
           <div class='fr-col-12 fr-col-md-6 fr-px-2w'>
             <div class="form-group custom-label-container">
-              <%= f.label :be_reached_with_phone,
+              <%= f.label :sign_with_sms,
                           class: "fr-label",
                           for: "user_phone_suffix",
                           data: {:'signup-target' =>"phoneLabel"} do %>
@@ -136,7 +97,7 @@
                 </div>
               <% end %>
               <small class="form-text text-muted fr-mb-2v">
-                Ce numéro de téléphone sera utilisé pour la signature des conventions de stage.
+                Ce numéro de téléphone sera utilisé pour les sms de signatures des conventions de stage.
               </small>
               <div class="fr-grid-row">
                 <div class="fr-col-5">
@@ -167,27 +128,73 @@
           </div>
         <% end %>
 
-        <div class='fr-col-12 fr-col-md-6 fr-px-2w'>
-          <div class="form-group custom-label-container">
-            <%= f.label :password, class: "fr-label" do %>
-              Créer un mot de passe
-              <%= f.rg2a_required_content_tag %>
+        <% if can?(:register_with_phone, resource) %>
+          <div class='fr-col-12 fr-col-md-6 fr-px-2w'>
+            <%= render "users/select_channel",
+                       label: "Comment vous contacter ?",
+                       form: f,
+                       resource: resource,
+                       chan: @resource_channel,
+                       phone: "SMS" do %>
+              <small class="small form-text text-muted">
+                Recevoir une réponse à une candidature, réinitialiser votre mot de passe, être contacté par un employeur…
+              </small>
             <% end %>
-            <%= f.password_field :password, autocomplete: "new-password", class: "fr-input", required: true, data: { action: "change->signup#checkPassword", :"signup-target" => "passwordInput" } %>
-            <small class="text-muted" data-signup-target="passwordHint"><%= I18n.t("devise.shared.minimum_password_length", count: @minimum_password_length) %></small>
           </div>
-        </div>
+        <% else %>
+          <div class="fr-px-2w <%= params[:as].present? && params[:as].in?(['MinistryStatistician', 'Statistician', 'Employer','SchoolManagement']) ? 'fr-col-sm-12' : 'fr-col-md-6' %>">
+            <% # <% following avoids javascript errors %>
+            <span data-signup-target="emailBloc"></span>
+            <span data-signup-target="emailRadioButton"></span>
+            <span data-signup-target="phoneInput"></span>
+            <span data-signup-target="phoneBloc"></span>
+            <div class="form-group custom-label-container">
+              <%= f.label :email, class: "fr-label" do %>
+                <span data-signup-target="label"><%= resource.school_manager? ? "Adresse électronique académique" : "Adresse électronique (e-mail)" %></span>
+                <%= f.rg2a_required_content_tag %>
+              <% end %>
+              <small class="form-text text-muted fr-mb-2v" data-signup-target="emailExplanation">
+                <% unless resource.school_manager?  %>
+                  Cette adresse sera utilisée uniquement pour communiquer avec vous.
+                <% end %>
+              </small>
+              <%= f.email_field :email,
+                                class: "fr-input",
+                                value: resource.email.blank? ? params[:email] : resource.email,
+                                required: true,
+                                placeholder: "ex: nom@exemple.fr",
+                                data: { action: "change->signup#onBlurEmailInput", :"signup-target" => "emailInput" } %>
 
-        <div class='fr-col-12 fr-col-md-6 fr-px-2w'>
-          <div class="form-group custom-label-container">
-            <%= f.label :password_confirmation, class: "fr-label" do %>
-              Ressaisir le mot de passe
-              <%= f.rg2a_required_content_tag %>
-            <% end %>
-            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "fr-input", required: true, data: { action: "change->signup#checkPasswordConfirmation", :"signup-target" => "passwordConfirmationInput" } %>
-            <small class="text-muted" data-signup-target="passwordConfirmationHint"></small>
+              <small class="d-none" data-signup-target="emailHint"></small>
+            </div>
           </div>
-        </div>
+
+          <div class='fr-col-12 fr-col-md-6 fr-px-2w'>
+            <div class="form-group custom-label-container">
+              <%= f.label :password, class: "fr-label" do %>
+                Créer un mot de passe
+                <%= f.rg2a_required_content_tag %>
+              <% end %>
+              <%= f.password_field :password, autocomplete: "new-password", class: "fr-input", required: true, data: { action: "change->signup#checkPassword", :"signup-target" => "passwordInput" } %>
+              <small class="text-muted" data-signup-target="passwordHint"><%= I18n.t("devise.shared.minimum_password_length", count: @minimum_password_length) %></small>
+            </div>
+          </div>
+
+          <div class='fr-col-12 fr-col-md-6 fr-px-2w'>
+            <div class="form-group custom-label-container">
+              <%= f.label :password_confirmation, class: "fr-label" do %>
+                Ressaisir le mot de passe
+                <%= f.rg2a_required_content_tag %>
+              <% end %>
+              <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "fr-input", required: true, data: { action: "change->signup#checkPasswordConfirmation", :"signup-target" => "passwordConfirmationInput" } %>
+              <small class="text-muted" data-signup-target="passwordConfirmationHint"></small>
+            </div>
+          </div>
+        <% end %>
+
+        
+
+
 
         <% if can?(:choose_operator, :sign_up) %>
           <div class='fr-col-12 fr-col-md-6 fr-px-2w'>
@@ -226,6 +233,7 @@
             </div>
           </div>
         <% end %>
+
         <div class='fr-col-12'>
           <div class="form-group label rg2a-checkbox fr-pl-2w">
             <%= f.rg2a_required_content_tag %>

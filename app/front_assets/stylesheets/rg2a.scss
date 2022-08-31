@@ -11,6 +11,10 @@ label, .label {
     color: $red;
   }
 }
+.label.rg2a-checkbox abbr {
+  left : 5px;
+  top: 15px;
+}
 .custom-control-label{
   font-weight: normal;
 }

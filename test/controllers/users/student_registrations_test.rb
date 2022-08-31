@@ -7,20 +7,15 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     school = create(:school)
     class_room = create(:class_room, school: school)
 
-    get new_user_registration_path(as: 'Student')
-
+    get new_identity_path
     assert_response :success
     assert_select 'input', value: 'Student', hidden: 'hidden'
-
-    assert_select 'title', "Inscription | Monstage"
-    assert_select 'label', /Prénom/
+    assert_select 'title', "Inscription élève - etape 1 sur 2 | Monstage"
+    # jsx componentes do not show labels with the usual way
     assert_select 'label', /Nom/
-    assert_select 'label', /Adresse électronique/
-    assert_select 'label', /Créer un mot de passe/
-    assert_select 'label', /Ressaisir le mot de passe/
-    assert_select 'div', /J'aurai besoin d'une aide adaptée pendant mon stage, en raison de mon handicap./
-    assert_select 'label', /Indiquez ce dont vous avez besoin/
-    assert_select 'label', /J'accepte les/
+    assert_select 'label', /Prénom/
+    assert_select 'label', /Date de naissance/
+    assert_select 'label', /Sexe/
   end
 
   test 'POST Create Student without class fails' do
