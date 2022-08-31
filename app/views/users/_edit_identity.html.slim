@@ -72,6 +72,35 @@
                                 options_from_collection_for_select(user_roles_to_select, :value, :text, current_user.role),
                                 { include_blank: false},
                                 { class: 'fr-select', data: {action: 'change->profile#refreshEmailFieldLabel'} }
+    - if can?(:be_reached_with_phone, current_user)
+      .row
+        .col-md-6.col-xs-12
+          .form-group.custom-label-container
+            = f.label :be_reached_with_phone,
+                      class: "fr-label",
+                      for: "user_phone_suffix" do
+              span
+                | Numéro de téléphone
+              = f.rg2a_required_content_tag
+            .fr-grid-row
+              .fr-col-3
+                .fr-select-group
+                  - prefixes = ["+33", "+594", "+689", "+596", "+687"]
+                  = f.select :phone_prefix,
+                              options_for_select(prefixes.map { |k| [k, k] }),
+                              { include_blank: false },
+                              { id: "user_phone_prefix",
+                                name: "user[phone_prefix]",
+                                class: "fr-select",
+                                :'aria-label' => "[préfix internationaux de téléphone]" }
+              .fr-col-9
+                = f.text_field :phone_suffix,
+                               class: "fr-input",
+                               id: "user_phone_suffix",
+                               name: "user[phone_suffix]",
+                               placeholder: "ex : 0623456789",
+                               required: true,
+                               :'aria-label' => "[Numéro de téléphone]"
         - if can?(:choose_function, current_user)
           .form-group
             = f.label :employer_role, class: 'fr-label', for: 'user_employer_role' do

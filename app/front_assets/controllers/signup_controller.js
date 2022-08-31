@@ -17,7 +17,10 @@ export default class extends Controller {
     'passwordHint',
     'passwordInput',
     'passwordConfirmationHint',
-    'passwordConfirmationInput'
+    'passwordConfirmationInput',
+    'phoneLabel',
+    'schoolPhoneBloc',
+    'phoneSuffix'
   ];
 
   static values = {
@@ -32,16 +35,36 @@ export default class extends Controller {
 
   // on change email address, ensure user is shown academia address requirement when neeeded
   refreshEmailFieldLabel(event) {
-    $(this.labelTarget).text(
-      ["school_manager", "teacher", "main_teacher", "other"].includes(event.target.value) ?
-      "Adresse électronique académique" :
-      'Adresse électronique (e-mail)'
-    );
-    $(this.emailExplanationTarget).text(
-      event.target.value == "school_manager" ?
-      'Merci de saisir une adresse au format : ce.UAI@ac-academie.fr. Cette adresse sera utilisée pour communiquer avec vous. ' : 
-      'Merci de saisir une adresse au format : xxx@ac-academie.fr. Cette adresse sera utilisée pour communiquer avec vous. '
-    )
+    let labelText = "Adresse électronique (e-mail)"
+    if (["school_manager", "teacher", "main_teacher", "other"].includes(event.target.value)) {
+      labelText = "Adresse électronique académique";
+      // margin adjusting
+      this.phoneLabelTarget.classList.add('fr-mb-6v');
+
+      this.specificExplanation(event)
+      this.compulsaryPhoneLabel(event)
+    }
+    $(this.labelTarget).text();
+  }
+
+  specificExplanation(event) {
+    const format = (event.target.value == "school_manager") ?
+      'ce.UAI@ac-academie.fr' :
+      'xxx@ac-academie.fr'
+    const explanation = `Merci de saisir une adresse au format : ${format}. Cette adresse sera utilisée pour communiquer avec vous. `
+    $(this.emailExplanationTarget).text(explanation);
+  }
+
+  compulsaryPhoneLabel(event) {
+    if (event.target.value != "school_manager") {
+      this.schoolPhoneBlocTarget.children[0].innerHTML = 'Numéro de téléphone (facultatif)';
+      this.schoolPhoneBlocTarget.children[1].classList.add('d-none');
+      this.phoneSuffixTarget.removeAttribute('required');
+    } else {
+      this.schoolPhoneBlocTarget.children[0].innerHTML = 'Numéro de téléphone';
+      this.schoolPhoneBlocTarget.children[1].classList.remove('d-none');
+      this.phoneSuffixTarget.addAttribute('required', true);
+    }
   }
 
   // show/hide handicap input if checkbox is checked

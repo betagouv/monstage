@@ -15,8 +15,6 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'title', "Inscription | Monstage"
     assert_select 'label', /Prénom/
     assert_select 'label', /Nom/
-    assert_select 'label', /Date de naissance/
-    assert_select 'div', /Sexe/
     assert_select 'label', /Adresse électronique/
     assert_select 'label', /Créer un mot de passe/
     assert_select 'label', /Ressaisir le mot de passe/

@@ -28,9 +28,11 @@ class EmployerRegistrationsTest < ActionDispatch::IntegrationTest
                                                     first_name: 'Madame',
                                                     last_name: 'Accor',
                                                     type: 'Users::Employer',
+                                                    phone_prefix: '+33',
+                                                    phone_suffix: '0612345678',
                                                     accept_terms: '1' } })
-      assert_redirected_to users_registrations_standby_path(id: Users::Employer.last.id)
     end
+    assert_redirected_to users_registrations_standby_path(id: Users::Employer.last.id)
   end
 
   test "POST won't create Employer unless employer_role given" do

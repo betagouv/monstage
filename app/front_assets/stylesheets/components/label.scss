@@ -13,10 +13,10 @@
   // padding: $input-padding-y $input-padding-x;
   label {
     // top: $input-padding-y;
-    
+
     // position label at same position as input content
     // to do so, we split the input padding-x between left [offset label]/padding[give some space around the label]
-    
+
     // left: $input-padding-x/2;
     // padding-left: $input-padding-x/2;
     // padding-right: $input-padding-x/2;
@@ -65,4 +65,7 @@
   }
   input:placeholder-shown:not(:focus) + * {
   }
+}
+.registration label.fr-label{
+  font-weight: 400;
 }

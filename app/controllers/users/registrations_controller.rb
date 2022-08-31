@@ -51,25 +51,30 @@ module Users
 
     def resource_channel
       return current_user.channel unless current_user.nil?
-      return :email unless params[:as] == 'Student'
 
       :email
     end
 
     # POST /resource
     def create
+      # students only
       if params.dig(:user, :identity_token)
         params[:user] = merge_identity(params)
       end
-      if params.dig(:user, :phone) && fetch_user_by_phone && @user
+      # in case of phone number reusing.
+      if params && params.dig(:user, :phone) && fetch_user_by_phone && @user
         redirect_to(
           new_user_session_path(phone: fetch_user_by_phone.phone),
           flash: { danger: I18n.t('devise.registrations.reusing_phone_number')}
         ) and return
       end
+      # students only
       clean_phone_param
+      # employers and school_management only
+      params[:user] = concatenate_phone_fields
+
       super do |resource|
-        resource.targeted_offer_id ||= params.dig(:user, :targeted_offer_id)
+        resource.targeted_offer_id ||= params && params.dig(:user, :targeted_offer_id)
         @current_ability = Ability.new(resource)
       end
     end
@@ -134,6 +139,8 @@ module Users
           last_name
           operator_id
           phone
+          phone_prefix
+          phone_suffix
           role
           school_id
           targeted_offer_id
@@ -154,7 +161,7 @@ module Users
 
     # The path used after sign up for inactive accounts.
     def after_inactive_sign_up_path_for(resource)
-      if resource.phone.present?
+      if resource.phone.present? && resource.student?
         options = { id: resource.id }
         options = options.merge({ as: 'Student'}) if resource.student?
         users_registrations_phone_standby_path(options)

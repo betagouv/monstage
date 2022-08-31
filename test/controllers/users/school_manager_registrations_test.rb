@@ -23,6 +23,8 @@ class SchoolManagerRegistrationsTest < ActionDispatch::IntegrationTest
                                                     last_name: 'Etablissement',
                                                     type: 'Users::SchoolManagement',
                                                     accept_terms: '1',
+                                                    phone_prefix: '+33',
+                                                    phone_suffix: '0602030405',
                                                     role: :school_manager } })
       school_manager_id = Users::SchoolManagement.where(role: 'school_manager').last.id
       assert_redirected_to users_registrations_standby_path(id: school_manager_id)
@@ -38,6 +40,8 @@ class SchoolManagerRegistrationsTest < ActionDispatch::IntegrationTest
                                                     last_name: 'LEF',
                                                     password: '[Filtered]',
                                                     password_confirmation: '[Filtered]',
+                                                    phone_prefix: '+33',
+                                                    phone_suffix: '0602030405',
                                                     role: :school_manager,
                                                     type: 'Users::SchoolManagement' }})
       assert_response :success
