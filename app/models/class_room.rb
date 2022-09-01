@@ -4,7 +4,7 @@ class ClassRoom < ApplicationRecord
   include SchoolTrackable
 
   belongs_to :school
-  belongs_to :main_teacher, class_name: "Users::SchoolManagement", -> { where role: "main_teacher" }, foreign_key: "main_teacher_id"
+  belongs_to :main_teacher, class_name: "Users::SchoolManagement", -> { where role: "main_teacher" }, foreign_key: "main_teacher_id", optional: true
   has_many :students, class_name: 'Users::Student',
                       dependent: :nullify
   has_many :school_managements, class_name: 'Users::SchoolManagement',
@@ -14,9 +14,9 @@ class ClassRoom < ApplicationRecord
     end
   end
 
-  def main_teacher
-    school_managements&.main_teachers&.last
-  end
+  # def main_teacher
+  #   school_managements&.main_teachers&.last
+  # end
 
   def fit_to_weekly?
     try(:troisieme_generale?)
