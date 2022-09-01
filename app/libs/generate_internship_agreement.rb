@@ -40,9 +40,14 @@ class GenerateInternshipAgreement < Prawn::Document
     article_9
     article_10
     signatures
-    signature_table_header
-    signature_table
-    signature_table_footer
+    (0..2).each do |slice|
+      signature_table_header(slice: slice)
+      signature_table_body(slice: slice)
+      signature_table_signature(slice: slice)
+      signature_table_footer
+      @pdf.move_down 20
+    end
+
     footer
     page_number
     @pdf
@@ -475,16 +480,49 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.move_down 20
   end
 
-  def signature_table_header
-    table_data= [[
-      "L'entreprise ou l'organisme d'accueil",
-      "Le représentant de l'établissement d'enseignement scolaire",
-      "L'élève",
-      "Les parents       (responsables légaux)"]]
+  def signature_table_header_data
+    { header: [[
+        "Le chef d'établissement",
+        "Le responsable de l'organisme d'accueil",
+        "L'élève",
+        "Les parents       (responsables légaux)",
+        "Le professeur référent",
+        "Le référent en charge de l’élève à sein de l’organisme d’accueil"
+        ]],
+      body: [
+        [""]*6,
+        [
+          "Nom et prénom : #{school_manager.presenter.formal_name}",
+          "Nom et prénom : #{employer.presenter.formal_name}",
+          "Nom et prénom : #{student.presenter.formal_name}",
+          "Nom et prénom : #{"." *58}",
+          "Nom et prénom : #{dotting(@internship_agreement.student_refering_teacher_full_name)}",
+          "Nom et prénom : #{"." *58}"
+        ],
+        [
+          signature_date_str(signatory_role:'school_manager'),
+          signature_date_str(signatory_role:'employer'),
+          "Signé le : #{"." * 70}",
+          "Signé le : #{"." * 70}",
+          "Signé le : #{"." * 70}",
+          "Signé le : #{"." * 70}"
+        ]],
+      signature_part: [
+        [image_from(signature: download_image_and_signature(signatory_role: 'school_manager')),
+         image_from(signature: download_image_and_signature(signatory_role: 'employer')),
+         "",
+         "",
+         "",
+         ""]]
+    }
+  end
+
+  def signature_table_header(slice:)
+    table_data = slice_by_two(signature_table_header_data[:header], slice: slice)
     @pdf.table(
       table_data,
       row_colors: ["F0F0F0"],
-      column_widths: [PAGE_WIDTH / 4] * 4,
+      column_widths: [PAGE_WIDTH / 2] * 2,
       cell_style: {size: 10}
     ) do |t|
         t.cells.border_color="cccccc"
@@ -492,15 +530,26 @@ class GenerateInternshipAgreement < Prawn::Document
     end
   end
 
-  def signature_table
-    img_empl      = image_from signature: download_image_and_signature(signatory_role: 'employer')
-    img_s_manager = image_from signature: download_image_and_signature(signatory_role: 'school_manager')
+  def signature_table_body(slice:)
+    table_data = slice_by_two(signature_table_header_data[:body], slice: slice)
 
-    table_data = [[img_empl, img_s_manager, "", ""]]
     @pdf.table(
       table_data,
       row_colors: ["FFFFFF"],
-      column_widths: [PAGE_WIDTH / 4] * 4
+      column_widths: [PAGE_WIDTH / 2] * 2
+    )  do |t|
+      t.cells.borders = [:left, :right]
+      t.cells.border_color="cccccc"
+      t.cells.height= 20
+    end
+  end
+
+  def signature_table_signature(slice:)
+    table_data = slice_by_two(signature_table_header_data[:signature_part], slice: slice)
+    @pdf.table(
+      table_data,
+      row_colors: ["FFFFFF"],
+      column_widths: [PAGE_WIDTH / 2] * 2
     )  do |t|
       t.cells.borders = [:left, :right]
       t.cells.border_color="cccccc"
@@ -509,23 +558,16 @@ class GenerateInternshipAgreement < Prawn::Document
   end
 
   def signature_table_footer
-    table_data = [[
-      signature_date_str(signatory_role:'employer'),
-      signature_date_str(signatory_role:'school_manager'),
-      "",
-      "" ]]
     @pdf.table(
-      table_data,
+      [[""] * 2],
       row_colors: ["FFFFFF"],
-      column_widths: [PAGE_WIDTH / 4] * 4,
+      column_widths: [PAGE_WIDTH / 2] * 2,
       cell_style: {size: 8, color: '555555'}
     )  do |t|
       t.cells.borders = [:left, :right, :bottom]
       t.cells.border_color="cccccc"
     end
   end
-
-
 
   def page_number
     string = '<page> / <total>'
@@ -557,7 +599,11 @@ class GenerateInternshipAgreement < Prawn::Document
     text.nil? ? '.' * len : text
   end
 
+
+
   private
+
+
 
   def image_from(signature: )
     signature.nil? ? "" : {image: signature.local_signature_image_file_path}.merge(SIGNATURE_OPTIONS)
@@ -623,7 +669,27 @@ class GenerateInternshipAgreement < Prawn::Document
     @internship_agreement.internship_application
   end
 
+  def employer
+    internship_application.internship_offer.employer
+  end
+
+  def school_manager
+    internship_application.student.school_manager
+  end
+
   def student
     internship_application.student
+  end
+
+  def referent_teacher
+    internship_agreement.referent_teacher
+  end
+
+  def slice_by_two(array, slice:)
+    table_data = []
+    array.each do |row|
+      table_data << row[2*slice..2*slice+1]
+    end
+    table_data
   end
 end
