@@ -126,6 +126,7 @@ import './homepage/partenaires/colored_logo/logo-viens-voir-mon-taf.png';
 // import './homepage/sponsors/logo-anct.png';
 import './homepage/sponsors/incubateur-anct.png';
 import './homepage/sponsors/logo-anct.svg';
+import './homepage/sponsors/logo-anct.png';
 import './homepage/sponsors/logo-ministere-education-nationale.svg';
 import './homepage/sponsors/logo-ministere-charge-de-la-ville.svg';
 import './homepage/sponsors/logo-ministere-cohesion-territoire.svg';
