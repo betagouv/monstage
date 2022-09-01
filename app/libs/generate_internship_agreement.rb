@@ -480,7 +480,7 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.move_down 20
   end
 
-  def signature_table_header_data
+  def signature_data
     { header: [[
         "Le chef d'établissement",
         "Le responsable de l'organisme d'accueil",
@@ -518,7 +518,7 @@ class GenerateInternshipAgreement < Prawn::Document
   end
 
   def signature_table_header(slice:)
-    table_data = slice_by_two(signature_table_header_data[:header], slice: slice)
+    table_data = slice_by_two(signature_data[:header], slice: slice)
     @pdf.table(
       table_data,
       row_colors: ["F0F0F0"],
@@ -531,7 +531,7 @@ class GenerateInternshipAgreement < Prawn::Document
   end
 
   def signature_table_body(slice:)
-    table_data = slice_by_two(signature_table_header_data[:body], slice: slice)
+    table_data = slice_by_two(signature_data[:body], slice: slice)
 
     @pdf.table(
       table_data,
@@ -545,7 +545,7 @@ class GenerateInternshipAgreement < Prawn::Document
   end
 
   def signature_table_signature(slice:)
-    table_data = slice_by_two(signature_table_header_data[:signature_part], slice: slice)
+    table_data = slice_by_two(signature_data[:signature_part], slice: slice)
     @pdf.table(
       table_data,
       row_colors: ["FFFFFF"],
@@ -688,7 +688,7 @@ class GenerateInternshipAgreement < Prawn::Document
   def slice_by_two(array, slice:)
     table_data = []
     array.each do |row|
-      table_data << row[2*slice..2*slice+1]
+      table_data << row.each_slice(2).to_a[slice]
     end
     table_data
   end
