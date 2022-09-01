@@ -495,7 +495,7 @@ class GenerateInternshipAgreement < Prawn::Document
           "Nom et prénom : #{school_manager.presenter.formal_name}",
           "Nom et prénom : #{employer.presenter.formal_name}",
           "Nom et prénom : #{student.presenter.formal_name}",
-          "Nom et prénom : #{"." *58}",
+          "Nom et prénom : #{dotting(@internship_agreement.student_legal_representative_full_name)}",
           "Nom et prénom : #{dotting(@internship_agreement.student_refering_teacher_full_name)}",
           "Nom et prénom : #{"." *58}"
         ],
