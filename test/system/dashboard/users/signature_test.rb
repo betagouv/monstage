@@ -95,6 +95,9 @@ module Dashboard
                       "#{student.last_name.upcase}.pdf"
           assert File.exist? file_name
           File.delete file_name
+          Dir[Signature::SIGNATURE_STORAGE_DIR + '/*'].each do |file|
+            File.delete file
+          end
         end
       end
     end
@@ -175,6 +178,9 @@ module Dashboard
                       "#{student.last_name.upcase}.pdf"
           assert File.exist? file_name
           File.delete file_name
+          Dir[Signature::SIGNATURE_STORAGE_DIR + '/*'].each do |file|
+            File.delete file
+          end
         end
       end
     end
