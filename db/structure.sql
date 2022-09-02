@@ -419,7 +419,7 @@ CREATE TABLE public.class_rooms (
     school_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
     main_teacher_id integer
 );
 
@@ -2641,7 +2641,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220704132020'),
 ('20220711083028'),
 ('20220722081417'),
-('20220726123520');
+('20220726123520'),
 ('20220901065014');
 
 
