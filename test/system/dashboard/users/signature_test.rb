@@ -68,7 +68,7 @@ module Dashboard
           assert_equal DateTime.now, signature.signature_date
           assert_equal 'employer', signature.signatory_role
           if Rails.application.config.active_storage.service == :local
-            assert File.exists?(signature.local_signature_image_file_path)
+            assert File.exist?(signature.local_signature_image_file_path)
           end
 
           signature = internship_agreement_2.signatures.first
@@ -77,7 +77,7 @@ module Dashboard
           assert_equal DateTime.now, signature.signature_date
           assert_equal 'employer', signature.signatory_role
           if Rails.application.config.active_storage.service == :local
-            assert File.exists?(signature.local_signature_image_file_path)
+            assert File.exist?(signature.local_signature_image_file_path)
           end
 
           assert_equal signature.employer.phone, signature.signature_phone_number
@@ -93,7 +93,7 @@ module Dashboard
           student = internship_agreement.student
           file_name = "Convention_de_stage_#{student.first_name.upcase}_" \
                       "#{student.last_name.upcase}.pdf"
-          assert File.exists? file_name
+          assert File.exist? file_name
           File.delete file_name
         end
       end
@@ -173,7 +173,7 @@ module Dashboard
           student = internship_agreement.student
           file_name = "Convention_de_stage_#{student.first_name.upcase}_" \
                       "#{student.last_name.upcase}.pdf"
-          assert File.exists? file_name
+          assert File.exist? file_name
           File.delete file_name
         end
       end

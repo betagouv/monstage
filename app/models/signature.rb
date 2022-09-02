@@ -1,5 +1,6 @@
 class Signature < ApplicationRecord
   has_one_attached :signature_image
+  SIGNATURE_STORAGE_DIR = "signature_storage"
 
   enum signatory_role: {
     school_manager: 'school_manager',
@@ -20,14 +21,14 @@ class Signature < ApplicationRecord
   delegate :school_manager, to: :internship_agreement
 
   def self.file_path(user: , internship_agreement_id: )
-    "storage/signatures/signature-#{Rails.env}-#{user.signatory_role}" \
+    "#{SIGNATURE_STORAGE_DIR}/signature-#{Rails.env}-#{user.signatory_role}" \
     "-#{internship_agreement_id}.png"
   end
 
   #----------------------------------------------------------------------------
 
   def local_signature_image_file_path
-    "storage/signatures/#{signature_file_name}"
+    "#{SIGNATURE_STORAGE_DIR}/#{signature_file_name}"
   end
 
   def signature_file_name
@@ -46,13 +47,13 @@ class Signature < ApplicationRecord
   def config_clean_local_signature_file
     return true if Rails.application.config.active_storage.service == :local
 
-    if signature_image.attached? && File.exists?(self.local_signature_image_file_path)
+    if signature_image.attached? && File.exist?(self.local_signature_image_file_path)
       File.delete(self.local_signature_image_file_path)
     end
   end
 
   def attach_signature!
-    unless File.exists?(local_signature_image_file_path) &&
+    unless File.exist?(local_signature_image_file_path) &&
       MIME::Types.type_for(local_signature_image_file_path).first.try(:media_type) ==  'image'
 
       raise ArgumentError , "L'image au format png n'a pas été trouvée"
