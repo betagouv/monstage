@@ -106,10 +106,10 @@ fr:
     attributes:
       group:
         created_at: Crée le
-        is_public: Secteur public/privé
-        name: Nom du groupe
+        is_public: Secteur public
+        is_paqte: Paqte
+        name: Nom
         updated_at: Mis à jour le
-        name: Administration centrale
       school:
         name: Nom
         kind: Type

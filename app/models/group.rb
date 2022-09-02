@@ -21,5 +21,13 @@ class Group < ApplicationRecord
   rails_admin do
     weight 15
     navigation_label 'Divers'
+
+    list do
+      field :id
+      field :name
+      field :is_public
+      field :is_paqte
+    end
+
   end
 end
