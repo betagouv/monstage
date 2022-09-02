@@ -1,7 +1,6 @@
 class NewsletterController < ApplicationController
 
   def subscribe
-    debugger
     redirect_to root_path,
                 flash: { warning: "Votre email a l'air erroné" } and return unless newsletter_email_checked?
     # our honeypot is filled, we don't subscribe this email, but pretend it's ok
