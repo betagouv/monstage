@@ -7,6 +7,7 @@ class UsersController < ApplicationController
 
   def edit
     authorize! :update, current_user
+    split_phone_parts(current_user)
     redirect_to = account_path(section: :school)
     if force_select_school? && can_redirect?(redirect_to)
       redirect_to(redirect_to,
