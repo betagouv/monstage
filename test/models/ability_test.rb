@@ -168,6 +168,7 @@ class AbilityTest < ActiveSupport::TestCase
            'god should be able see_tutor')
     assert ability.can?(:read, User)
     assert ability.can?(:destroy, User)
+    assert ability.can?(:manage, Group)
     assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
     assert ability.can?(:index, Acl::Reporting.new(user: god, params: {}))
     refute ability.can?(:apply, create(:weekly_internship_offer))
