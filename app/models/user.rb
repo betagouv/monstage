@@ -8,6 +8,8 @@ class User < ApplicationRecord
   include UserAdmin
   include ActiveModel::Dirty
 
+  attr_accessor :phone_prefix, :phone_suffix
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable,
          :validatable, :confirmable, :trackable,

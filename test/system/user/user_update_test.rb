@@ -74,4 +74,24 @@ class UserUpdateTest < ApplicationSystemTestCase
     visit internship_offers_path
     find('h1', text: 'Postulez à des offres de stage')
   end
+
+  test 'employer can update his phone_number' do
+    employer = create(:employer , phone: '+330623042585')
+    sign_in(employer)
+    visit account_path
+
+    user_phone_selector = find(:css, '#user_phone_suffix')
+    assert user_phone_selector.value == employer.phone[3..-1]
+    select('+687', from: 'user[phone_prefix]')
+    click_on 'Enregistrer mes informations'
+    success_message = find('#alert-text').text
+    assert success_message == 'Compte mis à jour avec succès.'
+    user_phone_selector = find(:css, '#user_phone_prefix')
+    assert_equal '+687', user_phone_selector.value
+    assert_equal '+6870623042585', employer.reload.phone
+    fill_in('Numéro de téléphone', with: '0623042586')
+    click_on 'Enregistrer mes informations'
+    assert_equal '+6870623042586', employer.reload.phone
+
+  end
 end

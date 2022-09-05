@@ -19,8 +19,6 @@ module Users
     has_many :tutors
     has_many :internship_offer_infos
 
-    validates :employer_role, presence: true, length:{ minimum: 2}
-
     def custom_dashboard_path
       url_helpers.dashboard_internship_offers_path
     end

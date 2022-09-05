@@ -34,16 +34,4 @@ class EmployerRegistrationsTest < ActionDispatch::IntegrationTest
     end
     assert_redirected_to users_registrations_standby_path(id: Users::Employer.last.id)
   end
-
-  test "POST won't create Employer unless employer_role given" do
-    assert_no_difference('Users::Employer.count') do
-      post user_registration_path(params: { user: { email: 'madame@accor.fr',
-                                                    password: 'okokok',
-                                                    password_confirmation: 'okokok',
-                                                    first_name: 'Madame',
-                                                    last_name: 'Accor',
-                                                    type: 'Users::Employer',
-                                                    accept_terms: '1' } })
-    end
-  end
 end
