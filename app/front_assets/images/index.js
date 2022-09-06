@@ -150,4 +150,4 @@ import './modes_d_emploi/Mode_d_emploi_2022-Élèves_et_Parents_d_élèves_V
 import './modes_d_emploi/Mode_d_emploi_2022-Entreprises_et_Administrations_publiques_VDEF_220818.png';
 import './modes_d_emploi/Mode_d_emploi_2022-Membres_de_l_équipe_pédagogique_VDEF_220818.png';
 import './modes_d_emploi/Mode_d_emploi_2022-Référents_administratifs_et_départementaux_VDEF_220818.png';
-import "./modes_d_emploi/Guide d'utilisation - monstagedetroisieme.fr.png";
+import "./modes_d_emploi/Mode-d-emploi-global-2022.png";
