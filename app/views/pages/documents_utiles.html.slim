@@ -12,7 +12,7 @@
   - { "Élève" => "Mode_d_emploi_2022-Élèves_et_Parents_d_élèves_VDEF_220818", "Entreprise" => "Mode_d_emploi_2022-Entreprises_et_Administrations_publiques_VDEF_220818",
     "Équipe pédagogique" => "Mode_d_emploi_2022-Membres_de_l_équipe_pédagogique_VDEF_220818",
     "référents administratifs et départementaux" => "Mode_d_emploi_2022-Référents_administratifs_et_départementaux_VDEF_220818",
-    "Tous les utilisateurs" => "Guide d'utilisation - monstagedetroisieme.fr", }.each do |user_segmeent, file_name|
+    "Tous les utilisateurs" => "Mode-d-emploi-global-2022", }.each do |user_segmeent, file_name|
     .col-12.col-sm-6.col-md-4.col-lg-3.text-center
       = link_to "#{root_url}/modes_d_emploi/#{file_name}.pdf", title: "Accéder au mode d'emploi #{user_segmeent}"  do
         = image_tag asset_pack_path("media/images/modes_d_emploi/#{file_name}.png"), alt: "Couverture du mode d'emploi #{user_segmeent}", size: '200x283', class: 'img-thumbnail'
