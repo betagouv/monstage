@@ -8,11 +8,11 @@ set -x
 # 4. run this file
 # 5. commit
 convert "modes-emplois/MS3_Guide-d-utilisation-global-2020.pdf[0]" -resize 400x568 ./app/front_assets/images/modes_d_emploi/MS3_Guide-d-utilisation-global-2020.png
-convert "modes-emplois/Mode_d_emploi_2022-Élèves_et_Parents_d_élèves_VDEF_220818.pdf[0]" -resize 400x568 ./app/front_assets/images/modes_d_emploi/Mode_d_emploi_2022-Élèves_et_Parents_d_élèves_VDEF_220818.png
-convert "modes-emplois/Mode_d_emploi_2022-Entreprises_et_Administrations_publiques_VDEF_220818.pdf[0]" -resize 400x568 ./app/front_assets/images/modes_d_emploi/Mode_d_emploi_2022-Entreprises_et_Administrations_publiques_VDEF_220818.png
-convert "modes-emplois/Mode_d_emploi_2022-Membres_de_l_équipe_pédagogique_VDEF_220818.pdf[0]" -resize 400x568 ./app/front_assets/images/modes_d_emploi/Mode_d_emploi_2022-Membres_de_l_équipe_pédagogique_VDEF_220818.png
-convert "modes-emplois/Mode_d_emploi_2022-Référents_administratifs_et_départementaux_VDEF_220818.pdf[0]" -resize 400x568 ./app/front_assets/images/modes_d_emploi/Mode_d_emploi_2022-Référents_administratifs_et_départementaux_VDEF_220818.png
-convert "modes-emplois/Mode-d-emploi-global-2022.pdf[0]" -resize 400x568 ./app/front_assets/images/modes_d_emploi/Mode-d-emploi-global-2022.png
+convert "modes-emplois/MS3_Mode-d-emploi-eleves.pdf[0]" -resize 400x568 ./app/front_assets/images/modes_d_emploi/MS3_Mode-d-emploi-eleves.png
+convert "modes-emplois/MS3_Mode-d-emploi-entreprises.pdf[0]" -resize 400x568 ./app/front_assets/images/modes_d_emploi/MS3_Mode-d-emploi-entreprises.png
+convert "modes-emplois/MS3_Mode-d-emploi-membres-pedagogique.pdf[0]" -resize 400x568 ./app/front_assets/images/modes_d_emploi/MS3_Mode-d-emploi-membres-pedagogique.png
+convert "modes-emplois/MS3_Mode-d-emploi-referents-departementaux.pdf[0]" -resize 400x568 ./app/front_assets/images/modes_d_emploi/MS3_Mode-d-emploi-referents-departementaux.png
+convert "modes-emplois/MS3_Mode-d-emploi-global-2022.pdf[0]" -resize 400x568 ./app/front_assets/images/modes_d_emploi/MS3_Mode-d-emploi-global-2021.png
 
 gs -sDEVICE=pdfwrite \
    -dCompatibilityLevel=1.4 \
@@ -26,21 +26,21 @@ gs -sDEVICE=pdfwrite \
    -dPDFSETTINGS=/ebook \
    -dNOPAUSE \
    -dBATCH \
-   -sOutputFile=public/modes_d_emploi/Mode_d_emploi_2022-Élèves_et_Parents_d_élèves_VDEF_220818.pdf "modes-emplois/Mode_d_emploi_2022-Élèves_et_Parents_d_élèves_VDEF_220818.pdf"
+   -sOutputFile=public/modes_d_emploi/MS3_Mode-d-emploi-eleves.pdf "modes-emplois/MS3_Mode-d-emploi-eleves.pdf"
 
 gs -sDEVICE=pdfwrite \
    -dCompatibilityLevel=1.4 \
    -dPDFSETTINGS=/ebook \
    -dNOPAUSE \
    -dBATCH \
-   -sOutputFile=public/modes_d_emploi/Mode_d_emploi_2022-Entreprises_et_Administrations_publiques_VDEF_220818.pdf "modes-emplois/Mode_d_emploi_2022-Entreprises_et_Administrations_publiques_VDEF_220818.pdf"
+   -sOutputFile=public/modes_d_emploi/MS3_Mode-d-emploi-entreprises.pdf "modes-emplois/MS3_Mode-d-emploi-entreprises.pdf"
 
 gs -sDEVICE=pdfwrite \
    -dCompatibilityLevel=1.4 \
    -dPDFSETTINGS=/ebook \
    -dNOPAUSE \
    -dBATCH \
-   -sOutputFile=public/modes_d_emploi/Mode_d_emploi_2022-Membres_de_l_équipe_pédagogique_VDEF_220818.pdf "modes-emplois/Mode_d_emploi_2022-Membres_de_l_équipe_pédagogique_VDEF_220818.pdf"
+   -sOutputFile=public/modes_d_emploi/MS3_Mode-d-emploi-membres-pedagogique.pdf "modes-emplois/MS3_Mode-d-emploi-membres-pedagogique.pdf"
 
 
 gs -sDEVICE=pdfwrite \
@@ -48,11 +48,16 @@ gs -sDEVICE=pdfwrite \
    -dPDFSETTINGS=/ebook \
    -dNOPAUSE \
    -dBATCH \
-   -sOutputFile=public/modes_d_emploi/Mode_d_emploi_2022-Référents_administratifs_et_départementaux_VDEF_220818.pdf "modes-emplois/Mode_d_emploi_2022-Référents_administratifs_et_départementaux_VDEF_220818.pdf"
+   -sOutputFile=public/modes_d_emploi/MS3_Mode-d-emploi-referents-departementaux.pdf "modes-emplois/MS3_Mode-d-emploi-referents-departementaux.pdf"
 
 gs -sDEVICE=pdfwrite \
    -dCompatibilityLevel=1.4 \
    -dPDFSETTINGS=/ebook \
    -dNOPAUSE \
    -dBATCH \
-   -sOutputFile=public/modes_d_emploi/Mode-d-emploi-global-2022.pdf "modes-emplois/Mode-d-emploi-global-2022.pdf"
+<<<<<<< HEAD
+   -sOutputFile=public/modes_d_emploi/MS3_Mode-d-emploi-global-2022.pdf "modes-emplois/MS3_Mode-d-emploi-global-2022.pdf"
+=======
+   -sOutputFile=public/modes_d_emploi/MS3_Mode-d-emploi-global-2021.pdf "modes-emplois/MS3_Mode-d-emploi-global-2021.pdf"
+
+>>>>>>> parent of f47176b79... Corrige la page Documents utiles avec les nouveaux modes d'emploi

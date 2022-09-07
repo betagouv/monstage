@@ -146,8 +146,8 @@ import './documents_utiles/versLinfini.jpg';
 
 import './modes_d_emploi/MS3_Guide-d-utilisation-global-2020.png';
 import './modes_d_emploi/MS3_Guide-stage-a-distance-2020.png';
-import './modes_d_emploi/Mode_d_emploi_2022-Élèves_et_Parents_d_élèves_VDEF_220818.png';
-import './modes_d_emploi/Mode_d_emploi_2022-Entreprises_et_Administrations_publiques_VDEF_220818.png';
-import './modes_d_emploi/Mode_d_emploi_2022-Membres_de_l_équipe_pédagogique_VDEF_220818.png';
-import './modes_d_emploi/Mode_d_emploi_2022-Référents_administratifs_et_départementaux_VDEF_220818.png';
-import "./modes_d_emploi/Mode-d-emploi-global-2022.png";
+import './modes_d_emploi/MS3_Mode-d-emploi-eleves.png';
+import './modes_d_emploi/MS3_Mode-d-emploi-entreprises.png';
+import './modes_d_emploi/MS3_Mode-d-emploi-membres-pedagogique.png';
+import './modes_d_emploi/MS3_Mode-d-emploi-referents-departementaux.png';
+import './modes_d_emploi/MS3_Mode-d-emploi-global-2022.png';
