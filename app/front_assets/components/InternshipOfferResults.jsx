@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
-import debounce from 'lodash.debounce';
 
 import activeMarker from '../images/active_pin.svg';
 import defaultMarker from '../images/default_pin.svg';
@@ -27,47 +26,50 @@ const defaultPointerIcon = new L.Icon({
   popupAnchor: [0, -60], // changed popup position
 });
 
-const ClickMap = ({ internshipOffers }) => {
-  // console.log('coucou center ');
-  if (internshipOffers.length) {
-    const map = useMap();
-    const bounds = internshipOffers.map((internshipOffer) => [
-      internshipOffer.lat,
-      internshipOffer.lon,
-    ]);
-    // console.log(bounds);
-    map.fitBounds(bounds);
-    L.tileLayer.provider('CartoDB.Positron').addTo(map);
-  }
-};
-
 const InternshipOfferResults = ({ count, sectors, params }) => {
-  const [map, setMap] = useState(null);
+  // const [map, setMap] = useState(null);
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [internshipOffers, setInternshipOffers] = useState([]);
   const [showSectors, setShowSectors] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [newDataFetched, setNewDataFetched] = useState(false);
   const [selectedSectors, setSelectedSectors] = useState([]);
 
   useEffect(() => {
     requestInternshipOffers();
   }, []);
 
-  const debouncedhandleMouseOver = debounce((data) => {
-    setSelectedOffer(data);
-  }, 100);
+  const ClickMap = ({ internshipOffers, recenterMap }) => {
+    console.log('coucou Click Map ');
+    console.log('internshipOffers.length', internshipOffers.length);
+  
+    if (internshipOffers.length && recenterMap) {
+      console.log('recenter map in click map');
+      const map = useMap();
+      const bounds = internshipOffers.map((internshipOffer) => [
+        internshipOffer.lat,
+        internshipOffer.lon,
+      ]);
+      map.fitBounds(bounds);
+      L.tileLayer.provider('CartoDB.Positron').addTo(map);
+    }
 
-  const debouncedhandleMouseOut = debounce(() => {
-    // setSelectedOffer(null);
-  }, 500);
+    setNewDataFetched(false);
+    return null
+  };
 
   const handleMouseOver = (data) => {
-    debouncedhandleMouseOver(data);
+    setSelectedOffer(data);
   };
 
   const handleMouseOut = () => {
-    debouncedhandleMouseOut();
+    // setSelectedOffer(null);
   };
+
+  const displayOffersState = () => {
+    console.log('les offres en state brut:');
+    console.log(internshipOffers);
+  }
 
   const getSectors = () => {
     const sectors = [];
@@ -78,35 +80,37 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
       };
     };
     setSelectedSectors(sectors);
+    displayOffersState();
     return sectors;
   }
 
   const requestInternshipOffers = () => {
+    console.log('request offers');
     setIsLoading(true);
     document.getElementById("fr-modal-filter").classList.remove("fr-modal--opened");
     document.getElementById("filter-sectors-button").setAttribute('data-fr-opened', false);
-
     params['sector_ids'] = getSectors();
 
-    setInternshipOffers(
-      $.ajax({ type: 'GET', url: endpoints['searchInternshipOffers'](), data: params })
-        .done(fetchDone)
-        .fail(fetchFail),
-    );
+    $.ajax({ type: 'GET', url: endpoints['searchInternshipOffers'](), data: params })
+      .done(fetchDone)
+      .fail(fetchFail);
   };
 
   const fetchDone = (result) => {
+    console.log('result :');
+    console.log(result);
+
     setInternshipOffers(result);
     setIsLoading(false);
-    if (internshipOffers.length) {
-      const map = useMap();
-      const bounds = internshipOffers.map((internshipOffer) => [
-        internshipOffer.lat,
-        internshipOffer.lon,
-      ]);
-      map.fitBounds(bounds);
-      L.tileLayer.provider('CartoDB.Positron').addTo(map);
-    }
+    setNewDataFetched(true);
+
+    console.log('offers');
+    console.log(internshipOffers);
+
+    // if (internshipOffers.length) {
+    //   resizingMap
+    // }
+    return true
   };
 
   const fetchFail = (xhr, textStatus) => {
@@ -126,7 +130,6 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
 
   return (
     <div className="results-container no-x-scroll">
-      
       <div className="row no-x-scroll">
         <div className="col-7 d-flex flex-row-reverse" style={{ overflowY: 'scroll' }}>
           
@@ -175,7 +178,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
                 ) : (
                   <div className="row mx-0">
                     {
-                      internshipOffers.length ? (
+                      internshipOffers.length ? (                   
                         internshipOffers.map((internshipOffer, i) => (
                           <InternshipOfferCard 
                             internshipOffer={internshipOffer} 
@@ -236,9 +239,9 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
                 ) : ('')
               }
               </MarkerClusterGroup>
-            
-              
-              <ClickMap internshipOffers={internshipOffers} />
+
+              <ClickMap internshipOffers={internshipOffers} recenterMap={newDataFetched} />
+
             </MapContainer>
           </div>
         </div>
