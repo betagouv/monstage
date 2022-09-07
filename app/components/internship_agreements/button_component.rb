@@ -32,9 +32,14 @@ module InternshipAgreements
         {status: 'disabled', text: 'Partie signature'}
       when 'validated', 'signatures_started' then
         user_signed_condition = current_user.already_signed?(internship_agreement_id: @internship_agreement.id)
-        user_signed_condition ? {status: 'disabled', text: 'Signée, en attente'} :
-                                {status: 'enabled', text: 'Signer la convention'}
-      when 'signed_by_all' then {status: 'disabled', text: 'Signée de tous'}
+        employer_signed = @internship_agreement.signature_by_role(signatory_role: 'employer').present?
+        user_signed_condition ? {status: 'disabled', text: "Signée par vous. " \
+                                                           "En attente de la signature de l'" \
+                                                            "#{employer_signed ? 'établissement' :  'employeur'}."} :
+                                {status: 'enabled', text: "Signer la convention " }
+      when 'signed_by_all' then
+          {status: 'disabled',
+           text: "Convention signée par toutes les parties." }
       end
     end
   end
