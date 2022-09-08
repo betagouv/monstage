@@ -84,9 +84,9 @@ module Dashboard
 
           find('h1', text: 'Editer, imprimer et bientôt signer les conventions dématérialisées')
           first_label = all('a.fr-btn.disabled')[0].text
-          assert_equal 'Signée, en attente', first_label
+          assert_equal 'Déjà signée', first_label
           second_label = all('a.fr-btn.disabled')[1].text
-          assert_equal 'Signée, en attente', second_label
+          assert_equal 'Déjà signée', second_label
           find('span[id="alert-text"]', text: 'Votre signature a été enregistrée')
           all("a.fr-btn--secondary.button-component-cta-button")[0].click # Imprimer
           sleep 0.5
@@ -166,9 +166,9 @@ module Dashboard
 
           find('h1', text: 'Editer, imprimer et bientôt signer les conventions dématérialisées')
           first_label = all('a.fr-btn.disabled')[0].text
-          assert_equal 'Signée, en attente', first_label
+          assert_equal 'Déjà signée', first_label
           second_label = all('a.fr-btn.disabled')[1].text
-          assert_equal 'Signée, en attente', second_label
+          assert_equal 'Déjà signée', second_label
           find('span[id="alert-text"]', text: 'Votre signature a été enregistrée')
 
           all("a.fr-btn--secondary.button-component-cta-button")[0].click # Imprimer
