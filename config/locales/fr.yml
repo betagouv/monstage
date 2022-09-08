@@ -206,20 +206,26 @@ fr:
         status:
           employer:
             draft: À remplir par les deux parties.
-            started_by_employer: Votre convention est remplie mais pas envoyée au chef d'établissement.
-            completed_by_employer: Votre convention est dans les mains du chef d'établissement.
-            started_by_school_manager: Votre convention est dans les mains du chef d'établissement.
+            started_by_employer: Votre convention est remplie, mais elle n'est pas envoyée au chef d'établissement.
+            completed_by_employer: La convention est dans les mains du chef d'établissement.
+            started_by_school_manager: La convention est dans les mains du chef d'établissement.
             validated: Votre convention est prête. Imprimez-la et renvoyez-la signée au chef d'établissement.
-            signatures_started: Des signatures ont été apposées, mais pas toutes
-            signed_by_all: Signée par toutes les parties
+            signatures_started:
+              already_signed: Vous avez déjà signé. En attente de la signature du chef d’établissement.
+              not_signed_yet: Le chef d'établissement a déjà signé. En attente de votre signature.
+            signed_by_all: Signée par toutes les parties.
           school_manager:
             draft: En attente de l'offreur.
             started_by_employer: En attente de l'offreur.
-            completed_by_employer: Votre convention est remplie par l'offreur mais vous ne l'avez pas validée.
-            started_by_school_manager: Votre convention est remplie mais pas validée.
+            completed_by_employer: Votre convention est remplie par l'offreur, mais vous ne l'avez pas renseignée.
+            started_by_school_manager: Votre convention est remplie, mais pas validée.
             validated: Votre convention est prête.
-            signatures_started: Des signatures ont été apposées, mais pas toutes
-            signed_by_all: Signée par toutes les parties
+            signatures_started:
+              already_signed: Vous avez déjà signé. En attente de la signature de l’employeur.
+              not_signed_yet: L'employeur a déjà signé. En attente de votre signature.
+            signed_by_all: Signée par toutes les parties.
+      signature: 
+        signatory_role: signataire
 
       internship_offer:
         <<: *organisation_fields
