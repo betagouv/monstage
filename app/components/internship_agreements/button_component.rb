@@ -13,33 +13,44 @@ module InternshipAgreements
     end
 
     def button_label(bool_employer:)
-      # when not employer then school_manager
-      case @internship_agreement.aasm_state
-      when 'draft', 'started_by_employer' then
-        bool_employer ? {status: 'enabled', text: 'Remplir ma convention'} :
-                        {status: 'disabled', text: 'En attente'}
-      when 'completed_by_employer', 'started_by_school_manager' then
-        bool_employer ? {status: 'enabled', text: 'Vérifier ma convention'} :
-                        {status: 'enabled', text: 'Remplir ma convention'}
-      when 'validated', 'signatures_started', 'signed_by_all' then
-        {status: 'enabled', text: 'Imprimer'}
+      if bool_employer #employer
+        case @internship_agreement.aasm_state
+        when 'draft' then
+          {status: 'cta', text: 'Remplir ma convention'}
+        when 'started_by_employer' then
+          {status: 'cta', text: 'Valider ma convention'}
+        when 'completed_by_employer' then
+          {status: 'secondary_cta', text: 'Vérifier ma convention'}
+        when 'started_by_school_manager' then
+          {status: 'secondary_cta', text: 'Vérifier ma convention'}
+        when 'validated', 'signatures_started', 'signed_by_all' then
+          {status: 'secondary_cta', text: 'Imprimer'}
+        end
+      else # school_manager
+        case @internship_agreement.aasm_state
+        when 'draft' then
+          {status: 'disabled', text: 'En attente'}
+        when 'started_by_employer' then
+          {status: 'disabled', text: 'En attente'}
+        when 'completed_by_employer' then
+          {status: 'cta', text: 'Remplir ma convention'}
+        when 'started_by_school_manager' then
+          {status: 'cta', text: 'Valider ma convention'}
+        when 'validated', 'signatures_started', 'signed_by_all' then
+          {status: 'secondary_cta', text: 'Imprimer'}
+        end
       end
     end
 
     def second_button_label
       case @internship_agreement.aasm_state
       when 'draft', 'started_by_employer' ,'completed_by_employer', 'started_by_school_manager' then
-        {status: 'disabled', text: 'Partie signature'}
+        {status: 'hidden', text: ''}
       when 'validated', 'signatures_started' then
         user_signed_condition = current_user.already_signed?(internship_agreement_id: @internship_agreement.id)
-        employer_signed = @internship_agreement.signature_by_role(signatory_role: 'employer').present?
-        user_signed_condition ? {status: 'disabled', text: "Signée par vous. " \
-                                                           "En attente de la signature de l'" \
-                                                            "#{employer_signed ? 'établissement' :  'employeur'}."} :
-                                {status: 'enabled', text: "Signer la convention " }
-      when 'signed_by_all' then
-          {status: 'disabled',
-           text: "Convention signée par toutes les parties." }
+        user_signed_condition ? {status: 'disabled', text: 'Déjà signée'} :
+                                {status: 'enabled', text: 'Ajouter aux signatures'}
+      when 'signed_by_all' then {status: 'disabled', text: 'Signée de tous'}
       end
     end
   end

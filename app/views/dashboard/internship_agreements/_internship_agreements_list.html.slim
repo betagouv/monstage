@@ -20,13 +20,15 @@
     = form_with(model: User,
                 url: start_signing_dashboard_user_path(id: current_user.id),
                 method: :post)  do |fg|
-      = fg.button 'Signer en groupe',
-                  type: 'submit',
-                  class: "fr-btn fr-mb-2w",
-                  disabled: true,
-                  'data-fr-opened': false,
-                  'aria-controls': "fr-modal-signatures",
-                  'data-group-signing-target': "generalCta"
+      .row
+        .col-12.text-right
+          = fg.button 'Signer',
+                      type: 'submit',
+                      class: "fr-btn fr-mb-2w fr-px-4w",
+                      disabled: true,
+                      'data-fr-opened': false,
+                      'aria-controls': "fr-modal-signatures",
+                      'data-group-signing-target': "generalCta"
 
       table.table.table-hover.table-rg2a.internship-agreements-list
         thead
