@@ -55,9 +55,4 @@ gs -sDEVICE=pdfwrite \
    -dPDFSETTINGS=/ebook \
    -dNOPAUSE \
    -dBATCH \
-<<<<<<< HEAD
    -sOutputFile=public/modes_d_emploi/MS3_Mode-d-emploi-global-2022.pdf "modes-emplois/MS3_Mode-d-emploi-global-2022.pdf"
-=======
-   -sOutputFile=public/modes_d_emploi/MS3_Mode-d-emploi-global-2021.pdf "modes-emplois/MS3_Mode-d-emploi-global-2021.pdf"
-
->>>>>>> parent of f47176b79... Corrige la page Documents utiles avec les nouveaux modes d'emploi
