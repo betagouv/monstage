@@ -1,47 +1,56 @@
 module PrettyConsole
-  def self.say_in_red(str)
-    puts "\e[31m=====> #{str} <=====\e[0m"
+  COLOR_MAP = {
+    red: 31,
+    green: 32,
+    yellow: 33,
+    blue: 34,
+    purple: 35,
+    cyan: 36,
+    heavy_white: 37
+  }
+  BACKGROUND_COLOR_MAP = {
+    leight: 40,
+    red: 41,
+    green: 42,
+    orange: 43,
+    blue: 44,
+    purple: 45,
+    cyan: 46,
+    white: 47
+  }
+  # say_in_red('Hello World')
+  COLOR_MAP.keys.each do |color|
+    define_singleton_method(
+      "say_in_#{color}".to_sym,
+      Proc.new do |str|
+        puts "\e[#{COLOR_MAP[color.to_sym]}m=====> #{str} <=====\e[0m"
+      end
+    )
   end
-  def self.say_in_green(str)
-    puts "\e[32m=====>  #{str} <=====\e[0m"
-  end
-  def self.say_in_yellow(str)
-    puts "\e[33m=====> #{str} <=====\e[0m"
-  end
-  def self.say_in_blue(str)
-    puts "\e[34m=====> #{str} <=====\e[0m"
-  end
-  def self.say_in_purple(str)
-    puts "\e[35m=====> #{str} <=====\e[0m"
-  end
-  def self.say_in_cyan(str)
-    puts "\e[36m=====> #{str} <=====\e[0m"
-  end
-  def self.say_in_heavy_white(str)
-    puts "\e[37m=====> #{str} <=====\e[0m"
+  BACKGROUND_COLOR_MAP.keys.each do |color|
+    define_singleton_method(
+      "say_with_#{color}_background".to_sym,
+      Proc.new do |str|
+        puts "\e[#{BACKGROUND_COLOR_MAP[color.to_sym]}m=====> #{str} <=====\e[0m"
+      end
+    )
   end
 
-  # with backgrounds
-
-  def self.say_with_leight_background(str)
-    puts "\e[40m=====> #{str} <=====\e[0m"
+  # only puts
+  COLOR_MAP.keys.each do |color|
+    define_singleton_method(
+      "puts_in_#{color}".to_sym,
+      Proc.new do |str|
+        puts "\e[#{COLOR_MAP[color.to_sym]}m #{str}\e[0m"
+      end
+    )
   end
-  def self.say_with_red_background(str)
-    puts "\e[41m=====> #{str} <=====\e[0m"
-  end
-  def self.say_with_green_background(str)
-    puts "\e[42m=====> #{str} <=====\e[0m"
-  end
-  def self.say_with_orange_background(str)
-    puts "\e[43m=====> #{str} <=====\e[0m"
-  end
-  def self.say_with_blue_background(str)
-    puts "\e[44m=====> #{str} <=====\e[0m"
-  end
-  def self.say_with_purple_background(str)
-    puts "\e[45m=====> #{str} <=====\e[0m"
-  end
-  def self.say_with_white_background(str)
-    puts "\e[47m=====> #{str} <=====\e[0m"
+  BACKGROUND_COLOR_MAP.keys.each do |color|
+    define_singleton_method(
+      "puts_with_#{color}_background".to_sym,
+      Proc.new do |str|
+        puts "\e[#{BACKGROUND_COLOR_MAP[color.to_sym]}m #{str}\e[0m"
+      end
+    )
   end
 end
