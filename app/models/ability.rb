@@ -199,7 +199,7 @@ class Ability
     can :manage, EmailWhitelists::Statistician
     can :manage, EmailWhitelists::Ministry
     can :manage, InternshipOfferKeyword
-    can %i[create read update], Group
+    can :manage, Group
     can :access, :rails_admin   # grant access to rails_admin
     can %i[read update delete discard export], InternshipOffers::Api
     can :read, :dashboard       # grant access to the dashboard
