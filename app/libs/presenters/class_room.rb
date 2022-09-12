@@ -9,11 +9,6 @@ module Presenters
       Null.instance
     end
 
-    def self.school_tracks_options
-      general_track = ['Voie générale', [[self.tr_school_track('troisieme_generale'), :troisieme_generale]]]
-      professional_track = ['Voie professionnelle', ::ClassRoom.school_tracks.keys.difference(['troisieme_generale']).collect {|tra| [self.tr_school_track(tra), tra]}]
-      [general_track, professional_track]
-    end
 
     def self.tr_school_track(track)
       I18n.t("enum.school_tracks.#{track}")

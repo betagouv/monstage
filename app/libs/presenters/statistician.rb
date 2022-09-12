@@ -43,8 +43,8 @@ module Presenters
       }
     end
 
-    def offer_export_mail_subject(department: )
-      "Export des offres du département de #{I18n.transliterate(department)}"
-    end
+    # def offer_export_mail_subject(department: )
+    #   "Export des offres du département de #{I18n.transliterate(department)}"
+    # end
   end
 end

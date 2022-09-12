@@ -9,9 +9,9 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
     assert_selector "a[data-test-id='#{internship_offer.id}']",
                     count: 1
   end
-  def refute_presence_of(internship_offer:)
-    refute_selector "a[data-test-id='#{internship_offer.id}']"
-  end
+  # def refute_presence_of(internship_offer:)
+  #   refute_selector "a[data-test-id='#{internship_offer.id}']"
+  # end
 
   test 'student troisieme try to apply to an offer while school manager has not open any internship week' do
     travel_to(Date.new(2019, 3, 1)) do

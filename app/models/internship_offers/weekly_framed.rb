@@ -133,13 +133,6 @@ module InternshipOffers
       after_week(week: Week.current)
     }
 
-    # def approved_applications_count
-    #   internship_offer_weeks.pluck(:blocked_applications_count).sum
-    # end
-
-    def weeks_applicable(user:)
-      weeks.from_now.available_for_student(user: user)
-    end
 
     def visible
       published? ? "oui" : "non"

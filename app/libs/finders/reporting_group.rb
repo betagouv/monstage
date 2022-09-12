@@ -2,13 +2,6 @@
 
 module Finders
   class ReportingGroup
-    def groups_commitment(is_public:)
-      Group.select('groups.*, count(internship_offers.id) as group_internship_offers_count')
-           .group_nature(is_public)
-           .joins(join_sources(is_public: is_public))
-           .group('groups.id')
-           .order(group_internship_offers_count: :desc)
-    end
 
     def groups_with_no_commitment(is_public:)
       Group.select('groups.*, count(internship_offers.id) as group_internship_offers_count')

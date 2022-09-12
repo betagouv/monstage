@@ -46,11 +46,11 @@ module Nearbyable
       end
     end
 
-    def osm_url
-      return "http://www.openstreetmap.org/" unless coordinates_are_valid?
+    # def osm_url
+    #   return "http://www.openstreetmap.org/" unless coordinates_are_valid?
 
-      "http://www.openstreetmap.org/?mlat=#{coordinates.lat}&mlon=#{coordinates.lon}&zoom=12"
-    end
+    #   "http://www.openstreetmap.org/?mlat=#{coordinates.lat}&mlon=#{coordinates.lon}&zoom=12"
+    # end
 
     def formatted_autocomplete_address
       [

@@ -9,9 +9,9 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     find('.alert-sticky')
   end
 
-  def fill_in_trix_editor(id, with:)
-    find(:xpath, "//trix-editor[@id='#{id}']").click.set(with)
-  end
+  # def fill_in_trix_editor(id, with:)
+  #   find(:xpath, "//trix-editor[@id='#{id}']").click.set(with)
+  # end
 
   test 'Employer can edit internship offer' do
     travel_to(Date.new(2019, 3, 1)) do

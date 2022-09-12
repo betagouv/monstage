@@ -713,11 +713,11 @@ def populate_applications
   # )
 end
 
-def populate_internship_weeks
-  manager = Users::SchoolManagement.find_by(role: 'school_manager')
-  school = manager.school
-  school.week_ids = Week.selectable_on_school_year.pluck(:id)
-end
+# def populate_internship_weeks
+#   manager = Users::SchoolManagement.find_by(role: 'school_manager')
+#   school = manager.school
+#   school.week_ids = Week.selectable_on_school_year.pluck(:id)
+# end
 
 def populate_agreements
   troisieme_applications_offers = InternshipApplications::WeeklyFramed.approved

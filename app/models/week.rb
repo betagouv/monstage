@@ -124,6 +124,7 @@ class Week < ApplicationRecord
     self.id.to_i == other_week.id.to_i + 1
   end
 
+  # This method is not used .... keep ?
   def self.airtablize(school_year = SchoolYear::Current.new)
     school_year_str = "#{school_year.beginning_of_period.year}-#{school_year.end_of_period.year}"
     weeks = Week.selectable_for_school_year(school_year: school_year)

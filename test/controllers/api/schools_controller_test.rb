@@ -6,9 +6,6 @@ module Api
   class SchoolsControllerTest < ActionDispatch::IntegrationTest
     include ::ApiTestHelpers
 
-    def assert_hash_contains(a, b)
-      assert (a.to_a - b.to_a).empty?, "contains fail:\n #{a}\n is not contained in\n #{b}"
-    end
 
     test 'empty searh works' do
       post search_api_schools_path, params: {}

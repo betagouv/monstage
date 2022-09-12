@@ -17,9 +17,9 @@ module SchoolYear
       end
     end
 
-    def between_june_to_august?
-      june_to_august.member?(current_month)
-    end
+    # def between_june_to_august?
+    #   june_to_august.member?(current_month)
+    # end
 
     def range
       beginning_of_period..(self.next_year).beginning_of_period
