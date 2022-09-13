@@ -23,10 +23,12 @@
                         .row.p-2.d-flex data-test="student-not-in-class-room-#{student.id}"
                           .col-7.d-flex.align-items-center.font-weight-bold.student-name= student.name
                           .col-4
+                            / autocomplete off from https://stackoverflow.com/questions/4831848/firefox-ignores-option-selected-selected
                             = select_tag "student_#{student.id}",
-                                          options_from_collection_for_select(student.school.class_rooms, :id, :name, student.class_room_id),
+                                          options_from_collection_for_select(student.school.class_rooms, :id, :name),
                                           prompt: 'Choisissez une classe' ,
                                           class: "fr-select",
+                                          autocomplete: 'off',
                                           data: { action: 'change->students#selectStudentClassRoom' }
                           .col-1.text-sm-center.d-flex.align-items-center
                             = link_to dashboard_school_user_path(id: student.id, school_id: @school.id),
