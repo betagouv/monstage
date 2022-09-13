@@ -71,6 +71,10 @@
     // top: 86px;
     height: calc(100vh - 130px);
   }
+
+  .fr-card__content {
+    padding-bottom: 2rem !important;
+  }
 }
 
 .clear-button {

@@ -23,10 +23,13 @@ class InternshipOffersController < ApplicationController
         @params = query_params
       end
       format.json do
-        internship_offers = finder.all.includes([:sector, :employer, :school]).order(id: :desc)
-        formatted_internship_offers = format_internship_offers(internship_offers)
-        # alternative_internship_offers = alternative_internship_offers if internship_offers.to_a.count == 0
-        render json: formatted_internship_offers, status: 200
+        @internship_offers = finder.all.includes([:sector, :employer, :school]).order(id: :desc)
+        formatted_internship_offers = format_internship_offers(@internship_offers)
+        data = {
+          internshipOffers: formatted_internship_offers,
+          pageLinks: page_links
+        }
+        render json: data, status: 200
       end 
     end
   end
@@ -151,6 +154,18 @@ class InternshipOffersController < ApplicationController
         image: view_context.asset_pack_path("media/images/sectors/#{internship_offer.sector.cover}"),
         sector: internship_offer.sector.name
       }
+    }
+  end
+  
+  def page_links
+    {
+      totalPages: @internship_offers.total_pages,
+      currentPage: @internship_offers.current_page,
+      nextPage: @internship_offers.next_page,
+      prevPage: @internship_offers.prev_page,
+      isFirstPage: @internship_offers.first_page?,
+      isLastPage: @internship_offers.last_page?,
+      pageUrlBase:  url_for(query_params.except('page'))
     }
   end
 end

@@ -6,7 +6,8 @@ import activeMarker from '../images/active_pin.svg';
 import defaultMarker from '../images/default_pin.svg';
 import InternshipOfferCard from './InternshipOfferCard';
 import CardLoader from './CardLoader';
-import FilterModal from './FilterModal';
+import FilterModal from './search_internship_offer/FilterModal';
+import Paginator from './search_internship_offer/Paginator';
 import TitleLoader from './TitleLoader';
 import { endpoints } from '../utils/api';
 
@@ -26,9 +27,10 @@ const defaultPointerIcon = new L.Icon({
   popupAnchor: [0, -60], // changed popup position
 });
 
-const InternshipOfferResults = ({ count, sectors, params }) => {
+const InternshipOfferResults = ({ count, sectors, params, paginator_html }) => {
   // const [map, setMap] = useState(null);
   const [selectedOffer, setSelectedOffer] = useState(null);
+  const [paginateLinks, setPaginateLinks] = useState(null);
   const [internshipOffers, setInternshipOffers] = useState([]);
   const [showSectors, setShowSectors] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -97,15 +99,21 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
   };
 
   const fetchDone = (result) => {
-    console.log('result :');
+    console.log('Result : ');
     console.log(result);
+    console.log(result['internshipOffers']);
 
-    setInternshipOffers(result);
+    setInternshipOffers(result['internshipOffers']);
+    setPaginateLinks(result['pageLinks']);
+
     setIsLoading(false);
     setNewDataFetched(true);
 
     console.log('offers');
     console.log(internshipOffers);
+
+    console.log('-- setPaginateLinks : ---', paginateLinks);
+
 
     // if (internshipOffers.length) {
     //   resizingMap
@@ -176,6 +184,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
                   </div>
                 </div>
                 ) : (
+                  <div>
                   <div className="row mx-0">
                     {
                       internshipOffers.length ? (                   
@@ -192,10 +201,12 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
                       ) : (
                         <div>
                           <h6>Aucune offre trouvée... </h6>
-                    </div>
+                        </div>
                       )
                     }
                   </div>
+                  <div>{paginateLinks ? <Paginator paginateLinks={paginateLinks} /> : ''}</div>
+                </div>
                 )
                 
               }

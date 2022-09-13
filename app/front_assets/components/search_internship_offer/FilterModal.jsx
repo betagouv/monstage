@@ -60,4 +60,4 @@ const FilterModal = ({ sectors, requestInternshipOffers, clearSectors }) => (
 </dialog>
 )
 
-export default FilterModal
+export default FilterModal;
