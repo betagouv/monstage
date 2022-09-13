@@ -42,16 +42,16 @@ h1.h2.mb-4
           | Semaines
 
     - if current_user.respond_to?(:school) && current_user.school.internship_agreement_open? && can?(:update, InternshipAgreement)
-      - path = dashboard_internship_agreements_path
-      = link_to path do
-        li
+      li
+        - path = dashboard_internship_agreements_path
+        = link_to path do
           button#internship-agreements.fr-tabs__tab [
             aria-controls="internship-agreements-panel"
             aria-selected="#{current_page?(path)}"
             role="tab"
             tabindex="3"]
             | Mes conventions de stage
-      - if (can? :edit, current_user.try(:school))
+      - if (can? :edit, current_user.school)
         li
           - path = dashboard_school_information_path(school_id: @school.id)
           = link_to path do
