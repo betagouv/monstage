@@ -1,14 +1,19 @@
-<%= "Convention de stage de #{@prez_stud.full_name}" %>
+Signature d'une convention de stage"
 
-Bonjour,
+<%= "Bonjour #{@school_manager.presenter.full_name}," %>
 
-<%= "Le stage de #{@prez_stud.full_name}, intitulé " \
-    "#{@internship_offer.title} à réaliser dans l'entreprise #{@internship_offer.employer_name} fait l'objet d'une convention " \
-    "qui vient d'être signée par l'employeur, #{@employer.presenter.formal_name}" %>
+<%= "Concernant la convention de stage de #{@prez_stud.full_name}, " %>
+la convention de stage a été signée par :
+- <%= "Le chef d'établissement de #{ @school_manager.school.name} \u2713" %>
+- <%="L'organisme d'accueil \u2713" %>
 
-Elle est donc signée par toutes les parties, et se trouve disponible à la lecture ou l'impression avec ses signatures
-Pour ce faire, veuillez suivre le lien suivant
+La convention doit désormais être signée par l’élève, ses responsables 
+légaux, son professeur référent ainsi que le référent en charge de l’élève 
+au sein de l’organisme d’accueil, et se trouve disponible à la lecture ou 
+à l'impression.
+
+Voir la convention signée : 
 <%= @url %>
 
-Excellente journée,
+À bientôt,
 L’équipe Monstagedetroisieme.fr

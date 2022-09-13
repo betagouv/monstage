@@ -79,7 +79,7 @@ class SchoolManagerMailer < ApplicationMailer
 
     send_email(
       to: @school_manager.email,
-      subject: 'Une convention de stage est signée et disponible'
+      subject: 'Dernière ligne droite pour la convention de stage'
     )
   end
 end
