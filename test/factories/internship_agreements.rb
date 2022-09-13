@@ -75,8 +75,20 @@ FactoryBot.define do
     end
     trait :signed_by_all do
       aasm_state { 'signed_by_all' }
+      after(:create) do |ia|
+        create(:signature,
+               internship_agreement: ia,
+               signatory_role: 'employer',
+               user_id: ia.employer.id,
+              )
+        create(:signature,
+               internship_agreement: ia,
+               signatory_role: 'school_manager',
+               user_id: ia.school_manager.id,
+              )
+      end
     end
-    
+
     factory :troisieme_generale_internship_agreement, traits: [:troisieme_generale_internship_agreement],
                                                       parent: :internship_agreement
     factory :troisieme_prepa_metier_internship_agreement, traits: [:troisieme_prepa_metier_internship_agreement],

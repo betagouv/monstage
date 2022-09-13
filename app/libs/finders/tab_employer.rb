@@ -7,6 +7,24 @@ module Finders
           .count
     end
 
+    def pending_internship_offers_actions(internship_offers)
+       internship_offers.map(&:internship_applications)
+                        .map(&:submitted)
+                        .map(&:count)
+                        .sum
+    end
+
+    def pending_agreements_actions_count
+      count = user.internship_agreements
+                  .where(aasm_state: [:draft, :started_by_employer, :validated])
+                  .count
+      count += user.internship_agreements
+                   .signatures_started
+                   .joins(:signatures)
+                   .where.not(signatures: {signatory_role: :employer} )
+                   .count
+    end
+
     def agreements_count
       user.internship_agreements.count
     end

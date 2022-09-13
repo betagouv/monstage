@@ -763,6 +763,31 @@ def populate_agreements
   agreement_5.employer_accept_terms = true
   agreement_5.aasm_state = :signed_by_all
   agreement_5.save!
+
+  Signature.new(
+    internship_agreement_id: agreement_4.id,
+    user_id: agreement_4.school_manager.id,
+    signatory_role: 'school_manager',
+    signatory_ip: FFaker::Internet.ip_v4_address,
+    signature_phone_number: agreement_4.school_manager.phone,
+    signature_date: 1.day.ago
+  ).save!
+  Signature.new(
+    signatory_ip: FFaker::Internet.ip_v4_address,
+    internship_agreement_id: agreement_5.id,
+    user_id: agreement_5.school_manager.id,
+    signature_phone_number: agreement_5.school_manager.phone,
+    signatory_role: 'school_manager',
+    signature_date: 1.day.ago
+  ).save!
+  Signature.new(
+    signatory_ip: FFaker::Internet.ip_v4_address,
+    internship_agreement_id: agreement_5.id,
+    user_id: agreement_5.employer.id,
+    signature_phone_number: agreement_5.employer.phone,
+    signatory_role: 'employer',
+    signature_date: 1.day.ago
+  ).save!
 end
 
 def populate_airtable_records
