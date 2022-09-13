@@ -15,11 +15,11 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   def assert_json_presence_of(json_response, internship_offer)
-    assert json_response.any? { |o| o['id'] == internship_offer.id }
+    assert json_response['internshipOffers'].any? { |o| o['id'] == internship_offer.id }
   end
 
   def assert_json_absence_of(json_response, internship_offer)
-    assert json_response.none? { |o| o['id'] == internship_offer.id }
+    assert json_response['internshipOffers'].none? { |o| o['id'] == internship_offer.id }
   end
 
   def create_offers
@@ -58,14 +58,14 @@ class IndexTest < ActionDispatch::IntegrationTest
     create_offers
     get internship_offers_path(keyword: 'avocat', format: :json)
     assert_response :success
-    assert_empty json_response
+    assert_empty json_response['internshipOffers']
   end
 
   test 'GET #index with wrong coordinates as Visitor returns no results' do
     create_offers
     get internship_offers_path(latitude: 4.8378, longitude: -0.579512, format: :json)
     assert_response :success
-    assert_empty json_response
+    assert_empty json_response['internshipOffers']
   end
 
   test 'GET #index ignore default radius in suggestions' do
@@ -80,7 +80,7 @@ class IndexTest < ActionDispatch::IntegrationTest
       format: :json)
       
     assert_response :success
-    assert_empty json_response
+    assert_empty json_response['internshipOffers']
     assert_absence_of(internship_offer: offer_paris_1)
   end
 
@@ -120,7 +120,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     )
 
     assert_response :success
-    assert_empty json_response
+    assert_empty json_response['internshipOffers']
   end
 
   test 'GET #index with wrong keyword and wrong weeks as Visitor returns no results with weeks suggestions' do
@@ -158,7 +158,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     )
 
     assert_response :success
-    assert_empty json_response
+    assert_empty json_response['internshipOffers']
   end
 
   test 'GET #index canonical links works' do
@@ -208,7 +208,7 @@ class IndexTest < ActionDispatch::IntegrationTest
         assert_equal 2, InternshipOffers::WeeklyFramed.uncompleted_with_max_candidates.count
         get internship_offers_path, params: { format: :json }
         assert_response :success
-        assert_equal 1, json_response.count
+        assert_equal 1, json_response['internshipOffers'].count
         assert_json_presence_of(json_response, internship_offer_without_application)
       end
     end
