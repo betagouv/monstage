@@ -170,19 +170,38 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       week_3 = Week.find_by(year: 2021, number: 2)  #2020-21
 
       # 2019-20
-      create(:weekly_internship_offer, weeks: [week_1, week_2], employer: employer, title: '2019/2020')
+      create(:weekly_internship_offer,
+             weeks: [week_1, week_2],
+             employer: employer,
+             title: '2019/2020',
+             last_date: week_2.beginning_of_week)
+      assert week_1.id.in?(InternshipOffer.last.internship_offer_weeks.map(&:week_id))
+      assert week_2.id.in?(InternshipOffer.last.internship_offer_weeks.map(&:week_id))
 
       # 2020-21
-      target_offer = create(:weekly_internship_offer, weeks: [week_3], employer: employer, title: '2020/2021')
+      target_offer = create(:weekly_internship_offer,
+             weeks: [week_3],
+             employer: employer,
+             title: '2020/2021',
+             last_date: week_3.beginning_of_week)
 
       # wrong employer
-      create(:weekly_internship_offer, weeks: [week_2], title: 'wrong employer')
+      create(:weekly_internship_offer,
+             weeks: [week_2],
+             title: 'wrong employer',
+             last_date: week_2.beginning_of_week)
 
       # free
-      create(:free_date_internship_offer, employer: employer, title: 'free')
+      create(:free_date_internship_offer,
+             employer: employer,
+             title: 'free')
 
       # 2019-20 unpublished
-      io = create(:weekly_internship_offer, employer: employer, weeks: [week_1, week_2], title: '2019/2020 unpublished')
+      io = create(:weekly_internship_offer,
+                  employer: employer,
+                  weeks: [week_1, week_2],
+                  title: '2019/2020 unpublished',
+                  last_date: week_2.beginning_of_week)
       io.update_column(:published_at, nil)
       io.reload
 
@@ -194,22 +213,27 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
       refute page.has_css?('.school_year')
       click_link('Passées')
-      find('.active', text: "Passées (2)")
+      find('.active', text: "Passées")
+      assert_equal 2, all(".test-internship-offer").count
 
-      select('2019/2020')
-      find('.active', text: "Passées (2)")
-
-      select('2020/2021')
-      find('.active', text: "Passées (0)")
+      select('2019/2020', from: "Années scolaires")
+      find('.active', text: "Passées")
+      assert_equal 2, all(".test-internship-offer").count
+      
+      select('2020/2021', from: "Années scolaires")
+      sleep 0.5
+      find('.active', text: "Passées")
+      assert_equal 0, all(".test-internship-offer").count
 
       click_link('Dépubliées')
-      find('.active', text: "Dépubliées (0)")
+      find('.active', text: "Dépubliées")
+      assert_equal 0, all(".test-internship-offer").count
 
-      select('2019/2020')
+      select('2019/2020', from: "Années scolaires")
       assert page.has_css?('p.internship-item-title.mb-0', count: 1)
       assert_text('2019/2020 unpublished')
 
-      select('2020/2021')
+      select('2020/2021', from: "Années scolaires")
       assert page.has_css?('p.internship-item-title.mb-0', count: 0)
       page.find("a[href=\"/dashboard/internship_agreements\"]", text: 'Mes conventions de stage')
       page.find("a[href=\"/dashboard/internship_agreements\"]", text: '1')

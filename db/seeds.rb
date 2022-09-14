@@ -276,12 +276,15 @@ end
 
 def populate_internship_offers
   # 3eme_generale: public sector
+  weeks = Week.selectable_on_school_year
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
     siret: siret,
     max_candidates: 5,
     max_students_per_group: 5,
-    weeks: Week.selectable_on_school_year,
+    weeks: weeks,
+    first_date: weeks.first.beginning_of_week,
+    last_date: weeks.last.beginning_of_week,
     sector: Sector.first,
     group: Group.is_paqte.first,
     is_public: false,
@@ -300,12 +303,15 @@ def populate_internship_offers
     employer_name: Group.is_paqte.first.name,
     school_track: :troisieme_generale
   )
+  weeks = [].concat(Week.selectable_on_school_year[0..1], Week.selectable_on_school_year[3..5])
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
     siret: siret,
     max_candidates: 5,
     max_students_per_group: 5,
-    weeks: [].concat(Week.selectable_on_school_year[0..1], Week.selectable_on_school_year[3..5]),
+    weeks: weeks,
+    first_date: weeks.first.beginning_of_week,
+    last_date: weeks.last.beginning_of_week,
     sector: Sector.first,
     group: Group.is_paqte.first,
     is_public: false,
@@ -326,12 +332,15 @@ def populate_internship_offers
   )
 
     # 3eme generale public
+  weeks =  Week.selectable_on_school_year
   InternshipOffers::WeeklyFramed.create!(
     max_candidates: 5,
     max_students_per_group: 5,
     employer: Users::Employer.first,
     siret: siret,
-    weeks: Week.selectable_on_school_year,
+    weeks: weeks,
+    first_date: weeks.first.beginning_of_week,
+    last_date: weeks.last.beginning_of_week,
     sector: Sector.second,
     group: Group.is_public.last,
     is_public: true,
@@ -355,7 +364,9 @@ def populate_internship_offers
     max_students_per_group: 5,
     employer: Users::Employer.first,
     siret: siret,
-    weeks: Week.selectable_on_school_year,
+    weeks: weeks,
+    first_date: weeks.first.beginning_of_week,
+    last_date: weeks.last.beginning_of_week,
     sector: Sector.first,
     group: Group.is_private.first,
     is_public: false,
@@ -378,7 +389,9 @@ def populate_internship_offers
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
     siret: siret,
-    weeks: Week.selectable_on_school_year,
+    weeks: weeks,
+    first_date: weeks.first.beginning_of_week,
+    last_date: weeks.last.beginning_of_week,
     sector: Sector.first,
     group: Group.is_private.first,
     is_public: false,
@@ -404,10 +417,13 @@ def populate_internship_offers
   io.save
 
   # 3eme_generale-2019:
+  weeks =  Week.weeks_of_school_year(school_year: SchoolYear::Base::YEAR_START)
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
     siret: siret,
-    weeks: Week.weeks_of_school_year(school_year: SchoolYear::Base::YEAR_START),
+    weeks: weeks,
+    first_date: weeks.first.beginning_of_week,
+    last_date: weeks.last.beginning_of_week,
     sector: Sector.first,
     group: Group.is_private.first,
     is_public: false,
@@ -427,10 +443,14 @@ def populate_internship_offers
     school_track: :troisieme_generale
   )
   # 3eme generale API
+  weeks =  Week.selectable_on_school_year
   InternshipOffers::Api.create!(
     employer: Users::Operator.first,
     siret: siret,
     weeks: Week.selectable_on_school_year,
+    weeks: weeks,
+    first_date: weeks.first.beginning_of_week,
+    last_date: weeks.last.beginning_of_week,
     sector: Sector.first,
     group: Group.is_private.first,
     is_public: false,
@@ -451,10 +471,13 @@ def populate_internship_offers
     employer_name: 'IBM',
   )
   # 3eme generale API
+  weeks = Week.of_previous_school_year
   InternshipOffers::Api.create!(
     employer: Users::Operator.first,
     siret: siret,
-    weeks: Week.of_previous_school_year,
+    weeks: weeks,
+    first_date: weeks.first.beginning_of_week,
+    last_date: weeks.last.beginning_of_week,
     sector: Sector.first,
     group: Group.is_public.first,
     is_public: false,
@@ -481,11 +504,14 @@ def populate_internship_offers
 - Présentation de la recette interrégionale (service de perception).
 - Immersion au sein d’un bureau de douane (gestion des procédures, déclarations en douane, dédouanement, contrôles des déclarations et des marchandises).
 MULTI_LINE
+  weeks = Week.weeks_of_school_year(school_year: SchoolYear::Base::YEAR_START)
   InternshipOffers::WeeklyFramed.create!(
     max_candidates: 5,
     max_students_per_group: 5,
     employer: Users::Employer.first,
-    weeks: Week.weeks_of_school_year(school_year: SchoolYear::Base::YEAR_START),
+    weeks: weeks,
+    first_date: weeks.first.beginning_of_week,
+    last_date: weeks.last.beginning_of_week,
     sector: Sector.first,
     group: Group.is_private.first,
     is_public: false,
@@ -514,7 +540,9 @@ MULTI_LINE
     employer: Users::Employer.first,
     max_candidates: 5,
     max_students_per_group: 5,
-    weeks: Week.weeks_of_school_year(school_year: SchoolYear::Base::YEAR_START),
+    weeks: weeks,
+    first_date: weeks.first.beginning_of_week,
+    last_date: weeks.last.beginning_of_week,
     sector: Sector.first,
     group: Group.is_private.first,
     is_public: false,
@@ -538,11 +566,14 @@ MULTI_LINE
 - Présentation des principes secondaires du métier.
 - Immersion au sein d’une équipe d'admiistrateurs de comptes de la banque. Proposition de gestion de portefeuille de clients en fin de stage, avec les conseils du tuteur'.
 MULTI_LINE
+  weeks = Week.weeks_of_school_year(school_year: (SchoolYear::Base::YEAR_START + 1))
   acme = InternshipOffers::WeeklyFramed.create!(
     max_candidates: 5,
     max_students_per_group: 5,
     employer: Users::Employer.first,
-    weeks: Week.weeks_of_school_year(school_year: SchoolYear::Base::YEAR_START),
+    weeks: weeks,
+    first_date: weeks.first.beginning_of_week,
+    last_date: weeks.last.beginning_of_week,
     sector: Sector.first,
     group: Group.is_private.first,
     is_public: false,
@@ -558,14 +589,7 @@ MULTI_LINE
     city: 'paris',
     coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
     employer_name: 'Oyonnax Corp.',
-    created_at: Date.today - 1.year,
-    updated_at: Date.today - 1.year,
     school_track: :troisieme_generale
-  )
-  school_year = SchoolYear::Floating.new(date: Date.today - 1.year)
-  acme.update_columns(
-    last_date: school_year.end_of_period,
-    first_date: school_year.beginning_of_period
   )
 end
 

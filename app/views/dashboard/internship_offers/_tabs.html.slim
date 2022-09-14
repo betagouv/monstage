@@ -26,10 +26,7 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
                                               role="tab"
                                               aria-selected="#{is_active}"
                                               aria-controls="tabpanel-404-panel"]
-        .my-auto
-          = "Dépubliées "
-          - if is_active
-            = internship_offers.total_count
+        .my-auto = "Dépubliées"
 
   - is_active = controller_name == 'internship_offers' && params[:filter] == 'past'
   li
@@ -41,10 +38,7 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
         aria-selected="#{is_active}"
         aria-controls="tabpanel-404-panel"]
 
-        .my-auto
-          = "Passées "
-          - if is_active
-            = " (#{internship_offers.total_count})"
+        .my-auto = "Passées"
 
   - # TouDoux checker si ref dep, centraux et opérateurs ça fonctionne
   - if can?(:edit, InternshipAgreement) && current_user.internship_agreements.count.positive?

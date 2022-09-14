@@ -12,6 +12,7 @@ form.row action=request.path method="GET"
       = select_tag :school_year,
                     options_for_select(options, params[:school_year]),
                     include_blank: 'Toutes',
+                    autocomplete: 'off',
                     class: 'fr-select',
                     'data-action': "change->select-years#handleChange",
                     'data-select-years-target': "schoolYearField"
