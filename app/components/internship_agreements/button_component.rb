@@ -8,12 +8,12 @@ module InternshipAgreements
                    second_label: {status: 'disabled', text: 'En attente'})
       @internship_agreement = internship_agreement
       @current_user         = current_user
-      @label              ||= button_label(bool_employer: current_user.employer?)
+      @label              ||= button_label(user: current_user)
       @second_label       ||= second_button_label
     end
 
-    def button_label(is_employer:)
-      if is_employer
+    def button_label(user:)
+      if user.employer?
         case @internship_agreement.aasm_state
         when 'draft' then
           {status: 'cta', text: 'Remplir ma convention'}
