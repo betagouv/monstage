@@ -14,7 +14,8 @@ class SendSmsApprovedApplicationJob < ApplicationJob
                 {
                   'sender': ENV['OVH_SENDER'],
                   'message': "Votre candidature à un stage a été acceptée. Connectez-vous à monstagedetroisieme.fr et contactez l'employeur pour signer votre convention de stage.",
-                  'receivers': [phone]
+                  'receivers': [phone],
+                  'noStopClause': 'true'
                 })
   end
 end
