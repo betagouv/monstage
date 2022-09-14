@@ -12,8 +12,8 @@ module InternshipAgreements
       @second_label       ||= second_button_label
     end
 
-    def button_label(bool_employer:)
-      if bool_employer #employer
+    def button_label(is_employer:)
+      if is_employer
         case @internship_agreement.aasm_state
         when 'draft' then
           {status: 'cta', text: 'Remplir ma convention'}
