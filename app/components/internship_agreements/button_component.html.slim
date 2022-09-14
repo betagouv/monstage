@@ -1,22 +1,22 @@
+- classes = 'd-flex justify-content-center button-component-cta-button fr-btn ml-2 fr-high-buttons text-center btn-block btn-sm'
 .row.text-left
   .col-md-6.col-sm-12.mb-1
-    -secondary_button_classes= 'd-flex justify-content-center button-component-cta-button fr-btn--secondary fr-btn ml-2 fr-high-buttons text-center btn-block btn-sm'
     - if label[:status] == 'disabled'
       = link_to label[:text],
                 '',
-                class: "#{secondary_button_classes} disabled"
-    - elsif ['validated', 'signatures_started', 'signed_by_all', 'signed'].include?(internship_agreement.aasm_state)
+                class: "#{classes} disabled"
+    - elsif %w[validated signatures_started signed_by_all signed].include?(internship_agreement.aasm_state)
       = link_to dashboard_internship_agreement_path(internship_agreement, format: :pdf),
                 target: "_blank",
-                class: "#{secondary_button_classes}",
+                class: "#{classes} fr-btn--secondary",
                 data: { test: "active-internship-agreement-progress-#{internship_agreement.id}" } do
         = label[:text]
-    - elsif @current_user.employer? || internship_agreement.completed_by_employer? || internship_agreement.started_by_school_manager?
+    - elsif @current_user.employer? || %w[completed_by_employer started_by_school_manager].include?(internship_agreement.aasm_state)
       = link_to edit_dashboard_internship_agreement_path(internship_agreement),
-                class: "#{secondary_button_classes} " do
+                class: "#{classes} #{(label[:status] == 'secondary_cta') ? 'fr-btn--secondary' : ''}" do
         = label[:text]
     - else
-      = link_to '', class: "#{secondary_button_classes} disabled" do
+      = link_to '', class: "#{classes} fr-btn--secondary disabled" do
         = "url to define - #{label[:text]}"
 
   .col-md-6.col-sm-12.mb-1

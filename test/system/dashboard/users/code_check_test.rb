@@ -17,7 +17,7 @@ module Dashboard::Users
       sign_in(employer)
 
       visit dashboard_internship_agreements_path
-      click_on 'Signer la convention'
+      click_on 'Ajouter aux signatures'
       click_on 'Signer'
 
       find('h1#fr-modal-signature-title', text: 'Vous vous apprêtez à signer 1 convention de stage')
@@ -44,7 +44,7 @@ module Dashboard::Users
       sign_in(school_manager)
 
       visit dashboard_internship_agreements_path
-      click_on 'Signer la convention'
+      click_on 'Ajouter aux signatures'
       click_on 'Signer'
 
       find('input#phone_suffix').set('0612345678')

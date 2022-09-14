@@ -40,9 +40,16 @@ class InternshipAgreementTest < ActiveSupport::TestCase
     assert internship_agreement.ready_to_sign?(user: internship_agreement.school_manager)
     create(:signature,
            :school_manager,
-           signatory_role: :school_manager,
            internship_agreement_id: internship_agreement.id)
+
     refute internship_agreement.ready_to_sign?(user: internship_agreement.school_manager)
+    assert internship_agreement.ready_to_sign?(user: internship_agreement.employer)
+
+    create(:signature,
+      :employer,
+      internship_agreement_id: internship_agreement.id)
+
+    refute internship_agreement.ready_to_sign?(user: internship_agreement.employer)
 
     internship_agreement_2 = create(:internship_agreement, aasm_state: :signed_by_all)
     refute internship_agreement_2.ready_to_sign?(user: internship_agreement_2.school_manager)
@@ -55,7 +62,7 @@ class InternshipAgreementTest < ActiveSupport::TestCase
             internship_agreement_id: internship_agreement.id)
     assert internship_agreement.signed_by?(user: internship_agreement.school_manager)
   end
-  
+
   test "validates school_track" do
     internship_agreement = InternshipAgreement.new(school_track: nil)
     internship_agreement.valid?
