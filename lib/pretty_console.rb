@@ -41,7 +41,7 @@ module PrettyConsole
     define_singleton_method(
       "puts_in_#{color}".to_sym,
       Proc.new do |str|
-        puts "\e[#{COLOR_MAP[color.to_sym]}m #{str}\e[0m"
+        puts "\e[#{COLOR_MAP[color.to_sym]}m#{str}\e[0m"
       end
     )
   end
@@ -49,7 +49,7 @@ module PrettyConsole
     define_singleton_method(
       "puts_with_#{color}_background".to_sym,
       Proc.new do |str|
-        puts "\e[#{BACKGROUND_COLOR_MAP[color.to_sym]}m #{str}\e[0m"
+        puts "\e[#{BACKGROUND_COLOR_MAP[color.to_sym]}m#{str}\e[0m"
       end
     )
   end

@@ -33,46 +33,106 @@ end
 # Temporary task
 desc 'Fix missing school street in production data'
 task :fix_missing_school_street => :environment do
+  def after_search(places: , school: , search_method:'file')
+    counter_ok = 1
+    street = ""
+    if places.empty? || "#{places&.first&.address["house_number"]} #{places.first.address["road"]}".blank?
+      if places&.first&.address&.present?
+        street = places.first.address.split(",")[1].strip
+        puts ''
+        PrettyConsole.puts_in_green( "hope it's ok : #{street} for school ##{school.id} - #{school.code_uai} - #{school.name}")
+      else
+        counter_ok = 0
+        puts''
+        PrettyConsole.puts_in_purple("KO | #{search_method} : #{school.code_uai} : #{school.name} | #{school.city} - #{school.zipcode}")
+      end
+    else
+      street = "#{places.first.address["house_number"]} #{places.first.address["road"]}"
+    end
+    { street: street, counter_ok: counter_ok }
+  end
+
   # Data correction
   wrong_uai = School.find_by_code_uai('065 0740B')
   wrong_uai.update(code_uai: '0650740B') unless wrong_uai.nil?
 
   # Run the task
   data_file_path = Rails.root.join('db/data_imports/fr-en-adresse-et-geolocalisation-etablissements-premier-et-second-degre.csv')
-  schools = {}
+  listed_schools = {}
+
   CSV.open(data_file_path, headers: { col_sep: ';' }).each do |row|
     fields = row.to_s.split(';')
     code_uai = fields[0]
     street = fields[5]
-    if street.blank?
-      puts("Adresse manquante pour #{code_uai}")
-    else
-      schools[code_uai] = street
-    end
+    latitude = fields[14]
+    longitude = fields[15]
+    listed_schools[code_uai] = {
+      street: street,
+      coordinates: {
+        latitude: latitude,
+        longitude: longitude
+      }
+    }
   end
-  puts "Les adresses manquantes ne sont pas forcément fatales car le fichier " \
-       "de départ correspond à toutes écoles et collèges de France, et pas" \
-       " nécessairement des collèges REP ou REP+ ."
+
 
   # updating db schools
   counter_ok = 0
   counter_ko = 0
+  ko_by_file_search = 0
+  ko_by_name_search = 0
+  ok_by_name_search = 0
+  missing_uai = 0
+
   School.where(street: nil).each do |school|
-    street = schools[school.code_uai]
-    if street.nil?
-      counter_ko += 1
-      PrettyConsole.puts_in_purple("KO : #{school.code_uai} : #{school.name} | #{school.city} - #{school.zipcode}")
+    search_street_by_name_school = nil
+    search_result = { street: '', counter_ok: 1 }
+
+    if listed_schools[school.code_uai].present?
+      # street might be in file
+      street = listed_schools[school.code_uai][:street]
+      search_result = { street: street, counter_ok: 1 }
+      if search_result[:street].blank?
+        # street might be caught by coordinates
+        ko_by_file_search += 1
+        print 'o'
+        latitude  = listed_schools[school.code_uai][:coordinates][:latitude]
+        longitude = listed_schools[school.code_uai][:coordinates][:longitude]
+        print "x" && next unless latitude.to_f.is_a?(Float) && longitude.to_f.is_a?(Float)
+        places = Geocoder.search("#{latitude}, #{longitude}")
+        search_result = after_search(places: places, school: school, search_method: 'search by coordinates in file failed ')
+        search_street_by_name_school = search_result[:counter_ok].zero? ? school : ''
+      end
     else
-      counter_ok += 1
-      print('.')
+      missing_uai += 1
+      search_street_by_name_school = school
+    end
+    if search_street_by_name_school.present?
+      # Final search by school name
+      places = Geocoder.search("Collège #{school.name} #{school.city} #{school.zipcode}")
+      search_result = after_search(places: places, school: school, search_method: 'search by name , city and zipcode failed ')
+      search_result[:counter_ok].zero? ? ko_by_name_search += 1 : ok_by_name_search +=1
+    end
+    counter_ok += search_result[:counter_ok]
+    if search_result[:counter_ok].zero?
+      counter_ko += 1
+      next
     end
 
-    raise 'boom' unless school.update(street:street)
+    street = search_result[:street]
+    unless street.blank?
+      print('.')
+      school.update(street:street)
+    end
   end
 
   puts('')
   PrettyConsole.say_in_heavy_white('Resultats')
   PrettyConsole.puts_in_green("OK: #{counter_ok}")
+  PrettyConsole.puts_in_red("note : missing uai in file: #{missing_uai}")
+  puts("missing street in reference file : #{ko_by_file_search}")
+  puts("streets found by names : #{ok_by_name_search}")
+  PrettyConsole.puts_in_red("Kos by name search : #{ko_by_name_search}")
   PrettyConsole.puts_with_red_background("KO: #{counter_ko}")
   puts('')
 
