@@ -11,13 +11,11 @@ class InternshipApplicationsController < ApplicationController
   end
 
   def new
-    # following line becomes necessary when employer authenticates : visitors may try to apply
-    raise CanCan::AccessDenied unless current_user.student?
+    authorize! :apply, @internship_offer
     @internship_application = InternshipApplication.new(
       internship_offer_id: params[:internship_offer_id],
       internship_offer_type: 'InternshipOffer',
       student: current_user)
-    authorize! :apply, @internship_offer
   end
 
   # alias for draft
