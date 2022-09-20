@@ -4,7 +4,7 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
                                                  aria-label="[Onglets de navigation employeur]"
                                                  data-fr-js-tabs-list="true"]
   - is_active = controller_name == 'internship_offers' && params[:filter].blank?
-  li role="presentation"
+  li
     / div.set-height-100
     = link_to dashboard_internship_offers_path(forwardable_params.except(:filter)),
               class: "#{is_active ? 'active' : ''}" do
@@ -18,7 +18,7 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
             = " (#{internship_offers.total_count})"
 
   - is_active = controller_name == 'internship_offers' && params[:filter] == 'unpublished'
-  li role="presentation"
+  li
     = link_to dashboard_internship_offers_path(forwardable_params.merge({filter: 'unpublished'})),
               class: "#{is_active ? 'active' : ''}" do
       button#unpublished_button.fr-tabs__tab [tabindex="0"
@@ -31,7 +31,7 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
             = " (#{internship_offers.total_count})"
 
   - is_active = controller_name == 'internship_offers' && params[:filter] == 'past'
-  li role="presentation"
+  li
     = link_to dashboard_internship_offers_path(forwardable_params.merge({filter: 'past'})),
               class: "#{is_active ? 'active' : ''}" do
       button#past_button.fr-tabs__tab [ tabindex="0"
@@ -47,7 +47,7 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
   - # TouDoux checker si ref dep, centraux et opérateurs ça fonctionne
   - if can?(:edit, InternshipAgreement) && badge_counter.agreements_count.positive?
     - is_active = current_page?(dashboard_internship_agreements_path)
-    li role="presentation"
+    li
       = link_to dashboard_internship_agreements_path,
                 class: "#{is_active ? 'active' : ''}" do
         button#agreement-button.fr-tabs__tab [
