@@ -32,13 +32,17 @@ tr class="d-sm-flex student-application-#{internship_agreement.id} internship-ag
 
   td.rg2a-width-50.col-sm-2.d-sm-flex.align-items-center.text-left data-head="Statut"
     .actions.d-flex.d-sm-block.mr-auto.ml-auto
-      - translation_path = "activerecord.attributes.internship_agreement.status.#{current_user.role || 'employer'}.#{internship_agreement.aasm_state}"
-      activerecord.attributes.internship_agreement.status.employer.signatures_started
-      - if internship_agreement.signatures_started? && internship_agreement.signed_by?(user: current_user)
-        = I18n.t("#{translation_path}.already_signed")
-      - elsif internship_agreement.signatures_started?
-        = I18n.t("#{translation_path}.not_signed_yet")
+      - role = current_user.school_manager? ? 'school_manager' : 'employer'
+      - translation_path = "activerecord.attributes.internship_agreement.status.#{role}.#{internship_agreement.aasm_state}"
+      - if internship_agreement.signatures_started? 
+        - if internship_agreement.signed_by?(user: current_user)
+          = "already signed (#{internship_agreement.id})"
+          = I18n.t("#{translation_path}.already_signed")
+        - else internship_agreement.signatures_started?
+          = "not_yet_signed (#{internship_agreement.id})"
+          = I18n.t("#{translation_path}.not_signed_yet")
       - else
+        = "else "
         = I18n.t(translation_path)
 
   td.rg2a-width-100.col-sm-3.d-sm-flex.align-items-center.text-center.actions

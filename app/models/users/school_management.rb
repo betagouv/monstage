@@ -88,7 +88,7 @@ module Users
 
       InternshipAgreement.joins(:signatures)
                          .where(id: internship_agreement_id)
-                         .where(signatures: {signatory_role: signatory_role})
+                         .where(signatures: {user_id: id})
                          .exists?
     end
 
