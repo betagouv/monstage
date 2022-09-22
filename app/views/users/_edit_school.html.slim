@@ -12,7 +12,7 @@
 
     - if current_user.respond_to?(:school)
       = react_component("SearchSchool", props: { classes: 'col-12 fr-input',
-                                                label:"Nom (ou ville) de mon établissement",
+                                                label:"Nom (ou ville) de mon établissement REP ou REP+",
                                                 required: true,
                                                 resourceName: :user,
                                                 selectClassRoom: can?(:change, :class_room),
