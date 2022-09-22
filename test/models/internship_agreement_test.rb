@@ -55,12 +55,22 @@ class InternshipAgreementTest < ActiveSupport::TestCase
     refute internship_agreement_2.ready_to_sign?(user: internship_agreement_2.school_manager)
   end
 
-  test '#signed_by?' do
+  test '#signed_by? starting with school_manager' do
     internship_agreement = create(:internship_agreement, aasm_state: :validated)
     refute internship_agreement.signed_by?(user: internship_agreement.school_manager)
     create(:signature, :school_manager,
             internship_agreement_id: internship_agreement.id)
     assert internship_agreement.signed_by?(user: internship_agreement.school_manager)
+    refute internship_agreement.signed_by?(user: internship_agreement.employer)
+  end
+
+  test '#signed_by? starting with employer' do
+    internship_agreement = create(:internship_agreement, aasm_state: :validated)
+    refute internship_agreement.signed_by?(user: internship_agreement.employer)
+    create(:signature, :employer,
+            internship_agreement_id: internship_agreement.id)
+    assert internship_agreement.signed_by?(user: internship_agreement.employer)
+    refute internship_agreement.signed_by?(user: internship_agreement.school_manager)
   end
 
   test "validates school_track" do
