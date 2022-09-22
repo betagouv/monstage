@@ -10,7 +10,7 @@
               span.font-weight-bold mon stage de troisieme,
               br
               |abonnez-vous dès maintenant à notre lettre d'informations.
-          div data-controller='newsletter'
+          div data-controller='email-confirmation'
             = form_with url: newsletter_url, method: 'post' do
               label.fr-label for="newsletter_email"
                 | Votre adresse électronique (ex. : nom@operateur.fr)
@@ -25,7 +25,7 @@
                                                  name="newsletter_email_confirmation"
                                                  placeholder=("Confirmez votre adresse électronique ")
                                                  title=("Confirmation de votre adresse électronique") type="email"
-                                                 data-newsletter-target="confirmation"]
+                                                 data-email-confirmation-target="confirmation"]
                 button#newsletter-button.fr-btn title=("S‘abonner à notre lettre d’information") type="submit"
                   | S'abonner
               p#newsletter-email-hint-text.fr-hint-text En renseignant votre adresse électronique, vous acceptez de recevoir nos actualités par courriel. Vous pouvez vous désinscrire à tout moment à l’aide des liens de désinscription ou en nous contactant.
