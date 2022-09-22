@@ -89,7 +89,7 @@ module Dashboard
           assert_equal 'Déjà signée', second_label
           find('span[id="alert-text"]', text: 'Votre signature a été enregistrée')
           all("a.fr-btn--secondary.button-component-cta-button")[0].click # Imprimer
-          sleep 0.5
+          sleep 1.2
           student = internship_agreement.student
           file_name = "Convention_de_stage_#{student.first_name.upcase}_" \
                       "#{student.last_name.upcase}.pdf"
@@ -172,7 +172,7 @@ module Dashboard
           find('span[id="alert-text"]', text: 'Votre signature a été enregistrée')
 
           all("a.fr-btn--secondary.button-component-cta-button")[0].click # Imprimer
-          sleep 0.5
+          sleep 1.2
           student = internship_agreement.student
           file_name = "Convention_de_stage_#{student.first_name.upcase}_" \
                       "#{student.last_name.upcase}.pdf"
