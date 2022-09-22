@@ -285,8 +285,9 @@ class Ability
     can %i[index_and_filter], Reporting::InternshipOffer
     can :read, Group
     can %i[index], Acl::Reporting, &:ministry_statistician_allowed?
-    can %i[export_reporting_dashboard_data,
-          see_dashboard_administrations_summary], User
+    can %i[export_reporting_dashboard_data
+      see_dashboard_enterprises_summary
+      see_dashboard_associations_summary], User
   end
 
   def common_to_all_statisticians(user: )
@@ -310,7 +311,7 @@ class Ability
     can %i[create], Tutor
 
     can %i[index], Acl::InternshipOfferDashboard
-    can %i[ see_reporting_dashboard], User
+    can %i[see_reporting_dashboard see_dashboard_administrations_summary], User
   end
 
 

@@ -44,9 +44,13 @@ module Reporting
     end
 
     def metabase_iframe
+      year = params[:school_year].to_i
       payload = {
         resource: { dashboard: 3 },
-        params: { "d%C3%A9partement": [params[:department]] },
+        params: { 
+          "d%C3%A9partement": [params[:department]],
+          "ann%C3%A9e_scolaire": "#{year}/#{year+1}" 
+        },
         exp: Time.now.to_i + (60 * 10) # 10 minute expiration
       }  
       token = JWT.encode payload, ENV['METABASE_SECRET_KEY']
