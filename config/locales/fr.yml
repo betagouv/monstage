@@ -21,6 +21,9 @@ fr:
       update: 'Mot de passe mis à jour.'
   activerecord:
     models:
+      email_whitelists/education_statistician:
+        one: Courriel autorisé du DASEN
+        other: Courriels autorisés des DASEN
       email_whitelists/statistician:
         one: Courriel autorisé du référent départemental
         other: Courriels autorisés des référents départementaux

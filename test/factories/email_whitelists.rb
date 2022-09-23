@@ -9,6 +9,13 @@ FactoryBot.define do
     zipcode { 60 }
   end
 
+  factory :education_statistician_email_whitelist,
+          class: EmailWhitelists::EducationStatistician,
+          parent: :email_whitelist do
+    email { "education_statistician_#{rand(1..10_000)}@ms3e.fr" }
+    zipcode { 60 }
+  end
+
   factory :ministry_statistician_email_whitelist,
           class: EmailWhitelists::Ministry,
           parent: :email_whitelist do
