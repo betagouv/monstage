@@ -166,45 +166,47 @@
                         = inline_svg_pack_tag('media/images/icons/noun_group_Computeur_People.svg', class: 'fill-purple-custom mx-3')
                         | Hybride
                         span.h2.mb-0.mx-3.text-purple-custom= dashboard_finder.operator_count_by_type(AirTableRecord::INTERNSHIP_OFFER_TYPE[:hybrid_internship_offer]) || "0"
+            
+            // TODO REMOVE AS SOON AS MINISTRY DASHBAORD IS AVAILABLE
+            - unless current_user.ministry_statistician?
+              .row.mt-3.align-items-center.no-gutters.bg-light-blue.py-4
+                .col-12.col-md-3.text-center
+                  h3.m-0.d-inline-block.text-cyan-custom Secteur
+                .col-12.col-md-9
+                  .row
+                    .col-6.bl-1.br-1.bc-light
+                      .row.h-100
+                        .col-auto.align-self-center
+                          = inline_svg_pack_tag('media/images/icons/noun_building_353052.svg', class: 'fill-cyan-custom')
+                        .col
+                          .row.no-gutters
+                            .col.align-self-center Secteur privé
+                            .col.align-self-center.text-right.h2.mb-0.text-cyan-custom= dashboard_finder.operator_count_by_private_sector(is_public: false) || "0"
+                          .row.no-gutters.mt-3
+                            .col.align-self-center Dont PaQte
+                            .col.align-self-center.text-right.h3.mb-0.text-cyan-custom= dashboard_finder.operator_count_by_private_sector_paqte || "0"
+                    .col-6
+                      .row.h-100
+                        .col-auto.align-self-center
+                          = inline_svg_pack_tag('media/images/icons/noun_group_establishment.svg', class: 'fill-cyan-custom')
+                        .col.align-self-center
+                          .row.no-gutters
+                            .col.align-self-center Secteur public
+                            .col.align-self-center.text-right.h2.mb-0.text-cyan-custom
+                              span.mr-3= dashboard_finder.operator_count_by_private_sector(is_public: true) || "0"
 
-            .row.mt-3.align-items-center.no-gutters.bg-light-blue.py-4
-              .col-12.col-md-3.text-center
-                h3.m-0.d-inline-block.text-cyan-custom Secteur
-              .col-12.col-md-9
-                .row
-                  .col-6.bl-1.br-1.bc-light
-                    .row.h-100
-                      .col-auto.align-self-center
-                        = inline_svg_pack_tag('media/images/icons/noun_building_353052.svg', class: 'fill-cyan-custom')
-                      .col
-                        .row.no-gutters
-                          .col.align-self-center Secteur privé
-                          .col.align-self-center.text-right.h2.mb-0.text-cyan-custom= dashboard_finder.operator_count_by_private_sector(is_public: false) || "0"
-                        .row.no-gutters.mt-3
-                          .col.align-self-center Dont PaQte
-                          .col.align-self-center.text-right.h3.mb-0.text-cyan-custom= dashboard_finder.operator_count_by_private_sector_paqte || "0"
-                  .col-6
-                    .row.h-100
-                      .col-auto.align-self-center
-                        = inline_svg_pack_tag('media/images/icons/noun_group_establishment.svg', class: 'fill-cyan-custom')
-                      .col.align-self-center
-                        .row.no-gutters
-                          .col.align-self-center Secteur public
-                          .col.align-self-center.text-right.h2.mb-0.text-cyan-custom
-                            span.mr-3= dashboard_finder.operator_count_by_private_sector(is_public: true) || "0"
-
-            .row.mt-3.align-items-center.no-gutters.bg-less-light-blue.py-4
-              .col-12.col-md-3
-                h3.m-0.d-inline-block.text-counter-stats.nowrap.ml-3.font-weight-normal
-                  | Total des stages pourvus
-                  br
-                  strong hors plateforme
-              .col-12.col-md-9
-                .row.align-items-center
-                  .col-12.px-3.bc-stats
-                    .row.
-                      .offset-8.col-4.align-self-center.text-right.h2.mb-0.text-counter-stats
-                        span.text-counter-stats.mr-3= dashboard_finder.operator_total || '0'
+              .row.mt-3.align-items-center.no-gutters.bg-less-light-blue.py-4
+                .col-12.col-md-3
+                  h3.m-0.d-inline-block.text-counter-stats.nowrap.ml-3.font-weight-normal
+                    | Total des stages pourvus
+                    br
+                    strong hors plateforme
+                .col-12.col-md-9
+                  .row.align-items-center
+                    .col-12.px-3.bc-stats
+                      .row.
+                        .offset-8.col-4.align-self-center.text-right.h2.mb-0.text-counter-stats
+                          span.text-counter-stats.mr-3= dashboard_finder.operator_total || '0'
           
           // Big total
           - if can?(:see_dashboard_enterprises_summary, current_user) && can?(:see_dashboard_administrations_summary, current_user) && can?(:see_dashboard_associations_summary, current_user)
