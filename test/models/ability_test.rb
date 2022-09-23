@@ -211,10 +211,10 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:apply, create(:api_internship_offer))
 
     assert ability.can?(:see_reporting_dashboard, User)
-    assert ability.can?(:see_reporting_internship_offers, User)
-    assert ability.can?(:see_reporting_schools, User)
+    assert ability.can?(:see_dashboard_enterprises_summary, User)
+    refute ability.can?(:see_reporting_schools, User)
     refute ability.can?(:see_reporting_associations, User)
-    assert ability.can?(:see_reporting_enterprises, User)
+    refute ability.can?(:see_reporting_enterprises, User)
   end
 
   test 'MinistryStatistician' do
@@ -253,6 +253,7 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:see_reporting_schools, User)
     refute ability.can?(:see_reporting_associations, User)
     refute ability.can?(:see_reporting_entreprises, User)
+    assert ability.can?(:see_dashboard_enterprises_summary, User)
   end
 
   test 'SchoolManager' do
