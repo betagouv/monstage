@@ -42,7 +42,7 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
       main_teacher: main_teacher
     )
     assert_includes email.to, school_manager.email
-    assert_includes email.cc, main_teacher.email
+    assert_nil email.cc
     refute_email_spammyness(email)
   end
 

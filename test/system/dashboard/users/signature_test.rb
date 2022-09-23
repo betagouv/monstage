@@ -68,7 +68,7 @@ module Dashboard
           assert_equal DateTime.now, signature.signature_date
           assert_equal 'employer', signature.signatory_role
           if Rails.application.config.active_storage.service == :local
-            assert File.exists?(signature.local_signature_image_file_path)
+            assert File.exist?(signature.local_signature_image_file_path)
           end
 
           signature = internship_agreement_2.signatures.first
@@ -77,24 +77,27 @@ module Dashboard
           assert_equal DateTime.now, signature.signature_date
           assert_equal 'employer', signature.signatory_role
           if Rails.application.config.active_storage.service == :local
-            assert File.exists?(signature.local_signature_image_file_path)
+            assert File.exist?(signature.local_signature_image_file_path)
           end
 
           assert_equal signature.employer.phone, signature.signature_phone_number
 
           find('h1', text: 'Editer, imprimer et bientôt signer les conventions dématérialisées')
           first_label = all('a.fr-btn.disabled')[0].text
-          assert_equal 'Signée, en attente', first_label
+          assert_equal 'Déjà signée', first_label
           second_label = all('a.fr-btn.disabled')[1].text
-          assert_equal 'Signée, en attente', second_label
+          assert_equal 'Déjà signée', second_label
           find('span[id="alert-text"]', text: 'Votre signature a été enregistrée')
           all("a.fr-btn--secondary.button-component-cta-button")[0].click # Imprimer
-          sleep 0.5
+          sleep 1.2
           student = internship_agreement.student
           file_name = "Convention_de_stage_#{student.first_name.upcase}_" \
                       "#{student.last_name.upcase}.pdf"
-          assert File.exists? file_name
+          assert File.exist? file_name
           File.delete file_name
+          Dir[Signature::SIGNATURE_STORAGE_DIR + '/*'].each do |file|
+            File.delete file
+          end
         end
       end
     end
@@ -163,18 +166,21 @@ module Dashboard
 
           find('h1', text: 'Editer, imprimer et bientôt signer les conventions dématérialisées')
           first_label = all('a.fr-btn.disabled')[0].text
-          assert_equal 'Signée, en attente', first_label
+          assert_equal 'Déjà signée', first_label
           second_label = all('a.fr-btn.disabled')[1].text
-          assert_equal 'Signée, en attente', second_label
+          assert_equal 'Déjà signée', second_label
           find('span[id="alert-text"]', text: 'Votre signature a été enregistrée')
 
           all("a.fr-btn--secondary.button-component-cta-button")[0].click # Imprimer
-          sleep 0.5
+          sleep 1.2
           student = internship_agreement.student
           file_name = "Convention_de_stage_#{student.first_name.upcase}_" \
                       "#{student.last_name.upcase}.pdf"
-          assert File.exists? file_name
+          assert File.exist? file_name
           File.delete file_name
+          Dir[Signature::SIGNATURE_STORAGE_DIR + '/*'].each do |file|
+            File.delete file
+          end
         end
       end
     end

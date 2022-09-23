@@ -41,10 +41,8 @@ class SchoolManagerMailer < ApplicationMailer
     ).html_safe
 
     subject = "Un de vos élèves a été accepté à un stage"
-    cc = main_teacher&.email
-    @message = "La convention dématérialisée peut être renseignée dès maintenant par le chef d'établissement ou le professeur principal"
 
-    send_email(to: to, subject: subject, cc: cc)
+    send_email(to: to, subject: subject)
   end
 
   def notify_others_signatures_started_email(internship_agreement: )
@@ -79,7 +77,7 @@ class SchoolManagerMailer < ApplicationMailer
 
     send_email(
       to: @school_manager.email,
-      subject: 'Une convention de stage est signée et disponible'
+      subject: 'Dernière ligne droite pour la convention de stage'
     )
   end
 end

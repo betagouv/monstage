@@ -5,9 +5,16 @@ tr class="test-student-#{student.id}"
     .row.no-gutters
       .col-9.col-sm-12
         h3.h5.mb-0
-          .d-none.d-sm-block= link_to link_to student.presenter.short_name, dashboard_students_internship_applications_path(student), class: 'fr-raw-link fr-tag'
-          .d-block.d-sm-none= link_to student.presenter.full_name
-      .col-3.d-sm-none.text-right= link_to "Voir le détail", dashboard_students_internship_applications_path(student), class: 'small'
+          .d-none.d-sm-block
+            = link_to link_to student.presenter.short_name,
+                              dashboard_students_internship_applications_path(student),
+                              class: 'fr-raw-link fr-tag'
+          .d-block.d-sm-none
+            = link_to student.presenter.full_name
+      .col-3.d-sm-none.text-right
+        = link_to "Voir le détail",
+                  dashboard_students_internship_applications_path(student),
+                  class: 'small'
 
   td.col-2 data-head="Confirmé" class="student_confirmed"
     - if student.confirmed?
@@ -22,7 +29,11 @@ tr class="test-student-#{student.id}"
 
   td.col-2.is_custom_track data-head="Cordée de réussite / Parcours d'excellence"
     - if can?(:update, student) && student.custom_track?
-      = link_to dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: false }), method: :patch, class: 'mx-1 fr-raw-link blue-france' do
+      = link_to dashboard_school_user_path(school_id: student.school.id,
+                                           id: student.id,
+                                           user: { custom_track: false }),
+                                           method: :patch,
+                                           class: 'mx-1 fr-raw-link blue-france' do
         span.fa-stack
           small
             i.fas.fa-square.fa-stack-2x

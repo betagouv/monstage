@@ -37,7 +37,6 @@ module Presenters
     end
 
     def gender_text
-      return '' if user.gender.blank? || user.gender.eql?('np')
       return 'Madame' if user.gender.eql?('f')
       return 'Monsieur' if user.gender.eql?('m')
 

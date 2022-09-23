@@ -43,4 +43,16 @@ class NewsletterControllerTest < ActionDispatch::IntegrationTest
       assert_equal err_message, flash[:warning]
     end
   end
+
+  test "post should not subscribe when confirmation is sent" do
+    test_email = 'test@free.fr'
+    raises_exception = -> { raise ArgumentError.new('This is a test') }
+    Services::SyncEmailCampaigns.stub_any_instance( :add_contact, raises_exception ) do
+      assert_nothing_raised do
+        post newsletter_path, params: {newsletter_email: test_email, newsletter_email_confirmation: test_email}
+      end
+    end
+    assert_redirected_to root_path
+    assert_equal 'Votre email a bien été enregistré', flash[:notice]
+  end
 end

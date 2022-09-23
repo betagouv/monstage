@@ -13,7 +13,7 @@ module Presenters
       student.school.name
     end
 
-    def formal_name
+    def formal_school_name
       school = student.school
       "#{school.name} à #{school.city} (Code U.A.I: #{school.code_uai})"
     end

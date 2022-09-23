@@ -19,8 +19,8 @@ class SignUpStatisticiansTest < ApplicationSystemTestCase
       fill_in 'Adresse électronique', with: bad_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      find('label[for="user_accept_terms"]').click
-      click_on "Je m'inscris"
+      find('input[type="checkbox"]', visible: false).check
+      click_on "Valider mes informations"
     end
 
     assert_equal 0, Users::Statistician.count
@@ -28,7 +28,7 @@ class SignUpStatisticiansTest < ApplicationSystemTestCase
       fill_in 'Adresse électronique', with: good_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      click_on "Je m'inscris"
+      click_on "Valider mes informations"
     end
 
     # check created statistician has valid info

@@ -19,8 +19,6 @@ module Users
     has_many :tutors
     has_many :internship_offer_infos
 
-    validates :employer_role, presence: true, length:{ minimum: 2}
-
     def custom_dashboard_path
       url_helpers.dashboard_internship_offers_path
     end
@@ -54,11 +52,10 @@ module Users
     end
 
     def already_signed?(internship_agreement_id:)
-      internship_agreement = InternshipAgreement.joins(:signatures)
-                                                .where(id: internship_agreement_id)
-                                                .where(signatures: {signatory_role: signatory_role})
-      internship_agreement.any? &&
-        internship_agreement.first.internship_offer.employer_id == id
+      InternshipAgreement.joins(:signatures)
+                         .where(id: internship_agreement_id)
+                         .where(signatures: {user_id: id})
+                         .exists?
     end
 
     def presenter

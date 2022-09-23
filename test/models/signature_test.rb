@@ -36,13 +36,13 @@ class SignatureTest < ActiveSupport::TestCase
 
   test '#file_path' do
     signature = create(:signature, :employer)
-    expected = "storage/signatures/signature-test-employer-#{signature.internship_agreement_id}.png"
+    expected = "signature_storage/signature-test-employer-#{signature.internship_agreement_id}.png"
     assert_equal expected, signature.local_signature_image_file_path
   end
 
   test '.file_path' do
     signature = create(:signature, :employer)
-    expected = "storage/signatures/signature-test-employer-#{signature.internship_agreement_id}.png"
+    expected = "signature_storage/signature-test-employer-#{signature.internship_agreement_id}.png"
     assert_equal expected,
                  Signature.file_path(user: signature.employer, internship_agreement_id: signature.internship_agreement_id)
 

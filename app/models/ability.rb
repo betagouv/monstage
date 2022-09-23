@@ -53,8 +53,10 @@ class Ability
   end
 
   def common_school_management_abilities(user:)
-    can :welcome_students, User
-    can :choose_role, User
+    can %i[
+      welcome_students
+      choose_role
+      sign_with_sms], User
     can_create_and_manage_account(user: user) do
       can [:choose_class_room], User
     end
@@ -83,9 +85,6 @@ class Ability
 
   def school_manager_abilities(user:)
     can :create_remote_internship_request, SupportTicket
-    can :sign, InternshipAgreement do |internship_agreement|
-      internship_agreement.school_manager.id == user.id
-    end
 
     can_manage_school(user: user) do
       can [:delete], User do |managed_user_from_school|
@@ -135,8 +134,7 @@ class Ability
 
 
   def employer_abilities(user:)
-    can :choose_function, User
-    can :supply_offers, User
+    can %i[supply_offers sign_with_sms choose_function] , User
     can :show, :account
 
     can :create_remote_internship_request, SupportTicket
@@ -230,7 +228,7 @@ class Ability
     can :manage, EmailWhitelists::Statistician
     can :manage, EmailWhitelists::Ministry
     can :manage, InternshipOfferKeyword
-    can %i[create read update], Group
+    can :manage, Group
     can :access, :rails_admin   # grant access to rails_admin
     can %i[read update delete discard export], InternshipOffers::Api
     can :read, :dashboard       # grant access to the dashboard

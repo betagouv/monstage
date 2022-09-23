@@ -74,13 +74,13 @@ tbody.internship-agreement
         = render partial: 'dashboard/internship_agreements/date_field_element',
                  locals: { field: :school_delegation_to_sign_delivered_at, form: form, text_label: label, title: title, content: content, filled_by: filled_by, disabled: disabled }
 
-      .row.mt-0
-        - label = "Articles"
-        - title = "Note au chef d'établissement"
-        - content = "Les articles sont modifiables selon vos spécificités locales."
-        - filled_by = ["le chef d'établissement"]
-        = render partial: 'dashboard/internship_agreements/trix_form_element',
-                 locals: { field: :legal_terms_rich_text, form: form, title: title, content: content, text_label: label, filled_by: filled_by, disabled: disabled }
+      / .row.mt-0
+      /   - label = "Articles"
+      /   - title = "Note au chef d'établissement"
+      /   - content = "Les articles sont modifiables selon vos spécificités locales."
+      /   - filled_by = ["le chef d'établissement"]
+      /   = render partial: 'dashboard/internship_agreements/trix_form_element',
+      /            locals: { field: :legal_terms_rich_text, form: form, title: title, content: content, text_label: label, filled_by: filled_by, disabled: disabled }
 
       .row.mt-0
         - label = "Nom de l’élève ou des élèves concerné(s)"
@@ -183,13 +183,13 @@ tbody.internship-agreement
       = form.submit 'Submit', class: 'd-none', id: 'submit'
 
       - unless disabled
-        .row.mt-0
-          - label = "Conditions liées au financement du stage de l'élève par l'établissement"
-          - title = "Note au chef d'établissement"
-          - content = "Toutes les modalités pratiques du stage. Vous avez la possibilité d'enregistrer un modèle pour tous vos élèves sur #{link_to 'votre page établissement', edit_dashboard_school_internship_agreement_preset_path(resource.internship_application.student.school, resource.internship_application.student.school.internship_agreement_preset), class: 'text-white'}."
-          - filled_by = ["le chef d'établissement"]
-          = render partial: 'dashboard/internship_agreements/trix_form_element',
-                  locals: { field: :complementary_terms_rich_text, form: form, text_label: label, title: title, content: content , filled_by: filled_by, disabled: disabled }
+        / .row.mt-0
+        /   - label = "Conditions liées au financement du stage de l'élève par l'établissement"
+        /   - title = "Note au chef d'établissement"
+        /   - content = "Toutes les modalités pratiques du stage. Vous avez la possibilité d'enregistrer un modèle pour tous vos élèves sur #{link_to 'votre page établissement', edit_dashboard_school_internship_agreement_preset_path(resource.internship_application.student.school, resource.internship_application.student.school.internship_agreement_preset), class: 'text-white'}."
+        /   - filled_by = ["le chef d'établissement"]
+        /   = render partial: 'dashboard/internship_agreements/trix_form_element',
+        /           locals: { field: :complementary_terms_rich_text, form: form, text_label: label, title: title, content: content , filled_by: filled_by, disabled: disabled }
 
         .row.mt-0
           .col-7

@@ -14,7 +14,7 @@ module Dashboard::Users
       sign_in(employer.reload)
 
       visit dashboard_internship_agreements_path
-      click_on 'Signer la convention'
+      click_on 'Ajouter aux signatures'
       find('button.fr-btn.button-component-cta-button[disabled]')
       click_on 'Signer'
 
@@ -28,7 +28,7 @@ module Dashboard::Users
       sign_in(school_manager.reload)
 
       visit dashboard_internship_agreements_path
-      click_on 'Signer la convention'
+      click_on 'Ajouter aux signatures'
       click_on 'Signer'
 
       find('h1#fr-modal-signature-title', text: 'Nous vous avons envoyé un code de vérification')

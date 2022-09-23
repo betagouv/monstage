@@ -7,7 +7,7 @@ module Dashboard::Users
       internship_agreement = create(:internship_agreement, :validated)
       sign_in(internship_agreement.employer)
       visit dashboard_internship_agreements_path
-      click_on 'Signer la convention'
+      click_on 'Ajouter aux signatures'
       find('button.fr-btn.button-component-cta-button[disabled]')
       click_on 'Signer'
 
@@ -26,7 +26,7 @@ module Dashboard::Users
       internship_agreement = create(:internship_agreement, :validated)
       sign_in(internship_agreement.school_manager)
       visit dashboard_internship_agreements_path
-      click_on 'Signer la convention'
+      click_on 'Ajouter aux signatures'
       click_on 'Signer'
 
       find('h1#fr-modal-signature-title', text: 'Vous vous apprêtez à signer 1 convention de stage')
@@ -45,7 +45,7 @@ module Dashboard::Users
       employer = internship_agreement.employer
       sign_in(employer)
       visit dashboard_internship_agreements_path
-      click_on 'Signer la convention'
+      click_on 'Ajouter aux signatures'
       click_on 'Signer'
 
       find('h1#fr-modal-signature-title', text: 'Vous vous apprêtez à signer 1 convention de stage')

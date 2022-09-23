@@ -151,6 +151,7 @@ class AbilityTest < ActiveSupport::TestCase
       assert(ability.can?(meth, internship_agreement), "Employer fail: #{meth}")
     end
     internship_agreement.update_columns(aasm_state: :started_to_sign)
+    assert(ability.can?(:sign_with_sms, User))
     assert(ability.can?(:sign_internship_agreements, internship_agreement.reload), "Signature fails")
   end
 
@@ -167,6 +168,7 @@ class AbilityTest < ActiveSupport::TestCase
            'god should be able see_tutor')
     assert ability.can?(:read, User)
     assert ability.can?(:destroy, User)
+    assert ability.can?(:manage, Group)
     assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
     assert ability.can?(:index, Acl::Reporting.new(user: god, params: {}))
     refute ability.can?(:apply, create(:weekly_internship_offer))
@@ -267,6 +269,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:choose_class_room, User))
     assert(ability.can?(:choose_role, User))
     assert(ability.can?(:choose_class_room, User))
+    assert(ability.can?(:sign_with_sms, User))
     assert(ability.can?(:dashboard_index, student))
     assert(ability.can?(:delete, student))
 
