@@ -151,3 +151,9 @@ import './modes_d_emploi/MS3_Mode-d-emploi-entreprises.png';
 import './modes_d_emploi/MS3_Mode-d-emploi-membres-pedagogique.png';
 import './modes_d_emploi/MS3_Mode-d-emploi-referents-departementaux.png';
 import './modes_d_emploi/MS3_Mode-d-emploi-global-2022.png';
+
+import './modes_d_emploi/miniature-MS3_Mode-d-emploi-eleves.jpg';
+import './modes_d_emploi/miniature-MS3_Mode-d-emploi-entreprises.jpg';
+import './modes_d_emploi/miniature-MS3_Mode-d-emploi-membres-pedagogique.jpg';
+import './modes_d_emploi/miniature-MS3_Mode-d-emploi-referents-departementaux.jpg';
+import './modes_d_emploi/miniature-MS3_Mode-d-emploi-global-2022.jpg';
