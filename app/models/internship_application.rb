@@ -317,7 +317,7 @@ class InternshipApplication < ApplicationRecord
 
   # Used for prettier links in rails_admin
   def title
-    student_name + ", le " + submitted_at.to_formatted_s(:short)
+    "Candidature de " + student_name
   end
 
   rails_admin do
