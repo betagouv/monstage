@@ -270,7 +270,6 @@ class Ability
     can %i[index_and_filter], Reporting::InternshipOffer
     can %i[ see_reporting_dashboard
             see_dashboard_administrations_summary
-            see_dashboard_enterprises_summary
             see_dashboard_department_summary
             see_dashboard_associations_summary], User
   end

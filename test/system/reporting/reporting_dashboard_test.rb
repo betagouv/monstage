@@ -28,7 +28,6 @@ class ReportingDashboardTest < ApplicationSystemTestCase
       sign_in(@statistician)
       visit reporting_dashboards_path(department: @department, school_year: 2020)
 
-      page.assert_selector("span[data-test-total=total-created-at]", text: '4')
       find_link('Tableau de bord').click
     end
   end
