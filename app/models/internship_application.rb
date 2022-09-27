@@ -317,6 +317,8 @@ class InternshipApplication < ApplicationRecord
 
   # Used for prettier links in rails_admin
   def title
+    return student_name if submitted_at.nil?
+
     student_name + ", le " + submitted_at.to_formatted_s(:short)
   end
 
