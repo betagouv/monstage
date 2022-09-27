@@ -60,11 +60,9 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
     .row
       .col-12.py-2
         h3.h4 Prochaine étape, la convention de stage
+        p La convention de stage est en signature dans la structure d'accueil du stage et chez le chef d'établissement. 
         - if current_user.student?
-          p La convention est fournie par l'établissement. Vous pouvez en demander un modèle à votre professeur principal.
-        - else
-          p La convention est fournie par l'établissement, son modèle est généralement fourni par le professeur principal.
-        p Elle doit être remplie et signée par les responsables légaux puis envoyée à l'employeur, au plus tôt, par courrier (postal ou électronique) ou remise en mains propres. Après l'avoir signée, l'employeur la retourne à l'établissement.
+          p Vous serez averti dès que vous pourrez la signer à votre tour.
         p.font-weight-bold Sans une convention convenablement remplie et signée, le stage ne peut pas avoir lieu.
         - internship_offer = @internship_application.internship_offer
         p

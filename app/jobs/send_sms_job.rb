@@ -18,7 +18,8 @@ class SendSmsJob < ApplicationJob
                            {
                              'sender': ENV['OVH_SENDER'],
                              'message': message,
-                             'receivers': [user.formatted_phone]
+                             'receivers': [user.formatted_phone],
+                             'noStopClause': 'true'
                            })
   end
 end

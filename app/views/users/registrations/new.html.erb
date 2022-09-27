@@ -1,7 +1,7 @@
 <% if params[:identity_token] %>
   <%= render 'identities/register' %>
 <% else %>
-  <div class='onboarding-card mb-4 fr-mt-6w' data-controller="signup" data-signup-channel-value="<%= @resource_channel %>">
+  <div class='onboarding-card mb-4 fr-mt-6w' data-controller="signup email-confirmation" data-signup-channel-value="<%= @resource_channel %>">
     <header class="header-account header-onboarding-card my-0">
       <div class="row mx-0">
         <div class="col-12 h-100">
@@ -29,7 +29,7 @@
           <div class='fr-col-sm-12 fr-px-2w'>
             <%= react_component("SearchSchool", props: {
                                                   classes: "col-12",
-                                                  label: "Nom (ou ville) de mon établissement",
+                                                  label: "Nom (ou ville) de mon établissement REP ou REP+",
                                                   required: true,
                                                   resourceName: :user,
                                                   selectClassRoom: can?(:choose_class_room, resource),
@@ -166,6 +166,17 @@
                                 data: { action: "change->signup#onBlurEmailInput", :"signup-target" => "emailInput" } %>
 
               <small class="d-none" data-signup-target="emailHint"></small>
+            </div>
+            <div class="form-group custom-label-container" data-email-confirmation-target="confirmation">
+              <%= f.label :confirmation_email, class: "fr-label" do %>
+                <span>Confirmation de l'email</span>
+                <%= f.rg2a_required_content_tag %>
+              <% end %>
+              <%= f.email_field :confirmation_email,
+                                class: "fr-input",
+                                value: '',
+                                placeholder: "indiquez le même email que ci-dessus"  %>
+
             </div>
           </div>
 
