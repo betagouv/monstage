@@ -29,7 +29,6 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     end
   end
 
-
   test 'Employer can see which week is choosen by nearby schools on edit' do
     employer = create(:employer)
     sign_in(employer)
@@ -57,8 +56,6 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       visit dashboard_internship_offer_path(internship_offer)
       assert_changes -> { internship_offer.reload.discarded_at } do
         page.find('a[data-target="#discard-internship-offer-modal"]').click
-        puts internship_offer.id
-        byebug
         page.find("button[data-test-delete-id='delete-#{dom_id(internship_offer)}']").click
       end
     end

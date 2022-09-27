@@ -106,11 +106,13 @@
                             data: { :"internship-offer-infos-target" => "studentsMaxGroupInput",
                                     action: "change->internship-offer-infos#handleMaxCandidatesChanges"}
       // TODO A vérifier si utile
-      = react_component("ReservedSchoolInput", props: { label:"Ville ou nom de l'établissement auquel le stage est reservé",
-                                                  required: false,
-                                                  resourceName: form.object_name,
-                                                  selectClassRoom: false,
-                                                  existingSchool: resource.school.as_json})
+      .form-group 
+        = react_component("ReservedSchoolInput",
+                           props: { label:"Ville ou nom de l'établissement pour lequel le stage est reservé",
+                                     required: false,
+                                     resourceName: form.object_name,
+                                     selectClassRoom: false,
+                                     existingSchool: resource.school.as_json})
 
       .form-group
         = render partial: "weeks/checkbox_inputs",
@@ -122,13 +124,6 @@
       .form-group
         = render partial: "dashboard/stepper/internship_offer_infos/daily_hours",
                  locals: { form: form, disabled: false }
-      .form-group
-        = react_component("ReservedSchoolInput",
-                  props: { label:"Ville ou nom de l'établissement auquel le stage est reservé",
-                            required: false,
-                            resourceName: form.object_name,
-                            selectClassRoom: false,
-                            existingSchool: resource.school.as_json})
 
       - if submit_button
         .row.mt-5
