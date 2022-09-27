@@ -44,9 +44,10 @@ class ReservedSchoolInput extends React.Component {
             type="checkbox"
             name="is_reserved"
             value="true"
+            aria-labelledby="is_reserved_label"
             checked={checkedOrHasExistingSchool}
           />
-          <label htmlFor="is_reserved">
+          <label htmlFor="is_reserved" id="is_reserved_label">
             <span className="ml-1 font-weight-normal">
               Ce stage est réservé à un seul établissement ?
             </span>
