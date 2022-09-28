@@ -9,7 +9,7 @@ module Dashboard
         authorize! :manage_school_students, current_user.school
 
         @class_room = @school.class_rooms.find(params.require(:class_room_id))
-        @students = @class_room.students
+        @students = @class_room.students.kept
                                .includes([:school, :internship_applications])
                                .order(:last_name, :first_name)
       end

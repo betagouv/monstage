@@ -57,10 +57,18 @@ module Users
 
     # POST /resource
     def create
-      # students only
-      if params.dig(:user, :identity_token)
-        params[:user] = merge_identity(params)
+      # honey_pot checking
+      unless params[:user][:confirmation_email].blank?
+        notice = "Votre inscription a bien été prise en compte. " \
+                 "Vous recevrez un email de confirmation dans " \
+                 "les prochaines minutes."
+        redirect_to(root_path, flash: { notice: notice }) and return
       end
+      params[:user].delete(:confirmation_email) if params.dig(:user, :confirmation_email)
+
+      # students only
+      params[:user] = merge_identity(params) if params.dig(:user, :identity_token)
+
       # in case of phone number reusing.
       if params && params.dig(:user, :phone) && fetch_user_by_phone && @user
         redirect_to(
@@ -130,6 +138,7 @@ module Users
           accept_terms
           birth_date
           class_room_id
+          confirmation_email
           email
           first_name
           employer_role
