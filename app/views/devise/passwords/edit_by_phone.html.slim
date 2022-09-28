@@ -10,13 +10,16 @@
     .body
       = form_tag phone_update_password_path, method: :put do
         .form-group.phone
-          = label_tag 'Numéro de mobile', class: 'fr-label'
+          = label_tag 'Numéro de mobile', '', class: 'fr-label'
+          = label_tag :phone, for: 'phone-input', class: 'fr-label' do
+            = 'Numéro de mobile'
           = react_component("CountryPhoneSelect", props: { name: 'phone', value: params[:phone]})
           small.text-muted 
             | (+33 puis 06 11 22 33 44 par exemple)
         .form-group.custom-label-container
-          = number_field_tag :phone_token, '', class: 'form-control', required: true, placeholder: "ex: 1234"
-          = label_tag :phone_token, class: 'fr-label', 'Code de confirmation'
+          = number_field_tag :phone_token, '', class: 'fr-input', required: true, placeholder: "ex: 1234"
+          = label_tag :phone_token, class: 'fr-label' do
+            ' Code de confirmation
         .form-group.custom-label-container
           = password_field_tag :password, '', autofocus: true, autocomplete: "new-password", required: true, class: 'fr-input'
           = label_tag :password , class: 'fr-label' do
