@@ -37,11 +37,14 @@
               | Quelle semaine ?
             - unless current_user.school.has_weeks_on_current_year?
               = render partial: "internship_applications/forms/student_missing_school_weeks"
-            = f.select :week_id, options_from_collection_for_select(applicable_weeks, :id, :human_select_text_method, @internship_application.week_id),
-              { prompt: 'Choisir une semaine'}, class: "fr-select col-6", required: true
+            = f.select :week_id,
+                       options_from_collection_for_select(applicable_weeks, :id, :human_select_text_method, @internship_application.week_id),
+                       { prompt: 'Choisir une semaine'},
+                       class: "fr-select col-6",
+                       required: true
         div class="form-group"
           .fr-label.required data-controller="rich-text-label" data-rich-text-label-for-value="internship_application_motivation" data-rich-text-label-enable-value=""
-            = "Pourquoi ce stage me motive"
+            = "Pourquoi ce stage me motivexx"
             small.form-text.text-muted Relisez-vous pour éviter les fautes d'orthographe et utilisez une formule de politesse pour conclure.
           = f.rich_text_area :motivation, class: "fr-input col-12", required: true, rows: 5
 
