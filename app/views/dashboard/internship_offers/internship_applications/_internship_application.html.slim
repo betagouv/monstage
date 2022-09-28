@@ -105,13 +105,7 @@
             = render "dashboard/internship_offers/internship_applications/actions/approve",
                       internship_application: internship_application
 
-          - if internship_application.approved? && internship_application.student.school.internship_agreement_open? && can?(:create, InternshipAgreement) && internship_application.internship_agreement
-            .d-flex.align-items-center.mt-2
-              .d-inline-flex
-                = link_to('Accéder à la convention de stage',
-                          edit_dashboard_internship_agreement_path(internship_application.internship_agreement),
-                          class: 'mr-4 font-weight-bold blue-france')
-          - if internship_application.approved?
+          - if internship_applicationS.approved?
             = render "dashboard/internship_offers/internship_applications/actions/cancel",
                       internship_application: internship_application
 
