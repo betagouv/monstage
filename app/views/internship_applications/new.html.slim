@@ -9,7 +9,7 @@
     h1.h6.my-3 Votre candidature
 
     - if @internship_offer.weekly?
-      - applicable_weeks = current_user.school.has_weeks_on_current_year? ?  InternshipOfferWeek.applicable(user: current_user, internship_offer: @internship_offer).map(&:week).uniq & @internship_offer.weeks : @internship_offer.weeks.in_the_future
+      - applicable_weeks = current_user.school.has_weeks_on_current_year? ?  InternshipOfferWeek.applicable(user: current_user, internship_offer: @internship_offer).map(&:week).uniq.sort_by(&:id) & @internship_offer.weeks : @internship_offer.weeks.in_the_future
 
     - is_creating = @internship_application.try(:new_record?)
 
