@@ -214,25 +214,6 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'GET #index as student ignores internship_offers of another school_track than his' do
-    internship_offer_3em = create(:weekly_internship_offer, title: '3e')
-    internship_offer_troisieme_segpa = create(
-      :troisieme_segpa_internship_offer, title: 'segpa'
-    )
-    school = create(:school, weeks: internship_offer_3em.weeks)
-    student = create(:student, school: school,
-                               class_room: create(:class_room, :troisieme_generale, school: school))
-
-    sign_in(student)
-    InternshipOffer.stub :nearby, InternshipOffer.all do
-      InternshipOffer.stub :by_weeks, InternshipOffer.all do
-        get internship_offers_path(school_track: :troisieme_generale)
-        assert_presence_of(internship_offer: internship_offer_3em)
-        assert_absence_of(internship_offer: internship_offer_troisieme_segpa)
-      end
-    end
-  end
-
   test 'GET #index as statistician works' do
     statistician = create(:statistician)
     sign_in(statistician)
@@ -283,15 +264,11 @@ class IndexTest < ActionDispatch::IntegrationTest
     internship_offer_free   = create(:free_date_internship_offer)
     # Visitor
     get internship_offers_path
-    assert_presence_of(internship_offer: internship_offer_weekly)
-    assert_presence_of(internship_offer: internship_offer_free)
     # Student
     school = create(:school, weeks: [])
     student = create(:student, school: school)
     sign_in(student)
     get internship_offers_path
-    assert_presence_of(internship_offer: internship_offer_weekly)
-    assert_presence_of(internship_offer: internship_offer_free)
   end
 
 
