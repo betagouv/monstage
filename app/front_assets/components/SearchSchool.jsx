@@ -12,7 +12,6 @@ const StartAutocompleteAtLength = 2;
 
 export default function SearchSchool({
   classes, // PropTypes.string
-  label, // PropTypes.string.isRequired
   required, // PropTypes.bool.isRequired
   resourceName, // PropTypes.string.isRequired
   selectClassRoom, // PropTypes.bool.isRequired
@@ -134,10 +133,10 @@ export default function SearchSchool({
           selectedItem,
         }) => (
           <div className="form-group custom-label-container">
-                    <label
+            <label
               {...getLabelProps({ className: 'fr-label', htmlFor: `${resourceName}_school_city` })}
             >
-              {label}
+              Nom (ou ville) de mon établissement REP ou REP+
               <abbr title="(obligatoire)" aria-hidden="true">
                 *
               </abbr>
