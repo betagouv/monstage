@@ -28,12 +28,12 @@ class Week < ApplicationRecord
     where(year: year)
   }
 
-  scope :from_now, lambda { 
-    where('number >= ?', Date.current.cweek).where('year >= ?', Date.current.year) 
+  scope :from_now, lambda {
+    (where('number >= ?', Date.current.cweek).where('year >= ?', Date.current.year)).or(where('year > ?', Date.current.year))
   }
 
-  scope :in_the_future, lambda { 
-    where('number > ?', Date.current.cweek).where('year >= ?', Date.current.year) 
+  scope :in_the_future, lambda {
+    (where('number > ?', Date.current.cweek).where('year >= ?', Date.current.year)).or(where('year > ?', Date.current.year))
   }
 
   scope :from_date_for_current_year, lambda { |from:|

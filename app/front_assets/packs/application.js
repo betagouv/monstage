@@ -67,6 +67,7 @@ import '../bootapp';
 import '../leaflet-providers';
 
 import '../utils/zammad_form';
-$(document).on("turbo:load", () => {
-  console.log('turbo:load');
-});
+
+import '../utils/confirm'
+
+

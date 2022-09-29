@@ -106,10 +106,10 @@ fr:
     attributes:
       group:
         created_at: Crée le
-        is_public: Secteur public/privé
-        name: Nom du groupe
+        is_public: Secteur public
+        is_paqte: Paqte
+        name: Nom
         updated_at: Mis à jour le
-        name: Administration centrale
       school:
         name: Nom
         kind: Type
@@ -175,7 +175,10 @@ fr:
         main_teacher_accept_terms: Validée par le professeur principal
         date_range: Dates du stage
         organisation_representative_full_name: Nom de l'employeur
-        school_representative_full_name: Nom du chef d'établissement
+        school_representative_full_name: Nom du chef d'établissement ou de son représentant
+        school_representative_email: Courriel du chef d'établissement ou de son représentant
+        school_representative_phone: Numéro de téléphone du chef d'établissement ou de son représentant
+        school_representative_role: Fonction du chef d'établissement ou de son représentant
         student_full_name: Nom de l'élève
         tutor_full_name: Nom du tuteur
         main_teacher_full_name: Nom du professeur principal
@@ -203,20 +206,26 @@ fr:
         status:
           employer:
             draft: À remplir par les deux parties.
-            started_by_employer: Votre convention est remplie mais pas envoyée au chef d'établissement.
-            completed_by_employer: Votre convention est dans les mains du chef d'établissement.
-            started_by_school_manager: Votre convention est dans les mains du chef d'établissement.
+            started_by_employer: Votre convention est remplie, mais elle n'est pas envoyée au chef d'établissement.
+            completed_by_employer: La convention est dans les mains du chef d'établissement.
+            started_by_school_manager: La convention est dans les mains du chef d'établissement.
             validated: Votre convention est prête. Imprimez-la et renvoyez-la signée au chef d'établissement.
-            signatures_started: Des signatures ont été apposées, mais pas toutes
-            signed_by_all: Signé par toutes les parties
+            signatures_started:
+              already_signed: Vous avez déjà signé. En attente de la signature du chef d’établissement.
+              not_signed_yet: Le chef d'établissement a déjà signé. En attente de votre signature.
+            signed_by_all: Signée par toutes les parties.
           school_manager:
             draft: En attente de l'offreur.
             started_by_employer: En attente de l'offreur.
-            completed_by_employer: Votre convention est remplie par l'offreur mais vous ne l'avez pas validée.
-            started_by_school_manager: Votre convention est remplie mais pas validée.
+            completed_by_employer: Votre convention est remplie par l'offreur, mais vous ne l'avez pas renseignée.
+            started_by_school_manager: Votre convention est remplie, mais pas validée.
             validated: Votre convention est prête.
-            signatures_started: Des signatures ont été apposées, mais pas toutes
-            signed_by_all: Signé par toutes les parties
+            signatures_started:
+              already_signed: Vous avez déjà signé. En attente de la signature de l’employeur.
+              not_signed_yet: L'employeur a déjà signé. En attente de votre signature.
+            signed_by_all: Signée par toutes les parties.
+      signature: 
+        signatory_role: signataire
 
       internship_offer:
         <<: *organisation_fields
@@ -291,7 +300,7 @@ fr:
           rejected: refusée
           expired: expirée
           canceled_by_employer: annulée par l'employeur
-          cancel_by_student: annulée par l'élève
+          canceled_by_student: annulée par l'élève
           convention_signed: convention signée
         week: Semaine
 
@@ -351,6 +360,12 @@ fr:
               blank: "Veuillez saisir l'établissement de l'élève"
             school_representative_full_name:
               blank: "Veuillez saisir le nom du représentant de l'établissement scolaire"
+            school_representative_email:
+              blank: "Veuillez saisir le courriel du représentant de l'établissement scolaire"
+            school_representative_phone:
+              blank: "Veuillez saisir le numéro de téléphone du représentant de l'établissement scolaire"
+            school_representative_role:
+              blank: "Veuillez saisir la fonction du représentant de l'établissement scolaire"
             student_class_room:
               blank: "Veuillez saisir la classe de l'élève"
             main_teacher_full_name:
@@ -583,5 +598,8 @@ fr:
 
     school_tracks:
       troisieme_generale: '3e'
+      troisieme_prepa_metiers: '3e prépa métiers'
+      troisieme_segpa: '3e SEGPA'
+      bac_pro: 'Bac pro'
   date:
     day_names: [Dimanche, Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi]

@@ -28,6 +28,11 @@ Things you may want to cover:
    * `./infra/dev/db.sh` (require a pg export)
    * `./infra/test/db.sh`
 
+* Restore a dump :
+   * Create a dump from existing staging or prod : pg_dump -F c -d *DB_URI* > db.dump
+   * Restore the dump locally : pg_restore -d *DB_NAME* db.dump
+  * Restore the dump on staging / prod : pg_restore --clean --if-exists --no-owner --no-privileges --no-comments -d *DB_URI* db.dump
+
 * Install yarn & webpack
   - On Linux
     sudo apt install npm
@@ -42,7 +47,7 @@ We keep things simple and secure :
 
 * a simple monolith mostly based on rails
 * minimals effort for an SPA like feeling while ensuring it works without js (90% based on turbo, some react for advanced user inputs [autocomplete, nearby searches], other wise a good old html form is required)
-* we try to avoid stacking technologies over technologies (fewer dependencies makes us happy). 
+* we try to avoid stacking technologies over technologies (fewer dependencies makes us happy).
 * we try to keep our dependencies up to date (bundle update, yarn update... at least once a month).
 
 ## backend
@@ -128,7 +133,7 @@ foreman start -f Procfile.dev
 - (staging) $ ```git checkout mabranche``` # on repasse sur sa branche
 - (mabranche) $ ```git merge staging``` # on merge staging dans sa propre branche
 
-Pour les mises en production, on utilise le script de déploiement après avoir fait : 
+Pour les mises en production, on utilise le script de déploiement après avoir fait :
 - (master) $ ```git merge staging``` # on merge staging dans master
 
 Ainsi, on peut faire des hotfixes à merger directement sur master

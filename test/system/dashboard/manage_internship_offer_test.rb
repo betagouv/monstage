@@ -63,20 +63,26 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   end
 
   test 'Employer can publish/unpublish internship_offer' do
-    internship_offer = create(:weekly_internship_offer)
-    sign_in(internship_offer.employer)
+    employer = create(:employer)
+    internship_offers = [
+      create(:weekly_internship_offer, employer: employer),
+      create(:free_date_internship_offer, employer: employer)
+    ]
+    sign_in(employer)
 
-    visit dashboard_internship_offer_path(internship_offer)
-    assert_changes -> { internship_offer.reload.published_at } do
-      page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
-      sleep 0.2
-      assert_nil internship_offer.reload.published_at, 'fail to unpublish'
+    internship_offers.each do |internship_offer|
+      visit dashboard_internship_offer_path(internship_offer)
+      assert_changes -> { internship_offer.reload.published_at } do
+        page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
+        sleep 0.2
+        assert_nil internship_offer.reload.published_at, 'fail to unpublish'
 
-      page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
-      sleep 0.2
-      assert_in_delta Time.now.utc.to_i,
-                      internship_offer.reload.published_at.utc.to_i,
-                      delta = 10
+        page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
+        sleep 0.2
+        assert_in_delta Time.now.utc.to_i,
+                        internship_offer.reload.published_at.utc.to_i,
+                        delta = 10
+      end
     end
   end
 
@@ -89,7 +95,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       sign_in(employer)
       visit dashboard_internship_offers_path(internship_offer: internship_offer)
       page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
-      
+
       click_link("Modifier")
       find('label[for="internship_type_false"]').click # max_candidates can be set to many now
       within('.form-group-select-max-candidates') do
@@ -172,6 +178,9 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       # wrong employer
       create(:weekly_internship_offer, weeks: [week_2], title: 'wrong employer')
 
+      # free
+      create(:free_date_internship_offer, employer: employer, title: 'free')
+
       # 2019-20 unpublished
       io = create(:weekly_internship_offer, employer: employer, weeks: [week_1, week_2], title: '2019/2020 unpublished')
       io.update_column(:published_at, nil)
@@ -199,12 +208,11 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       select('2019/2020')
       assert page.has_css?('p.internship-item-title.mb-0', count: 1)
       assert_text('2019/2020 unpublished')
+
       select('2020/2021')
       assert page.has_css?('p.internship-item-title.mb-0', count: 0)
-      page.find("a[href=\"/dashboard/internship_agreements\"]", text: 'Mes Conventions de stage')
-      page.find("a[href=\"/dashboard/internship_agreements\"] ", text: '1')
-      click_link('Conventions de stage')
-      page.find("a[href=\"/dashboard/internship_agreements\"] ", text: '1')
+      page.find("a[href=\"/dashboard/internship_agreements\"]", text: 'Mes conventions de stage')
+      page.find("a[href=\"/dashboard/internship_agreements\"]", text: '1')
     end
   end
 end

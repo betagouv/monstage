@@ -53,7 +53,7 @@ module Dashboard::InternshipOffers
       end
     end
 
-    test 'GET #edit is not turbolinkable' do
+    test 'GET #edit is not turboable' do
       employer = create(:employer)
       sign_in(employer)
       internship_offer = create(:weekly_internship_offer, employer: employer)
@@ -100,6 +100,7 @@ module Dashboard::InternshipOffers
                                                           max_candidates: 1,
                                                           tutor_name: 'fourtin mourcade',
                                                           tutor_email: 'fourtin@mour.cade',
+                                                          tutor_role: 'tutor',
                                                           employer: employer)
 
       get edit_dashboard_internship_offer_path(internship_offer.to_param)

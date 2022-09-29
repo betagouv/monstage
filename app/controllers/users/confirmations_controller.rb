@@ -5,13 +5,16 @@ module Users
     include Phonable
     def create
       if by_phone?
-        if fetch_user_by_phone
+        fetch_user_by_phone
+        if @user && @user.student?
           SendSmsJob.perform_later(
             user: fetch_user_by_phone,
             message: "Votre code de validation : #{fetch_user_by_phone.phone_token}"
           )
           redirect_to users_registrations_phone_standby_path(phone: fetch_user_by_phone.phone)
-        else
+        elsif @user&.employer? || @user&.school_management?
+          redirect_to users_registrations_standby_path(id: @user.id)
+        elsif @user.nil?
           self.resource = resource_class.new
           self.resource.phone = safe_phone_param
           self.resource.errors.add(:phone, 'Votre numéro de téléphone est inconnu')

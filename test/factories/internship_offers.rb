@@ -10,6 +10,7 @@ FactoryBot.define do
     tutor_name { 'Eric Dubois' }
     tutor_phone { '0123456789' }
     tutor_email { 'eric@dubois.fr' }
+    tutor_role { 'comptable' }
     is_public { true }
     group { create(:group, is_public: true) }
     employer_description { 'on envoie du parpaing' }
@@ -57,6 +58,24 @@ FactoryBot.define do
       description { 'Lorem ipsum dolor troisieme_generale_internship_offer' }
     end
 
+    trait :free_date_internship_offer do
+      employer { create(:employer ) }
+      school_track { :troisieme_segpa }
+      description { 'Lorem ipsum dolor free_date_internship_offer' }
+    end
+
+    trait :troisieme_segpa_internship_offer do
+      employer { create(:employer ) }
+      school_track { :troisieme_segpa }
+      description { 'Lorem ipsum dolor troisieme_segpa_internship_offer' }
+    end
+
+    trait :troisieme_prepa_metiers_internship_offer do
+      employer { create(:employer ) }
+      school_track { :troisieme_prepa_metiers }
+      description { 'Lorem ipsum dolor troisieme_prepa_metiers_internship_offer' }
+    end
+
     trait :discarded do
       discarded_at { Time.now }
     end
@@ -87,6 +106,17 @@ FactoryBot.define do
     factory :weekly_internship_offer_by_statistician, traits: [:weekly_internship_offer_by_statistician],
                                       class: 'InternshipOffers::WeeklyFramed',
                                       parent: :internship_offer
+    factory :free_date_internship_offer, traits: [:free_date_internship_offer],
+                                      class: 'InternshipOffers::FreeDate',
+                                      parent: :internship_offer
+
+
+    factory :troisieme_segpa_internship_offer, traits: [:troisieme_segpa_internship_offer],
+                                               class: 'InternshipOffers::FreeDate',
+                                               parent: :internship_offer
+    factory :troisieme_prepa_metiers_internship_offer, traits: [:troisieme_prepa_metiers_internship_offer],
+                                                       class: 'InternshipOffers::FreeDate',
+                                                       parent: :internship_offer
 
   end
 end

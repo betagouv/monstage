@@ -24,13 +24,14 @@ module Dashboard
           assert_difference 'ClassRoom.count' do
             post dashboard_school_class_rooms_path(school.to_param), params: {
               class_room: {
-                name: class_room_name
+                name: class_room_name,
+                school_track: :troisieme_segpa
               }
             }
             assert_redirected_to dashboard_school_path(school)
           end
           assert_equal 1, ClassRoom.where(name: class_room_name).count
-          assert_equal 'troisieme_generale', ClassRoom.where(name: class_room_name).first.school_track
+          assert_equal 'troisieme_segpa', ClassRoom.where(name: class_room_name).first.school_track
         end
       end
 

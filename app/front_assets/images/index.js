@@ -5,6 +5,7 @@ import './beta-gouv-logo.png';
 import './danger_sign_blue.svg';
 import './notice_people.svg';
 import './search-no-result.svg';
+import './checkbox.png';
 
 import './sectors/default_sector.svg';
 import './sectors/administration.svg';
@@ -47,7 +48,6 @@ import './sectors/transport.svg';
 
 import './onboarding/confirm-desktop-2.svg';
 import './onboarding/confirm-mobile-2.svg';
-import './onboarding/student.svg';
 
 import './internship_offers_new/fast_time.svg';
 import './internship_offers_new/paper.svg';
@@ -165,6 +165,7 @@ import './homepage/partenaires/colored_logo/logo-viens-voir-mon-taf.png';
 // import './homepage/sponsors/logo-anct.png';
 import './homepage/sponsors/incubateur-anct.png';
 import './homepage/sponsors/logo-anct.svg';
+import './homepage/sponsors/logo-anct.png';
 import './homepage/sponsors/logo-ministere-education-nationale.svg';
 import './homepage/sponsors/logo-ministere-charge-de-la-ville.svg';
 import './homepage/sponsors/logo-ministere-cohesion-territoire.svg';
@@ -188,5 +189,10 @@ import './modes_d_emploi/MS3_Mode-d-emploi-eleves.png';
 import './modes_d_emploi/MS3_Mode-d-emploi-entreprises.png';
 import './modes_d_emploi/MS3_Mode-d-emploi-membres-pedagogique.png';
 import './modes_d_emploi/MS3_Mode-d-emploi-referents-departementaux.png';
-import './modes_d_emploi/MS3_Mode-d-emploi-global-2021.png';
+import './modes_d_emploi/MS3_Mode-d-emploi-global-2022.png';
 
+import './modes_d_emploi/miniature-MS3_Mode-d-emploi-eleves.jpg';
+import './modes_d_emploi/miniature-MS3_Mode-d-emploi-entreprises.jpg';
+import './modes_d_emploi/miniature-MS3_Mode-d-emploi-membres-pedagogique.jpg';
+import './modes_d_emploi/miniature-MS3_Mode-d-emploi-referents-departementaux.jpg';
+import './modes_d_emploi/miniature-MS3_Mode-d-emploi-global-2022.jpg';

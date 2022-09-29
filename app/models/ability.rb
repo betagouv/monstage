@@ -53,8 +53,10 @@ class Ability
   end
 
   def common_school_management_abilities(user:)
-    can :welcome_students, User
-    can :choose_role, User
+    can %i[
+      welcome_students
+      choose_role
+      sign_with_sms], User
     can_create_and_manage_account(user: user) do
       can [:choose_class_room], User
     end
@@ -83,38 +85,56 @@ class Ability
 
   def school_manager_abilities(user:)
     can :create_remote_internship_request, SupportTicket
+
     can_manage_school(user: user) do
       can [:delete], User do |managed_user_from_school|
         managed_user_from_school.school_id == user.school_id
       end
     end
     can %i[
-      update
-      see_intro
-      edit_school_representative_full_name
-      edit_school_delegation_to_sign_delivered_at
-      edit_student_school
-      edit_student_full_name
-      edit_student_class_room
-      edit_main_teacher_full_name
+      create
+      edit
+      sign_internship_agreements
       edit_activity_rating_rich_text
+      edit_complementary_terms_rich_text
       edit_financial_conditions_rich_text
       edit_legal_terms_rich_text
-      edit_complementary_terms_rich_text
-      edit
-      create
+      edit_main_teacher_full_name
+      edit_school_representative_full_name
+      edit_school_representative_phone
+      edit_school_representative_email
+      edit_school_representative_role
+      edit_school_delegation_to_sign_delivered_at
+      edit_student_refering_teacher_full_name
+      edit_student_refering_teacher_email
+      edit_student_refering_teacher_phone
+      edit_student_address
+      edit_student_class_room
+      edit_student_full_name
+      edit_student_phone
+      edit_student_legal_representative_email
+      edit_student_legal_representative_full_name
+      edit_student_legal_representative_phone
+      edit_student_legal_representative_2_email
+      edit_student_legal_representative_2_full_name
+      edit_student_legal_representative_2_phone
+      edit_student_school
+      see_intro
+      update
     ], InternshipAgreement do |agreement|
       agreement.internship_application.student.school_id == user.school_id
     end
     can %i[edit update], InternshipAgreementPreset do |internship_agreement_preset|
       internship_agreement_preset.school_id == user.school_id
     end
+    can :create, Signature do |signature|
+      signature.internship_agreement.school_manager == user.id
+    end
   end
 
 
-
   def employer_abilities(user:)
-    can :supply_offers, User
+    can %i[supply_offers sign_with_sms choose_function] , User
     can :show, :account
 
     can :create_remote_internship_request, SupportTicket
@@ -138,20 +158,29 @@ class Ability
     can %i[index update], InternshipApplication
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
 
+    can :create, Signature do |signature|
+      signature.internship_agreement.internship_offer.employer_id == user.id
+    end
+
     can %i[
       create
-      update
-      edit_organisation_representative_full_name
-      edit_tutor_full_name
-      edit_date_range
-      edit_weekly_hours
+      edit
+      edit_organisation_representative_role
+      edit_tutor_email
+      edit_tutor_role
       edit_activity_scope_rich_text
       edit_activity_preparation_rich_text
       edit_activity_learnings_rich_text
       edit_complementary_terms_rich_text
-      edit
+      edit_date_range
+      edit_organisation_representative_full_name
+      edit_siret
+      edit_tutor_full_name
+      edit_weekly_hours
+      sign_internship_agreements
+      update
     ], InternshipAgreement do |agreement|
-      agreement.internship_application.internship_offer.employer == user
+      agreement.employer == user
     end
   end
 
@@ -199,7 +228,7 @@ class Ability
     can :manage, EmailWhitelists::Statistician
     can :manage, EmailWhitelists::Ministry
     can :manage, InternshipOfferKeyword
-    can %i[create read update], Group
+    can :manage, Group
     can :access, :rails_admin   # grant access to rails_admin
     can %i[read update delete discard export], InternshipOffers::Api
     can :read, :dashboard       # grant access to the dashboard
@@ -229,7 +258,6 @@ class Ability
   end
 
   def statistician_abilities(user:)
-
     common_to_all_statisticians(user: user)
 
     can :show, :api_token
@@ -363,7 +391,7 @@ class Ability
 
     return false if offer_is_reserved_to_another_school
     return true if student.try(:class_room).nil?
-    return true if student.try(:class_room)
+    return true if student.try(:class_room).try(:applicable?, internship_offer)
 
     false
   end

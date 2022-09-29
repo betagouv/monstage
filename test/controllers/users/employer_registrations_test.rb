@@ -23,12 +23,37 @@ class EmployerRegistrationsTest < ActionDispatch::IntegrationTest
     assert_difference('Users::Employer.count') do
       post user_registration_path(params: { user: { email: 'madame@accor.fr',
                                                     password: 'okokok',
+                                                    employer_role: 'chef de projet',
                                                     password_confirmation: 'okokok',
                                                     first_name: 'Madame',
                                                     last_name: 'Accor',
                                                     type: 'Users::Employer',
+                                                    phone_prefix: '+33',
+                                                    phone_suffix: '0612345678',
                                                     accept_terms: '1' } })
-      assert_redirected_to users_registrations_standby_path(id: Users::Employer.last.id)
     end
+    assert_redirected_to users_registrations_standby_path(id: Users::Employer.last.id)
   end
+
+  test "post should not subscribe when confirmation is sent" do
+    assert_no_difference('Users::Employer.count') do
+      post user_registration_path(params: { user: { email: 'madame@accor.fr',
+                                                    confirmation_email: 'madame@accor.fr',
+                                                    password: 'okokok',
+                                                    employer_role: 'chef de projet',
+                                                    password_confirmation: 'okokok',
+                                                    first_name: 'Madame',
+                                                    last_name: 'Accor',
+                                                    type: 'Users::Employer',
+                                                    phone_prefix: '+33',
+                                                    phone_suffix: '0612345678',
+                                                    accept_terms: '1' } })
+    end
+    assert_redirected_to root_path
+    notice = "Votre inscription a bien été prise en compte. " \
+             "Vous recevrez un email de confirmation dans " \
+             "les prochaines minutes."
+    assert_equal notice, flash[:notice]
+  end
+
 end

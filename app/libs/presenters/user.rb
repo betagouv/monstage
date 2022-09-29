@@ -13,7 +13,7 @@ module Presenters
     end
 
     def full_name
-      "#{user.first_name} #{user.last_name}"
+      "#{user.first_name.capitalize} #{user.last_name.capitalize}"
     end
 
     def formal_name
@@ -37,7 +37,6 @@ module Presenters
     end
 
     def gender_text
-      return '' if user.gender.blank? || user.gender.eql?('np')
       return 'Madame' if user.gender.eql?('f')
       return 'Monsieur' if user.gender.eql?('m')
 

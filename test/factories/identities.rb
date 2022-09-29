@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :identity do
     
-    first_name { 'Rick' }
-    last_name { 'Roll' }
+    first_name { FFaker::NameFR.first_name  }
+    last_name { FFaker::NameFR.last_name }
     gender { 'm' }
     birth_date { 14.years.ago }
     school { create(:school, :with_school_manager) }

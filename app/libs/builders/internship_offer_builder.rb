@@ -13,15 +13,15 @@ module Builders
           .merge(preprocess_tutor_to_params(tutor))
           .merge(employer_id: user.id, employer_type: 'User')
           .merge(tutor_id: tutor.id, organisation_id: organisation.id, internship_offer_info_id: internship_offer_info.id)
-      )
-      internship_offer.save!
-      callback.on_success.try(:call, internship_offer)
-    rescue ActiveRecord::RecordInvalid => e
-      callback.on_failure.try(:call, e.record)
-    end
+        )
+        internship_offer.save!
+        callback.on_success.try(:call, internship_offer)
+      rescue ActiveRecord::RecordInvalid => e
+        callback.on_failure.try(:call, e.record)
+      end
 
-    # called by internship_offers#create (duplicate), api/internship_offers#create
-    def create(params:)
+      # called by internship_offers#create (duplicate), api/internship_offers#create
+      def create(params:)
       yield callback if block_given?
       authorize :create, model
       internship_offer = model.create!(preprocess_api_params(params, fallback_weeks: true))
@@ -112,6 +112,7 @@ module Builders
         sector_id: internship_offer_info.sector_id,
         daily_lunch_break: internship_offer_info.daily_lunch_break,
         weekly_lunch_break: internship_offer_info.weekly_lunch_break,
+        school_track: internship_offer_info.school_track,
         type: internship_offer_info.type.gsub('Info', ''),
       }
       params[:week_ids] = internship_offer_info.week_ids if internship_offer_info.weekly?
@@ -122,7 +123,8 @@ module Builders
       {
         tutor_name: tutor.tutor_name,
         tutor_email: tutor.tutor_email,
-        tutor_phone: tutor.tutor_phone
+        tutor_phone: tutor.tutor_phone,
+        tutor_role: tutor.tutor_role
       }
     end
 

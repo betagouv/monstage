@@ -16,18 +16,26 @@ export default class extends Controller {
   }
 
   onInduceType(event) {
-    this.induceType()
-  }  //TODO remove this type test
+    this.induceType(event.target.value)
+  }
 
-  induceType() {
-    const induced_type = 'InternshipOffers::WeeklyFramed';
+  induceType(value){
+    const induced_type = (value == 'troisieme_generale') ? 'InternshipOffers::WeeklyFramed' : 'InternshipOffers::FreeDate';
     $(this.typeTarget).attr('value', induced_type)
     this.chooseType(induced_type);
   }
 
   chooseType(value) {
-    showElement($(this.weeksContainerTarget))
-    $(this.weeksContainerTarget).attr('data-select-weeks-skip', true)
+    switch (value) {
+      case 'InternshipOffers::WeeklyFramed':
+        showElement($(this.weeksContainerTarget))
+        $(this.weeksContainerTarget).attr('data-select-weeks-skip', true)
+        break;
+      case 'InternshipOffers::FreeDate':
+        hideElement($(this.weeksContainerTarget));
+        $(this.weeksContainerTarget).attr('data-select-weeks-skip', false)
+        break;
+    }
   }
 
   validateForm(event) {

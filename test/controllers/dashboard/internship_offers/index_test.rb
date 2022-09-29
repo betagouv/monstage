@@ -156,6 +156,7 @@ module Dashboard::InternshipOffers
         longitude: Coordinates.bordeaux[:longitude],
         radius: 1_000,
         city: 'bingobangobang',
+        school_track: 'troisieme_generale',
         keyword: 'bloop',
         order: 'total_applications_count',
         direction: 'desc'

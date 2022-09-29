@@ -68,7 +68,7 @@ div data-controller="internship-application-form"
               | Offre suivante
             span.fr-icon-arrow-right-line aria-hidden="true"
 
-/ TO DO DELETE BUTTON
-/ - if can?(:discard, InternshipOffer)
-/   = render "dashboard/internship_offers/delete_internship_offer_modal",
-/            internship_offer: @internship_offer
+
+- if can?(:discard, InternshipOffer)
+  = render "dashboard/internship_offers/delete_internship_offer_modal",
+           internship_offer: @internship_offer

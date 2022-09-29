@@ -38,6 +38,7 @@ module Users
         password_confirmation: 'tototo',
         first_name: 'Chef',
         last_name: 'Etablissement',
+        phone: '+330602030405',
         school: school,
         accept_terms: true
       )

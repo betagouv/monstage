@@ -23,15 +23,17 @@ module Users
     def create
       if by_phone? && fetch_user_by_phone.try(:valid_password?, params[:user][:password])
         user = fetch_user_by_phone
-        store_targeted_offer_id(user: user)
-        if user.confirmed?
-          sign_in(user)
-          redirect_to after_sign_in_path_for(user)
-        else
-          user.send_sms_token
-          redirect_to users_registrations_phone_standby_path(phone: safe_phone_param)
+        if user.student?
+          store_targeted_offer_id(user: user)
+          if user.confirmed?
+            sign_in(user)
+            redirect_to after_sign_in_path_for(user)
+          else
+            user.send_sms_token
+            redirect_to users_registrations_phone_standby_path(phone: safe_phone_param)
+          end
+          return
         end
-        return
       end
       store_targeted_offer_id(user: fetch_user_by_email)
       super

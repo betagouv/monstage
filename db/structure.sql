@@ -43,6 +43,16 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 --
 
 --
+-- Name: agreement_signatory_role; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.agreement_signatory_role AS ENUM (
+    'employer',
+    'school_manager'
+);
+
+
+--
 -- Name: class_room_school_track; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -409,8 +419,7 @@ CREATE TABLE public.class_rooms (
     school_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
-    anonymized boolean DEFAULT false
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
 );
 
 
@@ -600,7 +609,25 @@ CREATE TABLE public.internship_agreements (
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
     school_delegation_to_sign_delivered_at date,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
-    weekly_lunch_break text
+    weekly_lunch_break text,
+    siret character varying(16),
+    tutor_role character varying(100),
+    tutor_email character varying(80),
+    organisation_representative_role character varying(100),
+    student_address character varying(250),
+    student_phone character varying(20),
+    school_representative_phone character varying(20),
+    student_refering_teacher_phone character varying(20),
+    student_legal_representative_email character varying(60),
+    student_refering_teacher_email character varying(60),
+    student_legal_representative_full_name character varying(120),
+    student_refering_teacher_full_name character varying(120),
+    student_legal_representative_phone character varying(20),
+    student_legal_representative_2_full_name character varying(120),
+    student_legal_representative_2_email character varying(70),
+    student_legal_representative_2_phone character varying(20),
+    school_representative_role character varying(60),
+    school_representative_email character varying(100)
 );
 
 
@@ -880,7 +907,8 @@ CREATE TABLE public.internship_offers (
     total_female_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
     total_female_approved_applications_count integer DEFAULT 0,
     max_students_per_group integer DEFAULT 1 NOT NULL,
-    employer_manual_enter boolean DEFAULT false
+    employer_manual_enter boolean DEFAULT false,
+    tutor_role character varying(70)
 );
 
 
@@ -1112,6 +1140,42 @@ ALTER SEQUENCE public.sectors_id_seq OWNED BY public.sectors.id;
 
 
 --
+-- Name: signatures; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.signatures (
+    id bigint NOT NULL,
+    signatory_ip character varying(40) NOT NULL,
+    signature_date timestamp(6) without time zone NOT NULL,
+    internship_agreement_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    signatory_role public.agreement_signatory_role,
+    signature_phone_number character varying(20) NOT NULL,
+    user_id bigint
+);
+
+
+--
+-- Name: signatures_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.signatures_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: signatures_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.signatures_id_seq OWNED BY public.signatures.id;
+
+
+--
 -- Name: tutors; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1122,7 +1186,8 @@ CREATE TABLE public.tutors (
     tutor_phone character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    employer_id bigint NOT NULL
+    employer_id bigint NOT NULL,
+    tutor_role character varying NOT NULL
 );
 
 
@@ -1191,7 +1256,11 @@ CREATE TABLE public.users (
     anonymized boolean DEFAULT false NOT NULL,
     banners jsonb DEFAULT '{}'::jsonb,
     ministry_id bigint,
-    targeted_offer_id integer
+    targeted_offer_id integer,
+    signature_phone_token character varying(6),
+    signature_phone_token_expires_at timestamp(6) without time zone,
+    signature_phone_token_checked_at timestamp(6) without time zone,
+    employer_role character varying
 );
 
 
@@ -1398,6 +1467,13 @@ ALTER TABLE ONLY public.schools ALTER COLUMN id SET DEFAULT nextval('public.scho
 --
 
 ALTER TABLE ONLY public.sectors ALTER COLUMN id SET DEFAULT nextval('public.sectors_id_seq'::regclass);
+
+
+--
+-- Name: signatures id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.signatures ALTER COLUMN id SET DEFAULT nextval('public.signatures_id_seq'::regclass);
 
 
 --
@@ -1614,6 +1690,14 @@ ALTER TABLE ONLY public.sectors
 
 
 --
+-- Name: signatures signatures_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.signatures
+    ADD CONSTRAINT signatures_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: tutors tutors_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1684,13 +1768,6 @@ CREATE INDEX index_air_table_records_on_operator_id ON public.air_table_records 
 --
 
 CREATE INDEX index_air_table_records_on_week_id ON public.air_table_records USING btree (week_id);
-
-
---
--- Name: index_class_rooms_on_anonymized; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_class_rooms_on_anonymized ON public.class_rooms USING btree (anonymized);
 
 
 --
@@ -1988,6 +2065,20 @@ CREATE INDEX index_schools_on_coordinates ON public.schools USING gist (coordina
 
 
 --
+-- Name: index_signatures_on_internship_agreement_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_signatures_on_internship_agreement_id ON public.signatures USING btree (internship_agreement_id);
+
+
+--
+-- Name: index_signatures_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_signatures_on_user_id ON public.signatures USING btree (user_id);
+
+
+--
 -- Name: index_users_on_api_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2113,6 +2204,14 @@ ALTER TABLE ONLY public.internship_applications
 
 ALTER TABLE ONLY public.school_internship_weeks
     ADD CONSTRAINT fk_rails_07f908dbef FOREIGN KEY (week_id) REFERENCES public.weeks(id);
+
+
+--
+-- Name: signatures fk_rails_19164d1054; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.signatures
+    ADD CONSTRAINT fk_rails_19164d1054 FOREIGN KEY (internship_agreement_id) REFERENCES public.internship_agreements(id);
 
 
 --
@@ -2553,6 +2652,21 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220408084653'),
 ('20220511152203'),
 ('20220511152204'),
-('20220511152205');
+('20220511152205'),
+('20220603100433'),
+('20220616131010'),
+('20220621105148'),
+('20220624092113'),
+('20220626074601'),
+('20220704132020'),
+('20220711083028'),
+('20220722081417'),
+('20220726123520'),
+('20220803131022'),
+('20220803140408'),
+('20220803143024'),
+('20220804155217'),
+('20220811103937'),
+('20220816105807');
 
 

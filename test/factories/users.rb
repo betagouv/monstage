@@ -17,32 +17,41 @@ FactoryBot.define do
     factory :student, class: 'Users::Student', parent: :user do
       type { 'Users::Student' }
 
-      first_name { 'Rick' }
-      last_name { 'Roll' }
+      first_name { FFaker::NameFR.first_name  }
+      last_name { FFaker::NameFR.last_name }
       gender { 'm' }
       birth_date { 14.years.ago }
-
       school { create(:school, :with_school_manager) }
+
       trait :male do
         gender { 'm' }
       end
+
       trait :female do
         gender { 'f' }
       end
-      factory :student_with_class_room_3e, class: 'Users::Student', parent: :student do
-        class_room { create(:class_room, school: school) }
-      end
+
+
       trait :not_precised do
         gender { 'np' }
       end
+
       trait :registered_with_phone do
         email { nil }
         phone { '+330637607756' }
+      end
+
+      factory :student_with_class_room_3e, class: 'Users::Student', parent: :student do
+        class_room { create(:class_room, school: school) }
+        after(:create) do |student|
+          create(:main_teacher, class_room: student.class_room, school: student.school)
+        end
       end
     end
 
     factory :employer, class: 'Users::Employer', parent: :user do
       type { 'Users::Employer' }
+      employer_role { 'PDG' }
     end
 
     factory :god, class: 'Users::God', parent: :user do
@@ -112,7 +121,15 @@ FactoryBot.define do
     #
     # traits to create a student[with a school] having a specific class_rooms
     trait :troisieme_generale do
-      class_room { build(:class_room, school: school) }
+      class_room { build(:class_room, :troisieme_generale, school: school) }
+    end
+
+    trait :troisieme_segpa do
+      class_room { build(:class_room, :troisieme_segpa, school: school) }
+    end
+
+    trait :troisieme_prepa_metiers do
+      class_room { build(:class_room, :troisieme_prepa_metiers, school: school) }
     end
   end
 end

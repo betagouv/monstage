@@ -5,10 +5,13 @@ module StepperProxy
     extend ActiveSupport::Concern
 
     included do
+      include SchoolTrackable
+
       after_initialize :init
 
       # Validations
       validates :title, presence: true, length: { maximum: InternshipOffer::TITLE_MAX_CHAR_COUNT }
+      validates :school_track, presence: true
       validates :max_candidates,
                 numericality: { only_integer: true,
                                 greater_than: 0,

@@ -21,7 +21,6 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
       class_room = create(:class_room, school: school)
       student = create(:student, school: school, class_room: class_room)
       message_no_week = "Attention, votre établissement n'a pas encore renseigné ses dates de stage."
-      student_message = "Nous allons prévenir votre chef d'établissement pour que vous puissiez postuler"
       explanation = "Attention, vérifiez bien que les dates de stage proposées dans l'annonce correspondent " \
                     "à vos dates de stage. Votre chef d'établissement n'a en effet pas renseigné " \
                     "les semaines de stage de votre établissement." \

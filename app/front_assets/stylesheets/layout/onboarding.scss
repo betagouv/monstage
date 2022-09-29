@@ -13,15 +13,15 @@
   .onboarding-card-sm{
     width: 400px;
   }
-  .register-card-sm{
-    width: 640px
+  .onboarding-card.session{
+    width: 400px;
   }
-}
-@include media-breakpoint-up(sm) {
+
   .onboarding-card{
-    // background-color: #fff;
-  }
-  .onboarding-card{
+    .fr-h1{
+      margin-bottom:8px;
+    }
+    width: 636px;
     box-shadow: 0 7px 64px 0 rgba(0, 0, 0, 0.2);
     border: 1px solid #d8d8d8;
 
@@ -36,11 +36,11 @@
       }
     }
   }
-
-  .register-card{
-    background-color: #fff;
+  .register-card-sm{
+    width: 640px;
   }
   .register-card{
+    background-color: #fff;
     box-shadow: 0 7px 64px 0 rgba(0, 0, 0, 0.2);
     border: 1px solid #d8d8d8;
 
@@ -55,15 +55,6 @@
       }
     }
   }
-  .onboarding-col{
-    box-shadow: 0 7px 64px 0 rgba(0, 0, 0, 0.2);
-    border: 1px solid #d8d8d8;
-    border-radius: 16px;
-    padding-right: 1.5rem;
-    padding-left: 1.5rem;
-    padding-bottom: 1.5rem;
-    height: 100%;
-  }
 }
 
 .header-onboarding-card {
@@ -74,16 +65,3 @@
 @include media-breakpoint-down(xs) {
 }
 
-.navbar-auth-logo{
-  border: 1px solid #d8d8d8;
-  background-color: white;
-  box-shadow: 0 7px 64px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 20px;
-  height: 100px;
-  width: 100px;
-}
-.navbar-auth-title{
-  color: #3f3356;
-  font-size: 16px;
-  font-weight: bold;
-}

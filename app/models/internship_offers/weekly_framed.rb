@@ -43,6 +43,7 @@ module InternshipOffers
         field :tutor_name
         field :tutor_phone
         field :tutor_email
+        field :tutor_role
         field :employer_website
         field :discarded_at
         field :employer_name
@@ -59,6 +60,7 @@ module InternshipOffers
         field :title
         field :description
         field :group
+        field :school_track
         field :max_candidates
         field :max_students_per_group
         field :total_applications_count
@@ -67,6 +69,7 @@ module InternshipOffers
         field :tutor_name
         field :tutor_phone
         field :tutor_email
+        field :tutor_role
         field :street
         field :zipcode
         field :departement

@@ -12,7 +12,7 @@ h1.h2.mb-4
     li
       - path = dashboard_school_path(@school)
       = link_to path do
-        button#classes.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left [
+        button#classes.fr-tabs__tab [
           aria-controls="classes-panel"
           aria-selected="#{current_page?(path)}"
           role="tab"
@@ -24,7 +24,7 @@ h1.h2.mb-4
     li
       - path = dashboard_school_users_path(@school)
       = link_to path do
-        button#users.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left [
+        button#users.fr-tabs__tab [
           aria-controls="users-panel"
           aria-selected="#{current_page?(path)}"
           role="tab"
@@ -34,7 +34,7 @@ h1.h2.mb-4
     li
       - path = edit_dashboard_school_path(@school)
       = link_to path do
-        button#weeks.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left [
+        button#weeks.fr-tabs__tab [
           aria-controls="weeks-panel"
           aria-selected="#{current_page?(path)}"
           role="tab"
@@ -42,23 +42,24 @@ h1.h2.mb-4
           | Semaines
 
     - if current_user.respond_to?(:school) && current_user.school.internship_agreement_open? && can?(:update, InternshipAgreement)
-      - path = dashboard_internship_agreements_path
-      = link_to path do
-        li
-          button#internship-agreements.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left [
+      li
+        - path = dashboard_internship_agreements_path
+        = link_to path do
+          button#internship-agreements.fr-tabs__tab [
             aria-controls="internship-agreements-panel"
             aria-selected="#{current_page?(path)}"
             role="tab"
             tabindex="3"]
             | Mes conventions de stage
-      - if (can? :edit, current_user.try(:school))
+      - if (can? :edit, current_user.school)
         li
           - path = dashboard_school_information_path(school_id: @school.id)
           = link_to path do
-            button#manage-school.fr-tabs__tab.fr-icon-checkbox-line.fr-tabs__tab--icon-left [
+            button#manage-school.fr-tabs__tab [
               aria-controls="manage-school-panel"
               aria-selected="#{current_page?(path)}"
               role="tab"
               tabindex="4"]
               | Gérer mon établissement
   = yield
+= render partial: 'dashboard/internship_agreements/signature/modal_dialog'

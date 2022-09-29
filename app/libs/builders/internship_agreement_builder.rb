@@ -72,15 +72,18 @@ module Builders
         legal_terms_rich_text: internship_agreement_preset.legal_terms_rich_text.body,
         complementary_terms_rich_text: internship_agreement_preset.complementary_terms_rich_text.body
       }
-      params[:activity_rating_rich_text] = internship_agreement_preset.troisieme_generale_activity_rating_rich_text if internship_application.student.class_room
+      params[:activity_rating_rich_text] = internship_agreement_preset.troisieme_generale_activity_rating_rich_text if internship_application.student.class_room.try(:troisieme_generale?)
       params
     end
 
     def preprocess_internship_offer_params(internship_offer)
       {
         organisation_representative_full_name: internship_offer.employer.presenter.full_name,
+        organisation_representative_role: internship_offer.employer.employer_role,
+        siret: internship_offer.try(:siret),
         tutor_full_name: internship_offer.tutor_name,
-        activity_scope_rich_text: internship_offer.title,
+        tutor_role: internship_offer.try(:tutor_role),
+        tutor_email: internship_offer.try(:tutor_email),
         activity_preparation_rich_text: internship_offer.description_rich_text.body,
         new_daily_hours: internship_offer.new_daily_hours,
         weekly_hours: internship_offer.weekly_hours,
@@ -90,13 +93,31 @@ module Builders
     end
 
     def preprocess_student_to_params(student)
+      main_teacher = student&.class_room&.main_teacher
+      school_manager = student.school_manager
+      if student.class_room
+        main_teacher_full_name = main_teacher&.name
+        student_class_room = student&.class_room&.name
+      else
+        main_teacher_full_name = 'N/A'
+        student_class_room = ""
+      end
       {
-        student_school: "#{student.school} à #{student.school.city} (Code UAI: #{student.school.code_uai})",
-        school_representative_full_name: student.school_manager.name,
+        student_school: student.presenter.formal_school_name,
+        school_representative_full_name: school_manager.name,
+        school_representative_phone: school_manager.try(:phone),
+        school_representative_role: "Chef d'établissement",
+        school_representative_email: school_manager.email,
+        student_refering_teacher_full_name: main_teacher&.presenter&.full_name,
+        student_refering_teacher_email: main_teacher&.email,
+        student_refering_teacher_phone: main_teacher&.phone,
+        student_phone: student.phone,
+        school_track: student.school_track || 'troisieme_generale',
         student_full_name: student.name,
-        student_class_room: student.class_room.try(:name),
-        main_teacher_full_name: student.class_room ? student.class_room.school_managements.main_teachers.first.try(:name) : 'N/A'
+        student_class_room: student_class_room,
+        main_teacher_full_name: main_teacher_full_name
       }
+      # student_class_room is not used ...
     end
 
   end

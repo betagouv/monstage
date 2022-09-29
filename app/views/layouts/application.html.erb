@@ -6,6 +6,7 @@
     <% end %>
     <title><%= page_title %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="turbo-cache-control" content="no-cache">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= action_cable_meta_tag %>
@@ -23,6 +24,7 @@
       <header role="banner" class="custom-navbar">
         <div class="col px-0"><%= render "layouts/navbar" %></div>
       </header>
+
       <% if homepage? || statistics? %>
         <%= render 'layouts/flash' %>
         <div role="main"><%= yield %></div>
@@ -34,9 +36,20 @@
         </div>
       <% end %>
     </div>
-    <div class="<%= agreement_form? ? "d-none" : "" %>">
-      <%= render "layouts/footer" %>
+
+    <div class="<%= agreement_form? ? "d-none" : "" %>"  >
+      <%= render 'layouts/footer' %>
       <%= render partial: "layouts/analytics" %>
     </div>
+
+    <dialog id="turbo-confirm">
+      <form method="dialog">
+        <p>En êtes-vous sûr ?</p>
+        <div>
+          <button value="cancel">Annuler</button>
+          <button value="confirm">Confirmer</button>
+        </div>
+      </form>
+    </dialog>
   </body>
 </html>

@@ -21,6 +21,7 @@ gem "activerecord-postgis-adapter"; ">= 8.0.1"
 gem 'pg_search', '2.3.2'                    # pg search for autocomplete
 gem 'prawn'
 gem 'prawn-styled-text'
+gem 'prawn-table'
 
 # front end
 gem 'uglifier'
@@ -37,6 +38,7 @@ gem 'sidekiq'
 gem 'redis-namespace' # plug redis queues on same instance for prod/staging
 # Use Redis for Action Cable
 gem "redis", "~> 4.0"
+gem "aws-sdk-s3", require: false
 
 # admin
 
@@ -75,6 +77,7 @@ gem 'bootsnap', require: false
 group :development, :test do
   gem "dotenv-rails", require: "dotenv/rails-now"
   gem "debug"
+  gem 'ffaker'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
 end
@@ -107,6 +110,7 @@ group :test do
   gem 'rails-controller-testing'
   gem 'capybara-screenshot'
 gem "minitest-stub_any_instance"
+
 end
 
 group :review do

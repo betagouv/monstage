@@ -1,0 +1,4 @@
+- error_ids = agreement_ids.try(:gsub, ',' , '-') || ''
+div id="error-messages-#{error_ids}"
+  .fr-alert.fr-alert--error.fr-alert--sm
+    p = error_message
