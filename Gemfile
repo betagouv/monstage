@@ -69,6 +69,7 @@ gem 'kaminari'
 # model/validators
 gem 'validates_zipcode'
 gem 'email_inquire'
+gem 'jwt'
 
 # dev utils
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

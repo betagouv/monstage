@@ -567,6 +567,7 @@ DEPENDENCIES
   foreman
   geocoder
   inline_svg
+  jwt
   kaminari
   letter_opener
   listen
