@@ -392,8 +392,8 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   test 'when an employer tries to access application forms, he fails' do
     employer = create(:employer)
     internship_offer = create(:weekly_internship_offer)
-    visit internship_offers_path
-    click_link 'Je postule'
+    visit internship_offer_path(internship_offer.id)
+    first(:link, 'Je postule').click
     fill_in("Adresse électronique (e-mail)", with: employer.email)
     fill_in("Mot de passe", with: employer.password)
     click_button('Connexion')

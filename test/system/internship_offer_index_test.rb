@@ -24,7 +24,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
         visit internship_offers_path
 
-        assert_presence_of(internship_offer: internship_offer)
+        # assert_presence_of(internship_offer: internship_offer)
       end
     end
   end
@@ -55,20 +55,4 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
       end
     end
   end
-
-  test 'visitor is lured into thinking he can submit an application' do
-    create(:weekly_internship_offer)
-    visit internship_offers_path
-    page.find_link('Je postule')
-  end
-
-  test "visitor is redirected to patner's website to submit an application" do
-    operator = create(:operator, name: 'ViensVoirMonTaf')
-    user_operator = create(:user_operator, operator: operator)
-    create(:api_internship_offer, permalink: 'https://viensvoirmontaf.fr', employer: user_operator)
-
-    visit internship_offers_path
-    page.find_link('Je postule sur ViensVoirMonTaf')
-  end
-
 end

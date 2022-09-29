@@ -2,6 +2,7 @@
 
 class InternshipOffersController < ApplicationController
   before_action :authenticate_user!, only: %i[create edit update destroy]
+  layout 'search', only: :index
 
   with_options only: [:show] do
     before_action :set_internship_offer,
@@ -12,8 +13,25 @@ class InternshipOffersController < ApplicationController
   end
 
   def index
-    @internship_offers = finder.all.order(id: :desc)
-    @alternative_internship_offers = alternative_internship_offers if @internship_offers.to_a.count == 0
+    
+    respond_to do |format|
+      format.html do
+        # @internship_offers = finder.all.order(id: :desc)
+        # @formatted_internship_offers = format_internship_offers(@internship_offers)
+        # @alternative_internship_offers = alternative_internship_offers if @internship_offers.to_a.count == 0
+        @sectors = Sector.all.order(:name).to_a
+        @params = query_params
+      end
+      format.json do
+        @internship_offers = finder.all.includes([:sector, :employer, :school]).order(id: :desc)
+        formatted_internship_offers = format_internship_offers(@internship_offers)
+        data = {
+          internshipOffers: formatted_internship_offers,
+          pageLinks: page_links
+        }
+        render json: data, status: 200
+      end 
+    end
   end
 
   def show
@@ -38,6 +56,19 @@ class InternshipOffersController < ApplicationController
     @internship_offer = InternshipOffer.with_rich_text_description_rich_text
                                        .with_rich_text_employer_description_rich_text
                                        .find(params[:id])
+  end
+
+  def query_params
+    params.permit(
+      :page,
+      :latitude,
+      :longitude,
+      :city,
+      :radius,
+      :keyword,
+      :school_track,
+      week_ids: []
+    )
   end
 
   def check_internship_offer_is_not_discarded_or_redirect
@@ -74,6 +105,7 @@ class InternshipOffersController < ApplicationController
         :radius,
         :keyword,
         :school_track,
+        sector_ids: [],
         week_ids: []
       ),
       user: current_user_or_visitor
@@ -105,5 +137,36 @@ class InternshipOffersController < ApplicationController
 
   def increment_internship_offer_view_count
     @internship_offer.increment!(:view_count) if current_user&.student?
+  end
+
+  def format_internship_offers(internship_offers)
+    internship_offers.map { |internship_offer| 
+      {
+        id: internship_offer.id,
+        title: internship_offer.title.truncate(35),
+        description: internship_offer.description.to_s,
+        employer_name: internship_offer.employer_name,
+        link: internship_offer_path(internship_offer),
+        city: internship_offer.city.capitalize,
+        date_start: I18n.localize(internship_offer.first_date, format: :human_mm_dd_yyyy),
+        date_end:  I18n.localize(internship_offer.last_date, format: :human_mm_dd_yyyy),
+        lat: internship_offer.coordinates.latitude,
+        lon: internship_offer.coordinates.longitude,
+        image: view_context.asset_pack_path("media/images/sectors/#{internship_offer.sector.cover}"),
+        sector: internship_offer.sector.name
+      }
+    }
+  end
+  
+  def page_links
+    {
+      totalPages: @internship_offers.total_pages,
+      currentPage: @internship_offers.current_page,
+      nextPage: @internship_offers.next_page,
+      prevPage: @internship_offers.prev_page,
+      isFirstPage: @internship_offers.first_page?,
+      isLastPage: @internship_offers.last_page?,
+      pageUrlBase:  url_for(query_params.except('page'))
+    }
   end
 end

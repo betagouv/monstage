@@ -125,6 +125,10 @@ module InternshipOffers
       joins(:weeks).where(weeks: { id: weeks.ids })
     }
 
+    scope :by_sector, lambda { |sector_ids:|
+      where(sector_id: sector_ids)
+    }
+
     scope :after_week, lambda { |week:|
       joins(:week).where('weeks.year > ? OR (weeks.year = ? AND weeks.number > ?)', week.year, week.year, week.number)
     }
