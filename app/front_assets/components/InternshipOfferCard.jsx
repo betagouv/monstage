@@ -2,19 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 const InternshipOfferCard = ({ internshipOffer, handleMouseOver, handleMouseOut, index }) => {
   useEffect(() => {
-    console.log('InternshipOfferCard');
   }, []);
-
-  // const handleOver = (e) => {
-  //   console.log('over card : %s', e.target.getAttribute('data-internship-offer-id'));
-    
-  //   handleMouseOver(e.target.getAttribute('data-internship-offer-id'));
-  //   // handleMouseOver(82);
-  // };
-
-  // const handleMouseOut = () => {
-  //   console.log('out');
-  // };
 
   return (
     <div className={`col-6 fr-my-2w ${(index % 2) == 0 ? 'fr-pl-0-5v' : 'fr-pr-0-5v'}`}

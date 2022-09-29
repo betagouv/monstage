@@ -41,12 +41,8 @@ const InternshipOfferResults = ({ count, sectors, params, paginator_html }) => {
     requestInternshipOffers();
   }, []);
 
-  const ClickMap = ({ internshipOffers, recenterMap }) => {
-    console.log('coucou Click Map ');
-    console.log('internshipOffers.length', internshipOffers.length);
-  
+  const ClickMap = ({ internshipOffers, recenterMap }) => {  
     if (internshipOffers.length && recenterMap) {
-      console.log('recenter map in click map');
       const map = useMap();
       const bounds = internshipOffers.map((internshipOffer) => [
         internshipOffer.lat,
@@ -57,7 +53,7 @@ const InternshipOfferResults = ({ count, sectors, params, paginator_html }) => {
     }
 
     setNewDataFetched(false);
-    return null
+    return null;
   };
 
   const handleMouseOver = (data) => {
@@ -68,11 +64,6 @@ const InternshipOfferResults = ({ count, sectors, params, paginator_html }) => {
     // setSelectedOffer(null);
   };
 
-  const displayOffersState = () => {
-    console.log('les offres en state brut:');
-    console.log(internshipOffers);
-  }
-
   const getSectors = () => {
     const sectors = [];
     var clist = document.getElementsByClassName("checkbox-sector");
@@ -82,12 +73,10 @@ const InternshipOfferResults = ({ count, sectors, params, paginator_html }) => {
       };
     };
     setSelectedSectors(sectors);
-    displayOffersState();
     return sectors;
   }
 
   const requestInternshipOffers = () => {
-    console.log('request offers');
     setIsLoading(true);
     document.getElementById("fr-modal-filter").classList.remove("fr-modal--opened");
     document.getElementById("filter-sectors-button").setAttribute('data-fr-opened', false);
@@ -99,21 +88,11 @@ const InternshipOfferResults = ({ count, sectors, params, paginator_html }) => {
   };
 
   const fetchDone = (result) => {
-    console.log('Result : ');
-    console.log(result);
-    console.log(result['internshipOffers']);
-
     setInternshipOffers(result['internshipOffers']);
     setPaginateLinks(result['pageLinks']);
 
     setIsLoading(false);
     setNewDataFetched(true);
-
-    console.log('offers');
-    console.log(internshipOffers);
-
-    console.log('-- setPaginateLinks : ---', paginateLinks);
-
 
     // if (internshipOffers.length) {
     //   resizingMap
