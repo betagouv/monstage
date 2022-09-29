@@ -27,7 +27,7 @@ const defaultPointerIcon = new L.Icon({
   popupAnchor: [0, -60], // changed popup position
 });
 
-const InternshipOfferResults = ({ count, sectors, params, paginator_html }) => {
+const InternshipOfferResults = ({ count, sectors, params }) => {
   // const [map, setMap] = useState(null);
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [paginateLinks, setPaginateLinks] = useState(null);
@@ -36,6 +36,7 @@ const InternshipOfferResults = ({ count, sectors, params, paginator_html }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [newDataFetched, setNewDataFetched] = useState(false);
   const [selectedSectors, setSelectedSectors] = useState([]);
+  const [internshipOffersSeats, setInternshipOffersSeats] = useState(0);
 
   useEffect(() => {
     requestInternshipOffers();
@@ -90,6 +91,7 @@ const InternshipOfferResults = ({ count, sectors, params, paginator_html }) => {
   const fetchDone = (result) => {
     setInternshipOffers(result['internshipOffers']);
     setPaginateLinks(result['pageLinks']);
+    setInternshipOffersSeats(result['seats']);
 
     setIsLoading(false);
     setNewDataFetched(true);
@@ -130,7 +132,7 @@ const InternshipOfferResults = ({ count, sectors, params, paginator_html }) => {
                     </div>
                   ) : (
                     <h2 className="h2 mb-0" id="internship-offers-count">
-                      <span className="strong">{internshipOffers.length} Offres de stage</span>
+                      <span className="strong">{internshipOffersSeats} Offres de stage</span>
                     </h2>
                   )
                 }

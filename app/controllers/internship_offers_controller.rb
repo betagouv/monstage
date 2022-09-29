@@ -27,7 +27,8 @@ class InternshipOffersController < ApplicationController
         formatted_internship_offers = format_internship_offers(@internship_offers)
         data = {
           internshipOffers: formatted_internship_offers,
-          pageLinks: page_links
+          pageLinks: page_links,
+          seats: calculate_seats
         }
         render json: data, status: 200
       end 
@@ -168,5 +169,9 @@ class InternshipOffersController < ApplicationController
       isLastPage: @internship_offers.last_page?,
       pageUrlBase:  url_for(query_params.except('page'))
     }
+  end
+
+  def calculate_seats
+    @internship_offers.pluck(:max_candidates).sum
   end
 end
