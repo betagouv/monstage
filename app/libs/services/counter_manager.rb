@@ -5,7 +5,7 @@
 module Services
   class CounterManager
     def self.reset_internship_offer_counters
-      InternshipOffer.update_all(
+      InternshipOffer.kept.update_all(
         total_applications_count: 0,
         total_male_applications_count: 0,
         total_female_applications_count: 0,
@@ -27,7 +27,7 @@ module Services
     end
 
     def self.reset_internship_offer_weeks_counter
-      InternshipOffers::WeeklyFramed.find_each do |internship_offer|
+      InternshipOffers::WeeklyFramed.kept.find_each do |internship_offer|
         InternshipOffers::WeeklyFramed.reset_counters(internship_offer.id, :internship_offer_weeks)
       end
     end
