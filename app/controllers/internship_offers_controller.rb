@@ -13,7 +13,7 @@ class InternshipOffersController < ApplicationController
   end
 
   def index
-    
+
     respond_to do |format|
       format.html do
         # @internship_offers = finder.all.order(id: :desc)
@@ -31,7 +31,7 @@ class InternshipOffersController < ApplicationController
           seats: calculate_seats
         }
         render json: data, status: 200
-      end 
+      end
     end
   end
 
@@ -141,7 +141,7 @@ class InternshipOffersController < ApplicationController
   end
 
   def format_internship_offers(internship_offers)
-    internship_offers.map { |internship_offer| 
+    internship_offers.map { |internship_offer|
       {
         id: internship_offer.id,
         title: internship_offer.title.truncate(35),
@@ -158,7 +158,7 @@ class InternshipOffersController < ApplicationController
       }
     }
   end
-  
+
   def page_links
     return nil if @internship_offers.size < 1
     {

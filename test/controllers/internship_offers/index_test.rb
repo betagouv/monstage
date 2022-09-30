@@ -75,10 +75,10 @@ class IndexTest < ActionDispatch::IntegrationTest
     )
 
     get internship_offers_path(
-      keyword: 'avocat', 
+      keyword: 'avocat',
       radius: Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER,
       format: :json)
-      
+
     assert_response :success
     assert_empty json_response['internshipOffers']
     assert_absence_of(internship_offer: offer_paris_1)
@@ -98,7 +98,7 @@ class IndexTest < ActionDispatch::IntegrationTest
       title: 'Infirmier'
     )
     # not displayed
-    offer_bordeaux_1 = create( 
+    offer_bordeaux_1 = create(
       :weekly_internship_offer,
       title: 'Infirmier',
       city: 'Bordeaux',
@@ -113,8 +113,8 @@ class IndexTest < ActionDispatch::IntegrationTest
     )
 
     get internship_offers_path(
-      keyword: 'avocat', 
-      latitude: Coordinates.paris[:latitude], 
+      keyword: 'avocat',
+      latitude: Coordinates.paris[:latitude],
       longitude: Coordinates.paris[:longitude],
       format: :json
     )
@@ -226,12 +226,13 @@ class IndexTest < ActionDispatch::IntegrationTest
     internship_offer_published   = create(:weekly_internship_offer)
     internship_offer_unpublished = create(:weekly_internship_offer)
     internship_offer_unpublished.update_column(:published_at, nil)
+    assert internship_offer_unpublished.unpublished?
     student = create(:student)
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
         get internship_offers_path, params: { format: :json }
-        assert_equal 2, json_response.count
+        assert_equal 2, json_response['internshipOffers'].count
         assert_json_absence_of(json_response, internship_offer_unpublished)
         assert_json_presence_of(json_response, api_internship_offer)
         assert_json_presence_of(json_response, internship_offer_published)
