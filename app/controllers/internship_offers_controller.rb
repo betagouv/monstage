@@ -160,6 +160,7 @@ class InternshipOffersController < ApplicationController
   end
   
   def page_links
+    return nil if @internship_offers.size < 1
     {
       totalPages: @internship_offers.total_pages,
       currentPage: @internship_offers.current_page,
