@@ -29,6 +29,7 @@ import './sectors/gestion.svg';
 import './sectors/energie.svg';
 import './sectors/enseignement.svg';
 import './sectors/environnement.svg';
+import './sectors/filiere_bois.svg';
 import './sectors/immobilier.svg';
 import './sectors/industrie.svg';
 import './sectors/industrie_alimentaire.svg';
