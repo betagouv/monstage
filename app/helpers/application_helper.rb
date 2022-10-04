@@ -51,9 +51,6 @@ module ApplicationHelper
     controller.controller_name.to_s == controller_name.to_s
   end
 
-  def current_action?(action_name)
-    controller.action_name.to_s == action_name.to_s
-  end
 
   def page_title
     if content_for?(:page_title)

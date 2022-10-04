@@ -19,7 +19,6 @@ Things you may want to cover:
     - If you installed postgres with Homebrew, run : `brew install postgis`
   - On Linux :
     sudo apt install postgis postgresql-12-postgis-3
-* Setup Postgis : `rake db:gis:setup`
 * Install Redis
   - On Linux : sudo apt install redis-server
 * avoid rebuilding api doc : `./infra/dev/update-doc-output-files.sh`
