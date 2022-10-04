@@ -9,7 +9,9 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
   test 'can create InternshipOfferInfos::WeeklyFramed' do
     sector = create(:sector)
     employer = create(:employer)
+    school_name = 'Abd El Kader'
     organisation = create(:organisation, employer: employer)
+    school = create(:school, city: 'Paris', zipcode: 75012, name: school_name)
     sign_in(employer)
     available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
     assert_difference 'InternshipOfferInfos::WeeklyFramed.count' do
@@ -20,10 +22,28 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
         page.assert_no_selector('span.number', text: '1')
         find('span.number', text: '2')
         find('span.number', text: '3')
+        find('.test-school-reserved').click
+        fill_in('Ville ou nom de l\'établissement pour lequel le stage est reservé', with: 'Pari')
+        all('.autocomplete-school-results .list-group-item-action').first.click
+        select(school_name, from: 'Collège')
         click_on "Suivant"
         find('label', text: 'Nom du tuteur/trice')
+        assert InternshipOfferInfos::WeeklyFramed.last.school.id,
+               School.find_by(name: school_name).id
       end
     end
+  end
+
+  test 'employer can withdraw a school she formerly associated with an offer' do
+    employer = create(:employer)
+    internship_offer = create(:weekly_internship_offer, employer: employer, school: create(:school))
+    sign_in(employer)
+    visit edit_dashboard_internship_offer_path(internship_offer)
+    found_school_name = find('input[name="internship_offer[school_name]"]').value
+    assert_equal internship_offer.school.name, found_school_name
+    find("label[for='is_reserved']").click
+    find('input[type="submit"]').click
+    assert internship_offer.reload.school.nil?
   end
 
   test 'employer can see which week is choosen by nearby schools in stepper' do
