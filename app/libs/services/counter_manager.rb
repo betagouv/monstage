@@ -28,6 +28,8 @@ module Services
 
     def self.reset_one_internship_offer_counter(internship_offer: )
       ok = true
+      return ok if internship_offer.is_a?(InternshipOffers::Api)
+
       ActiveRecord::Base.transaction do
         res = internship_offer.update(
           total_applications_count: 0,
