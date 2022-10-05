@@ -11,7 +11,7 @@ class Sector < ApplicationRecord
     "Architecture, urbanisme et paysage" => "architecture.svg",
     "Armée - Défense" => "armee.svg",
     "Art et design" => "art_design.svg",
-    "Arts du spectacle" => "arts_spectable.svg",
+    "Arts du spectacle" => "arts_spectacle.svg",
     "Artisanat d'art" => "artisanat.svg",
     "Audiovisuel" => "audiovisuel.svg",
     "Automobile" => "automobile.svg",
