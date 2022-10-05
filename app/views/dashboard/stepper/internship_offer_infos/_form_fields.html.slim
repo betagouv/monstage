@@ -109,10 +109,10 @@
       .form-group 
         = react_component("ReservedSchoolInput",
                            props: { label:"Ville ou nom de l'établissement pour lequel le stage est reservé",
-                                     required: false,
-                                     resourceName: form.object_name,
-                                     selectClassRoom: false,
-                                     existingSchool: resource.school.as_json})
+                                    required: false,
+                                    resourceName: form.object_name,
+                                    selectClassRoom: false,
+                                    existingSchool: resource.school.as_json})
 
       .form-group
         = render partial: "weeks/checkbox_inputs",
