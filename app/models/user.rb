@@ -75,16 +75,6 @@ class User < ApplicationRecord
     respond_to?(relationship) && self.send(relationship).present?
   end
 
-  def missing_school_weeks?
-    return false unless respond_to?(:school)
-    return true if school.try(:weeks).try(:size).try(:zero?)
-
-    Week.selectable_on_school_year # rejecting stale_weeks from last year
-        .joins(:school_internship_weeks)
-        .where('school_internship_weeks.school_id': school.id)
-        .count
-        .zero?
-  end
 
   def missing_school?
     return true if respond_to?(:school) && school.blank?
@@ -207,9 +197,9 @@ class User < ApplicationRecord
     false
   end
 
-  def has_no_class_room?
-    class_room.nil?
-  end
+  # def has_no_class_room?
+  #   class_room.nil?
+  # end
 
   def send_reconfirmation_instructions
     @reconfirmation_required = false

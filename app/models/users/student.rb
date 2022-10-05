@@ -63,9 +63,6 @@ module Users
       internship_applications.any?(&:convention_signed?)
     end
 
-    def has_approved_internship_application?
-      internship_applications.any?(&:approved?)
-    end
 
     def age
       ((Time.zone.now - birth_date.to_time) / 1.year.seconds).floor
@@ -99,9 +96,9 @@ module Users
       school_manager&.email
     end
 
-    def main_teacher_email
-      main_teacher&.email
-    end
+    # def main_teacher_email
+    #   main_teacher&.email
+    # end
 
     def expire_application_on_week(week:, keep_internship_application_id:)
       internship_applications

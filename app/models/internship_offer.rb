@@ -139,10 +139,6 @@ class InternshipOffer < ApplicationRecord
     published_at.present?
   end
 
-  def unpublished?
-    !published?
-  end
-
   def from_api?
     permalink.present?
   end
@@ -167,9 +163,9 @@ class InternshipOffer < ApplicationRecord
     total_applications_count - total_male_applications_count - total_female_applications_count
   end
 
-  def total_no_gender_convention_signed_applications_count
-    convention_signed_applications_count - total_male_convention_signed_applications_count - total_female_convention_signed_applications_count
-  end
+  # def total_no_gender_convention_signed_applications_count
+  #   convention_signed_applications_count - total_male_convention_signed_applications_count - total_female_convention_signed_applications_count
+  # end
 
   def anonymize
     fields_to_reset = {
