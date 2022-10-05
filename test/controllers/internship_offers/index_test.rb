@@ -226,7 +226,6 @@ class IndexTest < ActionDispatch::IntegrationTest
     internship_offer_published   = create(:weekly_internship_offer)
     internship_offer_unpublished = create(:weekly_internship_offer)
     internship_offer_unpublished.update_column(:published_at, nil)
-    assert internship_offer_unpublished.unpublished?
     student = create(:student)
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
