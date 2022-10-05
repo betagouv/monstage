@@ -37,7 +37,7 @@ class Sector < ApplicationRecord
     "Industrie, ingénierie industrielle" => "industrie.svg",
     "Informatique et réseaux" => "informatique.svg",
     "Jeu vidéo" => "informatique.svg",
-    "Maintenance" => "industrie_energie.svg",
+    "Maintenance" => "industrie.svg",
     "Marketing, publicité" => "marketing.svg",
     "Mécanique" => "mecanique.svg",
     "Médical" => "medical.svg",
