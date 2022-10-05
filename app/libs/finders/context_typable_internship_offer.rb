@@ -6,12 +6,18 @@ module Finders
     delegate :next_from,
              :previous_from,
              :all,
+             :all_without_page,
              to: :listable_query_builder
 
     def base_query
       send(mapping_user_type.fetch(user.type))
         .group(:id)
         .page(params[:page])
+    end
+
+    def base_query_without_page
+      send(mapping_user_type.fetch(user.type))
+        .group(:id)
     end
 
     private

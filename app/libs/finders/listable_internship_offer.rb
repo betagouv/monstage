@@ -23,6 +23,10 @@ module Finders
             .first
     end
 
+    def all_without_page
+      finder.base_query_without_page
+    end
+
     private
 
     attr_reader :finder
