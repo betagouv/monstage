@@ -23,6 +23,7 @@ class InternshipOffersController < ApplicationController
         @params = query_params
       end
       format.json do
+        @internship_offers_all_without_page = finder.all_without_page
         @internship_offers = finder.all.includes([:sector, :employer, :school]).order(id: :desc)
         formatted_internship_offers = format_internship_offers(@internship_offers)
         data = {
@@ -173,6 +174,6 @@ class InternshipOffersController < ApplicationController
   end
 
   def calculate_seats
-    @internship_offers.pluck(:max_candidates).sum
+    @internship_offers_all_without_page.pluck(:max_candidates).sum
   end
 end
