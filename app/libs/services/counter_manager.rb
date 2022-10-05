@@ -26,6 +26,48 @@ module Services
       InternshipApplication.all.map(&:update_all_counters)
     end
 
+    def self.reset_one_internship_offer_counter(internship_offer: )
+      ok = true
+      ActiveRecord::Base.transaction do
+        res = internship_offer.update(
+          total_applications_count: 0,
+          total_male_applications_count: 0,
+          total_female_applications_count: 0,
+          submitted_applications_count: 0,
+          approved_applications_count: 0,
+          total_male_approved_applications_count: 0,
+          total_female_approved_applications_count: 0,
+          total_custom_track_approved_applications_count: 0,
+          rejected_applications_count: 0,
+          convention_signed_applications_count: 0,
+          total_male_convention_signed_applications_count: 0,
+          total_female_convention_signed_applications_count: 0,
+          total_custom_track_convention_signed_applications_count: 0
+        )
+
+        if internship_offer.is_a?(InternshipOffers::WeeklyFramed)
+          res &&= internship_offer.internship_offer_weeks
+                                  .map { |iow| iow.update(blocked_applications_count: 0)}
+                                  .all? { |update_result| !!update_result }
+        end
+
+        internship_offer.internship_applications
+                        .each do |internship_application|
+          res &&= internship_application.update_all_counters
+        end
+
+        unless !!res
+          Rails.logger.info '================'
+          Rails.logger.info "internship_offer.id : #{internship_offer.id}"
+          Rails.logger.info '================'
+          Rails.logger.info ''
+          ok = false
+          raise ActiveRecord::Rollback
+        end
+      end
+      ok
+    end
+
     def self.reset_internship_offer_weeks_counter
       InternshipOffers::WeeklyFramed.kept.find_each do |internship_offer|
         InternshipOffers::WeeklyFramed.reset_counters(internship_offer.id, :internship_offer_weeks)
