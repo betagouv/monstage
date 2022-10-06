@@ -44,6 +44,8 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
   }, []);
 
   const ClickMap = ({ internshipOffers, recenterMap }) => {
+    if (isMobile()) {return null };
+
     if (internshipOffers.length && recenterMap) {
       const map = useMap();
       const bounds = internshipOffers.map((internshipOffer) => [
@@ -124,7 +126,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
       <div className="row no-x-scroll">
         <div className={`col-${isMobile() ? 12 : 7 } d-flex flex-row-reverse`} style={{ overflowY: 'scroll' }}>
 
-          <div className="results-col results-row no-x-scroll hide-scrollbar fr-mt-2w">
+          <div className="results-row fr-mx-2w no-x-scroll hide-scrollbar fr-mt-2w">
             <div className="row fr-p-2w ">
               <div className="col-8 px-0">
                 {

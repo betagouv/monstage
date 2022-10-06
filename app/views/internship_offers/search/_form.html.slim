@@ -1,12 +1,12 @@
 - has_white_bg = current_page?(root_path) || current_page?(internship_offers_path)
-div [class="test-search-container #{has_white_bg ? 'search-container py-2' : ''}"
+div [class="test-search-container #{has_white_bg ? 'search-container py-2' : ''} #{render_as_partial ? 'd-none d-md-block rounded-6' : ''}"
      data-controller='search-form search-popover search-school-track-select search-week-checkboxes']
   = form_with url: url,
               method: :get,
               skip_enforcing_utf8: true,
               data: { turbo: false },
               local: true,
-              html: { class: "#{render_as_partial ? 'd-none d-md-block rounded-6' : ''}", id: form_id } do |form|
+              html: { id: form_id } do |form|
     / also used on dashboard_internship_offer, should support external filters
     - %i[direction filter order school_year].each do |dashboard_custom_filter|
       - if params.key?(dashboard_custom_filter)

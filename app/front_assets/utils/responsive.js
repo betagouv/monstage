@@ -1,9 +1,6 @@
 export const isMobile = () => {
-  const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-  return vw <= 480;
+  const MAX_SIZE_FOR_MOBILE = 480;
+  const vw = Math.min(document.documentElement.clientWidth || MAX_SIZE_FOR_MOBILE + 1, window.innerWidth || MAX_SIZE_FOR_MOBILE + 1, screen.width || MAX_SIZE_FOR_MOBILE + 1);
+  return vw <= MAX_SIZE_FOR_MOBILE;
 }
 
-export const isTablet = () => {
-  const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-  return (vw <= 767) && (vw >= 480);
-}
