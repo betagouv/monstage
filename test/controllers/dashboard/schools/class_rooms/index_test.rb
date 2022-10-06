@@ -49,7 +49,7 @@ module Dashboard
                       'missing or extra link to manage school weeks'
         assert_select 'li a[href=?]',
                       dashboard_school_path(school),
-                      { count: 2 },
+                      { count: 1 },
                       'missing or extra link to manage school weeks'
       end
 
