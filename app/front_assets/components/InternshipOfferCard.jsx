@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { isMobile } from '../utils/responsive';
 
 const InternshipOfferCard = ({ internshipOffer, handleMouseOver, handleMouseOut, index }) => {
   useEffect(() => {
   }, []);
 
   return (
-    <div className={`col-6 fr-my-2w ${(index % 2) == 0 ? 'fr-pl-0-5v' : 'fr-pr-0-5v'}`}
+    <div className={`col-${isMobile() ? 12 : 6} ${isMobile() ? 'text-align-center' : '' } fr-my-2w ${isMobile() ? '' : ((index % 2) == 0) ? 'fr-pl-0-5v' : 'fr-pr-0-5v'}`}
     key={internshipOffer.id}
     onMouseOver={(e) => handleMouseOver(internshipOffer.id)}
     onMouseOut={handleMouseOut}
