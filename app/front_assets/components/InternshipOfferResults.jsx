@@ -10,6 +10,7 @@ import FilterModal from './search_internship_offer/FilterModal';
 import Paginator from './search_internship_offer/Paginator';
 import TitleLoader from './TitleLoader';
 import { endpoints } from '../utils/api';
+import { isMobile } from '../utils/responsive';
 
 const center = [48.866669, 2.33333]; // ANCT
 
@@ -42,7 +43,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
     requestInternshipOffers();
   }, []);
 
-  const ClickMap = ({ internshipOffers, recenterMap }) => {  
+  const ClickMap = ({ internshipOffers, recenterMap }) => {
     if (internshipOffers.length && recenterMap) {
       const map = useMap();
       const bounds = internshipOffers.map((internshipOffer) => [
@@ -68,7 +69,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
   const getSectors = () => {
     const sectors = [];
     var clist = document.getElementsByClassName("checkbox-sector");
-    for (var i = 0; i < clist.length; ++i) { 
+    for (var i = 0; i < clist.length; ++i) {
       if (clist[i].checked) {
         sectors.push(clist[i].getAttribute('data-sector-id'));
       };
@@ -117,22 +118,23 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
     }
   };
 
+
   return (
     <div className="results-container no-x-scroll">
       <div className="row no-x-scroll">
-        <div className="col-7 d-flex flex-row-reverse" style={{ overflowY: 'scroll' }}>
-          
+        <div className={`col-${isMobile() ? 12 : 7 } d-flex flex-row-reverse`} style={{ overflowY: 'scroll' }}>
+
           <div className="results-col results-row no-x-scroll hide-scrollbar fr-mt-2w">
             <div className="row fr-p-2w ">
               <div className="col-8 px-0">
-                { 
+                {
                   isLoading ? (
                     <div className="row fr-mb-2w">
                       <TitleLoader/>
                     </div>
                   ) : (
                     <h2 className="h2 mb-0" id="internship-offers-count">
-                      <span className="strong">{internshipOffersSeats} Offres de stage</span>
+                      <div className="strong fr-ml-2w">{internshipOffersSeats} Offres de stage</div>
                     </h2>
                   )
                 }
@@ -144,23 +146,23 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
                     selectedSectors.length > 0 ? (
                       <p className="fr-badge fr-badge--success fr-badge--no-icon fr-m-1w">{selectedSectors.length}</p>
                     ) : ''
-                  } 
+                  }
                 </button>
               </div>
-              
+
             </div>
 
             <div> {/* Cards */}
-              { 
+              {
                 isLoading ? (
                 <div className="row">
-                  <div className="col-6">
+                    <div className={`col-${isMobile() ? 12 : 6}`}>
                     <CardLoader />
                   </div>
-                  <div className="col-6">
+                    <div className={`col-${isMobile() ? 12 : 6}`}>
                     <CardLoader />
                   </div>
-                  <div className="col-6">
+                    <div className={`col-${isMobile() ? 12 : 6}`}>
                     <CardLoader />
                   </div>
                 </div>
@@ -168,17 +170,17 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
                   <div>
                   <div className="row mx-0">
                     {
-                      internshipOffers.length ? (                   
+                      internshipOffers.length ? (
                         internshipOffers.map((internshipOffer, i) => (
-                          <InternshipOfferCard 
-                            internshipOffer={internshipOffer} 
+                          <InternshipOfferCard
+                            internshipOffer={internshipOffer}
                             key={internshipOffer.id}
                             index={i}
                             handleMouseOut={handleMouseOut}
                             handleMouseOver={(value) => {handleMouseOver(value)}}
                             />
                         ))
-                        
+
                       ) : (
                         <div>
                           <h6>Aucune offre trouvée... </h6>
@@ -189,47 +191,47 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
                   <div>{paginateLinks ? <Paginator paginateLinks={paginateLinks} /> : ''}</div>
                 </div>
                 )
-                
+
               }
             </div>
           </div>
         </div>
 
-        <div className="col-5 map-container">
+        {!isMobile() &&(<div className="col-5 map-container">
           <div className="">
             <MapContainer center={center} zoom={13} scrollWheelZoom={false}>
               <TileLayer
                 url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
               />
               <MarkerClusterGroup>
-              {
-                internshipOffers.length ? (
-                  internshipOffers.map((internshipOffer) => (
-                    <Marker
+                {
+                  internshipOffers.length ? (
+                    internshipOffers.map((internshipOffer) => (
+                      <Marker
                         icon={
                           internshipOffer.id === selectedOffer ? pointerIcon : defaultPointerIcon
                         }
-                      position={[internshipOffer.lat, internshipOffer.lon]}
-                      key={internshipOffer.id}
-                    >
-                      <Popup className='popup-custom'>
-                      <a href={internshipOffer.link}>
-                        <div className="img">
-                          <img className="fr-responsive-img" src={internshipOffer.image} alt="image"></img>
-                        </div>
+                        position={[internshipOffer.lat, internshipOffer.lon]}
+                        key={internshipOffer.id}
+                      >
+                        <Popup className='popup-custom'>
+                          <a href={internshipOffer.link}>
+                            <div className="img">
+                              <img className="fr-responsive-img" src={internshipOffer.image} alt="image"></img>
+                            </div>
 
-                        <div className="content fr-p-2w">
-                          <p className="fr-card__detail">{ internshipOffer.employer_name }</p>
-                          <h6 className="title">
-                            { internshipOffer.title }
-                          </h6>
-                        </div>
-                      </a>
-                      </Popup>
-                    </Marker>
-                  ))
-                ) : ('')
-              }
+                            <div className="content fr-p-2w">
+                              <p className="fr-card__detail">{internshipOffer.employer_name}</p>
+                              <h6 className="title">
+                                {internshipOffer.title}
+                              </h6>
+                            </div>
+                          </a>
+                        </Popup>
+                      </Marker>
+                    ))
+                  ) : ('')
+                }
               </MarkerClusterGroup>
 
               <ClickMap internshipOffers={internshipOffers} recenterMap={newDataFetched} />
@@ -237,6 +239,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
             </MapContainer>
           </div>
         </div>
+        )}
       </div>
 
       <FilterModal

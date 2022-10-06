@@ -6,7 +6,7 @@ div [class="test-search-container #{has_white_bg ? 'search-container py-2' : ''}
               skip_enforcing_utf8: true,
               data: { turbo: false },
               local: true,
-              html: { class: "#{render_as_partial ? 'd-none d-md-block rounded-6' : ''}", id: form_id } do |form|
+              html: { class: "#{render_as_partial ? 'rounded-6' : ''}", id: form_id } do |form|
     / also used on dashboard_internship_offer, should support external filters
     - %i[direction filter order school_year].each do |dashboard_custom_filter|
       - if params.key?(dashboard_custom_filter)
@@ -19,7 +19,7 @@ div [class="test-search-container #{has_white_bg ? 'search-container py-2' : ''}
                             props: {keyword: default_values[:keyword],
                                     whiteBg: has_white_bg } )
 
-      .form-group.mb-md-0.col-12.col-md
+      .form-group.mb-md-0.col-12.col-md.fr-ml-2w
         = react_component("CityInput",
                           props: { city: default_values[:city],
                                    latitude: default_values[:latitude],
@@ -39,7 +39,7 @@ div [class="test-search-container #{has_white_bg ? 'search-container py-2' : ''}
       .pb-5
       - if render_as_partial
         .col-auto-md.fr-mr-2w data-search-popover-target="searchSubmitContainer"
-          = form.button class: 'fr-btn fr-icon-search-line fr-btn--icon-right',
+          = form.button class: 'fr-ml-2w fr-btn fr-icon-search-line fr-btn--icon-right',
                         name: nil,
                         id: 'test-desktop-submit-search' do
             span.mr-2 = 'Rechercher'
