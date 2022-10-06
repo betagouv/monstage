@@ -119,7 +119,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
   };
 
 
-  return (isMobile()) && (
+  return (
     <div className="results-container no-x-scroll">
       <div className="row no-x-scroll">
         <div className={`col-${isMobile() ? 12 : 7 } d-flex flex-row-reverse`} style={{ overflowY: 'scroll' }}>
@@ -134,7 +134,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
                     </div>
                   ) : (
                     <h2 className="h2 mb-0" id="internship-offers-count">
-                      <span className="strong">{internshipOffersSeats} Offres de stage</span>
+                      <div className="strong fr-ml-2w">{internshipOffersSeats} Offres de stage</div>
                     </h2>
                   )
                 }

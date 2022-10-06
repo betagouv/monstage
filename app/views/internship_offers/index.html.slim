@@ -2,7 +2,7 @@
 
 - content_for(:custom_header) do
   .position-sticky.sticky-top.wrapper-sticky-with-offset.search-bar
-    .container-monstage.d-none.d-md-block
+    .container-monstage
       .row
         .col-12
           .fr-py-2w
@@ -22,8 +22,8 @@
 
 .fr-containerr
   = react_component("InternshipOfferResults",
-                        props: { sectors: @sectors.to_a,
-                                params: @params})
+                    props: { sectors: @sectors.to_a,
+                             params: @params})
 
 / .row.d-flex
 /   ul.col-12.d-none.d-flex.order-3.mt-2.mb-sm-3.justify-content-end
