@@ -86,7 +86,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
     document.getElementById("filter-sectors-button").setAttribute('data-fr-opened', false);
     params['sector_ids'] = getSectors();
 
-    $.ajax({ type: 'GET', url: endpoints['searchInternshipOffers'](), data: params })
+    $.ajax({ type: 'GET', url: endpoints['searchInternshipOffers'](), data: {internship_offer: params} })
       .done(fetchDone)
       .fail(fetchFail);
   };

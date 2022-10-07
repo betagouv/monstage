@@ -26,6 +26,7 @@ class InternshipOffersController < ApplicationController
         @internship_offers_all_without_page = finder.all_without_page
         @internship_offers = finder.all.includes([:sector, :employer, :school]).order(id: :desc)
         formatted_internship_offers = format_internship_offers(@internship_offers)
+        @params = internship_offer_params
         data = {
           internshipOffers: formatted_internship_offers,
           pageLinks: page_links,
@@ -38,8 +39,8 @@ class InternshipOffersController < ApplicationController
 
   def show
     check_internship_offer_is_published_or_redirect
-    @previous_internship_offer = finder.next_from(from: @internship_offer)
-    @next_internship_offer = finder.previous_from(from: @internship_offer)
+    @previous_internship_offer = finder_show.next_from(from: @internship_offer)
+    @next_internship_offer = finder_show.previous_from(from: @internship_offer)
 
     if current_user
       @internship_application = @internship_offer.internship_applications
@@ -62,6 +63,19 @@ class InternshipOffersController < ApplicationController
 
   def query_params
     params.permit(
+      :page,
+      :latitude,
+      :longitude,
+      :city,
+      :radius,
+      :keyword,
+      :school_track,
+      week_ids: []
+    )
+  end
+
+  def internship_offer_params
+    params.require(:internship_offer).permit(
       :page,
       :latitude,
       :longitude,
@@ -99,6 +113,22 @@ class InternshipOffersController < ApplicationController
   end
 
   def finder
+    @finder ||= Finders::InternshipOfferConsumer.new(
+      params: params.require(:internship_offer).permit(
+        :page,
+        :latitude,
+        :longitude,
+        :radius,
+        :keyword,
+        :school_track,
+        sector_ids: [],
+        week_ids: []
+      ),
+      user: current_user_or_visitor
+    )
+  end
+
+  def finder_show
     @finder ||= Finders::InternshipOfferConsumer.new(
       params: params.permit(
         :page,
@@ -148,7 +178,7 @@ class InternshipOffersController < ApplicationController
         title: internship_offer.title.truncate(35),
         description: internship_offer.description.to_s,
         employer_name: internship_offer.employer_name,
-        link: internship_offer_path(internship_offer),
+        link: internship_offer_path(internship_offer, internship_offer_params),
         city: internship_offer.city.capitalize,
         date_start: I18n.localize(internship_offer.first_date, format: :human_mm_dd_yyyy),
         date_end:  I18n.localize(internship_offer.last_date, format: :human_mm_dd_yyyy),
