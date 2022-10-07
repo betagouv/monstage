@@ -26,6 +26,7 @@ class InternshipOffersController < ApplicationController
         @internship_offers_all_without_page = finder.all_without_page
         @internship_offers = finder.all.includes([:sector, :employer, :school]).order(id: :desc)
         formatted_internship_offers = format_internship_offers(@internship_offers)
+        @params = query_params
         data = {
           internshipOffers: formatted_internship_offers,
           pageLinks: page_links,
@@ -148,7 +149,7 @@ class InternshipOffersController < ApplicationController
         title: internship_offer.title.truncate(35),
         description: internship_offer.description.to_s,
         employer_name: internship_offer.employer_name,
-        link: internship_offer_path(internship_offer),
+        link: internship_offer_path(internship_offer, query_params),
         city: internship_offer.city.capitalize,
         date_start: I18n.localize(internship_offer.first_date, format: :human_mm_dd_yyyy),
         date_end:  I18n.localize(internship_offer.last_date, format: :human_mm_dd_yyyy),
