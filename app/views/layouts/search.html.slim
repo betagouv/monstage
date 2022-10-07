@@ -1,14 +1,15 @@
-<!DOCTYPE html>
+doctype html
 html lang="fr"
   head
     - if content_for?(:canonical_url)
       link rel="canonical" href="#{yield(:canonical_url)}"
 
-    title= page_title
+    title = page_title
     = csrf_meta_tags
     = csp_meta_tag
     = action_cable_meta_tag
     meta name="turbo-visit-control" content="reload"
+    meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"
     = favicon_link_tag asset_pack_path('media/images/favicon.png')
     = stylesheet_pack_tag "application.css", media: "all", 'data-turbo-track': "reload"
     = stylesheet_link_tag "https://unpkg.com/leaflet@1.8.0/dist/leaflet.css", media: "all"
@@ -25,7 +26,7 @@ html lang="fr"
       .container-x
         = render 'layouts/flash'
         div role="main"= yield
-        
+
     div  data-controller='footer'
       = render 'layouts/footer'
     = render partial: "layouts/analytics"

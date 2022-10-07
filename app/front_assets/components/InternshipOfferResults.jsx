@@ -124,7 +124,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
   return (
     <div className="results-container no-x-scroll">
       <div className="row no-x-scroll">
-        <div className={`col-${isMobile() ? 12 : 7 } d-flex flex-row-reverse`} style={{ overflowY: 'scroll' }}>
+        <div className={`col-${isMobile() ? '12' : '7' } d-flex flex-row-reverse`} style={{ overflowY: 'scroll' }}>
 
           <div className="results-row fr-mx-2w no-x-scroll hide-scrollbar fr-mt-2w">
             <div className="row fr-p-2w ">
@@ -158,13 +158,13 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
               {
                 isLoading ? (
                 <div className="row">
-                    <div className={`col-${isMobile() ? 12 : 6}`}>
+                    <div className={`col-${isMobile() ? '12' : '6'}`}>
                     <CardLoader />
                   </div>
-                    <div className={`col-${isMobile() ? 12 : 6}`}>
+                    <div className={`col-${isMobile() ? '12' : '6'}`}>
                     <CardLoader />
                   </div>
-                    <div className={`col-${isMobile() ? 12 : 6}`}>
+                    <div className={`col-${isMobile() ? '12' : '6'}`}>
                     <CardLoader />
                   </div>
                 </div>
