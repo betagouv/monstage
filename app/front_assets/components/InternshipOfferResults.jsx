@@ -82,9 +82,11 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
 
   const requestInternshipOffers = () => {
     setIsLoading(true);
-    document.getElementById("fr-modal-filter").classList.remove("fr-modal--opened");
-    document.getElementById("filter-sectors-button").setAttribute('data-fr-opened', false);
-    params['sector_ids'] = getSectors();
+    if (!isMobile()) {
+      document.getElementById("fr-modal-filter").classList.remove("fr-modal--opened");
+      document.getElementById("filter-sectors-button").setAttribute('data-fr-opened', false);
+      params['sector_ids'] = getSectors();
+    }
 
     $.ajax({ type: 'GET', url: endpoints['searchInternshipOffers'](), data: params })
       .done(fetchDone)
@@ -141,17 +143,20 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
                   )
                 }
               </div>
-              <div className="col-4 text-right px-0">
-                <button className="fr-btn fr-btn--secondary fr-icon-equalizer-line fr-btn--icon-left" data-fr-opened="false" aria-controls="fr-modal-filter" id="filter-sectors-button">
-                  Filtrer
-                  {
-                    selectedSectors.length > 0 ? (
-                      <p className="fr-badge fr-badge--success fr-badge--no-icon fr-m-1w">{selectedSectors.length}</p>
-                    ) : ''
-                  }
-                </button>
-              </div>
-
+              {
+                !isMobile() && (
+                <div className="col-4 text-right px-0">
+                  <button className="fr-btn fr-btn--secondary fr-icon-equalizer-line fr-btn--icon-left" data-fr-opened="false" aria-controls="fr-modal-filter" id="filter-sectors-button">
+                    Filtrer
+                    {
+                      selectedSectors.length > 0 ? (
+                        <p className="fr-badge fr-badge--success fr-badge--no-icon fr-m-1w">{selectedSectors.length}</p>
+                      ) : ''
+                    }
+                  </button>
+                </div>
+                )
+              }
             </div>
 
             <div> {/* Cards */}
@@ -199,7 +204,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
           </div>
         </div>
 
-        {!isMobile() &&(<div className="col-5 map-container">
+        { !isMobile() && (<div className="col-5 map-container">
           <div className="">
             <MapContainer center={center} zoom={13} scrollWheelZoom={false}>
               <TileLayer
@@ -244,11 +249,16 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
         )}
       </div>
 
-      <FilterModal
-        sectors={sectors}
-        requestInternshipOffers={requestInternshipOffers}
-        clearSectors={clearSectors}
-      />
+      {
+        !isMobile() &&
+        (
+          <FilterModal
+          sectors={sectors}
+          requestInternshipOffers={requestInternshipOffers}
+          clearSectors={clearSectors}
+          />
+        )
+      }
     </div>
   );
 };
