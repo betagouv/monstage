@@ -10,5 +10,5 @@ Sentry.init do |config|
   config.traces_sampler = lambda do |context|
     true
   end
-  config.enabled_environments = %w[production]
+  config.enabled_environments = %w[production staging]
 end
