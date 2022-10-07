@@ -10,11 +10,13 @@ script src="https://player.vimeo.com/api/player.js"
         .mb-4
           h3.mb-2.fr-px-2w.text-blue-france
             | Histoire de parcours
-          .fr-px-2w.fr-text--lg.pb-2 Luca Biancheri, conducteur de travaux
+          .fr-px-2w.fr-text--lg.pb-2 Jade Le Maître, ingénieure
           p.fr-px-2w
-            | Responsabilité, sens du détail et savoir-faire.
-            br
-            | Luca nous raconte son passionnant métier dans le bâtiment.
+            |
+              Jade raconte son parcours pour devenir ingénieure et directrice
+              technique/innovation. Un métier qui demande de grandes
+              responsabilités, de la curiosité et une grande
+              ouverture d'esprit !
           p.fr-px-2w
             - if can?(:welcome_students, current_user) || !user_signed_in?
               .d-md-none
@@ -28,8 +30,7 @@ script src="https://player.vimeo.com/api/player.js"
                  = link_to 'Trouver un stage', internship_offers_path,
                           class: 'fr-btn fr-icon-search-line fr-btn--icon-right fr-px-4w',
                           data: { :"test-id" => 'mobile-search-button', :'videos-carousel-target' => 'inViewPort'}
-                  
-                    
+
     .col-lg-6.col-md-6.col-sm-12.col-xs-12
       .text-center
         .video-wrapper
@@ -37,10 +38,9 @@ script src="https://player.vimeo.com/api/player.js"
             iframe.video-responsive-item [ allow=("autoplay; fullscreen; picture-in-picture")
                           allowfullscreen
                           frameborder="0"
-                          title="Luca Biancheri, conducteur de travaux"
-                          src="https://player.vimeo.com/video/654158859?h=61d502097e&color=1E40AF&title=0&byline=0&portrait=0&loop=1&autoplay=1&autopause=0&muted=1&responsive=true&dnt=1" ]
+                          title="Jade Le Maître, ingénieure"
+                          src="https://player.vimeo.com/video/719891435?h=b7b37aa0d6&color=1E40AF&title=0&byline=0&portrait=0&loop=1&autoplay=1&autopause=0&muted=1&responsive=true&dnt=1" ]
 
   .row.my-4
-  / .fr-btn.fr-icon-search-line.fr-btn--icon-right.fr-px-16v.d-none.d-md-block = "Trouver un stage"
 
 
