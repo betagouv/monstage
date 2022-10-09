@@ -89,7 +89,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
       params['sector_ids'] = getSectors();
     }
 
-    $.ajax({ type: 'GET', url: endpoints['searchInternshipOffers'](), data: {internship_offer: params} })
+    $.ajax({ type: 'GET', url: endpoints['searchInternshipOffers'](), data: params })
       .done(fetchDone)
       .fail(fetchFail);
   };

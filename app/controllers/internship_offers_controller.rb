@@ -43,8 +43,8 @@ class InternshipOffersController < ApplicationController
 
   def show
     check_internship_offer_is_published_or_redirect
-    @previous_internship_offer = finder_show.next_from(from: @internship_offer)
-    @next_internship_offer = finder_show.previous_from(from: @internship_offer)
+    @previous_internship_offer = finder.next_from(from: @internship_offer)
+    @next_internship_offer = finder.previous_from(from: @internship_offer)
 
     if current_user
       @internship_application = @internship_offer.internship_applications
@@ -67,19 +67,6 @@ class InternshipOffersController < ApplicationController
 
   def query_params
     params.permit(
-      :page,
-      :latitude,
-      :longitude,
-      :city,
-      :radius,
-      :keyword,
-      :school_track,
-      week_ids: []
-    )
-  end
-
-  def internship_offer_params
-    params.require(:internship_offer).permit(
       :page,
       :latitude,
       :longitude,
@@ -117,22 +104,6 @@ class InternshipOffersController < ApplicationController
   end
 
   def finder
-    @finder ||= Finders::InternshipOfferConsumer.new(
-      params: params.require(:internship_offer).permit(
-        :page,
-        :latitude,
-        :longitude,
-        :radius,
-        :keyword,
-        :school_track,
-        sector_ids: [],
-        week_ids: []
-      ),
-      user: current_user_or_visitor
-    )
-  end
-
-  def finder_show
     @finder ||= Finders::InternshipOfferConsumer.new(
       params: params.permit(
         :page,
