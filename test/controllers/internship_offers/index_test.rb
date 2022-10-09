@@ -120,7 +120,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     )
 
     assert_response :success
-    assert_empty json_response['internshipOffers']
+    assert json_response['isSuggestion']
   end
 
   test 'GET #index with wrong keyword and wrong weeks as Visitor returns no results with weeks suggestions' do
@@ -158,7 +158,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     )
 
     assert_response :success
-    assert_empty json_response['internshipOffers']
+    assert json_response['isSuggestion']
   end
 
   test 'GET #index canonical links works' do
