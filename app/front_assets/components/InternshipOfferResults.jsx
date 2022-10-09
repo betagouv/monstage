@@ -34,6 +34,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
   const [paginateLinks, setPaginateLinks] = useState(null);
   const [internshipOffers, setInternshipOffers] = useState([]);
   const [showSectors, setShowSectors] = useState(false);
+  const [isSuggestion, setIsSuggestion] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [newDataFetched, setNewDataFetched] = useState(false);
   const [selectedSectors, setSelectedSectors] = useState([]);
@@ -82,9 +83,11 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
 
   const requestInternshipOffers = () => {
     setIsLoading(true);
-    document.getElementById("fr-modal-filter").classList.remove("fr-modal--opened");
-    document.getElementById("filter-sectors-button").setAttribute('data-fr-opened', false);
-    params['sector_ids'] = getSectors();
+    if (!isMobile()) {
+      document.getElementById("fr-modal-filter").classList.remove("fr-modal--opened");
+      document.getElementById("filter-sectors-button").setAttribute('data-fr-opened', false);
+      params['sector_ids'] = getSectors();
+    }
 
     $.ajax({ type: 'GET', url: endpoints['searchInternshipOffers'](), data: {internship_offer: params} })
       .done(fetchDone)
@@ -95,6 +98,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
     setInternshipOffers(result['internshipOffers']);
     setPaginateLinks(result['pageLinks']);
     setInternshipOffersSeats(result['seats']);
+    setIsSuggestion(result['isSuggestion']);
 
     setIsLoading(false);
     setNewDataFetched(true);
@@ -123,11 +127,11 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
 
   return (
     <div className="results-container no-x-scroll">
-      <div className="row no-x-scroll">
-        <div className={`col-${isMobile() ? '12' : '7' } d-flex flex-row-reverse`} style={{ overflowY: 'scroll' }}>
+      <div className="row mx-0 fr-px-2w no-x-scroll">
+        <div className={`${isMobile() ? 'col-12 px-0' : 'col-7 px-3'} d-flex flex-row-reverse no-x-scroll`} style={{ overflowY: 'scroll' }}>
 
-          <div className="results-row fr-mx-2w no-x-scroll hide-scrollbar fr-mt-2w">
-            <div className="row fr-p-2w ">
+          <div className="results-col results-row no-x-scroll hide-scrollbar fr-mt-2w">
+            <div className="row fr-py-2w mx-0">
               <div className="col-8 px-0">
                 {
                   isLoading ? (
@@ -136,22 +140,25 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
                     </div>
                   ) : (
                     <h2 className="h2 mb-0" id="internship-offers-count">
-                      <div className="strong fr-ml-2w">{internshipOffersSeats} Offres de stage</div>
+                      <div className="strong">{internshipOffersSeats} Offre{internshipOffersSeats > 1 ? 's' : ''} de stage</div>
                     </h2>
                   )
                 }
               </div>
-              <div className="col-4 text-right px-0">
-                <button className="fr-btn fr-btn--secondary fr-icon-equalizer-line fr-btn--icon-left" data-fr-opened="false" aria-controls="fr-modal-filter" id="filter-sectors-button">
-                  Filtrer
-                  {
-                    selectedSectors.length > 0 ? (
-                      <p className="fr-badge fr-badge--success fr-badge--no-icon fr-m-1w">{selectedSectors.length}</p>
-                    ) : ''
-                  }
-                </button>
-              </div>
-
+              {
+                !isMobile() && (
+                <div className="col-4 text-right px-0">
+                  <button className="fr-btn fr-btn--secondary fr-icon-equalizer-line fr-btn--icon-left" data-fr-opened="false" aria-controls="fr-modal-filter" id="filter-sectors-button">
+                    Filtrer
+                    {
+                      selectedSectors.length > 0 ? (
+                        <p className="fr-badge fr-badge--success fr-badge--no-icon fr-m-1w">{selectedSectors.length}</p>
+                      ) : ''
+                    }
+                  </button>
+                </div>
+                )
+              }
             </div>
 
             <div> {/* Cards */}
@@ -170,25 +177,44 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
                 </div>
                 ) : (
                   <div>
-                  <div className="row mx-0">
-                    {
-                      internshipOffers.length ? (
-                        internshipOffers.map((internshipOffer, i) => (
-                          <InternshipOfferCard
-                            internshipOffer={internshipOffer}
-                            key={internshipOffer.id}
-                            index={i}
-                            handleMouseOut={handleMouseOut}
-                            handleMouseOver={(value) => {handleMouseOver(value)}}
-                            />
-                        ))
-
-                      ) : (
-                        <div>
-                          <h6>Aucune offre trouvée... </h6>
-                        </div>
-                      )
-                    }
+                    <div className="row">
+                      {
+                        isSuggestion ? (
+                          <div className='col'>
+                            <h6>Aucune offre trouvée... </h6>
+                            { 
+                              internshipOffers.length > 0 ? (
+                                <div> 
+                                  <div className='search-no-result fr-mt-2w fr-mb-4w'></div>
+                                  <div className='row'>
+                                    {
+                                      internshipOffers.map((internshipOffer, i) => (
+                                        <InternshipOfferCard
+                                          internshipOffer={internshipOffer}
+                                          key={internshipOffer.id}
+                                          index={i}
+                                          handleMouseOut={handleMouseOut}
+                                          handleMouseOver={(value) => {handleMouseOver(value)}}
+                                          />
+                                      ))
+                                    }
+                                  </div>
+                                </div>
+                              ) : ''
+                            }
+                          </div>
+                        ) : (
+                          internshipOffers.map((internshipOffer, i) => (
+                            <InternshipOfferCard
+                              internshipOffer={internshipOffer}
+                              key={internshipOffer.id}
+                              index={i}
+                              handleMouseOut={handleMouseOut}
+                              handleMouseOver={(value) => {handleMouseOver(value)}}
+                              />
+                          ))
+                        )
+                      }
                   </div>
                   <div>{paginateLinks ? <Paginator paginateLinks={paginateLinks} /> : ''}</div>
                 </div>
@@ -199,7 +225,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
           </div>
         </div>
 
-        {!isMobile() &&(<div className="col-5 map-container">
+        { !isMobile() && (<div className="col-5 map-container">
           <div className="">
             <MapContainer center={center} zoom={13} scrollWheelZoom={false}>
               <TileLayer
@@ -244,11 +270,16 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
         )}
       </div>
 
-      <FilterModal
-        sectors={sectors}
-        requestInternshipOffers={requestInternshipOffers}
-        clearSectors={clearSectors}
-      />
+      {
+        !isMobile() &&
+        (
+          <FilterModal
+          sectors={sectors}
+          requestInternshipOffers={requestInternshipOffers}
+          clearSectors={clearSectors}
+          />
+        )
+      }
     </div>
   );
 };

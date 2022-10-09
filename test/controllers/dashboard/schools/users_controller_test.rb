@@ -73,9 +73,9 @@ module Dashboard
         get dashboard_school_users_path(school)
         assert_response :success
         assert_select 'title', "Professeurs du #{school.presenter.school_name_in_sentence} | Monstage"
-        assert_select 'ul.fr-tabs__list li a[href=?]', dashboard_school_path(school), count: 1
+        assert_select 'ul.fr-tabs__list li a[href=?]', dashboard_school_class_rooms_path(school), count: 1
         assert_select 'ul.fr-tabs__list li a[href=?]', dashboard_school_users_path(school), count: 1
-        assert_select 'ul.fr-tabs__list li a[href=?] button[aria-selected="false"]', dashboard_school_path(school), count: 1
+        assert_select 'ul.fr-tabs__list li a[href=?] button[aria-selected="false"]', dashboard_school_class_rooms_path(school), count: 1
         assert_select 'ul.fr-tabs__list li a[href=?] button[aria-selected="true"]', dashboard_school_users_path(school), count: 1
       end
 
