@@ -271,6 +271,7 @@ class Ability
     can %i[ see_reporting_dashboard
             see_dashboard_administrations_summary
             see_dashboard_department_summary
+            export_reporting_dashboard_data
             see_dashboard_associations_summary], User
   end
 
