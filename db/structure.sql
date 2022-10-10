@@ -1187,7 +1187,7 @@ CREATE TABLE public.tutors (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     employer_id bigint NOT NULL,
-    tutor_role character varying(80)
+    tutor_role character varying
 );
 
 
