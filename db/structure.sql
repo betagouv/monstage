@@ -15,9 +15,13 @@ SET row_security = off;
 
 CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 
+
 --
 -- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
 --
+
+COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
+
 
 --
 -- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
@@ -25,9 +29,13 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 
 CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 
+
 --
 -- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
 --
+
+COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
+
 
 --
 -- Name: unaccent; Type: EXTENSION; Schema: -; Owner: -
@@ -35,9 +43,13 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 
 CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 
+
 --
 -- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
 --
+
+COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
+
 
 --
 -- Name: agreement_signatory_role; Type: TYPE; Schema: public; Owner: -
@@ -1220,7 +1232,7 @@ CREATE TABLE public.tutors (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     employer_id bigint NOT NULL,
-    tutor_role character varying NOT NULL
+    tutor_role character varying
 );
 
 
@@ -2703,7 +2715,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211027130402'),
 ('20211110133150'),
 ('20211207163238'),
-('20211228162749');
+('20211228162749'),
 ('20220329131926'),
 ('20220408084653'),
 ('20220511152203'),
@@ -2723,6 +2735,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220803143024'),
 ('20220804155217'),
 ('20220811103937'),
-('20220816105807');
+('20220816105807'),
+('20221010071105');
 
 
