@@ -41,6 +41,8 @@ module Users
 
     scope :active, -> { where(discarded_at: nil) }
 
+    METABASE_DASHBOARD_ID = 8
+
     def custom_dashboard_path
       url_helpers.reporting_dashboards_path(
         department: department,

@@ -12,6 +12,7 @@ class Ability
       when 'Users::God' then god_abilities
       when 'Users::Operator' then operator_abilities(user: user)
       when 'Users::Statistician' then statistician_abilities(user: user)
+      when 'Users::EducationStatistician' then education_statistician_abilities(user: user)
       when 'Users::MinistryStatistician' then ministry_statistician_abilities(user: user)
       when 'Users::SchoolManagement'
         common_school_management_abilities(user: user)
@@ -265,6 +266,20 @@ class Ability
 
     can %i[create], Organisation
 
+    can %i[index], Acl::InternshipOfferDashboard, &:allowed?
+    can %i[index], Acl::Reporting, &:allowed?
+
+    can %i[index_and_filter], Reporting::InternshipOffer
+    can %i[ see_reporting_dashboard
+            see_dashboard_administrations_summary
+            see_dashboard_department_summary
+            export_reporting_dashboard_data
+            see_dashboard_associations_summary], User
+  end
+
+  def education_statistician_abilities(user:)
+    common_to_all_statisticians(user: user)
+    can %i[create], Organisation
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
     can %i[index], Acl::Reporting, &:allowed?
 
