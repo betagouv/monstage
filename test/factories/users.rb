@@ -100,6 +100,13 @@ FactoryBot.define do
       end
     end
 
+    factory :education_statistician, class: 'Users::EducationStatistician', parent: :user do
+      type { 'Users::EducationStatistician' }
+      before(:create) do |user|
+        create(:education_statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
+      end
+    end
+
     factory :ministry_statistician, class: 'Users::MinistryStatistician', parent: :user do
       transient do
         white_list { create(:ministry_statistician_email_whitelist) }

@@ -6,7 +6,7 @@ module Reporting
     def index
       authorize! :index, Acl::Reporting.new(user: current_user, params: params)
       authorize! :see_reporting_dashboard, current_user
-      @iframe = metabase_iframe if current_user.is_a? Users::Statistician
+      @iframe = metabase_iframe if can?(:see_dashboard_department_summary, current_user)
 
       render locals: { dashboard_finder: dashboard_finder }
     end
@@ -46,8 +46,8 @@ module Reporting
     def metabase_iframe
       year = params[:school_year].to_i
       payload = {
-        resource: { dashboard: 3 },
-        params: { 
+        resource: { dashboard: eval("#{current_user.class.to_s}::METABASE_DASHBOARD_ID") },
+        params: {
           "d%C3%A9partement": [params[:department]],
           "ann%C3%A9e_scolaire": "#{year}/#{year+1}" 
         },
