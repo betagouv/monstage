@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Users
-  class Statistician < User
+  class EducationStatistician < User
     rails_admin do
       weight 5
 
@@ -28,9 +28,8 @@ module Users
       end
     end
 
-    has_many :internship_offers, foreign_key: 'employer_id'
     has_one :email_whitelist,
-            class_name: 'EmailWhitelists::Statistician',
+            class_name: 'EmailWhitelists::EducationStatistician',
             foreign_key: :user_id,
             dependent: :destroy
 
@@ -42,7 +41,7 @@ module Users
 
     scope :active, -> { where(discarded_at: nil) }
 
-    METABASE_DASHBOARD_ID = 3
+    METABASE_DASHBOARD_ID = 8
 
     def custom_dashboard_path
       url_helpers.reporting_dashboards_path(
@@ -59,7 +58,7 @@ module Users
       ]
     end
 
-    def statistician?
+    def education_statistician?
       true
     end
 
@@ -87,13 +86,13 @@ module Users
     private
 
     # on create, make sure to assign existing email whitelist
-    # EmailWhitelists::Statistician holds the user_id foreign key
+    # EmailWhitelists::EducationStatistician holds the user_id foreign key
     def assign_email_whitelist
-      self.email_whitelist = EmailWhitelists::Statistician.find_by(email: email)
+      self.email_whitelist = EmailWhitelists::EducationStatistician.find_by(email: email)
     end
 
     def email_in_list
-      unless EmailWhitelists::Statistician.exists?(email: email)
+      unless EmailWhitelists::EducationStatistician.exists?(email: email)
         errors.add(
           :email,
           'Votre adresse électronique n\'est pas reconnue, veuillez la ' \
