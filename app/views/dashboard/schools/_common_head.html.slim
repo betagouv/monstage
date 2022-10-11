@@ -10,7 +10,7 @@ h1.h2.mb-4
 .fr-tabs.mb-5
   ul.fr-tabs__list aria-label=("school-tab") role="tablist"
     li
-      - path = dashboard_school_path(@school)
+      - path = dashboard_school_class_rooms_path(@school)
       = link_to path do
         button#classes.fr-tabs__tab [
           aria-controls="classes-panel"

@@ -1187,7 +1187,7 @@ CREATE TABLE public.tutors (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     employer_id bigint NOT NULL,
-    tutor_role character varying NOT NULL
+    tutor_role character varying
 );
 
 
@@ -2667,6 +2667,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220803143024'),
 ('20220804155217'),
 ('20220811103937'),
-('20220816105807');
+('20220816105807'),
+('20221010071105');
 
 

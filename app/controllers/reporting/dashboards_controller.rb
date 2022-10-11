@@ -6,6 +6,7 @@ module Reporting
     def index
       authorize! :index, Acl::Reporting.new(user: current_user, params: params)
       authorize! :see_reporting_dashboard, current_user
+      @iframe = metabase_iframe if current_user.is_a? Users::Statistician
 
       render locals: { dashboard_finder: dashboard_finder }
     end
@@ -40,6 +41,20 @@ module Reporting
 
     def dashboard_finder
       @dashboard_finder ||= Finders::ReportingDashboard.new(params: reporting_cross_view_params, user: current_user)
+    end
+
+    def metabase_iframe
+      year = params[:school_year].to_i
+      payload = {
+        resource: { dashboard: 3 },
+        params: { 
+          "d%C3%A9partement": [params[:department]],
+          "ann%C3%A9e_scolaire": "#{year}/#{year+1}" 
+        },
+        exp: Time.now.to_i + (60 * 10) # 10 minute expiration
+      }  
+      token = JWT.encode payload, ENV['METABASE_SECRET_KEY']
+      iframe_url = ENV['METABASE_SITE_URL'] + "/embed/dashboard/" + token + "#bordered=true&titled=true"
     end
   end
 end

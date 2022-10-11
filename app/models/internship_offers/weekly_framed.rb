@@ -125,6 +125,10 @@ module InternshipOffers
       joins(:weeks).where(weeks: { id: weeks.ids })
     }
 
+    scope :by_sector, lambda { |sector_ids:|
+      where(sector_id: sector_ids)
+    }
+
     scope :after_week, lambda { |week:|
       joins(:week).where('weeks.year > ? OR (weeks.year = ? AND weeks.number > ?)', week.year, week.year, week.number)
     }
@@ -133,13 +137,6 @@ module InternshipOffers
       after_week(week: Week.current)
     }
 
-    # def approved_applications_count
-    #   internship_offer_weeks.pluck(:blocked_applications_count).sum
-    # end
-
-    def weeks_applicable(user:)
-      weeks.from_now.available_for_student(user: user)
-    end
 
     def visible
       published? ? "oui" : "non"

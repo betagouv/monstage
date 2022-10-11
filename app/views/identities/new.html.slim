@@ -20,8 +20,8 @@
     span data-signup-target="phoneBloc"
 
     = react_component("SearchSchool", props: { classes: 'col-12 fr-input',
-                                                label:"Nom (ou ville) de mon établissement",
                                                 required: true,
+                                                label: 'Nom (ou ville) de mon établissement REP ou REP+',
                                                 resourceName: :identity,
                                                 selectClassRoom: true,
                                                 existingSchool: @identity.school.as_json,

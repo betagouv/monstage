@@ -16,12 +16,12 @@
     = f.hidden_field :identity_token, value: @identity.token
     
     = react_component("SearchSchool", props: { classes: 'col-12 fr-input',
-                                                label:"Nom (ou ville) de mon établissement",
-                                                required: true,
-                                                resourceName: :identity,
-                                                selectClassRoom: true,
-                                                existingSchool: @identity.school.as_json,
-                                                existingClassRoom: @identity.try(:class_room).try(:as_json)})
+                                               required: true,
+                                               label: 'Nom (ou ville) de mon établissement REP ou REP+',
+                                               resourceName: :identity,
+                                               selectClassRoom: true,
+                                               existingSchool: @identity.school.as_json,
+                                               existingClassRoom: @identity.try(:class_room).try(:as_json)})
 
     .row
      .col-md-6.col-xs-12

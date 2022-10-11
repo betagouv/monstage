@@ -134,7 +134,7 @@ export default function SearchSchool({
           selectedItem,
         }) => (
           <div className="form-group custom-label-container">
-                    <label
+            <label
               {...getLabelProps({ className: 'fr-label', htmlFor: `${resourceName}_school_city` })}
             >
               {label}

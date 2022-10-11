@@ -1,5 +1,5 @@
 @include media-breakpoint-up(md) {
-  .search-container {
+  .container-homepage .search-container {
     background-color: $input-bg;
     box-shadow: 0px 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
@@ -16,7 +16,72 @@
       padding-right: 1rem;
     }
   }
+
+  .position-sticky-md {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
 }
+
+.search-bar {
+  background: #FFFFFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.search-no-result {
+  width: 100%;
+  height: 200px;
+  background-image: url('../images/search-no-result.svg');
+  background-position: center center;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.results-container {
+  overflow: scroll;
+
+  .results-col {
+    width: calc((100% / 7) + 600px - 30px) !important;
+    top: 56px;
+    .row {
+      overflow-x: hidden;
+    }
+  }
+
+  .no-x-scroll {
+    overflow-x: hidden !important;
+  }
+
+  .results-row {
+    overflow-y: scroll;
+    height: 100vh;
+  }
+
+  .map-container {
+    height: calc(100vh - 130px);
+  }
+
+  .fr-card__content {
+    padding-bottom: 2rem !important;
+  }
+}
+
+.clear-button {
+  cursor: pointer
+}
+
+a.leaflet-control-zoom-in,
+a.leaflet-control-zoom-out {
+  background-image: none;
+}
+
+// left for example
+//#input-search-by-week[readonly=readonly]{
+//   background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 5V1M14 5V1M5 9H15M3 19H17C18.1046 19 19 18.1046 19 17V5C19 3.89543 18.1046 3 17 3H3C1.89543 3 1 3.89543 1 5V17C1 18.1046 1.89543 19 3 19Z' stroke='%23767676' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+// }
 
 .bg-custom-blue{
   background-image: linear-gradient(90deg, #000091 0%, #000091 100%);
@@ -26,3 +91,37 @@
   background-repeat: no-repeat;
 }
 
+.fr-card {
+  background-color: #f6f6f6;
+}
+
+.fr-card:hover {
+  background-color: #f2f2f2;
+}
+
+.fr-card::before {
+  content: none !important;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome */
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.fr-modal, .fr-modal-title-modal-filter {
+  z-index: 5000 !important;
+}
+
+.leaflet-container {
+  height: calc(100vh - 130px) !important;
+}
+
+@include media-breakpoint-up(xs) {
+  .search-no-result {
+    height: 110px;
+  }
+}

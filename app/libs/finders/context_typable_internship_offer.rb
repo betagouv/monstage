@@ -6,12 +6,18 @@ module Finders
     delegate :next_from,
              :previous_from,
              :all,
+             :all_without_page,
              to: :listable_query_builder
 
     def base_query
       send(mapping_user_type.fetch(user.type))
         .group(:id)
         .page(params[:page])
+    end
+
+    def base_query_without_page
+      send(mapping_user_type.fetch(user.type))
+        .group(:id)
     end
 
     private
@@ -59,6 +65,7 @@ module Finders
         keyword
         school_track
         week_ids
+        sector_ids
       ].each do |sym_key|
         query = self.send("#{sym_key}_query", query) if use_params(sym_key)
       end
@@ -69,6 +76,10 @@ module Finders
 
     def week_ids_query(query)
       query.merge(weekly_framed_scopes(:by_weeks, weeks: OpenStruct.new(ids: use_params(:week_ids))))
+    end
+
+    def sector_ids_query(query)
+      query.where(sector_id: use_params(:sector_ids))
     end
 
     def school_year_query(query)
