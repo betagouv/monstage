@@ -57,11 +57,11 @@
           </div>
         </div>
       </div>
-      <div class="body mb-3 registration fr-grid-row ">
+      <div class="body mb-3 registration fr-grid-row" >
         <% if can?(:choose_role, resource) %>
-          <div class='fr-col-sm-12 fr-col-md-6 fr-px-2w' >
+          <div class='fr-col-sm-12 fr-px-2w' >
             <div class="form-group custom-label-container">
-              <%= f.label :role, class: "fr-label fr-mb-6w", data: {:'signup-target' => 'skill'} do %>
+              <%= f.label :role, class: "fr-label" do %>
                 Fonction
                 <%= f.rg2a_required_content_tag %>
               <% end %>
@@ -73,9 +73,9 @@
           </div>
         <% end %>
         <% if can?(:choose_function, resource) %>
-          <div class='fr-col-12 fr-col-md-6 fr-px-2w '>
+          <div class='fr-col-12 fr-px-2w'>
             <div class="form-group custom-label-container">
-              <%= f.label :employer_role, class: "fr-label fr-mb-6w" do %>
+              <%= f.label :employer_role, class: "fr-label" do %>
                 Fonction au sein de l'entreprise
                 <%= f.rg2a_required_content_tag %>
               <% end %>
@@ -83,50 +83,8 @@
             </div>
           </div>
         <% end %>
-        
-        <% if can?(:sign_with_sms, resource) %>
-          <div class='fr-col-12 fr-col-md-6 fr-px-2w'>
-            <div class="form-group custom-label-container">
-              <%= f.label :sign_with_sms,
-                          class: "fr-label",
-                          for: "user_phone_suffix",
-                          data: {:'signup-target' =>"phoneLabel"} do %>
-                <div data-signup-target='schoolPhoneBloc'>
-                  <span>Numéro de téléphone</span>
-                  <%= f.rg2a_required_content_tag %>
-                </div>
-              <% end %>
-              <small class="form-text text-muted fr-mb-2v">
-                Ce numéro de téléphone sera utilisé pour les sms de signatures des conventions de stage.
-              </small>
-              <div class="fr-grid-row">
-                <div class="fr-col-5">
-                  <div class="fr-select-group">
-                    <% prefixes = ["+33", "+594", "+689", "+596", "+687"] %>
-                    <%= f.select :phone_prefix,
-                                 options_for_select(prefixes.map { |k| [k, k] }),
-                                 { include_blank: false },
-                                 { id: "user_phone_prefix",
-                                   name: "user[phone_prefix]",
-                                   class: "fr-select",
-                                   :'aria-label' => "[préfix internationaux de téléphone]" } %>
 
-                  </div>
-                </div>
-                <div class="fr-col-7">
-                  <%= f.text_field :phone_suffix,
-                                   class: "fr-input",
-                                   id: "user_phone_suffix",
-                                   name: "user[phone_suffix]",
-                                   placeholder: "ex : 0623456789",
-                                   required: true,
-                                   data: {:'signup-target' => "phoneSuffix"},
-                                   :'aria-label' => "[Numéro de téléphone]" %>
-                </div>
-              </div>
-            </div>
-          </div>
-        <% end %>
+
 
         <% if can?(:register_with_phone, resource) %>
           <div class='fr-col-12 fr-col-md-6 fr-px-2w'>
@@ -202,9 +160,6 @@
             </div>
           </div>
         <% end %>
-
-        
-
 
 
         <% if can?(:choose_operator, :sign_up) %>
