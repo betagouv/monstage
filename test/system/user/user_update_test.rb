@@ -87,9 +87,8 @@ class UserUpdateTest < ApplicationSystemTestCase
     user_phone_selector = find(:css, '#user_phone_prefix')
     assert_equal '+687', user_phone_selector.value
     assert_equal '+6870623042585', employer.reload.phone
-    fill_in('Numéro de téléphone', with: '0623042586')
+    fill_in('Numéro de téléphone', with: '06 23 04 25 86')
     click_on 'Enregistrer mes informations'
     assert_equal '+6870623042586', employer.reload.phone
-
   end
 end

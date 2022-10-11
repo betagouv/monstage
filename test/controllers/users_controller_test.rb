@@ -168,7 +168,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     destination_email = 'origin@to.com'
     student = create(:student, email: nil, phone: '+330637607756')
     sign_in(student)
-    
+
     patch(account_path, params: { user: { email: destination_email } })
 
     assert_redirected_to account_path
@@ -229,7 +229,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_nil school_manager.phone
     sign_in(school_manager)
 
-    patch account_path, params: { user: { 
+    patch account_path, params: { user: {
       phone_prefix: '+33',
       phone_suffix: some_phone_number } }
 
@@ -246,13 +246,35 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_nil employer.phone
     sign_in(employer)
 
-    patch account_path, params: { user: { 
-      phone_prefix: '+33',
-      phone_suffix: some_phone_number } }
+    patch account_path, params: {
+      user: {
+        phone_prefix: '+33',
+        phone_suffix: some_phone_number
+      }
+    }
 
     assert_redirected_to account_path
     employer.reload
     assert_equal "+33#{some_phone_number}", employer.phone
+    follow_redirect!
+    assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
+  end
+
+  test 'PATCH edit as employer, can nullify her phone number' do
+    some_phone_number = '+330623042585'
+    employer = create(:employer, phone: some_phone_number)
+    sign_in(employer)
+
+    patch account_path, params: {
+      user: {
+        phone_prefix: '+33',
+        phone_suffix: ' '
+      }
+    }
+
+    assert_redirected_to account_path
+    employer.reload
+    assert_equal nil, employer.phone
     follow_redirect!
     assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
   end

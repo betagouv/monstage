@@ -17,7 +17,7 @@ class User < ApplicationRecord
 
   include DelayedDeviseEmailSender
 
-  before_validation :clean_phone
+  before_validation :concatenate_and_clean
   after_create :send_sms_token
 
   # school_managements includes different roles
@@ -245,9 +245,20 @@ class User < ApplicationRecord
 
   private
 
+  def concatenate_and_clean
+    # if prefix and suffix phone are given,
+    # this means an update temptative
+    if phone_prefix.present? && !phone_suffix.nil?
+      self.phone = "#{phone_prefix}#{phone_suffix}".gsub(/\s+/, '')
+      self.phone_prefix = nil
+      self.phone_suffix = nil
+    end
+    clean_phone
+  end
+
   def clean_phone
-    self.phone = nil if phone == '+33'
     self.phone = phone.delete(' ') unless phone.nil?
+    self.phone = nil if phone == '+33'
   end
 
   def add_email_to_phone_account?

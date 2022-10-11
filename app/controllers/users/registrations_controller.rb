@@ -79,7 +79,6 @@ module Users
       # students only
       clean_phone_param
       # employers and school_management only
-      params[:user] = concatenate_phone_fields
 
       super do |resource|
         resource.targeted_offer_id ||= params && params.dig(:user, :targeted_offer_id)
