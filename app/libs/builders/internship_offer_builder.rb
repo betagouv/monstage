@@ -13,15 +13,15 @@ module Builders
           .merge(preprocess_tutor_to_params(tutor))
           .merge(employer_id: user.id, employer_type: 'User')
           .merge(tutor_id: tutor.id, organisation_id: organisation.id, internship_offer_info_id: internship_offer_info.id)
-      )
-      internship_offer.save!
-      callback.on_success.try(:call, internship_offer)
-    rescue ActiveRecord::RecordInvalid => e
-      callback.on_failure.try(:call, e.record)
-    end
+        )
+        internship_offer.save!
+        callback.on_success.try(:call, internship_offer)
+      rescue ActiveRecord::RecordInvalid => e
+        callback.on_failure.try(:call, e.record)
+      end
 
-    # called by internship_offers#create (duplicate), api/internship_offers#create
-    def create(params:)
+      # called by internship_offers#create (duplicate), api/internship_offers#create
+      def create(params:)
       yield callback if block_given?
       authorize :create, model
       internship_offer = model.create!(preprocess_api_params(params, fallback_weeks: true))
@@ -95,7 +95,8 @@ module Builders
         employer_description_rich_text: organisation.employer_description,
         is_public: organisation.is_public,
         group_id: organisation.group_id,
-        # siret: organisation.siret, #WHEN_SIRET
+        siret: organisation.siret,
+        employer_manual_enter: organisation.manual_enter
       }
     end
 
@@ -122,7 +123,8 @@ module Builders
       {
         tutor_name: tutor.tutor_name,
         tutor_email: tutor.tutor_email,
-        tutor_phone: tutor.tutor_phone
+        tutor_phone: tutor.tutor_phone,
+        tutor_role: tutor.tutor_role
       }
     end
 

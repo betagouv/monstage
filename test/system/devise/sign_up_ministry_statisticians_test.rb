@@ -6,11 +6,11 @@ class SignUpMinistryStatisticiansTest < ApplicationSystemTestCase
   test 'navigation & interaction works until ministry statistician creation' do
     # go to signup as statistician
     email = 'kikoolol_levrai@gmail.com'
-    ministry_statistician_email_whitelist = create(:ministry_statistician_email_whitelist, email: email)
+    create(:ministry_statistician_email_whitelist, email: email)
     bad_email = 'lol@lol.fr'
 
     visit new_user_registration_path(as: 'MinistryStatistician')
-    
+
     # fails to create ministry_statistician with unexisting email
     assert_difference('Users::MinistryStatistician.count', 0) do
       fill_in 'Prénom', with: 'Martin'
@@ -18,8 +18,8 @@ class SignUpMinistryStatisticiansTest < ApplicationSystemTestCase
       fill_in 'Adresse électronique', with: bad_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      find('label[for="user_accept_terms"]').click
-      click_on "Je m'inscris"
+      find('input[type="checkbox"]', visible: false).check
+      click_on "Valider mes informations"
     end
 
     # create ministry_statistician with previously set email
@@ -30,8 +30,8 @@ class SignUpMinistryStatisticiansTest < ApplicationSystemTestCase
       fill_in 'Adresse électronique', with: email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      find('label[for="user_accept_terms"]').click
-      click_on "Je m'inscris"
+      find('input[type="checkbox"]', visible: false).check
+      click_on "Valider mes informations"
     end
 
     # check created statistician has valid info

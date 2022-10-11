@@ -1,47 +1,55 @@
-fieldset.mt-4
-  legend.my-4 Informations sur le tuteur
-  .row.mt-3.d-flex.flex-row-reverse
-    .col-12.col-md-6
+.row
+  .col-12.col-md-6
+    fieldset
+      legend Informations sur le tuteur
+
       = form.rg2a_explain_required_asterisk
       p.small.text-muted Les coordonnées du tuteur seront uniquement transmises aux accompagnants de l'élève et à l'équipe éducative de son établissement scolaire.
       .form-group
-        = form.label :tutor_name do
+        = form.label :tutor_name, class: 'fr-label' do
           = 'Nom du tuteur/trice'
           = form.rg2a_required_content_tag
         = form.text_field :tutor_name,
-                           class: 'form-control',
+                           class: 'fr-input',
                            required: true,
                            value: resource.tutor_name || current_user.name
       .form-group
-        = form.label :tutor_email do
+        = form.label :tutor_role, class: 'fr-label' do
+          = "Fonction du tuteur dans l'entreprise"
+          = form.rg2a_required_content_tag
+        = form.text_field :tutor_role,
+                           class: 'fr-input',
+                           required: true,
+                           value: resource.try(:tutor_role)
+      .form-group
+        = form.label :tutor_email, class: 'fr-label' do
           = 'Adresse électronique / Email'
           = form.rg2a_required_content_tag
         = form.email_field :tutor_email,
-                           class: 'form-control',
+                           class: 'fr-input',
                            required: true,
                            value: resource.tutor_email || current_user.email
       .form-group
-        = form.label :tutor_phone do
+        = form.label :tutor_phone, class: 'fr-label' do
           = "Numéro de téléphone"
           = form.rg2a_required_content_tag
           small.form-text.text-muted
             |Pour faciliter la prise de contact, indiquez le numéro de mobile
         = form.phone_field :tutor_phone,
-                           class: 'form-control',
+                           class: 'fr-input',
                            required: true
 
       - if submit_button
         .actions
           .row.mt-5
             .col-4.text-left
-              = form.submit "Publier l'offre !", class: 'btn btn-primary' do
+              = form.submit "Publier l'offre !", class: 'fr-btn' do
                 i.fas.fa-arrow-right
 
             .col-8.text-left style="display: flex;align-items: center"
               = link_to 'Précédent', edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]), title: 'Revenir à la modification de l\'offre'
-              
-    - warning_block = true if warning_block.nil?
-    - if warning_block
-      .col-lg-6.col-md-12.order-md-2.order-1.employer
-        = render partial: 'dashboard/stepper/warning_block'
-  .row.my-5
+
+  - warning_block = true if warning_block.nil?
+  - if warning_block
+    .col-md-6.order-md-2.order-1
+      = render partial: 'dashboard/stepper/warning_block'

@@ -41,6 +41,24 @@ module Dashboard::InternshipOffers
       assert_absence_of(internship_offer: excluded_internship_offer)
     end
 
+    test 'GET #index as employer returns his internship_offers with applications on them' do
+      employer = create(:employer)
+      included_internship_offer = create(:weekly_internship_offer,
+                                         employer: employer, title: 'Hellow-me')
+      excluded_internship_offer = create(:weekly_internship_offer,
+                                         title: 'Not hellow-me')
+      student = create(:student)
+      internship_application = create( :weekly_internship_application,
+                                       internship_offer: included_internship_offer,
+                                       student: student )
+      internship_application.submit!
+      sign_in(employer)
+      get dashboard_internship_offers_path
+      assert_response :success
+      assert_presence_of(internship_offer: included_internship_offer)
+      assert_absence_of(internship_offer: excluded_internship_offer)
+    end
+
     test 'GET #index with filters includes thoses filter in search form' do
       employer = create(:employer)
       sign_in(employer)
@@ -52,7 +70,7 @@ module Dashboard::InternshipOffers
       }
       get dashboard_internship_offers_path(filters)
       assert_response :success
-      assert_select '.search-container'
+      assert_select '.test-search-container'
       filters.map do |input_name, input_value|
         assert_select "input[name=\"#{input_name}\"]"
       end
@@ -125,28 +143,28 @@ module Dashboard::InternshipOffers
       assert_redirected_to root_path
     end
 
-    test 'week selection does not prevent from showing api offers' do
-      travel_to(Date.new(2019, 9, 1)) do
-        available_weeks = Week.selectable_on_school_year
-        school_weeks = Week.selectable_on_school_year[0..2]
-        school = create(:school, weeks: school_weeks)
-        student = create(:student, school: school)
-        internship_offer = create(:weekly_internship_offer, weeks: [school_weeks.first] )
-        internship_offer_api = create(:api_internship_offer, weeks: [school_weeks.last] )
-        week = internship_offer.internship_offer_weeks.first.week
-        week_api = internship_offer_api.internship_offer_weeks.first.week
-        sign_in(student)
+    # test 'week selection does not prevent from showing api offers' do
+    #   travel_to(Date.new(2019, 9, 1)) do
+    #     available_weeks = Week.selectable_on_school_year
+    #     school_weeks = Week.selectable_on_school_year[0..2]
+    #     school = create(:school, weeks: school_weeks)
+    #     student = create(:student, school: school)
+    #     internship_offer = create(:weekly_internship_offer, weeks: [school_weeks.first] )
+    #     internship_offer_api = create(:api_internship_offer, weeks: [school_weeks.last] )
+    #     week = internship_offer.internship_offer_weeks.first.week
+    #     week_api = internship_offer_api.internship_offer_weeks.first.week
+    #     sign_in(student)
 
-        InternshipOffer.stub :nearby, InternshipOffer.all do
-          get internship_offers_path
-          assert_data_presence_of(internship_offer: internship_offer)
-          assert_data_presence_of(internship_offer: internship_offer_api)
-          get internship_offers_path( week_ids: [week.id, week_api.id])
-          assert_data_presence_of(internship_offer: internship_offer)
-          assert_data_presence_of(internship_offer: internship_offer_api)
-        end
-      end
-    end
+    #     InternshipOffer.stub :nearby, InternshipOffer.all do
+    #       get dashboard_internship_offers_path
+    #       assert_data_presence_of(internship_offer: internship_offer)
+    #       assert_data_presence_of(internship_offer: internship_offer_api)
+    #       get internship_offers_path( week_ids: [week.id, week_api.id])
+    #       assert_data_presence_of(internship_offer: internship_offer)
+    #       assert_data_presence_of(internship_offer: internship_offer_api)
+    #     end
+    #   end
+    # end
 
     test 'GET #index tabs forward expected params' do
       sign_in(create(:employer))
@@ -162,11 +180,11 @@ module Dashboard::InternshipOffers
         direction: 'desc'
       }
       get dashboard_internship_offers_path(forwarded_to_tabs_links)
-      assert_select 'a.nav-link[href=?]',
+      assert_select 'li a[href=?]',
                     dashboard_internship_offers_path({ filter: 'unpublished' }.merge(forwarded_to_tabs_links))
-      assert_select 'a.nav-link[href=?]',
+      assert_select 'li a[href=?]',
                     dashboard_internship_offers_path({ filter: 'past' }.merge(forwarded_to_tabs_links))
-      assert_select 'a.nav-link[href=?]',
+      assert_select 'li a[href=?]',
                     dashboard_internship_offers_path(forwarded_to_tabs_links)
     end
 
@@ -251,7 +269,7 @@ module Dashboard::InternshipOffers
                                                             employer: employer)
       sign_in(employer)
       get dashboard_internship_offers_path(order: :view_count, direction: :desc)
-      assert_select 'a.align-middle.text-warning.text-decoration-none[href=?]',
+      assert_select 'a.fr-raw-link[href=?]',
                     dashboard_internship_offers_path(order: :view_count,
                                                      direction: :asc),
                     count: 1
@@ -289,62 +307,63 @@ module Dashboard::InternshipOffers
     end
 
     test 'GET #index as Employer displays links to internship_application' do
-      employer = create(:employer)
-      void_internship_offer = create(:weekly_internship_offer,
-                                     employer: employer)
-      internship_offer_with_pending_response = create(
-        :weekly_internship_offer, employer: employer
-      )
-      create(:weekly_internship_application, :submitted,
-             internship_offer: internship_offer_with_pending_response)
-      internship_offer_with_application = create(:weekly_internship_offer,
-                                                 employer: employer)
-      create(:weekly_internship_application, :approved,
-             internship_offer: internship_offer_with_application)
+      travel_to(Date.new(2019, 9, 1)) do
+        employer = create(:employer)
+        void_internship_offer = create(:weekly_internship_offer,
+                                      employer: employer)
+        internship_offer_with_pending_response = create(
+          :weekly_internship_offer, employer: employer
+        )
+        create(:weekly_internship_application, :submitted,
+              internship_offer: internship_offer_with_pending_response)
+        internship_offer_with_application = create(:weekly_internship_offer,
+                                                  employer: employer)
+        create(:weekly_internship_application, :approved,
+              internship_offer: internship_offer_with_application)
 
-      sign_in(employer)
-      get dashboard_internship_offers_path
-      assert_response :success
-      assert_select '.test-internship-offer', count: 3
-      assert_select 'a[href=?]',
-                    dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Répondre', count: 0
-      assert_select 'a[href=?]',
-                    dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Afficher', count: 0
-      assert_select 'a[href=?]',
-                    dashboard_internship_offer_internship_applications_path(internship_offer_with_pending_response), text: 'Répondre'
-      assert_select 'a[href=?]',
-                    dashboard_internship_offer_internship_applications_path(internship_offer_with_application)
+        sign_in(employer)
+        get dashboard_internship_offers_path
+        assert_response :success
+        assert_select '.test-internship-offer', count: 3
+        assert_select 'a[href=?]',
+                      dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Répondre', count: 0
+        assert_select 'a[href=?]',
+                      dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Afficher', count: 0
+        assert_select 'a[href=?]',
+                      dashboard_internship_offer_internship_applications_path(internship_offer_with_application)
+      end
     end
 
     test 'GET #index as Employer displays pending submitted applications for kept internship_offers only' do
-      employer = create(:employer)
-      discarded_internship_offer = create(:weekly_internship_offer,
-                                          :discarded, employer: employer, 
-                                          max_candidates: 10,
-                                          max_students_per_group: 5,
-                                          weeks: Week.selectable_from_now_until_end_of_school_year.first(10))
-      kept_internship_offer = create(:weekly_internship_offer,
-                                     employer: employer,
-                                     max_candidates: 10,
-                                     max_students_per_group: 5,
-                                     weeks: Week.selectable_from_now_until_end_of_school_year.first(10))
-      create(:weekly_internship_application, :submitted,
-             internship_offer: discarded_internship_offer)
-      2.times do
+      travel_to(Date.new(2019, 9, 1)) do
+        employer = create(:employer)
+        discarded_internship_offer = create(:weekly_internship_offer,
+                                            :discarded, employer: employer,
+                                            max_candidates: 10,
+                                            max_students_per_group: 5,
+                                            weeks: Week.selectable_from_now_until_end_of_school_year.first(10))
+        kept_internship_offer = create(:weekly_internship_offer,
+                                      employer: employer,
+                                      max_candidates: 10,
+                                      max_students_per_group: 5,
+                                      weeks: Week.selectable_from_now_until_end_of_school_year.first(10))
         create(:weekly_internship_application, :submitted,
-               internship_offer: kept_internship_offer)
-      end
-      3.times do
-        create(:weekly_internship_application, :approved,
-               internship_offer: kept_internship_offer)
-      end
+              internship_offer: discarded_internship_offer)
+        2.times do
+          create(:weekly_internship_application, :submitted,
+                internship_offer: kept_internship_offer)
+        end
+        3.times do
+          create(:weekly_internship_application, :approved,
+                internship_offer: kept_internship_offer)
+        end
 
-      sign_in(employer)
-      get dashboard_internship_offers_path
-
-      assert_select '.fa-fw.red-notification-badge',
-                    text: '2',
-                    count: 1
+        sign_in(employer)
+        get dashboard_internship_offers_path
+        assert_select '.fr-tag-rounded',
+                       text: '2',
+                       count: 1
+      end
     end
 
     test 'GET #index as Operator displays api_internship_offers' do
@@ -357,12 +376,14 @@ module Dashboard::InternshipOffers
                     count: 1
     end
 
-    test 'GET #index as Operator works with geolocaton params' do
+    test 'GET #index as Operator works with geolocation params' do
       operator = create(:user_operator)
       internship_offer_at_paris = create(:weekly_internship_offer,
-                                         employer: operator, coordinates: Coordinates.paris)
+                                         employer: operator,
+                                         coordinates: Coordinates.paris)
       internship_offer_at_bordeaux = create(:weekly_internship_offer,
-                                            employer: operator, coordinates: Coordinates.bordeaux)
+                                            employer: operator,
+                                            coordinates: Coordinates.bordeaux)
       sign_in(operator)
 
       location_params_forwarded_to_sort_links = {
@@ -377,9 +398,10 @@ module Dashboard::InternshipOffers
       assert_absence_of(internship_offer: internship_offer_at_paris)
       assert_presence_of(internship_offer: internship_offer_at_bordeaux)
 
+      # Check sorting links on column header, like ... on title column
       sort_params = { order: :title, direction: :desc }
       ordonencer_params = sort_params.merge(location_params_forwarded_to_sort_links)
-      assert_select "a.align-middle.text-warning.text-decoration-none[href=\"#{dashboard_internship_offers_path(ordonencer_params)}\"]",
+      assert_select "a.fr-raw-link[href='#{dashboard_internship_offers_path(ordonencer_params)}']",
                     1,
                     'ordonencer links should contain geo filters'
     end

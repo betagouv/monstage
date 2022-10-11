@@ -11,7 +11,7 @@ class AirTableRecord < ApplicationRecord
     remote_internship_offer: "Stage à distance",
     hybrid_internship_offer: "Stage hybride",
     conference: "Conférence métier",
-    workshow: "Atelier"
+    workshop: "Atelier"
   }.freeze
 
   scope :last_modified_at, lambda {
@@ -23,9 +23,16 @@ class AirTableRecord < ApplicationRecord
   }
 
 
-  # where clauses
+  # where clauses  
   scope :during_year, lambda { |school_year:|
-    where(week_id: Week.selectable_for_school_year(school_year: school_year.next_year))
+    unless school_year.blank?
+      school_year = SchoolYear::Floating.new_by_year(year: school_year.to_i) unless school_year.is_a?(SchoolYear::Floating)
+      where(week_id: Week.selectable_on_specific_school_year(school_year: school_year))
+    end
+  }
+
+  scope :current_year, -> {
+    where(week_id: Week.selectable_on_school_year)
   }
 
   scope :by_department, lambda { |department:|
@@ -40,10 +47,20 @@ class AirTableRecord < ApplicationRecord
     where(internship_offer_type: [
       INTERNSHIP_OFFER_TYPE[:onsite_internship_offer],
       INTERNSHIP_OFFER_TYPE[:remote_internship_offer],
-      INTERNSHIP_OFFER_TYPE[:hybrid_internship_offer]
+      INTERNSHIP_OFFER_TYPE[:hybrid_internship_offer],
+      INTERNSHIP_OFFER_TYPE[:conference]
     ])
   }
 
+  scope :onsite, -> { where(internship_offer_type: INTERNSHIP_OFFER_TYPE[:onsite_internship_offer]) }
+  scope :hybrid, -> { where(internship_offer_type: INTERNSHIP_OFFER_TYPE[:hybrid_internship_offer]) }
+  scope :workshop, -> { where(internship_offer_type: INTERNSHIP_OFFER_TYPE[:workshop]) }
+  scope :without_workshop, -> { where.not(internship_offer_type: INTERNSHIP_OFFER_TYPE[:workshop]) }
+  scope :remote, -> { 
+    where(internship_offer_type: [
+      INTERNSHIP_OFFER_TYPE[:remote_internship_offer],
+      INTERNSHIP_OFFER_TYPE[:conference]]) 
+  }
 
   # aggregates
   scope :total, -> {

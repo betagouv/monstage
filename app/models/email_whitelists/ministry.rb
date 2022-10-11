@@ -9,6 +9,9 @@ module EmailWhitelists
     validate :public_group?
 
     rails_admin do
+      weight 10
+      navigation_label "Listes blanches"
+      
       list do
         field :id
         field :email

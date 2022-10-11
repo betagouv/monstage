@@ -3,12 +3,15 @@
 module Users
   class Statistician < User
     rails_admin do
+      weight 5
+
       configure :last_sign_in_at, :datetime
       configure :created_at, :datetime
 
       list do
-        scopes [:active]
+        scopes(UserAdmin::DEFAULT_SCOPES)
 
+        fields(*UserAdmin::DEFAULT_FIELDS)
         field :department do
           label 'Département'
           pretty_value { bindings[:object]&.department}
@@ -17,22 +20,25 @@ module Users
           label 'Code postal'
           pretty_value { bindings[:object]&.department_zipcode}
         end
-        fields(*UserAdmin::DEFAULTS_FIELDS)
-        field :sign_in_count
-        field :last_sign_in_at
-        field :created_at
+        fields(*UserAdmin::ACCOUNT_FIELDS)
+      end
+
+      edit do
+        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
       end
     end
-
-    validate :email_in_list
 
     has_many :internship_offers, foreign_key: 'employer_id'
     has_one :email_whitelist,
             class_name: 'EmailWhitelists::Statistician',
             foreign_key: :user_id,
             dependent: :destroy
-    validates :email_whitelist, presence: {message: 'none'}
+
+    
+    validates :email_whitelist, presence: { message: 'none' }
     before_validation :assign_email_whitelist
+    # Beware : order matters here !
+    validate :email_in_list
 
     scope :active, -> { where(discarded_at: nil) }
 
@@ -79,6 +85,7 @@ module Users
     private
 
     # on create, make sure to assign existing email whitelist
+    # EmailWhitelists::Statistician holds the user_id foreign key
     def assign_email_whitelist
       self.email_whitelist = EmailWhitelists::Statistician.find_by(email: email)
     end

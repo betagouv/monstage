@@ -1,12 +1,15 @@
 .row.align-items-center.no-gutters.pt-4.bb-1.bc-light
-  .col-12.col-md-6.order-3.order-md-1.mb-3.mb-sm-3.text-center
-    h2.h2.mb-0#internship-offers-count.text-left [style=(@internship_offers.blank? ? 'color: gray' : '')]
-      - if @internship_offers.blank?
+  - if @internship_offers.blank?
+    .col-12.col-md-12.order-3.order-md-1.mb-3.mb-sm-3.text-center
+      h2.h2.mb-0#internship-offers-count.text-left
         | Aucune offre n'est disponible.
-      - else
+      p.text-left.muted.fr-mt-1w.text-grey-disabled
+        | Veuillez essayer une autre recherche
+  - else
+    .col-12.col-md-6.order-3.order-md-1.mb-3.mb-sm-3.text-center
+      h2.h2.mb-0#internship-offers-count.text-left
         strong= "#{internship_offers.total_count}"
         = " #{'offre'.pluralize(internship_offers.total_count)} de stage"
 
-  - if !@internship_offers.blank?
     ul.col-12.d-none.d-md-flex.order-3.col-md-6.mb-0.mb-sm-3.justify-content-end
-      = paginate(@internship_offers, views_prefix: 'internship_offers', window: 2)
+      = paginate(internship_offers, views_prefix: 'internship_offers', window: 2)

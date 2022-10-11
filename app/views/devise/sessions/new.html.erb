@@ -1,60 +1,63 @@
-<div class='onboarding-card onboarding-card-sm mb-4'
+<div class='onboarding-card session onboarding-card-sm my-4'
      data-controller="signup"
      data-signup-channel-value="<%= (resource.channel == :phone || params[:phone].present?) ? "phone" : "email" %>">
-  <header class="header-account header-onboarding-card my-0">
-    <div class="row mx-0">
-      <div class="col-12 align-self-end col-sm-6 h-100">
-        <div class="row">
-          <div class='col-12 text-center text-sm-left'>
-            <h1 class="h2">Me connecter</h1>
-            <p><%= link_to "Pas encore de compte&nbsp;?".html_safe, users_choose_profile_path, class: "text-danger" %></p>
-          </div>
-        </div>
-      </div>
-      <div class="col-6 d-none d-sm-flex h-100 flex-row align-items-end justify-content-end pt-4">
-          <div class="row">
-            <%= image_tag asset_pack_path("media/images/onboarding/student.svg"), class: "justify-content-end align-self-end", alt: "Elève", height: 220 %>
-          </div>
+  <header class="header-account header-onboarding-card my-0 py-0">
+    <div class="row no-gutters mt-4 mx-2">
+      <div class='col-12 text-center text-sm-left'>
+        <h1 class="mb-1 ">Connexion</h1>
+        <p class="fr-text--sm pb-1 text-blue-france mb-1" >
+          <%= link_to "Vous n'avez pas encore de compte&nbsp;?".html_safe, users_choose_profile_path, class: "fr-raw-link " %>
+        </p>
+        <hr class="py-1 "/>
       </div>
     </div>
   </header>
   <div class="body">
-    <%= form_with(model: resource,
-                  scope: resource_name,
-                  local: true,
-                  html: { id: "sign_in_form" },
-                  url: session_path(resource_name)) do |f| %>
-      <%= f.hidden_field :targeted_offer_id, value: params.dig(:user, :targeted_offer_id) %>
+    <div class="mb-2">
+      <%= form_with(model: resource,
+                   scope: resource_name,
+                   data: {turbo: false},
+                   local: true,
+                   html: { id: "sign_in_form" },
+                   url: session_path(resource_name)) do |f| %>
+        <%= f.hidden_field :targeted_offer_id, value: params.dig(:user, :targeted_offer_id) %>
 
-      <%= f.rg2a_explain_required_asterisk %>
-      <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
+        <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
+        <%= render "users/select_channel",
+                  label: "Choisissez votre méthode de connexion",
+                  form: f,
+                  resource: resource,
+                  phone: "Par téléphone"                                                                                                                     %>
 
-      <%= render "users/select_channel",
-                 label: "Comment vous connecter ?",
-                 form: f,
-                 resource: resource,
-                 phone: "Téléphone" %>
+        <div class="form-group custom-label-container ">
+          <%= f.label :password, class: "fr-label" do %>
+            Mot de passe
+            <%= f.rg2a_required_content_tag %>
+          <% end %>
+          <%= f.password_field :password, autocomplete: "current-password", class: "fr-input", required: true, autofocus: params[:email].blank? ? false : true %>
+        </div>
 
-      <div class="form-group custom-label-container">
-        <%= f.password_field :password, autocomplete: "current-password", class: "form-control  ", required: true, autofocus: params[:email].blank? ? false : true %>
-        <%= f.label :password do %>
-          Mot de passe
-          <%= f.rg2a_required_content_tag %>
-        <% end %>
-        <% -if devise_mapping.recoverable? && controller_name != "passwords" && controller_name != "registrations" %>
-          <%= link_to t("devise.passwords.new.forgot_your_password"), new_password_path(resource_name), class: "form-text text-muted small" %>
-        <% end %>
-      </div>
 
-      <div class="form-group form-check">
-        <%= f.check_box :remember_me, class: "form-check-input" %>
-        <%= f.label :remember_me, class: "form-check-label" %>
-      </div>
+        <div class="row no-gutters">
+          <div class="col-6">
+            <div class="fr-checkbox-group fr-checkbox-group--sm">
+              <%= f.check_box :remember_me %>
+              <%= f.label :remember_me, class: "fr-text--sm" %>
+            </div>
+          </div>
+          <div class="col-6 text-right pb-2">
+            <% -if devise_mapping.recoverable? && controller_name != "passwords" && controller_name != "registrations" %>
+              <%= link_to t("devise.passwords.new.forgot_your_password"), new_password_path(resource_name), class: "fr-raw-link text-blue-france small" %>
+            <% end %>
+          </div>
+        </div>
+        
 
-      <div class="actions d-flex d-sm-block text-center">
-        <%= f.submit t(".sign_in"), class: "btn btn-primary" %>
-      </div>
-    <% end %>
+        <div class="actions d-flex d-sm-block text-center mb-4 ">
+          <%= f.submit t(".sign_in"), class: "fr-btn" %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
 <p class="onboarding-footer text-center my-3">

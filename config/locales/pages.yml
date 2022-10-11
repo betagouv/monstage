@@ -27,9 +27,13 @@ fr:
       new:
         page_title: "Déposer une offre de stage"
     schools:
+      show:
+        page_title: "Classes du %{name}"
+      information:
+        page_title: 'Informations relatives aux conventions'
       internship_agreement_presets:
         edit:
-          page_title: "Modifier les informations relative aux convetions"
+          page_title: "Modifier les informations relatives aux conventions"
       internship_applications:
         index:
           page_title: "Conventions de stage"
@@ -47,6 +51,8 @@ fr:
             page_title: "Élèves de la classe"
       edit:
         page_title: Semaines de stage
+      manager_school:
+        page_title: 'Informations relatives au %{name}'
       students:
         index:
           page_title: "Élèves des classes du %{name}"
@@ -65,10 +71,12 @@ fr:
       index:
         page_title: "Conventions de stage"
     internship_agreements:
+      index:
+        page_title: 'Mes conventions de stage'
       new:
         page_title: 'Nouvelle convention de stage'
       edit:
-        page_title: "Edition de la convention de stage pour %{name}"
+        page_title: "Edition de la convention de stage"
     support_tickets:
       new:
         page_title: "Demande de stage à distance"
@@ -116,9 +124,17 @@ fr:
     internship_offers:
       index:
         page_title: "Statistiques des offres"
+      employers_offers:
+        page_title: Statistiques par catégories d'entreprises
     schools:
       index:
         page_title: "Statistiques sur les établissements"
+    
+  identities:
+    new:
+      page_title: "Inscription élève - etape 1 sur 2"
+    edit:
+      page_title: "Modification inscription élève"
   users:
     confirmations:
       new:

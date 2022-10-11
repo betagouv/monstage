@@ -35,19 +35,21 @@ module Dashboard
       end
 
       test 'GET class_rooms#index as SchoolManagement shows link to manage school' do
-        school = create(:school)
-        school_manager = create(:school_manager, school: school)
+        school = create(:school , :with_school_manager, :with_weeks)
 
-        sign_in(school_manager)
+        sign_in(school.school_manager)
         get dashboard_school_class_rooms_path(school)
-
-        assert_select 'a.nav-link[href=?]',
+        assert_select 'li a[href=?]',
                       dashboard_school_users_path(school),
                       { count: 1 },
                       'missing link to manage school users'
-        assert_select 'a.nav-link[href=?]',
+        assert_select 'li a[href=?]',
                       edit_dashboard_school_path(school),
-                      { count: 2 },
+                      { count: 1 },
+                      'missing or extra link to manage school weeks'
+        assert_select 'li a[href=?]',
+                      dashboard_school_path(school),
+                      { count: 1 },
                       'missing or extra link to manage school weeks'
       end
 
@@ -56,10 +58,10 @@ module Dashboard
         school_manager = create(:school_manager, school: school)
 
         sign_in(school_manager)
-        get dashboard_school_class_rooms_path(school)
+        get school_manager.custom_dashboard_path
 
-        assert_select '.alert.alert-info p', text: "Renseignez les classes pour permettre aux enseignants (et aux élèves) de s'inscrire."
-        assert_select '.alert.alert-info p', text: 'Indiquez les semaines de stage afin que les offres proposées aux élèves correspondent à ces dates.'
+        assert_select '.modal-body p',
+                      text: 'Veuillez renseigner vos dates de stage afin que vos élèves puissent commencer à postuler.'
       end
 
       test 'GET class_rooms#index contains key navigations links to manage school classroom' do
@@ -75,17 +77,18 @@ module Dashboard
         roles.map do |user|
           sign_in(user)
           role = user.type
-          get dashboard_school_class_rooms_path(school)
+          get dashboard_school_path(school)
+          follow_redirect!
           assert_response :success
 
           # new link
-          assert_select 'a.btn-primary[href=?]',
+          assert_select 'a.fr-btn[href=?]',
                         new_dashboard_school_class_room_path(school),
                         { count: 1 },
                         "missing link to add class_room for #{role}"
 
           # destroy links
-          assert_select 'form[action=?]',
+          assert_select 'a.float-right[href=?]',
                         dashboard_school_class_room_path(school, class_room_without_student),
                         { count: 1 },
                         "missing link to destroy class_room for #{role}"
@@ -120,10 +123,10 @@ module Dashboard
           get dashboard_school_class_rooms_path(school)
           class_rooms.map do |class_room|
             assert_select '.d-sm-none a[href=?]',
-                          dashboard_school_class_room_path(school, class_room),
+                          dashboard_school_class_room_students_path(school, class_room),
                           count: 1, text: 'Voir le détail'
             assert_select '.col-sm-12 a[href=?]',
-                          dashboard_school_class_room_path(school, class_room),
+                          dashboard_school_class_room_students_path(school, class_room),
                           count: 1, text: class_room.name
 
             stats = Presenters::Dashboard::ClassRoomStats.new(class_room: class_room)
@@ -153,9 +156,9 @@ module Dashboard
 
         get dashboard_school_class_rooms_path(school)
         assert_response :success
-        assert_select "tr[data-test=\"student-not-in-class-room-#{student_in_class_room.id}\"]", count: 0
-        assert_select "tr[data-test=\"student-not-in-class-room-#{student_anonymized.id}\"]", count: 0
-        assert_select "tr[data-test=\"student-not-in-class-room-#{student_not_in_class_room_not_anonymized.id}\"]", count: 1
+        assert_select "div[data-test=\"student-not-in-class-room-#{student_in_class_room.id}\"]", count: 0
+        assert_select "div[data-test=\"student-not-in-class-room-#{student_anonymized.id}\"]", count: 0
+        assert_select "div[data-test=\"student-not-in-class-room-#{student_not_in_class_room_not_anonymized.id}\"]", count: 1
       end
     end
   end

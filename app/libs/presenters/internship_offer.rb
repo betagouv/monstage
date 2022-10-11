@@ -21,15 +21,6 @@ module Presenters
         ]
       }
     end
-    def mobile_tag_filter_options
-      options = filter_options[:mobile_extra_option] +
-                filter_options[:options]
-      options.map { |option| [ option[:label], option[:value]] }
-    end
-
-    def large_number(number)
-      number.to_s.reverse.gsub(/...(?=.)/,'\& ').reverse
-    end
 
   end
 end

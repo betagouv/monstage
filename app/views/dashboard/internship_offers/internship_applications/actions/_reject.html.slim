@@ -2,5 +2,9 @@
           internship_application: internship_application,
           aasm_target: :reject!,
           modal_opener_label: 'Refuser',
+          subtitle: 'Motif du refus',
+          message: "Une fois la candidature refusée, un email de notification " \
+                              "va être envoyé à l'élève avec le motif du refus.",
+          rich_text: true,
           modal_id: "reject-internship-application-#{internship_application.id}",
-          fa_icon: "fa-ban"
+          fa_icon: "fr-icon-close-line"

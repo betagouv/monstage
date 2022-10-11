@@ -4,7 +4,7 @@ require 'rails_admin/config/actions/base'
 module RailsAdmin
   module Config
     module Actions
-      class SwitchUser <  RailsAdmin::Config::Actions::Base
+      class SwitchUser <  Base
         RailsAdmin::Config::Actions.register(self)
 
         register_instance_option :visible? do
@@ -16,7 +16,7 @@ module RailsAdmin
         end
 
         register_instance_option :link_icon do
-          'icon-eye-open'
+          'fas fa-eye'
         end
 
         # You may or may not want pjax for your action

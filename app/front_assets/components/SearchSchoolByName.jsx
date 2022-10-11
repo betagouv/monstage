@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import $ from 'jquery';
 import Downshift from 'downshift';
-import { visitURLWithOneParam, getParamValueFromUrl, clearSearch } from '../utils/urls';
+import { visitURLWithOneParam, getParamValueFromUrl, clearSearch, turboVisitsWithSearchParams, searchParamsFromHash } from '../utils/urls';
 import { endpoints } from '../utils/api';
 
 const StartAutocompleteAtLength = 2;
@@ -12,6 +12,7 @@ export default function SearchSchool({
   required, // PropTypes.bool.isRequired
   resourceName, // PropTypes.string.isRequired
   chosenSchoolName,
+  statisticianDepartment,
 }) {
   const [currentRequest, setCurrentRequest] = useState(null);
   const [requestError, setRequestError] = useState(null);
@@ -28,6 +29,14 @@ export default function SearchSchool({
     return city.replace(/<b>/g, '').replace(/<\/b>/g, '');
   };
 
+  const isStatistician = () => {
+    return (!!statisticianDepartment);
+  }
+
+  const departmentFilter = (resultArr) => {
+    return resultArr.filter(res => res.department == statisticianDepartment)
+  }
+
   const emitRequest = (cityName) => {
     setCurrentRequest(
       $.ajax({ type: 'POST', url: endpoints['apiSearchSchool'](), data: { query: cityName } })
@@ -37,7 +46,8 @@ export default function SearchSchool({
   };
 
   const fetchDone = (result) => {
-    setSearchSchoolsSuggestions(result.match_by_name);
+    const records = (isStatistician()) ? departmentFilter(result.match_by_name) : result.match_by_name
+    setSearchSchoolsSuggestions(records);
     setAutocompleteNoResult(result.no_match);
     setRequestError(null);
     setCurrentRequest(null);
@@ -58,14 +68,18 @@ export default function SearchSchool({
     setSearchSchoolsSuggestions([]);
     setAutocompleteNoResult(false);
     setCurrentRequest(null);
-    clearSearch();
+    (isStatistician()) ? visitURLWithOneParam('department', statisticianDepartment) : clearSearch();
   };
 
   // search is done by city only
   // see: https://github.com/downshift-js/downshift#onchange
   const onDownshiftChange = (selectedItem) => {
     setCity(selectedItem.city);
-    visitURLWithOneParam('school_id', selectedItem.id);
+    if (isStatistician()) {
+      const searchHash = { 'school_id': selectedItem.id, 'department': statisticianDepartment };
+      turboVisitsWithSearchParams(searchParamsFromHash(searchHash));
+    }
+    else { visitURLWithOneParam('school_id', selectedItem.id); }
   };
 
   const inputChange = (event) => {
@@ -95,29 +109,30 @@ export default function SearchSchool({
           highlightedIndex,
           selectedItem,
         }) => (
-          <div className="name-search form-group custom-label-container">
-            <div className="input-group">
+          <div className="name-search custom-label-container smashed">
+            <div className="group">
+              <label
+                {...getLabelProps({ className: `fr-label ${cityCurrentlyChosen ? 'chosen-name' : 'not-chosen-name'}`, htmlFor: `${resourceName}_school_city` })}
+              >
+                {cityCurrentlyChosen ? chosenSchoolName : label}
+              </label>
               <input
                 {...getInputProps({
                   onChange: inputChange,
                   onFocus: inputFocus,
                   value: currentCityString(),
-                  className: `smashed form-control form-control-lg ${classes || ''} ${autocompleteNoResult ? 'rounded-0' : ''}`,
+                  className: `fr-input ${classes || ''} ${autocompleteNoResult ? 'rounded-0' : ''}`,
                   id: `${resourceName}_school_name`,
                   name: `${resourceName}[school][name]`,
                   required: required,
                 })}
               />
-              <label
-                {...getLabelProps({ className: cityCurrentlyChosen ? 'chosen-name' : 'not-chosen-name', htmlFor: `${resourceName}_school_city` })}
-              >
-                {cityCurrentlyChosen ? chosenSchoolName : label}
-              </label>
-              <div className="input-group-append">
+
+              {/* <div className="float-right">
                 {!currentRequest && (
                   <button
                     type="button"
-                    className={`btn btn-clear-city  ${cityCurrentlyChosen ? 'text-danger' : 'text-primary'}`}
+                    className={`fr-btn btn-clear-city  ${cityCurrentlyChosen ? 'text-danger' : 'text-primary'}`}
                     onClick={onResetSearch}
                     aria-label="Réinitialiser la recherche"
                   >
@@ -127,16 +142,16 @@ export default function SearchSchool({
                 {currentRequest && (
                   <button
                     type="button"
-                    className="btn btn-outline-secondary btn-clear-city"
+                    className=" fr-btn fr-btn--secondary btn-clear-city"
                     onClick={onResetSearch}
                     aria-label="Réinitialiser la recherche"
                   >
                     <i className="fas fa-spinner fa-spin" />
                   </button>
                 )}
-              </div>
+              </div> */}
             </div>
-            <div className="search-in-place bg-white shadow">
+            <div className="search-in-place bg-white">
               <ul
                 {...getMenuProps({
                   className: `${classes || ''

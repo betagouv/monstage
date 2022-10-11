@@ -1,5 +1,21 @@
-p style=head_styles
-  = "Candidature au stage \"#{@internship_application.internship_offer.title}\" refusée..."
+p style=(p_styles)
+  |Bonjour,
+p style=(p_styles)
+  = "Votre candidature au stage \"#{@internship_application.internship_offer.title}\" a été refusée par l'employeur."
 
-= @internship_application.rejected_message.to_s
+p style=(p_styles)
+  | Voici le motif du refus :
+
+  br
+  = @internship_application.rejected_message.to_s
+
+p style=(p_styles)
+  |Vous souhaitant une bonne continuation dans vos recherches de stage sur la plateforme&nbsp;
+  = link_to('www.monstagedetroisieme.fr', @host.html_safe)
+  | .
+
+p style=(p_styles)
+  | A bientôt
+  br
+  | L'équipe Mon Stage de 3e.
 

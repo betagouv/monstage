@@ -1,0 +1,35 @@
+#offers-panel.fr-tabs__panel.fr-tabs__panel--selected role="tabpanel" aria-labelledby="associations" tabindex="0"
+  .rounded.p-3[data-controller='statistics']
+    = render partial: 'reporting/filters', locals: {view_tab: :associations}
+
+  .row.mt-3
+    .col-12
+      .table.table.table-statistics.table-sticky-thead
+        .thead
+          .tr.tr-blue
+            .th.bl-1.bc-light= Operator.model_name.human
+            .th.bl-1.bc-light= Operator.human_attribute_name(:target_count)
+            .th.bl-1.bc-light data-toggle="tooltip" data-placement="top" title="Stages pourvus hors plateforme : somme des stages présentiels, distanciels, hybrides, ateliers et conférences métier" data-controller='tooltip' Stages Pourvus
+            .th.bl-1.bc-light.bg-blue-light data-toggle="tooltip" data-placement="top" title="Stages pourvus hors plateforme : somme des stages présentiels" data-controller='tooltip' dont présentiels
+            .th.bl-1.bc-light.bg-blue-light data-toggle="tooltip" data-placement="top" title="Stages pourvus hors plateforme : somme des stages hybrides" data-controller='tooltip' dont hybrides
+            .th.bl-1.bc-light.bg-blue-light data-toggle="tooltip" data-placement="top" title="Stages pourvus hors plateforme : somme des stages distanciels et conférences métier" data-controller='tooltip' dont à distance / conférences
+            .th.bl-1.bc-light data-toggle="tooltip" data-placement="top" title="Stages pourvus hors plateforme : somme des ateliers" data-controller='tooltip' Ateliers
+            .th.bl-1.bc-light Dernière mise à jour
+            .th.bl-1.bc-light
+
+        .tbody= render partial: 'reporting/operators/operator', collection: @operators
+
+        .tr class="font-weight-bold text-blue"
+          .td.align-middle.bl-1.bc-light Total
+          .td.align-middle.bl-1.bc-light.text-blue.font-weight-bold= @operators.sum(&:target_count)
+          .td.align-middle.bl-1.bc-light= AirTableRecord.during_year(school_year: params[:school_year]).countable_in_grand_total.sum(:nb_spot_used)
+          .td.align-middle.bl-1.bc-light= AirTableRecord.during_year(school_year: params[:school_year]).onsite.sum(:nb_spot_used)
+          .td.align-middle.bl-1.bc-light= AirTableRecord.during_year(school_year: params[:school_year]).hybrid.sum(:nb_spot_used)
+          .td.align-middle.bl-1.bc-light= AirTableRecord.during_year(school_year: params[:school_year]).remote.sum(:nb_spot_used)
+          .td.align-middle.bl-1.bc-light= AirTableRecord.during_year(school_year: params[:school_year]).workshop.sum(:nb_spot_used)
+          .td.align-middle.bl-1.bc-light= AirTableRecord.last_modified_at.try(:strftime, '%d-%m-%Y') || '-'
+          .td.align-middle.bl-1.bc-light
+
+  .row.mt-3.mb-3
+    .col-12.text-center
+      = link_to "Exporter", reporting_operators_path(format: :xlsx), class: 'fr-btn btn-danger', data: {turbolinks: false}

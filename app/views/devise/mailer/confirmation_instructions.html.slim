@@ -2,8 +2,7 @@ p style=head_styles
   | Plus qu'une étape...
 p style=p_styles
   | Bienvenue
-  = " #{@resource.formal_name}"
-  | ,
+  = " #{@resource.presenter.formal_name}, "
   br /
   | Votre compte a bien été enregistré !
   br /

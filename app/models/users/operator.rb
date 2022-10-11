@@ -13,11 +13,23 @@ module Users
     before_create :set_api_token
 
     rails_admin do
+      weight 7
+
       list do
-        fields(*UserAdmin::DEFAULTS_FIELDS)
+        fields(*UserAdmin::DEFAULT_FIELDS)
+        field :operator
+        fields(*UserAdmin::ACCOUNT_FIELDS)
+
+        scopes(UserAdmin::DEFAULT_SCOPES)
+      end
+
+      edit do
+        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
         field :operator
       end
     end
+
+    def operator? ; true end
 
     def custom_dashboard_path
       url_helpers.dashboard_internship_offers_path
@@ -28,6 +40,8 @@ module Users
     def dashboard_name
       'Mes offres'
     end
+
+    def operator? ; true end
 
     def presenter
       Presenters::Operator.new(self)

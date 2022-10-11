@@ -7,18 +7,33 @@ module Users
     after_action :remove_notice, only: %i[destroy create]
     after_action :switch_back, only: %i[destroy]
 
+    def new
+      super and return if confirmed? ||
+                          params[:check_confirmation].nil?
+
+      redirect_to_path = users_registrations_standby_path(
+        check_confirmation: true,
+        id: params[:id]
+      )
+      flash_message = 'Vous trouverez parmi vos emails le message' \
+                      ' permettant l\'activation de votre compte'
+      redirect_to(redirect_to_path, flash: { warning: flash_message }) and return
+    end
+
     def create
       if by_phone? && fetch_user_by_phone.try(:valid_password?, params[:user][:password])
         user = fetch_user_by_phone
-        store_targeted_offer_id(user: user)
-        if user.confirmed?
-          sign_in(user)
-          redirect_to after_sign_in_path_for(user)
-        else
-          user.send_sms_token
-          redirect_to users_registrations_phone_standby_path(phone: safe_phone_param)
+        if user.student?
+          store_targeted_offer_id(user: user)
+          if user.confirmed?
+            sign_in(user)
+            redirect_to after_sign_in_path_for(user)
+          else
+            user.send_sms_token
+            redirect_to users_registrations_phone_standby_path(phone: safe_phone_param)
+          end
+          return
         end
-        return
       end
       store_targeted_offer_id(user: fetch_user_by_email)
       super
@@ -42,7 +57,9 @@ module Users
       devise_parameter_sanitizer.permit(
         :sign_in,
         keys: %i[
+          check_confirmation
           email
+          id
           phone
           targeted_offer_id
         ]
@@ -55,6 +72,13 @@ module Users
       flash.delete(:notice)
     end
 
+    def confirmed?
+      return false if params[:check_confirmation].nil? || params[:id].nil?
+
+      identify_user_with_id
+      @user && @user.confirmed_at.present?
+    end
+
     def switch_back
       cookie_name = Rails.application.credentials.dig(:cookie_switch_back)
       switch_back = cookies.signed[cookie_name]
@@ -64,6 +88,10 @@ module Users
       user = User.find(switch_back)
       cookies.delete(cookie_name)
       sign_in(user, scope: :user)
+    end
+
+    def identify_user_with_id
+      @user = User.find_by(id: params[:id])
     end
   end
 end

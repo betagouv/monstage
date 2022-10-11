@@ -1,7 +1,19 @@
+.modal {
+  z-index: 10001;
+}
 .modal-header{border-bottom: none;}
 
 .modal-footer{border-top: none;}
 
 .close-absolute{
   right: 10px
+}
+.alert.alert-sticky.alert-success{
+  background-color: $green;
+}
+.alert.alert-sticky.alert-warning{
+  background-color: var(--warning);
+}
+.alert.alert-sticky.alert-danger{
+  background-color: $red-marianne;
 }

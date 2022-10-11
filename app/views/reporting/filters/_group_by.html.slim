@@ -1,0 +1,7 @@
+.col-md-3.col-12
+  .form-group.smashed.custom-label-container
+    = label_tag :dimension, 'Grouper par', class: 'fr-label'
+    = select_tag :dimension,
+                  options_for_select([['Secteurs professionnels', 'sector'],['Groupe ou institution de tutelle', 'group']], selected: params[:dimension]),
+                  class: 'fr-select',
+                  data: { action: 'statistics#useDimension' }

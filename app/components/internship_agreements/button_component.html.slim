@@ -1,9 +1,31 @@
-- if internship_agreement.validated?
-  = link_to dashboard_internship_agreement_path(internship_agreement, format: :pdf),  target: "_blank", class: 'btn btn-outline-primary ml-2 text-nowrap btn-sm', data: { test: "active-internship-agreement-progress-#{internship_agreement.id}" } do
-    = label
-- elsif @current_user.is_a?(Users::Employer) || internship_agreement.completed_by_employer? || internship_agreement.started_by_school_manager?
-  = link_to edit_dashboard_internship_agreement_path(internship_agreement), class: 'btn btn-outline-primary ml-2 text-nowrap btn-sm' do
-    = label
-- else 
-  = link_to label, '', class: 'btn btn-outline-primary ml-2 text-nowrap disabled btn-block btn-sm'
+- classes = 'd-flex justify-content-center button-component-cta-button fr-btn ml-2 fr-high-buttons text-center btn-block btn-sm'
+.row.text-left
+  .col-md-6.col-sm-12.mb-1
+    - if label[:status] == 'disabled'
+      = link_to label[:text],
+                '',
+                class: "#{classes} disabled"
+    - elsif %w[validated signatures_started signed_by_all signed].include?(internship_agreement.aasm_state)
+      = link_to dashboard_internship_agreement_path(internship_agreement, format: :pdf),
+                target: "_blank",
+                class: "#{classes} fr-btn--secondary",
+                data: { test: "active-internship-agreement-progress-#{internship_agreement.id}" } do
+        = label[:text]
+    - elsif @current_user.employer? || %w[completed_by_employer started_by_school_manager].include?(internship_agreement.aasm_state)
+      = link_to edit_dashboard_internship_agreement_path(internship_agreement),
+                class: "#{classes} #{(label[:status] == 'secondary_cta') ? 'fr-btn--secondary' : ''}" do
+        = label[:text]
+    - else
+      = link_to '', class: "#{classes} fr-btn--secondary disabled" do
+        = "url to define - #{label[:text]}"
+
+  .col-md-6.col-sm-12.mb-1
+    - primary_button_classes = "fr-btn button-component-cta-button ml-2 text-center fr-high-buttons btn-sm"
+    - if second_label[:status] == 'disabled'
+        = link_to second_label[:text],
+                  '',
+                  class: "#{primary_button_classes} disabled"
+    - elsif internship_agreement.validated? || internship_agreement.signatures_started?
+      button class="#{primary_button_classes}"  data-group-signing-target="signingButton" data-group-signing-id-param="#{internship_agreement.id}" data-action="group-signing#toggleFromButton"
+        = second_label[:text]
 

@@ -1,26 +1,16 @@
 .bg-dark-light{
   background-color: #f8f8f8;
 }
+.fr-btn.fr-red-background-btn {
+  background: var(--background-action-high-red-marianne);
 
-.bg-light-warning{
-  background-color: rgba(
-      red($warning),
-      green($warning),
-      blue($warning),
-      .2
-    );
-}
-.bg-less-light-blue{
-  background-color: $bg-less-light-blue;
-}
-
-.bg-light-green{
-  background-color: rgb(82,201,160);
-}
-@include media-breakpoint-down(xs) {
-  .bg-light-gray-sm{
-    background-color: $gray-200;
+  &:hover {
+    background-color: var(--background-action-high-red-marianne-hover);
   }
+}
+
+.bg-less-light-blue{
+  background-color: $blue-france-light;
 }
 
 @for $i from 1 through 9 {
@@ -28,7 +18,6 @@
     background-color: lighten($success, $i * 10%);
   }
 }
-
 
 @for $i from 1 through 9 {
   .bg-dark-#{$i}0 {

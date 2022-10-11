@@ -2,18 +2,18 @@
 
 class GodMailer < ApplicationMailer
   require_relative '../libs/email_utils'
-  default from: proc { EmailUtils.formatted_email }
+  default from: proc { EmailUtils.formatted_from }
 
   def weekly_kpis_email
-    current_week = Week.selectable_from_now_until_end_of_school_year.first
-    last_week = Week.find(current_week.id.to_i - 2)
-    @last_monday = last_week.week_date
+    @last_monday = Date.today - Date.today.wday.days - 6
     @last_sunday = @last_monday + 6.days
     @kpis = Reporting::Kpi.new.last_week_kpis(
       last_monday: @last_monday,
       last_sunday: @last_sunday
     )
-    @human_date = Date.today.strftime('%d %B %Y')
+    @human_date        = I18n.l Date.today,   format: '%d %B %Y'
+    @human_last_monday = I18n.l @last_monday, format: '%d %B %Y'
+    @human_last_sunday = I18n.l @last_sunday, format: '%d %B %Y'
 
     mail(
       to: ENV['TEAM_EMAIL'],
@@ -21,4 +21,3 @@ class GodMailer < ApplicationMailer
     )
   end
 end
-

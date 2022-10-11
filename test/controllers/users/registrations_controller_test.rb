@@ -11,65 +11,68 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
   test 'GET #choose_profile' do
     get users_choose_profile_path
     assert_select 'title', "Création de compte | Monstage"
-    assert_select 'a[href=?]', '/users/sign_up?as=Student'
+    assert_select 'a[href=?]', '/identities/new?as=Student'
     assert_select 'a[href=?]', '/users/sign_up?as=Employer'
     assert_select 'a[href=?]', '/users/sign_up?as=SchoolManagement'
     assert_select 'a[href=?]', '/users/sign_up?as=Statistician'
+    assert_select 'a[href=?]', '/users/sign_up?as=MinistryStatistician'
   end
 
-  test 'GET #registrations_standby as student using path?email=fourcade.m@gmail.com with pending account' do
+  test 'GET #registrations_standby as student using path?id=#id with pending account' do
     email = 'fourcade.m@gmail.com'
-    create(:student, email: email, confirmed_at: nil)
-    get users_registrations_standby_path(email: email)
+    student = create(:student, email: email, confirmed_at: nil)
+    get users_registrations_standby_path(id: student.id)
     assert_response :success
-    assert_select 'span.confirmation-text', text: 'Votre compte a bien été enregistré'
+    assert_select('p.h2', text: '1 . Activez votre compte !')
   end
 
-  test 'GET #registrations_standby as employer using path?email=fourcade.m@gmail.com with pending account' do
+  test 'GET #registrations_standby as employer using path?id=#id with pending account' do
     email = 'fourcade.m@gmail.com'
-    create(:employer, email: email, confirmed_at: nil)
-    get users_registrations_standby_path(email: email)
+    employer = create(:employer, email: email, confirmed_at: nil)
+    get users_registrations_standby_path(id: employer.id)
     assert_response :success
-    assert_select 'span.confirmation-text', text: 'Votre compte a bien été enregistré'
+    assert_select('p.h2', text: '1 . Activez votre compte !')
   end
 
-  test 'GET #registrations_standby using path?email=fourcade.m@gmail.com with confirmed account' do
+  test 'GET #registrations_standby using path?id=#id with confirmed account' do
     email = 'fourcade.m@gmail.com'
-    create(:student, email: email, confirmed_at: Time.now)
-    get users_registrations_standby_path(email: email)
+    student = create(:student, email: email, confirmed_at: Time.now)
+    get users_registrations_standby_path(id: student.id)
     assert_response :success
     assert_select '.alert.alert-success', text: "Votre compte est déjà confirmé (#{email}).Veuillez vous connecter"
   end
 
-  test 'GET #registrations_standby using path?email=fourcade.m@gmail.com with unknown account' do
-    email = 'fourcade.m@gmail.com'
-    get users_registrations_standby_path(email: email)
+  # What use case ??
+  test 'GET #registrations_standby using path?id=#id with unknown account' do
+    random_id = 132
+    get users_registrations_standby_path(id: random_id)
     assert_response :success
-    assert_select '.alert.alert-danger', text: "Aucun compte n'est lié au mail: #{email}.Veuillez créer un compte"
+    assert_select '.alert.alert-danger', text: "Aucun compte n'est lié à cet identifiant : #{random_id}.Veuillez créer un compte"
   end
 
-  test 'GET #users_registrations_phone_standby as student using path?phone=+330611223344 with pending account' do
+  test 'GET #users_registrations_phone_standby as student using path?id=#id with pending account' do
     phone = '+330611223344'
     create(:student, phone: phone, confirmed_at: nil)
     get users_registrations_phone_standby_path(phone: phone)
     assert_response :success
-    assert_select 'span.confirmation-text', text: 'Votre compte a bien été enregistré'
+    assert_select('h1.h2', text: 'Encore une petite étape...')
   end
 
   test 'GET #registrations_standby using path?phone=0611223344 with confirmed phone' do
     phone = '+330611223344'
-    create(:student, phone: phone, phone_token_validity: nil)
-    get users_registrations_phone_standby_path(phone: phone)
+    student = create(:student, phone: phone, phone_token_validity: nil)
+    get users_registrations_phone_standby_path(id: student.id)
     assert_response :success
     assert_select '.alert.alert-success', text: "Votre compte est déjà confirmé (#{phone}).Veuillez vous connecter"
   end
 
-  test 'GET #registrations_standby using path?phone=+330611223344 with unknown account' do
-    phone = '+330611223344'
-    get users_registrations_phone_standby_path(phone: phone)
-    assert_response :success
-    assert_select '.alert.alert-danger', text: "Aucun compte n'est lié au téléphone: #{phone}.Veuillez créer un compte"
-  end
+  # What use case ??
+  # test 'GET #registrations_standby using path?id=#id with unknown account but whith phone' do
+  #   phone = '+330611223344'
+  #   get users_registrations_phone_standby_path(phone: phone)
+  #   assert_response :success
+  #   assert_select '.alert.alert-danger', text: "Aucun compte n'est lié au téléphone: #{phone}.Veuillez créer un compte"
+  # end
 
   test 'POST #phone_validation redirect to sign in with phone preselected' do
     phone = '+330611223344'

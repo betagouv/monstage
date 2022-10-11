@@ -2,34 +2,29 @@
   .col.bg-light.pb-3
     .row.no-gutters.internship_application.bg-light.my-3.py-3
       .col-1.col-sm-1.text-center
-        a.d-block.btn-link href="#internship-application-#{internship_application.id}" data-action="click->internship-application-index#toggle" data-internship-application-index-target="linkIconContainer" title="Afficher le détail de la candidature de #{internship_application.student.name}" data-turbolinks="false"
+        a.d-block.btn-link href="#internship-application-#{internship_application.id}" data-action="click->internship-application-index#toggle" data-internship-application-index-target="linkIconContainer" title="Afficher le détail de la candidature de #{internship_application.student.name}" data-turbo="false"
           - if internship_application.submitted?
-            i.fas.fa-2x.text-danger.fa-caret-down
+            span.text-danger.fr-icon--lg.fr-icon-arrow-right-s-line aria-hidden="true"
           - else
-            i.fas.fa-2x.text-danger.fa-caret-right
-      .col-11
-        .row
-          .col-sm-8.col-xs-12
-            .d-flex.flex-row.align-items-baseline
-              h2.h4.font-weight-light.mr-2 Candidature de
-              h2.h4 name="internship-application-#{internship_application.id}"
-                = internship_application.student.name
-          .col-sm-4.col-xs-12
-            .font-weight-light.text-right.pr-3
-              | A postulé
-              br
-            .font-weight-bold.text-right.pr-3
-              = " le #{localize(internship_application.created_at, format: "%d %B")}"
+            span.text-danger.fr-icon--lg.fr-icon-arrow-down-s-line aria-hidden="true"
+        .h4.mb-0 name="internship-application-#{internship_application.id}"
+          = internship_application.student.name
+      .col-sm-4.col-xs-12.d-flex.align-items-center.text-right
+        .w-100
+          span.font-weight-light
+            = "A postulé "
+          span.font-weight-bold
+            = " le #{localize(internship_application.created_at, format: "%d %B")}"
     - if internship_application.respond_to?(:week)
-      .row.no-gutters.ml-4.mt-2
-        .col-10
-          i.fas.fa-calendar-alt.mr-2
-          = "Pour la semaine "
+      .row.no-gutters.mt-3
+        .col-10.grey-on-grey
+          span.fr-fi-calendar-line.fr-fi--sm
+          span.mx-2= "Pour la semaine"
           strong= "#{internship_application.week.short_select_text_method}"
-    .row.no-gutters.ml-4
+    .row.no-gutters
       .col-10
-          h3.h6.mt-4  Motivations
-    .row.no-gutters.ml-4
+          h3.h6.mt-3 Motivations
+    .row.no-gutters
       .col-10
         - if internship_application.submitted?
           div class="mb-3 reboot-trix-content" data-internship-application-index-target='motivation'= internship_application.motivation.to_s
@@ -38,12 +33,12 @@
         - else
           div class="mb-3 reboot-trix-content text-truncate-max-height-50"        data-internship-application-index-target='motivation'= internship_application.motivation.to_s
 
-    .row.no-gutters.ml-4
+    .row.no-gutters
       .col-10
-        a class="btn-link #{internship_application.submitted? ? 'd-none' : ''}" href="#internship-application-#{internship_application.id}" data-action="click->internship-application-index#toggle" data-internship-application-index-target="linkTextShowMore" data-turbolinks="false" title="Afficher le détail de la candidature de #{internship_application.student.name}"
-          | Tout afficher +
+        a class="btn-link fr-raw-link #{internship_application.submitted? ? 'd-none' : ''}" href="#internship-application-#{internship_application.id}" data-action="click->internship-application-index#toggle" data-internship-application-index-target="linkTextShowMore" data-turbo="false" title="Afficher le détail de la candidature de #{internship_application.student.name}"
+          | + Tout afficher
 
-    .row.no-gutters.ml-4.mt-2
+    .row.no-gutters.mt-2
       .col-10.collapsible data-internship-application-index-target="collapsible"
         .row
           .col-12.mb-3
@@ -52,25 +47,54 @@
               | Informations sur l'élève
             = render partial: "users/resume_details", locals: {student: internship_application.student}
         .row
-          .col-md-6.col-sm-12
-            h3.h6 Parcours Scolaire
-            .reboot-trix-content= internship_application.student.resume_educational_background.to_s
-            - if internship_application.student.resume_languages.present?
-              h3.h6.mt-3  Langues
-              .reboot-trix-content= internship_application.student.resume_languages.to_s
+          - resume_content = internship_application.student.resume_educational_background.to_s
+          - resume_languages = internship_application.student.resume_languages.to_s
+          - resume_other = internship_application.student.resume_other.to_s
+          .col-md-4.col-sm-8.col-xs-12
+            - if resume_content.present? || resume_languages.present?
+              h3.h6 Parcours Scolaire
+              .reboot-trix-content = resume_content
+              - if resume_languages.present?
+                h3.h6.mt-3 Langues
+                .reboot-trix-content = resume_languages
 
-          .col-md-6.col-sm-12
-            h3.h6 Activités extra-scolaires
-            .reboot-trix-content= internship_application.student.resume_other.to_s
+          .col-md-4.col-sm-8.col-xs-12
+            - if resume_other.present?
+              h3.h6 Activités extra-scolaires
+              .reboot-trix-content = resume_other
 
         - if internship_application.student.handicap?
           h3.h6.mt-3
             i.fas.fa-wheelchair
             Besoin d'accompagnement
-          .reboot-trix-content.student-handicap= internship_application.student.handicap.to_s
-    .row.no-gutters.ml-4
-      .col-10
-        .d-flex.flex-row.mt-4
+          .reboot-trix-content.student-handicap = internship_application.student.handicap.to_s
+    .row.no-gutters
+      / labels
+      .col-md-6.col-sm-12.font-weight-bold
+        .d-flex.align-items-baseline.pt-2
+          - if internship_application.approved? || internship_application.convention_signed?
+            .d-flex.align-items-center.fr-text-with-success
+              span.fr-icon-check-line aria-hidden="true"
+              = " Candidature acceptée le #{localize(internship_application.approved_at, format: :human_mm_dd_hh)}"
+
+          - if internship_application.rejected?
+            .d-flex.align-items-center.text-dark
+              span.fr-icon-close-line aria-hidden="true"
+              = " Réponse négative du #{localize(internship_application.rejected_at, format: :human_mm_dd_hh)}"
+
+          - if internship_application.expired?
+            .d-flex.align-items-center.text-grey-50
+              span.fr-icon-calendar-fill aria-hidden="true"
+              = " Candidature expirée le #{localize(internship_application.expired_at, format: :human_mm_dd_hh)}"
+
+          - if internship_application.canceled_by_employer?
+            span.fr-icon-close-line aria-hidden="true" Candidature annulée par l'employeur (nous)
+          - if internship_application.canceled_by_student?
+            span.fr-icon-close-line aria-hidden="true"Candidature annulée par l'élève
+
+      .col-md-6.col-sm-12
+        / buttons
+        .d-flex.justify-content-end
           - if internship_application.submitted?
             = render "dashboard/internship_offers/internship_applications/actions/approve",
                       internship_application: internship_application
@@ -81,48 +105,15 @@
             = render "dashboard/internship_offers/internship_applications/actions/approve",
                       internship_application: internship_application
 
-    .row.no-gutters.mx-4
-      .col-1.d-sm-none
-
-      .col-sm-11.col-md-3
-        - if internship_application.approved? || internship_application.convention_signed?
-          div.d-flex.align-items-center
-            .d-inline-flex.mr-1.text-success
-              i.far.fa-circle.fa-2x.fa-fw
-            .d-inline-flex
-              = "Candidature acceptée"
-              br
-              = "Le #{localize(internship_application.approved_at, format: :human_mm_dd_hh)}"
-
-        - if internship_application.approved? && internship_application.student.school.internship_agreement_open? && can?(:create, InternshipAgreement) && internship_application.internship_agreement
-          div.d-flex.align-items-center.mt-2
-            .d-inline-flex
-              = render(InternshipAgreements::ButtonComponent.new(internship_agreement: internship_application.internship_agreement, current_user: current_user))
-
-        - if internship_application.rejected?
-          div.d-flex.align-items-center
-            .d-inline-flex.mr-1
-              i.fas.fa-ban.fa-2x.fa-fw
-            .d-inline-flex
-              = "Réponse négative"
-              br
-              = "Le #{localize(internship_application.rejected_at, format: :human_mm_dd_hh)}"
+          - if internship_application.approved? && internship_application.student.school.internship_agreement_open? && can?(:create, InternshipAgreement) && internship_application.internship_agreement
+            .d-flex.align-items-center.mt-2
+              .d-inline-flex
+                = link_to('Accéder à la convention de stage',
+                          edit_dashboard_internship_agreement_path(internship_application.internship_agreement),
+                          class: 'mr-4 font-weight-bold blue-france')
+          - if internship_application.approved?
+            = render "dashboard/internship_offers/internship_applications/actions/cancel",
+                      internship_application: internship_application
 
 
-        - if internship_application.expired?
-          div.d-flex.align-items-center
-            .d-inline-flex.mr-1
-              i.fas.fa-history.fa-2x.fa-fw
-            .d-inline-flex
-              = "Candidature expirée"
-              br
-              = "Le #{localize(internship_application.expired_at, format: :human_mm_dd_hh)}"
-      .col-sm-11.col-md-4.ml-3
-        - if internship_application.approved?
-          = render "dashboard/internship_offers/internship_applications/actions/cancel",
-                    internship_application: internship_application
-        - if internship_application.canceled_by_employer?
-          p.text-center.font-weight-bolder Candidature annulée par l'employeur (nous)
-        - if internship_application.canceled_by_student?
-          p.text-center.font-weight-bolder Candidature annulée par l'élève
 

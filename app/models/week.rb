@@ -28,12 +28,12 @@ class Week < ApplicationRecord
     where(year: year)
   }
 
-  scope :from_now, lambda { 
-    where('number >= ?', Date.current.cweek).where('year >= ?', Date.current.year) 
+  scope :from_now, lambda {
+    (where('number >= ?', Date.current.cweek).where('year >= ?', Date.current.year)).or(where('year > ?', Date.current.year))
   }
 
-  scope :in_the_future, lambda { 
-    where('number > ?', Date.current.cweek).where('year >= ?', Date.current.year) 
+  scope :in_the_future, lambda {
+    (where('number > ?', Date.current.cweek).where('year >= ?', Date.current.year)).or(where('year > ?', Date.current.year))
   }
 
   scope :from_date_for_current_year, lambda { |from:|
@@ -51,7 +51,7 @@ class Week < ApplicationRecord
   scope :selectable_from_now_until_end_of_school_year, lambda {
     school_year = SchoolYear::Floating.new(date: Date.today)
 
-    from_date_to_date(from: school_year.beginning_of_period,
+    from_date_to_date(from: school_year.updated_beginning_of_period,
                       to: school_year.end_of_period)
   }
 
@@ -62,6 +62,10 @@ class Week < ApplicationRecord
 
   scope :selectable_for_school_year, lambda { |school_year:|
     weeks_of_school_year(school_year: school_year.strict_beginning_of_period.year)
+  }
+
+  scope :selectable_on_specific_school_year, lambda { |school_year:|
+    weeks_of_school_year(school_year: school_year.beginning_of_period.year)
   }
 
   scope :selectable_on_school_year, lambda {
@@ -120,6 +124,7 @@ class Week < ApplicationRecord
     self.id.to_i == other_week.id.to_i + 1
   end
 
+  # This method is not used .... keep ?
   def self.airtablize(school_year = SchoolYear::Current.new)
     school_year_str = "#{school_year.beginning_of_period.year}-#{school_year.end_of_period.year}"
     weeks = Week.selectable_for_school_year(school_year: school_year)

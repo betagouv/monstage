@@ -12,6 +12,27 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_select '#user_password[autofocus=autofocus]', count: 0
   end
 
+  test 'GET #new_session with check_confirmation and id params and unconfirmed account' do
+    email = 'fourcade.m@gmail.com'
+    employer = create(:employer, email: email, confirmed_at: nil)
+    get new_user_session_path(params:{check_confirmation: true, id: employer.id})
+    follow_redirect!
+    assert_response :success
+    assert_select('.h2', text: '1 . Activez votre compte !')
+    flash_message = 'Vous trouverez parmi vos emails le message' \
+                      ' permettant l\'activation de votre compte'
+    assert_select('span#alert-text', text: flash_message) # 1
+  end
+
+  test 'GET #new_session with check_confirmation and id params and confirmed account' do
+    email = 'fourcade.m@gmail.com'
+    employer = create(:employer, email: email, confirmed_at: nil)
+    employer.confirm
+    get new_user_session_path(params:{check_confirmation: true, id: employer.id})
+    assert_response :success
+    assert_select('h1', text: 'Connexion')
+  end
+
   test 'GET with prefilled email works' do
     email = 'fourcade.m@gmail.com'
     get new_user_session_path(email: email)

@@ -4,11 +4,14 @@ module Dashboard
   module Schools::ClassRooms
     class StudentsController < ApplicationController
       include NestedSchool
-      include NestedClassRoom
 
-      def show
-        @student = @class_room.students.find(params[:id])
-        authorize! :show_user_in_school, @student
+      def index
+        authorize! :manage_school_students, current_user.school
+
+        @class_room = @school.class_rooms.find(params.require(:class_room_id))
+        @students = @class_room.students.kept
+                               .includes([:school, :internship_applications])
+                               .order(:last_name, :first_name)
       end
     end
   end

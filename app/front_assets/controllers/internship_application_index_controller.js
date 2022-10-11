@@ -5,8 +5,11 @@ import { toggleElement, hideElement, showElement, isVisible } from '../utils/dom
 export default class extends Controller {
   static targets = ['collapsible', 'linkIconContainer', 'motivation', 'linkTextShowMore'];
 
+  klassRight() { return ("fr-icon--lg fr-icon-arrow-right-s-line text-danger"); }
+  klassDown() { return ("fr-icon--lg fr-icon-arrow-down-s-line text-danger"); }
+
   initialize(){
-    $(this.linkIconContainerTarget).html(`<i class="fas fa-2x fa-caret-right text-danger"></i>`);
+    $(this.linkIconContainerTarget).html(`<span aria-hidden="true" class="${this.klassRight()}"></span>`);
     $(this.motivationTarget).addClass('text-truncate-max-height-50');
     hideElement($(this.collapsibleTarget));
     showElement($(this.linkTextShowMoreTarget));
@@ -20,9 +23,9 @@ export default class extends Controller {
     toggleElement($linkTextShowMore);
     $(this.motivationTarget).toggleClass('text-truncate-max-height-50');
     if (isVisible($collapsibleTarget)) {
-      $linkIconContainer.html(`<i class="fas fa-2x fa-caret-down text-danger"></i>`);
+      $linkIconContainer.html(`<span class="${this.klassDown()}"></span>`); 
     } else {
-      $linkIconContainer.html(`<i class="fas fa-2x fa-caret-right text-danger"></i>`);
+      $linkIconContainer.html(`<span class="${this.klassRight()}"></span>`);
     }
   }
 }

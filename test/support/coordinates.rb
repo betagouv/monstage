@@ -6,7 +6,7 @@ class Coordinates
   end
 
   def self.verneuil
-    { latitude: 48.9793, longitude:1.9754 }
+    { latitude: 48.9793, longitude: 1.9754 }
   end
 
   def self.bordeaux

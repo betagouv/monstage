@@ -36,7 +36,7 @@ module Dashboard
                 free_date_internship_applications)
         .map do |internship_application|
         internship_offer = internship_application.internship_offer
-        find(".test-internship-offer-#{internship_offer.id}", count: 1)
+        find(".test-internship-offer-#{internship_offer.id}")
       end
     end
 
@@ -47,10 +47,9 @@ module Dashboard
       sign_in(@employer)
 
       visit dashboard_internship_offer_internship_applications_path(weekly_internship_application.internship_offer)
-      find "div[data-test-id=\"internship-application-#{weekly_internship_application.id}\"]", count: 1
-      find('a.btn-link', text: 'Tout afficher +', exact_text: true)
-      find('.d-block.btn-link').click
-      click_on 'Accepter'
+      find "div[data-test-id=\"internship-application-#{weekly_internship_application.id}\"]"
+      click_link('+ Tout afficher')
+      click_on 'Accepter' 
       assert_changes -> { weekly_internship_application.reload.approved? },
                      from: false,
                      to: true do
@@ -94,19 +93,19 @@ module Dashboard
       sign_in(@employer)
 
       visit dashboard_internship_offer_internship_applications_path(internship_offer.id)
-      find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
-      find "div[data-test-id=\"internship-application-#{late_application_for_week_1.id}\"]", count: 1
-      find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
+      find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]"
+      find "div[data-test-id=\"internship-application-#{late_application_for_week_1.id}\"]"
+      find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]"
 
-      click_link('Dates de stage')
+      select('dates de stage')
       if week_1.id < week_2. id # normal case
-        find "div[data-test-id=\"internship-application-#{late_application_for_week_1.id}\"]", count: 1
+        find "div[data-test-id=\"internship-application-#{late_application_for_week_1.id}\"]"
       else # might happen with fixture random order creation
-        find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
+        find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]"
       end
 
-      click_link('Dates de candidature')
-      find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
+      select('dates de candidature')
+      find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]"
 
       click_link(internship_offer.title)
       find('div.h3', text: internship_offer.title, exact_text: true)
@@ -137,14 +136,13 @@ module Dashboard
       sign_in(@employer)
 
       visit dashboard_internship_offer_internship_applications_path(internship_offer.id)
-      find "div[data-test-id=\"internship-application-#{application_for_week_1.id}\"]", count: 1
+      find "div[data-test-id=\"internship-application-#{application_for_week_1.id}\"]"
 
       find("div[data-test-id=\"internship-application-#{application_for_week_1.id}\"]  button", text: 'Accepter').click
       click_button('Confirmer')
-      click_link('Tout afficher +')
-      find('.student-name > strong', text: "#{student_1.first_name} #{student_1.last_name}")
-      find('.student-email > strong', text: student_1.email)
-
+      click_link('+ Tout afficher')
+      find('.student-name', text: "#{student_1.first_name} #{student_1.last_name}")
+      find('.student-email', text: student_1.email)
     end
 
     test 'show free_date_internship_applications internship offers' do
@@ -154,8 +152,7 @@ module Dashboard
       sign_in(@employer)
 
       visit dashboard_internship_offer_internship_applications_path(free_date_internship_application.internship_offer)
-      find "div[data-test-id=\"internship-application-#{free_date_internship_application.id}\"]", count: 1
-      find('.d-block.btn-link').click
+      find "div[data-test-id=\"internship-application-#{free_date_internship_application.id}\"]"
       click_on 'Refuser'
       assert_changes -> { free_date_internship_application.reload.rejected? },
                      from: false,

@@ -21,7 +21,7 @@ module Dashboard
       private
 
       def set_current_student
-        @current_student = Users::Student.find(params[:student_id])
+        @current_student = ::Users::Student.find(params[:student_id])
       end
     end
   end

@@ -1,5 +1,5 @@
 module Presenters
-  class Statistician
+  class Statistician < User
     def profile_filters
       {
         dashboard: {
@@ -43,15 +43,8 @@ module Presenters
       }
     end
 
-    def offer_export_mail_subject(department: )
-      "Export des offres du département de #{I18n.transliterate(department)}"
-    end
-
-    private
-    attr_reader :statistician
-
-    def initialize(statistician)
-      @statistician = statistician
-    end
+    # def offer_export_mail_subject(department: )
+    #   "Export des offres du département de #{I18n.transliterate(department)}"
+    # end
   end
 end

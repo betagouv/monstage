@@ -4,15 +4,8 @@
 }
 
 .warning-block-wrapper.application {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  position: sticky;
-  top: 22px;
   margin-bottom: 2rem;
   z-index: 100;
-
 }
 
 .application .info-covid {
@@ -28,8 +21,35 @@
   box-shadow: 0px 15px 20px -20px rgba(0, 0, 0, 0.25);
   border-radius: 6px;
 }
-.employer .info-covid {
-  top: 58px;
+.employer {
+  .fr-tabs{
+    min-height: 3.1rem;
+  }
+
+  .info-covid {
+    top: 58px;
+  }
+}
+
+tr.even-odd:nth-child(even) {
+  background-color: $grey-975;
+}
+
+a.heavy-blue-link {
+  font-weight: 800;
+  color: $blue-france;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.fr-tabs__panel.fr-tabs__panel--selected.internships {
+  min-height: 10rem;
+}
+
+.thin-line-below{
+  border-bottom: 1px solid #eee
 }
 
 .employer {
@@ -39,14 +59,6 @@
   background-color: white;
 }
 
-.white-mask {
-  position: absolute;
-  text-align: left;
-  width: 100%;
-  height: 50px;
-  background-color: white;
-  top: -58px;
-}
 .red-up {
   position: absolute;
 
@@ -56,7 +68,14 @@
   left: 30px;
   border-radius: 0.4rem;
   margin-top: 20rem;
+}
+
+.table {
+  border-bottom: none !important;
+  thead th {
+    border-bottom: none !important;
   }
+}
 
 a.white {
   text-decoration: underline;
@@ -64,39 +83,47 @@ a.white {
 }
 
 .warning-bloc {
-  position: relative;
-  top: 70px;
   background-color: $bg-light-blue;
   padding: 30px;
   margin-bottom: 10px;
+  border-radius: 21px;
   .explanation {
     font-family: 'Helvetica Neue';
     color: $blue;
     font-size: 0.9rem;
     ;
   }
-
-  .know-more {
-    font-size: 1rem;
-  }
 }
 
-  .tutors .warning-bloc {
-    top: 25px;
-  }
+.tutors .warning-bloc {
+  top: 25px;
+}
+shrinked-line {
+  line-height: 0.7rem;
+}
 
+.table.employers {
+  width: 100%;
+}
 
+table.employer tbody tr td.title {
+  width: 33%;
+}
+
+.col-label-sorting{
+  display: block;
+  height: 25px;
+}
 // sorting headers for dashboard/internship_offers#index
 $sortLinkOffset: 15px;
 .sort-links{
-  $sort-arrow-height: 15px;
+  $sort-arrow-height: 10px;
   display: inline-block;
   position: absolute;
-  top: 50%;
-  margin-top: -11px;
-  font-size: larger;
+  top: 35%;
+  margin-top: -$sort-arrow-height;
   .currently-sorting{
-    color: $blue !important;
+    color: yellow !important;
   }
 
   .sort-link{
@@ -109,12 +136,6 @@ $sortLinkOffset: 15px;
     opacity: 1;
 
   }
-  .sort-link-up{
-    top: 0;
-  }
-  .sort-link-down{
-    top: $sort-arrow-height;
-  }
 }
 
 // sort links container
@@ -123,10 +144,10 @@ $sortLinkOffset: 15px;
   position: relative;
   left: 5px;
 }
-.breakable-word{
-  font-weight: bold;
-  font-size: 70%;
-  word-wrap: break-word;
+.min-width-10 {
+  width: 10px;
+  position: relative;
+  left: 5px;
 }
 
 // navigation arrows on internship_offers#index
@@ -136,9 +157,6 @@ $sortLinkOffset: 15px;
   text-decoration: none;
 }
 
-.list-item-label{
-  font-size: .8rem;
-}
 .list-item .fa,
 .list-item .svg-inline--fa{
   font-size: 2rem;
@@ -154,11 +172,7 @@ $sortLinkOffset: 15px;
   background-repeat: no-repeat;
   background-size: cover;
 }
-@include media-breakpoint-down(md) {
-  .info-covid {
-    position: static;
-  }
-}
+
 // custom dimension table for dashboard/internship_offers#index
 @include media-breakpoint-up(sm) {
   .table-dashboard-internship-offers {
@@ -213,4 +227,64 @@ $sortLinkOffset: 15px;
   font-size: 1.5rem;
 }
 
+.siren-error {
+  border: 1px solid red;
+  color: red;
+  background-color: rgb(255, 188, 188);
+}
 
+.leaflet-container {
+  height: 100vh;
+  // min-height: 500px;
+}
+
+.popup-custom {
+  .leaflet-popup-content-wrapper {
+    padding: 0px !important;
+    border-radius: 0 !important;
+  }
+  
+  .leaflet-popup-tip-container,
+  a.leaflet-popup-close-button {
+    display: none !important;
+  }
+  
+  .leaflet-popup-content {
+    width: 250px;
+    margin: 0 !important;
+  }
+
+  .title a {
+    color: black;
+    font-size: 1.375rem;
+    line-height: 1.75rem;
+  }
+}
+
+.modal-filter {
+  .fr-modal__header,
+  .fr-modal__footer {
+    display: block
+  }
+
+  .fr-checkbox-group {
+    .fr-label {
+      font-weight: 400;
+      margin-bottom: 0;
+    }
+  }
+  .fr-checkbox-group:first-child {
+    margin-top: 0;
+  }
+  .hidden-checkbox {
+    display: none;
+  }
+}
+
+.modal-section {
+  border-bottom: 1px solid grey;
+}
+
+.fr-responsive-img {
+  aspect-ratio: auto !important;
+}

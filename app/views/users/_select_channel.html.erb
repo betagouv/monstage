@@ -1,6 +1,8 @@
-<fieldset class="select-channel">
-  <legend class="label">
-   <%= label %>
+<fieldset class="select-channel fr-fieldset ">
+  <legend class="fr-fieldset__legend fr-text--regular">
+   <div class="label">
+    <%= label %>
+   </div>
    <% if block_given? %>
     <%= yield %>
    <% end %>
@@ -8,45 +10,29 @@
 
   <div class='row' >
     <div class='col-6 d-table form-group'>
-      <%= form.label :channel,
-                    "SMS",
-                    class: 'channel-radio-label  d-table-cell align-middle',
-                    for: "select-channel-phone" do %>
-        <i class="fa fa-fw fa-4x fas fa-<%= phone == 'SMS' ? 'sms' : 'mobile-alt' %>"></i>
-        <br/>
-        <%= form.radio_button :channel,
-                        "phone",
-                        id: 'select-channel-phone',
-                        'data-action' => "change->signup#checkPhone",
-                        'data-signup-target' => 'phoneRadioButton'   %>
+      <%= form.label :channel, "SMS", class: "channel-radio-label fr-label d-table-cell align-middle fr-pl-3w", for: "select-channel-phone" do %>
+        <%= form.radio_button :channel, "phone", id: "select-channel-phone", "data-action" => "change->signup#checkPhone", "data-signup-target" => "phoneRadioButton" %>
           <%= phone %>
       <% end %>
     </div>
-    <div class='col-6 d-table form-group'>
-      <%= form.label :channel,
-                     "Email",
-                     class: 'channel-radio-label d-table-cell align-middle',
-                     for: "select-channel-email" do %>
-
-        <i class="fa fa-fw fa-4x far fa-envelope"></i>
-        <br />
-        <%= form.radio_button :channel,
-                              "email",
-                              id: 'select-channel-email',
-                              'data-action' => "change->signup#checkEmail",
-                              'data-signup-target' => 'emailRadioButton'   %>
-          Email
+    <div class='col-6 d-table form-group '>
+      <%= form.label :channel, "Email", class: "channel-radio-label fr-label d-table-cell align-middle fr-pl-3w", for: "select-channel-email" do %>
+        <%= form.radio_button :channel, "email", id: "select-channel-email", "data-action" => "change->signup#checkEmail", "data-signup-target" => "emailRadioButton" %>
+          Par e-mail
       <% end %>
     </div>
   </div>
 
-  <div data-signup-target="emailBloc" class="form-group email d-none">
-    <%= form.label :email do %>
-      <span data-signup-target="label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
-      <small class="form-text text-muted" data-signup-target="emailExplanation">Cette adresse sera utilisée pour communiquer avec vous</small>
+  <div data-signup-target="emailBloc" class="form-group email d-none registration">
+    <%= form.rg2a_explain_required_asterisk(p_class_name: "mb-0") %>
+    <%= form.label :email, class: "fr-label" do %>
+      <span data-signup-target="label">
+        <%= resource.school_manager? ? "Adresse électronique académique" : "Adresse électronique (e-mail)" %>
+      </span>
+      <small class="form-text text-muted" data-signup-target="emailExplanation"> </small>
     <% end %>
     <%= form.email_field :email,
-                         class: 'form-control',
+                         class: 'fr-input',
                          value: resource.email.blank? ? params[:email] : resource.email,
                          placeholder: "ex: nom@exemple.fr",
                          autofocus: params[:email].blank? ? true : false,
@@ -55,13 +41,14 @@
   </div>
   <div data-signup-target="phoneBloc" class="form-group phone d-none">
     <%= form.label :phone, 'data-action' => "click->signup#focusPhone", for: 'phone-input' do %>
-      <span>Numéro de mobile</span>
-      <small class="form-text text-muted">Ce numéro sera utilisé pour communiquer avec vous</small>
+      <span>Numéro de téléphone</span>
+      <small class="form-text text-muted">Ce numéro sera utilisé uniquement pour communiquer avec vous</small>
     <% end %>
     <%= react_component("CountryPhoneSelect",
       props: {
         name: 'user[phone]',
-        value: resource.phone || params[:phone]
+        value: resource.phone || params[:phone],
+        withTarget: true
       })
     %>
     <small class="text-muted">(+33 puis 06 11 22 33 44 par exemple)</small>

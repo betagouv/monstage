@@ -1,5 +1,14 @@
-- content_for :page_title, "#{t(".page_title", name: @school.name)} | Monstage"
-= render partial: 'dashboard/schools/navbar', locals: { school: @school }
+- content_for :page_title, "#{t(".page_title", name: @school.presenter.school_name_in_sentence)} | Monstage"
+= render 'layouts/breadcrumb', links: [ [dashboard_school_path(@school.id), current_user.dashboard_name],
+                                        ['', 'Personnels']]
+= render layout: 'dashboard/schools/common_head' do
+  #users-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0"
+    - if @school.has_staff?
+      .row
+        .col-12
+          .fr-alert.fr-alert--info
+            p.fr-alert__title Information
+            p Seul le personnel actuel de l'établissement doit figurer sur cette liste. Vérifiez qu'elle est bien à jour.
 
 - if @school.has_staff?
   - info = "Assurez-vous que chacun fait partie de l'établissement. " \

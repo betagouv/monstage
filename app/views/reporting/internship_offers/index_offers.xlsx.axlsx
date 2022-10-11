@@ -10,7 +10,7 @@ wb.add_worksheet(name: 'Offres') do |sheet|
     )
   )
 
-  # raws
+  # rows
   offers.each do |offer|
     presented_internship_offer = presenter_for_dimension.new(offer)
     sheet.add_row(

@@ -1,8 +1,9 @@
-.container-monstage
-  .row.px-5
-    .col-12.text-center-left
-      h2.h2.pt-5.text-dark Nos associations partenaires
-  .text-center.pb-5.mx-2.pt-2
+.fr-mx-2w.py-5.pt-2
+  h2 Nos associations partenaires
+.pt-2
+  .row
     - partners_map_of_colored_logo_url.each do |partner|
       = render partial: "pages/home/partner_link",
-                locals: { partner_url: partner[:url], partner_logo: partner[:logo], partner_height: partner[:height] }
+                locals: { partner_url: partner[:url],
+                          partner_logo: partner[:logo],
+                          partner_height: partner[:height] }

@@ -1,7 +1,10 @@
-= link_to internship_offer_application_path(internship_offer),
-          internship_offer_application_html_opts(internship_offer, class: 'btn btn-primary mb-3 btn-sm') do
-  - if internship_offer.from_api?
-    = "Postuler sur #{internship_offer.employer.operator.name}"
-  - else
-    i.fas.fa-fw.fa-xs.ml-1.fa-rocket
-    =" Postuler"
+- if internship_offer.from_api?
+  = render "internship_applications/call_to_action/api", internship_offer: internship_offer
+- elsif user_signed_in?
+  - if can?(:apply, internship_offer) && internship_offer.has_spots_left?
+    - if internship_offer.already_applied_by_student?(current_user)
+      = button_to 'Déjà postulé', '', class: 'fr-btn', disabled: true
+    - else
+      = link_to 'Postuler', new_internship_offer_internship_application_path(internship_offer_id: internship_offer.id), class: 'fr-btn fr-icon-edit-fill fr-btn--icon-left'
+- else
+  = render "internship_applications/call_to_action/visitor", internship_offer: internship_offer

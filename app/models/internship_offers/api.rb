@@ -5,18 +5,21 @@ module InternshipOffers
     include WeeklyFramable
 
     rails_admin do
+      weight 13
+      navigation_label "Offres"
+      
       configure :created_at, :datetime do
         date_format 'BUGGY'
       end
 
       list do
-        scopes [:from_api]
+        scopes [:kept, :discarded]
 
         field :title
+        field :department
         field :zipcode
         field :employer_name
         field :is_public
-        field :department
         field :created_at
       end
 
@@ -63,7 +66,7 @@ module InternshipOffers
     validates :permalink, presence: true, format: { without: /.*(test|staging).*/i, message: "Le lien ne doit pas renvoyer vers un environnement de test." }
 
     scope :uncompleted_with_max_candidates, lambda {
-      where(true)
+      where('1=1')
     }
 
     scope :fulfilled, lambda {

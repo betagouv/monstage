@@ -55,10 +55,29 @@ export const endpoints = {
     endpoint.search = searchParams.toString();
     return endpoint;
   },
+
+  // @get
+  searchCompanyByName: ({ name }) => {
+    const endpoint = new URL(`${host}/api_entreprise_proxy/search`);
+    const searchParams = new URLSearchParams();
+
+    searchParams.append('name', name);
+    endpoint.search = searchParams.toString();
+    return endpoint;
+  },
   
   // @post
   apiSearchSchool: () => {
     const endpoint = new URL(`${host}/api/schools/search`);
+    return endpoint;
+  },
+
+  // @get
+  searchInternshipOffers: () => {
+    const endpoint = new URL(`${host}/internship_offers.json`);
+    const searchParams = new URLSearchParams();
+
+    endpoint.search = searchParams.toString();
     return endpoint;
   },
 };

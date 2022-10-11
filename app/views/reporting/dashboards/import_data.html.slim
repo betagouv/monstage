@@ -1,14 +1,20 @@
-.container.mt-3
+.container.my-3
   = render partial: 'reporting/navigation'
-
-  .row.mt-2
+  .row
     .col-12
-      h2.text-body Mes données importées
+      .fr-tabs 
+        = render partial: 'reporting/tabs'
 
-  .row.mt-3
-    .col-12
-      iframe.airtable-embed frameborder="0" height="533" onmousewheel="" src="https://airtable.com/embed/#{@user.operator.airtable_id}?backgroundColor=yellow&viewControls=on" style=("background: transparent; border: 1px solid #ccc;") width="100%" 
-            
-  .row.my-4 
-    .col-12 
-      =link_to 'Importer de nouvelles données', @user.operator.airtable_link, class: 'btn btn-danger', target: '_blank'
+        #import-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0" 
+
+          .row.mt-2
+            .col-12
+              h2.text-body Mes données importées
+
+          .row.mt-3
+            .col-12
+              iframe.airtable-embed frameborder="0" height="533" onmousewheel="" src="https://airtable.com/embed/#{@user.operator.airtable_id}?backgroundColor=yellow&viewControls=on" style=("background: transparent; border: 1px solid #ccc;") width="100%" 
+                    
+          .row.my-4 
+            .col-12 
+              =link_to 'Importer de nouvelles données', @user.operator.airtable_link, class: 'fr-btn btn-danger', target: '_blank'

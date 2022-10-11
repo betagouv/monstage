@@ -1,10 +1,9 @@
-Information annulation
+Bonjour,
 
-<%="#{@internship_application.internship_offer.employer.formal_name}, "%>
+<%= "#{@internship_application.student.presenter.formal_name}" %> a annulé sa candidature pour le stage "<%= @internship_application.internship_offer.title %>".
 
-L'élève de 3e du "<%= @internship_application.student.school.name %>",
-<%= @internship_application.student.formal_name %>, 
-vous informe qu'il décline votre proposition de stage : 
-"<%= @internship_application.internship_offer.title%>". 
-Il vous en donne les raisons ici :
-<%= @internship_application.canceled_by_student_message.to_plain_text%>
+Voici le motif de l’annulation :
+<%= @internship_application.canceled_by_student_message.to_plain_text %>
+
+À bientôt,
+L'équipe Mon Stage de 3e.

@@ -5,6 +5,31 @@ class SchoolManagerMailerPreview < ActionMailer::Preview
                                    member: fetch_teacher)
   end
 
+  def internship_application_approved_with_agreement_email
+    SchoolManagerMailer.internship_application_approved_with_agreement_email(
+      internship_agreement: InternshipAgreement.first
+    )
+  end
+
+  def internship_application_approved_with_no_agreement_email
+    SchoolManagerMailer.internship_application_approved_with_no_agreement_email(
+      internship_application: InternshipApplication.approved.first
+    )
+  end
+
+  def notify_others_signatures_started_email
+    SchoolManagerMailer.notify_others_signatures_started_email(
+      internship_agreement: InternshipAgreement.first
+    )
+  end
+
+  def notify_others_signatures_finished_email
+    SchoolManagerMailer.notify_others_signatures_finished_email(
+      internship_agreement: InternshipAgreement.first
+    )
+  end
+
+
   private
 
   def school_manager

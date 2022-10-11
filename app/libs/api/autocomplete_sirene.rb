@@ -2,10 +2,12 @@ module Api
   class AutocompleteSirene
     # see: https://geo.api.gouv.fr/adresse
     API_ENDPOINT = "https://api.insee.fr/entreprises/sirene/V3/siret"
+    API_ENTREPRISE_ENDPOINT = "https://entreprise.data.gouv.fr/api/sirene/v1/full_text"
 
-    def self.search_by_siren(params:)
+
+    def self.search_by_siret(siret:)
       self.check_token
-      uri = URI("#{API_ENDPOINT}?q=siren:#{params[:siren]}")
+      uri = URI("#{API_ENDPOINT}?q=siret:#{siret}")
       headers = {
         'Authorization': "Bearer #{@token}",
         'Content-Type': 'application/json',
@@ -18,11 +20,9 @@ module Api
       http.request(request)
     end
 
-    def self.search_by_siret(siret:)
-      self.check_token
-      uri = URI("#{API_ENDPOINT}?q=siret:#{siret}")
+    def self.search_by_name(name:)
+      uri = URI("#{API_ENTREPRISE_ENDPOINT}/#{URI.encode(name)}")
       headers = {
-        'Authorization': "Bearer #{@token}",
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       }     

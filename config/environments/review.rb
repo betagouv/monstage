@@ -42,9 +42,9 @@ Rails.application.configure do
   # Compress JavaScripts and CSS.
   # config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
-  
+
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
+  # config.assets.compile = false
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
@@ -56,7 +56,8 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
   # Store uploaded files on the local file system (see config/storage.yml for options)
-  # config.active_storage.service = :local
+  # config.active_storage.service = :clevercloud
+  config.active_storage.service = :local
 
   # Mount Action Cable outside main process or domain
   host_uri = URI(HOST)
@@ -83,30 +84,43 @@ Rails.application.configure do
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "monstage_#{Rails.env}"
 
-  config.action_mailer.perform_caching = false
   # config.action_mailer.preview_path  = "#{Rails.root}/whatever"
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_caching = false
+  config.action_mailer.perform_deliveries = true
   config.action_mailer.show_previews = true
-
+  config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default_url_options = { host: HOST }
 
-  response = RestClient.get "https://mailtrap.io/api/v1/inboxes.json?api_token=#{ENV['MAILTRAP_API_TOKEN']}"
+  # To choose port read https://help.heroku.com/IR3S6I5X/problem-in-sending-e-mails-through-smtp and then https://fr.mailjet.com/blog/news/port-smtp/
+  # and https://stackoverflow.com/questions/26166032/rails-4-netreadtimeout-when-calling-actionmailer
+  config.action_mailer.smtp_settings = {
+    user_name: ENV['SMTP_USERNAME'],
+    password: ENV['SMTP_PASSWORD'],
+    domain: ENV['SMTP_DOMAIN'] || 'smtp.mailtrap.io',
+    address: ENV['SMTP_ADDRESS'] || 'smtp.mailtrap.io',
+    port: ENV['SMTP_PORT'] || '2525',
+    authentication: ENV['SMTP_AUTHENTICATION'] || 'cram_md5',
+    enable_starttls_auto: true
+  }
 
-  first_inbox = JSON.parse(response)[0] # get first inbox
+  # remove following after may 1st 2022
 
-  ActionMailer::Base.delivery_method = :smtp
-  ActionMailer::Base.smtp_settings = {
-                                       user_name: first_inbox['username'],
-                                       password: first_inbox['password'],
-                                       address: first_inbox['domain'],
-                                       domain: first_inbox['domain'],
-                                       port: 587,
-                                       authentication: :plain
-                                     }
+  # response = RestClient.get "https://mailtrap.io/api/v1/inboxes.json?api_token=#{ENV['MAILTRAP_API_TOKEN']}"
+  # first_inbox = JSON.parse(response)[0] # get first inbox
+  # ActionMailer::Base.smtp_settings = {
+  #                                      user_name: first_inbox['username'],
+  #                                      password: first_inbox['password'],
+  #                                      address: first_inbox['domain'],
+  #                                      domain: first_inbox['domain'],
+  #                                      port: 587,
+  #                                      authentication: :plain
+  #                                    }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
-
+ # ----------------------------
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true

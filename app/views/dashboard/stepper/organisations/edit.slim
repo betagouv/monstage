@@ -1,6 +1,8 @@
-.row.mx-5
+= render 'layouts/breadcrumb',
+          links: [ [dashboard_internship_offers_path, 'Mes offres de stage'],
+                   ['', 'Déposer une offre de stage']]
+.row
   .col-12
-    .row
       h1.h2.mb-3 Déposer une offre de stage
 
 .row
@@ -8,7 +10,6 @@
     = form_with model: @organisation,
                 url: dashboard_stepper_organisation_path(id: @organisation.id) do |form|
       = render "dashboard/stepper/steps"
-      = form.rg2a_explain_required_asterisk
       = render "layouts/form_errors",
                resource: @organisation,
                resource_name: :internship_offer

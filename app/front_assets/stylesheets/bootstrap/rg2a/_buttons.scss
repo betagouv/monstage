@@ -1,4 +1,11 @@
-a.btn {
+a.fr-btn {
+  text-decoration: none;
+}
+a.fr-btn:hover {
+  color: #fff;
+  text-decoration: none;
+}
+a, a:hover {
   text-decoration: none;
 }
 .btn-absolute{
@@ -22,15 +29,3 @@ a.btn {
   }
 }
 
-.btn-outline-fat {
-  font-weight: 800;
-  border: 3px solid white;
-  color: white;
-  background-color: $blue;
-  &:hover {
-    color: $blue;
-    background-color: white;
-    border: 3px solid $blue;
-    border-radius: 0.4rem;
-  }
-}

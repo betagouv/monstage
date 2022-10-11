@@ -1,17 +1,29 @@
 - content_for(:page_title, "Statistiques par catégories d'entreprises | Monstage")
-.container.mt-3
+
+.container-monstage.my-3
   = render partial: 'reporting/navigation'
-  div.bg-stats-filter.rounded.p-3[data-controller='statistics']
-    = render partial: 'reporting/filters',
-                      locals: {view_tab: :employers_internship_offers}
-  .row.mt-3
+  .row
     .col-12
-      table.table.table-statistics.table-sticky-thead
-        thead
-          tr.tr-blue
-            th.bl-1.bc-light= InternshipOffer.human_attribute_name(:employer_name)
-            th.bl-1.bc-light Type d'entreprise
-            th.bl-1.bc-light Nbre d'offres publiées
-        tbody= render partial: 'reporting/internship_offers/employer_offer',
-                      collection: @offers.map(&presenter_for_dimension.method(:new))
+      .fr-tabs 
+        = render partial: 'reporting/tabs'
+
+        #employers-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0" 
+
+
+          div.rounded.p-3[data-controller='statistics']
+            = render partial: 'reporting/filters',
+                              locals: {view_tab: :employers_internship_offers}
+          .row.mt-3
+            .col-12.fr-table
+              table.fr-table--white
+                thead
+                  tr.tr-blue
+                    th
+                      small= InternshipOffer.human_attribute_name(:employer_name)
+                    th 
+                      small Type d'entreprise
+                    th 
+                      small Nbre d'offres publiées
+                tbody= render partial: 'reporting/internship_offers/employer_offer',
+                              collection: @offers.map(&presenter_for_dimension.method(:new))
 

@@ -2,14 +2,18 @@
 
 module Users
   class Employer < User
+    include EmployerAdmin
+    include Signatorable
+
+
     has_many :internship_offers, as: :employer,
                                  dependent: :destroy
 
     has_many :kept_internship_offers, -> { merge(InternshipOffer.kept) },
-             class_name: 'InternshipOffer'
+             class_name: 'InternshipOffer', foreign_key: 'employer_id'
 
     has_many :internship_applications, through: :kept_internship_offers
-    has_many :internship_agreements, through: :internship_applications 
+    has_many :internship_agreements, through: :internship_applications
 
     has_many :organisations
     has_many :tutors
@@ -20,7 +24,7 @@ module Users
     end
 
     def custom_agreements_path
-      url_helpers.dashboard_internship_applications_path
+      url_helpers.dashboard_internship_agreements_path
     end
 
     def dashboard_name
@@ -35,10 +39,27 @@ module Users
       SupportTickets::Employer.new(params.merge(user_id: self.id))
     end
 
+    def employer? ; true end
+
     def anonymize(send_email: true)
       super
 
       internship_offers.map(&:anonymize)
+    end
+
+    def signatory_role
+      Signature.signatory_roles[:employer]
+    end
+
+    def already_signed?(internship_agreement_id:)
+      InternshipAgreement.joins(:signatures)
+                         .where(id: internship_agreement_id)
+                         .where(signatures: {user_id: id})
+                         .exists?
+    end
+
+    def presenter
+      Presenters::Employer.new(self)
     end
   end
 end

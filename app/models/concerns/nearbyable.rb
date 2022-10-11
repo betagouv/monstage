@@ -46,11 +46,11 @@ module Nearbyable
       end
     end
 
-    def osm_url
-      return "http://www.openstreetmap.org/" unless coordinates_are_valid?
+    # def osm_url
+    #   return "http://www.openstreetmap.org/" unless coordinates_are_valid?
 
-      "http://www.openstreetmap.org/?mlat=#{coordinates.lat}&mlon=#{coordinates.lon}&zoom=12"
-    end
+    #   "http://www.openstreetmap.org/?mlat=#{coordinates.lat}&mlon=#{coordinates.lon}&zoom=12"
+    # end
 
     def formatted_autocomplete_address
       [
@@ -63,6 +63,7 @@ module Nearbyable
     validate :coordinates_are_valid?
     def coordinates_are_valid?
       return true if [coordinates&.lat, coordinates&.lon].map(&:to_f).none?(&:zero?)
+
       errors.add(:coordinates, :blank)
     end
 

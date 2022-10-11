@@ -16,7 +16,6 @@ class Ability
       when 'Users::SchoolManagement'
         common_school_management_abilities(user: user)
         school_manager_abilities(user: user) if user.school_manager?
-        main_teacher_abilities(user: user)   if user.main_teacher?
       end
 
       shared_signed_in_user_abilities(user: user)
@@ -37,7 +36,7 @@ class Ability
     can :apply, InternshipOffer do |internship_offer|
       student_can_apply?(student: user, internship_offer: internship_offer)
     end
-    can %i[submit_internship_application update],
+    can %i[submit_internship_application update show],
         InternshipApplication do |internship_application|
       internship_application.student.id == user.id
     end
@@ -54,8 +53,10 @@ class Ability
   end
 
   def common_school_management_abilities(user:)
-    can :welcome_students, User
-    can :choose_role, User
+    can %i[
+      welcome_students
+      choose_role
+      sign_with_sms], User
     can_create_and_manage_account(user: user) do
       can [:choose_class_room], User
     end
@@ -92,48 +93,49 @@ class Ability
       end
     end
     can %i[
-      update
-      see_intro
-      edit_school_representative_full_name
-      edit_school_delegation_to_sign_delivered_at
-      edit_student_school
-      edit_student_full_name
-      edit_student_class_room
-      edit_main_teacher_full_name
+      create
+      edit
+      sign_internship_agreements
       edit_activity_rating_rich_text
+      edit_complementary_terms_rich_text
       edit_financial_conditions_rich_text
       edit_legal_terms_rich_text
-      edit_complementary_terms_rich_text
-      edit
-      create
+      edit_main_teacher_full_name
+      edit_school_representative_full_name
+      edit_school_representative_phone
+      edit_school_representative_email
+      edit_school_representative_role
+      edit_school_delegation_to_sign_delivered_at
+      edit_student_refering_teacher_full_name
+      edit_student_refering_teacher_email
+      edit_student_refering_teacher_phone
+      edit_student_address
+      edit_student_class_room
+      edit_student_full_name
+      edit_student_phone
+      edit_student_legal_representative_email
+      edit_student_legal_representative_full_name
+      edit_student_legal_representative_phone
+      edit_student_legal_representative_2_email
+      edit_student_legal_representative_2_full_name
+      edit_student_legal_representative_2_phone
+      edit_student_school
+      see_intro
+      update
     ], InternshipAgreement do |agreement|
       agreement.internship_application.student.school_id == user.school_id
     end
     can %i[edit update], InternshipAgreementPreset do |internship_agreement_preset|
       internship_agreement_preset.school_id == user.school_id
     end
-  end
-
-  def main_teacher_abilities(user:)
-    can %i[
-      create
-      update
-      see_intro
-      edit_student_class_room
-      edit_main_teacher_full_name
-      edit_activity_rating_rich_text
-      edit_activity_preparation_rich_text
-      edit
-        ], InternshipAgreement do |agreement|
-      is_student_in_school = agreement.internship_application.student.school_id == user.school_id
-      is_student_in_class_room = agreement.internship_application.student.class_room_id == user.class_room_id
-
-      is_student_in_school && is_student_in_class_room
+    can :create, Signature do |signature|
+      signature.internship_agreement.school_manager == user.id
     end
   end
 
+
   def employer_abilities(user:)
-    can :supply_offers, User
+    can %i[supply_offers sign_with_sms choose_function] , User
     can :show, :account
 
     can :create_remote_internship_request, SupportTicket
@@ -157,20 +159,29 @@ class Ability
     can %i[index update], InternshipApplication
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
 
+    can :create, Signature do |signature|
+      signature.internship_agreement.internship_offer.employer_id == user.id
+    end
+
     can %i[
       create
-      update
-      edit_organisation_representative_full_name
-      edit_tutor_full_name
-      edit_date_range
-      edit_weekly_hours
+      edit
+      edit_organisation_representative_role
+      edit_tutor_email
+      edit_tutor_role
       edit_activity_scope_rich_text
       edit_activity_preparation_rich_text
       edit_activity_learnings_rich_text
       edit_complementary_terms_rich_text
-      edit
+      edit_date_range
+      edit_organisation_representative_full_name
+      edit_siret
+      edit_tutor_full_name
+      edit_weekly_hours
+      sign_internship_agreements
+      update
     ], InternshipAgreement do |agreement|
-      agreement.internship_application.internship_offer.employer == user
+      agreement.employer == user
     end
   end
 
@@ -214,10 +225,11 @@ class Ability
     can :manage, Sector
     can %i[destroy see_tutor], InternshipOffer
     can %i[read update export], InternshipOffer
+    can %i[read update destroy export], InternshipApplication
     can :manage, EmailWhitelists::Statistician
     can :manage, EmailWhitelists::Ministry
     can :manage, InternshipOfferKeyword
-    can %i[create read update], Group
+    can :manage, Group
     can :access, :rails_admin   # grant access to rails_admin
     can %i[read update delete discard export], InternshipOffers::Api
     can :read, :dashboard       # grant access to the dashboard
@@ -226,7 +238,7 @@ class Ability
       true
     end
     can %i[index_and_filter], Reporting::InternshipOffer
-    can %i[new], InternshipAgreement
+    can :manage, InternshipAgreement
     can :reset_cache, User
     can %i[ switch_user
             read
@@ -247,7 +259,6 @@ class Ability
   end
 
   def statistician_abilities(user:)
-    
     common_to_all_statisticians(user: user)
 
     can :show, :api_token
@@ -260,10 +271,8 @@ class Ability
     can %i[index_and_filter], Reporting::InternshipOffer
     can %i[ see_reporting_dashboard
             see_dashboard_administrations_summary
-            see_reporting_internship_offers
-            see_reporting_schools
-            see_reporting_enterprises
-            see_dashboard_enterprises_summary
+            see_dashboard_department_summary
+            export_reporting_dashboard_data
             see_dashboard_associations_summary], User
   end
 
@@ -277,7 +286,9 @@ class Ability
     can %i[index_and_filter], Reporting::InternshipOffer
     can :read, Group
     can %i[index], Acl::Reporting, &:ministry_statistician_allowed?
-    can %i[export_reporting_dashboard_data], User
+    can %i[ export_reporting_dashboard_data
+            see_dashboard_enterprises_summary
+            see_dashboard_associations_summary ], User
   end
 
   def common_to_all_statisticians(user: )

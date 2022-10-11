@@ -4,7 +4,7 @@
       .row
         .col-12.h2.h4.p-3.bg-covid-19-notice.text-white
           span.h1-label.text-white Candidature
-          = link_to "#internship-application-closeform", data: {action: "click->internship-application-form#hideForm", turbolinks: false}, class: 'float-right text-white', aria: { label: 'Ne pas candidater' } do
+          = link_to "#internship-application-closeform", data: {action: "click->internship-application-form#hideForm", turbo: false}, class: 'float-right text-white', aria: { label: 'Ne pas candidater' } do
               i.fas.fa-times.fa-sm
   .row.align-items-center.container-connexion-required
     .onboarding-card.onboarding-card-sm.py-3
@@ -17,7 +17,7 @@
         p.text-center
           = link_to 'Me connecter',
                     new_user_session_path(user: {targeted_offer_id: @internship_application.internship_offer.id}),
-                    class: "btn btn-outline-primary"
+                    class: "fr-btn "
           br
           br
           = link_to 'Pas encore de compte ? Inscrivez-vous',

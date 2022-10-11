@@ -2,7 +2,8 @@
 
 class CustomDeviseMailer < Devise::Mailer
   require_relative '../libs/email_utils'
-  default from: proc { EmailUtils.formatted_email }
+  default from: proc { EmailUtils.formatted_from }
+  default reply_to: proc { EmailUtils.formatted_reply_to }
 
   include Layoutable
   include Devise::Controllers::UrlHelpers

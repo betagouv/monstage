@@ -6,29 +6,47 @@ Things you may want to cover:
 
 * Ruby version: 2.7.2
 * Database postgresql 12
+  - On Linux :
+    - sudo apt-get install postgresql-12 libpq-dev
  - Initialize with : `initdb /usr/local/var/postgres -E utf8`
  - Create local db : `createdb monstage`
  - Start with : `pg_ctl -D /usr/local/var/postgres start`
  - Stop with : `pg_ctl -D /usr/local/var/postgres stop`
 * Install html5validator : `pip install html5validator`
 * Install postgis :
-  - If you are using Postgres.app, Postgis is already here
-  - If you installed postgres with Homebrew, run : `brew install postgis`
-  - Setup Postgis : `rake db:gis:setup`
+  - On Mac :
+    - If you are using Postgres.app, Postgis is already here
+    - If you installed postgres with Homebrew, run : `brew install postgis`
+  - On Linux :
+    sudo apt install postgis postgresql-12-postgis-3
+* Install Redis
+  - On Linux : sudo apt install redis-server
 * avoid rebuilding api doc : `./infra/dev/update-doc-output-files.sh`
 
 * setup db:
    * `./infra/dev/db.sh` (require a pg export)
    * `./infra/test/db.sh`
+
+* Restore a dump :
+   * Create a dump from existing staging or prod : pg_dump -F c -d *DB_URI* > db.dump
+   * Restore the dump locally : pg_restore -d *DB_NAME* db.dump
+  * Restore the dump on staging / prod : pg_restore --clean --if-exists --no-owner --no-privileges --no-comments -d *DB_URI* db.dump
+
+* Install yarn & webpack
+  - On Linux
+    sudo apt install npm
+    npm install --global yarn
+    npm install webpack-dev-server -g
 * create rails master.key : `touch config/master.key` (then copy paste the entrey rails master key from monstage.kdbx)
+* Ask for a .env file from another developer
 
 # Architecture
 
 We keep things simple and secure :
 
 * a simple monolith mostly based on rails
-* minimals effort for an SPA like feeling while ensuring it works without js (90% based on turbolinks, some react for advanced user inputs [autocomplete, nearby searches], other wise a good old html form is required)
-* we try to avoid stacking technologies over technologies (fewer dependencies makes us happy). 
+* minimals effort for an SPA like feeling while ensuring it works without js (90% based on turbo, some react for advanced user inputs [autocomplete, nearby searches], other wise a good old html form is required)
+* we try to avoid stacking technologies over technologies (fewer dependencies makes us happy).
 * we try to keep our dependencies up to date (bundle update, yarn update... at least once a month).
 
 ## backend
@@ -71,7 +89,7 @@ As a public french service, we try to keep most data hosted by french service pr
 
 ### Tooling
 * Infra management
-* Mail: [mailjet](https://mailjet.com)
+* Mail: [tipimail](https://app.tipimail.com)
 * Monit [monit](monit.monstagedetroisieme.fr) : website up/down (pingdom like)
 
 # Build: test, dev
@@ -83,10 +101,7 @@ As a public french service, we try to keep most data hosted by french service pr
 * [mailers](https://github.com/betagouv/monstage/tree/master/app/mailers)
 * [api](https://github.com/betagouv/monstage/tree/master/doc)
 
-## Previews
 
-* [mailers](http://localhost:3000/rails/mailers)
-* [view_components](http://localhost:3000/rails/view_components)
 
 ## Dev
 
@@ -103,6 +118,11 @@ foreman start -f Procfile.dev
 * **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./.git/hooks/ ```
 * mail should be opened automatically by letter opener
 
+### Previews
+
+* [mailers](http://localhost:3000/rails/mailers)
+* [view_components](http://localhost:3000/rails/view_components)
+
 ### Etapes de travail jusqu'au merge dans staging
 
 - (staging) $ ```git checkout -b mabranche``` # donc creer sa feature branch
@@ -112,7 +132,7 @@ foreman start -f Procfile.dev
 - (staging) $ ```git checkout mabranche``` # on repasse sur sa branche
 - (mabranche) $ ```git merge staging``` # on merge staging dans sa propre branche
 
-Pour les mises en production, on utilise le script de déploiement après avoir fait : 
+Pour les mises en production, on utilise le script de déploiement après avoir fait :
 - (master) $ ```git merge staging``` # on merge staging dans master
 
 Ainsi, on peut faire des hotfixes à merger directement sur master
@@ -232,9 +252,29 @@ cat infra/dev/ssh/config >> ~/.ssh/config
 
 ## production app : [www.monstagedetroisieme.fr](https://www.monstagedetroisieme.fr)
 
-* push on production can be done manually using ```infra/production/deploy.sh```
+* git checkout staging
+* git pull
+* git checkout master
+* git pull
+* git merge staging
+* git push
+* push on production can be done manually using ```./infra/production/deploy.sh```
+
+
 * see other tools in ```infra/production/*.sh``` (logs, console...)
 
+### hotfix
+
+* git checkout master
+* git pull
+* git cherry-pick <commit_nr Hotfix-PR-branch> (* : as many commits as necessary)
+* git push
+* push on production can be done manually using ```./infra/production/deploy.sh```
+* git checkout staging
+* git pull
+* git merge master
+* git push
+* archive <Hotfix-PR-branch> in Github
 
 # disaster recovery plan
 

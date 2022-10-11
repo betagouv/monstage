@@ -1,14 +1,14 @@
 p style=head_styles
   | Changement d'adresse électronique (e-mail) ?
 p style=p_styles
-  = "Bonjour #{@resource.formal_name}, nous venons de recevoir une demande de changement d'Adresse électronique (e-mail) pour votre compte monstagedetroisieme.fr."
+  = "Bonjour #{@resource.presenter.formal_name}, nous venons de recevoir une demande de changement d'Adresse électronique (e-mail) pour votre compte monstagedetroisieme.fr."
 p style=p_styles
 
 p style=p_styles
   strong Avant de procéder merci de confirmer :
 ul
   li
-    = "Votre ancienne Adresse  électronique (e-mail) → "
+    = "Votre ancienne Adresse électronique (e-mail) → "
     strong= @resource.email
   li
     = "Votre nouvelle Adresse électronique (e-mail) → "

@@ -1,7 +1,4 @@
 fr:
-  admin:
-    table_headers:
-      last_created: 'Dernier créé'
   errors:
     messages:
       accept_terms: "Veuillez accepter les conditions d'utilisation"
@@ -25,11 +22,11 @@ fr:
   activerecord:
     models:
       email_whitelists/statistician:
-        one: courriel autorisé du référent départemental
-        other: courriels autorisés des référents départementaux
+        one: Courriel autorisé du référent départemental
+        other: Courriels autorisés des référents départementaux
       email_whitelists/ministry:
-        one: courriel autorisé du référent central
-        other: courriels autorisés des référents centraux
+        one: Courriel autorisé du référent central
+        other: Courriels autorisés des référents centraux
       group:
         one: Groupe
         other: Groupes
@@ -45,12 +42,18 @@ fr:
       internship_offers/api:
         one: Offre API
         other: Offres API
+      internship_offer_keyword:
+        one: Mot clé de recherche
+        other: Mots clé de recherche
+      internship_application:
+        one: Candidature
+        other: Candidatures
       internship_applications/weekly_framed:
-        one: Candidature pour la 3eme
-        other: Candidatures pour la 3eme
+        one: Candidature
+        other: Candidatures
       internship_applications/free_date:
-        one: Candidature de la voie pro
-        other: Candidatures de la voie pro
+        one: Candidature
+        other: Candidatures
       operator:
         one: Association
         other: Associations
@@ -58,8 +61,8 @@ fr:
         one: Secteur
         other: Secteurs
       school:
-        one: Etablissement
-        other: Etablissements
+        one: Établissement
+        other: Établissements
       user:
         one: Utilisateur
         other: Utilisateurs
@@ -103,10 +106,10 @@ fr:
     attributes:
       group:
         created_at: Crée le
-        is_public: Secteur public/privé
-        name: Nom du groupe
+        is_public: Secteur public
+        is_paqte: Paqte
+        name: Nom
         updated_at: Mis à jour le
-        name: Administration centrale
       school:
         name: Nom
         kind: Type
@@ -153,29 +156,76 @@ fr:
         description: Description
         sector: Secteur
         school_track: Filière
-        max_candidates: Nbr. max de candidats
+        max_candidates: Nbr. max de candidats accueillis sur l'année
         max_students_per_group: Effectif max. d'un groupe d'élèves
         sector_id: Secteurs professionnels
+        new_daily_hours: Horaires journaliers
+        daily_lunch_break: Pause déjeuner par jour
+        weekly_lunch_break: Pause déjeuner
 
       tutor: &tutor_fields
         tutor_name: Nom du tuteur
         tutor_phone: Téléphone du tuteur
         tutor_email: Email du tuteur
-      
+
       internship_agreement:
+        internship_application: Candidature
+        school_manager_accept_terms: Validée par CE
+        employer_accept_terms: Validée par l'employeur
+        main_teacher_accept_terms: Validée par le professeur principal
+        date_range: Dates du stage
+        organisation_representative_full_name: Nom de l'employeur
+        school_representative_full_name: Nom du chef d'établissement ou de son représentant
+        school_representative_email: Courriel du chef d'établissement ou de son représentant
+        school_representative_phone: Numéro de téléphone du chef d'établissement ou de son représentant
+        school_representative_role: Fonction du chef d'établissement ou de son représentant
+        student_full_name: Nom de l'élève
+        tutor_full_name: Nom du tuteur
+        main_teacher_full_name: Nom du professeur principal
+        new_daily_hours: Horaires journaliers
+        weekly_hours: Horaires
+        daily_lunch_break: Horaires journaliers pause déjeuner
+        weekly_lunch_break: Horaires pause déjeuner
+        school_delegation_to_sign_delivered_at: Date de déléguation
+        activity_rating_rich_text: Modalités d'évaluation
+        activity_scope_rich_text: Objectifs du stage
+        activity_preparation_rich_text: Modalités de concertation
+        activity_learnings_rich_text: Compétences visées
+        complementary_terms_rich_text: Dispositions générales
+        legal_terms_rich_text: Conditions complémentaires
+        student_school: Établissement de l'élève
+        doc_date: Date du document
         aasm_state:
+          one: Statut
+          draft: brouillon
+          started_by_employer: À remplir par l'employeur
+          completed_by_employer: Remplie par l'employeur
+          started_by_school_manager: À remplir par le chef d'établissement
+          validated: Validée
+          signed: Signée
+        status:
           employer:
             draft: À remplir par les deux parties.
-            started_by_employer: Votre convention est remplie mais pas envoyée au chef d'établissement.
-            completed_by_employer: Votre convention est dans les mains du chef d'établissement.
-            started_by_school_manager: Votre convention est dans les mains du chef d'établissement.
-            validated: Votre convention est prête. Imprimez la et renvoyez la signée au chef d'établissement.
+            started_by_employer: Votre convention est remplie, mais elle n'est pas envoyée au chef d'établissement.
+            completed_by_employer: La convention est dans les mains du chef d'établissement.
+            started_by_school_manager: La convention est dans les mains du chef d'établissement.
+            validated: Votre convention est prête. Imprimez-la et renvoyez-la signée au chef d'établissement.
+            signatures_started:
+              already_signed: Vous avez déjà signé. En attente de la signature du chef d’établissement.
+              not_signed_yet: Le chef d'établissement a déjà signé. En attente de votre signature.
+            signed_by_all: Signée par toutes les parties.
           school_manager:
             draft: En attente de l'offreur.
             started_by_employer: En attente de l'offreur.
-            completed_by_employer: Votre convention est remplie par l'offreur mais vous ne l'avez pas validée.
-            started_by_school_manager: Votre convention est remplie mais pas validée.
+            completed_by_employer: Votre convention est remplie par l'offreur, mais vous ne l'avez pas renseignée.
+            started_by_school_manager: Votre convention est remplie, mais pas validée.
             validated: Votre convention est prête.
+            signatures_started:
+              already_signed: Vous avez déjà signé. En attente de la signature de l’employeur.
+              not_signed_yet: L'employeur a déjà signé. En attente de votre signature.
+            signed_by_all: Signée par toutes les parties.
+      signature: 
+        signatory_role: signataire
 
       internship_offer:
         <<: *organisation_fields
@@ -184,13 +234,14 @@ fr:
 
         id: Identifiant unique de l'offre
         human_is_public: Public/Privé
-        human_max_candidates: Stage individuel/collectif
+        human_max_candidates: Nombre max d'élèves accueillis sur l'année
+        human_max_students_per_group: Stage individuel / collectif
         employer: Employeur
         internship_offer_weeks_count: Nombre de semaines
         created_at: "Crée le"
         department: Département
         academy: Académie
-        discarded_at: Supprimée le
+        discarded_at: Dépubliée le
         view_count: Nombre de vues
         published_at: Publiée le
         weeks:
@@ -199,6 +250,9 @@ fr:
         weeks_count: Nbr. de semaines proposées
         first_monday: Premier lundi de stage
         last_monday: Dernier lundi de stage
+        first_date: Premier jour
+        last_date: Dernier jour
+        daterange: Plage de disponibilité
         supplied_applications: Nbr. de candidatures par stages
         submitted_application_count: Nbr. de candidatures soumises
         rejected_application_count: Nbr. de candidatures refusées
@@ -230,21 +284,56 @@ fr:
         full_year: Disponible toute l'année
         full_employer: Employeur
         full_address: Adresse de l'employeur
+        coordinates: Coordonnées GPS
         group_name: Groupe ou institution
+        school: Établissement réservé
+        internship_applications: Candidatures
+
+      internship_application:
+        student: Élève
+        internship_offer: Offre
+        aasm_state:
+          one: État
+          drafted: brouillon
+          submitted: envoyée
+          approved: acceptée
+          rejected: refusée
+          expired: expirée
+          canceled_by_employer: annulée par l'employeur
+          canceled_by_student: annulée par l'élève
+          convention_signed: convention signée
+        week: Semaine
 
       user:
         accept_terms: "Conditions d'utilisation"
         class_room: "Classe"
+        class_room_id: ID de la classe
         confirmed_at: Confirmé le
         first_name: Prénom
         gender: Sexe
+        birth_date: Date de naissance
         last_name: Nom
         main_teacher: "Professeur principal"
         other: "Autres fonctions"
         phone: Téléphone mobile
         school: "Etablissement"
+        school_id: ID de l'établissement
         school_manager: "Chef d'établissement"
         teacher: "Professeur"
+        discarded_at: Supprimé le
+        operator: Association
+        ministry_id: ID de l'institution de tutelle
+        phone_password_reset_count: Compteur de remise à zéro de mot de passe par téléphone
+        anonymized: Anonymisé
+
+      identity:
+        first_name: Prénom
+        last_name: Nom
+        gender: Sexe
+        school: "Etablissement"
+        class_room: "Classe"
+        birth_date: Date de naissance
+
       week:
         number: Numéro de semaine
         year: Année
@@ -271,6 +360,12 @@ fr:
               blank: "Veuillez saisir l'établissement de l'élève"
             school_representative_full_name:
               blank: "Veuillez saisir le nom du représentant de l'établissement scolaire"
+            school_representative_email:
+              blank: "Veuillez saisir le courriel du représentant de l'établissement scolaire"
+            school_representative_phone:
+              blank: "Veuillez saisir le numéro de téléphone du représentant de l'établissement scolaire"
+            school_representative_role:
+              blank: "Veuillez saisir la fonction du représentant de l'établissement scolaire"
             student_class_room:
               blank: "Veuillez saisir la classe de l'élève"
             main_teacher_full_name:
@@ -378,6 +473,21 @@ fr:
               taken: "Un compte est déjà associé à ce numéro de téléphone"
             reset_password_token:
               invalid: 'Veuillez faire une nouvelle demande de changement de mot de passe, cette demande a expirée'
+
+        identity:
+          attributes:
+            first_name:
+              blank: Veuillez saisir un prénom
+            last_name:
+              blank: Veuillez saisir un nom de famille
+            birth_date:
+              blank: "Veuillez saisir votre date de naissance"
+            school:
+              blank: 'Veuillez saisir votre établissement scolaire'
+              required: 'Veuillez saisir votre établissement scolaire'
+            gender:
+              blank: Veuillez faire un choix parmi les options de genres proposés
+
         users/user_management:
           attributes:
             school_manager:
@@ -411,7 +521,7 @@ fr:
               taken: 'Vous ne pouvez pas postuler deux fois à la même offre'
   admin:
     table_headers:
-      last_created: 'last_created'
+      last_created: Dernier créé
     toggle_navigation: 'toggle_navigation'
 
     misc:
@@ -426,12 +536,43 @@ fr:
         title: 'Key Performance Indicators'
         breadcrumb: KPI
         menu: KPI
+      index:
+        no_records: Aucun résultat
     scopes:
-      _all: "Tous"
+      all: "Tous"
       school:
         with_manager: "Avec chef d'établissement"
         without_manager: "Sans chef d'établissement"
-
+      user:
+        kept: Actifs
+        discarded: Supprimés
+      users~employer:
+        kept: Actifs
+        discarded: Supprimés
+      users~operator:
+        kept: Actifs
+        discarded: Supprimés
+      users~school_management:
+        kept: Actifs
+        discarded: Supprimés
+      users~ministry_statistician:
+        kept: Actifs
+        discarded: Supprimés
+      users~statistician:
+        kept: Actifs
+        discarded: Supprimés
+      users~student:
+        kept: Actifs
+        discarded: Supprimés
+      internship_offers~weekly_framed:
+        kept: Actives
+        discarded: Supprimées
+      internship_offers~free_date:
+        kept: Actives
+        discarded: Supprimées
+      internship_offers~api:
+        kept: Actives
+        discarded: Supprimées
   dashboard:
     internship_offer:
       created: Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.
@@ -459,5 +600,6 @@ fr:
       troisieme_generale: '3e'
       troisieme_prepa_metiers: '3e prépa métiers'
       troisieme_segpa: '3e SEGPA'
+      bac_pro: 'Bac pro'
   date:
     day_names: [Dimanche, Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi]

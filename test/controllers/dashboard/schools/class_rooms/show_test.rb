@@ -32,7 +32,7 @@ module Dashboard
         ]
         sign_in(create(:school_manager, school: school))
 
-        get dashboard_school_class_room_path(school, class_room)
+        get dashboard_school_class_room_students_path(school, class_room)
         students.map do |student|
           assert_select 'a[href=?]', dashboard_students_internship_applications_path(student)
 
@@ -53,36 +53,38 @@ module Dashboard
           end
 
           student_stats = Presenters::Dashboard::StudentStats.new(student: student)
-          assert_select ".test-student-#{student.id} span.applications_count",
-                        text: student_stats.applications_count.to_s
-          assert_select ".test-student-#{student.id} span.applications_approved_count",
-                        text: student_stats.applications_approved_count.to_s
+          assert_select ".fr-badge--error", text: student_stats.applications_count.to_s
+          assert_select ".fr-badge--success", text: student_stats.applications_approved_count.to_s
         end
       end
 
-      test 'GET class_rooms#show as SchoolManagement contains key navigations links' do
-        school = create(:school, :with_school_manager)
+      test 'GET class_rooms#show as SchoolManagement with weeks declared contains key navigations links' do
+        school = create(:school, :with_school_manager, :with_weeks)
         class_room = create(:class_room, school: school)
         main_teacher = create(:main_teacher, school: school, class_room: class_room)
         sign_in(main_teacher)
 
-        get dashboard_school_class_room_path(school, class_room)
+        get dashboard_school_class_room_students_path(school, class_room)
         assert_response :success
-        assert_select 'a.nav-link[href=?]', dashboard_school_class_rooms_path(school), count: 1
-        assert_select 'a.nav-link[href=?]', dashboard_school_users_path(school), count: 1
-        assert_select 'a.nav-link[href=?]', edit_dashboard_school_path(school), count: 2
+        assert_select "li a[href=?]", dashboard_school_class_rooms_path(school) , count: 1
+        assert_select "li a[href=?]", edit_dashboard_school_path(school), count: 1
+        assert_select "li a[href=?]", dashboard_school_users_path(school), count: 1
+        assert_select "li a[href=?]", dashboard_internship_agreements_path, count: 0
+        assert_select "li a[href=?]", dashboard_school_information_path(school), count: 0
+      end
 
-        assert_select 'a.btn[href=?]', new_dashboard_school_class_room_path(school), count: 0
+      test 'GET class_rooms#show as SchoolManagement with no weeks declared contains key navigations links' do
+       puts 'TODO'
       end
 
       test 'GET class_rooms#show as SchoolManagement can remove student from school' do
-        school = create(:school, :with_school_manager)
+        school = create(:school, :with_school_manager, :with_weeks)
         class_room = create(:class_room, school: school)
         main_teacher = create(:main_teacher, school: school, class_room: class_room)
         student = create(:student, class_room: class_room, school: school, confirmed_at: 2.days.ago)
         sign_in(main_teacher)
 
-        get dashboard_school_class_room_path(school, class_room)
+        get dashboard_school_class_room_students_path(school, class_room)
         assert_response :success
         assert_select ".test-student-#{student.id} select option[value='']",
                       text: 'Cet élève ne fait pas partie de mon établissement'

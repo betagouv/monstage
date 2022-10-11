@@ -6,12 +6,18 @@ module Finders
     delegate :next_from,
              :previous_from,
              :all,
+             :all_without_page,
              to: :listable_query_builder
 
     def base_query
       send(mapping_user_type.fetch(user.type))
         .group(:id)
         .page(params[:page])
+    end
+
+    def base_query_without_page
+      send(mapping_user_type.fetch(user.type))
+        .group(:id)
     end
 
     private
@@ -23,13 +29,6 @@ module Finders
       @user = user
       @params = params
       @listable_query_builder = Finders::ListableInternshipOffer.new(finder: self)
-    end
-
-    def keyword_params
-      return nil unless params.key?(:keyword)
-      return nil if params.dig(:keyword).blank?
-
-      params[:keyword]
     end
 
     def coordinate_params
@@ -45,41 +44,42 @@ module Finders
       params[:radius]
     end
 
-    def school_track_params
-      return nil unless params.key?(:school_track)
-      return nil if params.dig(:school_track).blank?
-
-      params[:school_track]
-    end
-
     def school_year_param
-      return nil unless params.key?(:school_year)
-      return nil if params.dig(:school_year).blank?
-
-      params[:school_year].to_i
+       return params[:school_year].to_i if check_param?(:school_year)
     end
 
-    def week_ids_params
-      return nil unless params.key?(:week_ids)
-      return nil if params.dig(:week_ids).blank?
+    def use_params(param_key)
+      return params[param_key] if check_param?(param_key)
+    end
 
-      params[:week_ids]
+    def check_param?(param_key)
+      return nil unless params.key?(param_key)
+      return nil if params.dig(param_key).blank?
+
+      true
     end
 
     def common_filter
       query = yield
-
-      query = keyword_query(query) if keyword_params
+      %i[
+        keyword
+        school_track
+        week_ids
+        sector_ids
+      ].each do |sym_key|
+        query = self.send("#{sym_key}_query", query) if use_params(sym_key)
+      end
       query = nearby_query(query) if coordinate_params
-      query = school_track_query(query) if school_track_params
       query = school_year_query(query) if school_year_param
-      query = week_ids_query(query) if week_ids_params
       query
     end
 
-
     def week_ids_query(query)
-      query.merge(weekly_framed_scopes(:by_weeks, weeks: OpenStruct.new(ids: week_ids_params)))
+      query.merge(weekly_framed_scopes(:by_weeks, weeks: OpenStruct.new(ids: use_params(:week_ids))))
+    end
+
+    def sector_ids_query(query)
+      query.where(sector_id: use_params(:sector_ids))
     end
 
     def school_year_query(query)
@@ -87,23 +87,22 @@ module Finders
     end
 
     def keyword_query(query)
-      query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank))
+      query.merge(InternshipOffer.search_by_keyword(use_params(:keyword)).group(:rank))
     end
 
     def nearby_query(query)
-      query.merge(
-        query.nearby(latitude: coordinate_params.latitude,
-                     longitude: coordinate_params.longitude,
-                     radius: radius_params)
-             .with_distance_from(latitude: coordinate_params.latitude,
-                                 longitude: coordinate_params.longitude)
-      )
+      proximity_query = query.nearby(latitude: coordinate_params.latitude,
+                                     longitude: coordinate_params.longitude,
+                                     radius: radius_params)
+                             .with_distance_from(latitude: coordinate_params.latitude,
+                                                 longitude: coordinate_params.longitude)
+      query.merge(proximity_query)
     end
 
     def school_track_query(query)
-      query = query.merge(InternshipOffer.school_track(school_track: params[:school_track]))
+      query = query.merge(InternshipOffer.school_track(school_track: use_params(:school_track)))
 
-      if params[:school_track] == 'troisieme_generale'
+      if use_params(:school_track) == 'troisieme_generale'
         query = query.merge(
           weekly_framed_scopes(:ignore_already_applied, {user: user})
         )

@@ -1,5 +1,9 @@
 module InternshipAgreements
   class BaseComponent < ApplicationComponent
+    include Turbo::FramesHelper,
+            Turbo::Streams::StreamName,
+            Turbo::Streams::Broadcasts
+
     delegate :main_teacher_accept_terms?,
              :school_manager_accept_terms?,
              :employer_accept_terms?,
@@ -29,7 +33,5 @@ module InternshipAgreements
       signatures = signatures.push(:main_teacher_accept_terms?) unless troisieme_generale?
       signatures
     end
-
-
   end
 end

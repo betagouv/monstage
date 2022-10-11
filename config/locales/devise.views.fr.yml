@@ -25,7 +25,7 @@ fr:
         remember_me: Se souvenir de moi ?
         reset_password_sent_at: Clé de réinitialisation créée à
         reset_password_token: Clé de réinitialisation du mot de passe
-        sign_in_count: Nombre des connexions
+        sign_in_count: Nombre de connexions
         unconfirmed_email: Courriel non confirmé
         unlock_token: Clé de déverrouillage
         updated_at: Date de mise à jour
@@ -93,6 +93,7 @@ fr:
       updated: Votre mot de passe a bien été modifié. Vous êtes maintenant connecté(e).
       updated_not_active: Votre mot de passe a bien été modifié.
     registrations:
+      reusing_phone_number: Un compte est déjà associé à ce numéro de téléphone, connectez-vous ou réinitialisez votre mot de passe si vous l'avez oublié
       destroyed: Au revoir ! Votre compte a bien été supprimé. Nous espérons vous revoir bientôt.
       edit:
         are_you_sure: Êtes-vous sûr ?
@@ -105,6 +106,7 @@ fr:
         we_need_your_current_password_to_confirm_your_changes: nous avons besoin de votre mot de passe actuel pour valider ces modifications
       new:
         sign_up: Inscription
+      second_step: Informations bien enregistrées
       signed_up: Bienvenue ! Vous vous êtes bien enregistré(e).
       signed_up_but_inactive: Vous vous êtes bien enregistré(e). Cependant, nous n’avons pas pu vous connecter car votre compte n’a pas encore été activé.
       signed_up_but_locked: Vous vous êtes bien enregistré(e). Cependant, nous n’avons pas pu vous connecter car votre compte est verrouillé.

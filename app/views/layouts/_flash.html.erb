@@ -24,7 +24,7 @@
               <% end %>
             </div>
             <div class="col">
-              <span id="alert-text"><%= flash[flash_kind] %></span>
+              <span id="alert-text"><%= flash[flash_kind.to_sym] %></span>
             </div>
 
             <button type="button" class="close alert-link" data-dismiss="alert" aria-label="Close">

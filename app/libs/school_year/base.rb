@@ -5,6 +5,8 @@ module SchoolYear
     YEAR_START          = 2019
     MONTH_OF_YEAR_SHIFT = 5
     DAY_OF_YEAR_SHIFT   = 31
+    SEPTEMBER = 9
+    FIRST = 1
 
     def strict_beginning_of_period
       case current_month
@@ -15,9 +17,9 @@ module SchoolYear
       end
     end
 
-    def between_june_to_august?
-      june_to_august.member?(current_month)
-    end
+    # def between_june_to_august?
+    #   june_to_august.member?(current_month)
+    # end
 
     def range
       beginning_of_period..(self.next_year).beginning_of_period
@@ -40,7 +42,7 @@ module SchoolYear
     end
 
     def january_to_may
-      1..5
+      1..MONTH_OF_YEAR_SHIFT
     end
 
     def june_to_august
@@ -52,7 +54,7 @@ module SchoolYear
     end
 
     def last_week_of_may?
-      last_day_of_may = Date.new(current_year, 5, 31)
+      last_day_of_may = Date.new(current_year, MONTH_OF_YEAR_SHIFT, DAY_OF_YEAR_SHIFT)
       date.between?(last_day_of_may.beginning_of_week, last_day_of_may.end_of_week)
     end
   end

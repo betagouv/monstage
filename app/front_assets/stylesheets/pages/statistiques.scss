@@ -1,24 +1,9 @@
-.bg-cover-image-statistiques {
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mM0TgMAANIAm3/ipYoAAAAASUVORK5CYII='),
-    url('../images/homepage/mon-stage-de-3e-illustration.jpg');
-  background-position: bottom left, right -80px;
-  background-repeat: repeat, no-repeat;
-  background-size: contain, cover;
-}
-.wrapper-breadcrumb {
-  background-image: linear-gradient(to bottom, #f6f6f6, #eaeaea);
-}
-
 .bg-stats-filter {
   background-color: #eaeaea;
 }
 .table-statistics accr {
   border-bottom: 1px dotted #4CA2CD;
   cursor: help;
-}
-.custom-stats-checkbox {
-  padding-top: $input-btn-padding-y;
-  padding-bottom: $input-btn-padding-y;
 }
 
 .table-statistics {
@@ -27,19 +12,16 @@
       border-bottom-color: #d8d8d8;
     }
   tr:first-child td {
-    border-top: 0.3rem solid $blue;
+    border-top: 0.1rem solid black;
   }
-  tr:last-child td {
-      border-bottom: 1px solid $blue;
-    }
   tr:hover {
       background-color: #cce4f0;
     }
   }
 
   tfoot {
-    tr {
-      border-bottom: 2px solid $blue;
+    tr, td {
+      background-color: #eee !important;
     }
   }
 }
@@ -150,6 +132,10 @@ p.hero {
   height: 73px;
   }
 
+.table-statistics .bg-blue-light {
+  background-color: $blue-france-light !important;
+}
+
 .table-results {
   background-color: $bg-light-blue;
   border-radius: 1rem;
@@ -162,7 +148,7 @@ p.hero {
     }
 
     tr:last-child {
-      background-color: $bg-less-light-blue;
+      background-color: $blue-france-light;
 
       td:first-child {
         border-bottom-left-radius: 10px;
@@ -178,5 +164,5 @@ p.hero {
   }
 
   .bg-light-blue{
-    background-color: $bg-light-blue;
+    background-color: $blue-france-975;
   }

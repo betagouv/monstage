@@ -23,14 +23,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     operator = create(:user_operator)
     sign_in(operator)
     get account_path
-    assert_select 'a[href=?]', account_path(section: 'api')
-  end
-
-  test 'GET account_path(section: api) as Operator' do
-    operator = create(:user_operator)
-    sign_in(operator)
-    get account_path(section: 'api')
-    assert_select "a[href='#{account_path(section: 'api')}']"
+    assert_select '#api-panel', 1
     assert_select 'input[name="user[api_token]"]'
     assert_select "input[value=\"#{operator.api_token}\"]"
   end
@@ -38,8 +31,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test 'GET account_path(section: identity) as Operator' do
     operator = create(:user_operator)
     sign_in(operator)
-    get account_path(section: 'identity')
-    assert_select "a[href='#{account_path(section: 'api')}']"
+    get account_path
+    assert_select '#api-panel', 1
     assert_select 'select[name="user[department]"]'
   end
 
@@ -225,6 +218,41 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal school.id, school_manager.school_id
     assert_equal 'Jules', school_manager.first_name
     assert_equal 'Verne', school_manager.last_name
+    follow_redirect!
+    assert_select '#alert-success #alert-text', { text: 'Etablissement mis à jour avec succès.' }, 1
+  end
+
+  test 'PATCH edit as school_manager, can change phone number' do
+    original_school = create(:school)
+    school_manager = create(:school_manager, school: original_school)
+    some_phone_number = '0623042585'
+    assert_nil school_manager.phone
+    sign_in(school_manager)
+
+    patch account_path, params: { user: { 
+      phone_prefix: '+33',
+      phone_suffix: some_phone_number } }
+
+    assert_redirected_to account_path
+    school_manager.reload
+    assert_equal "+33#{some_phone_number}", school_manager.phone
+    follow_redirect!
+    assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
+  end
+
+  test 'PATCH edit as employer, can change phone number' do
+    employer = create(:employer)
+    some_phone_number = '0623042585'
+    assert_nil employer.phone
+    sign_in(employer)
+
+    patch account_path, params: { user: { 
+      phone_prefix: '+33',
+      phone_suffix: some_phone_number } }
+
+    assert_redirected_to account_path
+    employer.reload
+    assert_equal "+33#{some_phone_number}", employer.phone
     follow_redirect!
     assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
   end

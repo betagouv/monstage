@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
@@ -12,14 +13,12 @@ Devise.setup do |config|
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
-  # config.parent_controller = 'DeviseController'
+  config.parent_controller = 'Users::DeviseController'
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  require_relative '../../app/libs/email_utils'
-  config.mailer_sender = EmailUtils.formatted_email
 
   # Configure the class responsible to send e-mails.
   config.mailer = 'CustomDeviseMailer'
@@ -172,7 +171,7 @@ Devise.setup do |config|
   # Email regex used to validate email formats. It simply asserts that
   # one (and only one) @ exists in the given string. This is mainly
   # to give user feedback and not to assert the e-mail validity.
-  config.email_regexp = /\A[^@\s]+@[^@\s]+\z/
+  config.email_regexp = /\A[^@\s]+@[^@\s]+\.[^@\.\s]+\z/
 
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this
@@ -252,7 +251,7 @@ Devise.setup do |config|
   # should add them to the navigational formats lists.
   #
   # The "*/*" below is required to match Internet Explorer requests.
-  # config.navigational_formats = ['*/*', :html]
+  config.navigational_formats = ['*/*', :html, :turbo_stream]
 
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
@@ -289,8 +288,9 @@ Devise.setup do |config|
   # If your app is using Turbolinks, Turbolinks::Controller needs to be included to make redirection work correctly:
   #
   ActiveSupport.on_load(:devise_failure_app) do
-    include Turbolinks::Controller
+  #   include Turbolinks::Controller
   end
+  
 
   # ==> Configuration for :registerable
 

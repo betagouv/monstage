@@ -107,6 +107,7 @@ module Api
       street = "Avenue de l'opéra"
       zipcode = '75002'
       city = 'Paris'
+      siret = FFaker::CompanyFR.siret
       sector_uuid = sector.uuid
       week_params = [
         "#{week_instances.first.year}-W#{week_instances.first.number}",
@@ -125,6 +126,7 @@ module Api
                 employer_name: employer_name,
                 employer_description: employer_description,
                 employer_website: employer_website,
+                siret: siret,
                 'coordinates' => coordinates,
                 street: street,
                 zipcode: zipcode,
@@ -180,6 +182,7 @@ module Api
                 employer_name: 'employer_name',
                 employer_description: 'employer_description',
                 employer_website: 'http://employer_website.com',
+                siret: FFaker::CompanyFR.siret,
                 coordinates: { latitude: 1, longitude: 1 },
                 street: 'street',
                 zipcode: '60580',
@@ -220,6 +223,7 @@ module Api
                   employer_name: 'employer_name',
                   employer_description: 'employer_description',
                   employer_website: 'http://employer_website.com',
+                  siret: FFaker::CompanyFR.siret,
                   coordinates: { latitude: 1, longitude: 1 },
                   street: 'street',
                   zipcode: '60580',
@@ -279,6 +283,48 @@ module Api
       end
     end
 
+    test 'POST #create as operator with empty zipcode creates the internship offer' do
+      operator = create(:user_operator, api_token: SecureRandom.uuid)
+      sector = create(:sector, uuid: SecureRandom.uuid)
+      geocoder_response = {
+        status: 200,
+        body: [{
+          "address": {"office": "Ministère de l'Éducation Nationale", "road": "Rue de Grenelle", "suburb": "7th Arrondissement", "city_district": "7th Arrondissement", "city": "Paris", "municipality": "Paris", "county": "Paris", "country": "France", "postcode": "75007", "country_code": "fr"}
+        }].to_json
+      }
+      stub_request(:get, "https://nominatim.openstreetmap.org/reverse?accept-language=en&addressdetails=1&format=json&lat=48.8566383&lon=2.3211761").to_return(geocoder_response)
+
+      travel_to(Date.new(2019, 3, 1)) do
+        assert_difference('InternshipOffer.count', 1) do
+          documents_as(endpoint: :'internship_offers/create', state: :unprocessable_entity_bad_data) do
+            post api_internship_offers_path(
+              params: {
+                token: "Bearer #{operator.api_token}",
+                internship_offer: {
+                  title: 'title',
+                  description: 'description',
+                  employer_name: 'Ministere',
+                  employer_description: 'employer_description',
+                  employer_website: 'http://employer_website.com',
+                  coordinates: { latitude: 48.8566383, longitude: 2.3211761 },
+                  street: '',
+                  zipcode: '',
+                  siret: FFaker::CompanyFR.siret,
+                  city: 'Paris',
+                  sector_uuid: sector.uuid,
+                  remote_id: 'remote_id',
+                  permalink: 'http://google.fr/permalink'
+                }
+              }
+            )
+          end
+          assert_response :created
+        end
+        internship_offer = InternshipOffers::Api.first
+        assert_equal 'Rue de Grenelle', internship_offer.street
+      end
+    end
+
     test 'POST #create as operator with without street creates the internship offer' do
       operator = create(:user_operator, api_token: SecureRandom.uuid)
       sector = create(:sector, uuid: SecureRandom.uuid)
@@ -306,6 +352,7 @@ module Api
                   coordinates: { latitude: 48.8566383, longitude: 2.3211761 },
                   zipcode: '75007',
                   city: 'Paris',
+                  siret: FFaker::CompanyFR.siret,
                   sector_uuid: sector.uuid,
                   remote_id: 'remote_id',
                   permalink: 'http://google.fr/permalink'
@@ -342,6 +389,7 @@ module Api
                   employer_name: 'Ministere',
                   employer_description: 'employer_description',
                   employer_website: 'http://employer_website.com',
+                  siret: FFaker::CompanyFR.siret,
                   coordinates: { latitude: 148, longitude: 14 },
                   zipcode: '75007',
                   city: 'Paris',

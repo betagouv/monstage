@@ -1,50 +1,62 @@
 - badge_counter = Finders::TabEmployer.new(user: current_user)
 
-- if can? :create_remote_internship_request, SupportTicket
-  = render(UserHideableComponent.new(partial_path: 'dashboard/remote_internship_block', user: current_user))
-
-ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
-  - if current_user.is_a?(Users::Employer)
-    - is_active = controller_name == 'internship_offers' && params[:filter].blank?
-    li.nav-item= link_to dashboard_internship_offers_path(forwardable_params.except(:filter)),
-                        class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
-        div.my-auto
+ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
+                                                 aria-label="[Onglets de navigation employeur]"
+                                                 data-fr-js-tabs-list="true"]
+  - is_active = controller_name == 'internship_offers' && params[:filter].blank?
+  li
+    / div.set-height-100
+    = link_to dashboard_internship_offers_path(forwardable_params.except(:filter)),
+              class: "#{is_active ? 'active' : ''}" do
+      button#current_button.fr-tabs__tab [tabindex="0"
+                                          role="tab"
+                                          aria-selected="#{is_active}"
+                                          aria-controls="tabpanel-404-panel"]
+        .my-auto
           = "En cours "
           - if is_active
             = " (#{internship_offers.total_count})"
 
-    - is_active = controller_name == 'internship_offers' && params[:filter] == 'unpublished'
-    li.nav-item= link_to dashboard_internship_offers_path(forwardable_params.merge({filter: 'unpublished'})),
-                        class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
-        div.my-auto
+  - is_active = controller_name == 'internship_offers' && params[:filter] == 'unpublished'
+  li
+    = link_to dashboard_internship_offers_path(forwardable_params.merge({filter: 'unpublished'})),
+              class: "#{is_active ? 'active' : ''}" do
+      button#unpublished_button.fr-tabs__tab [tabindex="0"
+                                              role="tab"
+                                              aria-selected="#{is_active}"
+                                              aria-controls="tabpanel-404-panel"]
+        .my-auto
           = "Dépubliées "
           - if is_active
             = " (#{internship_offers.total_count})"
 
-    - is_active = controller_name == 'internship_offers' && params[:filter] == 'past'
-    li.nav-item= link_to dashboard_internship_offers_path(forwardable_params.merge({filter: 'past'})),
-                        class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
-        div.my-auto
+  - is_active = controller_name == 'internship_offers' && params[:filter] == 'past'
+  li
+    = link_to dashboard_internship_offers_path(forwardable_params.merge({filter: 'past'})),
+              class: "#{is_active ? 'active' : ''}" do
+      button#past_button.fr-tabs__tab [ tabindex="0"
+                                        role="tab"
+                                        aria-selected="#{is_active}"
+                                        aria-controls="tabpanel-404-panel"]
+
+        .my-auto
           = "Passées "
           - if is_active
             = " (#{internship_offers.total_count})"
-  
+
   - # TouDoux checker si ref dep, centraux et opérateurs ça fonctionne
-  - is_active = current_page?(dashboard_internship_applications_path)
-
   - if can?(:edit, InternshipAgreement) && badge_counter.agreements_count.positive?
-    li.nav-item
+    - is_active = current_page?(dashboard_internship_agreements_path)
+    li
       = link_to dashboard_internship_agreements_path,
-                class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_internship_agreements_path) ? 'active' : ''}" do
-        | Mes Conventions de stages &nbsp;
-        - if badge_counter.pending_agreements_count.positive?
-          span.badge-pill.badge-danger.small= badge_counter.pending_agreements_count
- 
-  /Remove code after  February, 15th 2022 or uncomment
-  /- if can? :create_remote_internship_request, SupportTicket
-    - is_active = current_page?(new_dashboard_support_ticket_path)
+                class: "#{is_active ? 'active' : ''}" do
+        button#agreement-button.fr-tabs__tab [
+          tabindex="0"
+          role="tab"
+          aria-selected="#{is_active}"
+          aria-controls="agreement-button-panel"]
 
-    /li.nav-item= link_to new_dashboard_support_ticket_path,
-                         class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
-      div.my-auto
-        | Stages à distance
+          .my-auto
+            | Mes conventions de stages &nbsp;
+            - if badge_counter.pending_agreements_count.positive?
+              span.badge-pill.badge-danger.small= badge_counter.pending_agreements_count

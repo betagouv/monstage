@@ -10,8 +10,14 @@ module Users
       'Admin'
     end
 
+    def god?; true end
+
     def presenter
       Presenters::God.new(self)
+    end
+
+    rails_admin do
+      weight 8
     end
   end
 end

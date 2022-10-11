@@ -30,7 +30,7 @@ module Dashboard
         assert_response :success
         assert_select 'title', 'Mes candidatures | Monstage'
         assert_select 'h1.h2.mb-3', text: student.name
-        assert_select 'a[href=?]', dashboard_school_class_room_path(school, class_room)
+        assert_select 'a[href=?]', dashboard_school_class_room_students_path(school, class_room)
         assert_select 'h2.h4', text: 'Aucun stage sélectionné'
       end
 
@@ -66,7 +66,7 @@ module Dashboard
         assert_template 'dashboard/students/internship_applications/index'
         assert_select 'h1.h2', text: 'Mes candidatures'
         assert_select 'h2.h4', text: 'Aucun stage sélectionné'
-        assert_select 'a.btn.btn-primary[href=?]', Presenters::User.new(student).default_internship_offers_path
+        assert_select 'a.fr-btn[href=?]', student.presenter.default_internship_offers_path
       end
 
       test 'GET internship_applications#index render internship_applications' do
@@ -86,8 +86,8 @@ module Dashboard
         sign_in(student)
         get dashboard_students_internship_applications_path(student)
         assert_response :success
-        assert_select 'a.btn.btn-primary[href=?]',
-                      Presenters::User.new(student).default_internship_offers_path
+        assert_select 'a.fr-btn[href=?]',
+                      student.presenter.default_internship_offers_path
         internship_applications.each do |aasm_state, internship_application|
           assert_select 'a[href=?]', dashboard_students_internship_application_path(student, internship_application)
           assert_template "dashboard/students/internship_applications/states/_#{aasm_state}"
@@ -114,7 +114,7 @@ module Dashboard
                       count: 1
         assert_select '.alert-internship-application-state',
                       text: "Candidature annulée le #{I18n.localize(internship_applications[:canceled_by_student].canceled_at, format: :human_mm_dd)}.",
-                      count: 1
+                      count: 2
       end
 
       test 'GET internship_applications#show not connected responds with redireciton' do
@@ -155,8 +155,8 @@ module Dashboard
         get dashboard_students_internship_application_path(student,
                                                            internship_application)
         assert_response :success
-        assert_select "a.btn-primary[href=\"#{internship_offer_internship_application_path(internship_application.internship_offer, internship_application, transition: :submit!)}\"]"
-        assert_select 'a.btn-primary[data-method=patch]'
+        assert_select "a[href=\"#{internship_offer_internship_application_path(internship_application.internship_offer, internship_application, transition: :submit!)}\"]"
+        assert_select 'a[data-method=patch]'
       end
     end
   end

@@ -25,4 +25,28 @@ class EmployerMailerPreview < ActionMailer::Preview
       internship_application: internship_application
     )
   end
+
+  def internship_application_approved_with_agreement_email
+    EmployerMailer.internship_application_approved_with_agreement_email(
+      internship_agreement: InternshipAgreement.first
+    )
+  end
+
+  def school_manager_finished_notice_email
+    EmployerMailer.school_manager_finished_notice_email(
+      internship_agreement: InternshipAgreement.first
+    )
+  end
+
+  def notify_others_signatures_started_email
+    EmployerMailer.notify_others_signatures_started_email(
+      internship_agreement: InternshipAgreement.first
+    )
+  end
+
+  def notify_others_signatures_finished_email
+    EmployerMailer.notify_others_signatures_finished_email(
+      internship_agreement: InternshipAgreement.first
+    )
+  end
 end

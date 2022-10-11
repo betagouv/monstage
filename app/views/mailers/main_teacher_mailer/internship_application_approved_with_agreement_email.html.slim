@@ -1,0 +1,25 @@
+p style=head_styles
+  = "Un de vos élèves a été accepté à un stage"
+
+p style=p_styles
+  = "La candidature de "
+  strong ="#{@student_presenter.formal_name}"
+  = " pour le stage "
+  strong ="\"#{@internship_offer.title}\""
+  = " a été acceptée."
+p style=p_styles
+  | Pour afficher le détails de l'offre, vous pouvez cliquer sur le bouton ci-dessous.
+  = render partial: "mailers/call_to_action",
+         locals: { href: @url,
+                   label: "Afficher l'offre de stage" }
+p style=p_styles
+  |
+    Nous vous informons que votre établissement fait partie des établissements
+    éligibles à l'expérimentation de la convention de stage en ligne. Un
+    email a été envoyé au chef d'établissement, lui indiquant la procédure à
+    suivre pour compléter la convention en ligne, sur notre plateforme.
+p style=p_styles
+  | Excellente journée
+p style=p_styles
+  | L'équipe 
+  = link_to('Monstagedetroisieme.fr', @site_url)

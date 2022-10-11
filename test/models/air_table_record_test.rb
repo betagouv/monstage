@@ -28,12 +28,10 @@ class AirTableRecordTest < ActiveSupport::TestCase
   test '.by_paqte' do
     create(:air_table_record,
            nb_spot_used: 10,
-           group: true,
            group: create(:group, name: "mfo",
                                  is_paqte: true))
     create(:air_table_record,
            nb_spot_used: 10,
-           group: true,
            group: create(:group, name: "fom",
                                  is_paqte: false))
 
@@ -56,9 +54,11 @@ class AirTableRecordTest < ActiveSupport::TestCase
     end
 
     assert_equal 3, AirTableRecord.count
-    assert_equal 1, AirTableRecord.during_year(school_year: school_years[0]).count
-    assert_equal 1, AirTableRecord.during_year(school_year: school_years[1]).count
-    assert_equal 1, AirTableRecord.during_year(school_year: school_years[2]).count
+    assert_equal 1, AirTableRecord.during_year(school_year: school_years[0].strict_beginning_of_period.year).count
+    assert_equal 1, AirTableRecord.during_year(school_year: school_years[1].strict_beginning_of_period.year).count
+    assert_equal 1, AirTableRecord.during_year(school_year: school_years[2].strict_beginning_of_period.year).count
+    # when school_year blank returns all records
+    assert_equal 3, AirTableRecord.during_year(school_year: '').count
   end
 
 end

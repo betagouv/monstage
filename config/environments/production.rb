@@ -1,10 +1,9 @@
-# frozen_string_literal: true
+require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  # Verifies that versions and hashed value of the package contents in the project's package.json
-  config.webpacker.check_yarn_integrity = false
   # Settings specified here will take precedence over those in config/application.rb.
 
+  config.webpacker.check_yarn_integrity = false
   # Code is not reloaded between requests.
   config.cache_classes = true
 
@@ -24,33 +23,34 @@ Rails.application.configure do
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
+  config.public_file_server.enabled = false #ENV['RAILS_SERVE_STATIC_FILES'].present?
 
-  config.public_file_server.headers = {
-    "Cache-Control" => "public, s-maxage=31536000, max-age=15552000",
-    "Expires"       => 1.year.from_now.to_formatted_s(:rfc822)
-  }
+  # config.public_file_server.headers = {
+  #   "Cache-Control" => "public, s-maxage=31536000, max-age=15552000",
+  #   'Access-Control-Allow-Origin' => '*',
+  #   "Expires"       => 1.year.from_now.to_formatted_s(:rfc822)
+  # }
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :uglifier
+  # config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
+  # config.assets.compile = false
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  if ENV['ASSET_HOST']
-    config.action_controller.asset_host = ENV['ASSET_HOST']
-  end
+  # if ENV['ASSET_HOST']
+  #   config.action_controller.asset_host = ENV['ASSET_HOST']
+  # end
 
   # Specifies the header that your server uses for sending files.
-  # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
-  # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
+  # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for Apache
+  # config.action_dispatch.x_sendfile_header = "X-Accel-Redirect" # for NGINX
 
-  # Store uploaded files on the local file system (see config/storage.yml for options)
-  # config.active_storage.service = :local
+  # Store uploaded files on the local file system (see config/storage.yml for options).
+  config.active_storage.service = :clevercloud
 
   # Mount Action Cable outside main process or domain
   host_or_default = ENV.fetch('HOST')
@@ -91,8 +91,8 @@ Rails.application.configure do
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
 
-  # Send deprecation notices to registered listeners.
-  config.active_support.deprecation = :notify
+  # Don't log any deprecations.
+  config.active_support.report_deprecations = false
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
@@ -118,24 +118,4 @@ Rails.application.configure do
     authentication: :plain,
     enable_starttls_auto: true
   }
-
-  # The `database_selector` hash is used to pass options to the DatabaseSelector
-  # middleware. The `delay` is used to determine how long to wait after a write
-  # to send a subsequent read to the primary.
-  #
-  # The `database_resolver` class is used by the middleware to determine which
-  # database is appropriate to use based on the time delay.
-  #
-  # The `database_resolver_context` class is used by the middleware to set
-  # timestamps for the last write to the primary. The resolver uses the context
-  # class timestamps to determine how long to wait before reading from the
-  # replica.
-  #
-  # By default Rails will store a last write timestamp in the session. The
-  # DatabaseSelector middleware is designed as such you can define your own
-  # strategy for connection switching and pass that into the middleware through
-  # these configuration options.
-  # config.active_record.database_selector = { delay: 2.seconds }
-  # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
-  # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 end

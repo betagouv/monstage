@@ -1,39 +1,39 @@
-.mx-sm-2.mx-0 data-controller='modal-covid'
-  header.bg-cover-image-homepage.container-xl
-    .row.py-3.py-sm-3.px-md-5.px-sm-4.px-2
-      .col.px-0
-        = render 'pages/home/navbar_home'
-
-    .row.no-gutters
+header.bg-cover-image-homepage.container-xl
+  .container-monstage.container-xl.homepage
+    .row
       .col-lg-6.col-md-12
-        .pl-lg-5.pl-md-4.pl-sm-4.pl-4
-          h1.h1.h1-text-hero.white.mb-3
-            | Des stages de troisième de premier choix !
-          p.my-5.d-sm-none
-          p.subtitle-hero.white.py-lg-5.py-md-4.py-sm-4.py-xs-3.to-regular
+        .px-xl-0.px-lg-3-px-md-3.px-sm-3.px-3
+          .fr-pt-5w
+            h1.fr-h1.fr-pt-5w.white
+              | Des stages de troisième
+              br
+              |de premier choix.
+          p.fr-text--lead.white.py-lg-4.py-md-3.py-sm-3.py-xs-2
             |
               Trouvez votre stage parmi une grande quantité d’offres
-              de qualité, dédiées aux élèves scolarisés en REP/REP+.
-          p.my-5.d-sm-none
-      .col-lg-6.col-md-12
-        .d-flex.align-items-end.flex-column
-          = image_tag asset_pack_path('media/images/homepage/hero-group-resized.png'),
-                      alt: "Illustration, un groupe d'élèves",
-                      width: '90%',
-                      class: 'mt-auto rounded-adjust img-fluid d-none d-md-block'
-          = image_tag asset_pack_path('media/images/homepage/hero-group-xs.png'),
-                      alt: "Illustration, un groupe d'élèves",
-                      width: '85%',
-                      class: 'mt-auto rounded-adjust img-fluid d-block d-md-none'
+              de qualité, dédiées aux élèves scolarisés en
+            span
+              strong = " REP/REP+."
+          .d-none.d-md-block
+            p.mt-4.py-lg-4.py-md-3.py-sm-3.py-xs-2
+          .d-md-none
+            p.mt-4.py-lg-4.py-md-3.py-sm-3.py-xs-2.text-center
+              = link_to internship_offers_path(current_user_or_visitor.default_search_options),
+                        class: 'fr-btn fr-icon-search-line fr-btn--icon-right bg-white fr-px-6w'  do
+                = "Rechercher un stage "
+      .col-lg-6.col-md-12.d-flex.align-items-end.justify-content-center
+        .d-none.d-sm-block
+          = image_tag asset_pack_path('media/images/homepage/hero-illustration.svg'), alt: 'Trouvez un stage', class: 'fr-mt-5w'
 
-  .row.search-form.px-5.mt-2
-    .col-12= render partial: "internship_offers/search/form",
-                    locals: { render_as_partial: true,
-                              url: internship_offers_path,
-                              default_values: user_presenter.default_search_options,
-                              form_id: :home_search_form }
-    .actions.d-flex.d-stick.d-md-none.p-2
+.container-monstage.light-grey-background.d-none.d-sm-block
+  .row.no-gutters.search-form.mt-1
+    .col-12 = render partial: "internship_offers/search/form",
+                     locals: { render_as_partial: true,
+                               url: internship_offers_path,
+                               default_values: user_presenter.default_search_options,
+                               form_id: :home_search_form }
+    .actions.d-stick.d-md-none.p-2.fitting.text-center
       = link_to internship_offers_path(current_user_or_visitor.default_search_options),
-                class: 'btn btn-danger rounded-sm',
+                class: 'fr-btn fr-icon-search-line fr-btn--icon-right fr-px-11w',
                 data: { :"test-id" => 'mobile-search-button' }
-        = "Rechercher un stage"
+        = "Rechercher un stage "

@@ -1,29 +1,42 @@
-h1.h2.mb-3 Je postule
+= render 'layouts/breadcrumb', links: [['/', 'Recherche de stage'], [internship_offer_path(@internship_offer), @internship_offer.title], ['', 'Je Postule']]
 
-.row.bg-dark-light.bt-1.bc-light
-  .col-12
-    .alert.alert-secondary.alert-outlined.bg-white.mt-3.rounded.shadow-sm
-      .row.align-items-center.no-gutters
-        .col-1.col-sm-auto
-          i.fas.fa-exclamation-triangle
-        .col Relisez vous bien pour éviter les fautes d'orthographe.
+.fr-callout.mt-0.mb-5
+  p.fr-callout__text
+    | Avant de valider votre candidature, relisez-vous bien afin d’éviter les fautes d’ortographes.
 
-.row.bg-dark-light
-  .col-12
-    h2.h5.my-2.gray-666 Pour le stage
-    h2.h1
-      strong= @internship_offer.title
-    p
-      = "à #{@internship_application.internship_offer.city}"
-      - if @internship_application.respond_to? :week
-        br
-        = @internship_application.week.select_text_method
+.row.my-4
+  .col-4
+    h6 Rappel du stage
 
-= render "internship_applications/show_details", internship_application: @internship_application
+    .fr-card.mt-3.fr-card--no-arrow
+      .fr-card__body
+        h4.fr-card__title
+          = link_to @internship_offer.title, internship_offer_path(@internship_offer), class: 'fr-card__link'
+        p.fr-card__desc.blue
+          = @internship_offer.city
+          .small.font-weight-bold.--text-title-blue-france.text-label-blue-france.blue-france= "Du #{I18n.localize(@internship_offer.first_date, format: :human_mm_dd_yyyy)} au #{I18n.localize(@internship_offer.last_date, format: :human_mm_dd_yyyy)}"
+        p.fr-card__detail
+          = @internship_offer.employer_name
+      .fr-card__img
+        .fr-tag= I18n.t("enum.school_tracks.#{@internship_offer.school_track}")
+        = image_tag asset_pack_path("media/images/internship_offer_show/offer_default_img.jpg"), alt: '', class: 'fr-responsive-img'
 
-.actions.d-flex.d-sm-block.d-xs-stick
-  = link_to "Modifier", internship_offer_path(@internship_offer), class: 'btn btn-outline-primary'
-  span.mx-1
-  = button_to "Envoyer",
-            internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application, transition: "submit!"),
-            method: :patch, class: 'btn btn-danger', form_class: 'd-inline-block', form: {id: 'submit_application_form'}
+  .col-8
+    h6 Votre candidature
+
+    = render "internship_applications/show_details", internship_application: @internship_application
+
+    .actions.d-flex.d-xs-stick.justify-content-between.flex-row.mt-3
+      .d-inline-flex
+        = link_to "Modifier",
+                  internship_offer_path(@internship_offer),
+                  class: 'fr-btn fr-btn--secondary'
+      .d-inline-flex
+        = button_to "Envoyer",
+                    internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application, transition: "submit!"),
+                    method: :patch,
+                    class: 'fr-btn',
+                    data: { turbo: false },
+                    form_class: 'd-inline-block',
+                    form: {id: 'submit_application_form'}
+

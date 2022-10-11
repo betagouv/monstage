@@ -2,45 +2,40 @@
 
 module UserAdmin
   extend ActiveSupport::Concern
-  BASE_FIELDS = %i[id email first_name last_name].freeze
-  DEFAULTS_FIELDS = (BASE_FIELDS + %i[confirmed_at]).freeze
+
+  DEFAULT_FIELDS = %i[id email first_name last_name]
+  ACCOUNT_FIELDS = %i[confirmed_at sign_in_count]
+
+  DEFAULT_EDIT_FIELDS = %i[first_name last_name email phone password password_confirmation confirmed_at type discarded_at]
+
+  DEFAULT_SCOPES = %i[kept discarded]
 
   included do
     rails_admin do
+      weight 1
+      
       list do
-        fields(*BASE_FIELDS)
-        field :school do
+        fields(*DEFAULT_FIELDS)
+        field :type do
           pretty_value do
-            object = bindings[:object]
-            if object.respond_to?(:school) && object.school.is_a?(School)
-              school = bindings[:object].school
-              path = bindings[:view].show_path(model_name: school.class.name, id: school.id)
-              bindings[:view].content_tag(:a, school.name, href: path)
-            end
+            value.constantize.model_name.human
           end
         end
-        field :class_room do
-          pretty_value do
-            object = bindings[:object]
-            if object.respond_to?(:class_room) && object.class_room.is_a?(ClassRoom)
-              class_room = bindings[:object].class_room
-              bindings[:view].content_tag(:div, class_room.name)
-            end
-          end
-        end
-        field :confirmed_at
+        fields(*ACCOUNT_FIELDS)
+
+        scopes(DEFAULT_SCOPES)
       end
 
       edit do
-        fields(*DEFAULTS_FIELDS)
+        fields(*DEFAULT_EDIT_FIELDS)
       end
 
       # show do
-      #   fields(*UserAdmin::DEFAULTS_FIELDS)
+      #   fields(*UserAdmin::DEFAULT_FIELDS)
       # end
 
       show do
-        fields(*DEFAULTS_FIELDS)
+        fields(*DEFAULT_FIELDS)
         field :confirmation_sent_at do
           date_format 'KO'
           strftime_format '%d/%m/%Y'
@@ -57,7 +52,7 @@ module UserAdmin
       end
 
       export do
-        fields(*UserAdmin::DEFAULTS_FIELDS)
+        fields(*DEFAULT_FIELDS)
         field :role
         field :type
       end

@@ -36,7 +36,7 @@ class MainTeacherRegistrationsTest < ActionDispatch::IntegrationTest
     school_manager = create(:school_manager, school: school)
     class_room = create(:class_room, name: '3e A', school: school)
     assert_difference('Users::SchoolManagement.main_teacher.count', 1) do
-      post user_registration_path(params: { user: { email: 'teacher@acu.edu.fr',
+      post user_registration_path(params: { user: { email: "teacher@#{school.email_domain_name}",
                                                     password: 'okokok',
                                                     password_confirmation: 'okokok',
                                                     type: 'Users::SchoolManagement',
@@ -46,7 +46,8 @@ class MainTeacherRegistrationsTest < ActionDispatch::IntegrationTest
                                                     class_room_id: class_room.id,
                                                     accept_terms: '1',
                                                     role: :main_teacher } })
-      assert_redirected_to users_registrations_standby_path(email: 'teacher@acu.edu.fr')
+      main_teacher_id =  Users::SchoolManagement.where(role: 'main_teacher').last.id                                          
+      assert_redirected_to users_registrations_standby_path(id: main_teacher_id)
     end
   end
 

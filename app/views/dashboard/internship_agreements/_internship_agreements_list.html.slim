@@ -1,0 +1,55 @@
+#agreement-button-panel [
+  class="margin-to-header #{current_user.employer? ? 'fr-tabs__panel fr-tabs__panel--selected' : ''}"
+  aria-labelled-by="agreement-button"
+  role="tabpanel"
+  tabindex="0"]
+
+  .fr-callout.fr-fi-information-line
+    p.fr-callout__title Signez votre convention en ligne !
+    p.fr-callout__text
+      |
+        La signature de la convention de stage peut désormais s’effectuer en 
+        ligne, de manière totalement dématérialisée et sécurisée. 
+        Vous préférez la signature traditionnelle en version papier ? 
+        Optez pour l’impression.
+
+  - if @internship_agreements.empty?
+    = render partial: 'empty_agreement_list'
+
+  - else
+    = form_with(model: User,
+                url: start_signing_dashboard_user_path(id: current_user.id),
+                method: :post)  do |fg|
+      .row
+        .col-12.text-right
+          = fg.button 'Signer',
+                      type: 'submit',
+                      class: "fr-btn fr-mb-2w fr-px-4w",
+                      disabled: true,
+                      'data-fr-opened': false,
+                      'aria-controls': "fr-modal-signatures",
+                      'data-group-signing-target': "generalCta"
+
+      table.table.table-hover.table-rg2a.internship-agreements-list
+        thead
+          tr.d-flex.leight-grey.row
+            th.col-sm-3
+              .fr-form-group.fr-ml-2w
+                .fr-fieldset.fr-fieldset--inline
+                  .fr-fieldset__content
+                    .fr-checkbox-group
+                      input.select-general-internship-agreements [
+                          type='checkbox'
+                          name='select-general-internship-agreements'
+                          id='select-general-internship-agreements'
+                          data-action="group-signing#toggleSignThemAll"
+                          data-group-signing-target="generalCtaSelectBox"]
+                      label for='select-general-internship-agreements' Elève
+            th.col-sm-2.fr-pl-3w Offre de stage
+            th.col-sm-2 Organisme d'accueil
+            th.col-sm-2 Statut
+            th.col-sm-3
+        tbody
+          - @internship_agreements.each do |internship_agreement|
+            = render partial: 'dashboard/internship_agreements/internship_agreement',
+                      locals: { internship_agreement: internship_agreement, fg: fg }

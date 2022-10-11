@@ -1,34 +1,25 @@
 - content_for(:canonical_url, params[:page] ? internship_offers_url(page: params[:page]) : internship_offers_url)
 
 - content_for(:custom_header) do
-  h1.text-white.text-center.pt-5.pb-5.pb-md-4.my-0.bg-custom-blue
-    = "Postulez à des offres de stage"
-  .position-sticky.sticky-top.bg-custom-blue.wrapper-sticky-with-offset
-    .container.d-none.d-md-block
+  .position-sticky.sticky-top.wrapper-sticky-with-offset.search-bar.d-none.d-sm-block
+    .container-monstage
       .row
         .col-12
-          .pt-3
+          .fr-py-2w
             = render partial: "internship_offers/search/form",
                               locals: { render_as_partial: true,
                                         url: internship_offers_path,
                                         default_values: params,
                                         form_id: :desktop_internship_offers_index_search_form }
 
-.actions.d-flex.d-stick.d-md-none.p-2
+.actions.d-flex.d-stick.d-md-none.py-2
   = link_to search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])),
-            class: 'btn btn-danger rounded-sm',
+            class: 'fr-btn btn-block-mobile',
+            title: "Lancer la recherche",
             data: { :"test-id" => 'mobile-search-button' }
     = search_button_label
 
-
-.row
-  .col-12 = render "internship_offers/title",
-                   internship_offers: @internship_offers
-
-= render partial: "internship_offer",
-                  collection: @internship_offers
-
-.row.d-flex
-  - if !@internship_offers.blank?
-    ul.col-12.d-none.d-flex.order-3.mt-2.mb-sm-3.justify-content-end
-      = paginate(@internship_offers, views_prefix: 'internship_offers', window: 2)
+.fr-containerr
+  = react_component("InternshipOfferResults",
+                    props: { sectors: @sectors.to_a,
+                             params: @params})

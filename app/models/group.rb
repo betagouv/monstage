@@ -17,4 +17,17 @@ class Group < ApplicationRecord
             class_name: 'EmailWhitelists::Ministry',
             dependent: :destroy,
             inverse_of: :group
+
+  rails_admin do
+    weight 15
+    navigation_label 'Divers'
+
+    list do
+      field :id
+      field :name
+      field :is_public
+      field :is_paqte
+    end
+
+  end
 end

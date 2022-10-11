@@ -17,32 +17,41 @@ FactoryBot.define do
     factory :student, class: 'Users::Student', parent: :user do
       type { 'Users::Student' }
 
-      first_name { 'Rick' }
-      last_name { 'Roll' }
+      first_name { FFaker::NameFR.first_name  }
+      last_name { FFaker::NameFR.last_name }
       gender { 'm' }
       birth_date { 14.years.ago }
-
       school { create(:school, :with_school_manager) }
+
       trait :male do
         gender { 'm' }
       end
+
       trait :female do
         gender { 'f' }
       end
-      factory :student_with_class_room_3e, class: 'Users::Student', parent: :student do
-        class_room { create(:class_room, school: school, school_track: 'troisieme_generale') }
-      end
+
+
       trait :not_precised do
         gender { 'np' }
       end
+
       trait :registered_with_phone do
         email { nil }
         phone { '+330637607756' }
+      end
+
+      factory :student_with_class_room_3e, class: 'Users::Student', parent: :student do
+        class_room { create(:class_room, school: school) }
+        after(:create) do |student|
+          create(:main_teacher, class_room: student.class_room, school: student.school)
+        end
       end
     end
 
     factory :employer, class: 'Users::Employer', parent: :user do
       type { 'Users::Employer' }
+      employer_role { 'PDG' }
     end
 
     factory :god, class: 'Users::God', parent: :user do
@@ -58,21 +67,30 @@ FactoryBot.define do
     end
 
     factory :main_teacher, class: 'Users::SchoolManagement', parent: :user do
+      school
       type { 'Users::SchoolManagement' }
       role { 'main_teacher' }
 
       first_name { 'Madame' }
       last_name { 'Labutte' }
+
+      sequence(:email) { |n| "labutte.#{n}@#{school.email_domain_name}" }
     end
 
     factory :teacher, class: 'Users::SchoolManagement', parent: :user do
+      school
       type { 'Users::SchoolManagement' }
       role { 'teacher' }
+
+      sequence(:email) { |n| "labotte.#{n}@#{school.email_domain_name}" }
     end
 
     factory :other, class: 'Users::SchoolManagement', parent: :user do
+      school
       type { 'Users::SchoolManagement' }
       role { 'other' }
+
+      sequence(:email) { |n| "lautre.#{n}@#{school.email_domain_name}" }
     end
 
     factory :statistician, class: 'Users::Statistician', parent: :user do
@@ -112,9 +130,6 @@ FactoryBot.define do
 
     trait :troisieme_prepa_metiers do
       class_room { build(:class_room, :troisieme_prepa_metiers, school: school) }
-    end
-    trait :bac_pro do
-      class_room { build(:class_room, :bac_pro, school: school) }
     end
   end
 end

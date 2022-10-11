@@ -11,4 +11,20 @@ module ReportingHelper
     opts.merge!(extra) unless extra.blank?
     opts
   end
+
+  def stats_breadcrumb_links(params:, user:)
+    if params[:department].present? && params[:group].present?
+      [ [reporting_internship_offers_path(default_reporting_url_options(user)),  'Statistiques'],
+              [reporting_internship_offers_path(department: params[:department]), params[:department]],
+              ['', params[:group]] ]
+    elsif params[:department].present?
+      [ [reporting_internship_offers_path(default_reporting_url_options(user)),  'Statistiques'],
+              ['', params[:department]] ]
+    elsif params[:group].present?
+      [ [reporting_internship_offers_path(default_reporting_url_options(user)),  'Statistiques'],
+              ['', params[:group]] ]
+    else
+      [ ['',  'Statistiques nationales'] ]
+    end
+  end
 end

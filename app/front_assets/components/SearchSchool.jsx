@@ -4,7 +4,7 @@ import $ from 'jquery';
 import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
 import SchoolPropType from '../prop_types/school';
-import RadioListSchoolInput from './search_school/RadioListSchoolInput';
+import SchoolSelectInput from './search_school/SchoolSelectInput';
 import ClassRoomInput from './search_school/ClassRoomInput';
 import { endpoints } from '../utils/api';
 
@@ -26,6 +26,7 @@ export default function SearchSchool({
   const [selectedClassRoom, setSelectedClassRoom] = useState(null);
 
   const [city, setCity] = useState('');
+  const [chosenCity, setChosenCity] = useState('');
   const [autocompleteCitySuggestions, setAutocompleteCitySuggestions] = useState({});
   const [autocompleteSchoolsSuggestions, setSearchSchoolsSuggestions] = useState([]);
   const [autocompleteNoResult, setAutocompleteNoResult] = useState(false);
@@ -53,10 +54,13 @@ export default function SearchSchool({
   const fetchDone = (result) => {
     setAutocompleteCitySuggestions(result.match_by_city);
     setSearchSchoolsSuggestions(result.match_by_name);
-    setAutocompleteNoResult(result.no_match);
+    const withNoMatch = isEmpty(result.match_by_name) && isEmpty(result.match_by_city)
+    setAutocompleteNoResult((chosenCity === '') && withNoMatch);
     setRequestError(null);
     setCurrentRequest(null);
   };
+
+  const isEmpty = (object) => { return Object.keys(object).length === 0; }
 
   const fetchFail = (xhr, textStatus) => {
     if (textStatus === 'abort') {
@@ -73,6 +77,7 @@ export default function SearchSchool({
 
   const onResetSearch = () => {
     setCity(null);
+    setChosenCity('');
     setSelectedSchool(null);
     setSelectedClassRoom(null);
     setAutocompleteCitySuggestions({});
@@ -83,14 +88,12 @@ export default function SearchSchool({
     setCurrentRequest(null);
   };
 
-  // search is done by city  or school
+  // search is done by city or school
   // either we find city
   // either we find school
   // based on selection (string:city, object:school)
   // see: https://github.com/downshift-js/downshift#onchange
   const onDownshiftChange = (selectedItem) => {
-    setCity(selectedItem);
-
     if (autocompleteCitySuggestions.hasOwnProperty(selectedItem)) {
       setCity(selectedItem);
       setSchoolsInCitySuggestions(autocompleteCitySuggestions[selectedItem]);
@@ -101,13 +104,14 @@ export default function SearchSchool({
       setSelectedSchool(selectedItem);
       setClassRoomsSuggestions(selectedItem.class_rooms);
     }
-
+    setChosenCity(selectedItem);
     setAutocompleteCitySuggestions({});
     setSearchSchoolsSuggestions([]);
   };
 
   const inputChange = (event) => {
     setCity(event.target.value);
+    if (event.target.value === '') { onResetSearch()}
   }
 
   const renderAutocompleteInput = () => {
@@ -130,12 +134,20 @@ export default function SearchSchool({
           selectedItem,
         }) => (
           <div className="form-group custom-label-container">
-            <div className="input-group">
+            <label
+              {...getLabelProps({ className: 'fr-label', htmlFor: `${resourceName}_school_city` })}
+            >
+              {label}
+              <abbr title="(obligatoire)" aria-hidden="true">
+                *
+              </abbr>
+            </label>
+            <div className="input-group-append">
               <input
                 {...getInputProps({
                   onChange: inputChange,
                   value: currentCityString(),
-                  className: `form-control ${classes || ''} ${
+                  className: `fr-input ${classes || ''} ${
                     autocompleteNoResult ? '' : 'rounded-0'
                   }`,
                   id: `${resourceName}_school_city`,
@@ -144,19 +156,10 @@ export default function SearchSchool({
                   required: required,
                 })}
               />
-              <label
-                {...getLabelProps({ className: 'label', htmlFor: `${resourceName}_school_city` })}
-              >
-                {label}
-                <abbr title="(obligatoire)" aria-hidden="true">
-                  *
-                </abbr>
-              </label>
-              <div className="input-group-append">
                 {!currentRequest && (
                   <button
                     type="button"
-                    className={`btn btn-outline-secondary btn-clear-city ${
+                    className={`fr-btn fr-btn--secondary btn-clear-city ml-1 ${
                       autocompleteNoResult ? '' : 'rounded-0'
                     }`}
                     onClick={onResetSearch}
@@ -168,15 +171,16 @@ export default function SearchSchool({
                 {currentRequest && (
                   <button
                     type="button"
-                    className="btn btn-outline-secondary btn-clear-city"
+                    className="fr-btn fr-btn--secondary btn-clear-city"
                     onClick={onResetSearch}
                     aria-label="Réinitialiser la recherche"
                   >
-                    <i className="fas fa-spinner fa-spin" />
+                  <span className="fr-icon-close-line"></span>
                   </button>
                 )}
-              </div>
+
             </div>
+
             <div className="search-in-place bg-white shadow">
               <ul
                 {...getMenuProps({
@@ -205,15 +209,15 @@ export default function SearchSchool({
                           key: `city-${currentCity}`,
                         })}
                       >
-                        <span dangerouslySetInnerHTML={{ __html: currentCity }} />
-                        <span className="badge-secondary badge-pill small">
+                        <span  className="fr-mx-1w" dangerouslySetInnerHTML={{ __html: currentCity }} />
+                        <span className="fr-badge fr-badge--sm fr-badge--success fr-badge--no-icon fr-ml-1w">
                           {autocompleteCitySuggestions[currentCity].length} établissement
                           {autocompleteCitySuggestions[currentCity].length > 1 ? 's' : ''}
                         </span>
                       </li>
                     ))}
                     <li
-                      className={`list-group-item  list-group-item-secondary small py-2 ${
+                      className={`list-group-item list-group-item-secondary small py-2 ${
                         (autocompleteSchoolsSuggestions || []).length > 0 ? '' : 'd-none'
                       }`}
                     >
@@ -287,7 +291,7 @@ export default function SearchSchool({
       {city !== null && (
         <>
           {
-            <RadioListSchoolInput
+            <SchoolSelectInput
               setClassRoomsSuggestions={setClassRoomsSuggestions}
               selectedSchool={selectedSchool}
               setSelectedSchool={setSelectedSchool}

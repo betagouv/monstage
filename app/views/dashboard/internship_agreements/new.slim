@@ -1,9 +1,9 @@
-- content_for(:page_title, "#{t(".page_title", name: @internship_agreement.internship_application.student.formal_name)} | Monstage")
+- content_for(:page_title, "#{t(".page_title")} | Monstage")
 
 = form_with model: @internship_agreement,
-              url: (@internship_agreement.new_record? ? dashboard_internship_agreements_path(@internship_agreement) : edit_dashboard_internship_agreements_path(@internship_agreement)),
-              class: 'form-offset-header',
-              html: {'data-controller': 'internship-agreement-form'}, local: true do |form|
+            url: (@internship_agreement.new_record? ? dashboard_internship_agreements_path(@internship_agreement) : edit_dashboard_internship_agreements_path(@internship_agreement)),
+            class: 'form-offset-header',
+            data: {controller: 'internship-agreement-form', turbo: false } do |form|
   table.table-sticky-thead
     = render partial: 'dashboard/internship_agreements/form_header',
              locals: { internship_application: @internship_agreement.internship_application,

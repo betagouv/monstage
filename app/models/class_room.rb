@@ -13,8 +13,6 @@ class ClassRoom < ApplicationRecord
     end
   end
 
-  scope :current, -> {where(anonymized: false)}
-
   def fit_to_weekly?
     try(:troisieme_generale?)
   end
@@ -30,19 +28,11 @@ class ClassRoom < ApplicationRecord
     false
   end
 
+  def main_teacher
+    school_managements&.main_teachers&.first
+  end
+
   def to_s
     name
   end
-
-  def anonymize
-    Users::SchoolManagement.where(class_room_id: id)
-                           .update(class_room_id: nil)
-    update_columns(
-      anonymized: true,
-      name: 'classe archivée'
-    )
-  end
-  alias archive anonymize
-
-  def anonymized? ; anonymized; end
 end

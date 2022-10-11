@@ -20,6 +20,10 @@ module Users
       refute_includes employer.kept_internship_offers, discarded_internship_offer
     end
 
+    test '#obfuscated_phone_number' do
+      employer = build(:employer, phone: '+330601020304')
+      assert_equal '+33 6 ** ** ** 04', employer.obfuscated_phone_number
+    end
 
     test '(rails6.1 upgrade) employer.internship_applications' do
       employer = create(:employer)
@@ -27,12 +31,27 @@ module Users
       discarded_internship_offer = create(:free_date_internship_offer, employer: employer)
       kept_internship_application = create(:free_date_internship_application, internship_offer: kept_internship_offer)
       discarded_internship_application = create(:free_date_internship_application, internship_offer: discarded_internship_offer)
-
+      
       discarded_internship_offer.discard
-
+      
       assert_equal 1, employer.internship_applications.count
       assert_includes employer.internship_applications, kept_internship_application
       refute_includes employer.internship_applications, discarded_internship_application
+    end
+
+    test '#already_signed?' do
+      internship_agreement_1 = create(:internship_agreement)
+      internship_agreement_2 = create(:internship_agreement)
+      employer = internship_agreement_1.employer
+      refute employer.already_signed?(internship_agreement_id: internship_agreement_1.id)
+      refute employer.already_signed?(internship_agreement_id: internship_agreement_2.id)
+      create(:signature,
+             internship_agreement: internship_agreement_1,
+             signatory_role: :employer,
+             user_id: employer.id
+            )
+      assert employer.already_signed?(internship_agreement_id: internship_agreement_1.id)
+      refute employer.already_signed?(internship_agreement_id: internship_agreement_2.id)
     end
   end
 end

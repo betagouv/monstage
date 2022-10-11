@@ -53,12 +53,23 @@ module Dashboard
       render :edit
     end
 
-    def show # TODO : test
+    def show
       @internship_agreement = InternshipAgreement.find(params[:id])
       respond_to do |format|
         format.html
         format.pdf do
-          send_data(GenerateInternshipAgreement.new(@internship_agreement.id).call.render, filename: "Convention_de_stage_#{Presenters::User.new(@internship_agreement.internship_application.student).full_name_camel_case}.pdf", type: 'application/pdf',disposition: 'inline')
+          ext_file_name = @internship_agreement.internship_application
+                                               .student
+                                               .presenter
+                                               .full_name_camel_case
+          send_data(
+            GenerateInternshipAgreement.new(@internship_agreement.id).call.render,
+              filename: "Convention_de_stage_#{ext_file_name}.pdf",
+              type: 'application/pdf',
+              disposition: 'inline'
+          ) && @internship_agreement.signatures.each do |signature|
+              signature.config_clean_local_signature_file
+            end
         end
       end
     end
@@ -66,6 +77,8 @@ module Dashboard
     def index
       authorize! :create, InternshipAgreement
       @internship_agreements = current_user.internship_agreements
+                                           .includes([:internship_application])
+      @school = current_user.school if current_user.is_a?(::Users::SchoolManagement)
     end
 
     private
@@ -76,19 +89,22 @@ module Dashboard
               :internship_application_id,
               :student_school,
               :school_representative_full_name,
+              :school_representative_phone,
+              :school_representative_role,
+              :school_representative_function,
               :school_delegation_to_sign_delivered_at,
               :school_track,
               :student_full_name,
               :student_class_room,
               :main_teacher_full_name,
               :organisation_representative_full_name,
-              :tutor_full_name,
+              :organisation_representative_role,
               :date_range,
               :doc_date,
               :schedule_rich_text,
+              :complementary_terms_rich_text,
               :activity_scope_rich_text,
               :activity_preparation_rich_text,
-              :complementary_terms_rich_text,
               :activity_learnings_rich_text,
               :activity_rating_rich_text,
               :legal_terms_rich_text,
@@ -96,6 +112,21 @@ module Dashboard
               :employer_accept_terms,
               :main_teacher_accept_terms,
               :weekly_lunch_break,
+              :student_refering_teacher_full_name,
+              :student_refering_teacher_email,
+              :student_refering_teacher_phone,
+              :student_address,
+              :student_phone,
+              :student_legal_representative_full_name,
+              :student_legal_representative_email,
+              :student_legal_representative_phone,
+              :student_legal_representative_2_full_name,
+              :student_legal_representative_2_email,
+              :student_legal_representative_2_phone,
+              :siret,
+              :tutor_full_name,
+              :tutor_role,
+              :tutor_email,
               weekly_hours:[],
               new_daily_hours:{},
               daily_lunch_break: {}
@@ -112,7 +143,7 @@ module Dashboard
       when 'completed_by_employer' then "La convention a été envoyée au chef d'établissement."
       when 'started_by_school_manager' then 'La convention a été enregistrée.'
       when 'validated' then "La convention a été validée."
-      else 
+      else
         'La convention a été enregistrée.'
       end
     end

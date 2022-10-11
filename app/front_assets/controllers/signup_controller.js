@@ -9,7 +9,6 @@ export default class extends Controller {
     'emailExplanation',
     'emailInput',
     'rolelInput',
-    'phoneInput',
     'label',
     'emailBloc',
     'phoneBloc',
@@ -18,7 +17,10 @@ export default class extends Controller {
     'passwordHint',
     'passwordInput',
     'passwordConfirmationHint',
-    'passwordConfirmationInput'
+    'passwordConfirmationInput',
+    'phoneLabel',
+    'schoolPhoneBloc',
+    'phoneSuffix'
   ];
 
   static values = {
@@ -28,20 +30,41 @@ export default class extends Controller {
   initialize() {
     // set default per specification
     this.show(this.emailBlocTarget)
+    this.checkEmail();
   }
 
   // on change email address, ensure user is shown academia address requirement when neeeded
   refreshEmailFieldLabel(event) {
-    $(this.labelTarget).text(
-      event.target.value == "school_manager" ?
-      "Adresse électronique académique" :
-      'Adresse électronique (e-mail)'
-    );
-    $(this.emailExplanationTarget).text(
-      event.target.value == "school_manager" ?
-      'Merci de saisir une adresse au format : ce.UAI@ac-academie.fr. Cette adresse sera utilisée pour communiquer avec vous. ' : 
-      'Cette adresse sera utilisée pour communiquer avec vous.'
-    )
+    let labelText = "Adresse électronique (e-mail)"
+    if (["school_manager", "teacher", "main_teacher", "other"].includes(event.target.value)) {
+      labelText = "Adresse électronique académique";
+      // margin adjusting
+      this.phoneLabelTarget.classList.add('fr-mb-1w');
+
+      this.specificExplanation(event)
+      this.compulsaryPhoneLabel(event)
+    }
+    $(this.labelTarget).text();
+  }
+
+  specificExplanation(event) {
+    const format = (event.target.value == "school_manager") ?
+      'ce.UAI@ac-academie.fr' :
+      'xxx@ac-academie.fr'
+    const explanation = `Merci de saisir une adresse au format : ${format}. Cette adresse sera utilisée pour communiquer avec vous. `
+    $(this.emailExplanationTarget).text(explanation);
+  }
+
+  compulsaryPhoneLabel(event) {
+    if (event.target.value != "school_manager") {
+      this.schoolPhoneBlocTarget.children[0].innerHTML = 'Numéro de téléphone (facultatif)';
+      this.schoolPhoneBlocTarget.children[1].classList.add('d-none');
+      this.phoneSuffixTarget.removeAttribute('required');
+    } else {
+      this.schoolPhoneBlocTarget.children[0].innerHTML = 'Numéro de téléphone';
+      this.schoolPhoneBlocTarget.children[1].classList.remove('d-none');
+      this.phoneSuffixTarget.addAttribute('required', true);
+    }
   }
 
   // show/hide handicap input if checkbox is checked
@@ -61,7 +84,7 @@ export default class extends Controller {
     }
   }
 
-  cleanLocalStorage() {
+  cleanLocalStorageWithSchoolManager() {
     localStorage.removeItem('close_school_manager')
   }
 
@@ -70,8 +93,11 @@ export default class extends Controller {
     const emailInputElement = this.emailInputTarget;
     const $hint = $(emailHintElement);
     const $input = $(emailInputElement);
+    if (localStorage.getItem('channel') !== undefined) {
+      this.channelValue = localStorage.getItem('channel');
+    }
 
-    this.cleanLocalStorage();
+    this.cleanLocalStorageWithSchoolManager();
 
     // setup wss to validate email (kind of history, tried to check email with smtp, not reliable)
     this.channelParams = {
@@ -86,19 +112,19 @@ export default class extends Controller {
         switch (data.status) {
           case 'valid':
             $hint.attr('class', 'valid-feedback');
-            $input.attr('class', 'form-control is-valid');
+            $input.attr('class', 'fr-input is-valid');
             emailHintElement.innerText = 'Votre email semble correct!';
             break;
           case 'invalid':
             $hint.attr('class', 'invalid-feedback');
-            $input.attr('class', 'form-control is-invalid');
+            $input.attr('class', 'fr-input is-invalid');
 
             emailHintElement.innerText =
               'Cette adresse éléctronique ne nous semble pas valide, veuillez vérifier';
             break;
           case 'hint':
             $hint.attr('class', 'invalid-feedback');
-            $input.attr('class', 'form-control is-invalid');
+            $input.attr('class', 'fr-input is-invalid');
             emailHintElement.innerText = `Peut être avez-vous fait une erreur de frappe ? ${data.replacement}`;
             break;
           default:
@@ -114,6 +140,7 @@ export default class extends Controller {
 
   disconnect() {
     try {
+      localStorage.clear();
       this.wssClient.disconnect();
     } catch (e) {}
   }
@@ -184,6 +211,7 @@ export default class extends Controller {
     this.hide(fieldToHide)
     this.show(fieldToDisplay);
     this.channelValue = channel;
+    localStorage.setItem('channel', channel)
   }
   clean(fieldToClean) {
     $(fieldToClean).val('');

@@ -10,16 +10,14 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
-
---
 -- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
 --
 
 CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
+
+--
+-- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
+--
 
 --
 -- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
@@ -27,12 +25,29 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 
 CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 
+--
+-- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
+--
 
 --
 -- Name: unaccent; Type: EXTENSION; Schema: -; Owner: -
 --
 
 CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
+
+--
+-- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
+--
+
+--
+-- Name: agreement_signatory_role; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.agreement_signatory_role AS ENUM (
+    'employer',
+    'school_manager'
+);
+
 
 --
 -- Name: class_room_school_track; Type: TYPE; Schema: public; Owner: -
@@ -278,8 +293,9 @@ CREATE TABLE public.active_storage_blobs (
     content_type character varying,
     metadata text,
     byte_size bigint NOT NULL,
-    checksum character varying NOT NULL,
-    created_at timestamp without time zone NOT NULL
+    checksum character varying,
+    created_at timestamp without time zone NOT NULL,
+    service_name character varying NOT NULL
 );
 
 
@@ -300,6 +316,36 @@ CREATE SEQUENCE public.active_storage_blobs_id_seq
 --
 
 ALTER SEQUENCE public.active_storage_blobs_id_seq OWNED BY public.active_storage_blobs.id;
+
+
+--
+-- Name: active_storage_variant_records; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.active_storage_variant_records (
+    id bigint NOT NULL,
+    blob_id bigint NOT NULL,
+    variation_digest character varying NOT NULL
+);
+
+
+--
+-- Name: active_storage_variant_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.active_storage_variant_records_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: active_storage_variant_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.active_storage_variant_records_id_seq OWNED BY public.active_storage_variant_records.id;
 
 
 --
@@ -370,8 +416,7 @@ CREATE TABLE public.class_rooms (
     school_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
-    anonymized boolean DEFAULT false
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
 );
 
 
@@ -463,6 +508,45 @@ ALTER SEQUENCE public.groups_id_seq OWNED BY public.groups.id;
 
 
 --
+-- Name: identities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.identities (
+    id bigint NOT NULL,
+    user_id bigint,
+    first_name character varying,
+    last_name character varying,
+    school_id bigint,
+    class_room_id bigint,
+    birth_date date,
+    gender character varying DEFAULT 'np'::character varying,
+    token character varying,
+    anonymized boolean DEFAULT false,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: identities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.identities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: identities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.identities_id_seq OWNED BY public.identities.id;
+
+
+--
 -- Name: internship_agreement_presets; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -522,7 +606,25 @@ CREATE TABLE public.internship_agreements (
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
     school_delegation_to_sign_delivered_at date,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
-    weekly_lunch_break text
+    weekly_lunch_break text,
+    siret character varying(16),
+    tutor_role character varying(100),
+    tutor_email character varying(80),
+    organisation_representative_role character varying(100),
+    student_address character varying(250),
+    student_phone character varying(20),
+    school_representative_phone character varying(20),
+    student_refering_teacher_phone character varying(20),
+    student_legal_representative_email character varying(60),
+    student_refering_teacher_email character varying(60),
+    student_legal_representative_full_name character varying(120),
+    student_refering_teacher_full_name character varying(120),
+    student_legal_representative_phone character varying(20),
+    student_legal_representative_2_full_name character varying(120),
+    student_legal_representative_2_email character varying(70),
+    student_legal_representative_2_phone character varying(20),
+    school_representative_role character varying(60),
+    school_representative_email character varying(100)
 );
 
 
@@ -801,7 +903,9 @@ CREATE TABLE public.internship_offers (
     total_female_applications_count integer DEFAULT 0 NOT NULL,
     total_female_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
     total_female_approved_applications_count integer DEFAULT 0,
-    max_students_per_group integer DEFAULT 1 NOT NULL
+    max_students_per_group integer DEFAULT 1 NOT NULL,
+    employer_manual_enter boolean DEFAULT false,
+    tutor_role character varying(70)
 );
 
 
@@ -931,7 +1035,8 @@ CREATE TABLE public.organisations (
     employer_id integer,
     siren character varying,
     siret character varying,
-    is_paqte boolean
+    is_paqte boolean,
+    manual_enter boolean DEFAULT false
 );
 
 
@@ -1068,6 +1173,42 @@ ALTER SEQUENCE public.sectors_id_seq OWNED BY public.sectors.id;
 
 
 --
+-- Name: signatures; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.signatures (
+    id bigint NOT NULL,
+    signatory_ip character varying(40) NOT NULL,
+    signature_date timestamp(6) without time zone NOT NULL,
+    internship_agreement_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    signatory_role public.agreement_signatory_role,
+    signature_phone_number character varying(20) NOT NULL,
+    user_id bigint
+);
+
+
+--
+-- Name: signatures_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.signatures_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: signatures_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.signatures_id_seq OWNED BY public.signatures.id;
+
+
+--
 -- Name: tutors; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1078,7 +1219,8 @@ CREATE TABLE public.tutors (
     tutor_phone character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    employer_id bigint NOT NULL
+    employer_id bigint NOT NULL,
+    tutor_role character varying NOT NULL
 );
 
 
@@ -1147,7 +1289,11 @@ CREATE TABLE public.users (
     anonymized boolean DEFAULT false NOT NULL,
     banners jsonb DEFAULT '{}'::jsonb,
     ministry_id bigint,
-    targeted_offer_id integer
+    targeted_offer_id integer,
+    signature_phone_token character varying(6),
+    signature_phone_token_expires_at timestamp(6) without time zone,
+    signature_phone_token_checked_at timestamp(6) without time zone,
+    employer_role character varying
 );
 
 
@@ -1224,6 +1370,13 @@ ALTER TABLE ONLY public.active_storage_blobs ALTER COLUMN id SET DEFAULT nextval
 
 
 --
+-- Name: active_storage_variant_records id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.active_storage_variant_records ALTER COLUMN id SET DEFAULT nextval('public.active_storage_variant_records_id_seq'::regclass);
+
+
+--
 -- Name: air_table_records id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1249,6 +1402,13 @@ ALTER TABLE ONLY public.email_whitelists ALTER COLUMN id SET DEFAULT nextval('pu
 --
 
 ALTER TABLE ONLY public.groups ALTER COLUMN id SET DEFAULT nextval('public.groups_id_seq'::regclass);
+
+
+--
+-- Name: identities id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.identities ALTER COLUMN id SET DEFAULT nextval('public.identities_id_seq'::regclass);
 
 
 --
@@ -1350,6 +1510,13 @@ ALTER TABLE ONLY public.sectors ALTER COLUMN id SET DEFAULT nextval('public.sect
 
 
 --
+-- Name: signatures id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.signatures ALTER COLUMN id SET DEFAULT nextval('public.signatures_id_seq'::regclass);
+
+
+--
 -- Name: tutors id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1395,6 +1562,14 @@ ALTER TABLE ONLY public.active_storage_blobs
 
 
 --
+-- Name: active_storage_variant_records active_storage_variant_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.active_storage_variant_records
+    ADD CONSTRAINT active_storage_variant_records_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: air_table_records air_table_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1432,6 +1607,14 @@ ALTER TABLE ONLY public.email_whitelists
 
 ALTER TABLE ONLY public.groups
     ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: identities identities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.identities
+    ADD CONSTRAINT identities_pkey PRIMARY KEY (id);
 
 
 --
@@ -1555,6 +1738,14 @@ ALTER TABLE ONLY public.sectors
 
 
 --
+-- Name: signatures signatures_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.signatures
+    ADD CONSTRAINT signatures_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: tutors tutors_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1607,6 +1798,13 @@ CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_b
 
 
 --
+-- Name: index_active_storage_variant_records_uniqueness; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_active_storage_variant_records_uniqueness ON public.active_storage_variant_records USING btree (blob_id, variation_digest);
+
+
+--
 -- Name: index_air_table_records_on_operator_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1621,13 +1819,6 @@ CREATE INDEX index_air_table_records_on_week_id ON public.air_table_records USIN
 
 
 --
--- Name: index_class_rooms_on_anonymized; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_class_rooms_on_anonymized ON public.class_rooms USING btree (anonymized);
-
-
---
 -- Name: index_class_rooms_on_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1639,6 +1830,27 @@ CREATE INDEX index_class_rooms_on_school_id ON public.class_rooms USING btree (s
 --
 
 CREATE INDEX index_email_whitelists_on_user_id ON public.email_whitelists USING btree (user_id);
+
+
+--
+-- Name: index_identities_on_class_room_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_identities_on_class_room_id ON public.identities USING btree (class_room_id);
+
+
+--
+-- Name: index_identities_on_school_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_identities_on_school_id ON public.identities USING btree (school_id);
+
+
+--
+-- Name: index_identities_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_identities_on_user_id ON public.identities USING btree (user_id);
 
 
 --
@@ -1908,6 +2120,20 @@ CREATE INDEX index_schools_on_coordinates ON public.schools USING gist (coordina
 
 
 --
+-- Name: index_signatures_on_internship_agreement_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_signatures_on_internship_agreement_id ON public.signatures USING btree (internship_agreement_id);
+
+
+--
+-- Name: index_signatures_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_signatures_on_user_id ON public.signatures USING btree (user_id);
+
+
+--
 -- Name: index_users_on_api_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2036,6 +2262,14 @@ ALTER TABLE ONLY public.school_internship_weeks
 
 
 --
+-- Name: signatures fk_rails_19164d1054; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.signatures
+    ADD CONSTRAINT fk_rails_19164d1054 FOREIGN KEY (internship_agreement_id) REFERENCES public.internship_agreements(id);
+
+
+--
 -- Name: internship_applications fk_rails_32ed157946; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2073,6 +2307,14 @@ ALTER TABLE ONLY public.class_rooms
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT fk_rails_535539e4e8 FOREIGN KEY (operator_id) REFERENCES public.operators(id);
+
+
+--
+-- Name: identities fk_rails_5373344100; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.identities
+    ADD CONSTRAINT fk_rails_5373344100 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -2137,6 +2379,14 @@ ALTER TABLE ONLY public.email_whitelists
 
 ALTER TABLE ONLY public.internship_applications
     ADD CONSTRAINT fk_rails_93579c3ede FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: active_storage_variant_records fk_rails_993965df05; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.active_storage_variant_records
+    ADD CONSTRAINT fk_rails_993965df05 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
 
 
 --
@@ -2454,5 +2704,25 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211110133150'),
 ('20211207163238'),
 ('20211228162749');
+('20220329131926'),
+('20220408084653'),
+('20220511152203'),
+('20220511152204'),
+('20220511152205'),
+('20220603100433'),
+('20220616131010'),
+('20220621105148'),
+('20220624092113'),
+('20220626074601'),
+('20220704132020'),
+('20220711083028'),
+('20220722081417'),
+('20220726123520'),
+('20220803131022'),
+('20220803140408'),
+('20220803143024'),
+('20220804155217'),
+('20220811103937'),
+('20220816105807');
 
 

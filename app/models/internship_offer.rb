@@ -139,10 +139,6 @@ class InternshipOffer < ApplicationRecord
     published_at.present?
   end
 
-  def unpublished?
-    !published?
-  end
-
   def from_api?
     permalink.present?
   end
@@ -159,19 +155,24 @@ class InternshipOffer < ApplicationRecord
     self.max_candidates ||= 1
   end
 
+  def already_applied_by_student?(student)
+    !!internship_applications.where(user_id: student.id).first
+  end
+
   def total_no_gender_applications_count
     total_applications_count - total_male_applications_count - total_female_applications_count
   end
 
-  def total_no_gender_convention_signed_applications_count
-    convention_signed_applications_count - total_male_convention_signed_applications_count - total_female_convention_signed_applications_count
-  end
+  # def total_no_gender_convention_signed_applications_count
+  #   convention_signed_applications_count - total_male_convention_signed_applications_count - total_female_convention_signed_applications_count
+  # end
 
   def anonymize
     fields_to_reset = {
       tutor_name: 'NA',
       tutor_phone: 'NA',
       tutor_email: 'NA',
+      tutor_role: 'NA',
       title: 'NA',
       description: 'NA',
       employer_website: 'NA',
@@ -185,10 +186,10 @@ class InternshipOffer < ApplicationRecord
 
   def duplicate
     white_list = %w[type title sector_id max_candidates max_students_per_group
-                    tutor_name tutor_phone tutor_email employer_website
+                    tutor_name tutor_phone tutor_email tutor_role employer_website
                     employer_name street zipcode city department region academy
                     is_public group school_id coordinates first_date last_date
-                    school_track
+                    school_track siret employer_manual_enter
                     internship_offer_info_id organisation_id tutor_id
                     weekly_hours new_daily_hours]
 
@@ -197,9 +198,9 @@ class InternshipOffer < ApplicationRecord
 
   def duplicate_without_location
     white_list_without_location = %w[type title sector_id max_candidates
-                    tutor_name tutor_phone tutor_email employer_website
-                    employer_name is_public group school_id coordinates 
-                    first_date last_date school_track
+                    tutor_name tutor_phone tutor_email tutor_role employer_website
+                    employer_name is_public group school_id coordinates
+                    first_date school_track last_date siret employer_manual_enter
                     internship_offer_info_id organisation_id tutor_id
                     weekly_hours new_daily_hours]
 

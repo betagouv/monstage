@@ -34,9 +34,9 @@ class OtherRegistrationsTest < ActionDispatch::IntegrationTest
 
   test 'POST #create with all params create Other' do
     school = create(:school)
-    school_manager = create(:school_manager, school: school)
+    create(:school_manager, school: school)
     assert_difference('Users::SchoolManagement.other.count', 1) do
-      post user_registration_path(params: { user: { email: 'cpe@edu.fr',
+      post user_registration_path(params: { user: { email: "cpe@#{school.email_domain_name}",
                                                     password: 'okokok',
                                                     password_confirmation: 'okokok',
                                                     type: 'Users::SchoolManagement',
@@ -45,7 +45,7 @@ class OtherRegistrationsTest < ActionDispatch::IntegrationTest
                                                     school_id: school.id,
                                                     accept_terms: '1',
                                                     role: :other } })
-      assert_redirected_to users_registrations_standby_path(email: 'cpe@edu.fr')
+      assert_redirected_to users_registrations_standby_path(id: User.last.id)
     end
   end
 end

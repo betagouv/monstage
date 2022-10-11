@@ -6,6 +6,9 @@ class User < ApplicationRecord
   include StiPreload
   include Discard::Model
   include UserAdmin
+  include ActiveModel::Dirty
+
+  attr_accessor :phone_prefix, :phone_suffix
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable,
@@ -18,8 +21,9 @@ class User < ApplicationRecord
   after_create :send_sms_token
 
   # school_managements includes different roles
-  # 1. school_manager should register with ac-xxx.fr email
-  # 2.3.4. can register
+  # Everyone should register with ac-xxx.fr email
+  # 1. should register with ce.UAI@ email
+  # 2.3.4. can register without
   enum role: {
     school_manager: 'school_manager',
     teacher: 'teacher',
@@ -49,15 +53,7 @@ class User < ApplicationRecord
 
   MAX_DAILY_PHONE_RESET = 3
 
-  def self.drh
-    Users::Employer.where(email: 'drh@betagouv.fr').first
-  end
-
-  def channel
-    return :phone if phone.present?
-
-    :email
-  end
+  def channel ; :email end
 
   def default_search_options
     opts = {}
@@ -79,16 +75,6 @@ class User < ApplicationRecord
     respond_to?(relationship) && self.send(relationship).present?
   end
 
-  def missing_school_weeks?
-    return false unless respond_to?(:school)
-    return true if school.try(:weeks).try(:size).try(:zero?)
-
-    Week.selectable_on_school_year # rejecting stale_weeks from last year
-        .joins(:school_internship_weeks)
-        .where('school_internship_weeks.school_id': school.id)
-        .count
-        .zero?
-  end
 
   def missing_school?
     return true if respond_to?(:school) && school.blank?
@@ -96,7 +82,7 @@ class User < ApplicationRecord
   end
 
   def to_s
-    "logged in as : #{type}[##{id}]"
+    name
   end
 
   def name
@@ -123,18 +109,6 @@ class User < ApplicationRecord
     [
       custom_dashboard_path
     ]
-  end
-
-  def gender_text
-    return '' if gender.blank? || gender.eql?('np')
-    return 'Madame' if gender.eql?('f')
-    return 'Monsieur' if gender.eql?('m')
-
-    ''
-  end
-
-  def formal_name
-    "#{gender_text} #{first_name.try(:capitalize)} #{last_name.try(:capitalize)}"
   end
 
   def email_domain_name
@@ -164,7 +138,6 @@ class User < ApplicationRecord
 
     unless email_for_job.blank?
       AnonymizeUserJob.perform_later(email: email_for_job) if send_email
-      RemoveContactFromSyncEmailDeliveryJob.perform_later(email: email_for_job)
     end
   end
 
@@ -189,7 +162,7 @@ class User < ApplicationRecord
   end
 
   def send_sms_token
-    return unless phone.present?
+    return unless phone.present? && student?
 
     create_phone_token
     message = "Votre code de validation : #{self.phone_token}"
@@ -220,19 +193,13 @@ class User < ApplicationRecord
     super
   end
 
-  rails_admin do
-    list do
-      scopes [:kept]
-    end
-  end
-
   def email_required?
     false
   end
 
-  def has_no_class_room?
-    class_room.nil?
-  end
+  # def has_no_class_room?
+  #   class_room.nil?
+  # end
 
   def send_reconfirmation_instructions
     @reconfirmation_required = false
@@ -259,6 +226,21 @@ class User < ApplicationRecord
   def statistician? ; false end
   def ministry_statistician? ; false end
   def student? ; false end
+  def employer? ; false end
+  def operator? ; false end
+  def school_management? ; false end
+  def school_manager? ; false end
+  def god? ; false end
+
+  def already_signed?(internship_aggreement_id:); true end
+  def create_signature_phone_token ; nil end
+  def send_signature_sms_token ; nil end
+  def signatory_role ; nil end
+  def obfuscated_phone_number ; nil end
+
+  def presenter
+    Presenters::User.new(self)
+  end
 
 
   private

@@ -9,10 +9,8 @@ class EmployerMailer < ApplicationMailer
   end
 
   def internship_applications_reminder_email(employer:,
-                                             remindable_application_ids:,
-                                             expirable_application_ids:)
+                                             remindable_application_ids: )
     @remindable_application_ids = InternshipApplication.where(id: remindable_application_ids)
-    @expirable_application_ids = InternshipApplication.where(id: expirable_application_ids)
     @employer = employer
 
     mail(to: @employer.email,
@@ -23,6 +21,73 @@ class EmployerMailer < ApplicationMailer
     @internship_application = internship_application
 
     mail(to: @internship_application.internship_offer.employer.email,
-         subject: 'Information – Annulation de candidature')
+         subject: 'Information - Une candidature a été annulée')
   end
+
+  def internship_application_approved_with_agreement_email(internship_agreement: )
+    internship_application = internship_agreement.internship_application
+    @internship_offer      = internship_application.internship_offer
+    student                = internship_application.student
+    @prez_stud             = student.presenter
+    @employer              = @internship_offer.employer
+    @url = dashboard_internship_offer_internship_applications_url(
+      internship_offer_id: @internship_offer.id,
+      id: internship_application.id,
+      mtm_campaign: "Offreur - Convention Ready to Edit#internship-application-#{internship_application.id}"
+    ).html_safe
+
+    mail(to: @employer.email, subject: 'Veuillez compléter la convention de stage.')
+  end
+
+  def school_manager_finished_notice_email(internship_agreement: )
+    internship_application = internship_agreement.internship_application
+    @internship_offer      = internship_application.internship_offer
+    student                = internship_application.student
+    @prez_stud             = student.presenter
+    @employer              = @internship_offer.employer
+    @school_manager        = internship_agreement.school_manager
+    @url = dashboard_internship_agreements_url(
+      id: internship_agreement.id,
+      mtm_campaign: 'Offreur - Convention Ready to Print'
+    ).html_safe
+
+    mail(to: @employer.email, subject: 'Imprimez et signez la convention de stage.')
+  end
+
+  def notify_others_signatures_started_email(internship_agreement:)
+    internship_application = internship_agreement.internship_application
+    @internship_offer      = internship_application.internship_offer
+    student                = internship_application.student
+    @prez_stud             = student.presenter
+    @employer              = @internship_offer.employer
+    @school_manager        = internship_agreement.school_manager
+    @url = dashboard_internship_agreements_url(
+      id: internship_agreement.id,
+      mtm_campaign: 'Offreur - Convention Ready to Sign'
+    ).html_safe
+
+    mail(
+      to: @employer.email,
+      subject: 'Une convention de stage attend votre signature'
+    )
+  end
+  
+  def notify_others_signatures_finished_email(internship_agreement:)
+    internship_application = internship_agreement.internship_application
+    @internship_offer      = internship_application.internship_offer
+    student                = internship_application.student
+    @prez_stud             = student.presenter
+    @employer              = @internship_offer.employer
+    @school_manager        = internship_agreement.school_manager
+    @url = dashboard_internship_agreements_url(
+      id: internship_agreement.id,
+      mtm_campaign: 'Offreur - Convention Ready to Sign'
+    ).html_safe
+
+    mail(
+      to: @employer.email,
+      subject: 'Dernière ligne droite pour la convention de stage'
+    )
+  end
+
 end

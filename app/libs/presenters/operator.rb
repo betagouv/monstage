@@ -1,5 +1,6 @@
 module Presenters
-  class Operator
+  class Operator < User
+
     def profile_filters
       {
         dashboard: {
@@ -41,13 +42,6 @@ module Presenters
           by_school_track: false
         }
       }
-    end
-
-    private
-    attr_reader :operator
-
-    def initialize(operator)
-      @operator = operator
     end
   end
 end

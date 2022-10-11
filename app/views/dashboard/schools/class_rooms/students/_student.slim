@@ -9,6 +9,12 @@ tbody class="class-room"
       tr class="d-flex"
         td.col-8 data-head="#{student.name}"= student.name
         td.col-4 data-head="Action"
-          = select_tag "student_#{student.id}", options_from_collection_for_select(student.school.class_rooms, :id, :name, student.class_room_id), prompt: 'Choisissez une classe' , class: "form-control", data: { action: 'change->students#selectStudentClassRoom' }
-            
-    = submit_tag "Enregister", class: 'btn btn-primary btn-sm ml-2', data: { 'target': 'students.hiddenButton' }
+          = select_tag "student_#{student.id}",
+                        options_from_collection_for_select(student.school.class_rooms, :id, :name, student.class_room_id),
+                        prompt: 'Choisissez une classe',
+                        class: "fr-select",
+                        data: { action: 'change->students#selectStudentClassRoom' }
+
+    = submit_tag "Enregister",
+                 class: 'fr-btn btn-sm ml-2',
+                 data: { 'target': 'students.hiddenButton' }

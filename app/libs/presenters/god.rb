@@ -1,5 +1,6 @@
 module Presenters
-  class God
+  class God < User
+
     def profile_filters
       {
         dashboard: {
@@ -30,7 +31,16 @@ module Presenters
           by_subscribed_school: true,
           by_school_track: false
         },
-        associations: {},
+        associations: {
+          by_school_name: false,
+          by_school_year: true,
+          by_academy: false,
+          by_department: false,
+          by_typology: false,
+          by_detailed_typology: false,
+          by_subscribed_school: false,
+          by_school_track: false
+        },
         employers_internship_offers: {
           by_school_year: true,
           by_academy: false,
@@ -41,13 +51,6 @@ module Presenters
           by_school_track: false
         }
       }
-    end
-
-    private
-    attr_reader :god
-
-    def initialize(god)
-      @god = god
     end
   end
 end

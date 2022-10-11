@@ -393,12 +393,12 @@ $(function() {
       $form.append('<h2>' + this.options.messageTitle + '</h2>')
     }
     $.each(this.options.attributes, function(index, value) {
-      var item = $('<div class="form-group"><label for="'+value.name+'">' + _this.T(value.display) + '</label></div>');
+      var item = $('<div class="fr-mt-2w"><label class="fr-label" for="'+value.name+'">' + _this.T(value.display) + '</label></div>');
       var defaultValue = (typeof value.defaultValue === 'function') ? value.defaultValue() : value.defaultValue;
       for (var i=0; i < (value.repeat ? value.repeat : 1); i++) {
         var isFile = value.type=='file'
         if (value.tag == 'input') {
-          var $input = $(`<input class="form-control" id="${value.name}" name="${value.name}" type="${value.type}" />`);
+          var $input = $(`<input class="${isFile ? '' : 'fr-input'}" id="${value.name}" name="${value.name}" type="${value.type}" />`);
           if (!isFile) {
              $input.attr('placeholder', _this.T(value.placeholder));
              $input.val(defaultValue || '');
@@ -406,12 +406,12 @@ $(function() {
           item.append($input);
         }
         else if (value.tag == 'textarea') {
-          item.append('<textarea class="form-control" id="'+value.name+'" name="' + value.name + '" placeholder="' + _this.T(value.placeholder) + '" rows="' + value.rows + '">' + (defaultValue || '') + '</textarea>')
+          item.append('<textarea class="fr-input" id="'+value.name+'" name="' + value.name + '" placeholder="' + _this.T(value.placeholder) + '" rows="' + value.rows + '">' + (defaultValue || '') + '</textarea>')
         }
       }
       $form.append(item)
     })
-    $form.append('<button type="submit" class="btn">' + this.options.messageSubmit + '</button')
+    $form.append('<button type="submit" class="fr-btn fr-mt-3w">' + this.options.messageSubmit + '</button')
 
     this.$modal = $element
     this.$form  = $form

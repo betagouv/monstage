@@ -39,7 +39,12 @@ module Api
     end
 
     def append_result(list:, item:, sort_by:)
-      Array(list).push(item).sort_by(&sort_by)
+      # Following sort by puts at the end those with 
+      # attribute nil that would otherwise generate an error
+      Array(list).push(item)
+                 .sort_by do |ite| 
+                    [ite.send(sort_by) ? 0 : 1 , ite.send(sort_by)]
+                 end
     end
   end
 end

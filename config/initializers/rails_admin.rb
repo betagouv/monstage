@@ -30,6 +30,8 @@ require Rails.root.join('lib', 'rails_admin', 'kpi.rb')
 require Rails.root.join('lib', 'rails_admin', 'switch_user.rb')
 
 RailsAdmin.config do |config|
+
+  config.asset_source = :webpacker
   ### Popular gems integration
 
   ## == Devise ==
@@ -44,7 +46,7 @@ RailsAdmin.config do |config|
 
   config.parent_controller = 'AdminController'
   config.model 'User' do
-    navigation_icon 'icon-user'
+    navigation_icon 'fas fa-user'
   end
 
   ## == PaperTrail ==
@@ -67,10 +69,14 @@ RailsAdmin.config do |config|
     edit
     delete
 
-    switch_user
+    switch_user do
+      except ['Users::God']
+    end
 
     export
   end
+
+  config.default_items_per_page = 50
 
   config.included_models = %w[EmailWhitelists::Statistician
                               EmailWhitelists::Ministry
@@ -82,6 +88,8 @@ RailsAdmin.config do |config|
                               InternshipOffers::WeeklyFramed
                               InternshipOffers::FreeDate
                               InternshipOffers::Api
+                              InternshipApplication
+                              InternshipAgreement
                               Operator
                               Organisation
                               Tutor
@@ -100,5 +108,5 @@ RailsAdmin.config do |config|
     "AB Testing" => "/split"
   }
 
-  
+
 end

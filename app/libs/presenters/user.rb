@@ -13,20 +13,34 @@ module Presenters
     end
 
     def full_name
-      "#{user.first_name} #{user.last_name}"
+      "#{user.first_name.capitalize} #{user.last_name.capitalize}"
+    end
+
+    def formal_name
+      "#{gender_text} #{user.first_name.try(:capitalize)} #{user.last_name.try(:capitalize)}"
     end
 
     def full_name_camel_case
       "#{user.first_name} #{user.last_name}".upcase.gsub(' ', '_')
     end
 
-    def formal_name
-      user.formal_name.to_s
-    end
-
     def civil_name
       name = user.last_name.downcase.capitalize
-      user.gender == "m" ? "Monsieur #{name}}" : "Madame #{name}}"
+      case user.gender
+      when 'm'
+        "Monsieur #{name}"
+      when 'f'
+        "Madame #{name}"
+      else
+        name
+      end
+    end
+
+    def gender_text
+      return 'Madame' if user.gender.eql?('f')
+      return 'Monsieur' if user.gender.eql?('m')
+
+      ''
     end
 
     def role_name
@@ -41,7 +55,11 @@ module Presenters
       internship_offers_path(default_search_options)
     end
 
-    private
+    def dashboard_name_link
+      url_helpers.root_path
+    end
+
+    protected
 
     attr_reader :user
     def initialize(user)

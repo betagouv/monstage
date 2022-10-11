@@ -1,8 +1,6 @@
-# frozen_string_literal: true
+require_relative "boot"
 
-require_relative 'boot'
-
-require 'rails/all'
+require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -12,10 +10,16 @@ module Monstage
   class Application < Rails::Application
     config.time_zone = 'Paris'
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.2
+    config.load_defaults 7.0
+    config.active_support.executor_around_test_case = false
 
-    config.autoloader = :zeitwerk
-
+    # Configuration for the application, engines, and railties goes here.
+    #
+    # These settings can be overridden in specific environments using the files
+    # in config/environments, which are processed later.
+    #
+    # config.time_zone = "Central Time (US & Canada)"
+    # config.eager_load_paths << Rails.root.join("extras")
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
@@ -26,6 +30,8 @@ module Monstage
 
     config.action_mailer.delivery_job = "ActionMailer::MailDeliveryJob"
 
+    config.time_zone = 'Europe/Paris'
+
     config.action_view.field_error_proc = Proc.new { |html_tag, instance| html_tag }
 
     config.active_record.schema_format = :sql
@@ -33,6 +39,7 @@ module Monstage
     config.middleware.use Rack::Deflater
 
     config.exceptions_app = self.routes
+
+    config.action_view.form_with_generates_remote_forms = false
   end
 end
-

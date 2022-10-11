@@ -1,13 +1,14 @@
 - edit_enable = can?("edit_#{field}".to_sym, form.object)
 
-- hint = hint || ''
-- title = title || ''
-- content = content || ''
+- hint ||= ''
+- title ||= ''
+- content ||= ''
+- required = required.nil?
 .col-12.pt-3
-  .form-group.mb-0.form-group-tooltip
+  .form-group.form-group-tooltip
     = form.label field do
-      span.mb-2= text_label
-      = form.rg2a_required_content_tag
+      span.mb-2.fr-label= text_label
+      = form.rg2a_required_content_tag if required
 
     span.float-right.tool-tip data-toggle="tooltip" data-html='true' data-placement="top" title="<b>#{title}</b><p>#{content}</p>" data-controller='tooltip'
       i.fa.fa-info-circle
@@ -15,13 +16,13 @@
     .input-group-custom data-controller="internship-agreement-field"
       - if edit_enable && !disabled
         = form.text_field field,
-                          class: 'form-control',
-                          required: true
+                          class: 'fr-input',
+                          required: required
 
       - else
         = form.text_field field,
                           class: 'form-control',
-                          required: true,
+                          required: required,
                           disabled: true
         = form.hidden_field field, class: 'form-control', id: "#{sanitize_to_id(form.object_name)}_#{field}_hidden"
 

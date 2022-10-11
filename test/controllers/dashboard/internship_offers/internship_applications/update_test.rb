@@ -11,14 +11,25 @@ module InternshipOffers::InternshipApplications
       school = create(:school, :with_school_manager)
       class_room = create(:class_room, :troisieme_generale, school: school)
       student = create(:student, school:school, class_room: class_room)
-      internship_application = create(:weekly_internship_application, :submitted, user_id: student.id)
+      internship_application = create(
+        :weekly_internship_application,
+        :submitted,
+        user_id: student.id
+      )
       sign_in(internship_application.internship_offer.employer)
 
-      assert_enqueued_emails 1 do
-        patch(dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
-              params: { transition: :approve! })
-        assert_redirected_to internship_application.internship_offer.employer.after_sign_in_path
+      assert_enqueued_emails 2 do
+        patch(
+          dashboard_internship_offer_internship_application_path(
+            internship_application.internship_offer,
+            internship_application ),
+            params: { transition: :approve! })
+          assert_redirected_to internship_application.internship_offer.employer.after_sign_in_path
       end
+      assert_equal 1,
+                  InternshipAgreement.count
+      assert_equal internship_application.id,
+                  InternshipAgreement.first.internship_application.id
       follow_redirect!
       validation_text = 'Candidature mise à jour avec succès. ' \
                         'Vous pouvez renseigner la convention dès maintenant.'
@@ -47,12 +58,16 @@ module InternshipOffers::InternshipApplications
       school = create(:school, :with_school_manager)
       class_room = create(:class_room, school: school)
       student = create(:student, school:school, class_room: class_room)
-      internship_application = create(:weekly_internship_application, :submitted, user_id: student.id)
+      internship_application = create(
+        :weekly_internship_application,
+        :submitted,
+        user_id: student.id
+      )
       internship_offer = internship_application.internship_offer
 
       sign_in(internship_offer.employer)
 
-      assert_enqueued_emails 1 do
+      assert_enqueued_emails 2 do
         assert_changes -> { InternshipAgreement.all.count },
                      from: 0,
                      to: 1 do
@@ -91,12 +106,16 @@ module InternshipOffers::InternshipApplications
       school = create(:school, :with_school_manager)
       class_room = create(:class_room, school: school)
       student = create(:student, school:school, class_room: class_room)
-      internship_application = create(:weekly_internship_application, :submitted, user_id: student.id)
+      internship_application = create(
+        :weekly_internship_application,
+        :submitted,
+        user_id: student.id
+      )
       internship_offer = internship_application.internship_offer
 
       sign_in(internship_offer.employer)
 
-      assert_enqueued_emails 1 do
+      assert_enqueued_emails 2 do
         update_url = dashboard_internship_offer_internship_application_path(
           internship_offer,
           internship_application

@@ -1,0 +1,14 @@
+<%= "Convention de stage de #{@prez_stud.full_name}" %>
+
+Bonjour,
+
+<%= "Bonne nouvelle, la convention de #{@prez_stud.full_name}, pour l'offre de stage '" \
+    "#{@internship_offer.title}' chez #{@internship_offer.employer_name} vient" \
+    " d'être signée par l'employeur, #{@employer.presenter.formal_name}" %>
+
+Il ne manque désormais que votre signature. A votre tour de signer !
+Pour ce faire, veuillez suivre le lien suivant
+<%= @url %>
+
+Excellente journée,
+L’équipe Monstagedetroisieme.fr

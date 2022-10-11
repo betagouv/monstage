@@ -1,60 +1,71 @@
 - student_stats = Presenters::Dashboard::StudentStats.new(student: student)
 
-tr class="d-flex test-student-#{student.id}"
-  td.col-3.d-flex.align-items-center data-head="Élève"
+tr class="test-student-#{student.id}"
+  td.col-3 data-head="Élève"
     .row.no-gutters
       .col-9.col-sm-12
-        h3.h6.mb-0
-          .d-none.d-sm-block= link_to Presenters::User.new(student).short_name, dashboard_students_internship_applications_path(student), class: 'small'
-          .d-block.d-sm-none= Presenters::User.new(student).short_name
-      .col-3.d-sm-none.text-right= link_to "Voir le détail", dashboard_students_internship_applications_path(student), class: 'small'
+        h3.h5.mb-0
+          .d-none.d-sm-block
+            = link_to link_to student.presenter.short_name,
+                              dashboard_students_internship_applications_path(student),
+                              class: 'fr-raw-link fr-tag'
+          .d-block.d-sm-none
+            = link_to student.presenter.full_name
+      .col-3.d-sm-none.text-right
+        = link_to "Voir le détail",
+                  dashboard_students_internship_applications_path(student),
+                  class: 'small'
 
-  td.col-2.d-flex.align-items-center data-head="Confirmé" class="student_confirmed"
+  td.col-2 data-head="Confirmé" class="student_confirmed"
     - if student.confirmed?
-      span.fa-stack
+      span.fa-stack.blue-france
         small
           i.fas.fa-square.fa-stack-2x
           i.fas.fa-check.fa-stack-1x.fa-inverse
     - else
-      span.fa-stack
+      span.fa-stack.blue-france
         small
           i.far.fa-square.fa-stack-2x
 
-  td.col-2.align-items-center.is_custom_track.d-none.d-flex data-head="Cordée de réussite / Parcours d'excellence"
+  td.col-2.is_custom_track data-head="Cordée de réussite / Parcours d'excellence"
     - if can?(:update, student) && student.custom_track?
-      = link_to dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: false }), method: :patch, class: 'mx-1' do
+      = link_to dashboard_school_user_path(school_id: student.school.id,
+                                           id: student.id,
+                                           user: { custom_track: false }),
+                                           method: :patch,
+                                           class: 'mx-1 fr-raw-link blue-france' do
         span.fa-stack
           small
             i.fas.fa-square.fa-stack-2x
             i.fas.fa-check.fa-stack-1x.fa-inverse
     - elsif can?(:update, student) && !student.custom_track?
-      = link_to dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: true }), method: :patch, class: 'mx-1' do
+      = link_to dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: true }), method: :patch, class: 'mx-1 fr-raw-link blue-france' do
         span.fa-stack
           small
             i.far.fa-square.fa-stack-2x
     - elsif student.custom_track?
       span.fa-stack
-        small
+        small.blue-france
           i.fas.fa-square.fa-stack-2x
           i.fas.fa-check.fa-stack-1x.fa-inverse
     - else
       span.fa-stack
-        small
+        small.blue-france
           i.far.fa-square.fa-stack-2x
 
-  td.col-2.d-flex.align-items-center data-head="Nombre de candidatures"
+  td.col-2 data-head="Nombre de candidatures"
     span.applications_count= student_stats.applications_count
-  td.col-1.half-height.d-flex.align-items-center data-head="Réponses"
+  td.col-1.half-height data-head="Réponses"
     .row.px-0
-      .col-6.text-center.text-danger.px-1
-        small Neg
-        br
-        span.applications_rejected_count.small= student_stats.applications_rejected_count
-      .col-6.text-center.text-success.px-1
-        small Pos
-        br
-        span.applications_approved_count.small= student_stats.applications_approved_count
-  td.col-2.d-flex.align-items-center
+      .col-6.text-center.px-1
+        .fr-badge.fr-badge--error.fr-badge--no-icon.small= student_stats.applications_rejected_count
+      .col-6.text-center.px-1
+        .fr-badge.fr-badge--success.fr-badge--no-icon.small= student_stats.applications_approved_count
+  td.col-2
     .row
       .col-12
-        = select_tag "student_#{student.id}", options_from_collection_for_select(student.school.class_rooms, :id, :name, student.class_room_id), prompt: 'Cet élève ne fait pas partie de mon établissement' , class: "form-control", data: { action: 'change->students#selectStudentClassRoom' }
+        = select_tag "student_#{student.id}",
+                     options_from_collection_for_select(student.school.class_rooms, :id, :name, student.class_room_id),
+                     prompt: 'Cet élève ne fait pas partie de mon établissement' ,
+                     class: "fr-select",
+                     data: { action: 'change->students#selectStudentClassRoom' }

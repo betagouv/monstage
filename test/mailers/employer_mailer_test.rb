@@ -20,12 +20,37 @@ class EmployerMailerTest < ActionMailer::TestCase
     internship_application = create(:weekly_internship_application)
     email = EmployerMailer.internship_applications_reminder_email(
       employer: internship_application.internship_offer.employer,
-      remindable_application_ids: [internship_application.id],
-      expirable_application_ids: [internship_application.id]
+      remindable_application_ids: [internship_application.id]
     )
     email.deliver_now
     assert_emails 1
     assert_equal [internship_application.internship_offer.employer.email], email.to
+    refute_email_spammyness(email)
+  end
+
+  test '.internship_application_approved_with_agreement_email delivers as expected' do
+    internship_agreement = create(:internship_agreement)
+    employer = internship_agreement.internship_application.internship_offer.employer
+    email = EmployerMailer.internship_application_approved_with_agreement_email(
+      internship_agreement: internship_agreement
+    )
+    email.deliver_now
+    assert_emails 1
+    assert_includes email.to, employer.email
+    assert_equal 'Veuillez compléter la convention de stage.', email.subject
+    refute_email_spammyness(email)
+  end
+
+  test '.school_manager_finished_notice_email delivers as expected' do
+    internship_agreement = create(:internship_agreement)
+    employer = internship_agreement.internship_application.internship_offer.employer
+    email = EmployerMailer.school_manager_finished_notice_email(
+      internship_agreement: internship_agreement
+    )
+    email.deliver_now
+    assert_emails 1
+    assert_includes email.to, employer.email
+    assert_equal 'Imprimez et signez la convention de stage.', email.subject
     refute_email_spammyness(email)
   end
 end

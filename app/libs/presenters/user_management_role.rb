@@ -1,5 +1,5 @@
 module Presenters
-  class UserManagementRole
+  class UserManagementRole < User
     TYPE_TRANSLATOR = {
       'Users::Student': 'Elève',
       'Users::Employer': 'Offreur',
@@ -57,6 +57,17 @@ module Presenters
       else
         'Erreur'
       end
+    end
+
+    def dashboard_name_link
+      if user.school &&
+         user.class_room &&
+         user.role == 'main_teacher'
+        return url_helpers.dashboard_school_class_room_students_path(school_id: user.school.id, class_room_id: user.class_room.id)
+      elsif user.school
+        return url_helpers.dashboard_school_path(user.school)
+      end
+      url_helpers.root_path
     end
 
     private

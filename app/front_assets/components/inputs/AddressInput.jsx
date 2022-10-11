@@ -31,7 +31,8 @@ export default function AddressInput({
     setFullAddress(event.target.value);
   };
 
-  const toggleHelpVisible = () => {
+  const toggleHelpVisible = (event) => {
+    event.stopPropagation();
     setHelpVisible(!helpVisible);
   };
   const searchCityByAddress = () => {
@@ -52,7 +53,7 @@ export default function AddressInput({
         [item.properties.housenumber, item.properties.street]
           .filter((component) => component)
           .join(' ')
-      )
+      );
     };
     setCity(item.properties.city);
     setZipcode(item.properties.postcode);
@@ -102,7 +103,7 @@ export default function AddressInput({
                     *
                   </abbr>
                   <a
-                    className="btn-absolute btn btn-link py-0"
+                    className="btn-absolute fr-btn btn-link py-0"
                     href="#help-multi-location"
                     aria-label="Afficher l'aide"
                     onClick={toggleHelpVisible}
@@ -189,10 +190,7 @@ export default function AddressInput({
             <input
               className="form-control"
               value={street}
-              onChange={(event) => {
-                setStreet(event.target.value);
-              }}
-              required="required"
+              readOnly
               type="text"
               name={`${resourceName}[street]`}
               id={`${resourceName}_street`}

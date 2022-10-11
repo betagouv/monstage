@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
+  include Phonable
   before_action :authenticate_user!
   skip_before_action :check_school_requested, only: [:edit, :update]
 
   def edit
     authorize! :update, current_user
+    split_phone_parts(current_user)
     redirect_to = account_path(section: :school)
     if force_select_school? && can_redirect?(redirect_to)
       redirect_to(redirect_to,
@@ -16,6 +18,7 @@ class UsersController < ApplicationController
 
   def update
     authorize! :update, current_user
+    params[:user] = concatenate_phone_fields
     current_user.update!(user_params)
     redirect_back fallback_location: account_path, flash: { success: current_flash_message }
   rescue ActiveRecord::RecordInvalid
@@ -27,9 +30,11 @@ class UsersController < ApplicationController
     if password_change_allowed?
       current_user.update!(user_params)
       bypass_sign_in current_user
-      redirect_to  account_path(section: :password), flash: { success: current_flash_message }
+      redirect_to account_path(section: :password),
+                  flash: { success: current_flash_message }
     else
-      redirect_to account_path(section: :password), flash: { warning: 'impossible de mettre à jour le mot de passe.' }
+      redirect_to account_path(section: :password),
+                  flash: { warning: 'impossible de mettre à jour le mot de passe.' }
     end
   rescue ActiveRecord::RecordInvalid
     render :edit, status: :bad_request
@@ -44,9 +49,10 @@ class UsersController < ApplicationController
               then "Nous allons prévenir votre chef d'établissement pour que vous puissiez postuler"
               else 'Compte mis à jour avec succès.'
               end
-    message += " Un courriel a été envoyé à l'ancienne adresse électronique (e-mail). " \
+    message += "Un courriel a été envoyé à l'ancienne adresse électronique (e-mail). " \
                "Veuillez cliquer sur le lien contenu dans le courriel pour " \
                "confirmer votre nouvelle adresse électronique (e-mail)." if current_user.unconfirmed_email
+    message = 'Etablissement mis à jour avec succès.' if current_user.school_id_previously_changed?
     message
   end
 
@@ -57,6 +63,8 @@ class UsersController < ApplicationController
                                  :last_name,
                                  :email,
                                  :phone,
+                                 :phone_prefix,
+                                 :phone_suffix,
                                  :department,
                                  :class_room_id,
                                  :resume_educational_background,
