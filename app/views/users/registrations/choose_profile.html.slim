@@ -76,6 +76,12 @@ header.header-account.subscription
               | Je suis référent d'administration centrale
           p.fr-card__desc
             | Vous êtes référent d'administration centrale et souhaitez accéder aux statistiques relatives aux offres de stage de votre administration.
-
-
-
+    .d-none.d-sm-block.col-12.col-md-6.mb-3
+      .fr-card.fr-card--horizontal.fr-enlarge-link
+        .fr-card__body
+          h4.fr-card__title
+            = link_to new_user_registration_path(as: 'EducationStatistician'),
+                      class: 'fr-card__link' do
+              | Je suis référent départemental DSDEN
+          p.fr-card__desc
+            | Vous êtes référent départemental du ministère de l'éducation nationale et souhaitez accéder aux statistiques relatives aux offres de stage de votre département.
