@@ -17,8 +17,8 @@ FactoryBot.define do
     factory :student, class: 'Users::Student', parent: :user do
       type { 'Users::Student' }
 
-      first_name { FFaker::NameFR.first_name  }
-      last_name { FFaker::NameFR.last_name }
+      first_name { FFaker::NameFR.first_name.capitalize  }
+      last_name { FFaker::NameFR.last_name.capitalize }
       gender { 'm' }
       birth_date { 14.years.ago }
       school { create(:school, :with_school_manager) }

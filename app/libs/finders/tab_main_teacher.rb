@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 module Finders
   class TabMainTeacher
+    def pending_class_rooms_actions_count
+      school.nil? ? 0 : school.students.without_class_room.count
+    end
+    
     def pending_agreements_count
       # internship_agreement approved with internship_agreement without terms_accepted
       @pending_internship_agreement_count ||= InternshipApplication
@@ -23,12 +27,6 @@ module Finders
         @pending_internship_agreement_count,
         @to_be_created_internnship_agreement
       ].sum
-    end
-
-    def student_without_class_room_count
-      return 0 if school.nil?
-
-      @students_without_classs_room_count ||= school.students.without_class_room.count
     end
 
     private

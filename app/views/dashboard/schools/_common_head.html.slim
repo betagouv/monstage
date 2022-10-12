@@ -17,9 +17,10 @@ h1.h2.mb-4
           aria-selected="#{current_page?(path)}"
           role="tab"
           tabindex="0"]
-          | Classes
-          - if badge_counter.student_without_class_room_count.size.positive?
-            = " (#{badge_counter.student_without_class_room_count})"
+          = "Classes"
+          - todos = badge_counter.pending_class_rooms_actions_count
+          - if todos.positive?
+            span.fr-ml-1w.badge-pill.badge-danger.small= todos
 
     li
       - path = dashboard_school_users_path(@school)
@@ -50,7 +51,11 @@ h1.h2.mb-4
             aria-selected="#{current_page?(path)}"
             role="tab"
             tabindex="3"]
-            | Mes conventions de stage
+            | Mes conventions de stage &nbsp;
+            - todos = badge_counter.pending_agreements_count
+            - if todos.positive?
+              span.badge-pill.badge-danger.small= todos
+
       - if (can? :edit, current_user.school)
         li
           - path = dashboard_school_information_path(school_id: @school.id)

@@ -15,7 +15,8 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
         .my-auto
           = "En cours "
           - if is_active
-            = " (#{internship_offers.total_count})"
+            span.badge-pill.badge-danger.small
+              = badge_counter.pending_internship_offers_actions(internship_offers)
 
   - is_active = controller_name == 'internship_offers' && params[:filter] == 'unpublished'
   li
@@ -25,10 +26,7 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
                                               role="tab"
                                               aria-selected="#{is_active}"
                                               aria-controls="tabpanel-404-panel"]
-        .my-auto
-          = "Dépubliées "
-          - if is_active
-            = " (#{internship_offers.total_count})"
+        .my-auto = "Dépubliées"
 
   - is_active = controller_name == 'internship_offers' && params[:filter] == 'past'
   li
@@ -39,13 +37,10 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
                                         aria-selected="#{is_active}"
                                         aria-controls="tabpanel-404-panel"]
 
-        .my-auto
-          = "Passées "
-          - if is_active
-            = " (#{internship_offers.total_count})"
+        .my-auto = "Passées"
 
   - # TouDoux checker si ref dep, centraux et opérateurs ça fonctionne
-  - if can?(:edit, InternshipAgreement) && badge_counter.agreements_count.positive?
+  - if can?(:edit, InternshipAgreement) && current_user.internship_agreements.count.positive?
     - is_active = current_page?(dashboard_internship_agreements_path)
     li
       = link_to dashboard_internship_agreements_path,
@@ -58,5 +53,6 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
 
           .my-auto
             | Mes conventions de stages &nbsp;
-            - if badge_counter.pending_agreements_count.positive?
-              span.badge-pill.badge-danger.small= badge_counter.pending_agreements_count
+            - todos = badge_counter.pending_agreements_actions_count
+            - if todos.positive?
+              span.badge-pill.badge-danger.small= todos
