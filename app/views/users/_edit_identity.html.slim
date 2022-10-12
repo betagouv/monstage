@@ -78,10 +78,13 @@
       - if can?(:choose_function, current_user)
         .col-md-6.col-xs-12
           .form-group
-            = f.label :employer_role, class: 'fr-label', for: 'user_employer_role' do
+            = f.label :employer_role, class: 'fr-label',for: 'user_employer_role' do
               = "Fonction au sein de l'entreprise"
               = f.rg2a_required_content_tag
-            = f.text_field :employer_role, class: 'fr-input', required: true
+            = f.text_field :employer_role,
+                           class: 'fr-input',
+                           maxlength: '150',
+                           required: true
 
       - if can?(:sign_with_sms, current_user)
         .col-md-6.col-xs-12
