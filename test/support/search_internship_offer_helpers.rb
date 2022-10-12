@@ -4,6 +4,11 @@ module SearchInternshipOfferHelpers
                     count: 1
   end
 
+  def assert_card_presence_of(internship_offer:)
+    assert_selector "div[data-internship-offer-id='#{internship_offer.id}']",
+                    count: 1
+  end
+
   def assert_absence_of(internship_offer:)
     assert_no_selector "a[data-test-id='#{internship_offer.id}']"
   end

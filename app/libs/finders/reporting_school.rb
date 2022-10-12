@@ -3,9 +3,6 @@
 module Finders
   class ReportingSchool
     ALL = 'all'
-    def total_with_manager
-      base_query.count_with_school_manager
-    end
 
     def total
       base_query.count
@@ -13,16 +10,6 @@ module Finders
 
     def fetch_all
       base_query.includes(:users, :weeks)
-                .order(:name)
-    end
-
-    def fetch_all_without_manager
-      base_query.without_school_manager
-                .order(:name)
-    end
-
-    def fetch_all_with_manager
-      base_query.with_school_manager
                 .order(:name)
     end
 

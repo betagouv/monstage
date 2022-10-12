@@ -108,9 +108,6 @@ class InternshipApplication < ApplicationRecord
     yield.deliver_later(wait: 1.second)
   end
 
-  def weekly_offer?
-    internship_offer.weekly?
-  end
 
   aasm do
     state :drafted, initial: true
@@ -296,12 +293,12 @@ class InternshipApplication < ApplicationRecord
     motivation.try(:delete)
   end
 
-  def new_format?
-    return true if new_record?
-    return false if created_at < Date.parse('01/09/2020')
+  # def new_format?
+  #   return true if new_record?
+  #   return false if created_at < Date.parse('01/09/2020')
 
-    true
-  end
+  #   true
+  # end
 
   def short_target_url(application)
     target = Rails.application
@@ -317,7 +314,7 @@ class InternshipApplication < ApplicationRecord
 
   # Used for prettier links in rails_admin
   def title
-    student_name + ", le " + submitted_at.to_formatted_s(:short)
+    "Candidature de " + student_name
   end
 
   rails_admin do

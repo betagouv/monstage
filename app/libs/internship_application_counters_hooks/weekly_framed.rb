@@ -36,13 +36,14 @@ module InternshipApplicationCountersHooks
         internship_offer_id: internship_offer.id,
         week_id: week.id
       )
+      return unless internship_offer_week
 
       internship_offer_week.update(
         blocked_applications_count: week.internship_applications
                                         .merge(InternshipApplication.approved)
                                         .where(internship_offer_id: internship_offer.id)
                                         .count
-      ) if internship_offer_week
+      )
     end
 
     private

@@ -78,10 +78,13 @@
       - if can?(:choose_function, current_user)
         .col-md-6.col-xs-12
           .form-group
-            = f.label :employer_role, class: 'fr-label', for: 'user_employer_role' do
+            = f.label :employer_role, class: 'fr-label',for: 'user_employer_role' do
               = "Fonction au sein de l'entreprise"
               = f.rg2a_required_content_tag
-            = f.text_field :employer_role, class: 'fr-input', required: true
+            = f.text_field :employer_role,
+                           class: 'fr-input',
+                           maxlength: '150',
+                           required: true
 
       - if can?(:sign_with_sms, current_user)
         .col-md-6.col-xs-12
@@ -91,7 +94,6 @@
                       for: "user_phone_suffix" do
               span
                 | Numéro de téléphone
-              = f.rg2a_required_content_tag
             .fr-grid-row
               .fr-col-3
                 .fr-select-group
@@ -110,7 +112,6 @@
                                 id: "user_phone_suffix",
                                 name: "user[phone_suffix]",
                                 placeholder: "ex : 0623456789",
-                                required: true,
                                 :'aria-label' => "[Numéro de téléphone]"
 
 

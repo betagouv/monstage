@@ -18,7 +18,6 @@ class UsersController < ApplicationController
 
   def update
     authorize! :update, current_user
-    params[:user] = concatenate_phone_fields
     current_user.update!(user_params)
     redirect_back fallback_location: account_path, flash: { success: current_flash_message }
   rescue ActiveRecord::RecordInvalid

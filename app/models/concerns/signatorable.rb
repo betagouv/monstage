@@ -35,11 +35,6 @@ module Signatorable
       save!
     end
 
-    def signature_role
-      return 'employer' if employer?
-      return 'school_manager' if school_manager?
-    end
-
     def signature_code_checked?
       signature_phone_token_checked_at.present? &&
         signature_phone_token_checked_at <= Time.zone.now
@@ -57,10 +52,6 @@ module Signatorable
 
     def signature_phone_token_still_ok?
       Time.zone.now < signature_phone_token_expires_at
-    end
-
-    def other_roles_than_mine
-      Signature.signatory_roles.keys - [signatory_role]
     end
 
     def obfuscated_phone_number

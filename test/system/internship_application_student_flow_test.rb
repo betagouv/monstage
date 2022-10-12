@@ -388,4 +388,16 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                             .count
     end
   end
+
+  test 'when an employer tries to access application forms, he fails' do
+    employer = create(:employer)
+    internship_offer = create(:weekly_internship_offer)
+    visit internship_offer_path(internship_offer.id)
+    first(:link, 'Je postule').click
+    fill_in("Adresse électronique (e-mail)", with: employer.email)
+    fill_in("Mot de passe", with: employer.password)
+    click_button('Connexion')
+
+    assert page.has_selector?("span#alert-text", text: "Vous n'êtes pas autorisé à effectuer cette action.")
+  end
 end

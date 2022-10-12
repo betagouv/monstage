@@ -15,10 +15,10 @@ tr class="test-class-room-#{class_room.id}"
                   class: 'small fr-raw-link'
 
   td.align-middle.text-sm-center data-head="#{cols[1]}"
-    span class='total_student'= class_room_stats.total_student
-    = "/"
     span class='total_student_confirmed'
       = class_room_stats.total_student_confirmed
+    = "/"
+    span class='total_student'= class_room_stats.total_student
   td.align-middle.text-sm-center data-head="#{cols[2]}"
     span class='total_student_with_zero_application'
       = class_room_stats.total_student_with_zero_application

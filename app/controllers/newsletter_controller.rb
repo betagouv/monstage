@@ -3,6 +3,9 @@ class NewsletterController < ApplicationController
   def subscribe
     redirect_to root_path,
                 flash: { warning: "Votre email a l'air erroné" } and return unless newsletter_email_checked?
+    # our honeypot is filled, we don't subscribe this email, but pretend it's ok
+    redirect_to root_path,
+                notice: "Votre email a bien été enregistré" and return if fake_confirmation_filled?
 
     user = User.new(email: email_param[:newsletter_email])
     result = Services::SyncEmailCampaigns.new.add_contact(user: user)
@@ -21,7 +24,11 @@ class NewsletterController < ApplicationController
   private
 
   def email_param
-    params.permit(:newsletter_email)
+    params.permit(:newsletter_email, :newsletter_email_confirmation)
+  end
+
+  def fake_confirmation_filled?
+    email_param[:newsletter_email_confirmation].present?
   end
 
   def success?(result)

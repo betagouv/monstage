@@ -211,10 +211,45 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:apply, create(:api_internship_offer))
 
     assert ability.can?(:see_reporting_dashboard, User)
-    assert ability.can?(:see_reporting_internship_offers, User)
-    assert ability.can?(:see_reporting_schools, User)
+    refute ability.can?(:see_dashboard_enterprises_summary, User)
+    refute ability.can?(:see_reporting_schools, User)
     refute ability.can?(:see_reporting_associations, User)
-    assert ability.can?(:see_reporting_enterprises, User)
+    refute ability.can?(:see_reporting_enterprises, User)
+  end
+
+  test 'Education Statistician' do
+    statistician = create(:education_statistician)
+    ability = Ability.new(statistician)
+
+    assert(ability.can?(:supply_offers, statistician), 'statistician are to be able to supply offers')
+    assert(ability.can?(:view, :department),
+           'statistician should be able to view his own department')
+    assert(ability.can?(:read, InternshipOffer))
+    assert(ability.cannot?(:renew, InternshipOffer.new),
+           'employers should not be able to renew internship offer not belonging to him')
+    refute(ability.can?(:show, :account),
+           'statistician should be able to see his account')
+    refute(ability.can?(:update, School),
+           'statistician should be able to manage school')
+    refute(ability.can?(:edit, User),
+           'statistician should be able to edit user')
+    assert(ability.can?(:create, Tutor),
+           'statistician should be able to create tutors')
+    refute ability.can?(:read, User)
+    refute ability.can?(:destroy, User)
+    assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
+    refute ability.can?(:index, Acl::Reporting.new(user: statistician, params: {}))
+    assert(ability.can?(:index, Acl::Reporting, &:allowed?))
+
+    refute ability.can?(:apply, create(:weekly_internship_offer))
+    refute ability.can?(:apply, create(:free_date_internship_offer))
+    refute ability.can?(:apply, create(:api_internship_offer))
+
+    assert ability.can?(:see_reporting_dashboard, User)
+    refute ability.can?(:see_dashboard_enterprises_summary, User)
+    refute ability.can?(:see_reporting_schools, User)
+    refute ability.can?(:see_reporting_associations, User)
+    refute ability.can?(:see_reporting_enterprises, User)
   end
 
   test 'MinistryStatistician' do
@@ -253,6 +288,7 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:see_reporting_schools, User)
     refute ability.can?(:see_reporting_associations, User)
     refute ability.can?(:see_reporting_entreprises, User)
+    assert ability.can?(:see_dashboard_enterprises_summary, User)
   end
 
   test 'SchoolManager' do

@@ -18,9 +18,8 @@ export default class extends Controller {
     'passwordInput',
     'passwordConfirmationHint',
     'passwordConfirmationInput',
-    'phoneLabel',
+    'phoneSuffix',
     'schoolPhoneBloc',
-    'phoneSuffix'
   ];
 
   static values = {
@@ -39,10 +38,7 @@ export default class extends Controller {
     if (["school_manager", "teacher", "main_teacher", "other"].includes(event.target.value)) {
       labelText = "Adresse électronique académique";
       // margin adjusting
-      this.phoneLabelTarget.classList.add('fr-mb-1w');
-
       this.specificExplanation(event)
-      this.compulsaryPhoneLabel(event)
     }
     $(this.labelTarget).text();
   }
@@ -55,17 +51,6 @@ export default class extends Controller {
     $(this.emailExplanationTarget).text(explanation);
   }
 
-  compulsaryPhoneLabel(event) {
-    if (event.target.value != "school_manager") {
-      this.schoolPhoneBlocTarget.children[0].innerHTML = 'Numéro de téléphone (facultatif)';
-      this.schoolPhoneBlocTarget.children[1].classList.add('d-none');
-      this.phoneSuffixTarget.removeAttribute('required');
-    } else {
-      this.schoolPhoneBlocTarget.children[0].innerHTML = 'Numéro de téléphone';
-      this.schoolPhoneBlocTarget.children[1].classList.remove('d-none');
-      this.phoneSuffixTarget.addAttribute('required', true);
-    }
-  }
 
   // show/hide handicap input if checkbox is checked
   toggleHandicap() {

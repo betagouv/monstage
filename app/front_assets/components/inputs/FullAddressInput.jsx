@@ -24,6 +24,7 @@ export default function AddressInput({
   const [latitude, setLatitude] = useState(currentLatitude || 0);
   const [longitude, setLongitude] = useState(currentLongitude || 0);
   const [searchResults, setSearchResults] = useState([]);
+  const [formerSearchResults, setFormerSearchResults] = useState([]);
   const [queryString, setQueryString] = useState('');
   const [fullAddressDebounced] = useDebounce(fullAddress, 100);
 
@@ -40,7 +41,8 @@ export default function AddressInput({
     fetch(endpoints.apiSearchAddress({ fullAddress }))
       .then((response) => response.json())
       .then((json) => {
-        setSearchResults(json.features)
+        setFormerSearchResults(searchResults);
+        setSearchResults(json.features.length === 0 ? formerSearchResults : json.features);
         setQueryString(json.query)
       });
   };
@@ -104,7 +106,7 @@ export default function AddressInput({
                     *
                   </abbr>
                   <a
-                    className="btn-absolute btn btn-link py-0"
+                    className="btn-absolute btn btn-link py-0 fr-raw-link"
                     href="#help-multi-location"
                     aria-label="Afficher l'aide"
                     onClick={toggleHelpVisible}
@@ -131,26 +133,37 @@ export default function AddressInput({
                       {...getMenuProps({
                         className: 'p-0 m-0',
                       })}
-                    >
-                      { isOpen && queryString === fullAddress
-                        ? searchResults.map((item, index) => (
-                            <li
-                              {...getItemProps({
-                                className: `py-2 px-3 listview-item ${
-                                  highlightedIndex === index ? 'highlighted-listview-item' : ''
-                                }`,
-                                key: `${item.properties.id}-${item.properties.label}`,
-                                index,
-                                item,
-                                style: {
-                                  fontWeight: highlightedIndex === index? 'bold' : 'normal',
-                                },
-                              })}
-                            >
-                              {item.properties.label}
-                            </li>
-                          ))
-                        : null}
+                    > 
+                      {isOpen && (queryString === fullAddress) && ((searchResults.length > 0)) ?
+                        searchResults.map((item, index) => (
+                          <li
+                            {...getItemProps({
+                              className: `py-2 px-3 listview-item ${highlightedIndex === index ? 'highlighted-listview-item' : '' }`,
+                              key: `${item.properties.id}-${item.properties.label}`,
+                              index,
+                              item,
+                              style: { fontWeight: highlightedIndex === index ? 'bold' : 'normal', },
+                            })}
+                          >
+                            {item.properties.label}
+                          </li>
+                        ))
+                        : (isOpen && (queryString === fullAddress) || (formerSearchResults.length === 0)) ?
+                          null
+                          : isOpen && formerSearchResults.map((item, index) => (
+                          <li
+                            {...getItemProps({
+                              className: `py-2 px-3 listview-item ${highlightedIndex === index ? 'highlighted-listview-item' : '' }`,
+                              key: `${item.properties.id}-${item.properties.label}`,
+                              index,
+                              item,
+                              style: { fontWeight: highlightedIndex === index ? 'bold' : 'normal', },
+                            })}
+                          >
+                            {item.properties.label}
+                          </li>
+                        ))
+                      }
                     </ul>
                   </div>
                 </div>

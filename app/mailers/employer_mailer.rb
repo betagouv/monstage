@@ -86,7 +86,7 @@ class EmployerMailer < ApplicationMailer
 
     mail(
       to: @employer.email,
-      subject: 'Une convention de stage attend votre signature'
+      subject: 'Dernière ligne droite pour la convention de stage'
     )
   end
 

@@ -30,11 +30,6 @@ module Users
     before_update :notify_school_manager, if: :notifiable?
     after_create :notify_school_manager, if: :notifiable?
 
-    def self.i18n_roles
-      roles.map do |ruby_role, _|
-        OpenStruct.new(value: ruby_role, text: I18n.t("enum.roles.#{ruby_role}"))
-      end
-    end
 
     def custom_dashboard_path
       if school.present?
@@ -86,15 +81,10 @@ module Users
     def already_signed?(internship_agreement_id:)
       return false unless role == 'school_manager'
 
-      internship_agreement = InternshipAgreement.joins(:signatures)
-                                                .where(id: internship_agreement_id)
-                                                .where(signatures: {signatory_role: signatory_role})
-      internship_agreement.any? &&
-        internship_agreement.first
-                            .try(:student)
-                            .try(:school)
-                            .try(:school_manager)
-                            .try(:id) == id
+      InternshipAgreement.joins(:signatures)
+                         .where(id: internship_agreement_id)
+                         .where(signatures: {user_id: id})
+                         .exists?
     end
 
     def school_management? ; true end
@@ -102,10 +92,6 @@ module Users
 
     def school_manager
       try(:school).try(:school_manager)
-    end
-
-    def school_manager?
-      role == 'school_manager'
     end
 
     private

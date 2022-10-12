@@ -66,13 +66,11 @@ class UserUpdateTest < ApplicationSystemTestCase
     click_button('Enregistrer')
 
     visit internship_offers_path
-    find('h1', text: 'Postulez à des offres de stage')
     sign_out(student)
 
     employer = create(:employer)
     sign_in(employer)
     visit internship_offers_path
-    find('h1', text: 'Postulez à des offres de stage')
   end
 
   test 'employer can update his phone_number' do
@@ -89,9 +87,8 @@ class UserUpdateTest < ApplicationSystemTestCase
     user_phone_selector = find(:css, '#user_phone_prefix')
     assert_equal '+687', user_phone_selector.value
     assert_equal '+6870623042585', employer.reload.phone
-    fill_in('Numéro de téléphone', with: '0623042586')
+    fill_in('Numéro de téléphone', with: '06 23 04 25 86')
     click_on 'Enregistrer mes informations'
     assert_equal '+6870623042586', employer.reload.phone
-
   end
 end

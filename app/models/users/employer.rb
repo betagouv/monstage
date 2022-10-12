@@ -10,7 +10,7 @@ module Users
                                  dependent: :destroy
 
     has_many :kept_internship_offers, -> { merge(InternshipOffer.kept) },
-             class_name: 'InternshipOffer'
+             class_name: 'InternshipOffer', foreign_key: 'employer_id'
 
     has_many :internship_applications, through: :kept_internship_offers
     has_many :internship_agreements, through: :internship_applications
@@ -52,11 +52,10 @@ module Users
     end
 
     def already_signed?(internship_agreement_id:)
-      internship_agreement = InternshipAgreement.joins(:signatures)
-                                                .where(id: internship_agreement_id)
-                                                .where(signatures: {signatory_role: signatory_role})
-      internship_agreement.any? &&
-        internship_agreement.first.internship_offer.employer_id == id
+      InternshipAgreement.joins(:signatures)
+                         .where(id: internship_agreement_id)
+                         .where(signatures: {user_id: id})
+                         .exists?
     end
 
     def presenter

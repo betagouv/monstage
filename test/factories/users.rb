@@ -17,8 +17,8 @@ FactoryBot.define do
     factory :student, class: 'Users::Student', parent: :user do
       type { 'Users::Student' }
 
-      first_name { FFaker::NameFR.first_name  }
-      last_name { FFaker::NameFR.last_name }
+      first_name { FFaker::NameFR.first_name.capitalize  }
+      last_name { FFaker::NameFR.last_name.capitalize }
       gender { 'm' }
       birth_date { 14.years.ago }
       school { create(:school, :with_school_manager) }
@@ -97,6 +97,13 @@ FactoryBot.define do
       type { 'Users::Statistician' }
       before(:create) do |user|
         create(:statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
+      end
+    end
+
+    factory :education_statistician, class: 'Users::EducationStatistician', parent: :user do
+      type { 'Users::EducationStatistician' }
+      before(:create) do |user|
+        create(:education_statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
       end
     end
 

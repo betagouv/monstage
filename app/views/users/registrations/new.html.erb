@@ -1,7 +1,7 @@
 <% if params[:identity_token] %>
   <%= render 'identities/register' %>
 <% else %>
-  <div class='onboarding-card mb-4 fr-mt-6w' data-controller="signup" data-signup-channel-value="<%= @resource_channel %>">
+  <div class='onboarding-card mb-4 fr-mt-6w' data-controller="signup email-confirmation" data-signup-channel-value="<%= @resource_channel %>">
     <header class="header-account header-onboarding-card my-0">
       <div class="row mx-0">
         <div class="col-12 h-100">
@@ -29,7 +29,7 @@
           <div class='fr-col-sm-12 fr-px-2w'>
             <%= react_component("SearchSchool", props: {
                                                   classes: "col-12",
-                                                  label: "Nom (ou ville) de mon établissement",
+                                                  label: 'Nom (ou ville) de mon établissement REP ou REP+',
                                                   required: true,
                                                   resourceName: :user,
                                                   selectClassRoom: can?(:choose_class_room, resource),
@@ -57,11 +57,11 @@
           </div>
         </div>
       </div>
-      <div class="body mb-3 registration fr-grid-row ">
+      <div class="body mb-3 registration fr-grid-row" >
         <% if can?(:choose_role, resource) %>
-          <div class='fr-col-sm-12 fr-col-md-6 fr-px-2w' >
+          <div class='fr-col-sm-12 fr-px-2w' >
             <div class="form-group custom-label-container">
-              <%= f.label :role, class: "fr-label fr-mb-6w", data: {:'signup-target' => 'skill'} do %>
+              <%= f.label :role, class: "fr-label" do %>
                 Fonction
                 <%= f.rg2a_required_content_tag %>
               <% end %>
@@ -73,60 +73,21 @@
           </div>
         <% end %>
         <% if can?(:choose_function, resource) %>
-          <div class='fr-col-12 fr-col-md-6 fr-px-2w '>
+          <div class='fr-col-12 fr-px-2w'>
             <div class="form-group custom-label-container">
-              <%= f.label :employer_role, class: "fr-label fr-mb-6w" do %>
+              <%= f.label :employer_role, class: "fr-label" do %>
                 Fonction au sein de l'entreprise
                 <%= f.rg2a_required_content_tag %>
               <% end %>
-              <%= f.text_field :employer_role, class: "fr-input", required: true %>
+              <%= f.text_field :employer_role,
+                               class: "fr-input",
+                               maxlength: "150",
+                               required: true %>
             </div>
           </div>
         <% end %>
-        
-        <% if can?(:sign_with_sms, resource) %>
-          <div class='fr-col-12 fr-col-md-6 fr-px-2w'>
-            <div class="form-group custom-label-container">
-              <%= f.label :sign_with_sms,
-                          class: "fr-label",
-                          for: "user_phone_suffix",
-                          data: {:'signup-target' =>"phoneLabel"} do %>
-                <div data-signup-target='schoolPhoneBloc'>
-                  <span>Numéro de téléphone</span>
-                  <%= f.rg2a_required_content_tag %>
-                </div>
-              <% end %>
-              <small class="form-text text-muted fr-mb-2v">
-                Ce numéro de téléphone sera utilisé pour les sms de signatures des conventions de stage.
-              </small>
-              <div class="fr-grid-row">
-                <div class="fr-col-5">
-                  <div class="fr-select-group">
-                    <% prefixes = ["+33", "+594", "+689", "+596", "+687"] %>
-                    <%= f.select :phone_prefix,
-                                 options_for_select(prefixes.map { |k| [k, k] }),
-                                 { include_blank: false },
-                                 { id: "user_phone_prefix",
-                                   name: "user[phone_prefix]",
-                                   class: "fr-select",
-                                   :'aria-label' => "[préfix internationaux de téléphone]" } %>
 
-                  </div>
-                </div>
-                <div class="fr-col-7">
-                  <%= f.text_field :phone_suffix,
-                                   class: "fr-input",
-                                   id: "user_phone_suffix",
-                                   name: "user[phone_suffix]",
-                                   placeholder: "ex : 0623456789",
-                                   required: true,
-                                   data: {:'signup-target' => "phoneSuffix"},
-                                   :'aria-label' => "[Numéro de téléphone]" %>
-                </div>
-              </div>
-            </div>
-          </div>
-        <% end %>
+
 
         <% if can?(:register_with_phone, resource) %>
           <div class='fr-col-12 fr-col-md-6 fr-px-2w'>
@@ -167,6 +128,17 @@
 
               <small class="d-none" data-signup-target="emailHint"></small>
             </div>
+            <div class="form-group custom-label-container" data-email-confirmation-target="confirmation">
+              <%= f.label :confirmation_email, class: "fr-label" do %>
+                <span>Confirmation de l'email</span>
+                <%= f.rg2a_required_content_tag %>
+              <% end %>
+              <%= f.email_field :confirmation_email,
+                                class: "fr-input",
+                                value: '',
+                                placeholder: "indiquez le même email que ci-dessus"  %>
+
+            </div>
           </div>
 
           <div class='fr-col-12 fr-col-md-6 fr-px-2w'>
@@ -191,9 +163,6 @@
             </div>
           </div>
         <% end %>
-
-        
-
 
 
         <% if can?(:choose_operator, :sign_up) %>

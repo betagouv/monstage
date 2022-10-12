@@ -19,7 +19,6 @@ Things you may want to cover:
     - If you installed postgres with Homebrew, run : `brew install postgis`
   - On Linux :
     sudo apt install postgis postgresql-12-postgis-3
-* Setup Postgis : `rake db:gis:setup`
 * Install Redis
   - On Linux : sudo apt install redis-server
 * avoid rebuilding api doc : `./infra/dev/update-doc-output-files.sh`
@@ -268,13 +267,14 @@ cat infra/dev/ssh/config >> ~/.ssh/config
 
 * git checkout master
 * git pull
-* git cherry-pick <commit_nr Hotfix-PR-branch>
+* git cherry-pick <commit_nr Hotfix-PR-branch> (* : as many commits as necessary)
 * git push
 * push on production can be done manually using ```./infra/production/deploy.sh```
 * git checkout staging
-* git cherry-pick <commit_nr Hotfix-PR-branch>
+* git pull
 * git merge master
 * git push
+* archive <Hotfix-PR-branch> in Github
 
 # disaster recovery plan
 

@@ -17,7 +17,7 @@ class User < ApplicationRecord
 
   include DelayedDeviseEmailSender
 
-  before_validation :clean_phone
+  before_validation :concatenate_and_clean
   after_create :send_sms_token
 
   # school_managements includes different roles
@@ -75,16 +75,6 @@ class User < ApplicationRecord
     respond_to?(relationship) && self.send(relationship).present?
   end
 
-  def missing_school_weeks?
-    return false unless respond_to?(:school)
-    return true if school.try(:weeks).try(:size).try(:zero?)
-
-    Week.selectable_on_school_year # rejecting stale_weeks from last year
-        .joins(:school_internship_weeks)
-        .where('school_internship_weeks.school_id': school.id)
-        .count
-        .zero?
-  end
 
   def missing_school?
     return true if respond_to?(:school) && school.blank?
@@ -207,9 +197,9 @@ class User < ApplicationRecord
     false
   end
 
-  def has_no_class_room?
-    class_room.nil?
-  end
+  # def has_no_class_room?
+  #   class_room.nil?
+  # end
 
   def send_reconfirmation_instructions
     @reconfirmation_required = false
@@ -255,9 +245,20 @@ class User < ApplicationRecord
 
   private
 
+  def concatenate_and_clean
+    # if prefix and suffix phone are given,
+    # this means an update temptative
+    if phone_prefix.present? && !phone_suffix.nil?
+      self.phone = "#{phone_prefix}#{phone_suffix}".gsub(/\s+/, '')
+      self.phone_prefix = nil
+      self.phone_suffix = nil
+    end
+    clean_phone
+  end
+
   def clean_phone
-    self.phone = nil if phone == '+33'
     self.phone = phone.delete(' ') unless phone.nil?
+    self.phone = nil if phone == '+33'
   end
 
   def add_email_to_phone_account?

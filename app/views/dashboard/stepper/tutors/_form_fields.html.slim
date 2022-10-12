@@ -20,7 +20,8 @@
         = form.text_field :tutor_role,
                            class: 'fr-input',
                            required: true,
-                           value: resource.try(:tutor_role)
+                           value: resource.try(:tutor_role),
+                           maxlength: 150
       .form-group
         = form.label :tutor_email, class: 'fr-label' do
           = 'Adresse électronique / Email'
