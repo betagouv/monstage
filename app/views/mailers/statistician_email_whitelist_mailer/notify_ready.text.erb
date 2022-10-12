@@ -2,7 +2,7 @@ Madame, Monsieur,
 
 Vous avez été désigné, pour cette année scolaire, référent départemental <%= "pour le ministère de l'éducation nationale " if @user_class == 'EducationStatistician' %>pour l'opération "30 000 stages pour les élèves de troisième des quartiers prioritaires".
 
-Vous pouvez dès à présent créer un compte mon stagedetroisieme.fr
+Vous pouvez dès à présent créer un compte monstagedetroisieme.fr
 
 <%= new_user_registration_url(as: @user_class, email: @recipient_email) %>
 

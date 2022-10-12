@@ -103,7 +103,7 @@
             <% end %>
           </div>
         <% else %>
-          <div class="fr-px-2w <%= params[:as].present? && params[:as].in?(['MinistryStatistician', 'Statistician', 'Employer','SchoolManagement']) ? 'fr-col-sm-12' : 'fr-col-md-6' %>">
+          <div class="fr-px-2w <%= params[:as].present? && params[:as].in?(['MinistryStatistician', 'Statistician', 'EducationStatistician', 'Employer','SchoolManagement']) ? 'fr-col-sm-12' : 'fr-col-md-6' %>">
             <% # <% following avoids javascript errors %>
             <span data-signup-target="emailBloc"></span>
             <span data-signup-target="emailRadioButton"></span>

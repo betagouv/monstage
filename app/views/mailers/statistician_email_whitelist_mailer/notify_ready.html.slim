@@ -4,7 +4,8 @@ p style=(p_styles)
   = "Vous avez été désigné, pour cette année scolaire, référent départemental #{"pour le ministère de l'éducation nationale " if @user_class == 'EducationStatistician'}pour l'opération '30 000 stages pour les élèves de troisième des quartiers prioritaires'."
 
 p style=(p_styles)
-  | Vous pouvez dès à présent créer un compte mon stagedetroisieme.fr
+  | Vous pouvez dès à présent créer un compte 
+  = link_to 'monstagedetroisieme.fr', root_url
 
 = render(partial: "mailers/call_to_action", locals: {href: new_user_registration_url(as: @user_class, email: @recipient_email), label:"Créer mon compte"})
 
