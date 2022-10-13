@@ -1,21 +1,31 @@
+- no_year = params[:school_year].blank?
 .container-monstage.my-3
   = render partial: 'reporting/navigation'
   .row
     .col-12
-      .fr-tabs 
+      .fr-tabs
         = render partial: 'reporting/tabs'
 
-        #offers-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0" 
-          div.p-3[data-controller='statistics']
+        #offers-panel.fr-tabs__panel.fr-tabs__panel--selected [aria-labelledby="tabpanel-404"
+                                                               role="tabpanel"
+                                                               data-controller='select-invalids-button'
+                                                               data-select-invalids-button-forbidden-value="Toutes"
+                                                               tabindex="0" ]
+          div.p-3 data-controller='statistics'
             = render partial: 'reporting/filters',
                     locals: { view_tab: :dashboard }
+
           - if can?(:export_reporting_dashboard_data, current_user)
             .row.mt-3.mb-3
               .col-12
-                = link_to 'Exporter les offres', reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)),
-                          class: 'fr-btn fr-btn-danger fr-icon-mail-line fr-btn--icon-left',
-                          data: {turbo: false}
-
+                - target_path = no_year ? '#' : reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers))
+                = link_to 'Exporter les offres',
+                          target_path,
+                          class: "fr-btn fr-btn-danger fr-icon-mail-line fr-btn--icon-left #{'disabled' if no_year}",
+                          data: { turbo: false }
+                - if no_year
+                  br
+                  span.small.text-dark Choisir une année scolaire pour obtenir des exports ciblés
           // platform stats
           .row.mt-5
             .col-12
@@ -25,8 +35,7 @@
             .fr-ml-2w.fr-py-2w
               p Le tableau ci-dessous ne s'affiche pas ?
               = link_to 'Voir le tableau dans une nouvelle page', @iframe, class: 'fr-btn', target: "_blank"
-            iframe.col-12.mt-2 title="Tableau de bord" src="#{@iframe}" style=("border: 0; height: 2000px;") 
-          
+            iframe.col-12.mt-2 title="Tableau de bord" src="#{@iframe}" style=("border: 0; height: 2000px;")
           - if can?(:see_dashboard_enterprises_summary, current_user)
             .row.mt-3.align-items-center.no-gutters.bg-light-blue.py-4
               .col-12.col-md-3.text-center
@@ -140,7 +149,7 @@
                     - if dashboard_finder.operator_last_synchro.present?
                       p.text-right.text-muted.small= "Dernière mise à jour il y a  #{time_ago_in_words(dashboard_finder.operator_last_synchro)}"
 
-          
+
             .row.mt-3.align-items-center.no-gutters.bg-light-blue.py-4
               .col-12.col-md-3.text-center
                 h3.m-0.d-inline-block.text-purple-custom Type de stage
@@ -169,7 +178,7 @@
                         = inline_svg_pack_tag('media/images/icons/noun_group_Computeur_People.svg', class: 'fill-purple-custom mx-3')
                         | Hybride
                         span.h2.mb-0.mx-3.text-purple-custom= dashboard_finder.operator_count_by_type(AirTableRecord::INTERNSHIP_OFFER_TYPE[:hybrid_internship_offer]) || "0"
-            
+
             // TODO REMOVE AS SOON AS MINISTRY DASHBAORD IS AVAILABLE
             - unless current_user.ministry_statistician?
               .row.mt-3.align-items-center.no-gutters.bg-light-blue.py-4
@@ -210,7 +219,7 @@
                       .row.
                         .offset-8.col-4.align-self-center.text-right.h2.mb-0.text-counter-stats
                           span.text-counter-stats.mr-3= dashboard_finder.operator_total || '0'
-          
+
           // Big total
           - if can?(:see_dashboard_enterprises_summary, current_user) && can?(:see_dashboard_administrations_summary, current_user) && can?(:see_dashboard_associations_summary, current_user)
             .row.mt-3.align-items-center.no-gutters.py-4.b-4.bc-blue-stats-total.mb-5
@@ -220,6 +229,6 @@
               .col-12.col-md-9
                 .row.align-items-center
                   .col-12.px-3.bc-stats
-                    .row.
+                    .row
                       .offset-8.col-4.align-self-center.text-right.h2.mb-0
                         span.text-blue-stats-total.mr-3= dashboard_finder.overall_total || '0'

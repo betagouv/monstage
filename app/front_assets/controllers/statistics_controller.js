@@ -1,6 +1,5 @@
 import { Controller } from 'stimulus';
 import { changeURLFromEvent} from '../utils/urls';
-import { showElement } from '../utils/dom';
 
 export default class extends Controller {
 
