@@ -22,6 +22,7 @@ html lang="fr"
       header.custom-navbar role="banner"
         .col.px-0
           = render "layouts/navbar"
+          = render 'layouts/webinar_banner' if can?(:subscribe_to_webinar, current_user_or_visitor)
       = content_for(:custom_header)
       .container-x
         = render 'layouts/flash'

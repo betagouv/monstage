@@ -70,6 +70,8 @@ class AbilityTest < ActiveSupport::TestCase
 
     assert(ability.can?(:choose_function, User.new),
           'employers can declare their role in their organisation')
+    assert(ability.can?(:subscribe_to_webinar, User.new),
+          'employers can subscribe to webinars')
     assert(ability.can?(:supply_offers, employer), 'employers are to be able to supply offers')
     assert(ability.can?(:create, InternshipOffer.new),
            'employers should be able to create internships')
@@ -233,6 +235,8 @@ class AbilityTest < ActiveSupport::TestCase
            'statistician should be able to manage school')
     refute(ability.can?(:edit, User),
            'statistician should be able to edit user')
+    assert(ability.can?(:subscribe_to_webinar, User.new),
+          'statisticians can subscribe to webinars')
     assert(ability.can?(:create, Tutor),
            'statistician should be able to create tutors')
     refute ability.can?(:read, User)
@@ -267,6 +271,8 @@ class AbilityTest < ActiveSupport::TestCase
            'ministry_statistician should be able to manage school')
     refute(ability.can?(:edit, User),
            'ministry_statistician should be able to edit user')
+    assert(ability.can?(:subscribe_to_webinar, ministry_statistician),
+          'statisticians can subscribe to webinars')
     assert(ability.can?(:see_tutor, InternshipOffer),
            'ministry_statistician should be able see_tutor')
     refute ability.can?(:read, User)
@@ -306,6 +312,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:choose_role, User))
     assert(ability.can?(:choose_class_room, User))
     assert(ability.can?(:sign_with_sms, User))
+    assert(ability.can?(:subscribe_to_webinar, school_manager))
     assert(ability.can?(:dashboard_index, student))
     assert(ability.can?(:delete, student))
 
@@ -383,7 +390,8 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:choose_class_room, main_teacher),
            'student should be able to choose_class_room')
     assert(ability.can?(:choose_role, User))
-    assert(ability.can?(:dashboard_index, student))
+    assert(ability.can?(:subscribe_to_webinar, main_teacher))
+    assert(ability.can?(:dashboard_index, main_teacher))
     assert(ability.can?(:show, :account),
            'students should be able to access their account')
 
@@ -420,6 +428,7 @@ class AbilityTest < ActiveSupport::TestCase
     teacher = create(:teacher, school: school)
     ability = Ability.new(teacher)
 
+    assert(ability.can?(:subscribe_to_webinar, teacher))
     assert(ability.can?(:welcome_students, teacher),
            'teacher are to be able to welcome students')
     assert(ability.can?(:manage, ClassRoom))
