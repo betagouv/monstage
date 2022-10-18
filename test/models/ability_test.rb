@@ -198,6 +198,8 @@ class AbilityTest < ActiveSupport::TestCase
            'statistician should be able to manage school')
     refute(ability.can?(:edit, User),
            'statistician should be able to edit user')
+    assert(ability.can?(:check_his_statistics, User),
+           'statistician should be able to check his statistics')
     assert(ability.can?(:create, Tutor),
            'statistician should be able to create tutors')
     refute ability.can?(:read, User)

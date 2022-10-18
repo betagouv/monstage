@@ -33,7 +33,7 @@ module Users
             foreign_key: :user_id,
             dependent: :destroy
 
-    
+    has_many :internship_offers, foreign_key: 'employer_id'
     validates :email_whitelist, presence: { message: 'none' }
     before_validation :assign_email_whitelist
     # Beware : order matters here !
