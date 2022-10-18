@@ -1027,6 +1027,43 @@ ALTER SEQUENCE public.organisations_id_seq OWNED BY public.organisations.id;
 
 
 --
+-- Name: remote_user_activities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.remote_user_activities (
+    id bigint NOT NULL,
+    student_id bigint,
+    operator_id bigint,
+    internship_offer_id bigint,
+    account_created_at timestamp(6) without time zone,
+    internship_offer_viewed_at timestamp(6) without time zone,
+    internship_application_sent_at timestamp(6) without time zone,
+    internship_application_accepted_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: remote_user_activities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.remote_user_activities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: remote_user_activities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.remote_user_activities_id_seq OWNED BY public.remote_user_activities.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1449,6 +1486,13 @@ ALTER TABLE ONLY public.organisations ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: remote_user_activities id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.remote_user_activities ALTER COLUMN id SET DEFAULT nextval('public.remote_user_activities_id_seq'::regclass);
+
+
+--
 -- Name: school_internship_weeks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1655,6 +1699,14 @@ ALTER TABLE ONLY public.operators
 
 ALTER TABLE ONLY public.organisations
     ADD CONSTRAINT organisations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: remote_user_activities remote_user_activities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.remote_user_activities
+    ADD CONSTRAINT remote_user_activities_pkey PRIMARY KEY (id);
 
 
 --
@@ -2037,6 +2089,27 @@ CREATE INDEX index_organisations_on_group_id ON public.organisations USING btree
 
 
 --
+-- Name: index_remote_user_activities_on_internship_offer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_remote_user_activities_on_internship_offer_id ON public.remote_user_activities USING btree (internship_offer_id);
+
+
+--
+-- Name: index_remote_user_activities_on_operator_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_remote_user_activities_on_operator_id ON public.remote_user_activities USING btree (operator_id);
+
+
+--
+-- Name: index_remote_user_activities_on_student_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_remote_user_activities_on_student_id ON public.remote_user_activities USING btree (student_id);
+
+
+--
 -- Name: index_school_internship_weeks_on_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2207,6 +2280,14 @@ ALTER TABLE ONLY public.school_internship_weeks
 
 
 --
+-- Name: remote_user_activities fk_rails_0c8c9bce62; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.remote_user_activities
+    ADD CONSTRAINT fk_rails_0c8c9bce62 FOREIGN KEY (operator_id) REFERENCES public.operators(id);
+
+
+--
 -- Name: signatures fk_rails_19164d1054; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2260,6 +2341,14 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.identities
     ADD CONSTRAINT fk_rails_5373344100 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: remote_user_activities fk_rails_5a6c6a7b58; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.remote_user_activities
+    ADD CONSTRAINT fk_rails_5a6c6a7b58 FOREIGN KEY (student_id) REFERENCES public.users(id);
 
 
 --
@@ -2396,6 +2485,14 @@ ALTER TABLE ONLY public.organisations
 
 ALTER TABLE ONLY public.internship_offer_weeks
     ADD CONSTRAINT fk_rails_f36a7226ee FOREIGN KEY (internship_offer_id) REFERENCES public.internship_offers(id);
+
+
+--
+-- Name: remote_user_activities fk_rails_ff9812dd52; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.remote_user_activities
+    ADD CONSTRAINT fk_rails_ff9812dd52 FOREIGN KEY (internship_offer_id) REFERENCES public.internship_offers(id);
 
 
 --
@@ -2668,6 +2765,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220804155217'),
 ('20220811103937'),
 ('20220816105807'),
-('20221010071105');
+('20221010071105'),
+('20221017100409');
 
 

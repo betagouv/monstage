@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 module InternshipOffers
   class Api < InternshipOffer
     include WeeklyFramable
@@ -7,7 +6,7 @@ module InternshipOffers
     rails_admin do
       weight 13
       navigation_label "Offres"
-      
+
       configure :created_at, :datetime do
         date_format 'BUGGY'
       end
@@ -59,6 +58,8 @@ module InternshipOffers
       end
     end
 
+    has_many :remote_user_activities
+
     validates :remote_id, presence: true
 
     validates :zipcode, zipcode: { country_code: :fr }
@@ -86,6 +87,14 @@ module InternshipOffers
 
       where(offers_ar[:id].not_in(full_offers_ids))
     }
+
+    def self.add_tracktag_to_url(url: , user:)
+      return url unless user&.student?
+
+      uri = URI(url)
+      uri.query = [uri.query, {msta: user.id}.to_query].compact.join('&')
+      uri.to_s
+    end
 
     def init
       self.is_public ||= false

@@ -12,6 +12,7 @@ class Operator < ApplicationRecord
   }
 
   has_many :operators, class_name: 'Users::Operator'
+  has_many :remote_user_activities, dependent: :destroy
   has_many :internship_offers, through: :operators
   has_many :air_table_records
   scope :reportable, lambda { where(airtable_reporting_enabled: true) }

@@ -5,8 +5,8 @@ module Users
     include StudentAdmin
 
     belongs_to :school, optional: true
-
     belongs_to :class_room, optional: true
+    has_many :remote_user_activity, dependent: :destroy
 
     has_many :internship_applications, dependent: :destroy,
                                        foreign_key: 'user_id' do
@@ -126,6 +126,7 @@ module Users
       resume_other.try(:delete)
       resume_languages.try(:delete)
       internship_applications.map(&:anonymize)
+      remote_user_activities.map(&:anonymize)
     end
 
     def validate_school_presence_at_creation
