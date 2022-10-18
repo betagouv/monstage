@@ -276,7 +276,7 @@ class Ability
             see_dashboard_administrations_summary
             see_dashboard_department_summary
             export_reporting_dashboard_data
-            see_dashboard_associations_summary ], User
+            see_dashboard_associations_summary], User
   end
 
   def education_statistician_abilities(user:)
@@ -309,8 +309,8 @@ class Ability
   end
 
   def common_to_all_statisticians(user: )
-    can %i[supply_offers], User
-    can :view, :department, :use_custom_dashboard
+    can :supply_offers, User
+    can :view, :department
     can %i[index update], InternshipApplication
     can %i[read create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
@@ -329,8 +329,8 @@ class Ability
     can %i[create], Tutor
 
     can %i[index], Acl::InternshipOfferDashboard
-    can %i[ see_reporting_dashboard
-            see_dashboard_administrations_summary ], User
+    can %i[see_reporting_dashboard
+           see_dashboard_administrations_summary], User
   end
 
 
