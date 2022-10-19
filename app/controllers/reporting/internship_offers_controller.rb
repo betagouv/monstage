@@ -11,14 +11,17 @@ module Reporting
 
       @offers = current_offers
       @no_offers = no_current_offers
+      return if offers_hash[:school_year].blank?
+
       respond_to do |format|
         format.xlsx do
-          response.headers['Content-Disposition'] = %(attachment; filename="#{export_filename('offres')}.xlsx")
           if dimension_is?('offers', params[:dimension])
             SendExportOffersJob.perform_later(current_user, offers_hash)
             redirect_back fallback_location: reporting_dashboards_path(offers_hash),
-                          flash: { success: "Votre fichier a été envoyé à l'adresse email : #{current_user.email}"}
+                          flash: { success: "Votre fichier va vous être envoyé " \
+                                            "à l'adresse email : #{current_user.email}" }
           else
+            response.headers['Content-Disposition'] = %(attachment; filename="#{export_filename('offres')}.xlsx")
             render :index_stats
           end
         end
@@ -76,7 +79,8 @@ module Reporting
     end
 
     def offers_hash
-      { department: params[:department], school_year: params[:school_year] }
+      { department: params[:department],
+        school_year: params[:school_year]}
     end
   end
 end
