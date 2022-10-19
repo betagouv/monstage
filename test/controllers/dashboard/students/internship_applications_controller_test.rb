@@ -92,27 +92,22 @@ module Dashboard
           assert_select 'a[href=?]', dashboard_students_internship_application_path(student, internship_application)
           assert_template "dashboard/students/internship_applications/states/_#{aasm_state}"
         end
-        assert_select '.alert-secondary .alert-internship-application-state',
+        assert_select '.fr-alert__title',
                       text: "Candidature en attente depuis le #{I18n.localize(internship_applications[:drafted].created_at, format: :human_mm_dd)}.",
                       count: 1
-        assert_select '.alert-warning .alert-internship-application-state',
+        assert_select '.fr-alert--success .fr-alert__title',
                       text: "Candidature acceptée le #{I18n.localize(internship_applications[:approved].approved_at, format: :human_mm_dd)}.",
-                      count: 1
-        # following test looks very much the same as the former one because
-        # the view shows the same info for this particular state
-        assert_select '.alert-success .alert-internship-application-state',
-                      text: "Candidature acceptée le #{I18n.localize(internship_applications[:convention_signed].approved_at, format: :human_mm_dd)}.",
-                      count: 1
-        assert_select '.alert-internship-application-state',
+                      count: 2
+        assert_select '.fr-alert--error .fr-alert__title',
                       text: "Candidature refusée le #{I18n.localize(internship_applications[:rejected].rejected_at, format: :human_mm_dd)}.",
                       count: 1
-        assert_select '.alert-internship-application-state',
+        assert_select '.fr-alert--info .fr-alert__title',
                       text: "Candidature envoyée le #{I18n.localize(internship_applications[:submitted].submitted_at, format: :human_mm_dd)}.",
                       count: 1
-        assert_select '.alert-internship-application-state',
+        assert_select '.fr-alert--warning .fr-alert__title',
                       text: "Candidature expirée le #{I18n.localize(internship_applications[:expired].expired_at, format: :human_mm_dd)}.",
                       count: 1
-        assert_select '.alert-internship-application-state',
+        assert_select '.fr-alert--error .fr-alert__title',
                       text: "Candidature annulée le #{I18n.localize(internship_applications[:canceled_by_student].canceled_at, format: :human_mm_dd)}.",
                       count: 2
       end
@@ -142,7 +137,7 @@ module Dashboard
 
         assert_template 'dashboard/students/internship_applications/show'
         assert_template 'dashboard/students/_timeline'
-        assert_select '#tab-internship-application-detail .alert-internship-application-state',
+        assert_select '#tab-internship-application-detail .fr-alert--info .fr-alert__title',
                       text: "Candidature envoyée le #{I18n.localize(internship_application.submitted_at, format: :human_mm_dd)}.",
                       count: 1
       end
