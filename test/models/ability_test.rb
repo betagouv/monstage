@@ -53,7 +53,6 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   test 'Employer' do
-
     employer = create(:employer)
     another_employer = create(:employer)
     internship_offer = create(:weekly_internship_offer, employer: employer)
@@ -446,6 +445,13 @@ class AbilityTest < ActiveSupport::TestCase
 
     assert(ability.can?(:supply_offers, operator),
            'operator are to be able to supply offers')
+    partner_activity = PartnerActivity.new(
+       operator_id: operator.operator.id,
+       student_id: 1,
+       account_created: true )
+    assert(ability.can?(:notify_account_was_created, partner_activity),
+           'operator are to be able to inform of its activity')
+
     assert(ability.can?(:create, InternshipOffers::Api.new),
            'Operator should be able to create internship_offers')
     assert(ability.cannot?(:update, InternshipOffers::Api.new),

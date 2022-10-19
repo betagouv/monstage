@@ -20,6 +20,9 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 -- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
 --
 
+COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
+
+
 --
 -- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
 --
@@ -31,6 +34,9 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 -- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
 --
 
+COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
+
+
 --
 -- Name: unaccent; Type: EXTENSION; Schema: -; Owner: -
 --
@@ -41,6 +47,9 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 --
 -- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
 --
+
+COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
+
 
 --
 -- Name: agreement_signatory_role; Type: TYPE; Schema: public; Owner: -
@@ -1027,28 +1036,28 @@ ALTER SEQUENCE public.organisations_id_seq OWNED BY public.organisations.id;
 
 
 --
--- Name: remote_user_activities; Type: TABLE; Schema: public; Owner: -
+-- Name: partner_activities; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.remote_user_activities (
+CREATE TABLE public.partner_activities (
     id bigint NOT NULL,
     student_id bigint,
-    operator_id bigint,
     internship_offer_id bigint,
-    account_created_at timestamp(6) without time zone,
-    internship_offer_viewed_at timestamp(6) without time zone,
-    internship_application_sent_at timestamp(6) without time zone,
-    internship_application_accepted_at timestamp(6) without time zone,
+    operator_id integer,
+    account_created boolean,
+    internship_offer_viewed boolean,
+    internship_application_sent boolean,
+    internship_application_accepted boolean,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
 
 
 --
--- Name: remote_user_activities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: partner_activities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.remote_user_activities_id_seq
+CREATE SEQUENCE public.partner_activities_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1057,10 +1066,10 @@ CREATE SEQUENCE public.remote_user_activities_id_seq
 
 
 --
--- Name: remote_user_activities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: partner_activities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.remote_user_activities_id_seq OWNED BY public.remote_user_activities.id;
+ALTER SEQUENCE public.partner_activities_id_seq OWNED BY public.partner_activities.id;
 
 
 --
@@ -1486,10 +1495,10 @@ ALTER TABLE ONLY public.organisations ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
--- Name: remote_user_activities id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: partner_activities id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.remote_user_activities ALTER COLUMN id SET DEFAULT nextval('public.remote_user_activities_id_seq'::regclass);
+ALTER TABLE ONLY public.partner_activities ALTER COLUMN id SET DEFAULT nextval('public.partner_activities_id_seq'::regclass);
 
 
 --
@@ -1702,11 +1711,11 @@ ALTER TABLE ONLY public.organisations
 
 
 --
--- Name: remote_user_activities remote_user_activities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: partner_activities partner_activities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.remote_user_activities
-    ADD CONSTRAINT remote_user_activities_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.partner_activities
+    ADD CONSTRAINT partner_activities_pkey PRIMARY KEY (id);
 
 
 --
@@ -2089,24 +2098,17 @@ CREATE INDEX index_organisations_on_group_id ON public.organisations USING btree
 
 
 --
--- Name: index_remote_user_activities_on_internship_offer_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_partner_activities_on_internship_offer_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_remote_user_activities_on_internship_offer_id ON public.remote_user_activities USING btree (internship_offer_id);
-
-
---
--- Name: index_remote_user_activities_on_operator_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_remote_user_activities_on_operator_id ON public.remote_user_activities USING btree (operator_id);
+CREATE INDEX index_partner_activities_on_internship_offer_id ON public.partner_activities USING btree (internship_offer_id);
 
 
 --
--- Name: index_remote_user_activities_on_student_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_partner_activities_on_student_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_remote_user_activities_on_student_id ON public.remote_user_activities USING btree (student_id);
+CREATE INDEX index_partner_activities_on_student_id ON public.partner_activities USING btree (student_id);
 
 
 --
@@ -2280,19 +2282,19 @@ ALTER TABLE ONLY public.school_internship_weeks
 
 
 --
--- Name: remote_user_activities fk_rails_0c8c9bce62; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.remote_user_activities
-    ADD CONSTRAINT fk_rails_0c8c9bce62 FOREIGN KEY (operator_id) REFERENCES public.operators(id);
-
-
---
 -- Name: signatures fk_rails_19164d1054; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.signatures
     ADD CONSTRAINT fk_rails_19164d1054 FOREIGN KEY (internship_agreement_id) REFERENCES public.internship_agreements(id);
+
+
+--
+-- Name: partner_activities fk_rails_25eccf908b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.partner_activities
+    ADD CONSTRAINT fk_rails_25eccf908b FOREIGN KEY (student_id) REFERENCES public.users(id);
 
 
 --
@@ -2341,14 +2343,6 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.identities
     ADD CONSTRAINT fk_rails_5373344100 FOREIGN KEY (user_id) REFERENCES public.users(id);
-
-
---
--- Name: remote_user_activities fk_rails_5a6c6a7b58; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.remote_user_activities
-    ADD CONSTRAINT fk_rails_5a6c6a7b58 FOREIGN KEY (student_id) REFERENCES public.users(id);
 
 
 --
@@ -2432,6 +2426,14 @@ ALTER TABLE ONLY public.internship_offer_info_weeks
 
 
 --
+-- Name: partner_activities fk_rails_a33b29aa8a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.partner_activities
+    ADD CONSTRAINT fk_rails_a33b29aa8a FOREIGN KEY (internship_offer_id) REFERENCES public.internship_offers(id);
+
+
+--
 -- Name: internship_offers fk_rails_aaa97f3a41; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2485,14 +2487,6 @@ ALTER TABLE ONLY public.organisations
 
 ALTER TABLE ONLY public.internship_offer_weeks
     ADD CONSTRAINT fk_rails_f36a7226ee FOREIGN KEY (internship_offer_id) REFERENCES public.internship_offers(id);
-
-
---
--- Name: remote_user_activities fk_rails_ff9812dd52; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.remote_user_activities
-    ADD CONSTRAINT fk_rails_ff9812dd52 FOREIGN KEY (internship_offer_id) REFERENCES public.internship_offers(id);
 
 
 --

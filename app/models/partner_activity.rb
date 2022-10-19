@@ -1,4 +1,4 @@
-class RemoteUserActivity < ApplicationRecord
+class PartnerActivity < ApplicationRecord
   belongs_to :student, class_name: 'Users::Student',
                        foreign_key: 'student_id'
   belongs_to :operator
@@ -6,9 +6,7 @@ class RemoteUserActivity < ApplicationRecord
                                 foreign_key: 'internship_offer_id',
                                 optional: true
 
-  def anonymize
-    update_columns(student_id: nil,
-                   operator_id: nil,
-                   internship_offer_id: nil)
-  end
+  validates :account_created, uniqueness: { scope: [:operator_id, :student_id],
+                                            message: 'le compte a déjà été créé' }
+
 end

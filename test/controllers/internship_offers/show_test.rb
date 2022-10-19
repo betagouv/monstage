@@ -226,7 +226,7 @@ module InternshipOffers
       sign_in(student)
       get internship_offer_path(internship_offer)
       assert_response :success
-      assert_select 'a[href=?]', internship_offer.permalink
+      assert_select 'a[href=?]', "#{internship_offer.permalink}?msta=#{student.id}"
       assert_template 'internship_applications/call_to_action/_api'
     end
 

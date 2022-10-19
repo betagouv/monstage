@@ -45,6 +45,11 @@ Rails.application.routes.draw do
 
   namespace :api, path: 'api' do
     resources :internship_offers, only: %i[create update destroy]
+    resources :partner_account_activities, only: [] do
+      collection do
+        post :create_account
+      end
+    end
     resources :schools, only: [] do
       collection do
         post :nearby

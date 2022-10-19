@@ -5,6 +5,10 @@ module Api
     extend ActiveSupport::Concern
 
     included do
+      DUPLICATE_FIELDS = {
+        PartnerActivity: :operator_id
+      }
+
       #
       # base responders
       #
@@ -22,8 +26,12 @@ module Api
       # error renderers
       #
       def render_duplicate(duplicate_ar_object)
+        duplicate_field = duplicate_fields(duplicate_ar_object)
+        error_message = "#{underscore_class_name(duplicate_ar_object)} with " \
+                        "this remote_id (#{duplicate_ar_object.send(duplicate_field)}) " \
+                        "already exists"
         render_error(code: "DUPLICATE_#{capitalize_class_name(duplicate_ar_object)}",
-                     error: "#{underscore_class_name(duplicate_ar_object)} with this remote_id (#{duplicate_ar_object.remote_id}) already exists",
+                     error: error_message,
                      status: :conflict)
       end
 
@@ -58,6 +66,12 @@ module Api
 
       def render_no_content
         head :no_content
+      end
+
+      private
+
+      def duplicate_fields(duplicate_ar_object)
+        DUPLICATE_FIELDS.fetch(duplicate_ar_object.class.name.to_sym, :remote_id)
       end
     end
   end

@@ -186,7 +186,10 @@ class Ability
   end
 
   def operator_abilities(user:)
-    can :supply_offers, User
+    can %i[supply_offers], User
+    can %i[notify_account_was_created], PartnerActivity do |partner_activity|
+      partner_activity.operator_id == user.operator.id
+    end
     can :show, :account
     can :choose_operator, :sign_up
     can :change, :department
