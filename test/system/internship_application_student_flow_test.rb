@@ -276,6 +276,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       assert page.has_selector?('.nav-link-icon-with-label-success', count: 2)
       click_on 'Afficher ma candidature'
       click_on 'Annuler'
+      find('.motivation-text').set "Désolé j'ai déjà trouvé."
       click_on 'Confirmer'
       assert page.has_content?('Candidature annulée le 30 décembre')
       assert page.has_selector?('.nav-link-icon-with-label-success', count: 1)
@@ -326,6 +327,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     assert page.has_selector?('.nav-link-icon-with-label-success', count: 2)
     click_on 'Afficher ma candidature'
     click_on 'Annuler'
+    find('.motivation-text').set "Désolé j'ai déjà trouvé."
     click_on 'Confirmer'
     assert page.has_content?('Candidature annulée')
     assert page.has_selector?('.nav-link-icon-with-label-success', count: 1)
@@ -380,6 +382,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       assert page.has_selector?('.nav-link-icon-with-label-success', count: 2)
       click_on 'Afficher ma candidature'
       click_on 'Annuler'
+      find('.motivation-text').set "Désolé j'ai déjà trouvé."
       click_on 'Confirmer'
       assert page.has_content?('Candidature annulée')
       assert page.has_selector?('.nav-link-icon-with-label-success', count: 1)

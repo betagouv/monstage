@@ -157,6 +157,7 @@ module Dashboard
       assert_changes -> { free_date_internship_application.reload.rejected? },
                      from: false,
                      to: true do
+        find('.motivation-text').set 'Désolé le stage est déjà pourvu.'
         click_on 'Confirmer'
         find '#alert-text', text: 'Candidature mise à jour avec succès'
       end
