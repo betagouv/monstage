@@ -9,6 +9,12 @@ class NavbarTest < ActionDispatch::IntegrationTest
     @school = create(:school, :with_school_manager)
   end
 
+  test 'visitor navbar' do
+    get root_path
+    assert_select("li a.fr-link.fr-icon-lock-line", text: 'Connexion', count: 1)
+    assert_select("li a.fr-link.fr-icon-user-line", text: 'Créer mon compte', count: 1)
+  end
+
   test 'employer' do
     employer = create(:employer)
     sign_in(employer)
@@ -16,6 +22,10 @@ class NavbarTest < ActionDispatch::IntegrationTest
     assert_select("li a.fr-link[href=\"#{root_path}\"]", count: 1, text: 'Accueil')
     assert_select('li a.fr-link.text-decoration-none.active', count: 1)
     assert_select('li a.fr-link.text-decoration-none.active', text: employer.dashboard_name, count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Accueil', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Recherche', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Mon tableau de bord', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Mon compte', count: 1)
   end
 
   test 'main_teacher' do
@@ -28,10 +38,11 @@ class NavbarTest < ActionDispatch::IntegrationTest
       'li a.fr-link[href=?]',
       main_teacher.presenter.default_internship_offers_path
     )
-    assert_select("li a.fr-link.text-decoration-none[href=\"#{root_path}\"]", count: 0, text: 'Accueil')
     assert_select('li a.fr-link.text-decoration-none.active', count: 1)
-    assert_select('li a.fr-link.text-decoration-none.active', text: 'Ma classe',
-                                      count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Accueil', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Recherche', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Ma classe', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
   end
 
   test 'other' do
@@ -42,7 +53,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
       'li a.fr-link[href=?]',
       Presenters::User.new(other).default_internship_offers_path
     )
-    assert_select("li a.fr-link.text-decoration-none[href=\"#{root_path}\"]", count: 0, text: 'Accueil')
+    assert_select("li a.fr-link.text-decoration-none[href=\"#{root_path}\"]", count: 1, text: 'Accueil')
     assert_select('li a.fr-link.text-decoration-none.active', count: 1)
     assert_select('li a.fr-link.text-decoration-none.active', text: 'Mon établissement', count: 1)
   end
@@ -51,12 +62,13 @@ class NavbarTest < ActionDispatch::IntegrationTest
     operator = create(:user_operator)
     sign_in(operator)
     get operator.custom_dashboard_path
-    # assert_select("li a.fr-link[href=\"#{reporting_dashboards_path(school_year: SchoolYear::Current.new.beginning_of_period.year, subscribed_school: false)}\"]",
-    #               count: 1,
-    #               text: 'Statistiques')
     assert_select('li a.fr-link.text-decoration-none.active', count: 1)
-    assert_select('li a.fr-link.text-decoration-none.active', text: operator.dashboard_name,
-                                      count: 1)
+    assert_select('li a.fr-link.text-decoration-none.active', text: operator.dashboard_name, count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Accueil', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Recherche', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Mes offres', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Statistiques', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
   end
 
   test 'school_manager' do
@@ -69,6 +81,10 @@ class NavbarTest < ActionDispatch::IntegrationTest
     )
     assert_select('li a.fr-link.text-decoration-none.active', count: 1)
     assert_select('li a.fr-link.text-decoration-none.active', text: 'Mon établissement', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Accueil', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Recherche', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Mon établissement', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
   end
 
   test 'student' do
@@ -81,6 +97,10 @@ class NavbarTest < ActionDispatch::IntegrationTest
     )
     assert_select('li a.fr-link.text-decoration-none.active', count: 1)
     assert_select('li a.fr-link.text-decoration-none.active', text: student.dashboard_name, count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Accueil', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Recherche', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Candidatures', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
   end
 
   test 'teacher' do
@@ -93,8 +113,11 @@ class NavbarTest < ActionDispatch::IntegrationTest
       teacher.presenter.default_internship_offers_path
     )
     assert_select('li a.fr-link.text-decoration-none.active', count: 1)
-    assert_select('li a.fr-link.text-decoration-none.active', text: 'Ma classe',
-                                      count: 1)
+    assert_select('li a.fr-link.text-decoration-none.active', text: 'Ma classe', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Accueil', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Recherche', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Ma classe', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
   end
 
   test 'statistician' do
@@ -102,7 +125,34 @@ class NavbarTest < ActionDispatch::IntegrationTest
     sign_in(statistician)
     get statistician.custom_dashboard_path
     assert_select('li a.fr-link.text-decoration-none.active', count: 1, text: 'Statistiques')
-    assert_select('li a.fr-link.text-decoration-none.active', text: statistician.dashboard_name,
-                                      count: 1)
+    assert_select('li a.fr-link.text-decoration-none.active', text: statistician.dashboard_name, count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Accueil', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Recherche', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Mes offres', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
+  end
+
+  test 'ministry statistician' do
+    ministry_statistician = create(:ministry_statistician)
+    sign_in(ministry_statistician)
+    get ministry_statistician.custom_dashboard_path
+    assert_select('li a.fr-link.text-decoration-none.active', count: 1, text: 'Statistiques nationales')
+    assert_select('li a.fr-link.text-decoration-none.active', text: ministry_statistician.dashboard_name, count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Accueil', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Recherche', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Mes offres', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
+  end
+
+  test 'education statistician' do
+    education_statistician = create(:education_statistician)
+    sign_in(education_statistician)
+    get education_statistician.custom_dashboard_path
+    assert_select('li a.fr-link.text-decoration-none.active', count: 1, text: 'Statistiques')
+    assert_select('li a.fr-link.text-decoration-none.active', text: education_statistician.dashboard_name, count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Accueil', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Recherche', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Mes offres', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
   end
 end
