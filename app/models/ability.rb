@@ -216,7 +216,8 @@ class Ability
     can %i[see_reporting_internship_offers
            export_reporting_dashboard_data
            see_reporting_schools
-           see_reporting_enterprises ], User
+           see_reporting_enterprises
+           check_his_statistics], User
   end
 
   def god_abilities
@@ -263,6 +264,7 @@ class Ability
     common_to_all_statisticians(user: user)
 
     can :show, :api_token
+
 
     can %i[create], Organisation
 
@@ -327,8 +329,8 @@ class Ability
     can %i[create], Tutor
 
     can %i[index], Acl::InternshipOfferDashboard
-    can %i[ see_reporting_dashboard
-            see_dashboard_administrations_summary ], User
+    can %i[see_reporting_dashboard
+           see_dashboard_administrations_summary], User
   end
 
 
