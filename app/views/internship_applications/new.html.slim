@@ -29,18 +29,16 @@
       fieldset.mb-4
 
         - if @internship_offer.weekly?
-          .fr-select-group class=('fr-callout-blue py-5 px-5' unless current_user.school.has_weeks_on_current_year?)
-            - unless current_user.school.has_weeks_on_current_year?
-              p.font-weight-bold
-                | Attention, vérifiez bien que les dates de stage proposées dans l'annonce correspondent à vos dates de stage. Votre chef d'établissement n'a en effet pas renseigné les dates de stage de votre établissement.
+          - unless current_user.school.has_weeks_on_current_year?
+            = render partial: "internship_applications/forms/student_missing_school_weeks"
+          .fr-select-group
             = f.label :internship_offer_week_id, class: 'required fr-label' do
               | Quelle semaine ?
-            - unless current_user.school.has_weeks_on_current_year?
-              = render partial: "internship_applications/forms/student_missing_school_weeks"
+
             = f.select :week_id,
                        options_from_collection_for_select(applicable_weeks, :id, :human_select_text_method, @internship_application.week_id),
                        { prompt: 'Choisir une semaine'},
-                       class: "fr-select col-6",
+                       class: "fr-select",
                        required: true
         div class="form-group"
           .fr-label.required data-controller="rich-text-label" data-rich-text-label-for-value="internship_application_motivation" data-rich-text-label-enable-value=""

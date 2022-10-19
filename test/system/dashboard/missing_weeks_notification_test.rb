@@ -29,7 +29,7 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
 
 
       InternshipOffer.stub :nearby, InternshipOffer.all do
-        sign_in(student)        
+        sign_in(student)
         visit internship_offer_path(internship_offer)
         first(:link, 'Postuler').click
         find "label[for='internship_application_internship_offer_week_id']", text: "Quelle semaine ?"
