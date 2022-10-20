@@ -47,6 +47,7 @@ yarn-debug.log*
 /doc/output/internship_offers/create/*
 /doc/output/internship_offers/destroy/*
 /doc/output/internship_offers/update/*
+/doc/output/partner_account_activities/create/*
 
 /infra/disaster/docker/backup_manager/_docker-run-with-env.sh
 dump.rdb
