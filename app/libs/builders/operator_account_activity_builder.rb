@@ -1,10 +1,10 @@
 module Builders
   # wrap internship offer creation logic / failure for API/web usage
-  class PartnerAccountActivityBuilder < BuilderBase
+  class OperatorAccountActivityBuilder < BuilderBase
     def create_account(params:)
       yield callback if block_given?
-      authorize :notify_account_was_created, PartnerActivity
-      remote_account = PartnerActivity.create!(preprocess_api_params(params))
+      authorize :notify_account_was_created, OperatorActivity
+      remote_account = OperatorActivity.create!(preprocess_api_params(params))
       callback.on_success.try(:call, remote_account)
     rescue ActiveRecord::RecordInvalid => e
       if duplicate?(e.record)

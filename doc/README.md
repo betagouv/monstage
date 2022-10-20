@@ -171,8 +171,9 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 
 # Endpoints
 
-### <a name="ref-create-internship-offer"></a>
-## Création d'une offre
+#### <a name="ref-create-internship-offer"></a>
+## Gestion des offres
+### Création d'une offre
 
 
 **url** : ```#{baseURL}/internship_offers```
@@ -196,7 +197,7 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 * **permalink** *(url, required)*
 * **max_candidates** *(integer)*
 
-### Exemple curl
+#### Exemple curl
 
 ```
 curl -H "Authorization: Bearer $API_TOKEN" \
@@ -209,12 +210,12 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 
 ```
 
-### Erreurs
+#### Erreurs
 
 - 409, Conflict. Une offre avec le même ```remote_id``` existe déjà
 
-### <a name="ref-modify-internship-offer"></a>
-## Modification d'une offre
+#### <a name="ref-modify-internship-offer"></a>
+### Modification d'une offre
 
 
 **url** : ```#{baseURL}/internship_offers/#{remote_id}```
@@ -239,7 +240,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 * **max_candidates** *(integer)*
 * **published_at** *(datetime.iso8601(0))* : voir [reference](https://ruby-doc.org/stdlib-2.6.1/libdoc/date/rdoc/DateTime.html#method-i-iso8601)
 
-### Exemple curl
+#### Exemple curl
 
 ```
 curl -H "Authorization: Bearer $API_TOKEN" \
@@ -251,13 +252,13 @@ curl -H "Authorization: Bearer $API_TOKEN" \
      $ENV/api/internship_offers/$remote_id
 ```
 
-### Erreurs
+#### Erreurs
 
 - 404, Not Found. Aucune offre n'a été trouvée avec le ```remote_id``` spécifié
 - 422, Unprocessable Entity. Aucun paramètre n'a été spécifié pour la modification
 
-### <a name="ref-destroy-internship-offer"></a>
-## Suppression d'une offre
+#### <a name="ref-destroy-internship-offer"></a>
+### Suppression d'une offre
 **url** : ```#{baseURL}/internship_offers/#{remote_id}```
 
 **method** : DELETE
@@ -266,7 +267,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 
 * **remote_id** *(string, required)*
 
-### Exemple curl
+#### Exemple curl
 
 ```
 curl -H "Authorization: Bearer foobarbaz" \
@@ -276,9 +277,43 @@ curl -H "Authorization: Bearer foobarbaz" \
      https://monstagedetroisieme.fr/api/internship_offers/#{job_irl_id|vvmt_id|myfuture_id|provider_id...}
 ```
 
-### Erreurs
+#### Erreurs
 
 - 404, Not Found. Aucune offre n'a été trouvée avec le ```remote_id``` spécifié
+
+## Suivi des élèves transplateformes
+L'identifiant d'un élève chez monstagedetroisieme est fourni par le tag à parser `msta`
+
+Exemple : https://www.operator.com/stages-alternance/etudiant/stage-analyste-threat-intelligence-cybersecurite-28356258?msta=3
+
+où 3 est l'identifiant élève chez monstagedetroisieme.fr
+### Inscription d'un élève provenant de monstagedetroisieme.fr
+
+**url** : ```#{baseURL}/operator_account_activities/create_account```
+
+**method** : POST
+
+*Paramètres d'url* :
+
+* **remote_id** *(string, required)*
+* **student_id** *(integer, required)*
+
+#### Exemple de curl
+```
+curl --location --request POST 'https://monstagedetroisieme.fr/api/operator_account_activities/create_account' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer #{your_api_token}' \
+--form 'remote_id="#{job_irl_id|vvmt_id|myfuture_id|provider_id...}"' \
+--form 'student_id="#{parsed_from_msta_student_id}"'
+```
+#### Erreurs
+
+- 404, Not Found. L'inscription a déjà été faite
+- 404, Not Found. Le remote_id n'existe pas.
+- 422, Unprocessable Entity. Duplicat de l'événement de création de compte.
+
+Voir le chapitre 'Premiers pas et exemple' pour trouver la documentation relative à ces erreurs dans doc/output/operator_account_activities
+
 
 
 # Premiers pas et exemples

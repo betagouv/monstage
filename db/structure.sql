@@ -952,6 +952,43 @@ CREATE TABLE public.months (
 
 
 --
+-- Name: operator_activities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.operator_activities (
+    id bigint NOT NULL,
+    student_id bigint,
+    internship_offer_id bigint,
+    operator_id integer,
+    account_created boolean,
+    internship_offer_viewed boolean,
+    internship_application_sent boolean,
+    internship_application_accepted boolean,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: operator_activities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.operator_activities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: operator_activities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.operator_activities_id_seq OWNED BY public.operator_activities.id;
+
+
+--
 -- Name: operators; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1033,43 +1070,6 @@ CREATE SEQUENCE public.organisations_id_seq
 --
 
 ALTER SEQUENCE public.organisations_id_seq OWNED BY public.organisations.id;
-
-
---
--- Name: partner_activities; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.partner_activities (
-    id bigint NOT NULL,
-    student_id bigint,
-    internship_offer_id bigint,
-    operator_id integer,
-    account_created boolean,
-    internship_offer_viewed boolean,
-    internship_application_sent boolean,
-    internship_application_accepted boolean,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: partner_activities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.partner_activities_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: partner_activities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.partner_activities_id_seq OWNED BY public.partner_activities.id;
 
 
 --
@@ -1481,6 +1481,13 @@ ALTER TABLE ONLY public.internship_offers ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: operator_activities id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.operator_activities ALTER COLUMN id SET DEFAULT nextval('public.operator_activities_id_seq'::regclass);
+
+
+--
 -- Name: operators id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1492,13 +1499,6 @@ ALTER TABLE ONLY public.operators ALTER COLUMN id SET DEFAULT nextval('public.op
 --
 
 ALTER TABLE ONLY public.organisations ALTER COLUMN id SET DEFAULT nextval('public.organisations_id_seq'::regclass);
-
-
---
--- Name: partner_activities id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.partner_activities ALTER COLUMN id SET DEFAULT nextval('public.partner_activities_id_seq'::regclass);
 
 
 --
@@ -1695,6 +1695,14 @@ ALTER TABLE ONLY public.internship_offers
 
 
 --
+-- Name: operator_activities operator_activities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.operator_activities
+    ADD CONSTRAINT operator_activities_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: operators operators_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1708,14 +1716,6 @@ ALTER TABLE ONLY public.operators
 
 ALTER TABLE ONLY public.organisations
     ADD CONSTRAINT organisations_pkey PRIMARY KEY (id);
-
-
---
--- Name: partner_activities partner_activities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.partner_activities
-    ADD CONSTRAINT partner_activities_pkey PRIMARY KEY (id);
 
 
 --
@@ -2084,6 +2084,20 @@ CREATE INDEX index_internship_offers_on_type ON public.internship_offers USING b
 
 
 --
+-- Name: index_operator_activities_on_internship_offer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_operator_activities_on_internship_offer_id ON public.operator_activities USING btree (internship_offer_id);
+
+
+--
+-- Name: index_operator_activities_on_student_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_operator_activities_on_student_id ON public.operator_activities USING btree (student_id);
+
+
+--
 -- Name: index_organisations_on_coordinates; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2095,20 +2109,6 @@ CREATE INDEX index_organisations_on_coordinates ON public.organisations USING gi
 --
 
 CREATE INDEX index_organisations_on_group_id ON public.organisations USING btree (group_id);
-
-
---
--- Name: index_partner_activities_on_internship_offer_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_partner_activities_on_internship_offer_id ON public.partner_activities USING btree (internship_offer_id);
-
-
---
--- Name: index_partner_activities_on_student_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_partner_activities_on_student_id ON public.partner_activities USING btree (student_id);
 
 
 --
@@ -2290,14 +2290,6 @@ ALTER TABLE ONLY public.signatures
 
 
 --
--- Name: partner_activities fk_rails_25eccf908b; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.partner_activities
-    ADD CONSTRAINT fk_rails_25eccf908b FOREIGN KEY (student_id) REFERENCES public.users(id);
-
-
---
 -- Name: internship_applications fk_rails_32ed157946; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2410,6 +2402,14 @@ ALTER TABLE ONLY public.internship_applications
 
 
 --
+-- Name: operator_activities fk_rails_991a963a47; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.operator_activities
+    ADD CONSTRAINT fk_rails_991a963a47 FOREIGN KEY (internship_offer_id) REFERENCES public.internship_offers(id);
+
+
+--
 -- Name: active_storage_variant_records fk_rails_993965df05; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2426,19 +2426,19 @@ ALTER TABLE ONLY public.internship_offer_info_weeks
 
 
 --
--- Name: partner_activities fk_rails_a33b29aa8a; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.partner_activities
-    ADD CONSTRAINT fk_rails_a33b29aa8a FOREIGN KEY (internship_offer_id) REFERENCES public.internship_offers(id);
-
-
---
 -- Name: internship_offers fk_rails_aaa97f3a41; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.internship_offers
     ADD CONSTRAINT fk_rails_aaa97f3a41 FOREIGN KEY (sector_id) REFERENCES public.sectors(id);
+
+
+--
+-- Name: operator_activities fk_rails_af526c27f3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.operator_activities
+    ADD CONSTRAINT fk_rails_af526c27f3 FOREIGN KEY (student_id) REFERENCES public.users(id);
 
 
 --

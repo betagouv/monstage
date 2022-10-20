@@ -1,6 +1,6 @@
-class CreatePartnerActivities < ActiveRecord::Migration[7.0]
+class CreateOperatorActivities < ActiveRecord::Migration[7.0]
   def up
-    create_table :partner_activities do |t|
+    create_table :operator_activities do |t|
       t.references :student, foreign_key: { to_table: :users }
       t.references :internship_offer, null: true, foreign_key: true
       t.integer :operator_id, foreign_key: { to_table: :operators }
@@ -14,6 +14,6 @@ class CreatePartnerActivities < ActiveRecord::Migration[7.0]
   end
 
   def down
-    drop_table :partner_activities
+    drop_table :operator_activities
   end
 end

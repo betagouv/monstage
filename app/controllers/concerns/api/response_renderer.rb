@@ -6,7 +6,7 @@ module Api
 
     included do
       DUPLICATE_FIELDS = {
-        PartnerActivity: :operator_id
+        OperatorActivity: :operator_id
       }
 
       #

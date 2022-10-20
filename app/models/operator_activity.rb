@@ -1,4 +1,4 @@
-class PartnerActivity < ApplicationRecord
+class OperatorActivity < ApplicationRecord
   belongs_to :student, class_name: 'Users::Student',
                        foreign_key: 'student_id'
   belongs_to :operator

@@ -1,5 +1,5 @@
 module Api
-  class PartnerAccountActivitiesController < ApiBaseController
+  class OperatorAccountActivitiesController < ApiBaseController
     before_action :authenticate_api_user!
 
     def create_account
@@ -14,7 +14,7 @@ module Api
     private
 
     def account_builder
-      @builder ||= Builders::PartnerAccountActivityBuilder.new(user: current_api_user,
+      @builder ||= Builders::OperatorAccountActivityBuilder.new(user: current_api_user,
                                                                      context: :api)
     end
 

@@ -6,7 +6,7 @@ module Users
 
     belongs_to :school, optional: true
     belongs_to :class_room, optional: true
-    has_many :partner_activities, dependent: :destroy
+    has_many :operator_activities, dependent: :destroy
 
     has_many :internship_applications, dependent: :destroy,
                                        foreign_key: 'user_id' do
@@ -126,7 +126,9 @@ module Users
       resume_other.try(:delete)
       resume_languages.try(:delete)
       internship_applications.map(&:anonymize)
-      partner_activities.map(&:anonymize)
+      # operator_activities.map depend on student_id.
+      # We keep the relation with the student but it becomes meaningless
+      # since the student is anonymized
     end
 
     def validate_school_presence_at_creation

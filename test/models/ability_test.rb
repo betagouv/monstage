@@ -445,11 +445,11 @@ class AbilityTest < ActiveSupport::TestCase
 
     assert(ability.can?(:supply_offers, operator),
            'operator are to be able to supply offers')
-    partner_activity = PartnerActivity.new(
+    operator_activity = OperatorActivity.new(
        operator_id: operator.operator.id,
        student_id: 1,
        account_created: true )
-    assert(ability.can?(:notify_account_was_created, partner_activity),
+    assert(ability.can?(:notify_account_was_created, operator_activity),
            'operator are to be able to inform of its activity')
 
     assert(ability.can?(:create, InternshipOffers::Api.new),

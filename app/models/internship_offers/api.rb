@@ -58,7 +58,7 @@ module InternshipOffers
       end
     end
 
-    has_many :partner_activities
+    has_many :operator_activities
 
     validates :remote_id, presence: true
 

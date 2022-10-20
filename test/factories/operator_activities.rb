@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :partner_activity do
+  factory :operator_activity do
     student_id { create(:student).id }
     operator_id  { create(:operator).id }
     internship_offer { nil }
