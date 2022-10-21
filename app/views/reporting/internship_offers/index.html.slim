@@ -61,15 +61,15 @@
           .sticky-footer.bg-light data-footer-target="fixedContent"
             .row.p-4
               .col-12.d-flex.justify-content-start
-                - target_path = no_year ?  '' : reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx))
+                - target_path = no_year ?  '#' : reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx))
                 = link_to target_path,
-                          class: "fr-btn fr-btn-danger fr-icon-mail-line fr-btn--icon-left #{'disabled' if no_year}",
+                          class: "fr-btn #{no_year ? '' : 'fr-btn-danger'} fr-icon-mail-line fr-btn--icon-left #{'disabled' if no_year}",
                           data: {turbolinks: false} do
                   | Exporter les statistiques des offres
                 - if params[:department] || can?(:export_reporting_dashboard_data, current_user)
                   - target_path = no_year ?  '' : reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers))
                   = link_to target_path,
-                            class: "ml-3 fr-btn fr-btn-danger fr-icon-mail-line fr-btn--icon-left #{'disabled' if no_year}" do
+                            class: "ml-3 fr-btn #{no_year ? '' : 'fr-btn-danger'} fr-icon-mail-line fr-btn--icon-left #{'disabled' if no_year}" do
                     | Exporter les offres
               - if no_year
                 .col-12.d-flex.justify-content-start
