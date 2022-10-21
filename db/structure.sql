@@ -611,7 +611,7 @@ CREATE TABLE public.internship_agreements (
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
     siret character varying(16),
-    tutor_role character varying(100),
+    tutor_role character varying,
     tutor_email character varying(80),
     organisation_representative_role character varying(100),
     student_address character varying(250),
@@ -908,7 +908,7 @@ CREATE TABLE public.internship_offers (
     total_female_approved_applications_count integer DEFAULT 0,
     max_students_per_group integer DEFAULT 1 NOT NULL,
     employer_manual_enter boolean DEFAULT false,
-    tutor_role character varying(70)
+    tutor_role character varying
 );
 
 
@@ -940,6 +940,43 @@ CREATE TABLE public.months (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
+
+
+--
+-- Name: operator_activities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.operator_activities (
+    id bigint NOT NULL,
+    student_id bigint,
+    internship_offer_id bigint,
+    operator_id integer,
+    account_created boolean,
+    internship_offer_viewed boolean,
+    internship_application_sent boolean,
+    internship_application_accepted boolean,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: operator_activities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.operator_activities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: operator_activities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.operator_activities_id_seq OWNED BY public.operator_activities.id;
 
 
 --
@@ -1435,6 +1472,13 @@ ALTER TABLE ONLY public.internship_offers ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: operator_activities id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.operator_activities ALTER COLUMN id SET DEFAULT nextval('public.operator_activities_id_seq'::regclass);
+
+
+--
 -- Name: operators id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1639,6 +1683,14 @@ ALTER TABLE ONLY public.internship_offer_weeks
 
 ALTER TABLE ONLY public.internship_offers
     ADD CONSTRAINT internship_offers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: operator_activities operator_activities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.operator_activities
+    ADD CONSTRAINT operator_activities_pkey PRIMARY KEY (id);
 
 
 --
@@ -2023,6 +2075,20 @@ CREATE INDEX index_internship_offers_on_type ON public.internship_offers USING b
 
 
 --
+-- Name: index_operator_activities_on_internship_offer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_operator_activities_on_internship_offer_id ON public.operator_activities USING btree (internship_offer_id);
+
+
+--
+-- Name: index_operator_activities_on_student_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_operator_activities_on_student_id ON public.operator_activities USING btree (student_id);
+
+
+--
 -- Name: index_organisations_on_coordinates; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2327,6 +2393,14 @@ ALTER TABLE ONLY public.internship_applications
 
 
 --
+-- Name: operator_activities fk_rails_991a963a47; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.operator_activities
+    ADD CONSTRAINT fk_rails_991a963a47 FOREIGN KEY (internship_offer_id) REFERENCES public.internship_offers(id);
+
+
+--
 -- Name: active_storage_variant_records fk_rails_993965df05; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2348,6 +2422,14 @@ ALTER TABLE ONLY public.internship_offer_info_weeks
 
 ALTER TABLE ONLY public.internship_offers
     ADD CONSTRAINT fk_rails_aaa97f3a41 FOREIGN KEY (sector_id) REFERENCES public.sectors(id);
+
+
+--
+-- Name: operator_activities fk_rails_af526c27f3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.operator_activities
+    ADD CONSTRAINT fk_rails_af526c27f3 FOREIGN KEY (student_id) REFERENCES public.users(id);
 
 
 --
@@ -2668,6 +2750,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220804155217'),
 ('20220811103937'),
 ('20220816105807'),
-('20221010071105');
+('20221010071105'),
+('20221017100409'),
+('20221021094345');
 
 
