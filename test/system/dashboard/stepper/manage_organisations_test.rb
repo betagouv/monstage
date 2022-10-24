@@ -25,7 +25,7 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
   end
 
   test 'ministry statistician can create Organisation' do
-    employer = create(:ministry_statistician)
+    ministry_statistician = create(:ministry_statistician)
     group = create(:group, name: 'hello', is_public: true)
     sign_in(ministry_statistician)
     assert_difference 'Organisation.count' do
