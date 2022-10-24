@@ -105,7 +105,7 @@
             = render "dashboard/internship_offers/internship_applications/actions/approve",
                       internship_application: internship_application
 
-          - if internship_applicationS.approved?
+          - if internship_application.approved?
             = render "dashboard/internship_offers/internship_applications/actions/cancel",
                       internship_application: internship_application
 
