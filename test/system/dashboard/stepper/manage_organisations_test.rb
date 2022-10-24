@@ -24,6 +24,23 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
     end
   end
 
+  test 'ministry statistician can create Organisation' do
+    employer = create(:ministry_statistician)
+    group = create(:group, name: 'hello', is_public: true)
+    sign_in(ministry_statistician)
+    assert_difference 'Organisation.count' do
+      travel_to(Date.new(2019, 3, 1)) do
+        visit employer.custom_dashboard_path
+        find('#test-create-offer').click
+        fill_in_organisation_form(is_public: true, group: group)
+        find('span.number', text: '1')
+        find('span.number', text: '2')
+        find('span.number', text: '3')
+        click_on "Suivant"
+      end
+    end
+  end
+
   # test 'can edit organisation' do
   #   employer = create(:employer)
   #   organisation = create(:organisation)
