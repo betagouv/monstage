@@ -1,10 +1,10 @@
 .form-group
   = form.label :group_id , class: 'fr-label' do
     = "Administration"
-  = form.text_field :employer_name,
-                      class: 'fr-input',
-                      value: current_user.ministry.name,
-                      disabled: true
+  = form.text_field :ministry_name,
+                    class: 'fr-input',
+                    value: current_user.ministry.name,
+                    disabled: true
 .form-group
   = form.label :employer_name, class: 'fr-label' do
     = "Institution proposant l’offre"
