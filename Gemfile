@@ -12,6 +12,7 @@ gem "rails", "~> 7.0.3"
 gem 'puma'
 # db
 gem 'pg'
+gem "net-http"
 
 # pg extension for geo queries
 # wait for : https://github.com/rgeo/activerecord-postgis-adapter/tree/ar61 to be merge into master
