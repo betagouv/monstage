@@ -40,6 +40,11 @@ module EmailWhitelists
       end
     end
 
+    def destroy
+      Users::MinistryStatistician.find_by(email: email).destroy
+      super
+    end
+
     protected
 
     def notify_account_ready

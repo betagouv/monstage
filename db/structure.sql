@@ -611,7 +611,7 @@ CREATE TABLE public.internship_agreements (
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
     siret character varying(16),
-    tutor_role character varying(100),
+    tutor_role character varying,
     tutor_email character varying(80),
     organisation_representative_role character varying(100),
     student_address character varying(250),
@@ -908,7 +908,7 @@ CREATE TABLE public.internship_offers (
     total_female_approved_applications_count integer DEFAULT 0,
     max_students_per_group integer DEFAULT 1 NOT NULL,
     employer_manual_enter boolean DEFAULT false,
-    tutor_role character varying(70)
+    tutor_role character varying
 );
 
 
@@ -1255,7 +1255,6 @@ CREATE TABLE public.users (
     last_phone_password_reset timestamp without time zone,
     anonymized boolean DEFAULT false NOT NULL,
     banners jsonb DEFAULT '{}'::jsonb,
-    ministry_id bigint,
     targeted_offer_id integer,
     signature_phone_token character varying(6),
     signature_phone_token_expires_at timestamp(6) without time zone,
@@ -2107,13 +2106,6 @@ CREATE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
--- Name: index_users_on_ministry_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_users_on_ministry_id ON public.users USING btree (ministry_id);
-
-
---
 -- Name: index_users_on_phone; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2284,14 +2276,6 @@ ALTER TABLE ONLY public.school_internship_weeks
 
 ALTER TABLE ONLY public.internship_offer_infos
     ADD CONSTRAINT fk_rails_65006c3093 FOREIGN KEY (employer_id) REFERENCES public.users(id);
-
-
---
--- Name: users fk_rails_720d9e0bfd; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT fk_rails_720d9e0bfd FOREIGN KEY (ministry_id) REFERENCES public.groups(id);
 
 
 --
@@ -2668,6 +2652,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220804155217'),
 ('20220811103937'),
 ('20220816105807'),
-('20221010071105');
+('20221010071105'),
+('20221021094345'),
+('20221028100721');
 
 

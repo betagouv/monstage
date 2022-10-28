@@ -7,7 +7,7 @@ module Reporting
     def index
       authorize! :index, Acl::Reporting.new(user: current_user, params: params)
 
-      params.merge!(group: current_user.ministry_id) if current_user.ministry_statistician?
+      params.merge!(group: current_user.ministry.id) if current_user.ministry_statistician?
 
       @offers = current_offers
       @no_offers = no_current_offers

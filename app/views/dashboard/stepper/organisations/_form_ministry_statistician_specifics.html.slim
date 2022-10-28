@@ -14,4 +14,4 @@
                     class: 'fr-input',
                     placeholder: 'Mon Institution', required: true
 = form.hidden_field :is_public, value: true
-= form.hidden_field :group_id, value: current_user.ministry_id
+= form.hidden_field :group_id, value: current_user.ministry.id
