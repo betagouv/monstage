@@ -611,7 +611,7 @@ CREATE TABLE public.internship_agreements (
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
     siret character varying(16),
-    tutor_role character varying(100),
+    tutor_role character varying,
     tutor_email character varying(80),
     organisation_representative_role character varying(100),
     student_address character varying(250),
@@ -908,7 +908,7 @@ CREATE TABLE public.internship_offers (
     total_female_approved_applications_count integer DEFAULT 0,
     max_students_per_group integer DEFAULT 1 NOT NULL,
     employer_manual_enter boolean DEFAULT false,
-    tutor_role character varying(70)
+    tutor_role character varying
 );
 
 
@@ -2668,6 +2668,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220804155217'),
 ('20220811103937'),
 ('20220816105807'),
-('20221010071105');
+('20221010071105'),
+('20221021094345');
 
 
