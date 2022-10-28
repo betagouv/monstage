@@ -27,7 +27,6 @@ div [data-controller="select-weeks"
         - current_weeks.map do |week|
           .fr-checkbox-group.fr-checkbox-group--sm.position-relative.pr-3.my-2
             - # prevent removing weeks with application by showing a disable checkbox (not submitted to server)
-            / - has_applications = week.has_applications?(root: form.object)
             - # keep reference of checkbox id for easier labelling
             - checkbox_id = "#{form.object_name}_week_ids_#{week.id}_checkbox"
             - # also add an id for hidden field for two reason, avoid conflict, testing
