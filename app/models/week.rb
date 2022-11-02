@@ -102,24 +102,6 @@ class Week < ApplicationRecord
     end
   end
 
-  # used to check if a week has any ongoing internship_application (so we avoid unlinking an offer/school and create orphan data)
-  def has_applications?(root:)
-    if root.is_a?(InternshipOffer)
-      internship_applications.where(internship_offer_weeks: { week_id: self.id, internship_offer_id: root.id })
-                             .count
-                             .positive?
-    elsif root.is_a?(School)
-      internship_applications.where(student: root.students)
-                             .count
-                             .positive?
-    elsif root.is_a?(InternshipOfferInfo) || root.is_a?(SupportTicket)
-      return false
-    else
-
-      raise ArgumentError "unknown root: #{root}, selectable week only works with school/internship_offer"
-    end
-  end
-
   def consecutive_to?(other_week)
     self.id.to_i == other_week.id.to_i + 1
   end

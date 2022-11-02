@@ -5,21 +5,19 @@ div data-controller="daily-hours"
       = check_box_tag 'same_daily_planning',
                       true,
                       form.object.new_daily_hours.empty?,
-                      class: 'custom-control-input',
                       data: {action: "change->daily-hours#handleToggleWeeklyPlanning"},
                       disabled: true
       = label_tag 'same_daily_planning',
                   'Le déroulé de la journée est le même pour toute la semaine',
-                  class: 'custom-control-label fr-label'
+                  class: 'fr-label'
     - else
       = check_box_tag 'same_daily_planning',
                     true,
                     form.object.weekly_planning?,
-                    class: 'custom-control-input',
                     data: {action: "change->daily-hours#handleToggleWeeklyPlanning"}
       = label_tag 'same_daily_planning',
                   'Le déroulé de la journée est le même pour toute la semaine',
-                   class: 'custom-control-label fr-label'
+                   class: 'fr-label'
 
   #weekly-planning[class="mt-3 #{'d-none' unless form.object.weekly_planning?}"]
     .row
