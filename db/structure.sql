@@ -932,6 +932,38 @@ ALTER SEQUENCE public.internship_offers_id_seq OWNED BY public.internship_offers
 
 
 --
+-- Name: ministry_groups; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ministry_groups (
+    id bigint NOT NULL,
+    group_id bigint,
+    email_whitelist_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: ministry_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.ministry_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ministry_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.ministry_groups_id_seq OWNED BY public.ministry_groups.id;
+
+
+--
 -- Name: months; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1434,6 +1466,13 @@ ALTER TABLE ONLY public.internship_offers ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: ministry_groups id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ministry_groups ALTER COLUMN id SET DEFAULT nextval('public.ministry_groups_id_seq'::regclass);
+
+
+--
 -- Name: operators id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1638,6 +1677,14 @@ ALTER TABLE ONLY public.internship_offer_weeks
 
 ALTER TABLE ONLY public.internship_offers
     ADD CONSTRAINT internship_offers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ministry_groups ministry_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ministry_groups
+    ADD CONSTRAINT ministry_groups_pkey PRIMARY KEY (id);
 
 
 --
@@ -2019,6 +2066,20 @@ CREATE INDEX index_internship_offers_on_tutor_id ON public.internship_offers USI
 --
 
 CREATE INDEX index_internship_offers_on_type ON public.internship_offers USING btree (type);
+
+
+--
+-- Name: index_ministry_groups_on_email_whitelist_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ministry_groups_on_email_whitelist_id ON public.ministry_groups USING btree (email_whitelist_id);
+
+
+--
+-- Name: index_ministry_groups_on_group_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ministry_groups_on_group_id ON public.ministry_groups USING btree (group_id);
 
 
 --
@@ -2654,6 +2715,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220816105807'),
 ('20221010071105'),
 ('20221021094345'),
-('20221028100721');
+('20221028100721'),
+('20221031083556');
 
 

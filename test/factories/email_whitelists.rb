@@ -20,6 +20,8 @@ FactoryBot.define do
           class: EmailWhitelists::Ministry,
           parent: :email_whitelist do
     email { "ministry_statistician_#{rand(1..10_000)}@ms3e.fr" }
-    group { create(:group, is_public: true)}
+    after(:create) do |whitelist|
+      2.times { |n| whitelist.groups << create(:public_group) }
+    end 
   end
 end

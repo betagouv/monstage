@@ -16,13 +16,17 @@ class EmailWhitelist < ApplicationRecord
   private
 
   def discard_user
-    return if user.blank?
+    return if user&.discarded? || fetch_user.nil?
 
-    user.discard!
+    fetch_user.discard!
   end
 
   def email_downcase
     email.downcase!
+  end
+
+  def fetch_user
+    user || User.find_by(email: email)
   end
 
 end

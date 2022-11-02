@@ -40,7 +40,7 @@ class AirTableRecord < ApplicationRecord
   }
 
   scope :by_ministry, lambda { |user:|
-    user.ministry.nil? ? none : joins(:group).where(group_id: user.ministry&.id)
+    user.ministries.empty? ? none : joins(:group).where(group_id: user.ministries.map(&:id))
   }
 
   scope :countable_in_grand_total, lambda {

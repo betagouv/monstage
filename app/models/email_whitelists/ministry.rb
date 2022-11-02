@@ -1,44 +1,52 @@
 module EmailWhitelists
   class Ministry < EmailWhitelist
-    belongs_to :group,
-               -> { where is_public: true },
-               inverse_of: :ministries,
-               foreign_key: :group_id,
-               class_name: 'Group'
+    has_many :ministry_groups,
+             foreign_key: :email_whitelist_id,
+             inverse_of: :ministries
+    has_many :groups,
+              -> { where is_public: true },
+              through: :ministry_groups
 
-    validate :public_group?
+    validate :all_public_group?
 
     rails_admin do
       weight 10
       navigation_label "Listes blanches"
-      
+
       list do
         field :id
         field :email
         field :ministry_name do
           label 'Administration centrale'
-          formatted_value { bindings[:object].group.name }
+          formatted_value { bindings[:object].groups.map(&:name).join(', ') }
         end
       end
 
       show do
         field :id
         field :email
-        field :ministry_name do
+        field :ministry_names do
           label 'Administration centrale'
-          formatted_value { bindings[:object].group.name }
+          formatted_value { bindings[:object].groups.map(&:name).join(', ') }
         end
       end
 
       edit do
         field :email
-        field :group do
+        field :groups do
           associated_collection_scope do
-            Proc.new { |scope| scope.where(is_public: true) }
+            Proc.new do |scope| 
+              scope.is_public
+            end
           end
         end
       end
+
+      configure :ministry_grid_associations do
+        visible(false)
+      end
     end
+
 
     def destroy
       Users::MinistryStatistician.find_by(email: email).destroy
@@ -54,10 +62,10 @@ module EmailWhitelists
 
     private
 
-    def public_group?
-      return if group.is_public
+    def all_public_group?
+      return if groups.all? { |group| group.is_public }
 
-      errors.add(:group_id, 'Le groupe associé doit être public')
+      errors.add(:group_id, 'Tous les groupes associés doivent être publics')
     end
   end
 end

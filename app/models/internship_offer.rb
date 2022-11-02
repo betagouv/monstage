@@ -52,9 +52,9 @@ class InternshipOffer < ApplicationRecord
   }
 
   scope :limited_to_ministry, lambda { |user:|
-    return none if  user.ministry.nil?
+    return none if user.ministries.empty?
 
-    where(group_id: user.ministry.id)
+    where(group_id: user.ministries.map(&:id))
   }
 
   scope :from_api, lambda {

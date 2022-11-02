@@ -12,7 +12,7 @@ module Users
         fields(*UserAdmin::DEFAULT_FIELDS)
         field :ministry_name do
           label 'Administration centrale'
-          pretty_value { bindings[:object]&.ministry&.name }
+          pretty_value { bindings[:object]&.ministries.map(&:name).join(', ') }
         end
         fields(*UserAdmin::ACCOUNT_FIELDS)
 
@@ -36,7 +36,7 @@ module Users
     def custom_dashboard_path
       url_helpers.reporting_dashboards_path(
         school_year: SchoolYear::Current.new.beginning_of_period.year,
-        ministry: ministry
+        ministries: ministries.ids.join('A')
       )
     end
 
@@ -44,8 +44,8 @@ module Users
       EmailWhitelists::Ministry.find_by(email: email)
     end
 
-    def ministry
-      ministry_email_whitelist&.group
+    def ministries
+      ministry_email_whitelist&.groups
     end
 
     def custom_dashboard_paths
@@ -72,7 +72,7 @@ module Users
     private
 
     def email_in_whitelist
-      if ministry.nil?
+      if ministries&.empty? || ministry_email_whitelist.nil?
         errors.add(
           :email,
           'Votre adresse électronique n\'est pas reconnue, veuillez la ' \
