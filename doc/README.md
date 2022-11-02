@@ -256,6 +256,40 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 - 404, Not Found. Aucune offre n'a été trouvée avec le ```remote_id``` spécifié
 - 422, Unprocessable Entity. Aucun paramètre n'a été spécifié pour la modification
 
+### <a name="ref-index-internship-offer"></a>
+## Recherche d'une offre
+
+
+**url** : ```#{baseURL}/internship_offers```
+
+**method** : GET
+
+**/!\ Endpoint ouvert sur demande**
+
+*Paramètres d'url* :
+
+* **keyword** *(string)*
+* **internship_offer.coordinates** *(object/geography)* : { "latitude" : 1, "longitude" : 1 }
+* **radius** *(integer, en mètres)*
+
+
+### Exemple curl
+
+```
+curl -H "Authorization: Bearer $API_TOKEN" \
+     -H "Accept: application/json" \
+     -H "Content-type: application/json" \
+     -X GET \
+     -d '{"keyword":"Avocat"}' \
+     -vvv \
+     $ENV/api/internship_offers
+```
+
+### Erreurs
+
+- 401, wrong api token
+- 401, access denied
+
 ### <a name="ref-destroy-internship-offer"></a>
 ## Suppression d'une offre
 **url** : ```#{baseURL}/internship_offers/#{remote_id}```
