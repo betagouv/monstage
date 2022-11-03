@@ -5,7 +5,7 @@ module Api
     before_action :authenticate_api_user!
 
     def index
-      render_not_authozied and return unless current_api_user.operator.api_full_access
+      render_not_authorized and return unless current_api_user.operator.api_full_access
 
       @internship_offers = finder.all.includes([:sector, :employer, :school]).order(id: :desc)
       

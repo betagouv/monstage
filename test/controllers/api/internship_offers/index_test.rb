@@ -32,6 +32,32 @@ module Api
       end
     end
 
+    test 'GET #index without wrong params does not return error' do
+      user = create(:user_operator)
+      offer_1 = create(:weekly_internship_offer)
+
+      documents_as(endpoint: :'internship_offers/index', state: :error) do
+        get api_internship_offers_path(
+          params: {
+            token: "Bearer #{user.api_token}",
+            page: 'not_a_number',
+            wrong_params: 'string',
+            coordinates: {
+              one: 'aaa',
+              two: 'bbb'
+            },
+            radius: 'abc'
+          }
+        )
+
+        assert_response :success
+        assert_equal 1, json_response['internshipOffers'].count
+        assert_equal 1, json_response['pagination']['totalInternshipOffers']
+        assert_equal 1, json_response['pagination']['totalPages']
+        assert_equal true, json_response['pagination']['isFirstPage']
+      end
+    end
+
     test 'GET #index without params returns all internship_offers available' do
       user = create(:user_operator)
       offer_1 = create(:weekly_internship_offer)
@@ -74,7 +100,7 @@ module Api
       end
     end
 
-    test 'GET #index with big page params returns no results' do
+    test 'GET #index with big page number params returns empty results' do
       user = create(:user_operator)
       (InternshipOffer::PAGE_SIZE + 1).times { create(:weekly_internship_offer) }
 

@@ -269,7 +269,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 *Paramètres d'url* :
 
 * **keyword** *(string)*
-* **internship_offer.coordinates** *(object/geography)* : { "latitude" : 1, "longitude" : 1 }
+* **internship_offer.coordinates** *(object/geography)* : { "latitude" : 1.0, "longitude" : 1.0 }
 * **radius** *(integer, en mètres)*
 
 
@@ -355,3 +355,6 @@ MONSTAGEDETROISIEME_TOKEN=foobarbaz
 ## Suppression d'une offre
 * exemple d'appel à l'api : ```./requests/internship_offers/destroy.sh```
 * exemple de reponse, cf: ./output/internship_offers/destroy/*
+
+## Recherche d'une offre
+* exemple de reponse, cf: ./output/internship_offers/index/success.json
