@@ -304,7 +304,6 @@ module InternshipOffers
 
     #   get internship_offer_path(internship_offer)
     #   assert_template 'internship_applications/call_to_action/_weekly'
-    #   assert_template 'internship_applications/forms/_weekly_and_free'
     # end
 
     #
