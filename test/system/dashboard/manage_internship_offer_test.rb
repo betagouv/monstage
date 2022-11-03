@@ -46,18 +46,14 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
   test 'Employer can discard internship_offer' do
     employer = create(:employer)
-    internship_offers = [
-      create(:weekly_internship_offer, employer: employer),
-      create(:free_date_internship_offer, employer: employer)
-    ]
+    internship_offer = create(:weekly_internship_offer, employer: employer)
+
     sign_in(employer)
 
-    internship_offers.each do |internship_offer|
-      visit dashboard_internship_offer_path(internship_offer)
-      assert_changes -> { internship_offer.reload.discarded_at } do
-        page.find('a[data-target="#discard-internship-offer-modal"]').click
-        page.find("button[data-test-delete-id='delete-#{dom_id(internship_offer)}']").click
-      end
+    visit dashboard_internship_offer_path(internship_offer)
+    assert_changes -> { internship_offer.reload.discarded_at } do
+      page.find('a[data-target="#discard-internship-offer-modal"]').click
+      page.find("button[data-test-delete-id='delete-#{dom_id(internship_offer)}']").click
     end
   end
 

@@ -11,9 +11,6 @@ module Finders
     #   student_1 = create(:student, school: school, class_room: class_room)
     #   student_2 = create(:student, school: school, class_room: class_room)
 
-    #   draft_internship_application = create(:free_date_internship_application,
-    #                                            :approved,
-    #                                            student: student_1)
     #   approved_internship_application = create(:weekly_internship_application,
     #                                            :approved,
     #                                            student: student_2)

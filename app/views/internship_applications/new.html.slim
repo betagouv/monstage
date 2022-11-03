@@ -20,9 +20,7 @@
       = render "layouts/form_errors",
                resource: @internship_application,
                resource_name: :internship_applications
-      - if @internship_offer.free_date? && current_user.student?
-        = f.hidden_field :user_id
-      = f.hidden_field :type, value: @internship_offer.weekly? ? 'InternshipApplications::WeeklyFramed' : 'InternshipApplications::FreeDate'
+      = f.hidden_field :type, value: 'InternshipApplications::WeeklyFramed'
       = f.hidden_field :internship_offer_id
       = f.hidden_field :internship_offer_type
 

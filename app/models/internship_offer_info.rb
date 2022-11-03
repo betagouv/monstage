@@ -11,10 +11,6 @@ class InternshipOfferInfo < ApplicationRecord
   # Relation
   belongs_to :internship_offer, optional: true
 
-  def free_date?
-    false
-  end
-
   def from_api?
     false
   end

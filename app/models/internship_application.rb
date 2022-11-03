@@ -97,10 +97,6 @@ class InternshipApplication < ApplicationRecord
   scope :not_by_id, ->(id:) { where.not(id: id) }
 
   scope :weekly_framed, -> { where(type: InternshipApplications::WeeklyFramed.name) }
-  # singleton_class.send(:alias_method, :troisieme_generale, :weekly_framed)
-
-  scope :free_date, -> { where(type: InternshipApplications::FreeDate.name) }
-  singleton_class.send(:alias_method, :voie_pro, :free_date)
 
   # add an additional delay when sending email using richtext
   # sometimes email was sent before action_texts_rich_text was persisted

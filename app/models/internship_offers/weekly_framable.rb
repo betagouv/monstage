@@ -64,10 +64,6 @@ module InternshipOffers
         true
       end
 
-      def free_date?
-        false
-      end
-
       def weeks_count
         internship_offer_weeks.count
       end

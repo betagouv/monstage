@@ -12,9 +12,5 @@ module InternshipOfferInfos
     def weekly?
       true
     end
-
-    def free_date?
-      false
-    end
   end
 end

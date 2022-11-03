@@ -33,8 +33,6 @@ div data-internship-application-form-target="containerForm" class="#{@internship
                     resource: @internship_application,
                     resource_name: :internship_applications
 
-            - if @internship_offer.free_date? && current_user.student?
-              = f.hidden_field :user_id
             = f.hidden_field :type
             = f.hidden_field :internship_offer_id
             = f.hidden_field :internship_offer_type
