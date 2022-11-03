@@ -114,7 +114,7 @@ module Builders
         weekly_lunch_break: internship_offer_info.weekly_lunch_break,
         type: internship_offer_info.type.gsub('Info', ''),
       }
-      params[:week_ids] = internship_offer_info.week_ids if internship_offer_info.weekly?
+      params[:week_ids] = internship_offer_info.week_ids
       params
     end
 

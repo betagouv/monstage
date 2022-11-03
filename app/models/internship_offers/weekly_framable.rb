@@ -60,10 +60,6 @@ module InternshipOffers
           .where('internship_offer_weeks.week_id in (?)', week_ids)
       }
 
-      def weekly?
-        true
-      end
-
       def weeks_count
         internship_offer_weeks.count
       end

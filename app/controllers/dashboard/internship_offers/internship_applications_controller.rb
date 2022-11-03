@@ -37,8 +37,6 @@ module Dashboard
       private
 
       def filter_by_week_or_application_date(internship_offer, params_order)
-        return internship_offer.internship_applications.no_date_index unless internship_offer.weekly?
-
         internship_applications = internship_offer.internship_applications.not_drafted
         if params_order == ORDER_WITH_INTERNSHIP_DATE
           internship_applications.order(

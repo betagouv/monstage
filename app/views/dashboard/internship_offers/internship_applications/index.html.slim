@@ -10,19 +10,18 @@
   .d-flex.justify-content-between.align-items-end.mx-xl-0.mx-lg-0.mx-2
     = link_to internship_offer_path(@internship_offer), class: 'fr-raw-link h3 blue-france' do
        = @internship_offer.title
-    - if @internship_offer.weekly?
-      .fr-select-group [data-controller='select-and-go'
-                        class='align-self-baseline'
-                        data-select-and-go-criterium-value='order'
-                        criteriumdata-select-and-go-url-value="#{dashboard_internship_offer_internship_applications_path}"]
-        label.fr-text--light for="select-order" Trier par
-        - selected = params[:order] || 'applicationDate'
-        = select_tag :select_order,
-                    options_for_select([['dates de candidature','applicationDate' ], [ 'dates de stage', 'internshipDate']], selected),
-                    class:'fr-select',
-                    id: "select-order",
-                    data:{action: "change->select-and-go#handleChange",
-                          'select-and-go-target': "direction"}
+    .fr-select-group [data-controller='select-and-go'
+                      class='align-self-baseline'
+                      data-select-and-go-criterium-value='order'
+                      criteriumdata-select-and-go-url-value="#{dashboard_internship_offer_internship_applications_path}"]
+      label.fr-text--light for="select-order" Trier par
+      - selected = params[:order] || 'applicationDate'
+      = select_tag :select_order,
+                  options_for_select([['dates de candidature','applicationDate' ], [ 'dates de stage', 'internshipDate']], selected),
+                  class:'fr-select',
+                  id: "select-order",
+                  data:{action: "change->select-and-go#handleChange",
+                        'select-and-go-target': "direction"}
   .row.fr-mt-4w
     .col-12
       = render partial: 'dashboard/internship_offers/internship_applications/internship_application',
