@@ -958,7 +958,8 @@ CREATE TABLE public.operators (
     airtable_link character varying,
     airtable_reporting_enabled boolean DEFAULT false,
     airtable_table character varying,
-    airtable_app_id character varying
+    airtable_app_id character varying,
+    api_full_access boolean DEFAULT false
 );
 
 
@@ -2669,6 +2670,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220811103937'),
 ('20220816105807'),
 ('20221010071105'),
-('20221021094345');
+('20221021094345'),
+('20221026142333');
 
 
