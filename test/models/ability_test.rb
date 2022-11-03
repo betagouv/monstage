@@ -219,7 +219,6 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:index, Acl::Reporting, &:allowed?))
 
     refute ability.can?(:apply, create(:weekly_internship_offer))
-    refute ability.can?(:apply, create(:free_date_internship_offer))
     refute ability.can?(:apply, create(:api_internship_offer))
 
     assert ability.can?(:see_reporting_dashboard, User)
