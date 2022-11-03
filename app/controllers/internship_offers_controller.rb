@@ -72,7 +72,6 @@ class InternshipOffersController < ApplicationController
       :city,
       :radius,
       :keyword,
-      :school_track,
       week_ids: []
     )
   end

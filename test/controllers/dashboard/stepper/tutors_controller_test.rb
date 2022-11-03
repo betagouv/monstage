@@ -106,9 +106,6 @@ module Dashboard::Stepper
       assert_equal(internship_offer_info.new_daily_hours,
                    created_internship_offer.new_daily_hours,
                    'new_daily_hours not copied')
-      assert_equal(internship_offer_info.school_track,
-                   created_internship_offer.school_track,
-                   'school_track not copied')
 
       # recopy organisation
       assert_equal organisation.employer_name, created_internship_offer.employer_name
@@ -159,10 +156,7 @@ module Dashboard::Stepper
       assert_equal(created_tutor.id,
                    created_internship_offer.tutor_id,
                    'tutor_id not copied')
-      assert_equal(internship_offer_info.school_track,
-                   created_internship_offer.school_track,
-                   'school_track not copied')
-
+ 
       assert_redirected_to internship_offer_path(created_internship_offer, origin: 'dashboard')
     end
 

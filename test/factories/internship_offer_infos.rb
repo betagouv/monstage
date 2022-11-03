@@ -12,7 +12,6 @@ FactoryBot.define do
 
     trait :weekly_internship_offer_info do
       weeks { [Week.first] }
-      school_track { :troisieme_generale }
       type { 'InternshipOfferInfos::WeeklyFramed' }
     end
 

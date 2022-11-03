@@ -69,9 +69,6 @@ class InternshipAgreement < ApplicationRecord
     validate :valid_working_hours_fields
   end
 
-  # validates :school_track, presence: true # legacy: school_track remains
-  # a field in the database
-
   # validate :at_least_one_validated_terms
 
   aasm do

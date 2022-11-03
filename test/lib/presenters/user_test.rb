@@ -32,15 +32,6 @@ module Presenters
                    main_teacher.presenter.default_internship_offers_path
     end
 
-    test '.default_internship_offers_path with student having a school/school_track also include school_track param' do
-      school_manager = create(:school_manager)
-      class_room = create(:class_room,  school: school_manager.school)
-      student = create(:student, school: school_manager.school, class_room: class_room)
-
-      assert_equal url_helpers.internship_offers_path(student.default_search_options),
-                   student.presenter.default_internship_offers_path
-    end
-
    test '.default_internship_offers_path with school_manager having a school with weeks does not prefilter by weeks' do
       weeks =  [Week.selectable_from_now_until_end_of_school_year.first]
       school = create(:school, weeks: weeks)

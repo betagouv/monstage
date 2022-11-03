@@ -152,7 +152,6 @@ fr:
         title: Intitulé
         description: Description
         sector: Secteur
-        school_track: Filière
         max_candidates: Nbr. max de candidats accueillis sur l'année
         max_students_per_group: Effectif max. d'un groupe d'élèves
         sector_id: Secteurs professionnels
@@ -399,8 +398,6 @@ fr:
               too_long: La description doit faire au maximum 500 caractères
             sector:
               required: "Veuillez choisir un secteur pour l'offre de stage"
-            school_track:
-              required: "Veuillez choisir la filière correspondant à l'offre de stage"
             weeks:
               blank: Veuillez saisir des semaines de stage
 
@@ -441,8 +438,6 @@ fr:
               blank: "Missing city"
             sector:
               required: "Missing sector"
-            school_track:
-              blank: "Missing school_track"
             weeks:
               blank: "Missing weeks"
             remote_id:
@@ -590,7 +585,5 @@ fr:
       main_teacher: "Professeur principal"
       other: "Autre fonction"
 
-    school_tracks:
-      troisieme_generale: '3e'
   date:
     day_names: [Dimanche, Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi]

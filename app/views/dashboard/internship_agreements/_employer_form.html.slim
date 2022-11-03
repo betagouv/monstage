@@ -31,7 +31,6 @@
                       form: form,
                       resource: @internship_agreement,
                       disabled: false
-                      / school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale',
 
         #nav-school-management.tab-pane.fade role="tabpanel" aria-labelledby="nav-school-management-tab"
           table.table-sticky-thead
@@ -42,4 +41,3 @@
                       form: form,
                       resource: @internship_agreement,
                       disabled: true
-                      / school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale',

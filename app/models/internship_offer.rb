@@ -87,10 +87,6 @@ class InternshipOffer < ApplicationRecord
                  InternshipOffers::Api.name])
   }
 
-  scope :free_date, lambda {
-    where(type: InternshipOffers::FreeDate.name)
-  }
-
   scope :ignore_already_applied, lambda { |user:|
     where.not(id: InternshipApplication.where(user_id: user.id).map(&:internship_offer_id))
   }
@@ -196,7 +192,7 @@ class InternshipOffer < ApplicationRecord
     white_list_without_location = %w[type title sector_id max_candidates
                     tutor_name tutor_phone tutor_email tutor_role employer_website
                     employer_name is_public group school_id coordinates
-                    first_date school_track last_date siret employer_manual_enter
+                    first_date last_date siret employer_manual_enter
                     internship_offer_info_id organisation_id tutor_id
                     weekly_hours new_daily_hours]
 

@@ -5,8 +5,6 @@ module Airtable
     CAST_MAPPING = {
       # bool
       "privé_/_public"=> :is_public,
-      # enum
-      "filière"=> :school_track,
       # reference, beware airtable returns an array for 1<->1 references
       "department_code"=> :department_name,
       "operator_id" => :operator_id,
@@ -78,19 +76,6 @@ module Airtable
 
     def cast_created_by(reference_created_by)
       reference_created_by.try(:dig, "email")
-    end
-
-    def cast_school_track(value)
-      case value
-      when "3e"
-        :troisieme_generale
-      when "3e Prépa métier"
-        :troisieme_prepa_metiers
-      when "3e Segpa"
-        :troisieme_segpa
-      else
-        value
-      end
     end
 
     def cast_operator_id(_)

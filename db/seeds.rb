@@ -193,8 +193,7 @@ def populate_groups
 end
 
 def populate_users
-  troisieme_generale_class_room = ClassRoom.find_by(school_track: :troisieme_generale)
-  troisieme_segpa_class_room = ClassRoom.find_by(school_track: :troisieme_segpa)
+  class_room = ClassRoom.first
 
   with_class_name_for_defaults(
     Users::Employer.new(
@@ -213,7 +212,7 @@ def populate_users
     school: find_default_school_during_test,
     phone: '+330623655541'))
   school_manager.save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_generale_class_room, email: "main_teacher@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: class_room, email: "main_teacher@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', email: "main_teacher_no_class_room@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: "other@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: "teacher@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
@@ -304,7 +303,6 @@ def populate_internship_offers
     city: 'paris',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: Group.is_paqte.first.name,
-    school_track: :troisieme_generale
   )
   weeks = [].concat(Week.selectable_on_school_year[0..1], Week.selectable_on_school_year[3..5])
   InternshipOffers::WeeklyFramed.create!(
@@ -331,7 +329,6 @@ def populate_internship_offers
     city: 'paris',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: Group.is_paqte.first.name,
-    school_track: :troisieme_generale
   )
 
     # 3eme generale public
@@ -360,7 +357,6 @@ def populate_internship_offers
     city: 'paris',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: Group.is_public.last.name,
-    school_track: :troisieme_generale
   )
   InternshipOffers::WeeklyFramed.create!(
     max_candidates: 5,
@@ -386,7 +382,6 @@ def populate_internship_offers
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
     employer_name: 'Du temps pour moi',
-    school_track: :troisieme_generale
   )
   # dépubliée
   InternshipOffers::WeeklyFramed.create!(
@@ -413,7 +408,6 @@ def populate_internship_offers
     employer_name: 'Du temps pour moi',
     max_candidates: 7,
     max_students_per_group: 7,
-    school_track: :troisieme_generale,
   )
   io = InternshipOffer.last
   io.published_at = nil
@@ -443,7 +437,6 @@ def populate_internship_offers
     city: 'paris',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: 'Editegis',
-    school_track: :troisieme_generale
   )
   # 3eme generale API
   weeks =  Week.selectable_on_school_year
@@ -531,7 +524,6 @@ MULTI_LINE
     city: 'Montmorency',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: 'Douanes Assistance Corp.',
-    school_track: :troisieme_generale
   )
   # 3eme generale multi-line
   multiline_description = <<-MULTI_LINE
@@ -561,7 +553,6 @@ MULTI_LINE
     city: 'paris',
     coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
     employer_name: 'MetaBoutShop',
-    school_track: :troisieme_generale
   )
   # 3eme generale multi-line
   multiline_description = <<-MULTI_LINE
@@ -592,7 +583,6 @@ MULTI_LINE
     city: 'paris',
     coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
     employer_name: 'Oyonnax Corp.',
-    school_track: :troisieme_generale
   )
 end
 
@@ -617,17 +607,15 @@ def populate_school_weeks
 end
 
 def populate_applications
-  trois_gene_studs = Users::Student.joins(:class_room)
-                                   .where(class_rooms: { school_track: :troisieme_generale })
-                                   .to_a
-  troisieme_generale_offers = InternshipOffers::WeeklyFramed.all
+  students = Users::Student.all
+  offers = InternshipOffers::WeeklyFramed.all
   puts "every 3e generale offers receives an application from first 3e generale stud"
-  troisieme_generale_offers.first(4).each do |offer|
+  offers.first(4).each do |offer|
     if offer.id.to_i.even?
       InternshipApplications::WeeklyFramed.create!(
         aasm_state: :submitted,
         submitted_at: 10.days.ago,
-        student: trois_gene_studs.first,
+        student: students.first,
         motivation: 'Au taquet',
         internship_offer: offer,
         week: offer.internship_offer_weeks.sample.week
@@ -636,7 +624,7 @@ def populate_applications
       InternshipApplications::WeeklyFramed.create!(
         aasm_state: :drafted,
         submitted_at: 10.days.ago,
-        student: trois_gene_studs.first,
+        student: students.first,
         motivation: 'Au taquet',
         internship_offer: offer,
         week: offer.internship_offer_weeks.sample.week
@@ -651,10 +639,10 @@ def populate_applications
     aasm_state: :approved,
     submitted_at: 10.days.ago,
     approved_at: 2.days.ago,
-    student: trois_gene_studs.second,
+    student: students.second,
     motivation: 'Au taquet',
-    internship_offer: troisieme_generale_offers.first,
-    week: troisieme_generale_offers.first.internship_offer_weeks.first.week
+    internship_offer: offers.first,
+    week: offers.first.internship_offer_weeks.first.week
   )
 
   puts  "second 3e generale stud is canceled by employer of last internship_offer"
@@ -663,10 +651,10 @@ def populate_applications
     submitted_at: 10.days.ago,
     approved_at: 3.days.ago,
     canceled_at: 1.day.ago,
-    student: trois_gene_studs.second,
+    student: students.second,
     motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
-    internship_offer: troisieme_generale_offers.second,
-    week: troisieme_generale_offers.first.internship_offer_weeks.first.week
+    internship_offer: offers.second,
+    week: offers.first.internship_offer_weeks.first.week
   )
   #-----------------
   # third student [1 approved, 1 canceled_by_student]
@@ -675,10 +663,10 @@ def populate_applications
     aasm_state: :approved,
     submitted_at: 10.days.ago,
     approved_at: 2.days.ago,
-    student: trois_gene_studs.third,
+    student: students.third,
     motivation: 'Au taquet',
-    internship_offer: troisieme_generale_offers.third,
-    week: troisieme_generale_offers.first.internship_offer_weeks.second.week
+    internship_offer: offers.third,
+    week: offers.first.internship_offer_weeks.second.week
   )
   puts  "third 3e generale stud cancels his application to first offer"
   InternshipApplications::WeeklyFramed.create!(
@@ -686,10 +674,10 @@ def populate_applications
     submitted_at: 10.days.ago,
     approved_at: 2.days.ago,
     canceled_at: 1.day.ago,
-    student: trois_gene_studs.third,
+    student: students.third,
     motivation: 'Au taquet',
-    internship_offer: troisieme_generale_offers.fourth,
-    week: troisieme_generale_offers.second.internship_offer_weeks.second.week
+    internship_offer: offers.fourth,
+    week: offers.second.internship_offer_weeks.second.week
   )
   #-----------------
   # 4th student [1 approved]
@@ -698,46 +686,46 @@ def populate_applications
     aasm_state: :approved,
     submitted_at: 10.days.ago,
     approved_at: 2.days.ago,
-    student: trois_gene_studs[4],
+    student: students[4],
     motivation: 'Au taquet',
-    internship_offer: troisieme_generale_offers.fourth,
-    week: troisieme_generale_offers.first.internship_offer_weeks.third.week
+    internship_offer: offers.fourth,
+    week: offers.first.internship_offer_weeks.third.week
   )
   InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
     submitted_at: 9.days.ago,
     approved_at: 3.days.ago,
-    student: trois_gene_studs[5],
+    student: students[5],
     motivation: 'Assez motivé pour ce stage',
-    internship_offer: troisieme_generale_offers.fifth,
-    week: troisieme_generale_offers.fifth.internship_offer_weeks.third.week
+    internship_offer: offers.fifth,
+    week: offers.fifth.internship_offer_weeks.third.week
   )
   InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
     submitted_at: 19.days.ago,
     approved_at: 13.days.ago,
-    student: trois_gene_studs[3],
+    student: students[3],
     motivation: 'motivé moyennement pour ce stage, je vous préviens',
-    internship_offer: troisieme_generale_offers[5],
-    week: troisieme_generale_offers[5].internship_offer_weeks.first.week
+    internship_offer: offers[5],
+    week: offers[5].internship_offer_weeks.first.week
   )
   InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
     submitted_at: 29.days.ago,
     approved_at: 23.days.ago,
-    student: trois_gene_studs[2],
+    student: students[2],
     motivation: 'motivé moyennement pour ce stage, je vous préviens',
-    internship_offer: troisieme_generale_offers[6],
-    week: troisieme_generale_offers[6].internship_offer_weeks.second.week
+    internship_offer: offers[6],
+    week: offers[6].internship_offer_weeks.second.week
   )
   # InternshipApplications::WeeklyFramed.create!(
   #   aasm_state: :approved,
   #   submitted_at: 29.days.ago,
   #   approved_at: 23.days.ago,
-  #   student: trois_gene_studs[8],
+  #   student: students[8],
   #   motivation: 'motivé moyennement pour ce stage, je vous préviens',
-  #   internship_offer: troisieme_generale_offers[7],
-  #   week: troisieme_generale_offers[7].internship_offer_weeks.second.week
+  #   internship_offer: offers[7],
+  #   week: offers[7].internship_offer_weeks.second.week
   # )
 end
 
@@ -839,7 +827,6 @@ def make_airtable_single_record
     nb_spot_male: nb_spot_male,
     nb_spot_female: nb_spot_used - nb_spot_male,
     department_name: Department::MAP.values.shuffle.first,
-    school_track: 'troisieme_generale',
     internship_offer_type: AirTableRecord::INTERNSHIP_OFFER_TYPE.values.shuffle.first,
     comment: nil,
     school_id: School.all.shuffle.first.id,

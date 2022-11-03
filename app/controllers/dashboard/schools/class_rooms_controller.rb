@@ -17,7 +17,7 @@ module Dashboard
       def create
         authorize! :create, ClassRoom
         @school = current_user.school
-        @class_room = @school.class_rooms.new(class_rooms_params) # school_track par défaut à troisieme_generale
+        @class_room = @school.class_rooms.new(class_rooms_params)
         @class_room.save!
         redirect_to dashboard_school_path(@school),
                     flash: { success: 'Classe ajoutée avec succès' }

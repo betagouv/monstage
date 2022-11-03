@@ -32,7 +32,6 @@ FactoryBot.define do
     aasm_state { 'draft' }
     weekly_hours { ['9:00', '17:00'] }
     weekly_lunch_break { '1h dans la cantine. Repas fourni.' }
-    school_track { 'troisieme_generale' }
     activity_rating_rich_text { "<div>Après concertation, le tuteur appelera le professeur principal vers 17h le lundi et au moins un autre jour de la semaine choisi ensemble. L'élève n'est pas convié à cet échange.<br/>A ceci se rajoute le rapport de stage</div>"}
     activity_learnings_rich_text { '<div>Communication orale</div>'}
 

@@ -29,8 +29,7 @@ module Product
       travel_to(Date.new(2019, 3, 1)) do
         run_request_and_cache_response(report_as: 'new_dashboard_stepper_internship_offer_info_path') do
           visit new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
-          fill_in_internship_offer_info_form(school_track: :troisieme_generale,
-                                             sector: sector,
+          fill_in_internship_offer_info_form(sector: sector,
                                              weeks: available_weeks)
         end
       end

@@ -53,13 +53,13 @@ FactoryBot.define do
 
     factory :school_with_troisieme_segpa_class_room do
       after(:create) do |school|
-        create(:class_room, school: school, school_track: 'troisieme_segpa')
+        create(:class_room, school: school)
       end
     end
 
     factory :school_with_troisieme_generale_class_room do
       after(:create) do |school|
-        create(:class_room, school: school, school_track: 'troisieme_generale')
+        create(:class_room, school: school)
       end
     end
   end

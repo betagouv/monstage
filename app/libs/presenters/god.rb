@@ -35,8 +35,7 @@ module Presenters
           by_department: false,
           by_typology: false,
           by_detailed_typology: false,
-          by_subscribed_school: false,
-          by_school_track: false
+          by_subscribed_school: false
         },
         employers_internship_offers: {
           by_school_year: true,

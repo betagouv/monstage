@@ -74,8 +74,6 @@ module Builders
     def preprocess_api_params(params, fallback_weeks:)
       return params unless from_api?
 
-      # API default school_track parameter is set by default
-      # in postgres with :troisieme generale
       opts = { params: params,
                user: user,
                fallback_weeks: fallback_weeks }
