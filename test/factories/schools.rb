@@ -32,14 +32,6 @@ FactoryBot.define do
       weeks { Week.selectable_on_school_year[0..1] }
     end
 
-    trait :with_troisieme_generale do
-      class_rooms { [build(:class_room, :troisieme_generale)] }
-    end
-
-    trait :with_troisieme_segpa do
-      class_rooms { [build(:class_room, :troisieme_segpa)] }
-    end
-
     trait :with_agreement_presets do
       internship_agreement_preset { build(:internship_agreement_preset,
                                            school_delegation_to_sign_delivered_at: 2.years.ago)}
@@ -49,18 +41,6 @@ FactoryBot.define do
       internship_agreement_preset { build(:internship_agreement_preset,
                                            school_delegation_to_sign_delivered_at: nil)}
       weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
-    end
-
-    factory :school_with_troisieme_segpa_class_room do
-      after(:create) do |school|
-        create(:class_room, school: school)
-      end
-    end
-
-    factory :school_with_troisieme_generale_class_room do
-      after(:create) do |school|
-        create(:class_room, school: school)
-      end
     end
   end
 

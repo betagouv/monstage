@@ -6,7 +6,7 @@ module Finders
   class TabMainTeacherTest < ActiveSupport::TestCase
     # test 'pending_agreements_count only count 3e generale applications' do
     #   school = create(:school, :with_school_manager)
-    #   class_room = create(:class_room, :troisieme_segpa, school: school)
+    #   class_room = create(:class_room, school: school)
     #   main_teacher = create(:main_teacher, school: school, class_room: class_room)
     #   student_1 = create(:student, school: school, class_room: class_room)
     #   student_2 = create(:student, school: school, class_room: class_room)

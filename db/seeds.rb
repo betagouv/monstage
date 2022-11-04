@@ -235,26 +235,26 @@ def populate_users
 end
 
 def populate_students
-  class_room_3e_generale     = ClassRoom.first
-  class_room_3e_prepa_metier = ClassRoom.second
-  class_room_3e_segpa        = ClassRoom.third
+  class_room_1 = ClassRoom.first
+  class_room_2 = ClassRoom.second
+  class_room_3 = ClassRoom.third
 
-  school = class_room_3e_generale.school
+  school = class_room_1.school
 
   with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Abdelaziz', last_name: 'Benzedine', school: find_default_school_during_test, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: find_default_school_during_test, class_room: ClassRoom.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   # sans classe
   with_class_name_for_defaults(Users::Student.new(email: 'enzo@ms3e.fr', password: 'review', first_name: 'Enzo', last_name: 'Clerc', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 3.days.ago)).save!
-  # 3e générale
-  5.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_3e_generale)).save! }
-  # 3e prepa métier
-  2.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_3e_prepa_metier)).save! }
-  with_class_name_for_defaults(Users::Student.new(email: 'louis@ms3e.fr', password: 'review', first_name: 'Louis', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'np', confirmed_at: 2.days.ago, class_room: class_room_3e_prepa_metier)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'leon@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Luanco', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_3e_prepa_metier)).save!
-  # 3e segpa
-  2.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_3e_segpa)).save! }
-  with_class_name_for_defaults(Users::Student.new(email: 'raphaelle@ms3e.fr', password: 'review',first_name: 'Raphaëlle', last_name: 'Mesnard',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3e_segpa)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Chotin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3e_segpa)).save!
+  
+  5.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_1)).save! }
+  
+  2.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_2)).save! }
+  with_class_name_for_defaults(Users::Student.new(email: 'louis@ms3e.fr', password: 'review', first_name: 'Louis', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'np', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'leon@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Luanco', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
+  
+  2.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_3)).save! }
+  with_class_name_for_defaults(Users::Student.new(email: 'raphaelle@ms3e.fr', password: 'review',first_name: 'Raphaëlle', last_name: 'Mesnard',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Chotin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
 end
 
 def student_maker (school: ,class_room: )
