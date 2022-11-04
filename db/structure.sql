@@ -53,18 +53,6 @@ CREATE TYPE public.agreement_signatory_role AS ENUM (
 
 
 --
--- Name: class_room_school_track; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.class_room_school_track AS ENUM (
-    'troisieme_generale',
-    'troisieme_prepa_metiers',
-    'troisieme_segpa',
-    'bac_pro'
-);
-
-
---
 -- Name: user_role; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -418,8 +406,7 @@ CREATE TABLE public.class_rooms (
     name character varying,
     school_id bigint,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -606,7 +593,6 @@ CREATE TABLE public.internship_agreements (
     daily_hours text[] DEFAULT '{}'::text[],
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
     main_teacher_accept_terms boolean DEFAULT false,
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
     school_delegation_to_sign_delivered_at date,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
@@ -748,7 +734,6 @@ CREATE TABLE public.internship_offer_infos (
     daily_hours text[] DEFAULT '{}'::text[],
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
@@ -891,7 +876,6 @@ CREATE TABLE public.internship_offers (
     last_date date NOT NULL,
     type character varying,
     search_tsv tsvector,
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
     aasm_state character varying,
     internship_offer_info_id bigint,
     organisation_id bigint,
@@ -2670,6 +2654,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220816105807'),
 ('20221010071105'),
 ('20221021094345'),
-('20221104091520');
+('20221104091520'),
+('20221104100047');
 
 
