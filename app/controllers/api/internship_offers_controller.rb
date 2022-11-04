@@ -118,7 +118,7 @@ module Api
           title: internship_offer.title,
           description: internship_offer.description.to_s,
           employer_name: internship_offer.employer_name,
-          url: internship_offer_url(internship_offer, query_params),
+          url: internship_offer_url(internship_offer, query_params.merge({utm_source: current_api_user.operator.name})),
           city: internship_offer.city.capitalize,
           date_start: I18n.localize(internship_offer.first_date, format: :human_mm_dd_yyyy),
           date_end:  I18n.localize(internship_offer.last_date, format: :human_mm_dd_yyyy),
