@@ -130,11 +130,12 @@ fr:
         weeks:
           one: Semaine de stage
           other: Semaines de stage
-        total_student_count: Nbr. d'élèves
-        total_main_teacher_count: Nbr. de PP
-        human_school_manager: Chef d'établissement inscrit
-        total_approved_internship_applications_count: Nbr. de candidatures acceptées
-        current_approved_internship_applications_count: Nbr. de candidatures acceptées
+        total_student_count: Elèves
+        total_main_teacher_count: Prof. Principaux
+        human_school_manager: Chefs d'établissement inscrits
+        total_approved_internship_applications_count: Candidatures acceptées
+        current_total_approved_internship_applications_count: Candidatures acceptées
+        current_approved_internship_applications_count: Candidatures acceptées
         full_address: "Adresse de l'établissement"
         full_weeks: Semaines
 

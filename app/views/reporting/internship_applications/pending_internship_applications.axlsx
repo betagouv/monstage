@@ -1,0 +1,20 @@
+wb = xlsx_package.workbook
+applications_per_employer = internship_applications.submitted.group_by { |a| a.internship_offer.employer_name }
+
+wb.add_worksheet(name: 'Candidature') do |sheet|
+  # headers
+  sheet.add_row(
+    ['Structure', 'Candidatures en attente', "Temps moyen d'attente (jours)"]  
+  )
+
+  # rows
+  applications_per_employer.each do |employer, applications|
+    sheet.add_row(
+      [
+        employer,
+        applications.count,
+        applications.map { |a| Date.current - a.submitted_at.to_date }.sum / applications.size.to_f
+       ]
+    )
+  end
+end
