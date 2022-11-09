@@ -4,6 +4,6 @@ class UpdateTutorFonctionLimitSize < ActiveRecord::Migration[7.0]
   end
 
   def down
-    change_column :tutors, :tutor_role, :string, limit: 70, null: false
+    change_column :tutors, :tutor_role, :string, limit: 70, null: true
   end
 end

@@ -2,15 +2,14 @@
 
 class GodMailer < ApplicationMailer
   require_relative '../libs/email_utils'
+
   default from: proc { EmailUtils.formatted_from }
 
   def weekly_kpis_email
-    @last_monday = Date.today - Date.today.wday.days - 6
-    @last_sunday = @last_monday + 6.days
-    @kpis = Reporting::Kpi.new.last_week_kpis(
-      last_monday: @last_monday,
-      last_sunday: @last_sunday
-    )
+    kpi_reporting_service = Reporting::Kpi.new
+    @last_monday = kpi_reporting_service.send(:last_monday)
+    @last_sunday = kpi_reporting_service.send(:last_sunday)
+    @kpis = kpi_reporting_service.last_week_kpis
     @human_date        = I18n.l Date.today,   format: '%d %B %Y'
     @human_last_monday = I18n.l @last_monday, format: '%d %B %Y'
     @human_last_sunday = I18n.l @last_sunday, format: '%d %B %Y'
