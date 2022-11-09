@@ -50,7 +50,7 @@ module EmailWhitelists
     private
 
     def public_group?
-      return if group.is_public
+      return if group&.is_public
 
       errors.add(:group_id, 'Le groupe associé doit être public')
     end
