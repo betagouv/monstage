@@ -21,7 +21,6 @@ module Users
 
       edit do
         fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
-        # field :ministry_id
       end
     end
 

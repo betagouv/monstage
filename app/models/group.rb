@@ -16,8 +16,6 @@ class Group < ApplicationRecord
             through: :ministry_groups,
             dependent: :destroy,
             inverse_of: :groups
-  # has_many :ministry_statisticians,
-  #           through: :ministries
 
   rails_admin do
     weight 15
