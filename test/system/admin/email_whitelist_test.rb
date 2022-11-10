@@ -8,7 +8,6 @@ module Dashboard
       admin = create(:god)
       sign_in(admin)
       visit '/admin'
-      byebug
       all('.nav-link', text: 'Courriels autorisés des référents centraux').first.click
       click_on 'Ajouter nouveau'
       fill_in 'Email', with: 'test@ministere.fr'
