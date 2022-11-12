@@ -251,4 +251,8 @@ class InternshipOffer < ApplicationRecord
   end
 
   def weekly?; false  end
+
+  def presenter
+    Presenters::InternshipOffer.new(self)
+  end
 end

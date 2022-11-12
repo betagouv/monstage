@@ -1,0 +1,8 @@
+.tags.my-2
+  .fr-tag.fr-icon-calendar-fill.fr-tag--icon-left.m-2
+    = @internship_offer.presenter.weeks_boundaries
+  .fr-tag.fr-icon-search-fill.fr-tag--icon-left.m-2.test-city
+    = @internship_offer.city.capitalize
+  - if @internship_offer.weekly?
+    .fr-tag.fr-icon-info-fill.fr-tag--icon-left.m-2.test-city
+      = @internship_offer.presenter.remaining_places

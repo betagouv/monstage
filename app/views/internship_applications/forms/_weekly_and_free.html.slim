@@ -17,7 +17,10 @@ div data-internship-application-form-target="containerForm" class="#{@internship
         .row
           .col-12.h2.h4.p-3.bg-covid-19-notice.text-white
             span.h1-label.text-white Candidature
-            = link_to "#internship-application-closeform", data: {action: "click->internship-application-form#hideForm", turbo: false}, class: 'float-right text-white', aria: { label: 'Ne pas candidater' } do
+            = link_to "#internship-application-closeform",
+                      data: {action: "click->internship-application-form#hideForm", turbo: false},
+                      class: 'float-right text-white',
+                      aria: { label: 'Ne pas candidater' } do
                 i.fas.fa-times.fa-sm
 
       .col-12
