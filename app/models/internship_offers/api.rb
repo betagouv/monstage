@@ -7,7 +7,7 @@ module InternshipOffers
     rails_admin do
       weight 13
       navigation_label "Offres"
-      
+
       configure :created_at, :datetime do
         date_format 'BUGGY'
       end
@@ -118,5 +118,8 @@ module InternshipOffers
         methods: [:formatted_coordinates]
       ))
     end
+
+    def weekly?; false  end
+
   end
 end

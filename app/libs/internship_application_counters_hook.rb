@@ -14,7 +14,8 @@ class InternshipApplicationCountersHook
       convention_signed_applications_count: convention_signed_applications_count,
       total_male_convention_signed_applications_count: total_male_convention_signed_applications_count,
       total_female_convention_signed_applications_count: total_female_convention_signed_applications_count,
-      total_custom_track_convention_signed_applications_count: total_custom_track_convention_signed_applications_count
+      total_custom_track_convention_signed_applications_count: total_custom_track_convention_signed_applications_count,
+      remaining_places_count: remaining_places_count
     }
   end
 
@@ -119,6 +120,13 @@ class InternshipApplicationCountersHook
                     .select(&:student_is_custom_track?)
                     .size
   end
+
+  def remaining_places_count
+      max_places      = internship_offer.max_candidates
+      reserved_places = internship_offer.internship_offer_weeks
+                                        .sum(:blocked_applications_count)
+      max_places - reserved_places
+    end
 
   private
 

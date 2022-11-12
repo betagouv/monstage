@@ -249,4 +249,6 @@ class InternshipOffer < ApplicationRecord
   def weekly_planning?
     weekly_hours.any?(&:present?)
   end
+
+  def weekly?; false  end
 end
