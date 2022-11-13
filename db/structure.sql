@@ -942,38 +942,6 @@ ALTER SEQUENCE public.internship_offers_id_seq OWNED BY public.internship_offers
 
 
 --
--- Name: ministry_groups; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.ministry_groups (
-    id bigint NOT NULL,
-    group_id bigint,
-    email_whitelist_id bigint,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: ministry_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.ministry_groups_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: ministry_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.ministry_groups_id_seq OWNED BY public.ministry_groups.id;
-
-
---
 -- Name: months; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1298,6 +1266,7 @@ CREATE TABLE public.users (
     last_phone_password_reset timestamp without time zone,
     anonymized boolean DEFAULT false NOT NULL,
     banners jsonb DEFAULT '{}'::jsonb,
+    ministry_id bigint,
     targeted_offer_id integer,
     signature_phone_token character varying(6),
     signature_phone_token_expires_at timestamp(6) without time zone,
@@ -1474,13 +1443,6 @@ ALTER TABLE ONLY public.internship_offer_weeks ALTER COLUMN id SET DEFAULT nextv
 --
 
 ALTER TABLE ONLY public.internship_offers ALTER COLUMN id SET DEFAULT nextval('public.internship_offers_id_seq'::regclass);
-
-
---
--- Name: ministry_groups id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ministry_groups ALTER COLUMN id SET DEFAULT nextval('public.ministry_groups_id_seq'::regclass);
 
 
 --
@@ -1688,14 +1650,6 @@ ALTER TABLE ONLY public.internship_offer_weeks
 
 ALTER TABLE ONLY public.internship_offers
     ADD CONSTRAINT internship_offers_pkey PRIMARY KEY (id);
-
-
---
--- Name: ministry_groups ministry_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ministry_groups
-    ADD CONSTRAINT ministry_groups_pkey PRIMARY KEY (id);
 
 
 --
@@ -2080,20 +2034,6 @@ CREATE INDEX index_internship_offers_on_type ON public.internship_offers USING b
 
 
 --
--- Name: index_ministry_groups_on_email_whitelist_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ministry_groups_on_email_whitelist_id ON public.ministry_groups USING btree (email_whitelist_id);
-
-
---
--- Name: index_ministry_groups_on_group_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ministry_groups_on_group_id ON public.ministry_groups USING btree (group_id);
-
-
---
 -- Name: index_organisations_on_coordinates; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2175,6 +2115,13 @@ CREATE INDEX index_users_on_discarded_at ON public.users USING btree (discarded_
 --
 
 CREATE INDEX index_users_on_email ON public.users USING btree (email);
+
+
+--
+-- Name: index_users_on_ministry_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_ministry_id ON public.users USING btree (ministry_id);
 
 
 --
@@ -2348,6 +2295,14 @@ ALTER TABLE ONLY public.school_internship_weeks
 
 ALTER TABLE ONLY public.internship_offer_infos
     ADD CONSTRAINT fk_rails_65006c3093 FOREIGN KEY (employer_id) REFERENCES public.users(id);
+
+
+--
+-- Name: users fk_rails_720d9e0bfd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT fk_rails_720d9e0bfd FOREIGN KEY (ministry_id) REFERENCES public.groups(id);
 
 
 --
@@ -2727,8 +2682,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221010071105'),
 ('20221021094345'),
 ('20221026142333'),
-('20221028100721'),
-('20221031083556'),
 ('20221112100533');
 
 
