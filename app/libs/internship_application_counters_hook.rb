@@ -1,5 +1,6 @@
 # base class for hooks on internship_applications (compute various counters for dashboard/reporting
 class InternshipApplicationCountersHook
+  delegate :remaining_places_count, to: :internship_application
   def internship_offer_counters_attributes
     {
       total_applications_count: total_applications_count,
@@ -121,12 +122,6 @@ class InternshipApplicationCountersHook
                     .size
   end
 
-  def remaining_places_count
-      max_places      = internship_offer.max_candidates
-      reserved_places = internship_offer.internship_offer_weeks
-                                        .sum(:blocked_applications_count)
-      max_places - reserved_places
-    end
 
   private
 

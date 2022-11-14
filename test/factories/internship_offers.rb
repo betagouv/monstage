@@ -35,6 +35,7 @@ FactoryBot.define do
       weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
       employer { create(:employer) }
       description { 'Lorem ipsum dolor weekly_internship_offer' }
+      remaining_places_count { max_candidates }
     end
 
     trait :last_year_weekly_internship_offer do

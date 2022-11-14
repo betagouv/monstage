@@ -118,8 +118,5 @@ module InternshipOffers
         methods: [:formatted_coordinates]
       ))
     end
-
-    def weekly?; false  end
-
   end
 end
