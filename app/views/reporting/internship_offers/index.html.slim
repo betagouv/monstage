@@ -1,14 +1,16 @@
+- no_year = params[:school_year].blank?
 .container-monstage.my-3
   = render partial: 'reporting/navigation'
   .row
     .col-12
-      .fr-tabs 
+      .fr-tabs
         = render partial: 'reporting/tabs'
 
-        #offers-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0" 
-          .rounded.p-3[data-controller='statistics']
+        #offers-panel.fr-tabs__panel.fr-tabs__panel--selected [aria-labelledby="tabpanel-404"
+                                                               role="tabpanel"
+                                                               tabindex="0" ]
+          .rounded.p-3 [data-controller='statistics']
             = render partial: 'reporting/filters', locals: {view_tab: :internship_offers}
-
           .row.mt-3
             .col-12.fr-table.table-display
               table.table-statistics.ftable-sticky-thead.fr-table--white
@@ -59,12 +61,17 @@
           .sticky-footer.bg-light data-footer-target="fixedContent"
             .row.p-4
               .col-12.d-flex.justify-content-start
-                = link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx)),
-                      class: 'fr-btn fr-btn-danger fr-icon-mail-line fr-btn--icon-left',
-                      data: {turbolinks: false} do
-                  | Exporter les statistiques des offres  
+                - target_path = no_year ?  '#' : reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx))
+                = link_to target_path,
+                          class: "fr-btn #{no_year ? '' : 'fr-btn-danger'} fr-icon-mail-line fr-btn--icon-left #{'disabled' if no_year}",
+                          data: {turbolinks: false} do
+                  | Exporter les statistiques des offres
                 - if params[:department] || can?(:export_reporting_dashboard_data, current_user)
-                  = link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)),
-                            class: 'ml-3 fr-btn fr-btn-danger fr-icon-mail-line fr-btn--icon-left',
-                            data: {turbolinks: false} do
+                  - target_path = no_year ?  '' : reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers))
+                  = link_to target_path,
+                            class: "ml-3 fr-btn #{no_year ? '' : 'fr-btn-danger'} fr-icon-mail-line fr-btn--icon-left #{'disabled' if no_year}" do
                     | Exporter les offres
+              - if no_year
+                .col-12.d-flex.justify-content-start
+                  span.small.text-dark
+                    | Choisir une année scolaire pour obtenir des exports ciblés
