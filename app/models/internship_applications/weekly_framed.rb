@@ -42,7 +42,7 @@ module InternshipApplications
           .where(user_id: user_id)
           .count
           .positive?
-      
+
         errors.add(:user_id, :duplicate)
       end
     end

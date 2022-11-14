@@ -75,10 +75,6 @@ class InternshipOffer < ApplicationRecord
     all # TODO : max_candidates specs for FreeDate required
   }
 
-  # scope :ignore_max_internship_offer_weeks_reached, lambda {
-  #   all # TODO : specs for FreeDate required
-  # }
-
   scope :school_track, lambda { |school_track:|
     where(school_track: school_track)
   }
@@ -104,7 +100,6 @@ class InternshipOffer < ApplicationRecord
 
   belongs_to :employer, polymorphic: true
   belongs_to :organisation, optional: true
-
   belongs_to :tutor, optional: true
   has_one :internship_offer_info
 
