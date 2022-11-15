@@ -9,8 +9,7 @@ namespace :retrofit do
                                               .joins(:week)
                                               .merge(Week.selectable_from_now_until_end_of_school_year)
                                               .where('internship_applications.updated_at > ?', Date.new(2022,9,1))
-    ias.first(1).each do |internship_application|
-      puts internship_application.employer.email
+    ias.each do |internship_application|
       next if internship_application.internship_agreement.present?
 
       PrettyConsole.puts_in_yellow "Creating internship agreement for #{internship_application.student.presenter.full_name}"
@@ -26,5 +25,6 @@ namespace :retrofit do
         end
       end
     end
+    PrettyConsole.say_in_green "Done"
   end
 end
