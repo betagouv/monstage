@@ -16,15 +16,9 @@ module Reporting
       }
     end
 
-    def last_week_kpis(last_monday: , last_sunday:)
-      subscriptions = recent_subscriptions(
-        last_monday: last_monday,
-        last_sunday: last_sunday
-      )
-      applications_count, student_applyers_count = recent_applications(
-        last_monday: last_monday,
-        last_sunday: last_sunday
-      )
+    def last_week_kpis
+      subscriptions = recent_subscriptions
+      applications_count, student_applyers_count = recent_applications
       offers = internship_offers_count
 
       {
@@ -40,7 +34,7 @@ module Reporting
 
     private
 
-    def recent_subscriptions(last_monday: , last_sunday:)
+    def recent_subscriptions
       translator = Presenters::UserManagementRole
       subscriptions = User.select('type, count(type)')
                           .where('created_at >= ? ',last_monday)
@@ -57,14 +51,15 @@ module Reporting
                              end
     end
 
-    def recent_applications(last_monday:, last_sunday:)
+    def recent_applications
       applications = InternshipApplication.where('created_at >= ? ', last_monday)
                                           .where('created_at <= ?', last_sunday)
 
       applications_students = applications.select('user_id, count(user_id)')
                                           .group(:user_id)
 
-      [applications.count, applications_students.pluck(:user_id).count]
+      [ applications.count,
+        applications_students.pluck(:user_id).count]
     end
 
     def internship_offers_count
@@ -78,6 +73,14 @@ module Reporting
       }
     end
 
-    def initialize; end
+    attr_reader :last_monday, :last_sunday
+
+    def initialize(
+      last_monday: Date.today - Date.today.wday.days - 6.days,
+      last_sunday: Date.today - Date.today.wday.days
+    )
+      @last_monday = last_monday
+      @last_sunday = last_sunday
+    end
   end
 end

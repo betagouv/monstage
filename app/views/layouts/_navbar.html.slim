@@ -32,43 +32,31 @@
                   li
                     = render partial: 'layouts/extra_for_devs'
                   - if user_signed_in?
-                    - if current_user.try(:employer?)
+                    li
+                      = link_to 'Accueil',
+                                root_path,
+                                class: "fr-link text-decoration-none mr-4 #{current_page?(root_path) ? 'active' : ''}"
+                    li
+                      - active = current_page?(internship_offers_path) && !request.url.include?('origin=dashboard') ? 'active' : ''
+                      = link_to 'Recherche',
+                                user_presenter.default_internship_offers_path,
+                                class: "fr-link text-decoration-none mr-4 #{active}"
+                    li
+                      = link_to current_user.dashboard_name,
+                                current_user.custom_dashboard_path,
+                                class: "fr-link text-decoration-none mr-4  #{custom_dashboard_controller?(user: current_user) ? 'active' : ''}"
+                    - if can?(:supply_offers, current_user) && !current_user.operator? && !current_user.employer?
                       li
-                        = link_to 'Accueil',
-                                  root_path,
-                                  class: "fr-link text-decoration-none mr-4 #{current_page?(root_path) ? 'active' : ''}"
-                      li
-                        = link_to current_user.dashboard_name,
-                                  current_user.custom_dashboard_path,
-                                  class: "fr-link text-decoration-none mr-4  #{custom_dashboard_controller?(user: current_user) ? 'active' : ''}"
-                    - elsif current_user.is_a?(Users::Statistician)
-                      li
-                        = link_to current_user.dashboard_name,
-                                  current_user.custom_dashboard_path,
-                                  class: "fr-link text-decoration-none mr-4  #{custom_dashboard_controller?(user: current_user) ? 'active' : ''}"
-
-                      li
-                        = link_to 'Recherche',
-                                  user_presenter.default_internship_offers_path,
-                                  class: "fr-link text-decoration-none mr-4 #{current_page?(internship_offers_path) && !request.url.include?('origin=dashboard') ? 'active' : ''}"
-                      li
+                        - active = current_page?(dashboard_internship_offers_path) || request.url.include?('origin=dashboard') ? 'active' : ''
                         = link_to 'Mes offres',
                                   dashboard_internship_offers_path,
-                                  class: "fr-link text-decoration-none mr-4 #{current_page?(dashboard_internship_offers_path) || request.url.include?('origin=dashboard') ? 'active' : ''}"
-                    - else
-                      - if current_user.try(:operator?)
-                        li
-                          = link_to 'Statistiques',
-                                    reporting_internship_offers_path(default_reporting_url_options(current_user)),
-                                    class: "fr-link text-decoration-none mr-4 #{request.path =~ /^\/reporting\// ? 'active' : ''}"
+                                  class: "fr-link text-decoration-none mr-4 #{active}"
+                    - if can?(:check_his_statistics, current_user)
                       li
-                        = link_to 'Recherche',
-                                  user_presenter.default_internship_offers_path,
-                                  class: "fr-link text-decoration-none mr-4 #{current_page?(internship_offers_path) || controller_path == 'internship_offers' ? 'active' : ''}"
-                      li
-                        = link_to current_user.dashboard_name,
-                                  current_user.custom_dashboard_path,
-                                  class: "fr-link text-decoration-none mr-4  #{custom_dashboard_controller?(user: current_user) ? 'active' : ''}"
+                        - active = (request.path =~ /^\/reporting\//) ? 'active' : ''
+                        = link_to 'Statistiques',
+                                  reporting_internship_offers_path(default_reporting_url_options(current_user)),
+                                  class: "fr-link text-decoration-none mr-4 #{active}"
                     li
                       = link_to current_user.account_link_name,
                                 account_path,
