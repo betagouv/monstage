@@ -16,7 +16,7 @@ namespace :schools do
 
 
       if school.nil?
-        PrettyConsole.puts_in_red("aucune école à ce code #{code_uai}")
+        PrettyConsole.puts_in_red("aucune école n'a ce code : #{code_uai}")
       else
         applications = InternshipApplication.joins(student: :school)
                                             .where(school: {code_uai: code_uai})
