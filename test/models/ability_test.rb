@@ -50,6 +50,7 @@ class AbilityTest < ActiveSupport::TestCase
     ability = Ability.new(student_2)
     assert(ability.can?(:apply, internship_offer),
            'students should be able to apply for internship offers')
+    
   end
 
   test 'Employer' do
@@ -392,8 +393,8 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:choose_class_room, main_teacher),
            'student should be able to choose_class_room')
     assert(ability.can?(:choose_role, User))
+    assert(ability.can?(:dashboard_index, student))
     assert(ability.can?(:subscribe_to_webinar, main_teacher))
-    assert(ability.can?(:dashboard_index, main_teacher))
     assert(ability.can?(:show, :account),
            'students should be able to access their account')
 
