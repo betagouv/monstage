@@ -70,7 +70,7 @@ module Finders
       platform_base_query.select('sum(max_candidates) as total_count, sum(approved_applications_count) as approved_applications_count')
               .where(permalink: nil)
               .joins(:group)
-              .where(group: {is_paqte: false})
+              .where(group: {is_paqte: true})
               .map(&:attributes)
               .first
     end
