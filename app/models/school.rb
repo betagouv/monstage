@@ -197,10 +197,4 @@ class School < ApplicationRecord
   def email_domain_name
     Academy.get_email_domain(Academy.lookup_by_zipcode(zipcode: zipcode))
   end
-
-  def internship_agreement_open?
-    targeted_departments = ENV['OPEN_DEPARTEMENTS_CONVENTION'].split(',')
-                                                              .map{|dept| dept.gsub(/\s+/, '') }
-    (targeted_departments & [zipcode[0..2], zipcode[0..1]]).size.positive?
-  end
 end

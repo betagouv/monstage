@@ -2,6 +2,11 @@ require 'test_helper'
 
 module Users
   class StatisticianTest < ActiveSupport::TestCase
+    test 'factory works' do
+      ministry_statistician = build(:ministry_statistician)
+      assert ministry_statistician.valid?
+    end
+
     test 'factory test' do
       ministry_statistician = create(:ministry_statistician)
       assert ministry_statistician.valid?
