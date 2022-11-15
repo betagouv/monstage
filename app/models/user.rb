@@ -53,6 +53,8 @@ class User < ApplicationRecord
 
   MAX_DAILY_PHONE_RESET = 3
 
+  scope :employers, -> { where(type: 'Users::Employer') }
+
   def channel ; :email end
 
   def default_search_options
