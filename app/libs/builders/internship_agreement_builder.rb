@@ -104,10 +104,10 @@ module Builders
       end
       {
         student_school: student.presenter.formal_school_name,
-        school_representative_full_name: school_manager.name,
+        school_representative_full_name: school_manager&.presenter&.full_name,
         school_representative_phone: school_manager.try(:phone),
         school_representative_role: "Chef d'établissement",
-        school_representative_email: school_manager.email,
+        school_representative_email: school_manager&.email,
         student_refering_teacher_full_name: main_teacher&.presenter&.full_name,
         student_refering_teacher_email: main_teacher&.email,
         student_refering_teacher_phone: main_teacher&.phone,
