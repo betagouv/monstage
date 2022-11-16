@@ -129,7 +129,7 @@ module Reporting
       )
       public_internship_offer = create(
         :weekly_internship_offer, # public internship by default
-        group_id: ministry_statistician.ministry_id,
+        group_id: ministry_statistician.ministries.first.id,
         zipcode: 60580 # this zipcode belongs to Oise
       ) # 1 public Oise
       private_internship_offer = create(

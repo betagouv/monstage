@@ -39,7 +39,7 @@
             = f.label :ministry, class: 'fr-label', for: 'user_ministry' do
               = "Administration centrale"
             = f.text_field :ministry,
-                            value: current_user.ministry.name,
+                            value: current_user.ministries.map(&:name).join(', '),
                             class: "fr-input",
                             disabled: true
       - if can?(:change, :department) || can?(:view, :department)
