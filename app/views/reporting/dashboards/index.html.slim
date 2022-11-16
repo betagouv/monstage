@@ -21,7 +21,7 @@
                 - target_path = no_year ? '#' : reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers))
                 = link_to 'Exporter les offres',
                           target_path,
-                          class: "fr-btn fr-btn-danger fr-icon-mail-line fr-btn--icon-left #{'disabled' if no_year}",
+                          class: "fr-btn fr-icon-mail-line fr-btn--icon-left #{no_year ? 'disabled' : 'fr-btn-danger'}",
                           data: { turbo: false }
                 - if no_year
                   br

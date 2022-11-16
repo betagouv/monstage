@@ -8,15 +8,14 @@ class Group < ApplicationRecord
     is_public.nil? ? all : where(is_public: is_public)
   }
   has_many :internship_offers
-  has_many :ministry_statisticians,
-            class_name: 'Users::MinistryStatistician',
-            dependent: :destroy,
-            foreign_key: 'ministry_id'
   has_many :organisations
+  has_many :ministry_groups
   has_many :ministries,
             class_name: 'EmailWhitelists::Ministry',
+            foreign_key: 'email_whitelist_id',
+            through: :ministry_groups,
             dependent: :destroy,
-            inverse_of: :group
+            inverse_of: :groups
 
   rails_admin do
     weight 15

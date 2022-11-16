@@ -325,7 +325,6 @@ fr:
         teacher: "Professeur"
         discarded_at: Supprimé le
         operator: Association
-        ministry_id: ID de l'institution de tutelle
         phone_password_reset_count: Compteur de remise à zéro de mot de passe par téléphone
         anonymized: Anonymisé
 

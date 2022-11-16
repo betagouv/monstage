@@ -7,7 +7,7 @@ class UserMailer < ApplicationMailer
 
   def export_offers(user, params)
     recipient_email = user.email
-    params.merge!(group: user.ministry_id) if user.ministry_statistician?
+    params.merge!(groups: user.ministries.map(&:id)) if user.ministry_statistician?
     offers = Finders::ReportingInternshipOffer.new(params: params).dimension_offer
 
     attachment_name = "#{serialize_params_for_filenaming(params)}.xlsx"

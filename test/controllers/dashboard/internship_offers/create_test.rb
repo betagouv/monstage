@@ -77,7 +77,7 @@ module Dashboard::InternshipOffers
       params = internship_offer
                .attributes
                .merge('type' => InternshipOffers::WeeklyFramed.name,
-                      'group' => employer.ministry,
+                      'group' => employer.ministries.first,
                       'week_ids' => weeks.map(&:id),
                       'coordinates' => { latitude: 1, longitude: 1 },
                       'school_id' => school.id,
