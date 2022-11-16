@@ -141,7 +141,7 @@ class InternshipApplication < ApplicationRecord
                           main_teacher = student.main_teacher
                           arg_hash = {internship_application: self, main_teacher: main_teacher}
                           accepted_student_notify
-                          if type == "InternshipApplications::WeeklyFramed"
+                          if type == "InternshipApplications::WeeklyFramed" && student&.school&.school_manager&.present?
                             create_agreement
                             if main_teacher.present?
                               MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
@@ -232,6 +232,7 @@ class InternshipApplication < ApplicationRecord
 
   def create_agreement
     return if internship_offer.school_track != 'troisieme_generale'
+    return unless student&.school&.school_manager&.present?
 
     agreement = Builders::InternshipAgreementBuilder.new(user: Users::God.new)
                                                     .new_from_application(self)
