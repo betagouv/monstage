@@ -6,7 +6,7 @@ module InternshipsOffers
   class WeeklyFramedTest < ActiveSupport::TestCase
     test 'should be valid' do
       offer = build(:weekly_internship_offer)
-      assert_equal offer.max_candidates, offer.remaining_places_count
+      assert_equal offer.max_candidates, offer.remaining_seats_count
       assert offer.valid?
       offer.save
       assert offer.persisted?

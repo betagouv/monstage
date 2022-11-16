@@ -27,8 +27,8 @@ module Presenters
       " au #{I18n.localize(internship_offer.last_date, format: :human_mm_dd_yyyy)}"
     end
 
-    def remaining_places
-      count = internship_offer.remaining_places_count
+    def remaining_seats
+      count = internship_offer.remaining_seats_count
       "#{count} #{"place".pluralize(count)} #{"disponible".pluralize(count)}"
     end
 

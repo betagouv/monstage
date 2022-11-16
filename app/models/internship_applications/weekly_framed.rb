@@ -47,7 +47,7 @@ module InternshipApplications
       end
     end
 
-    def remaining_places_count
+    def remaining_seats_count
       max_places      = internship_offer.max_candidates
       reserved_places = internship_offer.internship_offer_weeks&.sum(:blocked_applications_count)
       max_places - reserved_places

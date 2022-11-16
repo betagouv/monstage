@@ -100,7 +100,7 @@ module InternshipOffers
                                                           message: "Le nombre maximal d'élèves par groupe ne peut pas dépasser le nombre maximal d'élèves attendus dans l'année" }
     after_initialize :init
     before_create :reverse_academy_by_zipcode
-    after_update :update_remaining_places
+    after_update :update_remaining_seats
 
     #---------------------
     # fullfilled scope isolates those offers that have reached max_candidates
@@ -149,11 +149,11 @@ module InternshipOffers
                            .count
     end
 
-    def update_remaining_places
+    def update_remaining_seats
       reserved_places = internship_offer_weeks
                           .where('internship_offer_weeks.blocked_applications_count > 0')
                           .count
-      self.remaining_places_count = max_candidates - reserved_places
+      self.remaining_seats_count = max_candidates - reserved_places
     end
   end
 end

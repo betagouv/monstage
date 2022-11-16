@@ -251,7 +251,7 @@ class InternshipApplication < ApplicationRecord
     ).deliver_now
   end
 
-  def remaining_places_count
+  def remaining_seats_count
     internship_offer.max_candidates
   end
 

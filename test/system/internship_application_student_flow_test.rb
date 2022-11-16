@@ -89,7 +89,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     internship_offer = create(:weekly_internship_offer, weeks: weeks)
     school           = create(:school,:with_school_manager, weeks: [])
     student          = create(:student, school: school)
-    assert_equal 1, internship_offer.remaining_places_count
+    assert_equal 1, internship_offer.remaining_seats_count
     travel_to(Date.new(2019, 9, 1)) do
       sign_in(student)
       visit internship_offer_path(internship_offer)
@@ -110,9 +110,9 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       page.find('h1', text: 'Mes candidatures')
       assert page.has_content?(internship_offer.title)
       assert_equal 1, internship_offer.internship_applications.count
-      assert_equal 1, internship_offer.remaining_places_count
+      assert_equal 1, internship_offer.remaining_seats_count
       internship_offer.internship_applications.first.approve!
-      assert internship_offer.reload.remaining_places_count.zero?
+      assert internship_offer.reload.remaining_seats_count.zero?
     end
   end
 

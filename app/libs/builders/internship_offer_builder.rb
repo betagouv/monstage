@@ -114,7 +114,7 @@ module Builders
         weekly_lunch_break: internship_offer_info.weekly_lunch_break,
         school_track: internship_offer_info.school_track,
         type: internship_offer_info.type.gsub('Info', ''),
-        remaining_places_count: internship_offer_info.max_candidates
+        remaining_seats_count: internship_offer_info.max_candidates
       }
       params[:week_ids] = internship_offer_info.week_ids if internship_offer_info.weekly?
       params

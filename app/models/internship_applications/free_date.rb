@@ -10,7 +10,7 @@ module InternshipApplications
       true
     end
 
-    def remaining_places_count
+    def remaining_seats_count
       max_places      = internship_offer.max_candidates
       reserved_places = internship_offer.internship_applications
                                         .where(aasm_state: :approved)

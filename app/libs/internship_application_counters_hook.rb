@@ -1,6 +1,6 @@
 # base class for hooks on internship_applications (compute various counters for dashboard/reporting
 class InternshipApplicationCountersHook
-  delegate :remaining_places_count, to: :internship_application
+  delegate :remaining_seats_count, to: :internship_application
   def internship_offer_counters_attributes
     {
       total_applications_count: total_applications_count,
@@ -16,7 +16,7 @@ class InternshipApplicationCountersHook
       total_male_convention_signed_applications_count: total_male_convention_signed_applications_count,
       total_female_convention_signed_applications_count: total_female_convention_signed_applications_count,
       total_custom_track_convention_signed_applications_count: total_custom_track_convention_signed_applications_count,
-      remaining_places_count: remaining_places_count
+      remaining_seats_count: remaining_seats_count
     }
   end
 

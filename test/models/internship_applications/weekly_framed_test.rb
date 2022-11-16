@@ -69,21 +69,21 @@ module InternshipApplications
       refute internship_application_2.valid?
     end
 
-    test 'application updates remaining_places_count along with approved applications' do
+    test 'application updates remaining_seats_count along with approved applications' do
       offer = create(:weekly_internship_offer)
-      assert_equal offer.max_candidates, offer.remaining_places_count
+      assert_equal offer.max_candidates, offer.remaining_seats_count
       application = create(:weekly_internship_application, internship_offer: offer)
-      assert_equal offer.max_candidates, offer.remaining_places_count
+      assert_equal offer.max_candidates, offer.remaining_seats_count
       assert_equal "drafted", application.aasm_state
 
       application.submit!
       assert_equal "submitted", application.aasm_state
-      assert_equal offer.max_candidates, offer.reload.remaining_places_count
+      assert_equal offer.max_candidates, offer.reload.remaining_seats_count
 
       application.approve!
       assert_equal "approved", application.aasm_state
       assert_equal 1, application.internship_offer.internship_offer_weeks.first.blocked_applications_count
-      assert_equal offer.max_candidates - 1, offer.reload.remaining_places_count
+      assert_equal offer.max_candidates - 1, offer.reload.remaining_seats_count
     end
   end
 end
