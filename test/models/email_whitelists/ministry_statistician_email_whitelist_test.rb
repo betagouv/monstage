@@ -14,8 +14,7 @@ class MinistryStatisticianEmailWhitelistTest < ActiveSupport::TestCase
   test 'without valid group, one cannot create a ministry_statistician_email_whitelist' do
     invalid_group = create(:group, is_public: false)
     ministry_statistician_email_whitelist = create(
-      :ministry_statistician_email_whitelist,
-      email: 'kikoo@lol.fr'
+      :ministry_statistician_email_whitelist
     )
     assert_equal 2, ministry_statistician_email_whitelist.reload.groups.size
 
@@ -28,7 +27,7 @@ class MinistryStatisticianEmailWhitelistTest < ActiveSupport::TestCase
     invalid_group = create(:group, is_public: false)
     ministry_statistician_email_whitelist = build(:ministry_statistician_email_whitelist,
              email: 'kikoo@lol.fr',
-             group: nil)
+             groups: [invalid_group])
     refute ministry_statistician_email_whitelist.valid?, "group should have been public, there's an error here"
   end
 
