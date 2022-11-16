@@ -63,7 +63,7 @@ module EmailWhitelists
     private
 
     def all_public_group?
-      return if groups.all? { |group| group.is_public }
+      return if groups.any? && groups.all?(&:is_public?)
 
       errors.add(:group_id, 'Tous les groupes associés doivent être publics')
     end

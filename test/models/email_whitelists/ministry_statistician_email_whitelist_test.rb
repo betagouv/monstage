@@ -5,6 +5,10 @@ require 'test_helper'
 class MinistryStatisticianEmailWhitelistTest < ActiveSupport::TestCase
   include ActionMailer::TestHelper
 
+  test 'factory is valid' do
+    assert build(:ministry_statistician_email_whitelist).valid?
+  end
+
   test 'send email after create' do
     assert_enqueued_emails 1 do
       create(:ministry_statistician_email_whitelist, email: 'kikoo@lol.fr')
