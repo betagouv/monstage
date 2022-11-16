@@ -1,5 +1,5 @@
 require 'pretty_console.rb'
-# usage : rails users:extract_email_data_csv
+# usage : rake retrofit:internship_agreements_creations
 
 namespace :retrofit do
   desc 'Retrofit de création de conventions de stage'
