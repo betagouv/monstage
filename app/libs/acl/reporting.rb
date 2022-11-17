@@ -7,7 +7,7 @@ module Acl
     end
 
     def ministry_statistician_allowed?
-      user.respond_to?(:ministry)
+      user.respond_to?(:ministries)
     end
 
     private

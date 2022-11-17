@@ -261,7 +261,7 @@ class AbilityTest < ActiveSupport::TestCase
 
   test 'MinistryStatistician' do
     ministry_statistician = create(:ministry_statistician)
-    ministry = ministry_statistician.ministry
+    ministry = ministry_statistician.ministries.first
     ability = Ability.new(ministry_statistician)
 
     assert(ability.can?(:supply_offers, ministry_statistician), 'statistician are to be able to supply offers')

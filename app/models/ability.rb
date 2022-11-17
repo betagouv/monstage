@@ -298,7 +298,7 @@ class Ability
     common_to_all_statisticians(user: user)
 
     can %i[create], Organisation do  |organisation|
-      user.ministry == organisation.group && organisation.is_public == true
+      organisation.group.in?(user.ministries) && organisation.is_public
     end
 
     can %i[index_and_filter], Reporting::InternshipOffer

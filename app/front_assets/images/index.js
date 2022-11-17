@@ -81,7 +81,6 @@ import './pages/statistics/reseau.png';
 import './pages/statistics/la_poste.png';
 import './pages/statistics/carrefour.png';
 
-import './homepage/covid-alert.svg';
 import './homepage/explications.svg';
 import './homepage/illustration-documents-utiles.svg';
 import './homepage/scroll_down.svg';

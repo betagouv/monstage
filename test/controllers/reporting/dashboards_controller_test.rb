@@ -50,7 +50,8 @@ module Reporting
     test 'GET #index as ministry statistician counts ' \
          'offers of his own administration' do
       ministry_statistician = create(:ministry_statistician)
-      ministry_group = ministry_statistician.ministry
+      ministry_groups = ministry_statistician.ministries
+      ministry_group = ministry_groups.first
       public_group = create(:public_group)
       private_group  = create(:private_group)
       strict_beginning_year = SchoolYear::Current.new.strict_beginning_of_period.year

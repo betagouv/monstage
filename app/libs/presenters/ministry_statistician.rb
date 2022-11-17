@@ -42,5 +42,14 @@ module Presenters
         }
       }
     end
+
+    def ministry_groups_select
+      user.ministries.map do |group|
+        [
+          group.name,
+          group.id
+        ]
+      end
+    end
   end
 end

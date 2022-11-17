@@ -120,6 +120,53 @@ module Reporting
       assert_select ".test-published-offers-", false
     end
 
+    test 'get index as MinistryStatistician'  do
+      ministry_statistician = create(:ministry_statistician) # Oise is the department
+      paqte_group = create(:group, is_paqte: true)
+      public_internship_offer = create(
+        :weekly_internship_offer, # public internship by default
+        zipcode: 75012 # Paris
+      )
+      public_internship_offer = create(
+        :weekly_internship_offer, # public internship by default
+        group_id: ministry_statistician.ministries.first.id,
+        zipcode: 60580 # this zipcode belongs to Oise
+      ) # 1 public Oise
+      private_internship_offer = create(
+        :weekly_internship_offer,
+        :with_private_employer_group,
+        group: paqte_group,
+        max_candidates: 10,
+        max_students_per_group: 10,
+        zipcode: 60580
+      ) # 10 paqte(private) Oise
+      private_internship_offer_no_group = create(
+        :weekly_internship_offer,
+        is_public: false,
+        group: nil,
+        max_candidates: 20,
+        max_students_per_group: 20,
+        zipcode: 60580
+      ) # 20 private Oise
+      sign_in(ministry_statistician)
+
+      get reporting_dashboards_path
+      assert_response :success
+      assert_select 'title', "Statistiques - Tableau de bord | Monstage"
+
+      assert_select ".test-administrations-proposed-offers", text: "1"
+      assert_select ".test-administrations-approved-offers", text: "0"
+      assert_select ".text-counter-stats[data-test-total='total-created-at']", text: '1'
+
+      get reporting_dashboards_path(school_year: 2019)
+      assert_response :success
+      assert_select 'title', "Statistiques - Tableau de bord | Monstage"
+
+      assert_select ".test-administrations-proposed-offers", text: "0"
+      assert_select ".test-administrations-approved-offers", text: "0"
+      assert_select ".text-counter-stats[data-test-total='total-created-at']", text: '0'
+    end
+
 
     test 'GET #index as statistician fails ' \
          'when department params does not match his department' do

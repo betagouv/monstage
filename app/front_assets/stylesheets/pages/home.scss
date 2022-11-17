@@ -264,33 +264,8 @@ img.covering {
   }
 }
 
-// alert
-.bg-covid-19-notice {
-  .relative {
-    position: relative;
-  }
-.close {
-    opacity: 1;
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-}
 // pills customization
 @include media-breakpoint-down(xs) {
-  .bg-covid-19-notice .close {
-    right: 5px !important;
-    top: 5px !important;
-  }
-    .text-center-left {
-      text-align: center;
-    }
-}
-
-
-// bgs
-.bg-covid-19-notice {
-  background-color: #080091;
 }
 
 .bg-light-blue {
