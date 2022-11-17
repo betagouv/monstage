@@ -10,6 +10,7 @@ class PagesController < ApplicationController
   end
 
   def register_to_webinar
+    authorize! :subscribe_to_webinar, current_user
     reset_old_participation
     if current_user.subscribed_to_webinar_at.nil?
       current_user.update(subscribed_to_webinar_at: Time.zone.now)
@@ -17,8 +18,9 @@ class PagesController < ApplicationController
                   allow_other_host: true,
                   notice: 'Vous voilà inscrit au webinar !'
     else
+      alert_text = "Vous êtes déjà inscrit au prochain webinar Monstage"
       redirect_back fallback_location: root_path,
-                    flash: { alert: 'Vous êtes déjà inscrit au webinar' }
+                    flash: { alert: alert_text }
     end
   end
 

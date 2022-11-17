@@ -3,6 +3,7 @@
 require 'test_helper'
 
 class PagesTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
 
   test 'home' do
     get root_path
@@ -71,5 +72,45 @@ class PagesTest < ActionDispatch::IntegrationTest
     get statistiques_path
     assert_response :success
     assert_template 'pages/statistiques'
+  end
+
+  test '#register_to_webinar fails when not referent' do
+    student = create(:student)
+    sign_in student
+    get register_to_webinar_path
+    assert_redirected_to root_path
+  end
+
+  test '#register_to_webinar succeds when never registered' do
+    travel_to Time.zone.local(2021, 1, 1, 12, 0, 0) do
+      webinar_url = 'https://app.livestorm.co/incubateur-des-territoires/permanence-monstagedetroisiemefr?type=detailed'
+      ministry_statistician = create(:ministry_statistician)
+      sign_in ministry_statistician
+      get register_to_webinar_path
+      assert_redirected_to webinar_url
+      assert_equal ministry_statistician.subscribed_to_webinar_at.to_date, Time.zone.today
+    end
+  end
+
+  test '#register_to_webinar succeds when registered more than a week ago' do
+    travel_to Time.zone.local(2021, 1, 1, 12, 0, 0) do
+      webinar_url = 'https://app.livestorm.co/incubateur-des-territoires/permanence-monstagedetroisiemefr?type=detailed'
+      ministry_statistician = create(:ministry_statistician, subscribed_to_webinar_at: Time.zone.now - 8.days)
+      sign_in ministry_statistician
+      get register_to_webinar_path
+      assert_redirected_to webinar_url
+      assert_equal ministry_statistician.subscribed_to_webinar_at.to_date, Time.zone.today
+    end
+  end
+
+  test '#register_to_webinar wont succeed when never registered for less than a week' do
+    travel_to Time.zone.local(2021, 1, 1, 12, 0, 0) do
+      webinar_url = 'https://app.livestorm.co/incubateur-des-territoires/permanence-monstagedetroisiemefr?type=detailed'
+      ministry_statistician = create(:ministry_statistician, subscribed_to_webinar_at: Time.zone.now - 2.days)
+      sign_in ministry_statistician
+      get register_to_webinar_path
+      follow_redirect!
+      assert_select('#alert-text', text: 'Vous êtes déjà inscrit au prochain webinar Monstage')
+    end
   end
 end
