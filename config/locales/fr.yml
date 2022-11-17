@@ -131,8 +131,8 @@ fr:
           one: Semaine de stage
           other: Semaines de stage
         total_student_count: Elèves
-        total_main_teacher_count: Prof. Principaux
-        human_school_manager: Chefs d'établissement inscrits
+        total_main_teacher_count: Profs. Principaux
+        human_school_manager: Chef d'établissement inscrit
         total_approved_internship_applications_count: Candidatures acceptées
         current_total_approved_internship_applications_count: Candidatures acceptées
         current_approved_internship_applications_count: Candidatures acceptées
@@ -326,7 +326,6 @@ fr:
         teacher: "Professeur"
         discarded_at: Supprimé le
         operator: Association
-        ministry_id: ID de l'institution de tutelle
         phone_password_reset_count: Compteur de remise à zéro de mot de passe par téléphone
         anonymized: Anonymisé
 

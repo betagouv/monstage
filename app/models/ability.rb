@@ -276,7 +276,8 @@ class Ability
             see_dashboard_administrations_summary
             see_dashboard_department_summary
             export_reporting_dashboard_data
-            see_dashboard_associations_summary], User
+            see_dashboard_associations_summary
+            export_reporting_school], User
   end
 
   def education_statistician_abilities(user:)
@@ -297,7 +298,7 @@ class Ability
     common_to_all_statisticians(user: user)
 
     can %i[create], Organisation do  |organisation|
-      user.ministry == organisation.group && organisation.is_public == true
+      organisation.group.in?(user.ministries) && organisation.is_public
     end
 
     can %i[index_and_filter], Reporting::InternshipOffer

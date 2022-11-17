@@ -5,28 +5,33 @@ require 'test_helper'
 class MinistryStatisticianEmailWhitelistTest < ActiveSupport::TestCase
   include ActionMailer::TestHelper
 
+  test 'factory is valid' do
+    assert build(:ministry_statistician_email_whitelist).valid?
+  end
+
   test 'send email after create' do
-    valid_group = create(:group, is_public: true)
     assert_enqueued_emails 1 do
-      create(:ministry_statistician_email_whitelist,
-             email: 'kikoo@lol.fr',
-             group: valid_group)
+      create(:ministry_statistician_email_whitelist, email: 'kikoo@lol.fr')
     end
   end
 
   test 'without valid group, one cannot create a ministry_statistician_email_whitelist' do
     invalid_group = create(:group, is_public: false)
-    ministry_statistician_email_whitelist = build(:ministry_statistician_email_whitelist,
-             email: 'kikoo@lol.fr',
-             group: invalid_group)
-    refute ministry_statistician_email_whitelist.valid?, "group should have been public, there's an error here"
+    ministry_statistician_email_whitelist = create(
+      :ministry_statistician_email_whitelist
+    )
+    assert_equal 2, ministry_statistician_email_whitelist.reload.groups.size
+
+    ministry_statistician_email_whitelist.groups << invalid_group
+    assert_equal 2, ministry_statistician_email_whitelist.reload.groups.size,
+           "group should have been public, there's an error here"
   end
 
   test 'without group, one cannot create a ministry_statistician_email_whitelist' do
     invalid_group = create(:group, is_public: false)
     ministry_statistician_email_whitelist = build(:ministry_statistician_email_whitelist,
              email: 'kikoo@lol.fr',
-             group: nil)
+             groups: [invalid_group])
     refute ministry_statistician_email_whitelist.valid?, "group should have been public, there's an error here"
   end
 
@@ -43,7 +48,7 @@ class MinistryStatisticianEmailWhitelistTest < ActiveSupport::TestCase
   end
 
   test 'sentry#1887500611 destroy email whitelist does not fails when no user' do
-    ministry_email_whitelist = create(:statistician_email_whitelist, email: 'fourcade.m@gmail.com', zipcode: 60)
+    ministry_email_whitelist = create(:statistician_email_whitelist)
 
     assert_nothing_raised { ministry_email_whitelist.destroy! }
   end
