@@ -89,6 +89,11 @@ class InternshipApplication < ApplicationRecord
 
   scope :not_drafted, ->{ where.not(aasm_state: 'drafted') }
 
+  scope :approved_or_signed, lambda {
+    applications = InternshipApplication.arel_table
+    where(applications[:aasm_state].in(['approved', 'signed']))
+  }
+
   #
   # Other stuffs
   #
@@ -246,10 +251,9 @@ class InternshipApplication < ApplicationRecord
     ).deliver_now
   end
 
-  scope :approved_or_signed, lambda {
-    applications = InternshipApplication.arel_table
-    where(applications[:aasm_state].in(['approved', 'signed']))
-  }
+  def remaining_seats_count
+    internship_offer.max_candidates
+  end
 
   def internship_application_counter_hook
     case self

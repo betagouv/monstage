@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class InternshipOfferWeek < ApplicationRecord
+  #---------------------------------------
+  # blocked_applications_count is a column of InternshipOfferWeek
+  # it counts the applications approved for each internship offer week.
+  #---------------------------------------
   include Weekable
 
   belongs_to :internship_offer, counter_cache: true
