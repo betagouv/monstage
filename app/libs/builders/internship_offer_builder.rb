@@ -20,11 +20,13 @@ module Builders
         callback.on_failure.try(:call, e.record)
       end
 
-      # called by internship_offers#create (duplicate), api/internship_offers#create
-      def create(params:)
+    # called by internship_offers#create (duplicate), api/internship_offers#create
+    def create(params:)
       yield callback if block_given?
       authorize :create, model
-      internship_offer = model.create!(preprocess_api_params(params, fallback_weeks: true))
+      create_params = preprocess_api_params(params, fallback_weeks: true)
+      create_params.merge!(remaining_seats_count: params[:max_candidates])
+      internship_offer = model.create!(create_params)
       callback.on_success.try(:call, internship_offer)
     rescue ActiveRecord::RecordInvalid => e
       if duplicate?(e.record)
