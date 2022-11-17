@@ -22,6 +22,14 @@ class MinistryStatisticianEmailWhitelistTest < ActiveSupport::TestCase
     refute ministry_statistician_email_whitelist.valid?, "group should have been public, there's an error here"
   end
 
+  test 'without group, one cannot create a ministry_statistician_email_whitelist' do
+    invalid_group = create(:group, is_public: false)
+    ministry_statistician_email_whitelist = build(:ministry_statistician_email_whitelist,
+             email: 'kikoo@lol.fr',
+             group: nil)
+    refute ministry_statistician_email_whitelist.valid?, "group should have been public, there's an error here"
+  end
+
   test 'destroy email whitelist also discard statistician' do
     ministry_statistician = create(:ministry_statistician)
     ministry_email_whitelist = ministry_statistician.ministry_email_whitelist
