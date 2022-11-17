@@ -1,6 +1,8 @@
 require 'fileutils'
 require 'pretty_console'
 
+# File to move to data_migration while updating the namespace
+
 namespace :migrations do
   desc 'Migrate group_id to ministry_group table'
   task :email_whitelists_group_up, [] => :environment do |task, args|
