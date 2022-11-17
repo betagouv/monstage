@@ -2427,7 +2427,7 @@ ALTER TABLE ONLY public.internship_offer_weeks
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public, topology;
+SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20190207111844'),
