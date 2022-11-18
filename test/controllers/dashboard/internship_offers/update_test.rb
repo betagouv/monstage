@@ -43,6 +43,44 @@ module Dashboard::InternshipOffers
 
     end
 
+    test 'PATCH #update as employer owning internship_offer ' \
+         'updates internship_offer ' do
+      weeks = Week.all.first(3)
+      week_ids = weeks.map(&:id)
+      internship_offer = create(:weekly_internship_offer, max_candidates: 3, weeks: weeks)
+      create(:weekly_internship_application, :approved, internship_offer: internship_offer, week: weeks(:week_2019_1))
+      sign_in(internship_offer.employer)
+      patch(dashboard_internship_offer_path(internship_offer.to_param),
+            params: { internship_offer: {
+              week_ids: week_ids,
+              max_candidates: 2
+            } })
+      follow_redirect!
+      assert_select("#alert-text", text: "Votre annonce a bien été modifiée")
+      assert_equal 2, internship_offer.reload.max_candidates
+    end
+
+    test 'PATCH #update as employer owning internship_offer ' \
+         'updates internship_offer and fails due to too many accepted internships' do
+      weeks = Week.all.first(4)
+      week_ids = weeks.map(&:id)
+      internship_offer = create(:weekly_internship_offer, max_candidates: 3, weeks: weeks)
+      create(:weekly_internship_application, :approved, internship_offer: internship_offer, week: weeks.first)
+      create(:weekly_internship_application, :approved, internship_offer: internship_offer, week: weeks.second)
+      sign_in(internship_offer.employer)
+
+      patch(dashboard_internship_offer_path(internship_offer.to_param),
+            params: { internship_offer: {
+              week_ids: week_ids,
+              max_candidates: 1
+            } })
+      error_message = "Impossible de réduire le " \
+                      "nombre de places de cette offre de stage car vous avez déjà accepté " \
+                      "plus de candidats que vous n'allez leur offrir de places."
+      assert_response :bad_request
+      assert_select("label.for-errors", text: error_message)
+    end
+
     test 'PATCH #update as statistician owning internship_offer updates internship_offer' do
       internship_offer = create(:weekly_internship_offer)
       statistician = create(:statistician)
