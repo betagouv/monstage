@@ -7,6 +7,24 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     get new_user_registration_path
     assert_redirected_to users_choose_profile_path
   end
+  
+  test 'POST #registrations as statistician whitelisted' do
+    white_list = create(:statistician_email_whitelist)
+    data = {
+      first_name: 'James',
+      last_name: 'Ref',
+      email: white_list.email,
+      password: 'password',
+      password_confirmation: 'password',
+      type: 'Users::Statistician',
+      accept_terms: true
+    }
+
+    post user_registration_path(user: data)
+
+    assert_redirected_to reporting_dashboards_path(department: Department::MAP[white_list.zipcode], school_year: Date.current.year)
+  end
+
 
   test 'GET #choose_profile' do
     get users_choose_profile_path
