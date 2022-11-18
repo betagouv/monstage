@@ -41,10 +41,9 @@ module Builders
     def update(instance:, params:)
       yield callback if block_given?
       authorize :update, instance
-      if type_will_change?(params: params, instance: instance)
-        instance = switch_type(instance: instance, params: params)
-      end
+      instance = switch_type(instance: instance, params: params)
       instance.attributes = preprocess_api_params(params, fallback_weeks: false)
+      instance = deal_with_max_candidates_change(params: params, instance: instance)
       instance.save!
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => e
@@ -136,6 +135,8 @@ module Builders
     end
 
     def switch_type(instance:, params:)
+      return instance unless type_will_change?(params: params, instance: instance)
+
       if instance.with_applications?
         error_message = 'Impossible de modifier la filière de ' \
                         'cette offre de stage car ' \
@@ -146,8 +147,32 @@ module Builders
       instance.becomes!(params[:type].constantize)
     end
 
+    def deal_with_max_candidates_change(params: , instance: )
+      return instance unless max_candidates_will_change?(params: params, instance: instance)
+
+      approved_applications_count = instance.internship_applications.approved.count
+      former_max_candidates = instance.max_candidates
+      next_max_candidates = params[:max_candidates].to_i
+
+      if next_max_candidates < approved_applications_count
+        error_message = 'Impossible de réduire le nombre de places ' \
+                        'de cette offre de stage car ' \
+                        'vous avez déjà accepté plus de candidats que ' \
+                        'vous n\'allez leur offrir de places.'
+        instance.errors.add(:max_candidates, error_message)
+        raise ActiveRecord::RecordInvalid, instance
+      else
+        instance.remaining_seats_count = next_max_candidates - approved_applications_count
+      end
+      instance
+    end
+
     def type_will_change?(params: , instance: )
       params[:type] && params[:type] != instance.type
+    end
+
+    def max_candidates_will_change?(params: , instance: )
+      params[:max_candidates] && params[:max_candidates] != instance.max_candidates
     end
 
     def model
