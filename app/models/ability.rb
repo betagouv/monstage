@@ -34,6 +34,7 @@ class Ability
     can :show, :account
     can :change, :class_room
     can %i[read], InternshipOffer
+    can %i[create delete], Favorite
     can :apply, InternshipOffer do |internship_offer|
       student_can_apply?(student: user, internship_offer: internship_offer)
     end

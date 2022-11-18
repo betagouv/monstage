@@ -1,0 +1,14 @@
+- content_for :page_title, "Mes annonces favorites | Monstage"
+= render 'layouts/breadcrumb', links: [ ['', 'Mes annonces favorites'] ]
+
+h1.h2.mb-4 Mes annonces favorites
+
+.fr-alert.fr-alert--info
+  h3.fr-alert__title Note
+  p 
+    | Si une annonce n'est plus active sur le site, elle disparaît automatiquement de votre sélection.
+    br
+    | Pour retirer une annonce favorite, cliquez sur le coeur au-dessus du titre de l'annonce.
+
+.fr-containerr
+  = react_component("InternshipOfferFavorites", props: { internshipOffers: @internship_offers.to_a })

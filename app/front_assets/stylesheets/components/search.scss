@@ -69,6 +69,34 @@
   }
 }
 
+.heart-full {
+  width: 25px;
+  height: 20px;
+  background-image: url('../images/icons/full_heart.svg');
+  background-position: center center;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 10;
+}
+
+.heart-full:hover {
+  background-image: url('../images/icons/full_heart_hover.svg');
+  cursor: pointer;
+}
+
+.heart-empty {
+  width: 25px;
+  height: 20px;
+  background-image: url('../images/icons/empty_heart.svg');
+  background-position: center center;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 10;
+  cursor: pointer;
+}
+
 .clear-button {
   cursor: pointer
 }

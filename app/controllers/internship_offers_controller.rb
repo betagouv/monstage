@@ -160,7 +160,8 @@ class InternshipOffersController < ApplicationController
         lat: internship_offer.coordinates.latitude,
         lon: internship_offer.coordinates.longitude,
         image: view_context.asset_pack_path("media/images/sectors/#{internship_offer.sector.cover}"),
-        sector: internship_offer.sector.name
+        sector: internship_offer.sector.name,
+        is_favorite: current_user ? current_user.favorites.pluck(:internship_offer_id).include?(internship_offer.id) : false
       }
     }
   end

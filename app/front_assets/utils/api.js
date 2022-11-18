@@ -80,4 +80,22 @@ export const endpoints = {
     endpoint.search = searchParams.toString();
     return endpoint;
   },
+
+  // @post
+  addFavorite: ({ internship_offer_id }) => {
+    const endpoint = new URL(`${host}/favorites.json`);
+
+    return endpoint;
+  },
+
+  // @del
+  removeFavorite: ({ id }) => {
+    const endpoint = new URL(`${host}/favorites/${id}.json`);
+    const searchParams = new URLSearchParams();
+
+    searchParams.append('id', id);
+    endpoint.search = searchParams.toString();
+
+    return endpoint;
+  }
 };

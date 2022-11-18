@@ -43,6 +43,8 @@ Rails.application.routes.draw do
     resources :internship_applications, only: %i[new create index show update]
   end
 
+  resources :favorites, only: %i[create destroy index]
+
   namespace :api, path: 'api' do
     resources :internship_offers, only: %i[create update destroy index]
     resources :schools, only: [] do

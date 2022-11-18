@@ -19,6 +19,8 @@ class InternshipApplication < ApplicationRecord
   delegate :employer, to: :internship_offer
 
   after_save :update_all_counters
+  delegate :update_all_favorites, to: :internship_offer
+  after_save :update_all_favorites
   accepts_nested_attributes_for :student, update_only: true
 
   has_rich_text :approved_message

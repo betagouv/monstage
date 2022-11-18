@@ -104,6 +104,7 @@ class InternshipOffer < ApplicationRecord
   belongs_to :organisation, optional: true
   belongs_to :tutor, optional: true
   has_one :internship_offer_info
+  has_and_belongs_to_many :users
 
   has_rich_text :employer_description_rich_text
 
@@ -251,5 +252,9 @@ class InternshipOffer < ApplicationRecord
 
   def presenter
     Presenters::InternshipOffer.new(self)
+  end
+
+  def update_all_favorites
+    Favorite.where(internship_offer_id: id).destroy_all if approved_applications_count >= max_candidates
   end
 end
