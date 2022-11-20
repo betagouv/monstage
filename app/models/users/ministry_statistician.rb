@@ -24,6 +24,7 @@ module Users
       end
     end
 
+    before_validation :assign_email_whitelist_and_confirm
     validate :email_in_whitelist
 
     has_many :internship_offers, foreign_key: 'employer_id'
@@ -66,6 +67,11 @@ module Users
 
     def presenter
       Presenters::MinistryStatistician.new(self)
+    end
+
+    def assign_email_whitelist_and_confirm
+      self.ministry_email_whitelist = EmailWhitelists::Ministry.find_by(email: email)
+      self.confirmed_at = Time.now
     end
 
     private
