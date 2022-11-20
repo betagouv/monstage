@@ -1225,7 +1225,7 @@ ALTER SEQUENCE public.signatures_id_seq OWNED BY public.signatures.id;
 CREATE TABLE public.task_registers (
     id bigint NOT NULL,
     task_name character varying,
-    allowed_environment character varying,
+    used_environment character varying,
     played_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -2752,6 +2752,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221028100721'),
 ('20221031083556'),
 ('20221112100533'),
-('20221118075029');
+('20221118075029'),
+('20221119132335');
 
 
