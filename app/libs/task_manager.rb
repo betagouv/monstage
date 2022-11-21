@@ -63,14 +63,16 @@ class TaskManager
     messages <<  "A declared environment for #{task_name}#{arguments} " \
                  "does not exist, it has to be chosen from " \
                  "#{TaskRegister::ALLOWED_ENVIRONMENTS.join(', ')}" unless check_inclusion_in_list?
-    PrettyConsole.puts_in_yellow("#{task_name} is never executed in #{actual_environment}") unless check_environment_context?
+    unless check_environment_context?
+      PrettyConsole.puts_in_yellow(
+        "#{task_name} is never executed in #{actual_environment} environment")
+    end
     messages
   end
 
   def last_played
-    former_registration = TaskRegister.where(task_name: task_name)
-                            .where(used_environment: actual_environment)
-                            .first
+    former_registration = TaskRegister.find(task_name: task_name,
+                                            used_environment: actual_environment)
   end
 
   def initialize(allowed_environments:, task_name:, arguments: [])

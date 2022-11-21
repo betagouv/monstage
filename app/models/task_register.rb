@@ -7,10 +7,9 @@ class TaskRegister < ApplicationRecord
 
 
 
-  def self.find(task_name:, allowed_environment:)
-    where(task_name: task_name)
-      .where(allowed_environment: allowed_environment)
-      .first
+  def self.find(task_name:, used_environment:)
+    where(task_name: task_name).where(used_environment: used_environment)
+                               .first
   end
 
 end
