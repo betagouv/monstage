@@ -750,7 +750,6 @@ CREATE TABLE public.internship_offer_infos (
     updated_at timestamp(6) without time zone NOT NULL,
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
-    max_students_per_group integer DEFAULT 1 NOT NULL,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
     max_students_per_group integer DEFAULT 1 NOT NULL,
