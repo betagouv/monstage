@@ -58,7 +58,7 @@ module Users
     # POST /resource
     def create
       # honey_pot checking
-      unless params[:user][:confirmation_email].blank?
+      unless params[:user][:confirmation_email].blank? || EmailWhitelist.where(email: params[:user][:email]).first
         notice = "Votre inscription a bien été prise en compte. " \
                  "Vous recevrez un email de confirmation dans " \
                  "les prochaines minutes."

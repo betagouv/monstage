@@ -42,9 +42,15 @@ module InternshipApplications
           .where(user_id: user_id)
           .count
           .positive?
-      
+
         errors.add(:user_id, :duplicate)
       end
+    end
+
+    def remaining_seats_count
+      max_places      = internship_offer.max_candidates
+      reserved_places = internship_offer.internship_offer_weeks&.sum(:blocked_applications_count)
+      max_places - reserved_places
     end
   end
 end

@@ -277,7 +277,8 @@ class Ability
             see_dashboard_administrations_summary
             see_dashboard_department_summary
             export_reporting_dashboard_data
-            see_dashboard_associations_summary], User
+            see_dashboard_associations_summary
+            export_reporting_school], User
   end
 
   def education_statistician_abilities(user:)

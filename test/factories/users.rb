@@ -119,6 +119,12 @@ FactoryBot.define do
       type { 'Users::Operator' }
       operator
       api_token { SecureRandom.uuid }
+
+      trait :fully_authorized do
+        after(:create) do |user|
+          user.operator.update(api_full_access: true)
+        end
+      end
     end
 
 

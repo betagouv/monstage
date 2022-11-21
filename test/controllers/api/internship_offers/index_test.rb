@@ -33,7 +33,7 @@ module Api
     end
 
     test 'GET #index without wrong params does not return error' do
-      user = create(:user_operator)
+      user = create(:user_operator, :fully_authorized)
       offer_1 = create(:weekly_internship_offer)
 
       documents_as(endpoint: :'internship_offers/index', state: :error) do
@@ -59,7 +59,7 @@ module Api
     end
 
     test 'GET #index without params returns all internship_offers available' do
-      user = create(:user_operator)
+      user = create(:user_operator, :fully_authorized)
       offer_1 = create(:weekly_internship_offer)
       offer_2 = create(:weekly_internship_offer)
       offer_3 = create(:weekly_internship_offer, :unpublished)
@@ -82,7 +82,7 @@ module Api
     end
 
     test 'GET #index with page params returns the page results' do
-      user = create(:user_operator)
+      user = create(:user_operator, :fully_authorized)
       (InternshipOffer::PAGE_SIZE + 1).times { create(:weekly_internship_offer) }
 
       documents_as(endpoint: :'internship_offers/index', state: :success) do
@@ -101,7 +101,7 @@ module Api
     end
 
     test 'GET #index with big page number params returns empty results' do
-      user = create(:user_operator)
+      user = create(:user_operator, :fully_authorized)
       (InternshipOffer::PAGE_SIZE + 1).times { create(:weekly_internship_offer) }
 
       documents_as(endpoint: :'internship_offers/index', state: :success) do
@@ -122,7 +122,7 @@ module Api
 
 
     test 'GET #index with coordinates params returns all internship_offers available in the city' do
-      user = create(:user_operator)
+      user = create(:user_operator, :fully_authorized)
       offer_1 = create(:weekly_internship_offer, city: 'Bordeaux', coordinates: { latitude: 44.8624, longitude: -0.5848 })
       offer_2 = create(:weekly_internship_offer)
       offer_3 = create(:weekly_internship_offer, :unpublished)
@@ -146,7 +146,7 @@ module Api
     end
 
     test 'GET #index with coordinates and radius params returns all internship_offers available in the radius' do
-      user = create(:user_operator)
+      user = create(:user_operator, :fully_authorized)
       offer_1 = create(:weekly_internship_offer, city: 'Bordeaux', coordinates: { latitude: 44.8624, longitude: -0.5848 })
       offer_2 = create(:weekly_internship_offer, city: 'Le Bouscat', coordinates: { latitude: 44.865, longitude: -0.6033 })
       offer_3 = create(:weekly_internship_offer, :unpublished)
@@ -169,7 +169,7 @@ module Api
     end
 
     test 'GET #index with coordinates and radius params returns all internship_offers available in the radis' do
-      user = create(:user_operator)
+      user = create(:user_operator, :fully_authorized)
       offer_1 = create(:weekly_internship_offer, city: 'Bordeaux', coordinates: { latitude: 44.8624, longitude: -0.5848 })
       offer_2 = create(:weekly_internship_offer, city: 'Le Bouscat', coordinates: { latitude: 44.865, longitude: -0.6033 })
       offer_3 = create(:weekly_internship_offer, :unpublished)
@@ -191,7 +191,7 @@ module Api
     end
 
     test 'GET #index with keyword params returns all internship_offers available in the radis' do
-      user = create(:user_operator)
+      user = create(:user_operator, :fully_authorized)
       offer_1 = create(:weekly_internship_offer, title: 'Chef de chantier')
       offer_2 = create(:weekly_internship_offer, title: 'Avocat')
       offer_3 = create(:weekly_internship_offer, title: 'Cheffe de cuisine')

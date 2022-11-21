@@ -211,7 +211,7 @@ class User < ApplicationRecord
     if add_email_to_phone_account?
       self.confirm
     else
-      unless @skip_confirmation_notification
+      unless @skip_confirmation_notification || whitelisted?
         devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email })
                      .deliver_later
       end
@@ -280,5 +280,9 @@ class User < ApplicationRecord
         'Il faut conserver un email valide pour assurer la continuité du service'
       )
     end
+  end
+
+  def whitelisted?
+    !!EmailWhitelist.find_by_email(email)
   end
 end
