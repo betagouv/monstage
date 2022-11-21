@@ -32,7 +32,8 @@ class Academy
     'Académie de Nantes' => %w[44 49 53 72 85],
     "Académie d'Aix-Marseille" => %w[04 05 13 84],
     'Académie de Nice' => %w[06 83],
-    'Académie de La Réunion' => %w[974]
+    'Académie de La Réunion' => %w[974],
+    'Académie de Mayotte' => %w[976],
   }.freeze
 
   MAP_EMAIL_DOMAIN = {
