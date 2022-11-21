@@ -89,6 +89,11 @@ class InternshipApplication < ApplicationRecord
 
   scope :not_drafted, ->{ where.not(aasm_state: 'drafted') }
 
+  scope :approved_or_signed, lambda {
+    applications = InternshipApplication.arel_table
+    where(applications[:aasm_state].in(['approved', 'signed']))
+  }
+
   #
   # Other stuffs
   #
@@ -231,8 +236,7 @@ class InternshipApplication < ApplicationRecord
 
 
   def create_agreement
-    return if internship_offer.school_track != 'troisieme_generale'
-    return unless student&.school&.school_manager&.present?
+    return unless internship_agreement_creation_allowed?
 
     agreement = Builders::InternshipAgreementBuilder.new(user: Users::God.new)
                                                     .new_from_application(self)
@@ -247,10 +251,9 @@ class InternshipApplication < ApplicationRecord
     ).deliver_now
   end
 
-  scope :approved_or_signed, lambda {
-    applications = InternshipApplication.arel_table
-    where(applications[:aasm_state].in(['approved', 'signed']))
-  }
+  def remaining_seats_count
+    internship_offer.max_candidates
+  end
 
   def internship_application_counter_hook
     case self
@@ -333,5 +336,14 @@ class InternshipApplication < ApplicationRecord
         end
       end
     end
+  end
+
+  private
+
+  def internship_agreement_creation_allowed?
+    return false if internship_offer.school_track != 'troisieme_generale'
+    return false if internship_offer.employer.type != 'Users::Employer'
+    return false unless student.school.school_manager
+    true
   end
 end

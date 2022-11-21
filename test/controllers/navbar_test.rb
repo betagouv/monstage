@@ -136,7 +136,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     ministry_statistician = create(:ministry_statistician)
     sign_in(ministry_statistician)
     get ministry_statistician.custom_dashboard_path
-    assert_select('li a.fr-link.text-decoration-none.active', count: 1, text: 'Statistiques nationales')
+    assert_select('li a.fr-link.text-decoration-none.active', text: 'Statistiques nationales', count: 1)
     assert_select('li a.fr-link.text-decoration-none.active', text: ministry_statistician.dashboard_name, count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Accueil', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Recherche', count: 1)

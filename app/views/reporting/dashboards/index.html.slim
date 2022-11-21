@@ -17,15 +17,21 @@
 
           - if can?(:export_reporting_dashboard_data, current_user)
             .row.mt-3.mb-3
-              .col-12
+              .col-6
                 - target_path = no_year ? '#' : reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers))
                 = link_to 'Exporter les offres',
                           target_path,
-                          class: "fr-btn fr-btn-danger fr-icon-mail-line fr-btn--icon-left #{'disabled' if no_year}",
+                          class: "fr-btn fr-icon-mail-line fr-btn--icon-left #{no_year ? 'disabled' : 'fr-btn-danger'}",
                           data: { turbo: false }
                 - if no_year
                   br
                   span.small.text-dark Choisir une année scolaire pour obtenir des exports ciblés
+              .col-6
+                - if can?(:export_reporting_school, current_user)
+                  = link_to 'Exporter les établissements', reporting_schools_path(reporting_cross_view_params.merge(format: :xlsx)),
+                              class: 'fr-btn fr-btn-danger fr-icon-download-line fr-btn--icon-left',
+                              data: {turbolinks: false}
+                      
           // platform stats
           .row.mt-5
             .col-12

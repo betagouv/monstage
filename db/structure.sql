@@ -42,6 +42,7 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 -- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
 --
 
+
 --
 -- Name: agreement_signatory_role; Type: TYPE; Schema: public; Owner: -
 --
@@ -600,11 +601,11 @@ CREATE TABLE public.internship_agreements (
     tutor_full_name character varying,
     main_teacher_full_name character varying,
     doc_date date,
-    school_manager_accept_terms boolean DEFAULT false,
-    employer_accept_terms boolean DEFAULT false,
     weekly_hours text[] DEFAULT '{}'::text[],
     daily_hours text[] DEFAULT '{}'::text[],
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
+    school_manager_accept_terms boolean DEFAULT false,
+    employer_accept_terms boolean DEFAULT false,
     main_teacher_accept_terms boolean DEFAULT false,
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
     school_delegation_to_sign_delivered_at date,
@@ -750,9 +751,10 @@ CREATE TABLE public.internship_offer_infos (
     updated_at timestamp(6) without time zone NOT NULL,
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
+    max_students_per_group integer DEFAULT 1 NOT NULL,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
-    max_students_per_group integer DEFAULT 1 NOT NULL
+    remaining_seats_count integer DEFAULT 0
 );
 
 
@@ -900,15 +902,16 @@ CREATE TABLE public.internship_offers (
     tutor_id bigint,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
     daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED,
-    siret character varying,
-    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
-    weekly_lunch_break text,
     total_female_applications_count integer DEFAULT 0 NOT NULL,
     total_female_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
     total_female_approved_applications_count integer DEFAULT 0,
+    siret character varying,
     max_students_per_group integer DEFAULT 1 NOT NULL,
+    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
+    weekly_lunch_break text,
     employer_manual_enter boolean DEFAULT false,
-    tutor_role character varying
+    tutor_role character varying,
+    remaining_seats_count integer DEFAULT 0
 );
 
 
@@ -932,6 +935,38 @@ ALTER SEQUENCE public.internship_offers_id_seq OWNED BY public.internship_offers
 
 
 --
+-- Name: ministry_groups; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ministry_groups (
+    id bigint NOT NULL,
+    group_id bigint,
+    email_whitelist_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: ministry_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.ministry_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ministry_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.ministry_groups_id_seq OWNED BY public.ministry_groups.id;
+
+
+--
 -- Name: months; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -952,8 +987,8 @@ CREATE TABLE public.operators (
     target_count integer DEFAULT 0,
     logo character varying,
     website character varying,
-    created_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.377616'::timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.384734'::timestamp without time zone NOT NULL,
+    created_at timestamp without time zone DEFAULT '2021-06-07 14:16:28.780824'::timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone DEFAULT '2021-06-07 14:16:28.786069'::timestamp without time zone NOT NULL,
     airtable_id character varying,
     airtable_link character varying,
     airtable_reporting_enabled boolean DEFAULT false,
@@ -1001,7 +1036,6 @@ CREATE TABLE public.organisations (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     employer_id integer,
-    siren character varying,
     siret character varying,
     is_paqte boolean,
     manual_enter boolean DEFAULT false
@@ -1255,9 +1289,9 @@ CREATE TABLE public.users (
     phone_password_reset_count integer DEFAULT 0,
     last_phone_password_reset timestamp without time zone,
     anonymized boolean DEFAULT false NOT NULL,
-    banners jsonb DEFAULT '{}'::jsonb,
-    ministry_id bigint,
+    organisation_id bigint,
     targeted_offer_id integer,
+    banners jsonb DEFAULT '{}'::jsonb,
     signature_phone_token character varying(6),
     signature_phone_token_expires_at timestamp(6) without time zone,
     signature_phone_token_checked_at timestamp(6) without time zone,
@@ -1436,6 +1470,13 @@ ALTER TABLE ONLY public.internship_offers ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: ministry_groups id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ministry_groups ALTER COLUMN id SET DEFAULT nextval('public.ministry_groups_id_seq'::regclass);
+
+
+--
 -- Name: operators id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1539,14 +1580,6 @@ ALTER TABLE ONLY public.air_table_records
 
 
 --
--- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ar_internal_metadata
-    ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
-
-
---
 -- Name: class_rooms class_rooms_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1640,6 +1673,14 @@ ALTER TABLE ONLY public.internship_offer_weeks
 
 ALTER TABLE ONLY public.internship_offers
     ADD CONSTRAINT internship_offers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ministry_groups ministry_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ministry_groups
+    ADD CONSTRAINT ministry_groups_pkey PRIMARY KEY (id);
 
 
 --
@@ -2024,6 +2065,20 @@ CREATE INDEX index_internship_offers_on_type ON public.internship_offers USING b
 
 
 --
+-- Name: index_ministry_groups_on_email_whitelist_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ministry_groups_on_email_whitelist_id ON public.ministry_groups USING btree (email_whitelist_id);
+
+
+--
+-- Name: index_ministry_groups_on_group_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ministry_groups_on_group_id ON public.ministry_groups USING btree (group_id);
+
+
+--
 -- Name: index_organisations_on_coordinates; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2105,13 +2160,6 @@ CREATE INDEX index_users_on_discarded_at ON public.users USING btree (discarded_
 --
 
 CREATE INDEX index_users_on_email ON public.users USING btree (email);
-
-
---
--- Name: index_users_on_ministry_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_users_on_ministry_id ON public.users USING btree (ministry_id);
 
 
 --
@@ -2232,14 +2280,6 @@ ALTER TABLE ONLY public.internship_offers
 
 
 --
--- Name: internship_offers fk_rails_3cef9bdd89; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.internship_offers
-    ADD CONSTRAINT fk_rails_3cef9bdd89 FOREIGN KEY (group_id) REFERENCES public.groups(id);
-
-
---
 -- Name: class_rooms fk_rails_49ae717ca2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2285,14 +2325,6 @@ ALTER TABLE ONLY public.school_internship_weeks
 
 ALTER TABLE ONLY public.internship_offer_infos
     ADD CONSTRAINT fk_rails_65006c3093 FOREIGN KEY (employer_id) REFERENCES public.users(id);
-
-
---
--- Name: users fk_rails_720d9e0bfd; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT fk_rails_720d9e0bfd FOREIGN KEY (ministry_id) REFERENCES public.groups(id);
 
 
 --
@@ -2365,14 +2397,6 @@ ALTER TABLE ONLY public.tutors
 
 ALTER TABLE ONLY public.active_storage_attachments
     ADD CONSTRAINT fk_rails_c3b3935057 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
-
-
---
--- Name: users fk_rails_d23d91f0e6; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT fk_rails_d23d91f0e6 FOREIGN KEY (class_room_id) REFERENCES public.class_rooms(id);
 
 
 --
@@ -2593,11 +2617,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200904083343'),
 ('20200909065612'),
 ('20200909134849'),
-('20200911153500'),
 ('20200911153501'),
 ('20200911160718'),
 ('20200918165533'),
-('20200923164419'),
 ('20200924093439'),
 ('20200928102905'),
 ('20200928122922'),
@@ -2614,10 +2636,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201106143850'),
 ('20201109145559'),
 ('20201116085327'),
+('20201125102052'),
 ('20201203153154'),
 ('20210112164129'),
 ('20210113140604'),
-('20210121171025'),
 ('20210121172155'),
 ('20210128162938'),
 ('20210129121617'),
@@ -2625,7 +2647,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210225164349'),
 ('20210310173554'),
 ('20210326100435'),
-('20210408113406'),
 ('20210422145040'),
 ('20210430083329'),
 ('20210506142429'),
@@ -2671,6 +2692,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220816105807'),
 ('20221010071105'),
 ('20221021094345'),
-('20221026142333');
+('20221026142333'),
+('20221028100721'),
+('20221031083556'),
+('20221112100533');
 
 

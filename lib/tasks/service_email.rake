@@ -6,6 +6,12 @@ task send_weekly_kpis: :environment do
   SendWeeklyKpiEmail.perform_later
 end
 
+desc 'To be scheduled in a cron to send pending applications export'
+task send_pending_internship_applications_export: :environment do
+  Rails.logger.info("Cron runned at #{Time.now.utc}(UTC), send_pending_internship_applications_export")
+  SendPendingInternshipApplicationsEmail.perform_later
+end
+
 namespace :incident_2022_04_06 do
   desc 'april 13 2022 incident counterparts - applications'
   task applications_retrofit: :environment do

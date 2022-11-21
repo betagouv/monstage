@@ -35,7 +35,7 @@ module Users
 
     has_many :internship_offers, foreign_key: 'employer_id'
     validates :email_whitelist, presence: { message: 'none' }
-    before_validation :assign_email_whitelist
+    before_validation :assign_email_whitelist_and_confirm
     # Beware : order matters here !
     validate :email_in_list
 
@@ -87,8 +87,9 @@ module Users
 
     # on create, make sure to assign existing email whitelist
     # EmailWhitelists::EducationStatistician holds the user_id foreign key
-    def assign_email_whitelist
+    def assign_email_whitelist_and_confirm
       self.email_whitelist = EmailWhitelists::EducationStatistician.find_by(email: email)
+      self.confirmed_at = Time.now
     end
 
     def email_in_list

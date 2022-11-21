@@ -4,7 +4,7 @@ module Dashboard
   class EmailWhitelistTest < ApplicationSystemTestCase
     include Devise::Test::IntegrationHelpers
 
-    test 'admin canno create email whitelist without group' do
+    test 'admin cannot create email whitelist without any group' do
       admin = create(:god)
       sign_in(admin)
       visit '/admin'
@@ -24,10 +24,7 @@ module Dashboard
       all('.nav-link', text: 'Courriels autorisés des référents centraux').first.click
       find('a.nav-link span', text: 'Ajouter nouveau').click
       fill_in 'Email', with: 'test@ministere.fr'
-      within('.control-group.row.mb-3.belongs_to_association_type.group_field') do
-        find('label.dropdown-toggle').click
-      end
-      find('li a', text: group.name).click
+      click_link('Choisir tout')
       click_on 'Enregistrer'
       assert_text 'Courriel autorisé du référent central : créé(e) avec succès'
     end

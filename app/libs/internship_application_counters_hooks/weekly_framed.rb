@@ -58,7 +58,7 @@ module InternshipApplicationCountersHooks
     #---------------------------------------
     # blocked_weeks_count
     # counts the number of weeks with any positive number of approved applications
-    # in each week
+    # in each week for a given internship offer
     #---------------------------------------
     def blocked_weeks_count
       internship_offer.internship_offer_weeks

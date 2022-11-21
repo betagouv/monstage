@@ -274,7 +274,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to account_path
     employer.reload
-    assert_equal nil, employer.phone
+    assert_nil employer.phone
     follow_redirect!
     assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
   end

@@ -190,6 +190,7 @@ def populate_groups
   Group.create!(name: 'Carrefour', is_public: false, is_paqte: true)
   Group.create!(name: 'Engie', is_public: false, is_paqte: true)
   Group.create!(name: 'Ministère de la Justice', is_public: true, is_paqte: false)
+  Group.create!(name: 'Ministère de l\'Intérieur', is_public: true, is_paqte: false)
 end
 
 def populate_users
@@ -224,15 +225,15 @@ def populate_users
   with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', operator: Operator.first)).save!
 
   statistician_email = 'statistician@ms3e.fr'
-  ministry_statistician = 'ministry_statistician@ms3e.fr'
+  ministry_statistician_email = 'ministry_statistician@ms3e.fr'
   education_statistician_email = 'education_statistician@ms3e.fr'
-  last_public_group = Group.where(is_public: true).last
+  last_public_groups = Group.where(is_public: true).last(2)
   EmailWhitelists::Statistician.create!(email: statistician_email, zipcode: 75)
   EmailWhitelists::EducationStatistician.create!(email: education_statistician_email, zipcode: 75)
-  EmailWhitelists::Ministry.create!(email: ministry_statistician, group_id: last_public_group.id)
+  ministry_email_whitelist = EmailWhitelists::Ministry.create!(email: ministry_statistician_email, groups: last_public_groups)
   with_class_name_for_defaults(Users::Statistician.new(email: statistician_email, password: 'review')).save!
   with_class_name_for_defaults(Users::EducationStatistician.new(email: education_statistician_email, password: 'review')).save!
-  with_class_name_for_defaults(Users::MinistryStatistician.new(email: ministry_statistician, password: 'review', ministry: last_public_group)).save!
+  with_class_name_for_defaults(Users::MinistryStatistician.new(email: ministry_statistician_email, password: 'review')).save!
 end
 
 def populate_students
