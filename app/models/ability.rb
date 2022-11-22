@@ -56,6 +56,7 @@ class Ability
   def common_school_management_abilities(user:)
     can %i[
       welcome_students
+      subscribe_to_webinar
       choose_role
       sign_with_sms], User
     can_create_and_manage_account(user: user) do
@@ -135,7 +136,7 @@ class Ability
 
 
   def employer_abilities(user:)
-    can %i[supply_offers sign_with_sms choose_function] , User
+    can %i[supply_offers sign_with_sms choose_function subscribe_to_webinar] , User
     can :show, :account
 
     can :create_remote_internship_request, SupportTicket
@@ -310,7 +311,7 @@ class Ability
   end
 
   def common_to_all_statisticians(user: )
-    can :supply_offers, User
+    can %i[supply_offers subscribe_to_webinar], User
     can :view, :department
     can %i[index update], InternshipApplication
     can %i[read create see_tutor], InternshipOffer
