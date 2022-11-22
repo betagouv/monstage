@@ -66,7 +66,8 @@ class Academy
     'Académie de Nantes' => 'ac-nantes.fr',
     "Académie d'Aix-Marseille" => 'ac-aix-marseille.fr',
     'Académie de Nice' => 'ac-nice.fr',
-    'Académie de La Réunion' => 'ac-reunion.fr'
+    'Académie de La Réunion' => 'ac-reunion.fr',
+    'Académie de Mayotte' => 'ac-mayotte.fr'
   }.freeze
 
   def self.to_select(only: nil)
