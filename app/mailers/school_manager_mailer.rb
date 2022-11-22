@@ -21,7 +21,7 @@ class SchoolManagerMailer < ApplicationMailer
       mtm_campaign: 'ETB - Convention Almost Ready'
     ).html_safe
 
-    to = school_manager.email
+    to = school_manager&.email
     subject = 'Une convention de stage sera bientôt disponible.'
 
     send_email(to: to, subject: subject)
