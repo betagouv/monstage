@@ -611,7 +611,7 @@ CREATE TABLE public.internship_agreements (
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
     siret character varying(16),
-    tutor_role character varying,
+    tutor_role character varying(150),
     tutor_email character varying(80),
     organisation_representative_role character varying(100),
     student_address character varying(250),
@@ -1210,6 +1210,39 @@ ALTER SEQUENCE public.signatures_id_seq OWNED BY public.signatures.id;
 
 
 --
+-- Name: task_registers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.task_registers (
+    id bigint NOT NULL,
+    task_name character varying,
+    used_environment character varying,
+    played_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: task_registers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.task_registers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: task_registers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.task_registers_id_seq OWNED BY public.task_registers.id;
+
+
+--
 -- Name: tutors; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1519,6 +1552,13 @@ ALTER TABLE ONLY public.signatures ALTER COLUMN id SET DEFAULT nextval('public.s
 
 
 --
+-- Name: task_registers id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.task_registers ALTER COLUMN id SET DEFAULT nextval('public.task_registers_id_seq'::regclass);
+
+
+--
 -- Name: tutors id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1737,6 +1777,14 @@ ALTER TABLE ONLY public.sectors
 
 ALTER TABLE ONLY public.signatures
     ADD CONSTRAINT signatures_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: task_registers task_registers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.task_registers
+    ADD CONSTRAINT task_registers_pkey PRIMARY KEY (id);
 
 
 --
@@ -2696,6 +2744,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221026142333'),
 ('20221028100721'),
 ('20221031083556'),
-('20221112100533');
+('20221112100533'),
+('20221118075029'),
+('20221119132335'),
+('20221121103636');
 
 
