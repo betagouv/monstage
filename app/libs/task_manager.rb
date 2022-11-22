@@ -4,9 +4,9 @@ require 'pretty_console'
 #   allowed_environments: %w[development test],
 #   task_name: 'say_something',
 #   arguments: ['once_str, only_str']
-# ).play_task_once(no_job: true)
+# ).play_task_once(run_with_a_job: true)
 class TaskManager
-  def play_task_once(no_job: false)
+  def play_task_once(run_with_a_job: true)
     if messages_checking_tasks_ok.present?
       PrettyConsole.puts_in_red(messages_checking_tasks_ok.join("\n"))
     elsif last_played.present?
@@ -21,13 +21,13 @@ class TaskManager
       )
       if task_to_register.valid? && check_environment_context?
         task_to_register.save
-        PrettyConsole.say_in_green("Task #{task_name}#{arguments} will be played once as a #{no_job ? 'task' : 'job'}")
-        if no_job
-          Rake.application[task_name].invoke(*arguments)
+        PrettyConsole.say_in_green("Task #{task_name}#{arguments} will be played once as a #{run_with_a_job ? 'job' : 'task'}")
+        if run_with_a_job
+          MigrationTaskLaunchJob.perform_now(task_name, arguments)
         else
-          MigrationTaskLaunchJob.new.perform_later(task_name, arguments)
+          Rake.application[task_name].invoke(*arguments)
         end
-        PrettyConsole.say_in_green("Task #{task_name}#{arguments} has been played once as a #{no_job ? 'task' : 'job'}")
+        PrettyConsole.say_in_green("Task #{task_name}#{arguments} has been played once as a task") unless run_with_a_job
       else
         PrettyConsole.puts_in_red(task_to_register.errors.full_messages.join("\n"))
       end
@@ -38,7 +38,7 @@ class TaskManager
   # tasks are played only in the allowed environments each time, EVEN when rolling back !
   # this can be worked around by using up and down methods in the migration
   #=============================================================================
-  def play_task_each_time(no_job: false)
+  def play_task_each_time(run_with_a_job: true)
     if messages_checking_tasks_ok.present?
       PrettyConsole.puts_in_red(messages_checking_tasks_ok.join("\n"))
     else
@@ -49,13 +49,13 @@ class TaskManager
       )
       if task_to_register.valid? && check_environment_context?
         task_to_register.save
-        PrettyConsole.say_in_green("Task #{task_name}#{arguments} will be played as a #{no_job ? 'task' : 'job'}")
-        if no_job
-          Rake.application[task_name].invoke(*arguments)
+        PrettyConsole.say_in_green("Task #{task_name}#{arguments} will be played as a #{run_with_a_job ? 'job' : 'task'}")
+        if run_with_a_job
+          MigrationTaskLaunchJob.perform_now(task_name, arguments)
         else
-          MigrationTaskLaunchJob.new.perform_later(task_name, arguments)
+          Rake.application[task_name].invoke(*arguments)
         end
-        PrettyConsole.say_in_green("Task #{task_name}#{arguments} has been played as a #{no_job ? 'task' : 'job'}")
+        PrettyConsole.say_in_green("Task #{task_name}#{arguments} has been played as a task") unless run_with_a_job
       else
         PrettyConsole.puts_in_red(task_to_register.errors.full_messages.join("\n"))
       end

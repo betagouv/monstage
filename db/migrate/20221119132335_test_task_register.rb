@@ -4,7 +4,7 @@ class TestTaskRegister < ActiveRecord::Migration[7.0]
       allowed_environments: %w[development test],
       task_name: 'say_something',
       arguments: ['once_str, only_str']
-    ).play_task_once(no_job: true)
+    ).play_task_once(run_with_a_job: true)
 
     tm = TaskManager.new(
       allowed_environments: %w[staging test],
