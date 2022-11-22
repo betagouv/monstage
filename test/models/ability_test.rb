@@ -297,7 +297,7 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:see_reporting_schools, User)
     refute ability.can?(:see_reporting_associations, User)
     refute ability.can?(:see_reporting_entreprises, User)
-    assert ability.can?(:see_dashboard_enterprises_summary, User)
+    assert ability.can?(:see_ministry_dashboard, User)
   end
 
   test 'SchoolManager' do

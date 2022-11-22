@@ -306,7 +306,7 @@ class Ability
     can :read, Group
     can %i[index], Acl::Reporting, &:ministry_statistician_allowed?
     can %i[ export_reporting_dashboard_data
-            see_dashboard_enterprises_summary
+            see_ministry_dashboard
             see_dashboard_associations_summary ], User
   end
 
