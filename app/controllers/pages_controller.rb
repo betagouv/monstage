@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PagesController < ApplicationController
-  WEBINAR_URL = 'https://app.livestorm.co/incubateur-des-territoires/permanence-monstagedetroisiemefr?type=detailed'
+  WEBINAR_URL = ENV.fetch('WEBINAR_URL').freeze
   layout 'homepage', only: :home
 
   def reset_cache
