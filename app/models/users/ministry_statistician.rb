@@ -61,9 +61,8 @@ module Users
     end
 
 
-    def ministry_statistician?
-      true
-    end
+    def ministry_statistician? ; true end
+    def statistician? ; true end
 
     def presenter
       Presenters::MinistryStatistician.new(self)

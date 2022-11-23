@@ -42,6 +42,15 @@
                             value: current_user.ministries.map(&:name).join(', '),
                             class: "fr-input",
                             disabled: true
+      - if can?(:choose_to_sign_agreements, current_user)
+        .col-md-6.col-xs-12
+          .form-group
+            = f.label :agreement_signatorable, class: 'fr-label', for: 'user_ministry' do
+              = "Je serai le signataire des conventions pour les offres que je dépose"
+            = f.select :agreement_signatorable,
+                        options_from_collection_for_select(binary_to_select, :value, :text, current_user.agreement_signatorable),
+                        { prompt: "-- Veuillez choisir une des deux options --" },
+                        { class: "fr-select" }
       - if can?(:change, :department) || can?(:view, :department)
         .col-md-6.col-xs-12
           .form-group

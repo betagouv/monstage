@@ -240,6 +240,8 @@ class AbilityTest < ActiveSupport::TestCase
            'statistician should be able to edit user')
     assert(ability.can?(:subscribe_to_webinar, User.new),
           'statisticians can subscribe to webinars')
+    assert(ability.can?(:choose_to_sign_agreements, User.new),
+          'statisticians can decide to sign all agreements')
     assert(ability.can?(:create, Tutor),
            'statistician should be able to create tutors')
     refute ability.can?(:read, User)

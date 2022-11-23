@@ -164,6 +164,20 @@
           </div>
         <% end %>
 
+        <% if can?(:choose_to_sign_agreements, resource) %>
+          <div class='fr-col-12 fr-px-2w'>
+            <div class="form-group custom-label-container">
+              <%= f.label :agreement_signatorable, class: "fr-label" do %>
+                Je serai le signataire des conventions pour les offres que je dépose
+                <%= f.rg2a_required_content_tag %>
+              <% end %>
+              <%= f.select :agreement_signatorable,
+                           options_from_collection_for_select(binary_to_select, :value, :text, resource.agreement_signatorable),
+                           { prompt: "-- Veuillez choisir une des deux options --" },
+                           { class: "fr-select"}%>
+            </div>
+          </div>
+        <% end %>
 
         <% if can?(:choose_operator, :sign_up) %>
           <div class='fr-col-12 fr-col-md-6 fr-px-2w'>

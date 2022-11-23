@@ -311,7 +311,11 @@ class Ability
   end
 
   def common_to_all_statisticians(user: )
-    can %i[supply_offers subscribe_to_webinar], User
+    can %i[
+      supply_offers
+      subscribe_to_webinar
+      choose_to_sign_agreements
+      ], User
     can :view, :department
     can %i[index update], InternshipApplication
     can %i[read create see_tutor], InternshipOffer

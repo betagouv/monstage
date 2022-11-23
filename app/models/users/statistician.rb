@@ -59,9 +59,8 @@ module Users
       ]
     end
 
-    def statistician?
-      true
-    end
+    def department_statistician?; true end
+    def statistician? ; true end
 
     def presenter
       Presenters::Statistician.new(self)

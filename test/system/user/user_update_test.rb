@@ -91,4 +91,16 @@ class UserUpdateTest < ApplicationSystemTestCase
     click_on 'Enregistrer mes informations'
     assert_equal '+6870623042586', employer.reload.phone
   end
+
+  test 'statistician can update his ability to sign agreements' do
+    statistician = create(:statistician )
+    sign_in(statistician)
+    visit account_path
+
+    select('oui', from: 'user[agreement_signatorable]')
+    click_on 'Enregistrer mes informations'
+    success_message = find('#alert-text').text
+    assert success_message == 'Compte mis à jour avec succès.'
+    assert statistician.reload.agreement_signatorable
+  end
 end

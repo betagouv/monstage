@@ -135,6 +135,7 @@ module Users
         :sign_up,
         keys: %i[
           accept_terms
+          agreement_signatorable
           birth_date
           class_room_id
           confirmation_email

@@ -47,4 +47,9 @@ module UsersHelper
       OpenStruct.new(value: ruby_role, text: I18n.t("enum.roles.#{ruby_role}"))
     end
   end
+
+  def binary_to_select
+    [ OpenStruct.new(value: true, text: 'oui'),
+      OpenStruct.new(value: false, text: 'non') ]
+  end
 end

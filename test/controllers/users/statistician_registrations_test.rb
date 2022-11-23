@@ -31,5 +31,7 @@ class StatisticianRegistrationsTest < ActionDispatch::IntegrationTest
                                                     accept_terms: '1' } })
       assert_response 302
     end
+    refute Users::Statistician.last.agreement_signatorable
+    refute_nil Users::Statistician.last.agreement_signatorable
   end
 end

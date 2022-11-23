@@ -226,6 +226,7 @@ class User < ApplicationRecord
   end
 
   def statistician? ; false end
+  def department_statistician? ; false end
   def ministry_statistician? ; false end
   def student? ; false end
   def employer? ; false end

@@ -58,9 +58,8 @@ module Users
       ]
     end
 
-    def education_statistician?
-      true
-    end
+    def education_statistician? ; true end
+    def statistician? ; true end
 
     def presenter
       Presenters::Statistician.new(self)
