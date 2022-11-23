@@ -20,6 +20,9 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 -- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
 --
 
+COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
+
+
 --
 -- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
 --
@@ -31,6 +34,9 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 -- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
 --
 
+COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
+
+
 --
 -- Name: unaccent; Type: EXTENSION; Schema: -; Owner: -
 --
@@ -41,6 +47,9 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 --
 -- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
 --
+
+COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
+
 
 --
 -- Name: agreement_signatory_role; Type: TYPE; Schema: public; Owner: -
@@ -1328,7 +1337,8 @@ CREATE TABLE public.users (
     signature_phone_token_expires_at timestamp(6) without time zone,
     signature_phone_token_checked_at timestamp(6) without time zone,
     employer_role character varying,
-    subscribed_to_webinar_at timestamp(6) without time zone DEFAULT NULL::timestamp without time zone
+    subscribed_to_webinar_at timestamp(6) without time zone DEFAULT NULL::timestamp without time zone,
+    agreement_signatorable boolean DEFAULT false
 );
 
 
@@ -2747,6 +2757,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221112100533'),
 ('20221118075029'),
 ('20221119132335'),
-('20221121103636');
+('20221121103636'),
+('20221123101159');
 
 
