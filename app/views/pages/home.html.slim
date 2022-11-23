@@ -1,6 +1,7 @@
 .container-homepage
   = render 'layouts/navbar'
-= render 'layouts/webinar_banner'
+- if can?(:subscribe_to_webinar, current_user_or_visitor)
+  = render 'layouts/webinar_banner'
 .container-homepage
   .mx-0.light-grey-background data-controller='modal-covid'
     = render 'pages/home/hero'
