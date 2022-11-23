@@ -57,8 +57,8 @@ class Ability
     can %i[
       welcome_students
       subscribe_to_webinar
-      choose_role
       sign_with_sms], User
+    can :choose_role, User unless user.school_manager?
     can_create_and_manage_account(user: user) do
       can [:choose_class_room], User
     end

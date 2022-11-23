@@ -72,7 +72,7 @@
               = 'Fonction'
               = f.rg2a_required_content_tag
             .d-block= f.select :role,
-                                options_from_collection_for_select(user_roles_to_select, :value, :text, current_user.role),
+                                options_from_collection_for_select(user_roles_without_school_manager_to_select, :value, :text, current_user.role),
                                 { include_blank: false},
                                 { class: 'fr-select', data: {action: 'change->profile#refreshEmailFieldLabel'} }
       - if can?(:choose_function, current_user)
