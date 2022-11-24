@@ -34,6 +34,7 @@ module EmailWhitelists
       edit do
         field :email
         field :groups do
+          label 'Chercher parmi les ministères'
           associated_collection_scope do
             Proc.new do |scope| 
               scope.is_public
