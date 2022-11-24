@@ -37,7 +37,7 @@
             .col-12
               h2.text-body Stages sur la plateforme
 
-          - if can?(:see_dashboard_department_summary, current_user)
+          - if can?(:see_dashboard_department_summary, current_user) || can?(:see_ministry_dashboard, current_user)
             .fr-ml-2w.fr-py-2w
               p Le tableau ci-dessous ne s'affiche pas ?
               = link_to 'Voir le tableau dans une nouvelle page', @iframe, class: 'fr-btn', target: "_blank"

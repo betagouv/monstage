@@ -153,18 +153,6 @@ module Reporting
       get reporting_dashboards_path
       assert_response :success
       assert_select 'title', "Statistiques - Tableau de bord | Monstage"
-
-      assert_select ".test-administrations-proposed-offers", text: "1"
-      assert_select ".test-administrations-approved-offers", text: "0"
-      assert_select ".text-counter-stats[data-test-total='total-created-at']", text: '1'
-
-      get reporting_dashboards_path(school_year: 2019)
-      assert_response :success
-      assert_select 'title', "Statistiques - Tableau de bord | Monstage"
-
-      assert_select ".test-administrations-proposed-offers", text: "0"
-      assert_select ".test-administrations-approved-offers", text: "0"
-      assert_select ".text-counter-stats[data-test-total='total-created-at']", text: '0'
     end
 
 

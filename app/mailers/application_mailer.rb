@@ -12,10 +12,12 @@ class ApplicationMailer < ActionMailer::Base
 
   def send_email(to:, subject:, cc: nil)
     @site_url = root_url.html_safe
-    Rails.logger.error("mail without recipient sending attempt. Subject: #{subject}") and return if to.blank?
-
-    params = { to: to, subject: subject }
-    params.merge!(cc: cc) unless cc.nil?
-    mail(params)
+    if to.blank?
+      Rails.logger.error("mail without recipient sending attempt. Subject: #{subject}")
+    else
+      params = { to: to, subject: subject }
+      params.merge!(cc: cc) unless cc.nil?
+      mail(params)
+    end
   end
 end

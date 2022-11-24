@@ -56,8 +56,9 @@ class Ability
   def common_school_management_abilities(user:)
     can %i[
       welcome_students
-      choose_role
+      subscribe_to_webinar
       sign_with_sms], User
+    can :choose_role, User unless user.school_manager?
     can_create_and_manage_account(user: user) do
       can [:choose_class_room], User
     end
@@ -135,7 +136,7 @@ class Ability
 
 
   def employer_abilities(user:)
-    can %i[supply_offers sign_with_sms choose_function] , User
+    can %i[supply_offers sign_with_sms choose_function subscribe_to_webinar] , User
     can :show, :account
 
     can :create_remote_internship_request, SupportTicket
@@ -305,12 +306,12 @@ class Ability
     can :read, Group
     can %i[index], Acl::Reporting, &:ministry_statistician_allowed?
     can %i[ export_reporting_dashboard_data
-            see_dashboard_enterprises_summary
+            see_ministry_dashboard
             see_dashboard_associations_summary ], User
   end
 
   def common_to_all_statisticians(user: )
-    can :supply_offers, User
+    can %i[supply_offers subscribe_to_webinar], User
     can :view, :department
     can %i[index update], InternshipApplication
     can %i[read create see_tutor], InternshipOffer

@@ -127,6 +127,7 @@ Rails.application.routes.draw do
   get '/politique-de-confidentialite', to: 'pages#politique_de_confidentialite'
   get '/statistiques', to: 'pages#statistiques'
   post '/newsletter', to: 'newsletter#subscribe'
+  get '/register_to_webinar', to: 'pages#register_to_webinar'
 
   # Redirects
   get '/dashboard/internship_offers/:id', to: redirect('/internship_offers/%{id}', status: 302)

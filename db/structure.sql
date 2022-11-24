@@ -611,7 +611,7 @@ CREATE TABLE public.internship_agreements (
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
     siret character varying(16),
-    tutor_role character varying,
+    tutor_role character varying(150),
     tutor_email character varying(80),
     organisation_representative_role character varying(100),
     student_address character varying(250),
@@ -750,9 +750,9 @@ CREATE TABLE public.internship_offer_infos (
     updated_at timestamp(6) without time zone NOT NULL,
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
-    max_students_per_group integer DEFAULT 1 NOT NULL,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
+    max_students_per_group integer DEFAULT 1 NOT NULL,
     remaining_seats_count integer DEFAULT 0
 );
 
@@ -1327,7 +1327,8 @@ CREATE TABLE public.users (
     signature_phone_token character varying(6),
     signature_phone_token_expires_at timestamp(6) without time zone,
     signature_phone_token_checked_at timestamp(6) without time zone,
-    employer_role character varying
+    employer_role character varying,
+    subscribed_to_webinar_at timestamp(6) without time zone DEFAULT NULL::timestamp without time zone
 );
 
 
@@ -2738,12 +2739,14 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220811103937'),
 ('20220816105807'),
 ('20221010071105'),
+('20221013162104'),
 ('20221021094345'),
 ('20221026142333'),
 ('20221028100721'),
 ('20221031083556'),
 ('20221112100533'),
 ('20221118075029'),
-('20221119132335');
+('20221119132335'),
+('20221121103636');
 
 
