@@ -299,7 +299,7 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:see_reporting_schools, User)
     refute ability.can?(:see_reporting_associations, User)
     refute ability.can?(:see_reporting_entreprises, User)
-    assert ability.can?(:see_dashboard_enterprises_summary, User)
+    assert ability.can?(:see_ministry_dashboard, User)
   end
 
   test 'SchoolManager' do
@@ -314,7 +314,7 @@ class AbilityTest < ActiveSupport::TestCase
 
     assert(ability.can?(:welcome_students, school_manager), 'school_manager are to be able to supply offers')
     assert(ability.can?(:choose_class_room, User))
-    assert(ability.can?(:choose_role, User))
+    refute(ability.can?(:choose_role, User))
     assert(ability.can?(:choose_class_room, User))
     assert(ability.can?(:sign_with_sms, User))
     assert(ability.can?(:subscribe_to_webinar, school_manager))

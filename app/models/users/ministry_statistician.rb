@@ -24,6 +24,8 @@ module Users
       end
     end
 
+    METABASE_DASHBOARD_ID = 10
+
     before_validation :assign_email_whitelist_and_confirm
     validate :email_in_whitelist
 

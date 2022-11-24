@@ -57,8 +57,8 @@ class Ability
     can %i[
       welcome_students
       subscribe_to_webinar
-      choose_role
       sign_with_sms], User
+    can :choose_role, User unless user.school_manager?
     can_create_and_manage_account(user: user) do
       can [:choose_class_room], User
     end
@@ -306,7 +306,7 @@ class Ability
     can :read, Group
     can %i[index], Acl::Reporting, &:ministry_statistician_allowed?
     can %i[ export_reporting_dashboard_data
-            see_dashboard_enterprises_summary
+            see_ministry_dashboard
             see_dashboard_associations_summary ], User
   end
 

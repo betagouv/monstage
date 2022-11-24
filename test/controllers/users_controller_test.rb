@@ -52,7 +52,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test 'GET account_path(section: :identiy) as SchoolManagement can change identity' do
     school = create(:school, :with_school_manager)
     [
-      school.school_manager,
       create(:main_teacher, school: school),
       create(:teacher, school: school),
       create(:other, school: school)
