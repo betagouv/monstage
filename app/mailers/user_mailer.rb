@@ -25,8 +25,8 @@ class UserMailer < ApplicationMailer
   private
 
   def serialize_params_for_filenaming(params)
-    params.inject("export-des-offres-") do |accu, (k,v)|
-      "#{accu}-#{k.to_s.parameterize}-#{v.to_s.parameterize}"
+    params.delete_if { |k,v| v.nil? }.inject("export-des-offres") do |accu, (k,v)|
+      "#{accu}-#{InternshipOffer.human_attribute_name(k.to_s).parameterize}-#{v.to_s.parameterize}"
     end
   end
 

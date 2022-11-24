@@ -171,6 +171,7 @@ fr:
         tutor_name: Nom du tuteur
         tutor_phone: Téléphone du tuteur
         tutor_email: Email du tuteur
+        tutor_role: Fonction du tuteur
 
       internship_agreement:
         internship_application: Candidature
@@ -291,6 +292,7 @@ fr:
         coordinates: Coordonnées GPS
         group_name: Groupe ou institution
         school: Établissement réservé
+        school_year: Année
         internship_applications: Candidatures
 
       internship_application:
