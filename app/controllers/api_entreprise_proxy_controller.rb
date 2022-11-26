@@ -10,19 +10,19 @@ class ApiEntrepriseProxyController < ApplicationController
 
   def clean_response(body)
     etablissements = []
-    if JSON.parse(body)['etablissement']
-      JSON.parse(body)['etablissement'].each do |etablissement|
+    if JSON.parse(body)['results']
+      JSON.parse(body)['results'].each do |etablissement|
         etablissements << {
-          siret: etablissement['siret'],
+          siret: etablissement['siege']['siret'],
           uniteLegale: {
-            denominationUniteLegale: etablissement['l1_normalisee']
+            denominationUniteLegale: etablissement['nom_complet']
           },
           adresseEtablissement: {
-            numeroVoieEtablissement: '',
-            typeVoieEtablissement: '',
-            libelleVoieEtablissement: etablissement['l4_normalisee'],
-            codePostalEtablissement: etablissement['code_postal'],
-            libelleCommuneEtablissement: etablissement['libelle_commune'] 
+            numeroVoieEtablissement: etablissement['siege']['numero_voie'],
+            typeVoieEtablissement: etablissement['siege']['type_voie'],
+            libelleVoieEtablissement: "#{etablissement['siege']['numero_voie']} #{etablissement['siege']['type_voie']} #{etablissement['siege']['libelle_voie']}",
+            codePostalEtablissement: etablissement['siege']['commune'],
+            libelleCommuneEtablissement: etablissement['siege']['libelle_commune'] 
           }
 
         }
