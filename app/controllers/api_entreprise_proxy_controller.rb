@@ -18,8 +18,8 @@ class ApiEntrepriseProxyController < ApplicationController
             denominationUniteLegale: etablissement['nom_complet']
           },
           adresseEtablissement: {
-            numeroVoieEtablissement: etablissement['siege']['numero_voie'],
-            typeVoieEtablissement: etablissement['siege']['type_voie'],
+            numeroVoieEtablissement: '',
+            typeVoieEtablissement: '',
             libelleVoieEtablissement: "#{etablissement['siege']['numero_voie']} #{etablissement['siege']['type_voie']} #{etablissement['siege']['libelle_voie']}",
             codePostalEtablissement: etablissement['siege']['commune'],
             libelleCommuneEtablissement: etablissement['siege']['libelle_commune'] 
