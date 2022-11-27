@@ -5,7 +5,7 @@ require "sti_preload"
 class EmailWhitelist < ApplicationRecord
   include StiPreload
   before_validation :email_downcase
-  after_create :notify_account_ready
+  after_create :notify_account_ready,  if: :user_does_not_exist?
   after_destroy :discard_user
 
   belongs_to :user, optional: true
@@ -27,6 +27,10 @@ class EmailWhitelist < ApplicationRecord
 
   def fetch_user
     user || User.find_by(email: email)
+  end
+
+  def user_does_not_exist?
+    fetch_user.nil?
   end
 
 end
