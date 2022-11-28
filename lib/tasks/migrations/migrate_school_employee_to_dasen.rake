@@ -8,7 +8,7 @@ require 'pretty_console'
 # ======================================
 
 namespace :migrations do
-  desc 'Migrate school_manager to dasen'
+  desc 'Migrate school_manager to dasen (or education statistician)'
   task :from_school_employee_to_edu_stat, [:identity] => :environment do |t, args|
     arguments = args.identity
     email = arguments.split(';').first.split(':').last
@@ -16,10 +16,10 @@ namespace :migrations do
 
     user = User.find_by(email: email)
     short_zipcode =  if Department.departement_identified_by_3_chars?(zipcode: zipcode)
-                        zipcode[0..2]
-                      else
-                        zipcode[0..1]
-                      end
+                       zipcode[0..2]
+                     else
+                       zipcode[0..1]
+                     end
 
     if short_zipcode.nil?
         PrettyConsole.puts_in_red "Zipcode not found"
@@ -29,8 +29,8 @@ namespace :migrations do
     elsif
       user.school_manager? && user.send(:official_uai_email_address?)
       message = "User uses a shared email address, he should not be allowed" \
-                " to change his email address unless changing his function " \
-                "first and then his email address to a professional, yet personal one"
+                " to become statistician with this email address. He should " \
+                "change his email address first to a professional, yet personal one"
       PrettyConsole.puts_in_red message
     else
       ActiveRecord::Base.transaction do
