@@ -7,7 +7,7 @@
 
       - if can?(:supply_offers, current_user)
         - if current_user.ministry_statistician?
-          = render partial: "dashboard/stepper/organisations/form_ministry_statistician_specifics", locals: { form: form }
+          = render partial: "dashboard/stepper/organisations/form_ministry_statistician_specifics", locals: { form: form, resource: resource, submit_button: submit_button }
         - else
           = react_component("SirenInput",
                             props: { resourceName: form.object_name,
@@ -49,7 +49,7 @@
                             class: "form-control",
                             data: {:"organisation-form-target" => 'selectGroupName'}
 
-        .bloc-tooggle class=('d-none' if request.fullpath.include?('organisations/new'))
+        .bloc-tooggle
           = react_component("FullAddressInput", props: { resourceName: form.object_name,
                                   currentStreet: resource.street,
                                   currentCity: resource.city,

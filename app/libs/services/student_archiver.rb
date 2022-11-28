@@ -4,8 +4,18 @@ module Services
 
     def run
       archive_students
+      archive_class_room_student_link
     end
 
+
+    def archive_class_room_student_link
+      Users::Student.where(anonymized: true)
+                    .where(created_at: (begins_at..ends_at))
+                    .where.not(class_room_id: nil).each do |student|
+        student.update_column(:class_room_id, nil)
+        print '.'
+      end
+    end
 
     private
 

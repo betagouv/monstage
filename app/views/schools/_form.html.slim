@@ -1,0 +1,46 @@
+= form_with model: @school,
+            url: schools_path(@school),
+            data: {turbo: false} do |f|
+  = render "layouts/form_errors", resource: @school, resource_name: :school
+
+  fieldset
+    legend= "Établissement"
+
+    .form-group
+      = f.label :name, class: 'fr-label' do
+        = "Nom de l'établissement"
+        = f.rg2a_required_content_tag
+
+      = f.text_field :name, class: "fr-input col-lg-6", required:true
+    
+    .form-group
+      = f.label :name, class: 'fr-label' do
+        = "Code UAI de l'établissement"
+        = f.rg2a_required_content_tag
+
+      = f.text_field :code_uai, class: "fr-input col-lg-6", required:true
+
+    .form-group
+      = f.label :kind, "Type de collège", class: 'fr-label'
+      = f.select :kind,
+                  options_for_select(School::VALID_TYPE_PARAMS),
+                  { include_blank: false },
+                  class: "fr-select col-lg-6"
+
+    .form-group.mt-4
+       .fr-checkbox-group.fr-checkbox-group--sm
+        = f.check_box :visible
+        = f.label :visible, 'Actif (accessible aux utilisateurs)', class: 'fr-label'
+
+  fieldset
+    legend= "Localisation"
+
+    = react_component("AddressInput", props: { resourceName: :school,
+                                               currentStreet: @school.street,
+                                               currentCity: @school.city,
+                                               currentZipcode: @school.zipcode,
+                                               currentLatitude: @school.coordinates.try(:lat).try(:to_f),
+                                               currentLongitude: @school.coordinates.try(:lng).try(:to_f),
+                                               currentFullAddress: @school.formatted_autocomplete_address})
+
+  .actions.d-flex.d-sm-block= f.submit "Créer l'établissement", class: 'fr-btn'
