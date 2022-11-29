@@ -222,7 +222,7 @@ class Ability
   end
 
   def god_abilities
-    can :show, :account
+    can :show, :account, :user_migrations
     can :manage, School
     can :manage, Sector
     can %i[destroy see_tutor], InternshipOffer
