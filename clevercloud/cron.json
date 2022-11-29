@@ -2,6 +2,7 @@
     "0 7 * * * $ROOT/clevercloud/crons/internship_application_reminders.sh",
     "0 8 * * 1 $ROOT/clevercloud/crons/kpi_mailing.sh",
     "0 3 * * 1 $ROOT/clevercloud/crons/pending_internship_applications_mailing.sh",
+    "*/10 * * * * $ROOT/clevercloud/crons/sync_production_databases.sh",
     "0 * * * * $ROOT/clevercloud/crons/pull_airtable_data.sh"
   ]
 
