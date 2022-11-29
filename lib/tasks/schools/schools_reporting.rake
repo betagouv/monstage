@@ -43,4 +43,3 @@ namespace :schools do
     PrettyConsole.say_in_green "Le nombre d'établissements créés dans l'année scolaire courante est de #{new_schools.count}"
   end
 end
-# '0752694W'
