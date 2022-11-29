@@ -297,13 +297,6 @@ class InternshipApplication < ApplicationRecord
     motivation.try(:delete)
   end
 
-  # def new_format?
-  #   return true if new_record?
-  #   return false if created_at < Date.parse('01/09/2020')
-
-  #   true
-  # end
-
   def short_target_url(application)
     target = Rails.application
                   .routes
