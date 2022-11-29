@@ -1328,7 +1328,8 @@ CREATE TABLE public.users (
     signature_phone_token_expires_at timestamp(6) without time zone,
     signature_phone_token_checked_at timestamp(6) without time zone,
     employer_role character varying,
-    subscribed_to_webinar_at timestamp(6) without time zone DEFAULT NULL::timestamp without time zone
+    subscribed_to_webinar_at timestamp(6) without time zone DEFAULT NULL::timestamp without time zone,
+    agreement_signatorable boolean DEFAULT false
 );
 
 
@@ -2748,6 +2749,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221118075029'),
 ('20221119132335'),
 ('20221121103636'),
+('20221123101159'),
 ('20221124170052');
 
 

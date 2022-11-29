@@ -32,7 +32,7 @@
             = f.rg2a_required_content_tag
           small.d-none data-profile-target="emailHint"
           = f.text_field :email,
-                        {class: 'fr-input', required: true, data: {action: 'change->profile#onBlurEmailInput', :"profile-target" => 'emailInput'}}.merge(current_user.is_a?(Users::Statistician) ? { readonly: true } : {})
+                         {class: 'fr-input', required: true, data: {action: 'change->profile#onBlurEmailInput', :"profile-target" => 'emailInput'}}.merge(current_user.statistician? ? { readonly: true } : {})
       - if current_user.ministry_statistician?
         .col-md-6.col-xs-12
           .form-group

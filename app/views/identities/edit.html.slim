@@ -14,7 +14,7 @@
     = render "layouts/form_errors", resource: @identity, resource_name: :identity
     = f.hidden_field :targeted_offer_id, value: params.dig(:identity, :targeted_offer_id)
     = f.hidden_field :identity_token, value: @identity.token
-    
+
     = react_component("SearchSchool", props: { classes: 'col-12 fr-input',
                                                required: true,
                                                label: 'Nom (ou ville) de mon établissement REP ou REP+',

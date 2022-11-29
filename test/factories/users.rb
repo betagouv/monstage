@@ -95,6 +95,7 @@ FactoryBot.define do
 
     factory :statistician, class: 'Users::Statistician', parent: :user do
       type { 'Users::Statistician' }
+      agreement_signatorable { false }
       before(:create) do |user|
         create(:statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
       end
@@ -102,6 +103,7 @@ FactoryBot.define do
 
     factory :education_statistician, class: 'Users::EducationStatistician', parent: :user do
       type { 'Users::EducationStatistician' }
+      agreement_signatorable { false }
       before(:create) do |user|
         create(:education_statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
       end
@@ -109,6 +111,7 @@ FactoryBot.define do
 
     factory :ministry_statistician, class: 'Users::MinistryStatistician', parent: :user do
       type { 'Users::MinistryStatistician' }
+      agreement_signatorable { false }
       transient do
         white_list { create(:ministry_statistician_email_whitelist) }
       end
