@@ -102,6 +102,9 @@ fr:
       users/ministry_statistician:
         one: Référent central
         other: Référents centraux
+      users/education_statistician:
+        one: Référent de l'éducation nationale
+        other: Référents de l'éducation nationale
       week:
         one: Semaine
         other: Semaines
