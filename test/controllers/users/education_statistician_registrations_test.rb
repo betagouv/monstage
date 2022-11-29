@@ -32,4 +32,12 @@ class EducationStatisticianRegistrationsTest < ActionDispatch::IntegrationTest
       assert_response 302
     end
   end
+
+  test 'when agreement_signatorable goes from false to true a job is launched' do
+    education_statistician = create(:education_statistician)
+    refute education_statistician.agreement_signatorable
+    assert_enqueued_with(job: AgreementsAPosterioriJob) do
+      education_statistician.update(agreement_signatorable: true)
+    end
+  end
 end

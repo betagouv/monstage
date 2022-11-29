@@ -34,8 +34,9 @@ module Users
             foreign_key: :user_id,
             dependent: :destroy
 
-    
+
     validates :email_whitelist, presence: { message: 'none' }
+    before_update :trigger_agreements_creation
     before_validation :assign_email_whitelist_and_confirm
     # Beware : order matters here !
     validate :email_in_list
@@ -59,9 +60,8 @@ module Users
       ]
     end
 
-    def statistician?
-      true
-    end
+    def department_statistician?; true end
+    def statistician? ; true end
 
     def presenter
       Presenters::Statistician.new(self)

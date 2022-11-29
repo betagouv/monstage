@@ -26,6 +26,7 @@ module Users
 
     METABASE_DASHBOARD_ID = 10
 
+    before_update :trigger_agreements_creation
     before_validation :assign_email_whitelist_and_confirm
     validate :email_in_whitelist
 
@@ -63,9 +64,8 @@ module Users
     end
 
 
-    def ministry_statistician?
-      true
-    end
+    def ministry_statistician? ; true end
+    def statistician? ; true end
 
     def presenter
       Presenters::MinistryStatistician.new(self)
