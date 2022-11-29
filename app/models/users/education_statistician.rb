@@ -34,6 +34,7 @@ module Users
             dependent: :destroy
 
     has_many :internship_offers, foreign_key: 'employer_id'
+    before_update :trigger_agreements_creation
     validates :email_whitelist, presence: { message: 'none' }
     before_validation :assign_email_whitelist_and_confirm
     # Beware : order matters here !

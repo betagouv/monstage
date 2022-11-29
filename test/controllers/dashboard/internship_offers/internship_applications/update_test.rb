@@ -72,7 +72,7 @@ module InternshipOffers::InternshipApplications
         user_id: student.id
       )
       employer = internship_application.internship_offer.employer
-      employer.update(type: 'Users::Statistician')
+      employer.becomes(Users::Statistician)
       employer.update(agreement_signatorable: true)
 
       sign_in(employer)
@@ -80,10 +80,11 @@ module InternshipOffers::InternshipApplications
       assert_enqueued_emails 2 do
         patch(
           dashboard_internship_offer_internship_application_path(
-            internship_application.internship_offer,
-            internship_application ),
-            params: { transition: :approve! })
-          assert_redirected_to employer.after_sign_in_path
+            internship_application.internship_offer, 
+            internship_application),
+          params: { transition: :approve! }
+        )
+        assert_redirected_to employer.after_sign_in_path
       end
       assert_equal 1, InternshipAgreement.count
     end
