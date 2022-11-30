@@ -28,7 +28,7 @@ module InternshipAgreementsHelper
     range.map do |i|
       hour = (i.to_f / 4).to_i
       min = 15 * ( i - (hour * 4))
-      "#{format('%02d', hour)}h#{format('%02d',min)}"
+      "#{format('%02d', hour)}:#{format('%02d',min)}"
     end
   end
 end
