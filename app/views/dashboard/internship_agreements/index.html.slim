@@ -7,7 +7,7 @@
            layout: 'dashboard/schools/common_head',
            locals: { school: @school,
                     internship_agreements: @internship_agreements }
-- if current_user.employer?
+- if current_user.employer? || current_user.statistician?
   = render partial: 'dashboard/internship_agreements/index_employer',
            locals: { school: @school,
                      internship_agreements: @internship_agreements}

@@ -12,8 +12,22 @@ module InternshipAgreements
       @second_label       ||= second_button_label
     end
 
+    def started_or_signed?
+      %w[validated
+         signatures_started
+         signed_by_all signed
+      ].include?(internship_agreement.aasm_state)
+    end
+
+    def on_going_process?
+      condition_1 = current_user.employer? || current_user.statistician?
+      condition_2 = %w[completed_by_employer
+                       started_by_school_manager].include?(internship_agreement.aasm_state)
+      condition_1 || condition_2
+    end
+
     def button_label(user:)
-      if user.employer?
+      if user.employer? || user.statistician?
         case @internship_agreement.aasm_state
         when 'draft' then
           {status: 'cta', text: 'Remplir ma convention'}

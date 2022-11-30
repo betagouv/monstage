@@ -337,6 +337,7 @@ class Ability
     can %i[index], Acl::InternshipOfferDashboard
     can %i[see_reporting_dashboard
            see_dashboard_administrations_summary], User
+    can %i[create edit update], InternshipAgreement
   end
 
 

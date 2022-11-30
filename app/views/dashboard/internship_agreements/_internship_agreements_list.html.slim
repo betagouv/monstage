@@ -1,5 +1,5 @@
 #agreement-button-panel [
-  class="margin-to-header #{current_user.employer? ? 'fr-tabs__panel fr-tabs__panel--selected' : ''}"
+  class="margin-to-header #{(current_user.employer? || current_user.statistician?) ? 'fr-tabs__panel fr-tabs__panel--selected' : ''}"
   aria-labelled-by="agreement-button"
   role="tabpanel"
   tabindex="0"]

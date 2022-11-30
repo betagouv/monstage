@@ -50,7 +50,7 @@ class AbilityTest < ActiveSupport::TestCase
     ability = Ability.new(student_2)
     assert(ability.can?(:apply, internship_offer),
            'students should be able to apply for internship offers')
-    
+
   end
 
   test 'Employer' do
@@ -220,6 +220,10 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:see_reporting_schools, User)
     refute ability.can?(:see_reporting_associations, User)
     refute ability.can?(:see_reporting_enterprises, User)
+
+    assert(ability.can?(:edit, InternshipAgreement))
+    assert(ability.can?(:create, InternshipAgreement))
+    assert(ability.can?(:update, InternshipAgreement))
   end
 
   test 'Education Statistician' do
@@ -259,6 +263,10 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:see_reporting_schools, User)
     refute ability.can?(:see_reporting_associations, User)
     refute ability.can?(:see_reporting_enterprises, User)
+
+    assert(ability.can?(:edit, InternshipAgreement))
+    assert(ability.can?(:create, InternshipAgreement))
+    assert(ability.can?(:update, InternshipAgreement))
   end
 
   test 'MinistryStatistician' do
@@ -300,6 +308,10 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:see_reporting_associations, User)
     refute ability.can?(:see_reporting_entreprises, User)
     assert ability.can?(:see_ministry_dashboard, User)
+
+    assert(ability.can?(:edit, InternshipAgreement))
+    assert(ability.can?(:create, InternshipAgreement))
+    assert(ability.can?(:update, InternshipAgreement))
   end
 
   test 'SchoolManager' do
