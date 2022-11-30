@@ -11,4 +11,24 @@ module InternshipAgreementsHelper
     return false unless ['new', 'edit', 'update'].include?(controller.action_name)
     return true
   end
+
+  def morning_hours_by_quarter
+    # 32 => 08h00
+    # 33 => 08h15
+    # 44 => 11h00
+    hours_maker(range: (32..44).to_a)
+  end
+
+  def afternoon_hours_by_quarter
+    # 72 => 18h00
+    hours_maker(range: (60..72).to_a)
+  end
+
+  def hours_maker(range: )
+    range.map do |i|
+      hour = (i.to_f / 4).to_i
+      min = 15 * ( i - (hour * 4))
+      "#{format('%02d', hour)}h#{format('%02d',min)}"
+    end
+  end
 end
