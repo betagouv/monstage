@@ -134,6 +134,30 @@ class Ability
     end
   end
 
+  def as_employers_signatory_abilities(user:)
+    can %i[
+      create
+      edit
+      edit_organisation_representative_role
+      edit_tutor_email
+      edit_tutor_role
+      edit_activity_scope_rich_text
+      edit_activity_preparation_rich_text
+      edit_activity_learnings_rich_text
+      edit_complementary_terms_rich_text
+      edit_date_range
+      edit_organisation_representative_full_name
+      edit_siret
+      edit_tutor_full_name
+      edit_weekly_hours
+      sign_internship_agreements
+      update
+    ], InternshipAgreement do |agreement|
+      agreement.employer == user
+    end
+    can %i[create edit update], InternshipAgreement
+  end
+
 
   def employer_abilities(user:)
     can %i[supply_offers sign_with_sms choose_function subscribe_to_webinar] , User
@@ -164,26 +188,7 @@ class Ability
       signature.internship_agreement.internship_offer.employer_id == user.id
     end
 
-    can %i[
-      create
-      edit
-      edit_organisation_representative_role
-      edit_tutor_email
-      edit_tutor_role
-      edit_activity_scope_rich_text
-      edit_activity_preparation_rich_text
-      edit_activity_learnings_rich_text
-      edit_complementary_terms_rich_text
-      edit_date_range
-      edit_organisation_representative_full_name
-      edit_siret
-      edit_tutor_full_name
-      edit_weekly_hours
-      sign_internship_agreements
-      update
-    ], InternshipAgreement do |agreement|
-      agreement.employer == user
-    end
+    as_employers_signatory_abilities(user: user)
   end
 
   def operator_abilities(user:)
@@ -337,7 +342,8 @@ class Ability
     can %i[index], Acl::InternshipOfferDashboard
     can %i[see_reporting_dashboard
            see_dashboard_administrations_summary], User
-    can %i[create edit update], InternshipAgreement
+    
+    as_employers_signatory_abilities(user: user)
   end
 
 
