@@ -236,7 +236,7 @@ class User < ApplicationRecord
   def god? ; false end
   def employer_like? ; false end
 
-  def already_signed?(internship_aggreement_id:); true end
+  def already_signed?(internship_agreement_id:); true end
   def create_signature_phone_token ; nil end
   def send_signature_sms_token ; nil end
   def signatory_role ; nil end

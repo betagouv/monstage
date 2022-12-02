@@ -65,7 +65,16 @@ module Signatorable
     end
 
     def employer_like?
-      employer? || statistician?
+      employer? || (statistician? && agreement_signatorable)
+    end
+
+    def already_signed?(internship_agreement_id:)
+      return false if school_management? && !school_manager?
+      
+      InternshipAgreement.joins(:signatures)
+                         .where(id: internship_agreement_id)
+                         .where(signatures: {user_id: id})
+                         .exists?
     end
   end
 end

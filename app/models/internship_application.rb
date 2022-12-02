@@ -334,12 +334,10 @@ class InternshipApplication < ApplicationRecord
   private
 
   def internship_agreement_creation_allowed?
-    return false unless student.school&.school_manager
+    return false unless student.school&.school_manager&.email
     return false if internship_offer.school_track != 'troisieme_generale'
+    return false unless internship_offer.employer.employer_like?
 
-    employer = internship_offer.employer
-    return false unless employer.employer? || employer.statistician?
-    return false if employer.statistician? && !employer.agreement_signatorable?
     true
   end
 end

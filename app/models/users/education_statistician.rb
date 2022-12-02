@@ -69,6 +69,10 @@ module Users
       super
     end
 
+    def signatory_role
+      Signature.signatory_roles[:employer]
+    end
+
     rails_admin do
       weight 5
 

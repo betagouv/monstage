@@ -37,7 +37,7 @@ module Presenters
       if internship_agreement.signatures_started?
         if internship_agreement.signed_by?(user: current_user)
           I18n.t("#{translation_path}.already_signed")
-        else internship_agreement.signatures_started?
+        elsif internship_agreement.signatures_started?
           I18n.t("#{translation_path}.not_signed_yet")
         end
       else

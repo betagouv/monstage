@@ -20,14 +20,14 @@ module InternshipAgreements
     end
 
     def on_going_process?
-      condition_1 = current_user.employer? || current_user.statistician?
+      condition_1 = current_user.employer_like?
       condition_2 = %w[completed_by_employer
                        started_by_school_manager].include?(internship_agreement.aasm_state)
       condition_1 || condition_2
     end
 
     def button_label(user:)
-      if user.employer? || user.statistician?
+      if user.employer_like?
         case @internship_agreement.aasm_state
         when 'draft' then
           {status: 'cta', text: 'Remplir ma convention'}
