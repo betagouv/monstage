@@ -56,6 +56,7 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:school_id,
                                  :missing_weeks_school_id,
+                                 :agreement_signatorable,
                                  :first_name,
                                  :last_name,
                                  :email,

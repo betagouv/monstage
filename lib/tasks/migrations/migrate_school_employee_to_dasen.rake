@@ -4,7 +4,7 @@ require 'pretty_console'
 
 # Use it this way:
 # ======================================
-#   rake "migrations:from_school_manager_to_edu_stat[email:test@ac-amiens.fr;zipcode:67000]"
+#   rake "migrations:from_school_employee_to_edu_stat[email:test@ac-amiens.fr;zipcode:67000]"
 # ======================================
 
 namespace :migrations do

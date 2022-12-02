@@ -451,7 +451,6 @@ def populate_internship_offers
   InternshipOffers::Api.create!(
     employer: Users::Operator.first,
     siret: siret,
-    weeks: Week.selectable_on_school_year,
     weeks: weeks,
     first_date: weeks.first.beginning_of_week,
     last_date: weeks.last.beginning_of_week,
