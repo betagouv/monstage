@@ -52,12 +52,26 @@ class InternshipApplicationsController < ApplicationController
     authorize! :apply, @internship_offer
 
     @internship_application = InternshipApplication.create!({user_id: current_user.id}.merge(create_internship_application_params))
-    redirect_to internship_offer_internship_application_path(@internship_offer,
-                                                             @internship_application)
+    redirect_to completed_internship_offer_internship_application_path(@internship_offer, @internship_application)
   rescue ActiveRecord::RecordInvalid => e
     @internship_application = e.record
     puts @internship_application.errors.messages
     render 'new', status: :bad_request
+  end
+
+  def completed
+    set_internship_offer
+    @internship_application = @internship_offer.internship_applications.find(params[:id])
+    authorize! :submit_internship_application, @internship_application
+
+    @suggested_offers = Finders::InternshipOfferConsumer.new(
+      params: {
+        latitude: @internship_application.student.school.coordinates.latitude,
+        longitude: @internship_application.student.school.coordinates.longitude,
+        week_ids: [@internship_application.week_id]
+      },
+      user: current_user_or_visitor
+    ).all.includes([:sector]).order(id: :desc).last(6)
   end
 
   private
