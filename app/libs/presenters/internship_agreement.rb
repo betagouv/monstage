@@ -25,7 +25,10 @@ module Presenters
     end
 
     def role
-      current_user.statistician? || current_user.employer?  ? 'employer' : 'school_manager'
+      return 'employer' if current_user.employer_like?
+      return 'school_manager' if current_user.school_manager?
+
+      nil
     end
 
     def translation_path(role)
