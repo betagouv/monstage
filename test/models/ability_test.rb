@@ -221,6 +221,12 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:see_reporting_associations, User)
     refute ability.can?(:see_reporting_enterprises, User)
 
+    refute(ability.can?(:edit, InternshipAgreement))
+    refute(ability.can?(:create, InternshipAgreement))
+    refute(ability.can?(:update, InternshipAgreement))
+
+    statistician = create(:statistician, agreement_signatorable: true)
+    ability = Ability.new(statistician)
     assert(ability.can?(:edit, InternshipAgreement))
     assert(ability.can?(:create, InternshipAgreement))
     assert(ability.can?(:update, InternshipAgreement))
@@ -264,6 +270,12 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:see_reporting_associations, User)
     refute ability.can?(:see_reporting_enterprises, User)
 
+    refute(ability.can?(:edit, InternshipAgreement))
+    refute(ability.can?(:create, InternshipAgreement))
+    refute(ability.can?(:update, InternshipAgreement))
+
+    statistician = create(:education_statistician, agreement_signatorable: true)
+    ability = Ability.new(statistician)
     assert(ability.can?(:edit, InternshipAgreement))
     assert(ability.can?(:create, InternshipAgreement))
     assert(ability.can?(:update, InternshipAgreement))
@@ -309,6 +321,12 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:see_reporting_entreprises, User)
     assert ability.can?(:see_ministry_dashboard, User)
 
+    refute(ability.can?(:edit, InternshipAgreement))
+    refute(ability.can?(:create, InternshipAgreement))
+    refute(ability.can?(:update, InternshipAgreement))
+
+    statistician = create(:ministry_statistician, agreement_signatorable: true)
+    ability = Ability.new(statistician)
     assert(ability.can?(:edit, InternshipAgreement))
     assert(ability.can?(:create, InternshipAgreement))
     assert(ability.can?(:update, InternshipAgreement))

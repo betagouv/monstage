@@ -105,7 +105,7 @@ module Dashboard
     test 'statistician single signs and everything is ok' do
       # Brittle because of CI but shoud be working allright localy
       if ENV['RUN_BRITTLE_TEST']
-        employer = create(:statistician)
+        employer = create(:statistician, agreement_signatorable: true)
         weeks = [Week.find_by(number: 5, year: 2020), Week.find_by(number: 6, year: 2020)]
         internship_offer = create(:weekly_internship_offer, weeks: weeks, employer: employer)
         student = create(:student, school: create(:school, weeks: weeks))

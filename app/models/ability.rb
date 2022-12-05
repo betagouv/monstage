@@ -310,7 +310,11 @@ class Ability
       internship_application.student.school_id == user.school_id
     end
     can %i[update destroy], InternshipApplication do |internship_application|
-      user.school.students.where(id: internship_application.student.id).count.positive?
+      user.school
+          .students
+          .where(id: internship_application.student.id)
+          .count
+          .positive?
     end
     can %i[see_tutor], InternshipOffer
   end
@@ -318,11 +322,11 @@ class Ability
   def as_employers_signatory_abilities(user:)
     can %i[
       create
-      edit
-      update
     ], InternshipAgreement
 
     can %i[
+      edit
+      update
       edit_organisation_representative_role
       edit_tutor_email
       edit_tutor_role
