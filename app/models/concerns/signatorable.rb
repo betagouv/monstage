@@ -63,5 +63,10 @@ module Signatorable
 
       [signature_phone_token[0..2], signature_phone_token[3..-1]].join(' ')
     end
+
+    def employer_like?
+      employer?
+    end
+
   end
 end
