@@ -13,13 +13,15 @@
     - is_creating = @internship_application.try(:new_record?)
 
     = form_with({model: @internship_application,
+                data: {turbo: false},
                  url: (is_creating ? internship_offer_internship_applications_path(@internship_offer) : internship_offer_internship_application_path(@internship_offer, @internship_application)),
                  scope: :internship_application,
                  html: {method: is_creating ? :post : :patch, id: 'new_internship_application'} }) do |f|
       = render "layouts/form_errors",
                resource: @internship_application,
-               resource_name: :internship_applications
-      = f.hidden_field :type, value: 'InternshipApplications::WeeklyFramed'
+               resource_name: :internship_application
+
+      = f.hidden_field :type, value: @internship_offer.weekly? ? 'InternshipApplications::WeeklyFramed' : 'InternshipApplications::FreeDate'
       = f.hidden_field :internship_offer_id
       = f.hidden_field :internship_offer_type
 

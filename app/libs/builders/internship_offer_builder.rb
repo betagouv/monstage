@@ -20,11 +20,13 @@ module Builders
         callback.on_failure.try(:call, e.record)
       end
 
-      # called by internship_offers#create (duplicate), api/internship_offers#create
-      def create(params:)
+    # called by internship_offers#create (duplicate), api/internship_offers#create
+    def create(params:)
       yield callback if block_given?
       authorize :create, model
-      internship_offer = model.create!(preprocess_api_params(params, fallback_weeks: true))
+      create_params = preprocess_api_params(params, fallback_weeks: true)
+      create_params.merge!(remaining_seats_count: params[:max_candidates])
+      internship_offer = model.create!(create_params)
       callback.on_success.try(:call, internship_offer)
     rescue ActiveRecord::RecordInvalid => e
       if duplicate?(e.record)
@@ -39,8 +41,8 @@ module Builders
     def update(instance:, params:)
       yield callback if block_given?
       authorize :update, instance
-
       instance.attributes = preprocess_api_params(params, fallback_weeks: false)
+      instance = deal_with_max_candidates_change(params: params, instance: instance)
       instance.save!
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => e
@@ -109,6 +111,7 @@ module Builders
         daily_lunch_break: internship_offer_info.daily_lunch_break,
         weekly_lunch_break: internship_offer_info.weekly_lunch_break,
         type: internship_offer_info.type.gsub('Info', ''),
+        remaining_seats_count: internship_offer_info.max_candidates
       }
       params[:week_ids] = internship_offer_info.week_ids
       params
@@ -129,6 +132,10 @@ module Builders
 
     def type_will_change?(params: , instance: )
       params[:type] && params[:type] != instance.type
+    end
+
+    def max_candidates_will_change?(params: , instance: )
+      params[:max_candidates] && params[:max_candidates] != instance.max_candidates
     end
 
     def model

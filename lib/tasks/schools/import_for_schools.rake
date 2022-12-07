@@ -176,6 +176,102 @@ namespace :schools do
     remaing_schools_count = School.where(zipcode: nil).count
     PrettyConsole.puts_in_red("Remaining schools count: #{remaing_schools_count}") unless remaing_schools_count.zero?
   end
+
+  desc 'Import missing schools from csv file'
+  task :import_last_export => :environment do
+    # 0 ACADEMIE
+    # 1 N°Département
+    # 2 DEPARTEMENT
+    # 3 COMMUNE
+    # 4 UAI tête de réseau
+    # 5 NUMERO
+    # 6 NOM DE L'ETABLISSEMENT
+    # 7 TYPE_DETABLISSEMENT
+    # 8 EP
+    # 9 circonscription
+    # 10 contact collège ou circonscription
+
+    data_file_path = Rails.root.join('db/data_imports/liste-des-rep-et-rep-rentree-2022.csv')
+    listed_schools = {}
+    missing_schools = []
+    no_result_by_geocoder = []
+    CSV.open(data_file_path, headers: { col_sep: ';' }).each do |row|
+      fields = row.to_s.split(';')
+      type = fields[7]
+      next unless type.in?(['COLLÈGE','COLLEGE'])
+      
+      rep = fields[8]
+      next unless rep.in?(['REP','REP+'])
+
+      code_uai = fields[5]
+      zipcode = fields[1]
+      name = fields[6]
+      rep = fields[8]
+      city = fields[3]
+      listed_schools[code_uai] = {
+        code_uai: code_uai,
+        zipcode: zipcode,
+        name: name,
+        rep: rep,
+        city: city
+      }
+    end
+
+    PrettyConsole.say_in_green("Start")
+
+    listed_schools.each do |code_uai, school|
+      if School.find_by(code_uai: code_uai).nil?
+        missing_schools << school
+      end
+    end
+    PrettyConsole.say_in_red("Missing schools in db count: #{missing_schools.count}")
+
+    missing_schools.each do |school|
+      search_string = "Collège #{school[:name]} #{school[:city]} FRANCE"
+
+      geocoder_data = Geocoder.search(search_string).first
+      if geocoder_data.blank? || geocoder_data&.data&.key?('error')
+        no_result_by_geocoder << school
+        puts search_string
+        next
+      end
+
+
+      # (no_result_by_geocoder << school) and next if coordinates.blank?
+      coordinates   = geocoder_data.coordinates
+      street        = geocoder_data.street
+      zipcode       = geocoder_data.postal_code
+      village       = geocoder_data.village
+      geocoder_city = geocoder_data.city
+      kind = school[:rep] == 'REP' ? 'rep' : 'rep_plus'
+
+      db_school = School.new(
+          code_uai: school[:code_uai],
+          name: school[:name],
+          city: geocoder_city || village,
+          zipcode: zipcode,
+          coordinates: { latitude: coordinates[0], longitude: coordinates[1] },
+          street: street,
+          kind: kind
+      )
+      puts db_school if db_school.code_uai == '0020007X'
+      if db_school.valid?
+        db_school.save
+      else
+        PrettyConsole.say_in_yellow(db_school.inspect)
+        PrettyConsole.say_in_blue(db_school.errors.full_messages)
+        puts ''
+      end
+    end
+    PrettyConsole.say_in_red("No result count: #{no_result_by_geocoder.count}")
+    unless no_result_by_geocoder.empty?
+      puts '===== + = no result by geocoder = + ========='
+      puts no_result_by_geocoder.map { |school| "| Collège #{school[:name]} - #{school[:city]} - #{school[:code_uai] } FRANCE |\\n" }
+      puts '===== + = + = + ========='
+      puts ''
+    end
+    PrettyConsole.say_in_green("Done")
+  end
 end
 
 

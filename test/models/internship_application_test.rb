@@ -96,16 +96,14 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     mock_mail_to_main_teacher = MiniTest::Mock.new
     mock_mail_to_main_teacher.expect(:deliver_later, true)
 
-    School.stub_any_instance(:internship_agreement_open?, true) do
-      InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
-        InternshipApplication.stub_any_instance(:create_agreement, nil) do
-          MainTeacherMailer.stub(:internship_application_approved_with_agreement_email,
-                                mock_mail_to_main_teacher) do
-            internship_application.save
-            internship_application.approve!
-          end
-          mock_mail_to_main_teacher.verify
+    InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
+      InternshipApplication.stub_any_instance(:create_agreement, nil) do
+        MainTeacherMailer.stub(:internship_application_approved_with_agreement_email,
+                              mock_mail_to_main_teacher) do
+          internship_application.save
+          internship_application.approve!
         end
+        mock_mail_to_main_teacher.verify
       end
     end
   end
@@ -121,16 +119,14 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     mock_mail_to_main_teacher = MiniTest::Mock.new
     mock_mail_to_main_teacher.expect(:deliver_later, true)
 
-    School.stub_any_instance(:internship_agreement_open?, true) do
-      InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
-        InternshipApplication.stub_any_instance(:create_agreement, nil) do
-          MainTeacherMailer.stub(:internship_application_approved_with_agreement_email,
-                                mock_mail_to_main_teacher) do
-            internship_application.save
-            internship_application.approve!
-          end
-          assert_raises(MockExpectationError) { mock_mail_to_main_teacher.verify }
+    InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
+      InternshipApplication.stub_any_instance(:create_agreement, nil) do
+        MainTeacherMailer.stub(:internship_application_approved_with_agreement_email,
+                              mock_mail_to_main_teacher) do
+          internship_application.save
+          internship_application.approve!
         end
+        assert_raises(MockExpectationError) { mock_mail_to_main_teacher.verify }
       end
     end
   end
@@ -147,14 +143,12 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     mock_mail_to_school_manager.expect(:deliver_later, true)
 
     InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
-      School.stub_any_instance(:internship_agreement_open?, true) do
-        SchoolManagerMailer.stub(:internship_application_approved_with_agreement_email,
-                                 mock_mail_to_school_manager) do
-          internship_application.save
-          internship_application.approve!
-        end
-        mock_mail_to_school_manager.verify
+      SchoolManagerMailer.stub(:internship_application_approved_with_agreement_email,
+                                mock_mail_to_school_manager) do
+        internship_application.save
+        internship_application.approve!
       end
+      mock_mail_to_school_manager.verify
     end
   end
 
@@ -170,62 +164,61 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     mock_mail_to_employer.expect(:deliver_now, true)
 
     InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
-      School.stub_any_instance(:internship_agreement_open?, true) do
-        EmployerMailer.stub(:internship_application_approved_with_agreement_email,
-                                 mock_mail_to_employer) do
-          internship_application.save
-          internship_application.approve!
-        end
-        mock_mail_to_employer.verify
+      EmployerMailer.stub(:internship_application_approved_with_agreement_email,
+                                mock_mail_to_employer) do
+        internship_application.save
+        internship_application.approve!
       end
+      mock_mail_to_employer.verify
     end
   end
 
   test 'transition from submited to approved sends an email to school_manager when no agreement is possible' do
-    school = create(:school)
-    class_room = create(:class_room, school: school)
-    student = build(:student, class_room: class_room)
-    create(:school_manager, school: school)
+    # TO BE CONFIRMED there's no case where agreement is not possible anymore
 
-    internship_application = create(:weekly_internship_application, :submitted, student: student)
+    # school = create(:school)
+    # class_room = create(:class_room, school: school)
+    # student = build(:student, class_room: class_room)
+    # create(:school_manager, school: school)
 
-    mock_mail_to_school_manager = MiniTest::Mock.new
-    mock_mail_to_school_manager.expect(:deliver_later, true)
+    # internship_application = create(:weekly_internship_application, :submitted, student: student)
 
-    InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
-      School.stub_any_instance(:internship_agreement_open?, false) do
-        SchoolManagerMailer.stub(:internship_application_approved_with_no_agreement_email,
-                                 mock_mail_to_school_manager) do
-          internship_application.save
-          internship_application.approve!
-        end
-        mock_mail_to_school_manager.verify
-      end
-    end
+    # mock_mail_to_school_manager = MiniTest::Mock.new
+    # mock_mail_to_school_manager.expect(:deliver_later, true)
+
+    # InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
+    #   SchoolManagerMailer.stub(:internship_application_approved_with_no_agreement_email,
+    #                             mock_mail_to_school_manager) do
+    #     internship_application.save
+    #     internship_application.approve!
+    #   end
+    #   mock_mail_to_school_manager.verify
+    # end
   end
 
   test 'transition from submited to approved sends an email to main_teacher when no agreement is possible' do
-    school = create(:school)
-    class_room = create(:class_room, school: school)
-    student = build(:student, class_room: class_room)
-    create(:school_manager, school: school)
-    create(:main_teacher, class_room: class_room, school: school)
 
-    internship_application = create(:weekly_internship_application, :submitted, student: student)
+    # TO BE CONFIRMED there's no case where agreement is not possible anymore
 
-    mock_mail_to_main_teacher = MiniTest::Mock.new
-    mock_mail_to_main_teacher.expect(:deliver_later, true)
+    # school = create(:school)
+    # class_room = create(:class_room, school: school)
+    # student = build(:student, class_room: class_room)
+    # create(:school_manager, school: school)
+    # create(:main_teacher, class_room: class_room, school: school)
 
-    InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
-      School.stub_any_instance(:internship_agreement_open?, false) do
-        MainTeacherMailer.stub(:internship_application_approved_with_no_agreement_email,
-                                 mock_mail_to_main_teacher) do
-          internship_application.save
-          internship_application.approve!
-        end
-        mock_mail_to_main_teacher.verify
-      end
-    end
+    # internship_application = create(:weekly_internship_application, :submitted, student: student)
+
+    # mock_mail_to_main_teacher = MiniTest::Mock.new
+    # mock_mail_to_main_teacher.expect(:deliver_later, true)
+
+    # InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
+    #   MainTeacherMailer.stub(:internship_application_approved_with_no_agreement_email,
+    #                             mock_mail_to_main_teacher) do
+    #     internship_application.save
+    #     internship_application.approve!
+    #   end
+    #   mock_mail_to_main_teacher.verify
+    # end
   end
 
   test 'transition from submited to approved create internship_agreement for student in troisieme_generale.class_room' do

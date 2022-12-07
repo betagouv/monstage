@@ -198,7 +198,7 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 
 ### Exemple curl
 
-```
+``` bash
 curl -H "Authorization: Bearer $API_TOKEN" \
      -H "Accept: application/json" \
      -H "Content-type: application/json" \
@@ -206,7 +206,6 @@ curl -H "Authorization: Bearer $API_TOKEN" \
      -d '{"internship_offer": {"title":"title","description":"description","employer_website":"http://google.fr","street":"Tour Effeil","zipcode":"75002","city":"Paris","employer_name":"employer_name", "weeks":["2021-W16","2021-W18"],"employer_description":"employer_description","remote_id":"test_2","permalink":"https://www.google.fr","sector_uuid": "1ce60ecc-273d-4c73-9b1a-2f5ee14e1bc6", "coordinates":{"latitude":1.0,"longitude":1.0}}}' \
      -vvv \
      $ENV/api/internship_offers
-
 ```
 
 ### Erreurs
@@ -241,7 +240,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 
 ### Exemple curl
 
-```
+``` bash
 curl -H "Authorization: Bearer $API_TOKEN" \
      -H "Accept: application/json" \
      -H "Content-type: application/json" \
@@ -256,6 +255,40 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 - 404, Not Found. Aucune offre n'a été trouvée avec le ```remote_id``` spécifié
 - 422, Unprocessable Entity. Aucun paramètre n'a été spécifié pour la modification
 
+### <a name="ref-index-internship-offer"></a>
+## Recherche d'une offre
+
+
+**url** : ```#{baseURL}/internship_offers```
+
+**method** : GET
+
+**/!\ Endpoint ouvert sur demande**
+
+*Paramètres d'url* :
+
+* **keyword** *(string)*
+* **internship_offer.coordinates** *(object/geography)* : { "latitude" : 1.0, "longitude" : 1.0 }
+* **radius** *(integer, en mètres)*
+
+
+### Exemple curl
+
+``` bash
+curl -H "Authorization: Bearer $API_TOKEN" \
+     -H "Accept: application/json" \
+     -H "Content-type: application/json" \
+     -X GET \
+     -d '{"keyword":"Avocat"}' \
+     -vvv \
+     $ENV/api/internship_offers
+```
+
+### Erreurs
+
+- 401, wrong api token
+- 401, access denied
+
 ### <a name="ref-destroy-internship-offer"></a>
 ## Suppression d'une offre
 **url** : ```#{baseURL}/internship_offers/#{remote_id}```
@@ -268,7 +301,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 
 ### Exemple curl
 
-```
+``` bash
 curl -H "Authorization: Bearer foobarbaz" \
      -H "Accept: application/json" \
      -X DELETE \
@@ -288,7 +321,7 @@ Pour éprouver nos APIs, nous utilisons des [scripts shell](https://github.com/b
 
 C'est un moyen simple pour tester votre token et nos APIs.
 
-```
+``` bash
 git clone https://github.com/betagouv/monstage.git
 cd monstage
 cd doc
@@ -321,3 +354,6 @@ MONSTAGEDETROISIEME_TOKEN=foobarbaz
 ## Suppression d'une offre
 * exemple d'appel à l'api : ```./requests/internship_offers/destroy.sh```
 * exemple de reponse, cf: ./output/internship_offers/destroy/*
+
+## Recherche d'une offre
+* exemple de reponse, cf: ./output/internship_offers/index/success.json

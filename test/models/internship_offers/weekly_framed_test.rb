@@ -4,6 +4,14 @@ require 'test_helper'
 
 module InternshipsOffers
   class WeeklyFramedTest < ActiveSupport::TestCase
+    test 'should be valid' do
+      offer = build(:weekly_internship_offer)
+      assert_equal offer.max_candidates, offer.remaining_seats_count
+      assert offer.valid?
+      offer.save
+      assert offer.persisted?
+    end
+
     test 'association internship_offer_weeks' do
       internship_offer = InternshipOffers::WeeklyFramed.new
       assert_equal internship_offer.internship_offer_weeks, []

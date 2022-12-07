@@ -38,6 +38,103 @@ module InternshipOffers::InternshipApplications
       assert_equal 1, InternshipAgreement.count
     end
 
+    test 'PATCH #update with approve! when employer is a statistician it does not create internship agreement' do
+      school = create(:school, :with_school_manager)
+      class_room = create(:class_room, school: school)
+      student = create(:student, school:school, class_room: class_room)
+      internship_application = create(
+        :weekly_internship_application,
+        :submitted,
+        user_id: student.id
+      )
+      internship_application.internship_offer.employer.update(type: 'Users::Statistician')
+
+      sign_in(internship_application.internship_offer.employer)
+
+      assert_enqueued_emails 1 do
+        patch(
+          dashboard_internship_offer_internship_application_path(
+            internship_application.internship_offer,
+            internship_application ),
+            params: { transition: :approve! })
+          assert_redirected_to internship_application.internship_offer.employer.after_sign_in_path
+      end
+      assert_equal 0, InternshipAgreement.count
+    end
+
+    test 'PATCH #update with approve! when employer is a statistician that can sign agreements , it does create internship agreement' do
+      school = create(:school, :with_school_manager)
+      class_room = create(:class_room, school: school)
+      student = create(:student, school:school, class_room: class_room)
+      internship_application = create(
+        :weekly_internship_application,
+        :submitted,
+        user_id: student.id
+      )
+      employer = internship_application.internship_offer.employer
+      employer.becomes(Users::Statistician)
+      employer.update(agreement_signatorable: true)
+
+      sign_in(employer)
+
+      assert_enqueued_emails 2 do
+        patch(
+          dashboard_internship_offer_internship_application_path(
+            internship_application.internship_offer, 
+            internship_application),
+          params: { transition: :approve! }
+        )
+        assert_redirected_to employer.after_sign_in_path
+      end
+      assert_equal 1, InternshipAgreement.count
+    end
+
+    test 'PATCH #update with approve! when employer is an operator it does not create internship agreement' do
+      school = create(:school, :with_school_manager)
+      class_room = create(:class_room, school: school)
+      student = create(:student, school:school, class_room: class_room)
+      internship_application = create(
+        :weekly_internship_application,
+        :submitted,
+        user_id: student.id
+      )
+      internship_application.internship_offer.employer.update(type: 'Users::Operator')
+
+      sign_in(internship_application.internship_offer.employer)
+
+      assert_enqueued_emails 1 do
+        patch(
+          dashboard_internship_offer_internship_application_path(
+            internship_application.internship_offer,
+            internship_application ),
+            params: { transition: :approve! })
+          assert_redirected_to internship_application.internship_offer.employer.after_sign_in_path
+      end
+      assert_equal 0, InternshipAgreement.count
+    end
+
+    test 'PATCH #update with approve! when school has no school_manager it does not create internship agreement' do
+      school = create(:school)
+      class_room = create(:class_room, school: school)
+      student = create(:student, school:school, class_room: class_room)
+      internship_application = create(
+        :weekly_internship_application,
+        :submitted,
+        user_id: student.id
+      )
+      sign_in(internship_application.internship_offer.employer)
+
+      assert_enqueued_emails 2 do # Student and school_manager receive emails
+        patch(
+          dashboard_internship_offer_internship_application_path(
+            internship_application.internship_offer,
+            internship_application ),
+            params: { transition: :approve! })
+          assert_redirected_to internship_application.internship_offer.employer.after_sign_in_path
+      end
+      assert_equal 0, InternshipAgreement.count
+    end
+
     test 'PATCH #update with approve! and a custom message transition sends email' do
       school = create(:school, :with_school_manager)
       class_room = create(:class_room, school: school)

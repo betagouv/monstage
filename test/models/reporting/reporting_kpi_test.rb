@@ -3,10 +3,6 @@ require 'test_helper'
 class ReportingKpiTest < ActiveSupport::TestCase
   test 'last_week_kpis' do
     travel_to Date.new(2022, 01, 25) do
-      current_week = Week.selectable_from_now_until_end_of_school_year.first
-      last_week = Week.find(current_week.id.to_i - 2)
-      last_monday = last_week.week_date
-      last_sunday = last_monday + 6.days
       school_manager = create(:school_manager, school: create(:school))
 
     # internship_offer_unpublished should not be taken into account
@@ -42,15 +38,9 @@ class ReportingKpiTest < ActiveSupport::TestCase
         seats_count: 5,
         public_seats_count: 2
       }
-      assert_equal expected, Reporting::Kpi.new.last_week_kpis(
-        last_monday: last_monday,
-        last_sunday: last_sunday
-      )
+      assert_equal expected, Reporting::Kpi.new.last_week_kpis
       student = create(:student)
-      assert_equal expected, Reporting::Kpi.new.last_week_kpis(
-        last_monday: last_monday,
-        last_sunday: last_sunday
-      )
+      assert_equal expected, Reporting::Kpi.new.last_week_kpis
 
       student.update_columns(
         updated_at: Date.today - 7.days,
@@ -65,19 +55,13 @@ class ReportingKpiTest < ActiveSupport::TestCase
         seats_count: 5,
         public_seats_count: 2
       }
-      assert_equal updated_expected, Reporting::Kpi.new.last_week_kpis(
-        last_monday: last_monday,
-        last_sunday: last_sunday
-      )
+      assert_equal updated_expected, Reporting::Kpi.new.last_week_kpis
       internship_application = create(
         :weekly_internship_application,
         :approved,
         student: student,
         internship_offer: internship_offer)
-      assert_equal updated_expected, Reporting::Kpi.new.last_week_kpis(
-        last_monday: last_monday,
-        last_sunday: last_sunday
-      )
+      assert_equal updated_expected, Reporting::Kpi.new.last_week_kpis
       internship_application.update_columns(
         updated_at: Date.today - 7.days,
         created_at: Date.today - 7.days
@@ -91,10 +75,7 @@ class ReportingKpiTest < ActiveSupport::TestCase
         seats_count: 5,
         public_seats_count: 2
       }
-      assert_equal new_updated_expected, Reporting::Kpi.new.last_week_kpis(
-        last_monday: last_monday,
-        last_sunday: last_sunday
-      )
+      assert_equal new_updated_expected, Reporting::Kpi.new.last_week_kpis
     end
   end
 end

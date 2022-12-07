@@ -25,6 +25,10 @@ module Users
 
       edit do
         fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
+        field :agreement_signatorable do
+          label 'Signataire des conventions'
+          help 'Si le V est coché en vert, le signataire doit signer TOUTES les conventions'
+        end
       end
     end
 
@@ -34,9 +38,10 @@ module Users
             foreign_key: :user_id,
             dependent: :destroy
 
-    
+
     validates :email_whitelist, presence: { message: 'none' }
-    before_validation :assign_email_whitelist
+    before_update :trigger_agreements_creation
+    before_validation :assign_email_whitelist_and_confirm
     # Beware : order matters here !
     validate :email_in_list
 
@@ -59,9 +64,8 @@ module Users
       ]
     end
 
-    def statistician?
-      true
-    end
+    def department_statistician?; true end
+    def statistician? ; true end
 
     def presenter
       Presenters::Statistician.new(self)
@@ -88,8 +92,9 @@ module Users
 
     # on create, make sure to assign existing email whitelist
     # EmailWhitelists::Statistician holds the user_id foreign key
-    def assign_email_whitelist
+    def assign_email_whitelist_and_confirm
       self.email_whitelist = EmailWhitelists::Statistician.find_by(email: email)
+      self.confirmed_at = Time.now
     end
 
     def email_in_list

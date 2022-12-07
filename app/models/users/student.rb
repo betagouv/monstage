@@ -53,11 +53,6 @@ module Users
                              .zero?
     end
 
-    def has_convention_signed_internship_application?
-      internship_applications.any?(&:convention_signed?)
-    end
-
-
     def age
       ((Time.zone.now - birth_date.to_time) / 1.year.seconds).floor
     end

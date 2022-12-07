@@ -53,6 +53,8 @@ class User < ApplicationRecord
 
   MAX_DAILY_PHONE_RESET = 3
 
+  scope :employers, -> { where(type: 'Users::Employer') }
+
   def channel ; :email end
 
   def default_search_options
@@ -207,7 +209,7 @@ class User < ApplicationRecord
     if add_email_to_phone_account?
       self.confirm
     else
-      unless @skip_confirmation_notification
+      unless @skip_confirmation_notification || whitelisted?
         devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email })
                      .deliver_later
       end
@@ -222,6 +224,7 @@ class User < ApplicationRecord
   end
 
   def statistician? ; false end
+  def department_statistician? ; false end
   def ministry_statistician? ; false end
   def student? ; false end
   def employer? ; false end
@@ -240,6 +243,15 @@ class User < ApplicationRecord
     Presenters::User.new(self)
   end
 
+  protected
+
+  # TODO : this is to move to a statistician model
+
+  def trigger_agreements_creation
+    if changes[:agreement_signatorable] == [false, true]
+      AgreementsAPosterioriJob.perform_later(user_id: id)
+    end
+  end
 
   private
 
@@ -276,5 +288,9 @@ class User < ApplicationRecord
         'Il faut conserver un email valide pour assurer la continuité du service'
       )
     end
+  end
+
+  def whitelisted?
+    !!EmailWhitelist.find_by_email(email)
   end
 end

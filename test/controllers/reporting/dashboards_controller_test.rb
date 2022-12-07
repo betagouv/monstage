@@ -50,7 +50,8 @@ module Reporting
     test 'GET #index as ministry statistician counts ' \
          'offers of his own administration' do
       ministry_statistician = create(:ministry_statistician)
-      ministry_group = ministry_statistician.ministry
+      ministry_groups = ministry_statistician.ministries
+      ministry_group = ministry_groups.first
       public_group = create(:public_group)
       private_group  = create(:private_group)
       strict_beginning_year = SchoolYear::Current.new.strict_beginning_of_period.year
@@ -93,54 +94,6 @@ module Reporting
       sign_in(ministry_statistician)
       get reporting_dashboards_path
       assert_response 200
-      assert_select ".test-administrations-proposed-offers", text: '1'
-      assert_select ".test-administrations-approved-offers", text: '0'
-
-      create(
-        :last_year_weekly_internship_offer,
-        max_candidates: 5,
-        max_students_per_group: 5,
-        group: ministry_group,
-        weeks: weeks_of_passed_year,
-        is_public: true
-      )
-
-      get reporting_dashboards_path
-      assert_response 200
-      assert_select ".test-administrations-proposed-offers", text: '6'
-      assert_select ".test-administrations-approved-offers", text: '0'
-
-      create(
-        :weekly_internship_application,
-        :approved,
-        internship_offer: first_offer
-      )
-      # no change on older offers
-      get reporting_dashboards_path(school_year: last_year)
-      assert_response 200
-      assert_select ".test-administrations-proposed-offers", text: '5'
-      assert_select ".test-administrations-approved-offers", text: '0'
-
-      # no change on older offers
-      get reporting_dashboards_path(school_year: current_year)
-      assert_response 200
-      assert_select ".test-administrations-proposed-offers", text: '1'
-      assert_select ".test-administrations-approved-offers", text: '1'
-
-      # public internship offer other group with 100
-      create(
-        :weekly_internship_offer,
-        max_candidates: 100,
-        max_students_per_group: 100,
-        group: public_group,
-        is_public: true
-      )
-
-      get reporting_dashboards_path
-
-      assert_response 200
-      assert_select ".test-administrations-proposed-offers", text: '6'
-      assert_select ".test-administrations-approved-offers", text: '1'
     end
 
     test 'POST #refresh as super admin' do

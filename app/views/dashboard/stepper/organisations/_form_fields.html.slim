@@ -7,12 +7,12 @@
 
       - if can?(:supply_offers, current_user)
         - if current_user.ministry_statistician?
-          = render partial: "dashboard/stepper/organisations/form_ministry_statistician_specifics", locals: { form: form }
+          = render partial: "dashboard/stepper/organisations/form_ministry_statistician_specifics", locals: { form: form, resource: resource, submit_button: submit_button }
         - else
           = react_component("SirenInput",
                             props: { resourceName: form.object_name,
-                                    currentSiren: resource.siret,
-                                    railsEnv: Rails.env })
+                                     currentSiren: resource.siret,
+                                     railsEnv: Rails.env })
           #manual-input.bloc-tooggle class=('d-none' if request.fullpath.include?('organisations/new'))
             .form-group
               = form.label :employer_name do
@@ -39,8 +39,15 @@
                     = form.label :is_public_false, 'Privé', class: ''
 
             div class="form-group form-group-select-group #{resource.is_public.nil? ? 'd-none' : ''}" data-organisation-form-target="groupBlock"
-              = form.label :group_id, "Groupe ou Institution de tutelle", data: {:"organisation-form-target" => 'groupLabel'}
-              = form.select :group_id, options_for_select(options_for_groups, resource.group.try(:id)), {prompt: '-- Indépendant --'}, class: "form-control", data: {:"organisation-form-target" => 'selectGroupName'}
+              = form.label :group_id,
+                           "Groupe ou Institution de tutelle",
+                           data: {:"organisation-form-target" => 'groupLabel'}
+              = form.select :group_id,
+                            options_for_select(options_for_groups,
+                            resource.group.try(:id)),
+                            { prompt: '-- Indépendant --' },
+                            class: "form-control",
+                            data: {:"organisation-form-target" => 'selectGroupName'}
 
         .bloc-tooggle
           = react_component("FullAddressInput", props: { resourceName: form.object_name,

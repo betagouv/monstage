@@ -52,7 +52,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test 'GET account_path(section: :identiy) as SchoolManagement can change identity' do
     school = create(:school, :with_school_manager)
     [
-      school.school_manager,
       create(:main_teacher, school: school),
       create(:teacher, school: school),
       create(:other, school: school)
@@ -274,7 +273,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to account_path
     employer.reload
-    assert_equal nil, employer.phone
+    assert_nil employer.phone
     follow_redirect!
     assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
   end

@@ -56,8 +56,9 @@ class Ability
   def common_school_management_abilities(user:)
     can %i[
       welcome_students
-      choose_role
+      subscribe_to_webinar
       sign_with_sms], User
+    can :choose_role, User unless user.school_manager?
     can_create_and_manage_account(user: user) do
       can [:choose_class_room], User
     end
@@ -135,7 +136,7 @@ class Ability
 
 
   def employer_abilities(user:)
-    can %i[supply_offers sign_with_sms choose_function] , User
+    can %i[supply_offers sign_with_sms choose_function subscribe_to_webinar] , User
     can :show, :account
 
     can :create_remote_internship_request, SupportTicket
@@ -276,7 +277,8 @@ class Ability
             see_dashboard_administrations_summary
             see_dashboard_department_summary
             export_reporting_dashboard_data
-            see_dashboard_associations_summary], User
+            see_dashboard_associations_summary
+            export_reporting_school], User
   end
 
   def education_statistician_abilities(user:)
@@ -297,19 +299,23 @@ class Ability
     common_to_all_statisticians(user: user)
 
     can %i[create], Organisation do  |organisation|
-      user.ministry == organisation.group && organisation.is_public == true
+      organisation.group.in?(user.ministries) && organisation.is_public
     end
 
     can %i[index_and_filter], Reporting::InternshipOffer
     can :read, Group
     can %i[index], Acl::Reporting, &:ministry_statistician_allowed?
     can %i[ export_reporting_dashboard_data
-            see_dashboard_enterprises_summary
+            see_ministry_dashboard
             see_dashboard_associations_summary ], User
   end
 
   def common_to_all_statisticians(user: )
-    can :supply_offers, User
+    can %i[
+      supply_offers
+      subscribe_to_webinar
+      choose_to_sign_agreements
+      ], User
     can :view, :department
     can %i[index update], InternshipApplication
     can %i[read create see_tutor], InternshipOffer

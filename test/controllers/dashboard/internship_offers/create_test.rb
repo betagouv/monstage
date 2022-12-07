@@ -38,6 +38,7 @@ module Dashboard::InternshipOffers
       assert_equal weeks.map(&:id), created_internship_offer.week_ids
       assert_equal weeks.size, created_internship_offer.internship_offer_weeks_count
       assert_equal params['max_candidates'], created_internship_offer.max_candidates
+      assert_equal params['max_candidates'], created_internship_offer.remaining_seats_count
       assert_redirected_to internship_offer_path(created_internship_offer)
     end
 
@@ -50,7 +51,7 @@ module Dashboard::InternshipOffers
       params = internship_offer
                .attributes
                .merge('type' => InternshipOffers::WeeklyFramed.name,
-                      'group' => employer.ministry,
+                      'group' => employer.ministries.first,
                       'week_ids' => weeks.map(&:id),
                       'coordinates' => { latitude: 1, longitude: 1 },
                       'school_id' => school.id,

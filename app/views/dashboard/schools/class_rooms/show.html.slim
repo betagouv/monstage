@@ -22,13 +22,12 @@ h1.h2.mb-4
     li
       = link_to dashboard_school_path(@school) do 
         button#weeks.fr-tabs__tab aria-controls="weeks-panel" aria-selected="false" role="tab" tabindex="2"  Semaines
-    - if current_user.school.internship_agreement_open?
-      li
-        = link_to dashboard_school_path(@school) do
-          button#internship-agreements.fr-tabs__tab aria-controls="internship-agreements-panel" aria-selected="false" role="tab" tabindex="3"  Mes conventions de stage
-      li
-        = link_to dashboard_school_path(@school) do
-          button#manage-school.fr-tabs__tab aria-controls="manage-school-panel" aria-selected="false" role="tab" tabindex="4"  Gérer mon établissement
+    li
+      = link_to dashboard_school_path(@school) do
+        button#internship-agreements.fr-tabs__tab aria-controls="internship-agreements-panel" aria-selected="false" role="tab" tabindex="3"  Mes conventions de stage
+    li
+      = link_to dashboard_school_path(@school) do
+        button#manage-school.fr-tabs__tab aria-controls="manage-school-panel" aria-selected="false" role="tab" tabindex="4"  Gérer mon établissement
 
   #classes-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0"
     .row.mt-3.pl-0

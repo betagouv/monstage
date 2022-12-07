@@ -96,6 +96,9 @@ fr:
       users/ministry_statistician:
         one: Référent central
         other: Référents centraux
+      users/education_statistician:
+        one: Référent de l'éducation nationale
+        other: Référents de l'éducation nationale
       week:
         one: Semaine
         other: Semaines
@@ -124,11 +127,12 @@ fr:
         weeks:
           one: Semaine de stage
           other: Semaines de stage
-        total_student_count: Nbr. d'élèves
-        total_main_teacher_count: Nbr. de PP
+        total_student_count: Elèves
+        total_main_teacher_count: Profs. Principaux
         human_school_manager: Chef d'établissement inscrit
-        total_approved_internship_applications_count: Nbr. de candidatures acceptées
-        current_approved_internship_applications_count: Nbr. de candidatures acceptées
+        total_approved_internship_applications_count: Candidatures acceptées
+        current_total_approved_internship_applications_count: Candidatures acceptées
+        current_approved_internship_applications_count: Candidatures acceptées
         full_address: "Adresse de l'établissement"
         full_weeks: Semaines
 
@@ -163,6 +167,7 @@ fr:
         tutor_name: Nom du tuteur
         tutor_phone: Téléphone du tuteur
         tutor_email: Email du tuteur
+        tutor_role: Fonction du tuteur
 
       internship_agreement:
         internship_application: Candidature
@@ -283,7 +288,9 @@ fr:
         coordinates: Coordonnées GPS
         group_name: Groupe ou institution
         school: Établissement réservé
+        school_year: Année
         internship_applications: Candidatures
+        ministries: Ministères
 
       internship_application:
         student: Élève
@@ -318,7 +325,6 @@ fr:
         teacher: "Professeur"
         discarded_at: Supprimé le
         operator: Association
-        ministry_id: ID de l'institution de tutelle
         phone_password_reset_count: Compteur de remise à zéro de mot de passe par téléphone
         anonymized: Anonymisé
 

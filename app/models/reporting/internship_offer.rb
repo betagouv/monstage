@@ -76,7 +76,9 @@ module Reporting
     }
 
     scope :limited_to_ministry, lambda { |user:|
-      where(group_id: user.ministry_id)
+      return none unless user.ministry_statistician?
+
+      where(group_id: user.ministries.map(&:id))
     }
 
     scope :by_group, lambda { |group_id:|

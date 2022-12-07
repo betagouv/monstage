@@ -52,7 +52,9 @@ class InternshipOffer < ApplicationRecord
   }
 
   scope :limited_to_ministry, lambda { |user:|
-    where(group_id: user.ministry_id)
+    return none if user.ministries.empty?
+
+    where(group_id: user.ministries.map(&:id))
   }
 
   scope :from_api, lambda {
@@ -75,10 +77,6 @@ class InternshipOffer < ApplicationRecord
     all # TODO : max_candidates specs for FreeDate required
   }
 
-  # scope :ignore_max_internship_offer_weeks_reached, lambda {
-  #   all # TODO : specs for FreeDate required
-  # }
-
   scope :unpublished, -> { where(published_at: nil) }
   scope :published, -> { where.not(published_at: nil) }
 
@@ -96,7 +94,6 @@ class InternshipOffer < ApplicationRecord
 
   belongs_to :employer, polymorphic: true
   belongs_to :organisation, optional: true
-
   belongs_to :tutor, optional: true
   has_one :internship_offer_info
 
@@ -240,5 +237,11 @@ class InternshipOffer < ApplicationRecord
 
   def weekly_planning?
     weekly_hours.any?(&:present?)
+  end
+
+  def weekly?; false  end
+
+  def presenter
+    Presenters::InternshipOffer.new(self)
   end
 end

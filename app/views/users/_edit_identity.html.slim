@@ -32,14 +32,14 @@
             = f.rg2a_required_content_tag
           small.d-none data-profile-target="emailHint"
           = f.text_field :email,
-                        {class: 'fr-input', required: true, data: {action: 'change->profile#onBlurEmailInput', :"profile-target" => 'emailInput'}}.merge(current_user.is_a?(Users::Statistician) ? { readonly: true } : {})
+                         {class: 'fr-input', required: true, data: {action: 'change->profile#onBlurEmailInput', :"profile-target" => 'emailInput'}}.merge(current_user.statistician? ? { readonly: true } : {})
       - if current_user.ministry_statistician?
         .col-md-6.col-xs-12
           .form-group
             = f.label :ministry, class: 'fr-label', for: 'user_ministry' do
               = "Administration centrale"
             = f.text_field :ministry,
-                            value: current_user.ministry.name,
+                            value: current_user.ministries.map(&:name).join(', '),
                             class: "fr-input",
                             disabled: true
       - if can?(:change, :department) || can?(:view, :department)
@@ -72,7 +72,7 @@
               = 'Fonction'
               = f.rg2a_required_content_tag
             .d-block= f.select :role,
-                                options_from_collection_for_select(user_roles_to_select, :value, :text, current_user.role),
+                                options_from_collection_for_select(user_roles_without_school_manager_to_select, :value, :text, current_user.role),
                                 { include_blank: false},
                                 { class: 'fr-select', data: {action: 'change->profile#refreshEmailFieldLabel'} }
       - if can?(:choose_function, current_user)

@@ -4,7 +4,7 @@ module Users
   class MinistryStatistician < User
     rails_admin do
       weight 6
-      
+
       configure :last_sign_in_at, :datetime
       configure :created_at, :datetime
 
@@ -12,7 +12,7 @@ module Users
         fields(*UserAdmin::DEFAULT_FIELDS)
         field :ministry_name do
           label 'Administration centrale'
-          pretty_value { bindings[:object]&.ministry&.name }
+          pretty_value { bindings[:object]&.ministries.map(&:name).join(', ') }
         end
         fields(*UserAdmin::ACCOUNT_FIELDS)
 
@@ -21,35 +21,39 @@ module Users
 
       edit do
         fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
-        field :ministry_id
+        field :agreement_signatorable do
+          label 'Signataire des conventions'
+          help 'Si le V est coché en vert, le signataire doit signer TOUTES les conventions'
+        end
+
       end
     end
 
-    validate :email_in_list
+    METABASE_DASHBOARD_ID = 10
 
-    belongs_to :ministry,
-               class_name: 'Group',
-               optional: true
-    validates_associated :ministry,
-                         if: :exists_and_is_public?
+    before_update :trigger_agreements_creation
+    before_validation :assign_email_whitelist_and_confirm
+    validate :email_in_whitelist
+
     has_many :internship_offers, foreign_key: 'employer_id'
     has_one :ministry_email_whitelist,
             class_name: 'EmailWhitelists::Ministry',
             foreign_key: :user_id,
             dependent: :destroy
-    validates :ministry_email_whitelist,
-              presence: { message: 'none' }
-    before_validation :assign_ministry_email_whitelist
-
-    def exists_and_is_public?
-      ministry&.is_public
-    end
 
     def custom_dashboard_path
       url_helpers.reporting_dashboards_path(
         school_year: SchoolYear::Current.new.beginning_of_period.year,
-        ministry: ministry
+        ministries: ministries.ids.join('A')
       )
+    end
+
+    def ministry_email_whitelist
+      EmailWhitelists::Ministry.find_by(email: email)
+    end
+
+    def ministries
+      ministry_email_whitelist&.groups
     end
 
     def custom_dashboard_paths
@@ -64,30 +68,23 @@ module Users
       'Statistiques nationales'
     end
 
-    def destroy
-      ministry_email_whitelist.delete
-      super
-    end
 
-    def ministry_statistician?
-      true
-    end
+    def ministry_statistician? ; true end
+    def statistician? ; true end
 
     def presenter
       Presenters::MinistryStatistician.new(self)
     end
 
-    private
-
-    # on create, make sure to assign existing email whitelist
-    def assign_ministry_email_whitelist
-      email_whitelist_obj = EmailWhitelists::Ministry.find_by(email: email)
-      self.ministry_email_whitelist = email_whitelist_obj
-      self.ministry = email_whitelist_obj&.group
+    def assign_email_whitelist_and_confirm
+      self.ministry_email_whitelist = EmailWhitelists::Ministry.find_by(email: email)
+      self.confirmed_at = Time.now
     end
 
-    def email_in_list
-      unless EmailWhitelists::Ministry.exists?(email: email)
+    private
+
+    def email_in_whitelist
+      if ministries&.empty? || ministry_email_whitelist.nil?
         errors.add(
           :email,
           'Votre adresse électronique n\'est pas reconnue, veuillez la ' \

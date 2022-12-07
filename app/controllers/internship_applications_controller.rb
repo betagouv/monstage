@@ -56,7 +56,8 @@ class InternshipApplicationsController < ApplicationController
                                                              @internship_application)
   rescue ActiveRecord::RecordInvalid => e
     @internship_application = e.record
-    render 'internship_offers/show', status: :bad_request
+    puts @internship_application.errors.messages
+    render 'new', status: :bad_request
   end
 
   private

@@ -18,10 +18,9 @@ class MinistryStatiticianRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'label', /J'accepte les/
   end
 
-  test 'POST #create with missing params fails creation' do
+  test 'POST #create with right params do not fail creation' do
     email = 'bing@bongo.bang'
-    group = create(:public_group)
-    create :ministry_statistician_email_whitelist, email: email, group: group
+    whitelist = create :ministry_statistician_email_whitelist, email: email
     assert_difference('Users::MinistryStatistician.count', 1) do
       post user_registration_path(params: { user: { email: email,
                                                     first_name: 'ref',
@@ -34,6 +33,14 @@ class MinistryStatiticianRegistrationsTest < ActionDispatch::IntegrationTest
     end
     last_ministry_statistician = Users::MinistryStatistician.last
     assert_equal email, last_ministry_statistician.email
-    assert_equal group.name, last_ministry_statistician.ministry.name
+    assert_equal last_ministry_statistician.ministries, whitelist.groups
+  end
+
+  test 'when agreement_signatorable goes from false to true a job is launched' do
+    ministry_statistician = create(:ministry_statistician)
+    refute ministry_statistician.agreement_signatorable
+    assert_enqueued_with(job: AgreementsAPosterioriJob) do
+      ministry_statistician.update(agreement_signatorable: true)
+    end
   end
 end

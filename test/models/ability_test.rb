@@ -50,6 +50,7 @@ class AbilityTest < ActiveSupport::TestCase
     ability = Ability.new(student_2)
     assert(ability.can?(:apply, internship_offer),
            'students should be able to apply for internship offers')
+    
   end
 
   test 'Employer' do
@@ -66,6 +67,8 @@ class AbilityTest < ActiveSupport::TestCase
 
     assert(ability.can?(:choose_function, User.new),
           'employers can declare their role in their organisation')
+    assert(ability.can?(:subscribe_to_webinar, User.new),
+          'employers can subscribe to webinars')
     assert(ability.can?(:supply_offers, employer), 'employers are to be able to supply offers')
     assert(ability.can?(:create, InternshipOffer.new),
            'employers should be able to create internships')
@@ -210,6 +213,10 @@ class AbilityTest < ActiveSupport::TestCase
            'statistician should be able to manage school')
     refute(ability.can?(:edit, User),
            'statistician should be able to edit user')
+    assert(ability.can?(:subscribe_to_webinar, User.new),
+          'statisticians can subscribe to webinars')
+    assert(ability.can?(:choose_to_sign_agreements, User.new),
+          'statisticians can decide to sign all agreements')
     assert(ability.can?(:create, Tutor),
            'statistician should be able to create tutors')
     refute ability.can?(:read, User)
@@ -230,7 +237,7 @@ class AbilityTest < ActiveSupport::TestCase
 
   test 'MinistryStatistician' do
     ministry_statistician = create(:ministry_statistician)
-    ministry = ministry_statistician.ministry
+    ministry = ministry_statistician.ministries.first
     ability = Ability.new(ministry_statistician)
 
     assert(ability.can?(:supply_offers, ministry_statistician), 'statistician are to be able to supply offers')
@@ -243,6 +250,8 @@ class AbilityTest < ActiveSupport::TestCase
            'ministry_statistician should be able to manage school')
     refute(ability.can?(:edit, User),
            'ministry_statistician should be able to edit user')
+    assert(ability.can?(:subscribe_to_webinar, ministry_statistician),
+          'statisticians can subscribe to webinars')
     assert(ability.can?(:see_tutor, InternshipOffer),
            'ministry_statistician should be able see_tutor')
     refute ability.can?(:read, User)
@@ -263,7 +272,7 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:see_reporting_schools, User)
     refute ability.can?(:see_reporting_associations, User)
     refute ability.can?(:see_reporting_entreprises, User)
-    assert ability.can?(:see_dashboard_enterprises_summary, User)
+    assert ability.can?(:see_ministry_dashboard, User)
   end
 
   test 'SchoolManager' do
@@ -278,9 +287,10 @@ class AbilityTest < ActiveSupport::TestCase
 
     assert(ability.can?(:welcome_students, school_manager), 'school_manager are to be able to supply offers')
     assert(ability.can?(:choose_class_room, User))
-    assert(ability.can?(:choose_role, User))
+    refute(ability.can?(:choose_role, User))
     assert(ability.can?(:choose_class_room, User))
     assert(ability.can?(:sign_with_sms, User))
+    assert(ability.can?(:subscribe_to_webinar, school_manager))
     assert(ability.can?(:dashboard_index, student))
     assert(ability.can?(:delete, student))
 
@@ -359,6 +369,7 @@ class AbilityTest < ActiveSupport::TestCase
            'student should be able to choose_class_room')
     assert(ability.can?(:choose_role, User))
     assert(ability.can?(:dashboard_index, student))
+    assert(ability.can?(:subscribe_to_webinar, main_teacher))
     assert(ability.can?(:show, :account),
            'students should be able to access their account')
 
@@ -395,6 +406,7 @@ class AbilityTest < ActiveSupport::TestCase
     teacher = create(:teacher, school: school)
     ability = Ability.new(teacher)
 
+    assert(ability.can?(:subscribe_to_webinar, teacher))
     assert(ability.can?(:welcome_students, teacher),
            'teacher are to be able to welcome students')
     assert(ability.can?(:manage, ClassRoom))
