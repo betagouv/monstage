@@ -130,6 +130,26 @@ module Builders
       context == :api
     end
 
+    def deal_with_max_candidates_change(params: , instance: )
+      return instance unless max_candidates_will_change?(params: params, instance: instance)
+
+      approved_applications_count = instance.internship_applications.approved.count
+      former_max_candidates = instance.max_candidates
+      next_max_candidates = params[:max_candidates].to_i
+
+      if next_max_candidates < approved_applications_count
+        error_message = 'Impossible de réduire le nombre de places ' \
+                        'de cette offre de stage car ' \
+                        'vous avez déjà accepté plus de candidats que ' \
+                        'vous n\'allez leur offrir de places.'
+        instance.errors.add(:max_candidates, error_message)
+        raise ActiveRecord::RecordInvalid, instance
+      else
+        instance.remaining_seats_count = next_max_candidates - approved_applications_count
+      end
+      instance
+    end
+
     def type_will_change?(params: , instance: )
       params[:type] && params[:type] != instance.type
     end
