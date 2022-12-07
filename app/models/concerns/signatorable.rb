@@ -63,5 +63,18 @@ module Signatorable
 
       [signature_phone_token[0..2], signature_phone_token[3..-1]].join(' ')
     end
+
+    def employer_like?
+      employer? || (statistician? && agreement_signatorable)
+    end
+
+    def already_signed?(internship_agreement_id:)
+      return false if school_management? && !school_manager?
+      
+      InternshipAgreement.joins(:signatures)
+                         .where(id: internship_agreement_id)
+                         .where(signatures: {user_id: id})
+                         .exists?
+    end
   end
 end

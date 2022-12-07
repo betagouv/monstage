@@ -10,6 +10,7 @@ module Services
               .approved
               .each do |application|
             next unless application.student&.school&.school_manager&.email
+            next if application.internship_agreement&.present?
 
             application.create_agreement
           end

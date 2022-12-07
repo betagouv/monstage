@@ -21,7 +21,7 @@ module Services
     end
 
     test 'perform with school_manager in this school produces an internship_agreement' do
-      ministry_statistician = create(:ministry_statistician)
+      ministry_statistician = create(:ministry_statistician, agreement_signatorable: false)
       internship_offer = create(:weekly_internship_offer, employer: ministry_statistician)
       school = create(:school, :with_school_manager, weeks: [internship_offer.weeks.first])
       student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
