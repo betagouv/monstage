@@ -191,8 +191,6 @@ class IndexTest < ActionDispatch::IntegrationTest
       title: 'offer with_application',
       weeks: weeks)
 
-    assert_equal 2, InternshipOffers::WeeklyFramed.count
-
     internship_application = create(
       :internship_application,
       internship_offer: internship_offer_with_application,
@@ -201,6 +199,9 @@ class IndexTest < ActionDispatch::IntegrationTest
       week: weeks.first)
 
     assert_equal 2, InternshipOffers::WeeklyFramed.count
+    assert_equal 1, InternshipApplication.count
+    assert_equal 1, InternshipApplication.approved.count
+    assert_equal 1, internship_offer_with_application.reload.remaining_seats_count
 
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -257,6 +258,18 @@ class IndexTest < ActionDispatch::IntegrationTest
     get internship_offers_path, params: { format: :json }
     assert_json_presence_of(json_response, published_internship_offer)
     assert_json_absence_of(json_response, not_published_internship_offer)
+  end
+
+  test 'GET #index as visitor does not show fulfilled offers' do
+    travel_to(Date.new(2022,9,1)) do
+      internship_application = create(:weekly_internship_application, :submitted)
+      internship_offer = internship_application.internship_offer
+      get internship_offers_path, params: { format: :json }
+      assert_json_presence_of(json_response, internship_offer)
+      internship_application.update!(aasm_state: 'approved')
+      get internship_offers_path, params: { format: :json }
+      assert_json_absence_of(json_response, internship_offer)
+    end
   end
 
   test 'GET #index as visitor or student default shows both middle school and high school offers' do
