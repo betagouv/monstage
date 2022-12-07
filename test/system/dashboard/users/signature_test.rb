@@ -82,11 +82,90 @@ module Dashboard
 
           assert_equal signature.employer.phone, signature.signature_phone_number
 
-          find('h1', text: 'Editer, imprimer et bientôt signer les conventions dématérialisées')
+          find('h1', text: 'Editer, imprimer et signer les conventions dématérialisées')
           first_label = all('a.fr-btn.disabled')[0].text
           assert_equal 'Déjà signée', first_label
           second_label = all('a.fr-btn.disabled')[1].text
           assert_equal 'Déjà signée', second_label
+          find('span[id="alert-text"]', text: 'Votre signature a été enregistrée')
+          all("a.fr-btn--secondary.button-component-cta-button")[0].click # Imprimer
+          sleep 1.2
+          student = internship_agreement.student
+          file_name = "Convention_de_stage_#{student.first_name.upcase}_" \
+                      "#{student.last_name.upcase}.pdf"
+          assert File.exist? file_name
+          File.delete file_name
+          Dir[Signature::SIGNATURE_STORAGE_DIR + '/*'].each do |file|
+            File.delete file
+          end
+        end
+      end
+    end
+
+    test 'statistician single signs and everything is ok' do
+      # Brittle because of CI but shoud be working allright localy
+      if ENV['RUN_BRITTLE_TEST']
+        employer = create(:statistician, agreement_signatorable: true)
+        weeks = [Week.find_by(number: 5, year: 2020), Week.find_by(number: 6, year: 2020)]
+        internship_offer = create(:weekly_internship_offer, weeks: weeks, employer: employer)
+        student = create(:student, school: create(:school, weeks: weeks))
+        create(:school_manager, school: student.school)
+        internship_application = create(:weekly_internship_application,
+                                        :approved,
+                                        motivation: 'au taquet',
+                                        student: student,
+                                        internship_offer: internship_offer)
+        internship_application.validate!
+        internship_agreement = InternshipAgreement.last
+        internship_agreement.complete!
+        internship_agreement.validate!
+        travel_to(weeks[0].week_date - 1.week) do
+          sign_in(employer)
+
+          visit dashboard_internship_agreements_path
+
+          click_button('Ajouter aux signatures')
+
+          find('label', text: internship_agreement.student.presenter.full_name).click
+          find('label', text: internship_application.student.presenter.full_name).click
+          click_button('Signer')
+
+          find('h1#fr-modal-signature-title', text: 'Vous vous apprêtez à signer 1 convention de stage')
+          find('input#phone_suffix').set('0612345678')
+          click_button('Recevoir un code')
+
+          find('h1#fr-modal-signature-title', text: 'Nous vous avons envoyé un code de vérification')
+          find("button#button-code-submit.fr-btn[disabled]")
+          signature_phone_tokens = employer.reload.signature_phone_token.split('')
+          (0..5).to_a.each do |index|
+            execute_script(code_script_enables(index))
+            execute_script(code_script_assign(signature_phone_tokens, index))
+          end
+          execute_script(enable_validation_button("button-code-submit"))
+          find("#button-code-submit").click
+          find("input#submit[disabled='disabled']")
+          within "dialog" do
+            find('canvas').click
+          end
+          assert_difference 'Signature.count', 1 do
+            find("input#submit").click
+          end
+
+          signature = internship_agreement.signatures.first
+          assert_equal internship_agreement.id, signature.internship_agreement.id
+          assert_equal employer.id, signature.employer.id
+          assert_equal DateTime.now, signature.signature_date
+          assert_equal 'employer', signature.signatory_role
+          if Rails.application.config.active_storage.service == :local
+            assert File.exist?(signature.local_signature_image_file_path)
+          end
+
+
+          assert_equal signature.employer.phone, signature.signature_phone_number
+
+          find('h1', text: 'Editer, imprimer et signer les conventions dématérialisées')
+          first_label = all('a.fr-btn.disabled')[0].text
+          assert_equal 'Déjà signée', first_label
           find('span[id="alert-text"]', text: 'Votre signature a été enregistrée')
           all("a.fr-btn--secondary.button-component-cta-button")[0].click # Imprimer
           sleep 1.2

@@ -78,15 +78,6 @@ module Users
       Signature.signatory_roles[:school_manager] if role == 'school_manager'
     end
 
-    def already_signed?(internship_agreement_id:)
-      return false unless role == 'school_manager'
-
-      InternshipAgreement.joins(:signatures)
-                         .where(id: internship_agreement_id)
-                         .where(signatures: {user_id: id})
-                         .exists?
-    end
-
     def school_management? ; true end
     def school_manager? ; role == 'school_manager' end
 
