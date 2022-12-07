@@ -20,10 +20,10 @@ module InternshipAgreements
     end
 
     def on_going_process?
-      condition_1 = current_user.employer_like?
-      condition_2 = %w[completed_by_employer
-                       started_by_school_manager].include?(internship_agreement.aasm_state)
-      condition_1 || condition_2
+      employer_like = current_user.employer_like?
+      after_employer_state = %w[completed_by_employer
+                                started_by_school_manager].include?(internship_agreement.aasm_state)
+      employer_like || after_employer_state
     end
 
     def button_label(user:)
