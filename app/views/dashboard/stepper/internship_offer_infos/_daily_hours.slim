@@ -24,23 +24,24 @@ div data-controller="daily-hours"
       .col-5
         - if disabled
           = select_tag :"#{form.object_name}[weekly_hours][]",
-                        options_for_select((9..12).map{|h| "#{h}:00"}, selected: select_weekly_start(form.object)),
+                        options_for_select(morning_hours_by_quarter, selected: select_weekly_start(form.object)),
                         { :include_blank => '--', class: "fr-select", disabled: true, aria: { label: "Selectionner une heure de debut de stage pour tous les jours de la semaine" }, id: "#{form.object_name}_weekly_hours_start" }
         - else
           = select_tag :"#{form.object_name}[weekly_hours][]",
-                        options_for_select((9..12).map{|h| "#{h}:00"}, selected: select_weekly_start(form.object)),
+                        options_for_select(morning_hours_by_quarter, selected: select_weekly_start(form.object)),
                         { :include_blank => '--', class: "fr-select", aria: { label: "Selectionner une heure de debut de stage pour tous les jours de la semaine" }, id: "#{form.object_name}_weekly_hours_start" }
 
       .col-1 style="display: flex;align-items: center;justify-content: center;"
         | à
       .col-5
+        / - hours = (52..70).map { |i| h = (i.to_f / 4).to_i; m = 15 * (i-(h * 4)); "#{format('%02d', h)}h#{format('%02d',m)}"}
         - if disabled
           = select_tag :"#{form.object_name}[weekly_hours][]",
-                        options_for_select((13..19).map{|h| "#{h}:00"}, selected: select_weekly_end(form.object)),
+                        options_for_select(afternoon_hours_by_quarter, selected: select_weekly_end(form.object)),
                         { :include_blank => '--', class: "fr-select", disabled: true, aria: { label: "Selectionner une heure de debut de stage pour tous les jours de la semaine" }, id: "#{form.object_name}_weekly_hours_end" }
         - else
           = select_tag :"#{form.object_name}[weekly_hours][]",
-                        options_for_select((13..19).map{|h| "#{h}:00"}, selected: select_weekly_end(form.object)),
+                        options_for_select(afternoon_hours_by_quarter, selected: select_weekly_end(form.object)),
                         { :include_blank => '--', class: "fr-select", aria: { label: "Selectionner une heure de debut de stage pour tous les jours de la semaine" }, id: "#{form.object_name}_weekly_hours_end" }
       .col-12.mt-2
         .form-group
@@ -61,22 +62,22 @@ div data-controller="daily-hours"
         .col-5
           - if disabled
             = select_tag :"#{form.object_name}[new_daily_hours][#{weekday}][]",
-                          options_for_select((9..12).map{|h| "#{h}:00"}, selected: select_daily_start(form.object, weekday)),
+                          options_for_select(morning_hours_by_quarter, selected: select_daily_start(form.object, weekday)),
                           {:include_blank => '--', class: "fr-select", disabled: true, aria: { label: "Selectionner une heure de debut de stage pour le #{weekday.capitalize}" }, id: "#{form.object_name}_new_daily_hours_#{weekday}_start"}
           - else
             = select_tag :"#{form.object_name}[new_daily_hours][#{weekday}][]",
-                          options_for_select((9..12).map{|h| "#{h}:00"}, selected: select_daily_start(form.object, weekday)),
+                          options_for_select(morning_hours_by_quarter, selected: select_daily_start(form.object, weekday)),
                           {:include_blank => '--', class: "fr-select", aria: { label: "Selectionner une heure de debut de stage pour le #{weekday.capitalize}" }, id: "#{form.object_name}_new_daily_hours_#{weekday}_start"}
         .col-1 style="display: flex;align-items: center;justify-content: center;"
           | à
         .col-5
           - if disabled
             = select_tag :"#{form.object_name}[new_daily_hours][#{weekday}][]",
-                          options_for_select((13..19).map{|h| "#{h}:00"}, selected: select_daily_end(form.object, weekday)),
+                          options_for_select(afternoon_hours_by_quarter, selected: select_daily_end(form.object, weekday)),
                           {:include_blank => '--', class: "fr-select", disabled: true, aria: { label:"Selectionner une heure de debut de fin pour le #{weekday.capitalize}" }, id: "#{form.object_name}_new_daily_hours_#{weekday}_end"}
           - else
             = select_tag :"#{form.object_name}[new_daily_hours][#{weekday}][]",
-                          options_for_select((13..19).map{|h| "#{h}:00"}, selected: select_daily_end(form.object, weekday)),
+                          options_for_select(afternoon_hours_by_quarter, selected: select_daily_end(form.object, weekday)),
                           {:include_blank => '--', class: "fr-select", aria: { label:"Selectionner une heure de debut de fin pour le #{weekday.capitalize}" }, id: "#{form.object_name}_new_daily_hours_#{weekday}_end"}
 
         .col-12.mt-2

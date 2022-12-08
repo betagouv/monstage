@@ -2,14 +2,27 @@
 
 module Users
   class Statistician < User
-    has_many :internship_offers, foreign_key: 'employer_id'
+    include Signatorable
+
+    has_many :internship_offers, as: :employer,
+                                 dependent: :destroy
+
+    has_many :kept_internship_offers, -> { merge(InternshipOffer.kept) },
+             class_name: 'InternshipOffer', foreign_key: 'employer_id'
+
+    has_many :internship_applications, through: :kept_internship_offers
+    has_many :internship_agreements, through: :internship_applications
+    has_many :organisations
+    has_many :tutors
+    has_many :internship_offer_infos
     has_one :email_whitelist,
             class_name: 'EmailWhitelists::Statistician',
             foreign_key: :user_id,
             dependent: :destroy
 
-    
+
     validates :email_whitelist, presence: { message: 'none' }
+    before_update :trigger_agreements_creation
     before_validation :assign_email_whitelist_and_confirm
     # Beware : order matters here !
     validate :email_in_list
@@ -33,9 +46,8 @@ module Users
       ]
     end
 
-    def statistician?
-      true
-    end
+    def department_statistician?; true end
+    def statistician? ; true end
 
     def presenter
       Presenters::Statistician.new(self)

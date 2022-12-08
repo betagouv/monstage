@@ -51,6 +51,11 @@ function CityInput({
     isZipcode(cityOrZipcode) ? searchByZipcode(cityOrZipcode) : searchCityByName(cityOrZipcode);
   };
 
+  const manageResults = (results) => {
+    setSearchResults(results);
+    setLocation(results[0]);
+  };
+
   const searchCityByName = () => {
     const searchParams = new URLSearchParams();
 
@@ -61,7 +66,7 @@ function CityInput({
     endpoint.search = searchParams.toString();
     fetch(endpoint)
       .then((response) => response.json())
-      .then(setSearchResults);
+      .then(manageResults);
   };
   // zipcodes represent a set of communes referenced with a code.
   // This set represents an area that have a center from which a radius can be used for other search criteria
@@ -92,7 +97,7 @@ function CityInput({
 
       fetch(endpoint)
         .then((response) => response.json())
-        .then(setSearchResults);
+        .then(manageResults);
     }
   };
 

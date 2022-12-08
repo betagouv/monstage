@@ -142,25 +142,25 @@ class InternshipApplication < ApplicationRecord
       transitions from: %i[submitted cancel_by_employer rejected],
                   to: :approved,
                   after: proc { |*_args|
-                          update!("approved_at": Time.now.utc)
-                          main_teacher = student.main_teacher
-                          arg_hash = {internship_application: self, main_teacher: main_teacher}
-                          accepted_student_notify
-                          if type == "InternshipApplications::WeeklyFramed" && student&.school&.school_manager&.present?
-                            create_agreement
-                            if main_teacher.present?
-                              MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
-                                               .deliver_later
-                            end
-                          else
-                            SchoolManagerMailer.internship_application_approved_with_no_agreement_email(arg_hash)
-                                               .deliver_later
-                            if main_teacher.present?
-                              MainTeacherMailer.internship_application_approved_with_no_agreement_email(arg_hash)
-                                               .deliver_later
-                            end
-                          end
-                        }
+                    update!("approved_at": Time.now.utc)
+                    main_teacher = student.main_teacher
+                    arg_hash = {internship_application: self, main_teacher: main_teacher}
+                    accepted_student_notify
+                    if type == "InternshipApplications::WeeklyFramed" && student&.school&.school_manager&.present?
+                      create_agreement
+                      if main_teacher.present?
+                        MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
+                                          .deliver_later
+                      end
+                    else
+                      SchoolManagerMailer.internship_application_approved_with_no_agreement_email(arg_hash)
+                                          .deliver_later
+                      if main_teacher.present?
+                        MainTeacherMailer.internship_application_approved_with_no_agreement_email(arg_hash)
+                                          .deliver_later
+                      end
+                    end
+                  }
     end
 
     event :reject do
@@ -297,13 +297,6 @@ class InternshipApplication < ApplicationRecord
     motivation.try(:delete)
   end
 
-  # def new_format?
-  #   return true if new_record?
-  #   return false if created_at < Date.parse('01/09/2020')
-
-  #   true
-  # end
-
   def short_target_url(application)
     target = Rails.application
                   .routes
@@ -341,9 +334,10 @@ class InternshipApplication < ApplicationRecord
   private
 
   def internship_agreement_creation_allowed?
+    return false unless student.school&.school_manager&.email
     return false if internship_offer.school_track != 'troisieme_generale'
-    return false if internship_offer.employer.type != 'Users::Employer'
-    return false unless student.school.school_manager
+    return false unless internship_offer.employer.employer_like?
+
     true
   end
 end

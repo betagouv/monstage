@@ -226,6 +226,7 @@ class User < ApplicationRecord
   end
 
   def statistician? ; false end
+  def department_statistician? ; false end
   def ministry_statistician? ; false end
   def student? ; false end
   def employer? ; false end
@@ -233,8 +234,9 @@ class User < ApplicationRecord
   def school_management? ; false end
   def school_manager? ; false end
   def god? ; false end
+  def employer_like? ; false end
 
-  def already_signed?(internship_aggreement_id:); true end
+  def already_signed?(internship_agreement_id:); true end
   def create_signature_phone_token ; nil end
   def send_signature_sms_token ; nil end
   def signatory_role ; nil end
@@ -244,6 +246,15 @@ class User < ApplicationRecord
     Presenters::User.new(self)
   end
 
+  protected
+
+  # TODO : this is to move to a statistician model
+
+  def trigger_agreements_creation
+    if changes[:agreement_signatorable] == [false, true]
+      AgreementsAPosterioriJob.perform_later(user_id: id)
+    end
+  end
 
   private
 

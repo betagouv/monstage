@@ -7,7 +7,11 @@ class UserMailer < ApplicationMailer
 
   def export_offers(user, params)
     recipient_email = user.email
-    params.merge!(ministries: user.ministries.map(&:id)) if user.ministry_statistician?
+    if user.ministry_statistician?
+      params.merge!(ministries: user.ministries.map(&:id)) 
+    else
+      params.delete(:ministries)
+    end
 
     offers = Finders::ReportingInternshipOffer.new(params: params).dimension_offer
 

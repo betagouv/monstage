@@ -5,13 +5,13 @@
       = link_to label[:text],
                 '',
                 class: "#{classes} disabled"
-    - elsif %w[validated signatures_started signed_by_all signed].include?(internship_agreement.aasm_state)
+    - elsif started_or_signed?
       = link_to dashboard_internship_agreement_path(internship_agreement, format: :pdf),
                 target: "_blank",
                 class: "#{classes} fr-btn--secondary",
                 data: { test: "active-internship-agreement-progress-#{internship_agreement.id}" } do
         = label[:text]
-    - elsif @current_user.employer? || %w[completed_by_employer started_by_school_manager].include?(internship_agreement.aasm_state)
+    - elsif on_going_process?
       = link_to edit_dashboard_internship_agreement_path(internship_agreement),
                 class: "#{classes} #{(label[:status] == 'secondary_cta') ? 'fr-btn--secondary' : ''}" do
         = label[:text]

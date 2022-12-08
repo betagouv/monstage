@@ -2,12 +2,26 @@
 
 module Users
   class MinistryStatistician < User
+    include Signatorable
+
+    has_many :internship_offers, as: :employer,
+                                 dependent: :destroy
+
+    has_many :kept_internship_offers, -> { merge(InternshipOffer.kept) },
+             class_name: 'InternshipOffer', foreign_key: 'employer_id'
+
+    has_many :internship_applications, through: :kept_internship_offers
+    has_many :internship_agreements, through: :internship_applications
+    has_many :organisations
+    has_many :tutors
+    has_many :internship_offer_infos
+
     METABASE_DASHBOARD_ID = 10
 
+    before_update :trigger_agreements_creation
     before_validation :assign_email_whitelist_and_confirm
     validate :email_in_whitelist
 
-    has_many :internship_offers, foreign_key: 'employer_id'
     has_one :ministry_email_whitelist,
             class_name: 'EmailWhitelists::Ministry',
             foreign_key: :user_id,
@@ -41,9 +55,8 @@ module Users
     end
 
 
-    def ministry_statistician?
-      true
-    end
+    def ministry_statistician? ; true end
+    def statistician? ; true end
 
     def presenter
       Presenters::MinistryStatistician.new(self)
