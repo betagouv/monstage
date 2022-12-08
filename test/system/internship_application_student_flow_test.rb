@@ -77,6 +77,8 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     page.find '#internship-application-closeform', visible: true
     # check for phone and email fields disabled
     page.find("input[type='submit'][value='Valider']").click
+    assert page.has_selector?(".fr-card__title a[href='/internship_offers/#{internship_offer.id}']", count: 1)
+    click_button('Envoyer')
     page.find('h1', text: 'Félicitations !')
   end
 
@@ -102,6 +104,8 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       page.find "input[name='internship_application[student_attributes][email]']", visible: true
       select weeks.first.human_select_text_method, from: 'internship_application_week_id'
       page.find("input[type='submit'][value='Valider']").click
+      assert page.has_selector?(".fr-card__title a[href='/internship_offers/#{internship_offer.id}']", count: 1)
+      click_button('Envoyer')
       page.find('h1', text: 'Félicitations !')
     end
   end
@@ -255,8 +259,21 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                      from: 0,
                      to: 1 do
         click_on 'Valider'
-        page.find('.success-banner') # timer
+        page.find('#submit_application_form') # timer
       end
+
+      assert_changes lambda {
+        student.internship_applications
+               .where(aasm_state: :submitted)
+               .count
+            },
+            from: 0,
+            to: 1 do
+        click_on 'Envoyer'
+        sleep 0.15
+      end
+
+      page.find('h1', text: 'Félicitations !')
     end
   end
 
@@ -282,8 +299,21 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                    to: 1 do
       click_on 'Valider'
       student.reload
-      page.find('.success-banner')
+      page.find('#submit_application_form')
     end
+
+    assert_changes lambda {
+                     student.internship_applications
+                            .where(aasm_state: :submitted)
+                            .count
+                   },
+                   from: 0,
+                   to: 1 do
+      click_on 'Envoyer'
+      sleep 0.15
+    end
+
+    page.find('h1', text: 'Félicitations !')
   end
 
   test 'student in troisieme_prepa_metiers can draft, submit, and cancel(by_student) internship_applications' do
@@ -313,8 +343,21 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                     from: 0,
                     to: 1 do
         click_on 'Valider'
-        page.find('.success-banner') # timer
+        page.find('#submit_application_form') # timer
       end
+
+      assert_changes lambda {
+        student.internship_applications
+               .where(aasm_state: :submitted)
+               .count
+            },
+            from: 0,
+            to: 1 do
+        click_on 'Envoyer'
+        sleep 0.15
+      end
+
+      page.find('h1', text: 'Félicitations !')
     end
   end
 
