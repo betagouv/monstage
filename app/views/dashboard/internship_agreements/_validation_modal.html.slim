@@ -15,7 +15,7 @@ div.modal.sign-modal id="validation-modal" tabindex="-1" role="dialog" data-cont
 
       .modal-footer.actions         
         = link_to 'Je vérifie mes informations', '#',  class: 'px-3', data: { 'dismiss': "modal" }  
-        = button_tag type: "button", data: { action: "click->internship-agreement-modal##{action}" }, class: 'fr-btn' do
+        = button_tag type: "button", data: { action: "click->internship-agreement-form##{action}" }, class: 'fr-btn' do
           = button
         .error-message.d-none
           = link_to 'Je vérifie mes informations', '#',  class: 'px-3 fr-btn btn-danger', data: { 'dismiss': "modal" }  
