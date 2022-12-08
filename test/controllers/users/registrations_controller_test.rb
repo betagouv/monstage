@@ -22,7 +22,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     post user_registration_path(user: data)
 
-    assert_redirected_to reporting_dashboards_path(department: Department::MAP[white_list.zipcode], school_year: Date.current.year)
+    assert_redirected_to reporting_dashboards_path(department: Department::MAP[white_list.zipcode], school_year: SchoolYear::Current.new.beginning_of_period.year)
   end
 
   test 'POST #registrations as ministry statistician whitelisted' do

@@ -1,0 +1,71 @@
+
+.fr data-controller="signup" data-signup-channel-value="phone"
+  = form_with(model: @student, 
+              data: { turbo: false }, 
+              url: dashboard_school_class_room_students_path(@class_room.school, @class_room), 
+              id: "new_user") do |f|
+    .body.registration.fr-grid-row
+      .fr-col-12.fr-col-md-6.fr-pr-2w
+        .form-group.custom-label-container
+          = f.label :first_name, class: "fr-label" do 
+            | Prénom de l'élève
+          = f.text_field :first_name, class: "fr-input", required: true 
+      .fr-col-12.fr-col-md-6.fr-pl-2w
+        .form-group.custom-label-container
+          = f.label :last_name, class: "fr-label" do 
+            | Nom de l'élève
+          = f.text_field :last_name, class: "fr-input", required: true 
+    
+    .fr-mt-1w
+      = render "users/select_channel",
+                          label: "L'élève se connectera",
+                          form: f,
+                          resource: @student,
+                          chan: @student.channel,
+                          phone: "Par téléphone (SMS)"
+    .row.fr-my-1w
+      .col-md-12.col-xs-12
+        .fr-input-group
+          = f.label 'Date de naissance', class: 'fr-label', for: 'user_birthdate'
+          .fr-input-wrap.fr-icon-calendar-line
+            = f.date_field :birth_date, class: 'fr-input', required: true
+    
+    .row.fr-my-2w
+      .col-md-12.col-xs-12
+        .fr-form-group
+          .fr-fieldset.fr-fieldset--inline
+            legend= f.label "Sexe", class: "fr-label fr-fieldset__legend fr-text--regular", for: "select-gender"
+            .fr-fieldset__content
+              .fr-radio-group.fr-radio-group--sm
+                = f.radio_button :gender, "f", id: "select-gender-girl", class: "border", required: true
+                = f.label :gender, "Féminin", class: "fr-label fr-mb-0", for: "select-gender-girl"
+              .fr-radio-group.fr-radio-group--sm
+                = f.radio_button :gender, "m", id: "select-gender-boy"
+                = f.label :gender, "Masculin", class: "fr-label fr-mb-0", for: "select-gender-boy"
+              .fr-radio-group.fr-radio-group--sm
+                = f.radio_button :gender, "np", id: "select-gender-unknown"
+                = f.label :gender, "Non précisé", class: "fr-label fr-mb-0", for: "select-gender-unknown"
+    
+    .row.fr-my-1w
+      .fr-col-12.fr-col-md-12.fr-pl-2w
+        .form-group
+          .fr-checkbox-group.fr-checkbox-group--sm
+            = f.check_box :handicap_present, data: { action: "change->signup#toggleHandicap" }
+            = f.label :handicap_present, class: "" do
+              | L'élève aura besoin d'une aide adaptée pendant son stage, en raison de son handicap.
+              small.text-muted
+                | (optionnel)
+            
+        .form-group.custom-label-container class="#{@student.handicap_present ? '' : 'd-none'}" data-signup-target="handicapGroup" 
+          = f.label "Indiquez ce dont l'élève a besoin", class: "fr-label"
+          = f.text_area :handicap, class: 'fr-input'
+
+              
+    .fr-highlight
+      p
+        | En confirmant l’inscription, un message de confirmation sera envoyé sur le numéro de téléphone indiqué, avec un lien permettant à l’élève de définir son propre mot de passe.
+    .row 
+      .fr-col-12
+        .actions.d-flex.d-sm-block.text-center.fr-mx-2w
+          = f.submit "Confirmer l'inscription de l'élève", class: "btn-block fr-btn", id: "test-create-user"
+            
