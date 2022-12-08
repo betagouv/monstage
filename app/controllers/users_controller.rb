@@ -39,11 +39,6 @@ class UsersController < ApplicationController
     render :edit, status: :bad_request
   end
 
-  def new_user_migration
-    authorize! :user_migration, current_user
-    render :new_user_migration
-  end
-
   helper_method :current_section
 
   private

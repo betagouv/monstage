@@ -48,10 +48,6 @@ Rails.application.routes.draw do
     end
   end
 
-  # namespace :admin, path: 'admin' do
-  get 'user/migrate_employer', to: 'users#migrate_employer'
-  # end
-
   namespace :api, path: 'api' do
     resources :internship_offers, only: %i[create update destroy index]
     resources :schools, only: [] do

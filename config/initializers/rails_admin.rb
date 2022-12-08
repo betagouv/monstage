@@ -104,7 +104,6 @@ RailsAdmin.config do |config|
                               Users::God]
 
   config.navigation_static_links = {
-    "Migrer un employeur vers un compte référent" => "/user/migrate_employee_to_referent",
     "Ajouter un établissement" => "/schools/new",
     "Stats" => "/reporting/dashboards?school_year=#{SchoolYear::Current.new.beginning_of_period.year}",
     "Sidekiq" => "/sidekiq",
