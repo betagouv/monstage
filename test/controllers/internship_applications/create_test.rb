@@ -31,7 +31,7 @@ module InternshipApplications
 
       assert_difference('InternshipApplications::WeeklyFramed.count', 1) do
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
-        assert_redirected_to completed_internship_offer_internship_application_path(
+        assert_redirected_to internship_offer_internship_application_path(
           internship_offer,
           InternshipApplications::WeeklyFramed.last
         )
@@ -74,7 +74,7 @@ module InternshipApplications
 
       assert_difference('InternshipApplications::WeeklyFramed.count', 1) do
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
-        assert_redirected_to completed_internship_offer_internship_application_path(
+        assert_redirected_to internship_offer_internship_application_path(
           internship_offer,
           InternshipApplications::WeeklyFramed.last
         )
@@ -114,7 +114,7 @@ module InternshipApplications
       }
       assert_difference('InternshipApplications::FreeDate.count', 1) do
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
-        assert_redirected_to completed_internship_offer_internship_application_path(
+        assert_redirected_to internship_offer_internship_application_path(
           internship_offer,
           InternshipApplications::FreeDate.last
         )
@@ -153,7 +153,7 @@ module InternshipApplications
       }
       assert_difference('InternshipApplications::FreeDate.count', 1) do
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
-        assert_redirected_to completed_internship_offer_internship_application_path(
+        assert_redirected_to internship_offer_internship_application_path(
           internship_offer,
           InternshipApplications::FreeDate.last
         )
@@ -192,7 +192,7 @@ module InternshipApplications
       }
       assert_difference('InternshipApplications::FreeDate.count', 1) do
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
-        assert_redirected_to completed_internship_offer_internship_application_path(
+        assert_redirected_to internship_offer_internship_application_path(
           internship_offer,
           InternshipApplications::FreeDate.last
         )
@@ -233,7 +233,7 @@ module InternshipApplications
 
       assert_difference('InternshipApplications::WeeklyFramed.count', 1) do
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
-        assert_redirected_to completed_internship_offer_internship_application_path(
+        assert_redirected_to internship_offer_internship_application_path(
           internship_offer,
           InternshipApplications::WeeklyFramed.last
         )
