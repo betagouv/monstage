@@ -2,28 +2,6 @@
 
 module Users
   class MinistryStatistician < User
-    rails_admin do
-      weight 6
-
-      configure :last_sign_in_at, :datetime
-      configure :created_at, :datetime
-
-      list do
-        fields(*UserAdmin::DEFAULT_FIELDS)
-        field :ministry_name do
-          label 'Administration centrale'
-          pretty_value { bindings[:object]&.ministries.map(&:name).join(', ') }
-        end
-        fields(*UserAdmin::ACCOUNT_FIELDS)
-
-        scopes(UserAdmin::DEFAULT_SCOPES)
-      end
-
-      edit do
-        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
-      end
-    end
-
     METABASE_DASHBOARD_ID = 10
 
     before_validation :assign_email_whitelist_and_confirm
@@ -74,6 +52,40 @@ module Users
     def assign_email_whitelist_and_confirm
       self.ministry_email_whitelist = EmailWhitelists::Ministry.find_by(email: email)
       self.confirmed_at = Time.now
+    end
+
+    def signatory_role
+      Signature.signatory_roles[:employer]
+    end
+
+    rails_admin do
+      weight 6
+
+      configure :last_sign_in_at, :datetime
+      configure :created_at, :datetime
+
+      list do
+        fields(*UserAdmin::DEFAULT_FIELDS)
+        field :ministry_name do
+          label 'Administration centrale'
+          pretty_value { bindings[:object]&.ministries.map(&:name).join(', ') }
+        end
+        fields(*UserAdmin::ACCOUNT_FIELDS)
+
+        scopes(UserAdmin::DEFAULT_SCOPES)
+      end
+
+      show do
+        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
+      end
+
+      edit do
+        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
+        field :agreement_signatorable do
+          label 'Signataire des conventions'
+          help 'Si le V est coché en vert, le signataire doit signer TOUTES les conventions'
+        end
+      end
     end
 
     private

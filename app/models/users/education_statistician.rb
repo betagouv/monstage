@@ -2,32 +2,6 @@
 
 module Users
   class EducationStatistician < User
-    rails_admin do
-      weight 5
-
-      configure :last_sign_in_at, :datetime
-      configure :created_at, :datetime
-
-      list do
-        scopes(UserAdmin::DEFAULT_SCOPES)
-
-        fields(*UserAdmin::DEFAULT_FIELDS)
-        field :department do
-          label 'Département'
-          pretty_value { bindings[:object]&.department}
-        end
-        field :department_zipcode do
-          label 'Code postal'
-          pretty_value { bindings[:object]&.department_zipcode}
-        end
-        fields(*UserAdmin::ACCOUNT_FIELDS)
-      end
-
-      edit do
-        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
-      end
-    end
-
     has_one :email_whitelist,
             class_name: 'EmailWhitelists::EducationStatistician',
             foreign_key: :user_id,
@@ -81,6 +55,44 @@ module Users
     def destroy
       email_whitelist&.delete
       super
+    end
+
+    def signatory_role
+      Signature.signatory_roles[:employer]
+    end
+
+    rails_admin do
+      weight 5
+
+      configure :last_sign_in_at, :datetime
+      configure :created_at, :datetime
+
+      list do
+        scopes(UserAdmin::DEFAULT_SCOPES)
+
+        fields(*UserAdmin::DEFAULT_FIELDS)
+        field :department do
+          label 'Département'
+          pretty_value { bindings[:object]&.department}
+        end
+        field :department_zipcode do
+          label 'Code postal'
+          pretty_value { bindings[:object]&.department_zipcode}
+        end
+        fields(*UserAdmin::ACCOUNT_FIELDS)
+      end
+
+      show do
+        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
+      end
+
+      edit do
+        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
+        field :agreement_signatorable do
+          label 'Signataire des conventions'
+          help 'Si le V est coché en vert, le signataire doit signer TOUTES les conventions'
+        end
+      end
     end
 
     private
