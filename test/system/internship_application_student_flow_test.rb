@@ -61,28 +61,6 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     end
   end
 
-  test 'student with no class_room can submit a 3e segpa when school have not choosen week' do
-    # weeks = Week.selectable_from_now_until_end_of_school_year.to_a.first(2)
-    school = create(:school, weeks: [])
-    student = create(:student, school: school)
-    internship_offer = create(:weekly_internship_offer)
-
-    sign_in(student)
-    visit internship_offer_path(internship_offer)
-    # check application form opener and check form is hidden by default
-    page.find '#internship-application-closeform', visible: false
-
-    all('a', text: 'Postuler').first.click
-    # check application is now here, ensure feature is here
-    page.find '#internship-application-closeform', visible: true
-    # check for phone and email fields disabled
-    page.find("input[type='submit'][value='Valider']").click
-    assert page.has_selector?(".fr-card__title a[href='/internship_offers/#{internship_offer.id}']", count: 1)
-    click_button('Envoyer')
-    page.find('h1', text: 'Mes candidatures')
-    assert page.has_content?(internship_offer.title)
-  end
-
   test 'student with no class_room can submit an application when school has not choosen week' do
     # Pay attention when merging this very test: it's here to stay
     weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
