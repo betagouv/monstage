@@ -72,7 +72,7 @@ module Builders
         legal_terms_rich_text: internship_agreement_preset.legal_terms_rich_text.body,
         complementary_terms_rich_text: internship_agreement_preset.complementary_terms_rich_text.body
       }
-      params[:activity_rating_rich_text] = internship_agreement_preset.troisieme_generale_activity_rating_rich_text if internship_application.student.class_room
+      params[:activity_rating_rich_text] = internship_agreement_preset.troisieme_generale_activity_rating_rich_text
       params
     end
 
