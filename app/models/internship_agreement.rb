@@ -252,10 +252,6 @@ class InternshipAgreement < ApplicationRecord
     aasm_state.to_s.in?(%w[validated signatures_started]) && !signed_by?(user: user)
   end
 
-
-
-
-
   def signed_by?(user:)
     signatures.pluck(:user_id).include?(user.id)
   end
@@ -263,6 +259,9 @@ class InternshipAgreement < ApplicationRecord
   def presenter(user:)
     Presenters::InternshipAgreement.new(self, user)
   end
+
+
+
 
   private
 
