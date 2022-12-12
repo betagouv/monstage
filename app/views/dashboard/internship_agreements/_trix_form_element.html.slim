@@ -21,8 +21,11 @@
             = form.rich_text_area field,
                                   class: 'form-control',
                                   required: required,
-                                  data: { 'action': 'input->internship-agreement-field#checkRequiredTrixField',
-                                  aria: {labelledby: "label_#{form.object_name}_#{field}"} }
+                                  data: { 'action': 'input->internship-agreement-field#checkRequiredTrixField', :'internship-agreement-form-target' => 'textField' },
+                                  aria: { labelledby: "label_#{form.object_name}_#{field}" }
         - else
           div id="#{field}" class="text-muted mt-2 trix-header-vanisher"
-            = form.rich_text_area field, class: 'form-control', disabled: disabled
+            = form.rich_text_area field,
+                                  class: 'form-control',
+                                  data: {:'internship-agreement-form-target' => 'textField' },
+                                  disabled: disabled
