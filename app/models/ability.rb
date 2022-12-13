@@ -410,12 +410,6 @@ class Ability
   end
 
   def student_can_apply?(internship_offer:, student:)
-    offer_is_reserved_to_another_school = internship_offer.reserved_to_school? && (internship_offer.school_id != student.school_id)
-
-    return false if offer_is_reserved_to_another_school
-    return true if student.try(:class_room).nil?
-    return true if student.try(:class_room)
-
-    false
+    !(internship_offer.reserved_to_school? && (internship_offer.school_id != student.school_id))
   end
 end
