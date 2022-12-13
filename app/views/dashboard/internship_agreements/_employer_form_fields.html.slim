@@ -103,7 +103,7 @@ tbody.internship-agreement
         .row.mt-0
           - label = "Compétences visées"
           - title = "Note au chef d'entreprise"
-          - ccontent = "Apprentissages en entreprise"
+          - content = "Apprentissages en entreprise"
           - filled_by = ["l'entreprise"]
           = render partial: 'dashboard/internship_agreements/trix_form_element',
                    locals: { field: :activity_learnings_rich_text, form: form, text_label: label, title: title, content: content , filled_by: filled_by, disabled: disabled }
@@ -126,6 +126,6 @@ tbody.internship-agreement
         .row
           .col-8= render "layouts/form_errors", resource: resource
 
-        .row.mt-0
+        .row.mt-0.fr-mb-10w
           = render partial: 'dashboard/internship_agreements/employer_form_footer',
                             locals: { form: form, internship_agreement: @internship_agreement }

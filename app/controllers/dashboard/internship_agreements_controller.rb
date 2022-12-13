@@ -113,6 +113,8 @@ module Dashboard
               :legal_terms_rich_text,
               :school_manager_accept_terms,
               :employer_accept_terms,
+              :employer_event,
+              :school_manager_event,
               :main_teacher_accept_terms,
               :weekly_lunch_break,
               :student_refering_teacher_full_name,
