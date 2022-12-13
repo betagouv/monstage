@@ -11,7 +11,7 @@ module Presenters
 
 
 
-    def self.with_class_rooms(school)
+    def self.from_school(school)
       school.class_rooms
             .includes([:students])
             .order(:name)

@@ -41,7 +41,7 @@
       .col-12.text-right.px-0
         - if can?(:create, ClassRoom)
           = link_to "Ajouter une classe", new_dashboard_school_class_room_path(@school), class: 'fr-btn fr-icon-add-line fr-btn--icon-left'
-    - Presenters::ClassRoom.with_class_rooms(@school).each do |class_rooms|
+    - Presenters::ClassRoom.from_school(@school).each do |class_rooms|
       .row.mt-3
         .col-8
           .h3.mb-0 3e 
