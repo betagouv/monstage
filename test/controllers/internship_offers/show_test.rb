@@ -41,15 +41,15 @@ module InternshipOffers
       end
     end
 
-    test 'GET #show as Student displays application form' do
-      school = create(:school)
-      student = create(:student, school: school, class_room: create(:class_room, school: school))
-      sign_in(student)
-      get internship_offer_path(create(:weekly_internship_offer))
+    # test 'GET #show as Student displays application form' do
+    #   school = create(:school)
+    #   student = create(:student, school: school, class_room: create(:class_room, school: school))
+    #   sign_in(student)
+    #   get internship_offer_path(create(:weekly_internship_offer))
 
-      assert_response :success
-      assert_select 'h2', text: "Informations sur l'entreprise"
-    end
+    #   assert_response :success
+    #   assert_select 'form[id=?]', 'new_internship_application'
+    # end
 
     # test 'GET #show as Student when school has no weeks it shows caution message and weeks offer select' do
     #   school = create(:school, weeks: [])
