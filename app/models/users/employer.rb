@@ -51,13 +51,6 @@ module Users
       Signature.signatory_roles[:employer]
     end
 
-    def already_signed?(internship_agreement_id:)
-      InternshipAgreement.joins(:signatures)
-                         .where(id: internship_agreement_id)
-                         .where(signatures: {user_id: id})
-                         .exists?
-    end
-
     def presenter
       Presenters::Employer.new(self)
     end

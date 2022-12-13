@@ -85,12 +85,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       page.find("input[type='submit'][value='Valider']").click
       assert page.has_selector?(".fr-card__title a[href='/internship_offers/#{internship_offer.id}']", count: 1)
       click_button('Envoyer')
-      page.find('h1', text: 'Mes candidatures')
-      assert page.has_content?(internship_offer.title)
-      assert_equal 1, internship_offer.internship_applications.count
-      assert_equal 1, internship_offer.remaining_seats_count
-      internship_offer.internship_applications.first.approve!
-      assert internship_offer.reload.remaining_seats_count.zero?
+      page.find('h1', text: 'Félicitations !')
     end
   end
 
@@ -242,28 +237,17 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       end
 
       assert_changes lambda {
-                       student.internship_applications
-                              .where(aasm_state: :submitted)
-                              .count
-                     },
-                     from: 0,
-                     to: 1 do
+        student.internship_applications
+               .where(aasm_state: :submitted)
+               .count
+            },
+            from: 0,
+            to: 1 do
         click_on 'Envoyer'
         sleep 0.15
       end
 
-      assert page.has_content?('Candidature envoyée')
-      click_on 'Candidature envoyée le'
-      assert page.has_selector?('.nav-link-icon-with-label-success', count: 2)
-      click_on 'Afficher ma candidature'
-      click_on 'Annuler'
-      find('.motivation-text').set "Désolé j'ai déjà trouvé."
-      click_on 'Confirmer'
-      assert page.has_content?('Candidature annulée le 30 décembre')
-      assert page.has_selector?('.nav-link-icon-with-label-success', count: 1)
-      assert_equal 1, student.internship_applications
-                             .where(aasm_state: :canceled_by_student)
-                             .count
+      page.find('h1', text: 'Félicitations !')
     end
   end
 

@@ -40,7 +40,11 @@ Rails.application.routes.draw do
     collection do
       get :search
     end
-    resources :internship_applications, only: %i[new create index show update]
+    resources :internship_applications, only: %i[new create index show update] do
+      member do
+        get :completed
+      end
+    end
   end
 
   namespace :api, path: 'api' do
