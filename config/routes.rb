@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   end
   
   resources :identities, only: %i[new create edit update]
+  resources :schools, only: %i[new create ]
 
   resources :internship_offer_keywords, only: [] do
     collection do
@@ -131,6 +132,7 @@ Rails.application.routes.draw do
   get '/politique-de-confidentialite', to: 'pages#politique_de_confidentialite'
   get '/statistiques', to: 'pages#statistiques'
   post '/newsletter', to: 'newsletter#subscribe'
+  get '/register_to_webinar', to: 'pages#register_to_webinar'
 
   # Redirects
   get '/dashboard/internship_offers/:id', to: redirect('/internship_offers/%{id}', status: 302)
@@ -140,4 +142,5 @@ Rails.application.routes.draw do
   get '/404', to: 'errors#not_found'
   get '/422', to: 'errors#unacceptable'
   get '/500', to: 'errors#internal_error'
+  get '/flyer_2022', to: 'pages#flyer'
 end

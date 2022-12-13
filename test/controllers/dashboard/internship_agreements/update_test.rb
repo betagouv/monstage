@@ -77,7 +77,7 @@ module Dashboard::InternshipAgreements
       student = create(:student, school: school, class_room: class_room)
       create(:main_teacher, school: school, class_room: class_room)
       internship_application = create(:weekly_internship_application, :submitted, user_id: student.id)
-      internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+      internship_agreement = create(:internship_agreement, :created_by_system,
                                     internship_application: internship_application)
       new_organisation_representative_full_name = 'John Doe'
       params = {
@@ -131,7 +131,7 @@ module Dashboard::InternshipAgreements
 
     test 'PATCH #update as school manager owning students updates internship_agreement with missing school_manager_event' do
       internship_application = create(:weekly_internship_application, :approved)
-      internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+      internship_agreement = create(:internship_agreement, :created_by_system,
                                     school_manager_accept_terms: true,
                                     internship_application: internship_application)
       school_manager = internship_application.student.school_manager
@@ -150,7 +150,7 @@ module Dashboard::InternshipAgreements
 
     test 'PATCH #update as school manager owning students updates internship_agreement with soft saving'  do
       internship_application = create(:weekly_internship_application, :approved)
-      internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+      internship_agreement = create(:internship_agreement, :created_by_system,
                                     school_manager_accept_terms: true,
                                     internship_application: internship_application)
       school_manager = internship_application.student.school_manager

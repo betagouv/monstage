@@ -18,7 +18,7 @@ module Finders
     test '.pending_internship_offers_actions' do
       employer     = create(:employer)
       status_count = InternshipApplication.aasm.states.count
-      2.times do
+      2.times do 
         InternshipApplication.aasm.states.each do |state|
           student = create(:student)
           wio = create(:weekly_internship_offer, employer: employer)

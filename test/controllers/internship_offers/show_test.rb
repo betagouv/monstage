@@ -22,6 +22,10 @@ module InternshipOffers
     #   assert_response :success
     #   assert_select 'title', "Offre de stage '#{internship_offer.title}' | Monstage"
     #   assert_select 'form[id=?]', 'new_internship_application', count: 0
+    #   assert_select 'strong.tutor_name', text: internship_offer.tutor_name
+    #   assert_select 'ul li.tutor_phone', text: "Portable : #{internship_offer.tutor_phone}"
+    #   assert_select "a.tutor_email[href=\"mailto:#{internship_offer.tutor_email}\"]",
+    #                 text: internship_offer.tutor_email
     # end
 
     #
@@ -55,6 +59,7 @@ module InternshipOffers
     #   get internship_offer_path(internship_offer)
 
     #   assert_response :success
+    #   assert_select 'form[id=?]', 'new_internship_application', count: 1
     #   assert_select('.test-missing-school-weeks',
     #                 { count: 1 },
     #                 'missing rendering of call_to_action/student_missing_school_weeks')

@@ -297,9 +297,9 @@ class IndexTest < ActionDispatch::IntegrationTest
                               max_candidates: max_candidates,
                               weeks: [week]
                               )
-   create(:internship_application,
-          internship_offer: internship_offer,
-          week: week)
+    internship_application = create(:internship_application,
+                                    internship_offer: internship_offer,
+                                    week: week)
 
 
     sign_in(student)

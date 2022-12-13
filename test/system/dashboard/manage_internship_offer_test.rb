@@ -203,7 +203,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       select('2019/2020', from: "Années scolaires")
       find('.active', text: "Passées")
       assert_equal 2, all(".test-internship-offer").count
-
+      
       select('2020/2021', from: "Années scolaires")
       sleep 0.5
       find('.active', text: "Passées")
