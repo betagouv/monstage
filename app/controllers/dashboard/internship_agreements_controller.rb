@@ -80,6 +80,7 @@ module Dashboard
     def index
       authorize! :create, InternshipAgreement
       @internship_agreements = current_user.internship_agreements
+                                           .having_school_manager
                                            .includes([:internship_application])
       @school = current_user.school if current_user.is_a?(::Users::SchoolManagement)
     end
