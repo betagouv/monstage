@@ -303,7 +303,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
-    employer_name: Group.is_paqte.first.name,
+    employer_name: Group.is_paqte.first.name
   )
   weeks = [].concat(Week.selectable_on_school_year[0..1], Week.selectable_on_school_year[3..5])
   InternshipOffers::WeeklyFramed.create!(
@@ -329,7 +329,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
-    employer_name: Group.is_paqte.first.name,
+    employer_name: Group.is_paqte.first.name
   )
 
     # 3eme generale public
@@ -357,7 +357,7 @@ def populate_internship_offers
     zipcode: '75012',
     city: 'paris',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
-    employer_name: Group.is_public.last.name,
+    employer_name: Group.is_public.last.name
   )
   InternshipOffers::WeeklyFramed.create!(
     max_candidates: 5,
@@ -382,7 +382,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'Du temps pour moi',
+    employer_name: 'Du temps pour moi'
   )
   # dépubliée
   InternshipOffers::WeeklyFramed.create!(
@@ -408,7 +408,7 @@ def populate_internship_offers
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
     employer_name: 'Du temps pour moi',
     max_candidates: 7,
-    max_students_per_group: 7,
+    max_students_per_group: 7
   )
   io = InternshipOffer.last
   io.published_at = nil
@@ -437,7 +437,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
-    employer_name: 'Editegis',
+    employer_name: 'Editegis'
   )
   # 3eme generale API
   weeks =  Week.selectable_on_school_year
@@ -464,7 +464,7 @@ def populate_internship_offers
     remote_id: '1',
     permalink: 'https://www.google.fr',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
-    employer_name: 'IBM',
+    employer_name: 'IBM'
   )
   # 3eme generale API
   weeks = Week.of_previous_school_year
@@ -491,7 +491,7 @@ def populate_internship_offers
     remote_id: '2',
     permalink: 'https://www.google.fr',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'Ministère de l\'Education Nationale',
+    employer_name: 'Ministère de l\'Education Nationale'
   )
 
   # 3eme generale multi-line
@@ -523,7 +523,7 @@ MULTI_LINE
     zipcode: '95160',
     city: 'Montmorency',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
-    employer_name: 'Douanes Assistance Corp.',
+    employer_name: 'Douanes Assistance Corp.'
   )
   # 3eme generale multi-line
   multiline_description = <<-MULTI_LINE
@@ -552,7 +552,7 @@ MULTI_LINE
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
-    employer_name: 'MetaBoutShop',
+    employer_name: 'MetaBoutShop'
   )
   # 3eme generale multi-line
   multiline_description = <<-MULTI_LINE
@@ -582,7 +582,7 @@ MULTI_LINE
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
-    employer_name: 'Oyonnax Corp.',
+    employer_name: 'Oyonnax Corp.'
   )
 end
 
