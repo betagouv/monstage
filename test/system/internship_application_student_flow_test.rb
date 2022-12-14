@@ -29,7 +29,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     click_on 'Valider'
   end
 
-  test 'student with no class_room can submit a 3e prepa métier application when school have not choosen week' do
+  test 'student with no class_room can submit an application when school have not choosen week' do
     if ENV['RUN_BRITTLE_TEST']
       weeks = Week.selectable_from_now_until_end_of_school_year.to_a.first(2)
       school = create(:school, weeks: [])
