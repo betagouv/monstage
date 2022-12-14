@@ -243,8 +243,6 @@ class InternshipOffer < ApplicationRecord
     weekly_hours.any?(&:present?)
   end
 
-  def weekly?; true  end
-
   def presenter
     Presenters::InternshipOffer.new(self)
   end
