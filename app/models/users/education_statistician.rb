@@ -94,6 +94,10 @@ module Users
         fields(*UserAdmin::ACCOUNT_FIELDS)
       end
 
+      show do
+        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
+      end
+
       edit do
         fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
         field :agreement_signatorable do
