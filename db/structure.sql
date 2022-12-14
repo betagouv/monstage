@@ -407,8 +407,6 @@ CREATE TABLE public.class_rooms (
     school_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    discarded_at timestamp without time zone,
-    main_teacher_id integer
 );
 
 
@@ -737,9 +735,9 @@ CREATE TABLE public.internship_offer_infos (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
-    max_students_per_group integer DEFAULT 1 NOT NULL,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
+    max_students_per_group integer DEFAULT 1 NOT NULL,
     remaining_seats_count integer DEFAULT 0
 );
 
@@ -972,8 +970,8 @@ CREATE TABLE public.operators (
     target_count integer DEFAULT 0,
     logo character varying,
     website character varying,
-    created_at timestamp without time zone DEFAULT '2021-05-31 19:54:30.697678'::timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone DEFAULT '2021-05-31 19:54:30.703573'::timestamp without time zone NOT NULL,
+    created_at timestamp without time zone DEFAULT '2021-06-07 14:16:28.780824'::timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone DEFAULT '2021-06-07 14:16:28.786069'::timestamp without time zone NOT NULL,
     airtable_id character varying,
     airtable_link character varying,
     airtable_reporting_enabled boolean DEFAULT false,
@@ -1307,6 +1305,7 @@ CREATE TABLE public.users (
     phone_password_reset_count integer DEFAULT 0,
     last_phone_password_reset timestamp without time zone,
     anonymized boolean DEFAULT false NOT NULL,
+    organisation_id bigint,
     targeted_offer_id integer,
     banners jsonb DEFAULT '{}'::jsonb,
     signature_phone_token character varying(6),
@@ -1847,13 +1846,6 @@ CREATE INDEX index_air_table_records_on_week_id ON public.air_table_records USIN
 
 
 --
--- Name: index_class_rooms_on_discarded_at; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_class_rooms_on_discarded_at ON public.class_rooms USING btree (discarded_at);
-
-
---
 -- Name: index_class_rooms_on_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2321,14 +2313,6 @@ ALTER TABLE ONLY public.internship_offers
 
 
 --
--- Name: internship_offers fk_rails_3cef9bdd89; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.internship_offers
-    ADD CONSTRAINT fk_rails_3cef9bdd89 FOREIGN KEY (group_id) REFERENCES public.groups(id);
-
-
---
 -- Name: class_rooms fk_rails_49ae717ca2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2446,14 +2430,6 @@ ALTER TABLE ONLY public.tutors
 
 ALTER TABLE ONLY public.active_storage_attachments
     ADD CONSTRAINT fk_rails_c3b3935057 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
-
-
---
--- Name: users fk_rails_d23d91f0e6; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT fk_rails_d23d91f0e6 FOREIGN KEY (class_room_id) REFERENCES public.class_rooms(id);
 
 
 --
@@ -2693,6 +2669,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201106143850'),
 ('20201109145559'),
 ('20201116085327'),
+('20201125102052'),
 ('20201203153154'),
 ('20210112164129'),
 ('20210113140604'),
@@ -2746,7 +2723,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220804155217'),
 ('20220811103937'),
 ('20220816105807'),
-('20220901065014'),
 ('20221010071105'),
 ('20221013162104'),
 ('20221021094345'),
