@@ -406,7 +406,7 @@ CREATE TABLE public.class_rooms (
     name character varying,
     school_id bigint,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
