@@ -37,11 +37,11 @@
             .col-12
               h2.text-body Stages sur la plateforme
 
-          - if can?(:see_dashboard_department_summary, current_user)
+          - if can?(:see_dashboard_department_summary, current_user) || can?(:see_ministry_dashboard, current_user)
             .fr-ml-2w.fr-py-2w
               p Le tableau ci-dessous ne s'affiche pas ?
               = link_to 'Voir le tableau dans une nouvelle page', @iframe, class: 'fr-btn', target: "_blank"
-            iframe.col-12.mt-2 title="Tableau de bord" src="#{@iframe}" style=("border: 0; height: 2000px;")
+            iframe.col-12.mt-2 title="Tableau de bord" src="#{@iframe}" style=("border: 0; height: #{can?(:see_dashboard_department_summary, current_user) ? '2050px' : '950px'};")
           - if can?(:see_dashboard_enterprises_summary, current_user)
             .row.mt-3.align-items-center.no-gutters.bg-light-blue.py-4
               .col-12.col-md-3.text-center

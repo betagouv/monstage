@@ -78,15 +78,6 @@ module Users
       Signature.signatory_roles[:school_manager] if role == 'school_manager'
     end
 
-    def already_signed?(internship_agreement_id:)
-      return false unless role == 'school_manager'
-
-      InternshipAgreement.joins(:signatures)
-                         .where(id: internship_agreement_id)
-                         .where(signatures: {user_id: id})
-                         .exists?
-    end
-
     def school_management? ; true end
     def school_manager? ; role == 'school_manager' end
 
@@ -116,8 +107,10 @@ module Users
     def official_uai_email_address
       return if school_id.blank?
 
-      unless email =~ /\Ace\.\d{7}\S@#{school.email_domain_name}\z/
-        errors.add(:email, "L'adresse email utilisée doit être l'adresse officielle de l'établissement.<br>ex: ce.MON_CODE_UAI@ac-MON_ACADEMIE.fr".html_safe)
+      unless official_uai_email_address?
+        message = "L'adresse email utilisée doit être l'adresse officielle " \
+                  "de l'établissement.<br>ex: ce.MON_CODE_UAI@ac-MON_ACADEMIE.fr"
+        errors.add(:email, message.html_safe)
       end
     end
 
@@ -132,6 +125,10 @@ module Users
                                        member: self)
                            .deliver_later
       end
+    end
+
+    def official_uai_email_address?
+      email =~ /\Ace\.\d{7}\S@#{school.email_domain_name}\z/
     end
   end
 end

@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   end
   
   resources :identities, only: %i[new create edit update]
+  resources :schools, only: %i[new create ]
 
   resources :internship_offer_keywords, only: [] do
     collection do
@@ -40,7 +41,11 @@ Rails.application.routes.draw do
     collection do
       get :search
     end
-    resources :internship_applications, only: %i[new create index show update]
+    resources :internship_applications, only: %i[new create index show update] do
+      member do
+        get :completed
+      end
+    end
   end
 
   resources :favorites, only: %i[create destroy index]
@@ -129,6 +134,7 @@ Rails.application.routes.draw do
   get '/politique-de-confidentialite', to: 'pages#politique_de_confidentialite'
   get '/statistiques', to: 'pages#statistiques'
   post '/newsletter', to: 'newsletter#subscribe'
+  get '/register_to_webinar', to: 'pages#register_to_webinar'
 
   # Redirects
   get '/dashboard/internship_offers/:id', to: redirect('/internship_offers/%{id}', status: 302)

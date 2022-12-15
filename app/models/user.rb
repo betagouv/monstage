@@ -216,7 +216,7 @@ class User < ApplicationRecord
     if add_email_to_phone_account?
       self.confirm
     else
-      unless @skip_confirmation_notification
+      unless @skip_confirmation_notification || whitelisted?
         devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email })
                      .deliver_later
       end
@@ -231,6 +231,7 @@ class User < ApplicationRecord
   end
 
   def statistician? ; false end
+  def department_statistician? ; false end
   def ministry_statistician? ; false end
   def student? ; false end
   def employer? ; false end
@@ -238,8 +239,9 @@ class User < ApplicationRecord
   def school_management? ; false end
   def school_manager? ; false end
   def god? ; false end
+  def employer_like? ; false end
 
-  def already_signed?(internship_aggreement_id:); true end
+  def already_signed?(internship_agreement_id:); true end
   def create_signature_phone_token ; nil end
   def send_signature_sms_token ; nil end
   def signatory_role ; nil end
@@ -249,6 +251,15 @@ class User < ApplicationRecord
     Presenters::User.new(self)
   end
 
+  protected
+
+  # TODO : this is to move to a statistician model
+
+  def trigger_agreements_creation
+    if changes[:agreement_signatorable] == [false, true]
+      AgreementsAPosterioriJob.perform_later(user_id: id)
+    end
+  end
 
   private
 
@@ -285,5 +296,9 @@ class User < ApplicationRecord
         'Il faut conserver un email valide pour assurer la continuité du service'
       )
     end
+  end
+
+  def whitelisted?
+    !!EmailWhitelist.find_by_email(email)
   end
 end

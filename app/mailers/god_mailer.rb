@@ -19,4 +19,24 @@ class GodMailer < ApplicationMailer
       subject: "Monitoring monstagede3e : kpi du #{@human_date}"
     )
   end
+
+  def weekly_pending_applications_email
+    internship_applications = InternshipApplication.submitted.where('submitted_at > :date', date: 30.days.ago).where(canceled_at: nil)
+
+    @human_date = I18n.l Date.today,   format: '%d %B %Y'
+
+    attachment_name = "export_candidatures_non_repondues.xlsx"
+    xlsx = render_to_string layout: false,
+                            handlers: [:axlsx],
+                            formats: [:xlsx],
+                            template: "reporting/internship_applications/pending_internship_applications",
+                            locals: { internship_applications: internship_applications,
+                                      presenter_for_dimension: Presenters::Reporting::DimensionByOffer }
+    attachments[attachment_name] = {mime_type: Mime[:xlsx], content: xlsx}
+
+    mail(
+      to: ENV['TEAM_EMAIL'],
+      subject: "Monitoring monstagede3e : Candidatures non répondues au #{@human_date}"
+    )
+  end
 end

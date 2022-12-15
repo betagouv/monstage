@@ -54,6 +54,7 @@ module Finders
       query = query.by_department(department: params[:department]) if department_param?
       query = query.by_school_track(school_track: params[:school_track]) if school_track?
       query = query.by_group(group_id: params[:group]) if group_param?
+      query = query.by_group(group_id: params[:ministries]) if ministries_param?
       query = query.by_academy(academy: params[:academy]) if academy_param?
       query = query.where(is_public: params[:is_public]) if public_param?
       query = query.by_detailed_typology(detailed_typology: params[:dimension]) if detailed_typology?
@@ -87,6 +88,14 @@ module Finders
 
     def group_param?
       params.key?(:group)
+    end
+
+    def groups_param?
+      params.key?(:groups)
+    end
+
+    def ministries_param?
+      params.key?(:ministries)
     end
 
     def academy_param?

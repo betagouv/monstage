@@ -8,13 +8,13 @@ module Reporting
       authorize! :index, Acl::Reporting.new(user: current_user, params: params)
 
       if current_user.ministry_statistician?
-        params.merge!(groups: current_user.ministries.map(&:id))
+        params.merge!(ministries: current_user.ministries.map(&:id))
       end
-
+      
       @offers = current_offers
       @no_offers = no_current_offers
       return if offers_hash[:school_year].blank?
-
+    
       respond_to do |format|
         format.xlsx do
           if dimension_is?('offers', params[:dimension])
@@ -82,7 +82,9 @@ module Reporting
 
     def offers_hash
       { department: params[:department],
-        school_year: params[:school_year]}
+        school_year: params[:school_year],
+        ministries: params[:ministries]
+      }
     end
   end
 end

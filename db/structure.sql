@@ -48,9 +48,6 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 -- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
-
-
 --
 -- Name: agreement_signatory_role; Type: TYPE; Schema: public; Owner: -
 --
@@ -2848,6 +2845,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221028100721'),
 ('20221031083556'),
 ('20221112100533'),
-('20221118074333');
+('20221118074333'),
+('20221118075029'),
+('20221119132335'),
+('20221121103636'),
+('20221123101159'),
+('20221124170052');
 
 

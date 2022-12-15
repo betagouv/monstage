@@ -87,7 +87,7 @@ module Dashboard::InternshipOffers
                       { count: 1 },
                       "other week should be selectable")
 
-        assert_select 'input#internship_offer_max_candidates[disabled]'
+        assert_select 'input#internship_offer_max_candidates'
       end
     end
 

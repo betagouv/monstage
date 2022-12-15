@@ -11,6 +11,7 @@ module Reporting
                     :department,
                     :academy,
                     :group,
+                    :ministries,
                     :school_track,
                     :subscribed_school,
                     :dimension,

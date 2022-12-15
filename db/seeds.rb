@@ -230,8 +230,7 @@ def populate_users
   last_public_groups = Group.where(is_public: true).last(2)
   EmailWhitelists::Statistician.create!(email: statistician_email, zipcode: 75)
   EmailWhitelists::EducationStatistician.create!(email: education_statistician_email, zipcode: 75)
-  ministry_email_whitelist = EmailWhitelists::Ministry.create!(email: ministry_statistician_email)
-  ministry_email_whitelist.groups << last_public_groups
+  ministry_email_whitelist = EmailWhitelists::Ministry.create!(email: ministry_statistician_email, groups: last_public_groups)
   with_class_name_for_defaults(Users::Statistician.new(email: statistician_email, password: 'review')).save!
   with_class_name_for_defaults(Users::EducationStatistician.new(email: education_statistician_email, password: 'review')).save!
   with_class_name_for_defaults(Users::MinistryStatistician.new(email: ministry_statistician_email, password: 'review')).save!
@@ -452,7 +451,6 @@ def populate_internship_offers
   InternshipOffers::Api.create!(
     employer: Users::Operator.first,
     siret: siret,
-    weeks: Week.selectable_on_school_year,
     weeks: weeks,
     first_date: weeks.first.beginning_of_week,
     last_date: weeks.last.beginning_of_week,

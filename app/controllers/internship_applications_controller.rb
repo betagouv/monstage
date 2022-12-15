@@ -32,7 +32,7 @@ class InternshipApplicationsController < ApplicationController
     if params[:transition] == 'submit!'
       @internship_application.submit!
       @internship_application.save!
-      redirect_to dashboard_students_internship_applications_path(@internship_application.student, @internship_application),
+      redirect_to completed_internship_offer_internship_application_path(@internship_offer, @internship_application),
                   flash: { success: "Votre candidature a bien été envoyée. Poursuivez votre recherche d'un stage et notez que en l'absence de réponse dans un délai de 30 jours, votre candidature sera automatiquement annulée." }
     else
       @internship_application.update(update_internship_application_params)
@@ -56,7 +56,23 @@ class InternshipApplicationsController < ApplicationController
                                                              @internship_application)
   rescue ActiveRecord::RecordInvalid => e
     @internship_application = e.record
-    render 'internship_offers/show', status: :bad_request
+    puts @internship_application.errors.messages
+    render 'new', status: :bad_request
+  end
+
+  def completed
+    set_internship_offer
+    @internship_application = @internship_offer.internship_applications.find(params[:id])
+    authorize! :submit_internship_application, @internship_application
+
+    @suggested_offers = Finders::InternshipOfferConsumer.new(
+      params: {
+        latitude: @internship_application.student.school.coordinates.latitude,
+        longitude: @internship_application.student.school.coordinates.longitude,
+        week_ids: [@internship_application.week_id]
+      },
+      user: current_user_or_visitor
+    ).all.includes([:sector]).order(id: :desc).last(6)
   end
 
   private

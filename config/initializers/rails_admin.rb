@@ -98,11 +98,13 @@ RailsAdmin.config do |config|
                               Users::SchoolManagement
                               Users::Statistician
                               Users::MinistryStatistician
+                              Users::EducationStatistician
                               Users::Operator
                               Users::Employer
                               Users::God]
 
   config.navigation_static_links = {
+    "Ajouter un établissement" => "/schools/new",
     "Stats" => "/reporting/dashboards?school_year=#{SchoolYear::Current.new.beginning_of_period.year}",
     "Sidekiq" => "/sidekiq",
     "Zammad (Support)" => "https://monstage.zammad.com",

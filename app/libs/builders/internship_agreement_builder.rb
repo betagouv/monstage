@@ -20,7 +20,7 @@ module Builders
       yield callback if block_given?
       internship_agreement = InternshipAgreement.new(
         {}.merge(preprocess_terms)
-          .merge(params)
+          .merge(sanitize(params))
       )
       authorize :create, internship_agreement
       internship_agreement.save!
@@ -32,8 +32,8 @@ module Builders
     def update(instance:, params:)
       yield callback if block_given?
       authorize :update, instance
-      instance.attributes = {}.merge(preprocess_terms)
-                              .merge(params)
+      instance.attributes = {}.merge(preprocess_terms(check_soft_saving(params)))
+                              .merge(sanitize(params))
       instance.save!
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => e
@@ -50,10 +50,10 @@ module Builders
       @callback = Callback.new
     end
 
-    def preprocess_terms
-      return { enforce_school_manager_validations: true } if user.school_manager?
-      return { enforce_main_teacher_validations: true } if user.main_teacher?
-      return { enforce_employer_validations: true } if user.employer?
+    def preprocess_terms(soft_saving= false)
+      return { enforce_school_manager_validations: !soft_saving } if user.school_manager?
+      return { enforce_main_teacher_validations: !soft_saving } if user.main_teacher?
+      return { enforce_employer_validations: !soft_saving } if user.employer_like?
       return { skip_validations_for_system: true } if user.is_a?(Users::God)
       raise ArgumentError, "#{user.type} can not create agreement yet"
     end
@@ -67,13 +67,12 @@ module Builders
     def preprocess_internship_agreement_preset(internship_application)
       internship_agreement_preset = internship_application.student.school.internship_agreement_preset
 
-      params = {
+      {
         school_delegation_to_sign_delivered_at: internship_agreement_preset.school_delegation_to_sign_delivered_at,
         legal_terms_rich_text: internship_agreement_preset.legal_terms_rich_text.body,
-        complementary_terms_rich_text: internship_agreement_preset.complementary_terms_rich_text.body
+        complementary_terms_rich_text: internship_agreement_preset.complementary_terms_rich_text.body,
+        activity_rating_rich_text: internship_agreement_preset.troisieme_generale_activity_rating_rich_text.body
       }
-      params[:activity_rating_rich_text] = internship_agreement_preset.troisieme_generale_activity_rating_rich_text if internship_application.student.class_room.try(:troisieme_generale?)
-      params
     end
 
     def preprocess_internship_offer_params(internship_offer)
@@ -120,5 +119,15 @@ module Builders
       # student_class_room is not used ...
     end
 
+    def check_soft_saving(params)
+      params[:employer_event] == 'start_by_employer' ||
+        params[:school_manager_event] == 'start_by_school_manager'
+    end
+
+    def sanitize(params)
+      params.delete(:employer_event)
+      params.delete(:school_manager_event)
+      params
+    end
   end
 end

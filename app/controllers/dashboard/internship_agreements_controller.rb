@@ -38,7 +38,10 @@ module Dashboard
       internship_agreement_builder.update(instance: InternshipAgreement.find(params[:id]),
                                           params: internship_agreement_params) do |on|
         on.success do |updated_internship_agreement|
-          updated_internship_agreement.send(params[:internship_agreement][:event]) if updated_internship_agreement.send("may_#{params[:internship_agreement][:event]}?")
+          updated_internship_agreement = process_state_update(
+            agreement: updated_internship_agreement,
+            params: params
+          )
           updated_internship_agreement.save
           redirect_to dashboard_internship_agreements_path, flash: { success: update_success_message(updated_internship_agreement) }
         end
@@ -77,6 +80,7 @@ module Dashboard
     def index
       authorize! :create, InternshipAgreement
       @internship_agreements = current_user.internship_agreements
+                                           .having_school_manager
                                            .includes([:internship_application])
       @school = current_user.school if current_user.is_a?(::Users::SchoolManagement)
     end
@@ -110,6 +114,8 @@ module Dashboard
               :legal_terms_rich_text,
               :school_manager_accept_terms,
               :employer_accept_terms,
+              :employer_event,
+              :school_manager_event,
               :main_teacher_accept_terms,
               :weekly_lunch_break,
               :student_refering_teacher_full_name,
@@ -146,6 +152,24 @@ module Dashboard
       else
         'La convention a été enregistrée.'
       end
+    end
+
+    def process_state_update( agreement: , params: )
+      employer_event       = params[:internship_agreement][:employer_event]
+      school_manager_event = params[:internship_agreement][:school_manager_event]
+      return agreement if employer_event.blank? && school_manager_event.blank?
+
+      agreement = transit_when_allowed( agreement: agreement, event: employer_event )
+      agreement = transit_when_allowed( agreement: agreement, event: school_manager_event )
+      agreement
+    end
+
+    def transit_when_allowed(agreement: , event:)
+      return agreement if event.blank?
+      return agreement unless agreement.send("may_#{event}?")
+
+      agreement.send(event)
+      agreement
     end
   end
 end

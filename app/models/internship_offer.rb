@@ -47,6 +47,10 @@ class InternshipOffer < ApplicationRecord
     where(sector_id: sector_id)
   }
 
+  scope :with_seats, lambda {
+    where('remaining_seats_count > 0')
+  }
+
   scope :limited_to_department, lambda { |user:|
     where(department: user.department)
   }

@@ -2,41 +2,28 @@
 
 module Users
   class Statistician < User
-    rails_admin do
-      weight 5
+    include Signatorable
 
-      configure :last_sign_in_at, :datetime
-      configure :created_at, :datetime
+    has_many :internship_offers, as: :employer,
+                                 dependent: :destroy
 
-      list do
-        scopes(UserAdmin::DEFAULT_SCOPES)
+    has_many :kept_internship_offers, -> { merge(InternshipOffer.kept) },
+             class_name: 'InternshipOffer', foreign_key: 'employer_id'
 
-        fields(*UserAdmin::DEFAULT_FIELDS)
-        field :department do
-          label 'Département'
-          pretty_value { bindings[:object]&.department}
-        end
-        field :department_zipcode do
-          label 'Code postal'
-          pretty_value { bindings[:object]&.department_zipcode}
-        end
-        fields(*UserAdmin::ACCOUNT_FIELDS)
-      end
-
-      edit do
-        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
-      end
-    end
-
-    has_many :internship_offers, foreign_key: 'employer_id'
+    has_many :internship_applications, through: :kept_internship_offers
+    has_many :internship_agreements, through: :internship_applications
+    has_many :organisations
+    has_many :tutors
+    has_many :internship_offer_infos
     has_one :email_whitelist,
             class_name: 'EmailWhitelists::Statistician',
             foreign_key: :user_id,
             dependent: :destroy
 
-    
+
     validates :email_whitelist, presence: { message: 'none' }
-    before_validation :assign_email_whitelist
+    before_update :trigger_agreements_creation
+    before_validation :assign_email_whitelist_and_confirm
     # Beware : order matters here !
     validate :email_in_list
 
@@ -59,9 +46,8 @@ module Users
       ]
     end
 
-    def statistician?
-      true
-    end
+    def department_statistician?; true end
+    def statistician? ; true end
 
     def presenter
       Presenters::Statistician.new(self)
@@ -84,12 +70,51 @@ module Users
       super
     end
 
+    def signatory_role
+      Signature.signatory_roles[:employer]
+    end
+
+    rails_admin do
+      weight 5
+
+      configure :last_sign_in_at, :datetime
+      configure :created_at, :datetime
+
+      list do
+        scopes(UserAdmin::DEFAULT_SCOPES)
+
+        fields(*UserAdmin::DEFAULT_FIELDS)
+        field :department do
+          label 'Département'
+          pretty_value { bindings[:object]&.department}
+        end
+        field :department_zipcode do
+          label 'Code postal'
+          pretty_value { bindings[:object]&.department_zipcode}
+        end
+        fields(*UserAdmin::ACCOUNT_FIELDS)
+      end
+
+      show do
+        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
+      end
+
+      edit do
+        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
+        field :agreement_signatorable do
+          label 'Signataire des conventions'
+          help 'Si le V est coché en vert, le signataire doit signer TOUTES les conventions'
+        end
+      end
+    end
+
     private
 
     # on create, make sure to assign existing email whitelist
     # EmailWhitelists::Statistician holds the user_id foreign key
-    def assign_email_whitelist
+    def assign_email_whitelist_and_confirm
       self.email_whitelist = EmailWhitelists::Statistician.find_by(email: email)
+      self.confirmed_at = Time.now
     end
 
     def email_in_list

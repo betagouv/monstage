@@ -1,0 +1,22 @@
+wb = xlsx_package.workbook
+applications_per_employer = internship_applications.group_by { |a| a.internship_offer.employer }
+applications_per_employer_sorted = applications_per_employer.map { |employer, applications| [employer, applications] }.sort! { |a,b| a[1].size <=> b[1].size }.reverse
+
+wb.add_worksheet(name: 'Candidature') do |sheet|
+  # headers
+  sheet.add_row(
+    ['Structure', 'Email', 'Candidatures en attente', "Temps moyen d'attente (jours)"]  
+  )
+
+  # rows
+  applications_per_employer_sorted.each do |employer|
+    sheet.add_row(
+      [
+        employer[1].first.internship_offer.employer_name,
+        employer[0].email,
+        employer[1].count,
+        (employer[1].map { |a| Date.current - a.submitted_at.to_date }.sum / employer[1].size.to_f).to_i
+       ]
+    )
+  end
+end

@@ -102,6 +102,9 @@ fr:
       users/ministry_statistician:
         one: Référent central
         other: Référents centraux
+      users/education_statistician:
+        one: Référent de l'éducation nationale
+        other: Référents de l'éducation nationale
       week:
         one: Semaine
         other: Semaines
@@ -171,6 +174,7 @@ fr:
         tutor_name: Nom du tuteur
         tutor_phone: Téléphone du tuteur
         tutor_email: Email du tuteur
+        tutor_role: Fonction du tuteur
 
       internship_agreement:
         internship_application: Candidature
@@ -291,7 +295,9 @@ fr:
         coordinates: Coordonnées GPS
         group_name: Groupe ou institution
         school: Établissement réservé
+        school_year: Année
         internship_applications: Candidatures
+        ministries: Ministères
 
       internship_application:
         student: Élève

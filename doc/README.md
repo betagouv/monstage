@@ -198,7 +198,7 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 
 ### Exemple curl
 
-```
+``` bash
 curl -H "Authorization: Bearer $API_TOKEN" \
      -H "Accept: application/json" \
      -H "Content-type: application/json" \
@@ -206,7 +206,6 @@ curl -H "Authorization: Bearer $API_TOKEN" \
      -d '{"internship_offer": {"title":"title","description":"description","employer_website":"http://google.fr","street":"Tour Effeil","zipcode":"75002","city":"Paris","employer_name":"employer_name", "weeks":["2021-W16","2021-W18"],"employer_description":"employer_description","remote_id":"test_2","permalink":"https://www.google.fr","sector_uuid": "1ce60ecc-273d-4c73-9b1a-2f5ee14e1bc6", "coordinates":{"latitude":1.0,"longitude":1.0}}}' \
      -vvv \
      $ENV/api/internship_offers
-
 ```
 
 ### Erreurs
@@ -241,7 +240,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 
 ### Exemple curl
 
-```
+``` bash
 curl -H "Authorization: Bearer $API_TOKEN" \
      -H "Accept: application/json" \
      -H "Content-type: application/json" \
@@ -275,7 +274,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 
 ### Exemple curl
 
-```
+``` bash
 curl -H "Authorization: Bearer $API_TOKEN" \
      -H "Accept: application/json" \
      -H "Content-type: application/json" \
@@ -302,7 +301,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 
 ### Exemple curl
 
-```
+``` bash
 curl -H "Authorization: Bearer foobarbaz" \
      -H "Accept: application/json" \
      -X DELETE \
@@ -322,7 +321,7 @@ Pour éprouver nos APIs, nous utilisons des [scripts shell](https://github.com/b
 
 C'est un moyen simple pour tester votre token et nos APIs.
 
-```
+``` bash
 git clone https://github.com/betagouv/monstage.git
 cd monstage
 cd doc
