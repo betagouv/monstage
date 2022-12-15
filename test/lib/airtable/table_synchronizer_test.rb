@@ -93,6 +93,12 @@ module Airtable
       assert_equal @operator.id, airtable_sync.cast_operator_id(@operator.id)
     end
 
+    test 'cast_school_track(value)' do
+      airtable_sync = Airtable::TableSynchronizer.new(operator: @operator)
+
+      assert_equal :troisieme_generale, airtable_sync.cast_school_track("3e")
+    end
+
     test 'cast_department_name(value)' do
       airtable_sync = Airtable::TableSynchronizer.new(operator: @operator)
 

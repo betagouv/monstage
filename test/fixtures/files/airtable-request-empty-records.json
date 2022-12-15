@@ -30,6 +30,7 @@
          "fields" : {
             "Secteur d'activitÃ©" : "MÃ©canique",
             "Entreprise d'accueil" : "BNP Paribas",
+            "FiliÃ¨re" : "3e",
             "Nombre d'Ã©lÃ¨ves masculins" : 2,
             "Nombre de places disponibles" : 32,
             "Nombre d'Ã©lÃ¨ves en stage" : 3,
@@ -48,6 +49,7 @@
             "PrivÃ© / Public" : "PrivÃ©",
             "ID" : 2,
             "Semaine de stage" : "Semaine 41 - du 5 octobre au 11 octobre",
+            "FiliÃ¨re" : "3e Segpa",
             "Etablissement des Ã©lÃ¨ves" : "Victor Hugo - AcadÃ©mie de Lille",
             "Entreprise d'accueil" : "Engie"
          },
@@ -85,6 +87,7 @@
             "ID" : 1,
             "Nombre de places disponibles" : 32,
             "Nombre d'Ã©lÃ¨ves masculins" : 2,
+            "FiliÃ¨re" : "3e",
             "Entreprise d'accueil" : "BNP Paribas",
             "Secteur d'activitÃ©" : "MÃ©canique",
             "Sync Source" : "Grid view",
@@ -102,7 +105,8 @@
             "PrivÃ© / Public" : "PrivÃ©",
             "Etablissement des Ã©lÃ¨ves" : "Victor Hugo - AcadÃ©mie de Lille",
             "Entreprise d'accueil" : "Engie",
-            "Semaine de stage" : "Semaine 41 - du 5 octobre au 11 octobre"
+            "Semaine de stage" : "Semaine 41 - du 5 octobre au 11 octobre",
+            "FiliÃ¨re" : "3e Segpa"
          },
          "id" : "recbXQkUA7k7Wn0Gr"
       },
