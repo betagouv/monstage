@@ -11,25 +11,6 @@ export default class extends Controller {
     'selectGroupName',
   ];
 
-  onChooseType(event) {
-    this.chooseType(event.target.value)
-  }
-
-  onInduceType(event) {
-    this.induceType(event.target.value)
-  }
-
-  induceType(value){
-    const induced_type = 'InternshipOffers::WeeklyFramed';
-    $(this.typeTarget).attr('value', induced_type)
-    this.chooseType(induced_type);
-  }
-
-  chooseType(value) {
-    showElement($(this.weeksContainerTarget))
-    $(this.weeksContainerTarget).attr('data-select-weeks-skip', true)
-  }
-
   validateForm(event) {
     const latitudeInput = document.getElementById('internship_offer_coordinates_latitude');
     if (!latitudeInput.validity.valid) {

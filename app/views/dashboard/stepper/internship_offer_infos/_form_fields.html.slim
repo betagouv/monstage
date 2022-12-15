@@ -1,12 +1,9 @@
-- klass = resource.class.to_s.split("s::").first
-
 .row
   .col-md-6.order-md-1.order-2
-    fieldset [data-controller='internship-offer-infos' data-internship-offer-infos-base-type-value="#{klass}"]
+    fieldset [data-controller='internship-offer-infos']
       legend Offre de stage
 
       = form.rg2a_explain_required_asterisk
-      = form.hidden_field :type, data: { :"internship-offer-infos-target" => "type" }
 
       .form-group
         = form.label :title, class: 'fr-label' do
