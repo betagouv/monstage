@@ -51,6 +51,14 @@
                         = link_to 'Mes offres',
                                   dashboard_internship_offers_path,
                                   class: "fr-link text-decoration-none mr-4 #{active}"
+                    - if can?(:create, Favorite)
+                      li
+                        - active = current_page?(favorites_path) ? 'active' : ''
+                        = link_to favorites_path,
+                                  class: "fr-link text-decoration-none mr-4 #{active}" do
+                          | Mes annonces favorites
+                          - if current_user.favorites.count.positive?
+                            span.fr-badge.fr-badge--info.fr-badge--sm.fr-badge--no-icon.fr-ml-1w= current_user.favorites.count
                     - if can?(:check_his_statistics, current_user)
                       li
                         - active = (request.path =~ /^\/reporting\//) ? 'active' : ''

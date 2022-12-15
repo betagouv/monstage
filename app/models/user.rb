@@ -8,6 +8,11 @@ class User < ApplicationRecord
   include UserAdmin
   include ActiveModel::Dirty
 
+  has_many :favorites
+  
+  # has_many :users_internship_offers
+  # has_many :internship_offers, through: :users_internship_offers
+
   attr_accessor :phone_prefix, :phone_suffix
 
   devise :database_authenticatable, :registerable,

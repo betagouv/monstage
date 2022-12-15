@@ -16,6 +16,17 @@ module Users
     end
     has_many :internship_agreements, through: :internship_applications
 
+    # has_many :favorites
+    
+    # has_many :users_internship_offers
+    has_many :internship_offers, through: :favorites
+
+    # has_many :favorite_internship_offers, class_name: 'FavoriteInternshipOffer'
+    
+    # has_many :internship_offers, through: :favorite_internship_offers, class_name: 'InternshipOffer'
+    
+    # has_many :users_internship_offers
+
     scope :without_class_room, -> { where(class_room_id: nil, anonymized: false) }
 
     has_rich_text :resume_educational_background

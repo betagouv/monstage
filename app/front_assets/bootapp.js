@@ -19,7 +19,9 @@ const componentRequireContext = require.context("components", true);
 
 import ReservedSchoolInput from "components/ReservedSchoolInput";
 import InternshipOfferResults from "components/InternshipOfferResults";
+import InternshipOfferFavorites from "components/InternshipOfferFavorites";
 import InternshipOfferCard from "components/InternshipOfferCard";
+import FlashMessage from "components/FlashMessage";
 import SearchSchool from "components/SearchSchool";
 import SearchSchoolByName from "components/SearchSchoolByName";
 
@@ -36,7 +38,9 @@ import AddressInput from "components/inputs/AddressInput";
 ReactOnRails.register({
   ReservedSchoolInput,
   InternshipOfferResults,
+  InternshipOfferFavorites,
   InternshipOfferCard,
+  FlashMessage,
   SearchSchool,
   SearchSchoolByName,
   DistanceIcon,
