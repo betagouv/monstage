@@ -17,6 +17,25 @@ export default class extends Controller {
     baseType: String
   }
 
+  onChooseType(event) {
+    this.chooseType(event.target.value)
+  }
+
+  onInduceType(event) {
+    this.induceType(event.target.value)
+  }
+
+  induceType(value){
+    const inducedType = `${this.baseTypeValue}s::WeeklyFramed`;
+    $(this.typeTarget).attr('value', inducedType)
+    this.chooseType(inducedType);
+  }
+
+  chooseType(value) {
+    showElement($(this.weeksContainerTarget))
+    $(this.weeksContainerTarget).attr('data-select-weeks-skip-validation-value', false)
+  }
+
   checkOnCandidateCount() {
     const maxCandidates = parseInt(this.maxCandidatesInputTarget.value, 10);
     (maxCandidates === 1) ? this.collectiveOptionInhibit(true) : this.collectiveOptionInhibit(false);
@@ -60,8 +79,7 @@ export default class extends Controller {
   }
 
   connect() {
-    showElement($(this.weeksContainerTarget))
-    $(this.weeksContainerTarget).attr('data-select-weeks-skip-validation-value', false)
+    this.induceType('');
     this.checkOnCandidateCount()
   }
 
