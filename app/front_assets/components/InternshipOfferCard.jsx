@@ -57,17 +57,19 @@ const InternshipOfferCard = ({
             </h4>
             <div className="fr-card__detail">
               <div className="mr-auto">{internshipOffer.employer_name}</div>
-              <div
-                className={`heart-${isFavorite ? 'full' : 'empty'}`}
-                onClick={(e) => {
-                  if (isFavorite) {
-                    removeFavorite(internshipOffer.id)
-                  } else {
-                    addFavorite(internshipOffer.id)
+              { internshipOffer.logged_in && 
+                <div
+                  className={`heart-${isFavorite ? 'full' : 'empty'}`}
+                  onClick={(e) => {
+                    if (isFavorite) {
+                      removeFavorite(internshipOffer.id)
+                    } else {
+                      addFavorite(internshipOffer.id)
+                    }
                   }
-                }
-                }
-              ></div>
+                  }
+                ></div>
+              }
             </div>
             <div className="fr-card__desc">
               <p className="blue-france">{ internshipOffer.city }</p>
