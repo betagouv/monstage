@@ -15,6 +15,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16.13
+      - name: Install node depencies
+        run: npm ci
       - uses: ruby/setup-ruby-pkgs@v1
         with:
           ruby-version: 2.7.2
