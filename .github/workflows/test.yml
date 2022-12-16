@@ -1,8 +1,9 @@
 name: test project
-on:
-  push:
-    branches:
-      - FEAT/actions-for-reviews
+on: push
+# on:
+#   push:
+#     branches:
+#       - FEAT/actions-for-reviews
 jobs:
   test:
     runs-on: ubuntu-latest
