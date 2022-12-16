@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import InternshipOfferCard from './InternshipOfferCard';
-import CardLoader from './CardLoader';
-import TitleLoader from './TitleLoader';
-import { endpoints } from '../utils/api';
 import { isMobile } from '../utils/responsive';
 import FlashMessage from './FlashMessage';
 
