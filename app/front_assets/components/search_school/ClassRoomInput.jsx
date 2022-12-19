@@ -25,14 +25,6 @@ function RenderClassRoomsInput({
     </option>
   );
 
-  const classRoomsSuggestionsByType = (classRoomsSuggestions || []).reduce((accu, item) => {
-    if (!accu['troisieme_generale']) {
-      accu['troisieme_generale'] = [];
-    }
-    accu['troisieme_generale'].push(item);
-    return accu;
-  }, {});
-
   return (
     <div
       className={`form-group custom-label-container ${
@@ -83,15 +75,8 @@ function RenderClassRoomsInput({
                 -- Veuillez choisir une classe --
               </option>
             )}
-            {Object.keys(classRoomsSuggestionsByType).length > 1 &&
-              Object.keys(classRoomsSuggestionsByType).map((schoolTrack) => (
-                <optgroup label={TRADS[schoolTrack]}>
-                  {classRoomsSuggestionsByType[schoolTrack].map(renderClassRoomOption)}
-                </optgroup>
-              ))}
 
-            {Object.keys(classRoomsSuggestionsByType).length <= 1 &&
-              (classRoomsSuggestions || []).map(renderClassRoomOption)}
+            {classRoomsSuggestions.map(renderClassRoomOption)}
             <option value="">Autre classe</option>
           </select>
           
