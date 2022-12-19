@@ -4,7 +4,7 @@ import { enableInput, disableInput } from  '../utils/dom';
 export default class extends Controller {
 
   static targets = [
-    'schoolTrackInput', // select
+    'dateInput', // select
     'inputPlaceholder',  // used as 'label/placeholder'
     'searchByDateContainer'
   ]
