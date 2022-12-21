@@ -8,6 +8,7 @@ FactoryBot.define do
     nb_spot_used { 1 }
     nb_spot_male { 1 }
     nb_spot_female { 1 }
+    school_track { "MyText" }
     internship_offer_type { "MyText" }
     comment { "MyText" }
   end
