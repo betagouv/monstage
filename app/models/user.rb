@@ -141,7 +141,9 @@ class User < ApplicationRecord
     }
     update_columns(fields_to_reset)
 
-    discard!
+    EmailWhitelist.destroy_by(email: email_for_job)
+
+    discard! unless discarded?
 
     unless email_for_job.blank?
       AnonymizeUserJob.perform_later(email: email_for_job) if send_email
