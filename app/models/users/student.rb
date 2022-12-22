@@ -143,5 +143,9 @@ module Users
     def presenter
       Presenters::Student.new(self)
     end
+
+    def satisfaction_survey_id
+      ENV['TALLY_STUDENT_SURVEY_ID']
+    end
   end
 end
