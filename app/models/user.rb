@@ -253,6 +253,10 @@ class User < ApplicationRecord
     Presenters::User.new(self)
   end
 
+  def satisfaction_survey
+    Rails.env.production? ? satisfaction_survey_id : ENV['TALLY_STAGING_SURVEY_ID']
+  end
+
   protected
 
   # TODO : this is to move to a statistician model

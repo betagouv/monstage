@@ -1,0 +1,11 @@
+javascript:  
+  if ("#{Rails.env}" != 'test') {
+    const tally_id = "#{current_user.satisfaction_survey}";
+    Tally.openPopup(
+      tally_id,
+      {
+        hideTitle: true,
+        autoClose: 1000
+      }
+    );
+  }

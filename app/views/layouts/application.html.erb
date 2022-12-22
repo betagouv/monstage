@@ -16,6 +16,7 @@
     <%= stylesheet_link_tag "https://unpkg.com/leaflet@1.8.0/dist/leaflet.css", media: "all" %>
     <%= javascript_pack_tag "application.js", defer: true, 'data-turbo-track': "reload" %>
     <%= javascript_include_tag "https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" %>
+    <%= javascript_include_tag "https://tally.so/widgets/embed.js" %>
   </head>
 
   <body class="<%= env_class_name %> <%= body_class_name %>">
