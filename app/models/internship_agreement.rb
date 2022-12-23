@@ -126,6 +126,10 @@ class InternshipAgreement < ApplicationRecord
   delegate :school,           to: :student
   delegate :school_manager,   to: :school
 
+  scope :having_school_manager, ->{
+    joins(internship_application: {student: :school}).merge(School.with_school_manager)
+  }
+
   def at_least_one_validated_terms
     return true if skip_validations_for_system
     return true if [school_manager_accept_terms, employer_accept_terms, main_teacher_accept_terms].any?

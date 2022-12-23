@@ -88,13 +88,16 @@ module Users
         scopes(UserAdmin::DEFAULT_SCOPES)
       end
 
+      show do
+        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
+      end
+
       edit do
         fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
         field :agreement_signatorable do
           label 'Signataire des conventions'
           help 'Si le V est coché en vert, le signataire doit signer TOUTES les conventions'
         end
-
       end
     end
 

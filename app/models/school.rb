@@ -30,6 +30,12 @@ class School < ApplicationRecord
                                 .having('count(users.id) = 0')
   }
 
+  scope :with_school_manager, ->{
+    School.where(id: Users::SchoolManagement.kept
+                                            .where(role: 'school_manager')
+                                            .pluck(:school_id))
+  }
+
   scope :without_weeks_on_current_year, lambda {
     all.where.not(
       id: self.joins(:weeks)

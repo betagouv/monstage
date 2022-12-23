@@ -34,6 +34,7 @@ class Ability
     can :show, :account
     can :change, :class_room
     can %i[read], InternshipOffer
+    can %i[create delete], Favorite
     can :apply, InternshipOffer do |internship_offer|
       student_can_apply?(student: user, internship_offer: internship_offer)
     end
@@ -106,6 +107,7 @@ class Ability
     can %i[supply_offers sign_with_sms choose_function subscribe_to_webinar] , User
     can :show, :account
 
+    can :see_minister_video, User
     can :create_remote_internship_request, SupportTicket
 
     can %i[create see_tutor], InternshipOffer
@@ -203,6 +205,7 @@ class Ability
             see_dashboard_associations_summary
             reset_cache ], User
     can :manage, Operator
+    can :see_minister_video, User
   end
 
   def statistician_abilities(user:)
@@ -282,6 +285,7 @@ class Ability
            see_dashboard_administrations_summary], User
 
     as_employers_signatory_abilities(user: user) if user.employer_like?
+    can :see_minister_video, User
   end
 
   def common_school_management_abilities(user:)

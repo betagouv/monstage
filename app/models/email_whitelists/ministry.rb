@@ -49,10 +49,6 @@ module EmailWhitelists
     end
 
 
-    def destroy
-      Users::MinistryStatistician.find_by(email: email).destroy
-      super
-    end
 
     protected
 
