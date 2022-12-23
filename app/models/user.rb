@@ -8,6 +8,11 @@ class User < ApplicationRecord
   include UserAdmin
   include ActiveModel::Dirty
 
+  has_many :favorites
+  
+  # has_many :users_internship_offers
+  # has_many :internship_offers, through: :users_internship_offers
+
   attr_accessor :phone_prefix, :phone_suffix
 
   devise :database_authenticatable, :registerable,
@@ -136,7 +141,9 @@ class User < ApplicationRecord
     }
     update_columns(fields_to_reset)
 
-    discard!
+    EmailWhitelist.destroy_by(email: email_for_job)
+
+    discard! unless discarded?
 
     unless email_for_job.blank?
       AnonymizeUserJob.perform_later(email: email_for_job) if send_email
@@ -244,6 +251,10 @@ class User < ApplicationRecord
 
   def presenter
     Presenters::User.new(self)
+  end
+
+  def satisfaction_survey
+    Rails.env.production? ? satisfaction_survey_id : ENV['TALLY_STAGING_SURVEY_ID']
   end
 
   protected

@@ -73,6 +73,8 @@ import './icons/noun_Computer_2646597.svg';
 import './icons/noun_group_Computeur_People.svg';
 import './icons/noun_group_establishment.svg';
 import './icons/noun_people_3139638.svg';
+import './icons/full_heart.svg';
+import './icons/empty_heart.svg';
 
 import './pages/statistics/hand_left.svg';
 import './pages/statistics/hand_right.svg';

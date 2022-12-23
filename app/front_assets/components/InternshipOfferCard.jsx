@@ -1,12 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { isMobile } from '../utils/responsive';
+import { endpoints } from '../utils/api';
 
-const InternshipOfferCard = ({ internshipOffer, handleMouseOver, handleMouseOut, index }) => {
-  useEffect(() => {
-  }, []);
+const InternshipOfferCard = ({
+  internshipOffer,
+  handleMouseOver,
+  handleMouseOut,
+  index,
+  sendNotification,
+  threeByRow
+  }) => {
+
+    const [isFavorite, setIsFavorite] = useState(internshipOffer.is_favorite);
+
+    useEffect(() => {
+    }, []);
+
+    const addFavorite = (id) => {
+    $.ajax({ type: 'POST', url: endpoints.addFavorite({id}), data: { id } })
+        .done(fetchDone)
+        .fail(fetchFail);
+    };
+
+    const removeFavorite = (id) => {
+    $.ajax({ type: 'DELETE', url: endpoints.removeFavorite({id}), data: { id } })
+        .done(fetchDone)
+        .fail(fetchFail);
+    };
+
+    const fetchDone = (result) => {
+      setIsFavorite(result['is_favorite']);
+      sendNotification('Enregistré !');
+      return true
+    };
+
+    const fetchFail = (xhr, textStatus) => {
+      if (textStatus === 'abort') {
+        return;
+      }
+    };
 
   return (
-    <div className={`col-${isMobile() ? '12 text-align-center' : '6'} fr-my-2w ${isMobile() ? '' : ((index % 2) == 0) ? 'fr-pl-0-5v' : 'fr-pr-0-5v'}`}
+    <div className={`col-${isMobile() ? '12 text-align-center' : (threeByRow ? '4' : '6')} fr-my-2w ${isMobile() ? '' : ((index % 2) == 0) ? '' : 'fr-pr-0-5v'}`}
     key={internshipOffer.id}
     onMouseOver={(e) => handleMouseOver(internshipOffer.id)}
     onMouseOut={handleMouseOut}
@@ -16,9 +51,26 @@ const InternshipOfferCard = ({ internshipOffer, handleMouseOver, handleMouseOut,
         <div className="fr-card__body">
           <div className="fr-card__content">
             <h4 className="fr-card__title">
-              <a href={internshipOffer.link} className="row-link text-dark">{ internshipOffer.title }</a>
+              <a href={internshipOffer.link} className="row-link text-dark">
+                {internshipOffer.title}
+              </a>
             </h4>
-            <p className="fr-card__detail">{ internshipOffer.employer_name }</p>
+            <div className="fr-card__detail">
+              <div className="mr-auto">{internshipOffer.employer_name}</div>
+              { internshipOffer.logged_in && 
+                <div
+                  className={`heart-${isFavorite ? 'full' : 'empty'}`}
+                  onClick={(e) => {
+                    if (isFavorite) {
+                      removeFavorite(internshipOffer.id)
+                    } else {
+                      addFavorite(internshipOffer.id)
+                    }
+                  }
+                  }
+                ></div>
+              }
+            </div>
             <div className="fr-card__desc">
               <p className="blue-france">{ internshipOffer.city }</p>
               <div className="blue-france fr-text--bold my-2">
@@ -39,7 +91,7 @@ const InternshipOfferCard = ({ internshipOffer, handleMouseOver, handleMouseOut,
         </div>
       </div>
     </div>
-  )
+  );
 };
 
 export default InternshipOfferCard;

@@ -54,5 +54,9 @@ module Users
     def presenter
       Presenters::Employer.new(self)
     end
+
+    def satisfaction_survey_id
+      ENV['TALLY_EMPLOYER_SURVEY_ID']
+    end
   end
 end
