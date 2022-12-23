@@ -359,6 +359,14 @@ class GenerateInternshipAgreement < Prawn::Document
       "sur leur lieu de stage avant huit heures du matin et après dix-huit " \
       "heures le soir. Pour l’élève de moins de seize ans, le travail de nuit " \
       "est interdit. Cette disposition ne souffre aucune dérogation.")
+    paraphing(
+      "Concernant les modalités d'accueil en milieu professionnel d'élèves mineurs " \
+      "de moins de quatorze ans, il convient de se référer à l’annexe 4, de la " \
+      "circulaire n° 2003-134 du 8 septembre 2003. La durée de présence " \
+      "d’un élève mineur en milieu professionnel ne peut excéder 7 heures par jour. " \
+      "Les horaires journaliers des élèves ne peuvent prévoir leur présence sur " \
+      "leur lieu de stage avant six heures du matin et après vingt heures le soir."
+    )
   end
 
   def article_9
