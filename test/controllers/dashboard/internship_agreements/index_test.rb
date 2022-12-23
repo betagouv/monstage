@@ -10,7 +10,7 @@ module Dashboard::InternshipOffers
       school = create(:school, :with_school_manager)
       internship_application = create(:weekly_internship_application, :approved)
       internship_application.student.update(school_id: school.id)
-      internship_agreement = create(:troisieme_generale_internship_agreement, internship_application: internship_application, school_manager_accept_terms: true)
+      internship_agreement = create(:internship_agreement, internship_application: internship_application, school_manager_accept_terms: true)
       sign_in(internship_application.internship_offer.employer)
 
       get dashboard_internship_agreements_path
@@ -22,7 +22,7 @@ module Dashboard::InternshipOffers
       school = create(:school) #no_school_manager
       internship_application = create(:weekly_internship_application, :approved)
       internship_application.student.update(school_id: school.id)
-      internship_agreement = create(:troisieme_generale_internship_agreement, internship_application: internship_application, school_manager_accept_terms: true)
+      internship_agreement = create(:internship_agreement, internship_application: internship_application, school_manager_accept_terms: true)
       sign_in(internship_application.internship_offer.employer)
 
       get dashboard_internship_agreements_path
