@@ -401,12 +401,7 @@ class Ability
     return false unless main_condition
 
     school_year_start = SchoolYear::Current.new.beginning_of_period
-    weekly_condition = internship_offer.weekly? &&
-                       internship_offer.last_date <= school_year_start
-    free_date_condition = internship_offer.free_date? &&
-                          internship_offer.last_date < school_year_start.to_datetime
-
-    weekly_condition || free_date_condition
+    internship_offer.last_date <= school_year_start
   end
 
   def duplicable?(internship_offer:, user:)
@@ -415,21 +410,11 @@ class Ability
     return false unless main_condition
 
     school_year_start = SchoolYear::Current.new.beginning_of_period
-    weekly_condition = internship_offer.weekly? &&
-                       internship_offer.last_date > school_year_start
-    free_date_condition = internship_offer.free_date? &&
-                          internship_offer.last_date >= school_year_start.to_datetime
-
-    weekly_condition || free_date_condition
+    internship_offer.last_date > school_year_start
   end
 
   def student_can_apply?(internship_offer:, student:)
     offer_is_reserved_to_another_school = internship_offer.reserved_to_school? && (internship_offer.school_id != student.school_id)
-
-    return false if offer_is_reserved_to_another_school
-    return true if student.try(:class_room).nil?
-    return true if student.try(:class_room).try(:applicable?, internship_offer)
-
-    false
+    !offer_is_reserved_to_another_school
   end
 end

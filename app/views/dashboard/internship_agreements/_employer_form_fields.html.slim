@@ -6,9 +6,6 @@ tbody.internship-agreement
       = form.hidden_field :internship_application_id,
                           id: "employer-internship_application-#{resource.internship_application_id}",
                           value: resource.internship_application_id
-      = form.hidden_field :school_track,
-                          id: "employer-school-track-#{resource.id}",
-                          value: resource.school_track
       = form.hidden_field current_user_agreement_terms(current_user),
                           id: "employer-agreement_terms-#{resource.id}",
                           value: true
@@ -88,25 +85,6 @@ tbody.internship-agreement
         - filled_by = ["l'entreprise"]
         = render partial: 'dashboard/internship_agreements/trix_form_element',
                  locals: { field: :activity_scope_rich_text, form: form, text_label: label, title: title, content: content, filled_by: filled_by, disabled: disabled }
-      / Voie pro
-      - if school_track != 'troisieme_generale'
-        .row.mt-0
-          - label = "Modalités de la concertation qui sera assurée pour organiser " \
-                    "la préparation, contrôler le déroulement de la période en vue " \
-                    "d’une véritable complémentarité des enseignements reçus"
-          - title = "Note destinée au professeur principal :"
-          - content = "Objet pédagogique"
-          - filled_by = ["l'entreprise"]
-          = render partial: 'dashboard/internship_agreements/trix_form_element',
-                   locals: { field: :activity_preparation_rich_text, form: form, text_label: label, title: title, content: content , filled_by: filled_by, disabled: disabled }
-
-        .row.mt-0
-          - label = "Compétences visées"
-          - title = "Note au chef d'entreprise"
-          - content = "Apprentissages en entreprise"
-          - filled_by = ["l'entreprise"]
-          = render partial: 'dashboard/internship_agreements/trix_form_element',
-                   locals: { field: :activity_learnings_rich_text, form: form, text_label: label, title: title, content: content , filled_by: filled_by, disabled: disabled }
 
       = form.submit 'Submit', class: 'd-none', id: 'employer-submit'
 

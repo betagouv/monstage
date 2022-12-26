@@ -11,7 +11,6 @@
 #
 # only use dedicated builder to CRUD those objects
 class InternshipAgreement < ApplicationRecord
-  include SchoolTrackable
   include AASM
 
   belongs_to :internship_application
@@ -36,7 +35,6 @@ class InternshipAgreement < ApplicationRecord
   with_options if: :enforce_main_teacher_validations? do
     validates :student_class_room, presence: true
     validates :main_teacher_full_name, presence: true
-    validate :valid_trix_main_teacher_fields
   end
 
   with_options if: :enforce_school_manager_validations? do
@@ -178,24 +176,12 @@ class InternshipAgreement < ApplicationRecord
       errors.add(:complementary_terms_rich_text,
                  'Veuillez compléter les conditions complémentaires du stage (hebergement, transport, securité)...')
     end
-    if !troisieme_generale? && activity_learnings_rich_text.blank?
-      errors.add(:activity_learnings_rich_text, 'Veuillez compléter les compétences visées')
-    end
   end
 
   def valid_trix_school_manager_fields
     if complementary_terms_rich_text.blank?
       errors.add(:complementary_terms_rich_text,
                  'Veuillez compléter les conditions complémentaires du stage (hebergement, transport, securité)...')
-    end
-    if !troisieme_generale? && activity_rating_rich_text.blank?
-      errors.add(:activity_rating_rich_text, 'Veuillez compléter les modalités d’évaluation du stage')
-    end
-  end
-
-  def valid_trix_main_teacher_fields
-    if !troisieme_generale? && activity_preparation_rich_text.blank?
-      errors.add(:activity_preparation_rich_text, 'Veuillez compléter les modalités de concertation')
     end
   end
 

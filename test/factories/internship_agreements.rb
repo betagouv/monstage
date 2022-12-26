@@ -32,24 +32,8 @@ FactoryBot.define do
     aasm_state { 'draft' }
     weekly_hours { ['9:00', '17:00'] }
     weekly_lunch_break { '1h dans la cantine. Repas fourni.' }
-    school_track { 'troisieme_generale' }
     activity_rating_rich_text { "<div>Après concertation, le tuteur appelera le professeur principal vers 17h le lundi et au moins un autre jour de la semaine choisi ensemble. L'élève n'est pas convié à cet échange.<br/>A ceci se rajoute le rapport de stage</div>"}
     activity_learnings_rich_text { '<div>Communication orale</div>'}
-
-    trait :troisieme_generale_internship_agreement do
-      school_track { 'troisieme_generale' }
-      activity_rating_rich_text { "<div>Après concertation, le tuteur appelera le professeur principal vers 17h le lundi et au moins un autre jour de la semaine choisi ensemble. L'élève n'est pas convié à cet échange.<br/>A ceci se rajoute le rapport de stage</div>"}
-    end
-
-    trait :troisieme_prepa_metier_internship_agreement do
-      school_track { 'troisieme_prepa_metier' }
-      activity_rating_rich_text { '<div>Rapport de stage</div>'}
-    end
-
-    trait :troisieme_segpa_internship_agreement do
-      school_track { 'troisieme_segpa' }
-      activity_rating_rich_text { '<div>Rapport de stage</div>'}
-    end
 
     trait :created_by_system do
       skip_validations_for_system { true }
@@ -88,12 +72,5 @@ FactoryBot.define do
               )
       end
     end
-
-    factory :troisieme_generale_internship_agreement, traits: [:troisieme_generale_internship_agreement],
-                                                      parent: :internship_agreement
-    factory :troisieme_prepa_metier_internship_agreement, traits: [:troisieme_prepa_metier_internship_agreement],
-                                                          parent: :internship_agreement
-    factory :troisieme_segpa_internship_agreement, traits: [:troisieme_segpa_internship_agreement],
-                                                   parent: :internship_agreement
   end
 end

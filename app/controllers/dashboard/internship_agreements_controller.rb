@@ -97,7 +97,6 @@ module Dashboard
               :school_representative_role,
               :school_representative_function,
               :school_delegation_to_sign_delivered_at,
-              :school_track,
               :student_full_name,
               :student_class_room,
               :main_teacher_full_name,

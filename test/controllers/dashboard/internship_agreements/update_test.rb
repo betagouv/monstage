@@ -8,7 +8,7 @@ module Dashboard::InternshipAgreements
 
     # As Visitor
     test 'PATCH #update as visitor redirects to new_user_session_path' do
-      internship_agreement = create(:troisieme_generale_internship_agreement, employer_accept_terms: true)
+      internship_agreement = create(:internship_agreement, employer_accept_terms: true)
       patch dashboard_internship_agreement_path(internship_agreement.id),
             params: { internship_agreement: {school_representative_full_name: 'poupinet'} }
       assert_redirected_to new_user_session_path
@@ -22,7 +22,7 @@ module Dashboard::InternshipAgreements
       student                = create(:student, school: school, class_room: class_room)
       main_teacher           = create(:main_teacher, school: school, class_room: other_class_room)
       internship_application = create(:weekly_internship_application, :approved, user_id: student.id)
-      internship_agreement   = create(:troisieme_generale_internship_agreement, employer_accept_terms: true, internship_application: internship_application)
+      internship_agreement   = create(:internship_agreement, employer_accept_terms: true, internship_application: internship_application)
       sign_in main_teacher
       patch dashboard_internship_agreement_path(internship_agreement.id),
             params: {internship_agreement: {student_class_room: 'a'}}
@@ -34,7 +34,7 @@ module Dashboard::InternshipAgreements
     # As Employer
     test 'PATCH #update as employer not owning internship_offer redirects to root path' do
       internship_offer = create(:weekly_internship_offer)
-      internship_agreement = create(:troisieme_generale_internship_agreement, employer_accept_terms: true)
+      internship_agreement = create(:internship_agreement, employer_accept_terms: true)
       sign_in(create(:employer))
       patch dashboard_internship_agreement_path(internship_agreement.id),
             params: { internship_agreement: {school_representative_full_name: 'poupinet'} }
@@ -47,7 +47,7 @@ module Dashboard::InternshipAgreements
       student = create(:student, school: school, class_room: class_room)
       create(:main_teacher, school: school, class_room: class_room)
       internship_application = create(:weekly_internship_application, :submitted, user_id: student.id)
-      internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+      internship_agreement = create(:internship_agreement, :created_by_system,
                                     internship_application: internship_application)
       new_organisation_representative_full_name = 'John Doe'
       params = {
@@ -77,7 +77,7 @@ module Dashboard::InternshipAgreements
       student = create(:student, school: school, class_room: class_room)
       create(:main_teacher, school: school, class_room: class_room)
       internship_application = create(:weekly_internship_application, :submitted, user_id: student.id)
-      internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+      internship_agreement = create(:internship_agreement, :created_by_system,
                                     internship_application: internship_application)
       new_organisation_representative_full_name = 'John Doe'
       params = {
@@ -99,7 +99,7 @@ module Dashboard::InternshipAgreements
     # As School Manager
     test 'PATCH #update as school manager not owning student redirects to user_session_path' do
       internship_offer = create(:weekly_internship_offer)
-      internship_agreement = create(:troisieme_generale_internship_agreement, employer_accept_terms: true)
+      internship_agreement = create(:internship_agreement, employer_accept_terms: true)
       sign_in(create(:school_manager))
       patch dashboard_internship_agreement_path(internship_agreement.id),
             params: { internship_agreement: {school_representative_full_name: 'poupinet'} }
@@ -108,7 +108,7 @@ module Dashboard::InternshipAgreements
 
     test 'PATCH #update as school manager owning students updates internship_agreement' do
       internship_application = create(:weekly_internship_application, :approved)
-      internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+      internship_agreement = create(:internship_agreement, :created_by_system,
                                     school_manager_accept_terms: true,
                                     internship_application: internship_application)
       school_manager = internship_application.student.school_manager
@@ -131,7 +131,7 @@ module Dashboard::InternshipAgreements
 
     test 'PATCH #update as school manager owning students updates internship_agreement with missing school_manager_event' do
       internship_application = create(:weekly_internship_application, :approved)
-      internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+      internship_agreement = create(:internship_agreement, :created_by_system,
                                     school_manager_accept_terms: true,
                                     internship_application: internship_application)
       school_manager = internship_application.student.school_manager
@@ -150,7 +150,7 @@ module Dashboard::InternshipAgreements
 
     test 'PATCH #update as school manager owning students updates internship_agreement with soft saving'  do
       internship_application = create(:weekly_internship_application, :approved)
-      internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+      internship_agreement = create(:internship_agreement, :created_by_system,
                                     school_manager_accept_terms: true,
                                     internship_application: internship_application)
       school_manager = internship_application.student.school_manager

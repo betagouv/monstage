@@ -46,42 +46,32 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
   test 'Employer can discard internship_offer' do
     employer = create(:employer)
-    internship_offers = [
-      create(:weekly_internship_offer, employer: employer),
-      create(:free_date_internship_offer, employer: employer)
-    ]
+    internship_offer = create(:weekly_internship_offer, employer: employer)
+
     sign_in(employer)
 
-    internship_offers.each do |internship_offer|
-      visit dashboard_internship_offer_path(internship_offer)
-      assert_changes -> { internship_offer.reload.discarded_at } do
-        page.find('a[data-target="#discard-internship-offer-modal"]').click
-        page.find("button[data-test-delete-id='delete-#{dom_id(internship_offer)}']").click
-      end
+    visit dashboard_internship_offer_path(internship_offer)
+    assert_changes -> { internship_offer.reload.discarded_at } do
+      page.find('a[data-target="#discard-internship-offer-modal"]').click
+      page.find("button[data-test-delete-id='delete-#{dom_id(internship_offer)}']").click
     end
   end
 
   test 'Employer can publish/unpublish internship_offer' do
-    employer = create(:employer)
-    internship_offers = [
-      create(:weekly_internship_offer, employer: employer),
-      create(:free_date_internship_offer, employer: employer)
-    ]
-    sign_in(employer)
+    internship_offer = create(:weekly_internship_offer)
+    sign_in(internship_offer.employer)
 
-    internship_offers.each do |internship_offer|
-      visit dashboard_internship_offer_path(internship_offer)
-      assert_changes -> { internship_offer.reload.published_at } do
-        page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
-        sleep 0.2
-        assert_nil internship_offer.reload.published_at, 'fail to unpublish'
+    visit dashboard_internship_offer_path(internship_offer)
+    assert_changes -> { internship_offer.reload.published_at } do
+      page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
+      sleep 0.2
+      assert_nil internship_offer.reload.published_at, 'fail to unpublish'
 
-        page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
-        sleep 0.2
-        assert_in_delta Time.now.utc.to_i,
-                        internship_offer.reload.published_at.utc.to_i,
-                        delta = 10
-      end
+      page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
+      sleep 0.2
+      assert_in_delta Time.now.utc.to_i,
+                      internship_offer.reload.published_at.utc.to_i,
+                      delta = 10
     end
   end
 
@@ -191,10 +181,9 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
               title: 'wrong employer',
               last_date: week_2.beginning_of_week)
 
-        # free
-        create(:free_date_internship_offer,
+        create(:weekly_internship_offer,
               employer: employer,
-              title: 'free')
+              title: 'an offer')
 
         # 2019-20 unpublished
         io = create(:weekly_internship_offer,

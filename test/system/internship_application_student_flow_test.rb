@@ -8,7 +8,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
 
   test 'student not in class room can not ask for week' do
     school = create(:school, weeks: [])
-    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
+    student = create(:student, school: school, class_room: create(:class_room, school: school))
     internship_offer = create(:weekly_internship_offer, weeks: weeks)
 
     sign_in(student)
@@ -19,7 +19,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
 
   test 'student can submit application wheen school has not choosen any week yet' do
     school = create(:school, weeks: [])
-    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
+    student = create(:student, school: school, class_room: create(:class_room, school: school))
     internship_offer = create(:weekly_internship_offer, weeks: weeks)
 
     sign_in(student)
@@ -29,7 +29,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     click_on 'Valider'
   end
 
-  test 'student with no class_room can submit a 3e prepa métier application when school have not choosen week' do
+  test 'student with no class_room can submit an application when school have not choosen week' do
     if ENV['RUN_BRITTLE_TEST']
       weeks = Week.selectable_from_now_until_end_of_school_year.to_a.first(2)
       school = create(:school, weeks: [])
@@ -61,28 +61,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     end
   end
 
-  test 'student with no class_room can submit a 3e segpa when school have not choosen week' do
-    # weeks = Week.selectable_from_now_until_end_of_school_year.to_a.first(2)
-    school = create(:school, weeks: [])
-    student = create(:student, school: school)
-    internship_offer = create(:troisieme_segpa_internship_offer)
-
-    sign_in(student)
-    visit internship_offer_path(internship_offer)
-    # check application form opener and check form is hidden by default
-    page.find '#internship-application-closeform', visible: false
-
-    all('a', text: 'Postuler').first.click
-    # check application is now here, ensure feature is here
-    page.find '#internship-application-closeform', visible: true
-    # check for phone and email fields disabled
-    page.find("input[type='submit'][value='Valider']").click
-    assert page.has_selector?(".fr-card__title a[href='/internship_offers/#{internship_offer.id}']", count: 1)
-    click_button('Envoyer')
-    page.find('h1', text: 'Félicitations !')
-  end
-
-  test 'student with no class_room can submit a 3e generale application when school has not choosen week' do
+  test 'student with no class_room can submit an application when school has not choosen week' do
     # Pay attention when merging this very test: it's here to stay
     weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
     internship_offer = create(:weekly_internship_offer, weeks: weeks)
@@ -111,7 +90,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   end
 
   test 'student can browse his internship_applications' do
-    school = create(:school, :with_school_manager, :with_troisieme_generale)
+    school = create(:school, :with_school_manager)
     student = create(:student, school: school)
     internship_applications = {
       drafted: create(:weekly_internship_application, :drafted, student: student),
@@ -141,7 +120,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
       internship_offer      = create(:weekly_internship_offer, weeks: weeks)
       school                = create(:school, weeks: weeks)
-      student               = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
+      student               = create(:student, school: school, class_room: create(:class_room, school: school))
       internship_application = create(:weekly_internship_application,
                                       :drafted,
                                       motivation: 'au taquet',
@@ -167,7 +146,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     school = create(:school)
     student = create(:student,
                      school: school,
-                     class_room: create(:class_room, :troisieme_generale, school: school),
+                     class_room: create(:class_room, school: school),
                      email: "",
                      phone: '+330612345678'
     )
@@ -188,11 +167,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     school = create(:school, :with_school_manager)
     student = create(:student,
                      school: school,
-                     class_room: create(
-                       :class_room,
-                       :troisieme_generale,
-                       school: school
-                     )
+                     class_room: create(:class_room, school: school)
     )
     internship_application = create(
       :weekly_internship_application,
@@ -215,7 +190,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     school = create(:school)
     student = create(:student,
                      school: school,
-                     class_room: create(:class_room, :troisieme_generale, school: school)
+                     class_room: create(:class_room, school: school)
     )
     internship_application = create(
       :weekly_internship_application,
@@ -229,13 +204,12 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     refute page.has_selector?("a[href='#tab-convention-detail']", count: 1)
   end
 
-  test 'student in troisieme_generale can draft, submit, and cancel(by_student) internship_applications' do
+  test 'student can draft, submit, and cancel(by_student) internship_applications' do
     weeks = [Week.find_by(number: 1, year: 2020)]
     school = create(:school, weeks: weeks)
     student = create(:student,
                      school: school,
                      class_room: create( :class_room,
-                                         :troisieme_generale,
                                          school: school)
                     )
     internship_offer = create(:weekly_internship_offer, weeks: weeks)
@@ -258,90 +232,6 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                      },
                      from: 0,
                      to: 1 do
-        click_on 'Valider'
-        page.find('#submit_application_form') # timer
-      end
-
-      assert_changes lambda {
-        student.internship_applications
-               .where(aasm_state: :submitted)
-               .count
-            },
-            from: 0,
-            to: 1 do
-        click_on 'Envoyer'
-        sleep 0.15
-      end
-
-      page.find('h1', text: 'Félicitations !')
-    end
-  end
-
-  test 'student in troisieme_segpa can draft, submit, and cancel(by_student) internship_applications' do
-    school = create(:school)
-    student = create(:student, school: school, class_room: create(:class_room, :troisieme_segpa, school: school))
-    internship_offer = create(:troisieme_segpa_internship_offer)
-    sign_in(student)
-    visit internship_offer_path(internship_offer)
-
-    # show application form
-    first(:link, 'Postuler').click
-
-    # fill in application form
-    find('#internship_application_motivation').native.send_keys('Je suis au taquet')
-
-    assert_changes lambda {
-                     student.internship_applications
-                            .where(aasm_state: :drafted)
-                            .count
-                   },
-                   from: 0,
-                   to: 1 do
-      click_on 'Valider'
-      student.reload
-      page.find('#submit_application_form')
-    end
-
-    assert_changes lambda {
-                     student.internship_applications
-                            .where(aasm_state: :submitted)
-                            .count
-                   },
-                   from: 0,
-                   to: 1 do
-      click_on 'Envoyer'
-      sleep 0.15
-    end
-
-    page.find('h1', text: 'Félicitations !')
-  end
-
-  test 'student in troisieme_prepa_metiers can draft, submit, and cancel(by_student) internship_applications' do
-    travel_to(Date.new(2022, 3, 1)) do
-      school = create(:school)
-      student = create(:student, school: school, class_room: create(:class_room, :troisieme_prepa_metiers, school: school))
-      internship_offer = create(:troisieme_prepa_metiers_internship_offer)
-      sign_in(student)
-      visit internship_offer_path(internship_offer)
-
-      # show application form
-      first(:link, 'Postuler').click
-      # TO DELETE ?
-
-      # page.find '#internship-application-closeform', visible: false
-      # click_on 'Je postule'
-      # page.find '#internship-application-closeform', visible: true
-
-      # fill in application form
-      find('#internship_application_motivation').native.send_keys('Je suis au taquet')
-      refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
-      assert_changes lambda {
-                      student.internship_applications
-                              .where(aasm_state: :drafted)
-                              .count
-                    },
-                    from: 0,
-                    to: 1 do
         click_on 'Valider'
         page.find('#submit_application_form') # timer
       end

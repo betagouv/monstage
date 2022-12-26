@@ -2,7 +2,6 @@ tbody.internship-agreement
   tr
     td
       = form.hidden_field :internship_application_id, value: resource.internship_application_id
-      = form.hidden_field :school_track, value: resource.school_track
       = form.hidden_field current_user_agreement_terms(current_user), value: true
       = form.hidden_field :school_manager_event, value: '', data: { :'internship-agreement-form-target' => 'schoolManagerEvent' }
       .row.mt-4.align-items-center

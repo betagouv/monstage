@@ -111,7 +111,6 @@ module Builders
         student_refering_teacher_email: main_teacher&.email,
         student_refering_teacher_phone: main_teacher&.phone,
         student_phone: student.phone,
-        school_track: student.school_track || 'troisieme_generale',
         student_full_name: student.name,
         student_class_room: student_class_room,
         main_teacher_full_name: main_teacher_full_name

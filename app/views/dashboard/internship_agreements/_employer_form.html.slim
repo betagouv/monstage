@@ -32,7 +32,6 @@ div data-controller='internship-agreement-form'
               = render 'employer_form_fields',
                        form: form,
                        resource: @internship_agreement,
-                       school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale',
                        disabled: false
 
           #nav-school-management.tab-pane.fade role="tabpanel" aria-labelledby="nav-school-management-tab"
@@ -43,5 +42,4 @@ div data-controller='internship-agreement-form'
               = render 'school_management_form_fields',
                        form: form,
                        resource: @internship_agreement,
-                       school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale',
                        disabled: true
