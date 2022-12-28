@@ -145,7 +145,7 @@ module Dashboard::Stepper
         params: {
           internship_offer_info: {
             sector_id: sector.id,
-            type: 'InternshipOfferInfos::FreeDate',
+            type: 'InternshipOfferInfos::WeeklyFramed',
             description_rich_text: '<div><b>Activités de découverte</b></div>',
             'week_ids' => weeks.map(&:id),
             organisation_id: 1,

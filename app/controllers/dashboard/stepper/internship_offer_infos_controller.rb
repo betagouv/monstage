@@ -71,7 +71,6 @@ module Dashboard::Stepper
               :description_rich_text,
               :max_candidates,
               :max_students_per_group,
-              :school_track,
               :siret,
               :weekly_lunch_break,
               weekly_hours: [],

@@ -7,7 +7,12 @@ class UserMailer < ApplicationMailer
 
   def export_offers(user, params)
     recipient_email = user.email
-    params.merge!(groups: user.ministries.map(&:id)) if user.ministry_statistician?
+    if user.ministry_statistician?
+      params.merge!(ministries: user.ministries.map(&:id)) 
+    else
+      params.delete(:ministries)
+    end
+
     offers = Finders::ReportingInternshipOffer.new(params: params).dimension_offer
 
     attachment_name = "#{serialize_params_for_filenaming(params)}.xlsx"
@@ -24,8 +29,8 @@ class UserMailer < ApplicationMailer
   private
 
   def serialize_params_for_filenaming(params)
-    params.inject("export-des-offres-") do |accu, (k,v)|
-      "#{accu}-#{k.to_s.parameterize}-#{v.to_s.parameterize}"
+    params.compact.inject("export-des-offres") do |accu, (k,v)|
+      "#{accu}-#{InternshipOffer.human_attribute_name(k.to_s).parameterize}-#{v.to_s.parameterize}"
     end
   end
 

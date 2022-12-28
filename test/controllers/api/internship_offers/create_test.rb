@@ -161,7 +161,6 @@ module Api
       end
       assert_equal remote_id, internship_offer.remote_id
       assert_equal permalink, internship_offer.permalink
-      assert_equal 'troisieme_generale', internship_offer.school_track
       assert_equal 2, internship_offer.max_candidates
 
       assert_equal JSON.parse(internship_offer.to_json), json_response

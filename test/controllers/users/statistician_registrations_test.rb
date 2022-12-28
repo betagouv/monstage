@@ -31,5 +31,15 @@ class StatisticianRegistrationsTest < ActionDispatch::IntegrationTest
                                                     accept_terms: '1' } })
       assert_response 302
     end
+    refute Users::Statistician.last.agreement_signatorable
+    refute_nil Users::Statistician.last.agreement_signatorable
+  end
+
+  test 'when agreement_signatorable goes from false to true a job is launched' do
+    statistician = create(:statistician)
+    refute statistician.agreement_signatorable
+    assert_enqueued_with(job: AgreementsAPosterioriJob) do
+      statistician.update(agreement_signatorable: true)
+    end
   end
 end

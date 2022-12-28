@@ -17,7 +17,7 @@ module InternshipApplications
         patch internship_offer_internship_application_path(internship_offer,
                                                            internship_application,
                                                            transition: :submit!)
-        assert_redirected_to dashboard_students_internship_applications_path(internship_application.student,
+        assert_redirected_to completed_internship_offer_internship_application_path(internship_offer,
                                                                              internship_application)
       end
     end
@@ -37,7 +37,7 @@ module InternshipApplications
         patch internship_offer_internship_application_path(internship_offer,
                                                            internship_application,
                                                            transition: :submit!)
-        assert_redirected_to dashboard_students_internship_applications_path(internship_application.student,
+        assert_redirected_to completed_internship_offer_internship_application_path(internship_offer,
                                                                              internship_application)
       end
     end

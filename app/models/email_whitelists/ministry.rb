@@ -34,6 +34,7 @@ module EmailWhitelists
       edit do
         field :email
         field :groups do
+          label 'Chercher parmi les ministères'
           associated_collection_scope do
             Proc.new do |scope| 
               scope.is_public
@@ -48,10 +49,6 @@ module EmailWhitelists
     end
 
 
-    def destroy
-      Users::MinistryStatistician.find_by(email: email).destroy
-      super
-    end
 
     protected
 

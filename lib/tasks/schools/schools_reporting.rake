@@ -30,5 +30,16 @@ namespace :schools do
       end
     end
   end
+
+  desc 'what are the new schools in the current school year'
+  task :new_schools_in_current_school_year => :environment do |task, args|
+    school_year_start = SchoolYear::Current.new.beginning_of_period
+    school_year_end = SchoolYear::Current.new.end_of_period
+    new_schools = School.where('created_at >= ?', school_year_start)
+                        .where('created_at <= ?', school_year_end)
+                        .order(:created_at)
+                        .pluck(:code_uai, :name, :city, :department, :created_at)
+                        .map { |sco| sco[4] = sco[4].strftime("%d/%m/%Y"); sco.join(',') }.join(';')
+    PrettyConsole.say_in_green "Le nombre d'établissements créés dans l'année scolaire courante est de #{new_schools.count}"
+  end
 end
-# '0752694W'

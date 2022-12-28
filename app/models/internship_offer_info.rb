@@ -11,8 +11,6 @@ class InternshipOfferInfo < ApplicationRecord
   # Relation
   belongs_to :internship_offer, optional: true
 
-  def weekly?; false end
-  def free_date?; false end
   def from_api?; false end
   def is_fully_editable?; true end
 

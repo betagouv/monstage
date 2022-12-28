@@ -88,3 +88,16 @@ $line-height: 4px;
   color: var(--grey-425-625);
 }
 
+.success-banner {
+  background-color: #F5F5FF;
+  .image-character {
+    height: 420px;
+    margin-top: -200px;
+  }
+}
+
+.competitors-bloc {
+  .h1, .main-text {
+    color: #d64d00;
+  }
+}

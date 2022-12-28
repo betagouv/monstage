@@ -11,7 +11,6 @@
 #
 # only use dedicated builder to CRUD those objects
 class InternshipAgreement < ApplicationRecord
-  include SchoolTrackable
   include AASM
 
   belongs_to :internship_application
@@ -36,7 +35,6 @@ class InternshipAgreement < ApplicationRecord
   with_options if: :enforce_main_teacher_validations? do
     validates :student_class_room, presence: true
     validates :main_teacher_full_name, presence: true
-    validate :valid_trix_main_teacher_fields
   end
 
   with_options if: :enforce_school_manager_validations? do
@@ -128,6 +126,10 @@ class InternshipAgreement < ApplicationRecord
   delegate :school,           to: :student
   delegate :school_manager,   to: :school
 
+  scope :having_school_manager, ->{
+    joins(internship_application: {student: :school}).merge(School.with_school_manager)
+  }
+
   def at_least_one_validated_terms
     return true if skip_validations_for_system
     return true if [school_manager_accept_terms, employer_accept_terms, main_teacher_accept_terms].any?
@@ -174,24 +176,12 @@ class InternshipAgreement < ApplicationRecord
       errors.add(:complementary_terms_rich_text,
                  'Veuillez compléter les conditions complémentaires du stage (hebergement, transport, securité)...')
     end
-    if !troisieme_generale? && activity_learnings_rich_text.blank?
-      errors.add(:activity_learnings_rich_text, 'Veuillez compléter les compétences visées')
-    end
   end
 
   def valid_trix_school_manager_fields
     if complementary_terms_rich_text.blank?
       errors.add(:complementary_terms_rich_text,
                  'Veuillez compléter les conditions complémentaires du stage (hebergement, transport, securité)...')
-    end
-    if !troisieme_generale? && activity_rating_rich_text.blank?
-      errors.add(:activity_rating_rich_text, 'Veuillez compléter les modalités d’évaluation du stage')
-    end
-  end
-
-  def valid_trix_main_teacher_fields
-    if !troisieme_generale? && activity_preparation_rich_text.blank?
-      errors.add(:activity_preparation_rich_text, 'Veuillez compléter les modalités de concertation')
     end
   end
 
@@ -252,17 +242,16 @@ class InternshipAgreement < ApplicationRecord
     aasm_state.to_s.in?(%w[validated signatures_started]) && !signed_by?(user: user)
   end
 
-
-
-
-
   def signed_by?(user:)
     signatures.pluck(:user_id).include?(user.id)
   end
 
-  def presenter
-    Presenters::InternshipAgreement.new(self)
+  def presenter(user:)
+    Presenters::InternshipAgreement.new(self, user)
   end
+
+
+
 
   private
 

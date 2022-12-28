@@ -1,0 +1,18 @@
+- if can?(:subscribe_to_webinar, current_user)
+  .container-monstage.homepage
+    .fr-alert.fr-alert--info.fr-mb-1w
+      h3.fr-alert__title Notre équipe se tient à votre disposition.
+      p
+        |
+          Vous avez des questions sur
+          une fonctionnalité, vous rencontrez un problème ou vous souhaitez
+          simplement contacter notre équipe ? Nous sommes à votre disposition
+          tous les 
+        span.font-weight-bolder vendredis de 14h à 15h 
+        span pour répondre à toutes vos questions sur la plateforme Monstagedetroisieme.fr.
+
+      p.fr-mb-0
+        |Inscrivez-vous pour la prochaine permanence en cliquant 
+        = link_to 'sur ce lien',
+                  register_to_webinar_path,
+                  target: '_blank'

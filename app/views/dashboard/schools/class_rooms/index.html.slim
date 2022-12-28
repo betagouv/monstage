@@ -8,7 +8,7 @@
       div data-controller='students'
         = form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', class: 'd-block py-3') do
           .row.fr-text--md
-            .col-10
+            .col-12
               .row.align-items-center.p-3.bg-blue-950
                 .col-8.text-primary
                   | Les élèves ci-dessous ont besoin d'être affectés à une classe pour pouvoir postuler à des stages.
@@ -41,24 +41,23 @@
       .col-12.text-right.px-0
         - if can?(:create, ClassRoom)
           = link_to "Ajouter une classe", new_dashboard_school_class_room_path(@school), class: 'fr-btn fr-icon-add-line fr-btn--icon-left'
-    - Presenters::ClassRoom.with_school_tracks(@school).each do |school_track, class_rooms|
-      .row.mt-3
-        .col-8
-          .h3.mb-0= tr_school_track(school_track)
-      .row
-        .col-12.fr-table.fr-table--white
-          table
-            - cols = ["Classe",
-                "Compte actif",
-                "Sans candidature",
-                "Sans stage", ""]
-            thead
-              tr.tr-blue
-                - cols.map.with_index do |col, i|
-                  th class="align-top #{i.zero? ? '' : 'text-center'}" style="width: 20%"
-                    small= col
-            tbody
+
+    .row
+      .col-12.fr-table.fr-table--white
+        table
+          - cols = ["Classe",
+              "Compte actif",
+              "Sans candidature",
+              "Sans stage", ""]
+          thead
+            tr.tr-blue
+              - cols.map.with_index do |col, i|
+                th class="align-top #{i.zero? ? '' : 'text-center'}" style="width: 20%"
+                  small= col
+          tbody
+            - Presenters::ClassRoom.from_school(@school).each do |class_rooms|
               = render partial: "class_rooms/class_room",
                       collection: Array(class_rooms),
                       locals: { school: @school, cols: cols }
 
+= render 'dashboard/satisfaction_survey'

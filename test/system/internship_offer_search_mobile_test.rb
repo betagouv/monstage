@@ -66,14 +66,6 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
     # assert_presence_of(internship_offer: internship_offer_at_bordeaux)
   end
 
-  test 'USE_IPHONE_EMULATION, search by school_track works' do
-    weekly_internship_offer = create(:weekly_internship_offer)
-    visit search_internship_offers_path
-
-    submit_form
-    # assert_presence_of(internship_offer: weekly_internship_offer)
-  end
-
   test 'USE_IPHONE_EMULATION, search by keyword works' do
     searched_keyword = 'helloworld'
     searched_internship_offer = create(:weekly_internship_offer, title: searched_keyword)

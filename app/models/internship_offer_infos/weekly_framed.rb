@@ -8,13 +8,5 @@ module InternshipOfferInfos
                                            inverse_of: :internship_offer_info
 
     has_many :weeks, through: :internship_offer_info_weeks
-
-    def weekly?
-      true
-    end
-
-    def free_date?
-      false
-    end
   end
 end
