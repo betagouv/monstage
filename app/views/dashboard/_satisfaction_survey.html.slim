@@ -1,2 +1,2 @@
-- unless Rails.env == 'test' || current_user.survey_answered
+- unless Rails.env == 'test' || current_user.survey_answered || current_user.satisfaction_survey.nil?
   #satisfaction-survey data-controller='satisfaction-survey' data-satisfaction-survey-tally-value=current_user.satisfaction_survey
