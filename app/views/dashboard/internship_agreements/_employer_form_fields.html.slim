@@ -27,14 +27,14 @@ tbody.internship-agreement
         - content = "Métier ou fonction du représentant de l'entreprise dans cette convention - le représentant n'est pas forcément le tuteur de l'élève"
         - filled_by = ["l'entreprise"]
         = render partial: 'dashboard/internship_agreements/text_field_element',
-                 locals: { field: :organisation_representative_role, form: form, text_label: label, content: content, title: title, filled_by: filled_by, disabled: disabled }
+                 locals: { field: :organisation_representative_role, limit: 100, form: form, text_label: label, content: content, title: title, filled_by: filled_by, disabled: disabled}
       .row.mt-0
         - label = "SIRET de l'entreprise"
         - title = "Note au chef d'entreprise"
         - content = "Numéro de SIRET de l'entreprise"
         - filled_by = ["l'entreprise"]
         = render partial: 'dashboard/internship_agreements/text_field_element',
-                 locals: { field: :siret, form: form, text_label: label, content: content, title: title, filled_by: filled_by, disabled: disabled }
+                 locals: { field: :siret, limit: 14, form: form, text_label: label, content: content, title: title, filled_by: filled_by, disabled: disabled }
       .row.mt-0
         - label = "Nom du responsable de l’accueil en milieu professionnel du tuteur"
         - title = "Note au chef d'entreprise"
@@ -48,14 +48,14 @@ tbody.internship-agreement
         - content = "Fonction ou titre professionnel"
         - filled_by = ["l'entreprise"]
         = render partial: 'dashboard/internship_agreements/text_field_element',
-                 locals: { field: :tutor_role, form: form, text_label: label, content: content, title: title, filled_by: filled_by, disabled: disabled , limit: 150}
+                 locals: { field: :tutor_role, limit: 150, form: form, text_label: label, content: content, title: title, filled_by: filled_by, disabled: disabled}
       .row.mt-0
         - label = "Email du tuteur"
         - title = "Note au chef d'entreprise"
         - content = "Email du tuteur dans l'entreprise"
         - filled_by = ["l'entreprise"]
         = render partial: 'dashboard/internship_agreements/text_field_element',
-                 locals: { field: :tutor_email, form: form, text_label: label, content: content, title: title, filled_by: filled_by, disabled: disabled }
+                 locals: { field: :tutor_email, limit: 80, form: form, text_label: label, content: content, title: title, filled_by: filled_by, disabled: disabled }
 
       .row.mt-0
         - label = "Dates de la séquence d’observation en milieu professionnel du stagiaire"
