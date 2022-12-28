@@ -82,7 +82,7 @@ module Dashboard
       @internship_agreements = current_user.internship_agreements
                                            .includes([:internship_application])
                                            .reject { |a| a.student.school.school_manager.nil? }
-      @school = current_user.school if current_user.is_a?(::Users::SchoolManagement)
+      @school = current_user.school if current_user.school_management?
     end
 
     private
