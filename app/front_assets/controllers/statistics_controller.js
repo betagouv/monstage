@@ -15,10 +15,6 @@ export default class extends Controller {
     changeURLFromEvent(event, 'is_public');
   }
 
-  filterBySchoolTrack(event) {
-    changeURLFromEvent(event, 'school_track');
-  }
-
   filterBySchoolYear(event) {
     changeURLFromEvent(event, 'school_year');
   }

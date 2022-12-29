@@ -177,5 +177,122 @@ module Dashboard
       find('a.button-component-cta-button', text: 'Imprimer')
       find('a.fr-btn.button-component-cta-button', text: 'Signée de tous')
     end
+
+    # =================== Statistician ===================
+
+    test 'statistician without rights attempt to reach internship agreement table fails' do
+      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: false))
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, aasm_state: :draft)
+      sign_in(internship_offer.employer)
+      visit dashboard_internship_agreements_path
+      find('span#alert-text', text: "Vous n'êtes pas autorisé à effectuer cette action.")
+    end
+
+    test 'statistician reads internship agreement table with correct indications - draft' do
+      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: true))
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, aasm_state: :draft, internship_application: internship_application)
+      sign_in(internship_offer.employer)
+      visit dashboard_internship_agreements_path
+      within('td[data-head="Statut"]') do
+        find('div.actions', text: 'À remplir par les deux parties.')
+      end
+      find('a.button-component-cta-button', text: 'Remplir ma convention')
+    end
+
+    test 'statistician reads internship agreement table with correct indications - status: started_by_employer' do
+      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: true))
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, aasm_state: :started_by_employer, internship_application: internship_application)
+      sign_in(internship_offer.employer)
+      visit dashboard_internship_agreements_path
+      within('td[data-head="Statut"]') do
+        find('div.actions', text: "Votre convention est remplie, mais elle n'est pas envoyée au chef d'établissement.")
+      end
+      find('a.button-component-cta-button', text: 'Valider ma convention')
+    end
+
+    test 'statistician reads internship agreement table with correct indications - status: completed_by_employer /' do
+      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: true))
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, aasm_state: :completed_by_employer, internship_application: internship_application)
+      sign_in(internship_offer.employer)
+      visit dashboard_internship_agreements_path
+      within('td[data-head="Statut"]') do
+        find('div.actions', text: "La convention est dans les mains du chef d'établissement.")
+      end
+      find('a.button-component-cta-button', text: 'Vérifier ma convention')
+    end
+
+    test 'statistician reads internship agreement table with correct indications - status: started_by_school_manager' do
+      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: true))
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, aasm_state: :started_by_school_manager, internship_application: internship_application)
+      sign_in(internship_offer.employer)
+      visit dashboard_internship_agreements_path
+      within('td[data-head="Statut"]') do
+        find('div.actions', text: "La convention est dans les mains du chef d'établissement.")
+      end
+      find('a.button-component-cta-button', text: 'Vérifier ma convention')
+    end
+
+    test 'statistician reads internship agreement table with correct indications - status: validated' do
+      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: true))
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, aasm_state: :validated, internship_application: internship_application)
+      sign_in(internship_offer.employer)
+      visit dashboard_internship_agreements_path
+      within('td[data-head="Statut"]') do
+        find('div.actions', text: "Votre convention est prête. Imprimez-la et renvoyez-la signée au chef d'établissement.")
+      end
+      find('a.button-component-cta-button', text: 'Imprimer')
+      find('button[data-action=\'group-signing#toggleFromButton\']', text: 'Ajouter aux signatures')
+    end
+
+    test 'statistician reads internship agreement table with correct indications - status: signatures_started with employer' do
+      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: true))
+      employer = internship_offer.employer
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, aasm_state: :signatures_started, internship_application: internship_application)
+      create(:signature, internship_agreement: internship_agreement, signatory_role: :employer, user_id: internship_agreement.employer.id)
+      sign_in(employer)
+      visit dashboard_internship_agreements_path
+      within('td[data-head="Statut"]') do
+        find('.actions.d-flex', text: "Vous avez déjà signé. En attente de la signature du chef d’établissement.")
+      end
+      find('a.button-component-cta-button', text: 'Imprimer')
+      find('a.fr-btn.button-component-cta-button', text: 'Déjà signé')
+    end
+
+    test 'statistician reads internship agreement table with correct indications - status: signatures_started with school_manager' do
+      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: true))
+      employer = internship_offer.employer
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, aasm_state: :signatures_started, internship_application: internship_application)
+      school_manager = internship_agreement.internship_application.student.school.school_manager
+      create(:signature, internship_agreement: internship_agreement, signatory_role: :school_manager, user_id: school_manager.id)
+      sign_in(employer)
+      visit dashboard_internship_agreements_path
+      within('td[data-head="Statut"]') do
+        find('.actions.d-flex', text: "Le chef d'établissement a déjà signé. En attente de votre signature.")
+      end
+      find('a.button-component-cta-button', text: 'Imprimer')
+      find('button[data-action=\'group-signing#toggleFromButton\']', text: 'Ajouter aux signatures')
+    end
+
+    test 'statistician reads internship agreement table with correct indications - status: signed_by_all' do
+      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: true))
+      employer = internship_offer.employer
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, aasm_state: :signed_by_all, internship_application: internship_application)
+      sign_in(internship_agreement.employer)
+      visit dashboard_internship_agreements_path
+      within('td[data-head="Statut"]') do
+        find('.actions.d-flex', text: "Signée par toutes les parties.")
+      end
+      find('a.button-component-cta-button', text: 'Imprimer')
+      find('a.fr-btn.button-component-cta-button', text: 'Signée de tous')
+    end
   end
 end

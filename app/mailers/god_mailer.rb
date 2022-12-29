@@ -21,7 +21,8 @@ class GodMailer < ApplicationMailer
   end
 
   def weekly_pending_applications_email
-    internship_applications = InternshipApplication.submitted
+    internship_applications = InternshipApplication.submitted.where('submitted_at > :date', date: 30.days.ago).where(canceled_at: nil)
+
     @human_date = I18n.l Date.today,   format: '%d %B %Y'
 
     attachment_name = "export_candidatures_non_repondues.xlsx"

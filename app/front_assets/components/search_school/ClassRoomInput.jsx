@@ -2,8 +2,6 @@ import React from 'react';
 
 const TRADS = {
   troisieme_generale: '3e',
-  troisieme_prepa_metier: '3e prépa-métiers',
-  troisieme_segpa: 'Segpa',
 };
 function RenderClassRoomsInput({
   selectedClassRoom,
@@ -26,23 +24,6 @@ function RenderClassRoomsInput({
       {classRoom.name}
     </option>
   );
-
-  const classRoomsSuggestionsByType = (classRoomsSuggestions || []).reduce((accu, item) => {
-    if (!accu[item.school_track]) {
-      accu[item.school_track] = [];
-    }
-    accu[item.school_track].push(item);
-    accu[item.school_track].sort((a, b) => {
-      if (a.name < b.name) {
-        return -1;
-      }
-      if (a.name > b.name) {
-        return 1;
-      }
-      return 0;
-    });
-    return accu;
-  }, {});
 
   return (
     <div
@@ -94,15 +75,8 @@ function RenderClassRoomsInput({
                 -- Veuillez choisir une classe --
               </option>
             )}
-            {Object.keys(classRoomsSuggestionsByType).length > 1 &&
-              Object.keys(classRoomsSuggestionsByType).map((schoolTrack) => (
-                <optgroup label={TRADS[schoolTrack]}>
-                  {classRoomsSuggestionsByType[schoolTrack].map(renderClassRoomOption)}
-                </optgroup>
-              ))}
 
-            {Object.keys(classRoomsSuggestionsByType).length <= 1 &&
-              (classRoomsSuggestions || []).map(renderClassRoomOption)}
+            {classRoomsSuggestions.map(renderClassRoomOption)}
             <option value="">Autre classe</option>
           </select>
           

@@ -3,10 +3,14 @@
 tbody.internship-agreement
   tr
     td
-      = form.hidden_field :internship_application_id, id:"employer-internship_application-#{resource.internship_application_id}", value: resource.internship_application_id
-      = form.hidden_field :school_track, id:"employer-school-track-#{resource.id}", value: resource.school_track
-      = form.hidden_field current_user_agreement_terms(current_user), id:"employer-agreement_terms-#{resource.id}", value: true
-      = form.hidden_field :event, value: ''
+      = form.hidden_field :internship_application_id,
+                          id: "employer-internship_application-#{resource.internship_application_id}",
+                          value: resource.internship_application_id
+      = form.hidden_field current_user_agreement_terms(current_user),
+                          id: "employer-agreement_terms-#{resource.id}",
+                          value: true
+      = form.hidden_field :employer_event, value: '', data: { :'internship-agreement-form-target' => 'employerEvent' }
+
       .row.mt-4.align-items-center
         .col-12= form.rg2a_explain_required_asterisk(p_class_name: "mb-0")
 
@@ -81,25 +85,6 @@ tbody.internship-agreement
         - filled_by = ["l'entreprise"]
         = render partial: 'dashboard/internship_agreements/trix_form_element',
                  locals: { field: :activity_scope_rich_text, form: form, text_label: label, title: title, content: content, filled_by: filled_by, disabled: disabled }
-      / Voie pro
-      - if school_track != 'troisieme_generale'
-        .row.mt-0
-          - label = "Modalités de la concertation qui sera assurée pour organiser " \
-                    "la préparation, contrôler le déroulement de la période en vue " \
-                    "d’une véritable complémentarité des enseignements reçus"
-          - title = "Note destinée au professeur principal :"
-          - content = "Objet pédagogique"
-          - filled_by = ["l'entreprise"]
-          = render partial: 'dashboard/internship_agreements/trix_form_element',
-                   locals: { field: :activity_preparation_rich_text, form: form, text_label: label, title: title, content: content , filled_by: filled_by, disabled: disabled }
-
-        .row.mt-0
-          - label = "Compétences visées"
-          - title = "Note au chef d'entreprise"
-          - ccontent = "Apprentissages en entreprise"
-          - filled_by = ["l'entreprise"]
-          = render partial: 'dashboard/internship_agreements/trix_form_element',
-                   locals: { field: :activity_learnings_rich_text, form: form, text_label: label, title: title, content: content , filled_by: filled_by, disabled: disabled }
 
       = form.submit 'Submit', class: 'd-none', id: 'employer-submit'
 
@@ -119,6 +104,6 @@ tbody.internship-agreement
         .row
           .col-8= render "layouts/form_errors", resource: resource
 
-        .row.mt-0
+        .row.mt-0.fr-mb-10w
           = render partial: 'dashboard/internship_agreements/employer_form_footer',
-            locals: { form: form, internship_agreement: @internship_agreement }
+                            locals: { form: form, internship_agreement: @internship_agreement }

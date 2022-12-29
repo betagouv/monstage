@@ -7,7 +7,7 @@ module Presenters
       'Users::Operator': 'Operateur',
       'Users::Statistician': 'Référent départemental',
       'Users::MinistryStatistician': 'Référent central',
-      'Users::EducationStatistician': 'Référent éducation nationale'
+      'Users::EducationStatistician': 'Référent éduc. nat.'
     }
     ROLE_TRANSLATOR = {
       school_manager: "Chef d'établissement",

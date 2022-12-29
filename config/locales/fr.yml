@@ -22,8 +22,8 @@ fr:
   activerecord:
     models:
       email_whitelists/education_statistician:
-        one: Courriel autorisé du DASEN
-        other: Courriels autorisés des DASEN
+        one: Courriel autorisé du Dsden
+        other: Courriels autorisés des Dsden
       email_whitelists/statistician:
         one: Courriel autorisé du référent départemental
         other: Courriels autorisés des référents départementaux
@@ -39,9 +39,6 @@ fr:
       internship_offers/weekly_framed:
         one: Offre pour la 3eme
         other: Offres pour la 3eme
-      internship_offers/free_date:
-        one: Offre de la voie pro
-        other: Offres de la voie pro
       internship_offers/api:
         one: Offre API
         other: Offres API
@@ -52,9 +49,6 @@ fr:
         one: Candidature
         other: Candidatures
       internship_applications/weekly_framed:
-        one: Candidature
-        other: Candidatures
-      internship_applications/free_date:
         one: Candidature
         other: Candidatures
       operator:
@@ -102,6 +96,9 @@ fr:
       users/ministry_statistician:
         one: Référent central
         other: Référents centraux
+      users/education_statistician:
+        one: Référent de l'éducation nationale
+        other: Référents de l'éducation nationale
       week:
         one: Semaine
         other: Semaines
@@ -159,7 +156,6 @@ fr:
         title: Intitulé
         description: Description
         sector: Secteur
-        school_track: Filière
         max_candidates: Nbr. max de candidats accueillis sur l'année
         max_students_per_group: Effectif max. d'un groupe d'élèves
         sector_id: Secteurs professionnels
@@ -171,6 +167,7 @@ fr:
         tutor_name: Nom du tuteur
         tutor_phone: Téléphone du tuteur
         tutor_email: Email du tuteur
+        tutor_role: Fonction du tuteur
 
       internship_agreement:
         internship_application: Candidature
@@ -291,7 +288,9 @@ fr:
         coordinates: Coordonnées GPS
         group_name: Groupe ou institution
         school: Établissement réservé
+        school_year: Année
         internship_applications: Candidatures
+        ministries: Ministères
 
       internship_application:
         student: Élève
@@ -405,8 +404,6 @@ fr:
               too_long: La description doit faire au maximum 500 caractères
             sector:
               required: "Veuillez choisir un secteur pour l'offre de stage"
-            school_track:
-              required: "Veuillez choisir la filière correspondant à l'offre de stage"
             weeks:
               blank: Veuillez saisir des semaines de stage
 
@@ -447,8 +444,6 @@ fr:
               blank: "Missing city"
             sector:
               required: "Missing sector"
-            school_track:
-              blank: "Missing school_track"
             weeks:
               blank: "Missing weeks"
             remote_id:
@@ -570,9 +565,6 @@ fr:
       internship_offers~weekly_framed:
         kept: Actives
         discarded: Supprimées
-      internship_offers~free_date:
-        kept: Actives
-        discarded: Supprimées
       internship_offers~api:
         kept: Actives
         discarded: Supprimées
@@ -599,10 +591,5 @@ fr:
       main_teacher: "Professeur principal"
       other: "Autre fonction"
 
-    school_tracks:
-      troisieme_generale: '3e'
-      troisieme_prepa_metiers: '3e prépa métiers'
-      troisieme_segpa: '3e SEGPA'
-      bac_pro: 'Bac pro'
   date:
     day_names: [Dimanche, Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi]

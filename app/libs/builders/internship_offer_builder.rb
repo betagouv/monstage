@@ -41,7 +41,6 @@ module Builders
     def update(instance:, params:)
       yield callback if block_given?
       authorize :update, instance
-      instance = switch_type(instance: instance, params: params)
       instance.attributes = preprocess_api_params(params, fallback_weeks: false)
       instance = deal_with_max_candidates_change(params: params, instance: instance)
       instance.save!
@@ -75,8 +74,6 @@ module Builders
     def preprocess_api_params(params, fallback_weeks:)
       return params unless from_api?
 
-      # API default school_track parameter is set by default
-      # in postgres with :troisieme generale
       opts = { params: params,
                user: user,
                fallback_weeks: fallback_weeks }
@@ -113,11 +110,10 @@ module Builders
         sector_id: internship_offer_info.sector_id,
         daily_lunch_break: internship_offer_info.daily_lunch_break,
         weekly_lunch_break: internship_offer_info.weekly_lunch_break,
-        school_track: internship_offer_info.school_track,
         type: internship_offer_info.type.gsub('Info', ''),
         remaining_seats_count: internship_offer_info.max_candidates
       }
-      params[:week_ids] = internship_offer_info.week_ids if internship_offer_info.weekly?
+      params[:week_ids] = internship_offer_info.week_ids
       params
     end
 
@@ -132,19 +128,6 @@ module Builders
 
     def from_api?
       context == :api
-    end
-
-    def switch_type(instance:, params:)
-      return instance unless type_will_change?(params: params, instance: instance)
-
-      if instance.with_applications?
-        error_message = 'Impossible de modifier la filière de ' \
-                        'cette offre de stage car ' \
-                        'vous avez au moins une candidature pour cette offre.'
-        instance.errors.add(:type, error_message)
-        raise ActiveRecord::RecordInvalid, instance
-      end
-      instance.becomes!(params[:type].constantize)
     end
 
     def deal_with_max_candidates_change(params: , instance: )

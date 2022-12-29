@@ -103,7 +103,7 @@ export default function AddressInput({
                     *
                   </abbr>
                   <a
-                    className="btn-absolute fr-btn btn-link py-0"
+                    className="btn-absolute btn fr-btn btn-link py-0"
                     href="#help-multi-location"
                     aria-label="Afficher l'aide"
                     onClick={toggleHelpVisible}

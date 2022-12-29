@@ -8,6 +8,11 @@ class User < ApplicationRecord
   include UserAdmin
   include ActiveModel::Dirty
 
+  has_many :favorites
+  
+  # has_many :users_internship_offers
+  # has_many :internship_offers, through: :users_internship_offers
+
   attr_accessor :phone_prefix, :phone_suffix
 
   devise :database_authenticatable, :registerable,
@@ -61,9 +66,7 @@ class User < ApplicationRecord
     opts = {}
 
     opts = opts.merge(school.default_search_options) if has_relationship?(:school)
-    opts = opts.merge(school_track: school_track) if has_relationship?(:school_track)
-    opts = opts.merge(school_track: :troisieme_generale) if self.is_a?(Users::SchoolManagement)
-    if (has_relationship?(:class_room) && class_room.troisieme_generale?) || self.is_a?(Users::SchoolManagement)
+    if has_relationship?(:class_room) || self.is_a?(Users::SchoolManagement)
       week_ids = school.weeks
                        .where(id: Week.selectable_on_school_year.pluck(:id))
                        .pluck(:id)
@@ -136,7 +139,9 @@ class User < ApplicationRecord
     }
     update_columns(fields_to_reset)
 
-    discard!
+    EmailWhitelist.destroy_by(email: email_for_job)
+
+    discard! unless discarded?
 
     unless email_for_job.blank?
       AnonymizeUserJob.perform_later(email: email_for_job) if send_email
@@ -226,6 +231,7 @@ class User < ApplicationRecord
   end
 
   def statistician? ; false end
+  def department_statistician? ; false end
   def ministry_statistician? ; false end
   def student? ; false end
   def employer? ; false end
@@ -233,8 +239,9 @@ class User < ApplicationRecord
   def school_management? ; false end
   def school_manager? ; false end
   def god? ; false end
+  def employer_like? ; false end
 
-  def already_signed?(internship_aggreement_id:); true end
+  def already_signed?(internship_agreement_id:); true end
   def create_signature_phone_token ; nil end
   def send_signature_sms_token ; nil end
   def signatory_role ; nil end
@@ -244,6 +251,19 @@ class User < ApplicationRecord
     Presenters::User.new(self)
   end
 
+  def satisfaction_survey
+    Rails.env.production? ? try(:satisfaction_survey_id) : ENV['TALLY_STAGING_SURVEY_ID']
+  end
+
+  protected
+
+  # TODO : this is to move to a statistician model
+
+  def trigger_agreements_creation
+    if changes[:agreement_signatorable] == [false, true]
+      AgreementsAPosterioriJob.perform_later(user_id: id)
+    end
+  end
 
   private
 

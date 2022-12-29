@@ -13,6 +13,12 @@ module InternshipApplicationCountersHooks
           blocked_weeks_count: blocked_weeks_count
         )
       )
+      update_favorites
+      true
+    end
+
+    def update_favorites
+      internship_offer.update_all_favorites
     end
 
     # PERF: can be optimized with one query

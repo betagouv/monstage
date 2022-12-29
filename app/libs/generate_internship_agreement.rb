@@ -359,6 +359,14 @@ class GenerateInternshipAgreement < Prawn::Document
       "sur leur lieu de stage avant huit heures du matin et après dix-huit " \
       "heures le soir. Pour l’élève de moins de seize ans, le travail de nuit " \
       "est interdit. Cette disposition ne souffre aucune dérogation.")
+    paraphing(
+      "Concernant les modalités d'accueil en milieu professionnel d'élèves mineurs " \
+      "de moins de quatorze ans, il convient de se référer à l’annexe 4, de la " \
+      "circulaire n° 2003-134 du 8 septembre 2003. La durée de présence " \
+      "d’un élève mineur en milieu professionnel ne peut excéder 7 heures par jour. " \
+      "Les horaires journaliers des élèves ne peuvent prévoir leur présence sur " \
+      "leur lieu de stage avant six heures du matin et après vingt heures le soir."
+    )
   end
 
   def article_9
@@ -460,11 +468,6 @@ class GenerateInternshipAgreement < Prawn::Document
 
     # label_form "Activités prévues :"
     # field_form @internship_agreement.activity_scope_rich_text.body.html_safe, html: true
-
-    # unless @internship_agreement.troisieme_generale?
-    #   label_form "Compétences visées :"
-    #   field_form @internship_agreement.activity_learnings_rich_text.body.html_safe, html: true
-    # end
 
     # if @internship_agreement.activity_rating_rich_text.present?
     #   label_form "Modalités d’évaluation de la séquence d’observation en milieu professionnel :"

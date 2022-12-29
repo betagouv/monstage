@@ -89,10 +89,6 @@ module Reporting
       where(academy: academy)
     }
 
-    scope :by_school_track, lambda { |school_track:|
-      where(school_track: school_track)
-    }
-
     scope :dimension_offer, lambda {
       select('internship_offers.*')
     }

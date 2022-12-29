@@ -54,10 +54,11 @@
         = form.number_field :max_candidates,
                             class: "fr-input",
                             placeholder: "Nombre d'élèves prévus pour cette offre",
-                            disabled: !resource.is_fully_editable?,
+                            disabled: false,
                             required: true,
                             pattern: "[0-9]*",
                             inputmode: "numeric",
+                            min: resource.is_a?(InternshipOffer) ? (resource.internship_applications.try(:approved).try(:count) || 0) : 0,
                             data: { :"internship-offer-infos-target" => 'maxCandidatesInput',
                                     action: "change->internship-offer-infos#handleMaxCandidatesChanges"}
 
@@ -71,7 +72,7 @@
                               true,
                               resource.new_record? && resource.errors.empty? && params[:duplicate_id].blank? ? false : resource.is_individual?,
                               class: '',
-                              disabled: !resource.is_fully_editable?,
+                              disabled: false,
                               data: { :'internship-offer-infos-target' => 'individualButton',
                                       action: "change->internship-offer-infos#toggleInternshipmaxStudentsPerGroup" }
           = label_tag :internship_type_true, class: 'd-flex flex-column' do
@@ -82,7 +83,7 @@
                               false,
                               resource.new_record? && resource.errors.empty? && params[:duplicate_id].blank? ? false : !resource.is_individual?,
                               class: '',
-                              disabled: !resource.is_fully_editable?,
+                              disabled: false,
                               data: { :'internship-offer-infos-target' => 'collectiveButton',
                                       action: "change->internship-offer-infos#toggleInternshipmaxStudentsPerGroup" }
 
@@ -102,7 +103,7 @@
                             max: InternshipOffer::MAX_CANDIDATES_HIGHEST,
                             step: 1,
                             class: 'fr-input col-lg-6',
-                            disabled: !resource.is_fully_editable?,
+                            disabled: false,
                             data: { :"internship-offer-infos-target" => "studentsMaxGroupInput",
                                     action: "change->internship-offer-infos#handleMaxCandidatesChanges"}
       // TODO A vérifier si utile

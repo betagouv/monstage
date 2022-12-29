@@ -16,18 +16,23 @@ module Users
     end
     has_many :internship_agreements, through: :internship_applications
 
+    # has_many :favorites
+    
+    # has_many :users_internship_offers
+    has_many :internship_offers, through: :favorites
+
+    # has_many :favorite_internship_offers, class_name: 'FavoriteInternshipOffer'
+    
+    # has_many :internship_offers, through: :favorite_internship_offers, class_name: 'InternshipOffer'
+    
+    # has_many :users_internship_offers
+
     scope :without_class_room, -> { where(class_room_id: nil, anonymized: false) }
 
     has_rich_text :resume_educational_background
     has_rich_text :resume_other
     has_rich_text :resume_languages
 
-    delegate :school_track,
-             :troisieme_generale?,
-             :troisieme_prepa_metiers?,
-             :troisieme_segpa?,
-             to: :class_room,
-             allow_nil: true
     delegate :school_manager,
              to: :school
 
@@ -45,12 +50,6 @@ module Users
       return :email if email.present?
 
       :phone
-    end
-
-    def internship_applications_type
-      return nil unless class_room.present?
-      return InternshipApplications::WeeklyFramed.name if class_room.troisieme_generale?
-      return InternshipApplications::FreeDate.name
     end
 
     def has_zero_internship_application?
@@ -131,6 +130,10 @@ module Users
 
     def presenter
       Presenters::Student.new(self)
+    end
+
+    def satisfaction_survey_id
+      ENV['TALLY_STUDENT_SURVEY_ID']
     end
   end
 end

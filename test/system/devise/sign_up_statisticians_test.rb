@@ -35,5 +35,6 @@ class SignUpStatisticiansTest < ApplicationSystemTestCase
     created_statistician = Users::Statistician.find_by(email: good_email)
     assert_equal 'Martin', created_statistician.first_name
     assert_equal 'Fourcade', created_statistician.last_name
+    assert_equal false, created_statistician.agreement_signatorable
   end
 end

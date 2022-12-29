@@ -35,4 +35,12 @@ class MinistryStatiticianRegistrationsTest < ActionDispatch::IntegrationTest
     assert_equal email, last_ministry_statistician.email
     assert_equal last_ministry_statistician.ministries, whitelist.groups
   end
+
+  test 'when agreement_signatorable goes from false to true a job is launched' do
+    ministry_statistician = create(:ministry_statistician)
+    refute ministry_statistician.agreement_signatorable
+    assert_enqueued_with(job: AgreementsAPosterioriJob) do
+      ministry_statistician.update(agreement_signatorable: true)
+    end
+  end
 end

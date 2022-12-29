@@ -95,6 +95,7 @@ FactoryBot.define do
 
     factory :statistician, class: 'Users::Statistician', parent: :user do
       type { 'Users::Statistician' }
+      agreement_signatorable { false }
       before(:create) do |user|
         create(:statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
       end
@@ -102,6 +103,7 @@ FactoryBot.define do
 
     factory :education_statistician, class: 'Users::EducationStatistician', parent: :user do
       type { 'Users::EducationStatistician' }
+      agreement_signatorable { false }
       before(:create) do |user|
         create(:education_statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
       end
@@ -109,6 +111,7 @@ FactoryBot.define do
 
     factory :ministry_statistician, class: 'Users::MinistryStatistician', parent: :user do
       type { 'Users::MinistryStatistician' }
+      agreement_signatorable { false }
       transient do
         white_list { create(:ministry_statistician_email_whitelist) }
       end
@@ -133,15 +136,7 @@ FactoryBot.define do
     #
     # traits to create a student[with a school] having a specific class_rooms
     trait :troisieme_generale do
-      class_room { build(:class_room, :troisieme_generale, school: school) }
-    end
-
-    trait :troisieme_segpa do
-      class_room { build(:class_room, :troisieme_segpa, school: school) }
-    end
-
-    trait :troisieme_prepa_metiers do
-      class_room { build(:class_room, :troisieme_prepa_metiers, school: school) }
+      class_room { build(:class_room, school: school) }
     end
   end
 end

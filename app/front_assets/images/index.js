@@ -57,6 +57,9 @@ import './internship_offer_show/people.png';
 import './internship_offer_show/user.png';
 import './internship_offer_show/offer-header-illustration.svg';
 
+import './internship_applications/boy.svg';
+import './internship_applications/girl.svg';
+
 import './pages/logo_onisep.jpg';
 import './pages/logo_cget_texte.png';
 import './pages/remote_internships/webinar_2x.png';
@@ -70,6 +73,8 @@ import './icons/noun_Computer_2646597.svg';
 import './icons/noun_group_Computeur_People.svg';
 import './icons/noun_group_establishment.svg';
 import './icons/noun_people_3139638.svg';
+import './icons/full_heart.svg';
+import './icons/empty_heart.svg';
 
 import './pages/statistics/hand_left.svg';
 import './pages/statistics/hand_right.svg';
