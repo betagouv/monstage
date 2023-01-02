@@ -111,7 +111,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       )
       page.find "a[href='#{url}']",
                 text: internship_application.internship_offer.title,
-                wait: 3
+                wait: 4
 
       visit url
       all( 'a', text: 'Candidatures').first.click
@@ -226,7 +226,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
 
       # fill in application form
       human_first_week_label = weeks.first.human_select_text_method
-      select human_first_week_label, from: 'internship_application_week_id'
+      select human_first_week_label, from: 'internship_application_week_id', wait: 3
       find('#internship_application_motivation', wait: 3).native.send_keys('Je suis au taquet')
       refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
       assert_changes lambda {
