@@ -56,7 +56,8 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       page.find("input[type='submit'][value='Valider']").click
       assert page.has_selector?(".fr-card__title a[href='/internship_offers/#{internship_offer.id}']", count: 1)
       click_button('Envoyer')
-      page.find('h1', text: 'Mes candidatures')
+      page.find('h1', text: 'Félicitations !')
+      page.find('h2.h1.display-1', text:'1')
       assert page.has_content?(internship_offer.title)
     end
   end
@@ -108,8 +109,10 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
         student_id: student.id,
         id: internship_application.id
       )
-      assert_selector "a[href='#{url}']",
-                      text: internship_application.internship_offer.title
+      page.find "a[href='#{url}']",
+                text: internship_application.internship_offer.title,
+                wait: 3
+
       visit url
       all( 'a', text: 'Candidatures').first.click
     end
@@ -222,8 +225,9 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       first(:link, 'Postuler').click
 
       # fill in application form
-      select weeks.first.human_select_text_method, from: 'internship_application_week_id'
-      find('#internship_application_motivation').native.send_keys('Je suis au taquet')
+      human_first_week_label = weeks.first.human_select_text_method
+      select human_first_week_label, from: 'internship_application_week_id'
+      find('#internship_application_motivation', wait: 3).native.send_keys('Je suis au taquet')
       refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
       assert_changes lambda {
                        student.internship_applications
