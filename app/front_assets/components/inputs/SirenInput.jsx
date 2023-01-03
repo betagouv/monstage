@@ -61,6 +61,7 @@ export default function SirenInput({
     blocs.forEach(bloc => {
       bloc.classList.remove('d-none');
     });
+    document.querySelector('.fr-callout').classList.add('d-none');
     document.getElementById('organisation_city').removeAttribute("readonly");
     document.getElementById('organisation_zipcode').removeAttribute("readonly");
     document.getElementById("organisation_manual_enter").value = true;
