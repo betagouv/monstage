@@ -21,7 +21,7 @@
                   th.fr-col-4 scope="col" Fonction
                   th.fr-col-4 scope="col" Action
               tbody
-                - collection = @school.main_teachers.kept + @school.teachers.kept + @school.others.kept
+                - collection = @school.presenter.staff
                 = render partial: "dashboard/schools/users/school_employee",
                         collection: collection
     - else

@@ -37,7 +37,21 @@ module Dashboard
       private
 
       def filter_by_week_or_application_date(internship_offer, params_order)
-        internship_applications = internship_offer.internship_applications.not_drafted
+        includings = %i[ week
+                         internship_offer
+                         rich_text_motivation
+                         internship_agreement
+                         rich_text_rejected_message
+                         rich_text_canceled_by_employer_message]
+        student_includings = %i[school
+                                rich_text_resume_languages
+                                rich_text_resume_educational_background
+                                rich_text_resume_languages
+                                rich_text_resume_other]
+        internship_applications = InternshipApplications::WeeklyFramed.includes(*includings)
+                                                                      .includes(student: [*student_includings])
+                                                                      .where(internship_offer: internship_offer)
+                                                                      .not_drafted
         if params_order == ORDER_WITH_INTERNSHIP_DATE
           internship_applications.order(
             'week_id ASC',

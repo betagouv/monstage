@@ -13,12 +13,13 @@ module Presenters
 
     def self.from_school(school)
       school.class_rooms
-            .includes([:students])
             .order(:name)
     end
 
     def self.students_without_class_room(school)
-      school.students.without_class_room
+      school.students
+            .includes(:school)
+            .without_class_room
     end
 
     class Null

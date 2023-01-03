@@ -25,6 +25,12 @@ module Presenters
       end
     end
 
+    def staff
+      %i(main_teachers teachers others).map do |role|
+        school.send(role).kept.includes(:school)
+      end.flatten
+    end
+
     private
 
     attr_accessor :school
