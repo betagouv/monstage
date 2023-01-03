@@ -28,8 +28,9 @@ module Presenters
     def staff
       %i(main_teachers teachers others).map do |role|
         school.send(role).kept.includes(:school)
-      end.sum
+      end.flatten
     end
+
     private
 
     attr_accessor :school
