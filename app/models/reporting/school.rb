@@ -42,11 +42,6 @@ module Reporting
       more_recent_than(week: ::Week.current)
     }
 
-    scope :with_school_track, lambda { |school_track|
-      joins(:class_rooms)
-        .where('class_rooms.school_track = ?', school_track)
-    }
-
     scope :by_subscribed_school, ->(subscribed_school:)  {
       case subscribed_school.to_s
       when 'true'

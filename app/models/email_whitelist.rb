@@ -13,6 +13,14 @@ class EmailWhitelist < ApplicationRecord
   validates :email,
             format: { with: Devise.email_regexp },
             on: :create
+
+  def self.destroy_by(email: )
+    email_whitelist = find_by(email: email)
+    return if email_whitelist.nil?
+
+    email_whitelist.destroy
+  end
+
   private
 
   def discard_user

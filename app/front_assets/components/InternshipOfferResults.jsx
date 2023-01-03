@@ -11,6 +11,7 @@ import Paginator from './search_internship_offer/Paginator';
 import TitleLoader from './TitleLoader';
 import { endpoints } from '../utils/api';
 import { isMobile } from '../utils/responsive';
+import FlashMessage from './FlashMessage';
 
 const center = [48.866669, 2.33333]; // ANCT
 
@@ -39,6 +40,8 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
   const [newDataFetched, setNewDataFetched] = useState(false);
   const [selectedSectors, setSelectedSectors] = useState([]);
   const [internshipOffersSeats, setInternshipOffersSeats] = useState(0);
+  const [notify, setNotify] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
 
   useEffect(() => {
     requestInternshipOffers();
@@ -124,9 +127,24 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
     }
   };
 
+  const sendNotification = (message) => {
+    setNotify(true);
+    setNotificationMessage(message);
+  };
+  
+  const hideNotification = () => {
+    setNotify(false);
+  };
 
   return (
     <div className="results-container no-x-scroll">
+      { notify ? (
+        <FlashMessage 
+          message={notificationMessage}
+          display={notify}
+          hideNotification={hideNotification} 
+        />
+      ) : '' }
       <div className="row mx-0 fr-px-2w no-x-scroll">
         <div className={`${isMobile() ? 'col-12 px-0' : 'col-7 px-3'} d-flex flex-row-reverse no-x-scroll`} style={{ overflowY: 'scroll' }}>
 
@@ -195,6 +213,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
                                           index={i}
                                           handleMouseOut={handleMouseOut}
                                           handleMouseOver={(value) => {handleMouseOver(value)}}
+                                          sendNotification={(message) => {sendNotification(message)}}
                                           />
                                       ))
                                     }
@@ -211,6 +230,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
                               index={i}
                               handleMouseOut={handleMouseOut}
                               handleMouseOver={(value) => {handleMouseOver(value)}}
+                              sendNotification={(message) => {sendNotification(message)}}
                               />
                           ))
                         )

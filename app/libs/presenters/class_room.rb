@@ -10,15 +10,11 @@ module Presenters
     end
 
 
-    def self.tr_school_track(track)
-      I18n.t("enum.school_tracks.#{track}")
-    end
 
-    def self.with_school_tracks(school)
+    def self.from_school(school)
       school.class_rooms
             .includes([:students])
             .order(:name)
-            .group_by { |c| c.school_track }
     end
 
     def self.students_without_class_room(school)

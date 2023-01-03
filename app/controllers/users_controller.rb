@@ -3,7 +3,7 @@
 class UsersController < ApplicationController
   include Phonable
   before_action :authenticate_user!
-  skip_before_action :check_school_requested, only: [:edit, :update]
+  skip_before_action :check_school_requested, only: [:edit, :update, :answer_survey]
 
   def edit
     authorize! :update, current_user
@@ -37,6 +37,11 @@ class UsersController < ApplicationController
     end
   rescue ActiveRecord::RecordInvalid
     render :edit, status: :bad_request
+  end
+
+  def answer_survey
+    current_user.update(survey_answered: true)
+    render json: 'Survey answered', status: 200
   end
 
   helper_method :current_section

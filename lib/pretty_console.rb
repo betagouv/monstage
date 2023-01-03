@@ -26,11 +26,25 @@ module PrettyConsole
         console_in_color(COLOR_MAP, enhance_str(str), color)
       end
     )
+    # say_in_red_loudly('Hello World')
+    define_singleton_method(
+      "say_in_#{color}_loudly".to_sym,
+      Proc.new do |str|
+        console_in_color(COLOR_MAP, enhance_str(bold(str)), color)
+      end
+    )
     # puts_in_red('Hello World')
     define_singleton_method(
       "puts_in_#{color}".to_sym,
       Proc.new do |str|
         console_in_color(COLOR_MAP, str, color)
+      end
+    )
+    # puts_in_red_loudly('Hello World')
+    define_singleton_method(
+      "puts_in_#{color}_loudly".to_sym,
+      Proc.new do |str|
+        console_in_color(COLOR_MAP, bold(str), color)
       end
     )
   end
@@ -55,8 +69,11 @@ module PrettyConsole
     "=====> #{str} <====="
   end
 
+  def self.bold(str)
+    "\x1b[1m#{str}\x1b[0m"
+  end
+
   def self.console_in_color(map, str, color)
     puts "\e[#{map[color.to_sym]}m#{str}\e[0m"
   end
-
 end

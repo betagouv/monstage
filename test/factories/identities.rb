@@ -21,7 +21,7 @@ FactoryBot.define do
     end
 
     factory :identity_student_with_class_room_3e do
-      class_room { create(:class_room, school: school, school_track: 'troisieme_generale') }
+      class_room { create(:class_room, school: school) }
     end
   
   end

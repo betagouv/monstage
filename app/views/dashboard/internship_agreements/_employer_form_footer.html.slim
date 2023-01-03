@@ -1,27 +1,21 @@
 - if internship_agreement.draft? || internship_agreement.started_by_employer?
-  div data-controller="footer"
-    div  [
-      data-footer-target="placeholder"
-      data-action="resize@window->footer#resize"
-      ]
+  .sticky-footer.bg-light
+    .container.py-4
+      .row
+        .col-12.d-flex.justify-content-between
+          = button_tag type: "submit",
+                       value: 'save_and_quit',
+                       class: 'fr-btn mx-1',
+                       data: { action: 'click->internship-agreement-form#saveAndQuit' },
+                       id:'save_and_quit' do
+            | Enregistrer et quitter
 
-    .sticky-footer.bg-light data-footer-target="fixedContent"
-      .container.py-4
-        .row
-
-          .col-12.d-flex.justify-content-between
-            = button_tag type: "button",
-                         data: { action: 'click->footer#saveAndQuit' },
-                         class: 'fr-btn mx-1',
-                         id:'save_and_quit' do
-              | Enregistrer et quitter
-
-            = button_tag type: "button",
-                         data: { action: 'click->footer#checkFormValidity' },
-                         class: 'fr-btn mx-1',
-                         id: 'send_agreement' do
-              i.fas.fa-check
-              |  Envoyer la convention
+          = button_tag type: "button",
+                       data: { action: 'click->internship-agreement-form#checkFormValidity' },
+                       class: 'fr-btn mx-1',
+                       id: 'send_agreement' do
+            i.fas.fa-check
+            | Envoyer la convention
 
   = render "dashboard/internship_agreements/validation_modal",
            title: 'Envoyer la convention',

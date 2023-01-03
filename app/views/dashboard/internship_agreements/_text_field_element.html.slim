@@ -18,7 +18,8 @@
       - if edit_enable && !disabled
         = form.text_field field,
                           class: 'fr-input',
-                          required: required
+                          required: required,
+                          data: {:'internship-agreement-form-target' => 'textField' }
 
       - else
         - options = { class: 'form-control', disabled: true , required: required }

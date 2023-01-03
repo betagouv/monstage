@@ -1,8 +1,7 @@
-.form-group.mb-md-0.col-12.col-md [data-search-popover-target="searchByDateContainer"
-                                  data-search-school-track-select-target="searchByDateContainer"]
+.form-group.mb-md-0.col-12.col-md [data-search-popover-target="searchByDateContainer"]
   label class="fr-ml-2w #{white_bg ? 'fr-label' : 'font-weight-light'}" Dates de stage
 
-  input.fr-select.fr-ml-2w.almost-fitting.label.my-0 [data-search-school-track-select-target='inputPlaceholder'
+  input.fr-select.fr-ml-2w.almost-fitting.label.my-0 [
     data-action='focus->search-popover#show'
     placeholder=""
     type="text"
@@ -11,7 +10,7 @@
     id="input-search-by-week"
     aria-label="Afficher les semaines de stage"]
 
-  div data-search-school-track-select-target="dateContainer"
+  div
     div#weeks-container [role="tabpanel"
                          class="rounded-6 bg-white #{render_as_partial ? 'd-none' : ''}"
                          data-search-popover-target="popover"]

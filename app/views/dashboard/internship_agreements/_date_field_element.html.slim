@@ -16,7 +16,9 @@
                           class: 'fr-input',
                           required: true,
                           placeholder: 'jj/mm/aaaa',
-                          data: { 'action': 'input->internship-agreement-field#checkRequiredField blur->a11y-date-input#validate', :"a11y-date-input-target" => 'input'  }
+                          data: { 'action': 'input->internship-agreement-field#checkRequiredField blur->a11y-date-input#validate',
+                                  :"a11y-date-input-target" => 'input',
+                                  :"internship-agreement-form-target" => 'textField' }
 
       - else
         = form.text_field field,

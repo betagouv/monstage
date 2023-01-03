@@ -34,6 +34,7 @@ class Ability
     can :show, :account
     can :change, :class_room
     can %i[read], InternshipOffer
+    can %i[create delete], Favorite
     can :apply, InternshipOffer do |internship_offer|
       student_can_apply?(student: user, internship_offer: internship_offer)
     end
@@ -106,6 +107,7 @@ class Ability
     can %i[supply_offers sign_with_sms choose_function subscribe_to_webinar] , User
     can :show, :account
 
+    can :see_minister_video, User
     can :create_remote_internship_request, SupportTicket
 
     can %i[create see_tutor], InternshipOffer
@@ -203,6 +205,7 @@ class Ability
             see_dashboard_associations_summary
             reset_cache ], User
     can :manage, Operator
+    can :see_minister_video, User
   end
 
   def statistician_abilities(user:)
@@ -282,6 +285,7 @@ class Ability
            see_dashboard_administrations_summary], User
 
     as_employers_signatory_abilities(user: user) if user.employer_like?
+    can :see_minister_video, User
   end
 
   def common_school_management_abilities(user:)
@@ -397,12 +401,7 @@ class Ability
     return false unless main_condition
 
     school_year_start = SchoolYear::Current.new.beginning_of_period
-    weekly_condition = internship_offer.weekly? &&
-                       internship_offer.last_date <= school_year_start
-    free_date_condition = internship_offer.free_date? &&
-                          internship_offer.last_date < school_year_start.to_datetime
-
-    weekly_condition || free_date_condition
+    internship_offer.last_date <= school_year_start
   end
 
   def duplicable?(internship_offer:, user:)
@@ -411,21 +410,11 @@ class Ability
     return false unless main_condition
 
     school_year_start = SchoolYear::Current.new.beginning_of_period
-    weekly_condition = internship_offer.weekly? &&
-                       internship_offer.last_date > school_year_start
-    free_date_condition = internship_offer.free_date? &&
-                          internship_offer.last_date >= school_year_start.to_datetime
-
-    weekly_condition || free_date_condition
+    internship_offer.last_date > school_year_start
   end
 
   def student_can_apply?(internship_offer:, student:)
     offer_is_reserved_to_another_school = internship_offer.reserved_to_school? && (internship_offer.school_id != student.school_id)
-
-    return false if offer_is_reserved_to_another_school
-    return true if student.try(:class_room).nil?
-    return true if student.try(:class_room).try(:applicable?, internship_offer)
-
-    false
+    !offer_is_reserved_to_another_school
   end
 end

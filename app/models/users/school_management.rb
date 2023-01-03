@@ -130,5 +130,9 @@ module Users
     def official_uai_email_address?
       email =~ /\Ace\.\d{7}\S@#{school.email_domain_name}\z/
     end
+
+    def satisfaction_survey_id
+      ['teacher', 'main_teacher'].include?(role) ? ENV['TALLY_TEACHER_SURVEY_ID'] : ENV['TALLY_SCHOOL_MANAGEMENT_SURVEY_ID']
+    end
   end
 end

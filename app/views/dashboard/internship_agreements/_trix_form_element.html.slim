@@ -13,7 +13,11 @@
       = form.label field do
         span.mb-2.fr-label= text_label
         = form.rg2a_required_content_tag if required
-      span.tool-tip.float-right data-toggle="tooltip" data-html='true' data-placement="top" title="<b>#{title}</b><p>#{content}</p>" data-controller='tooltip'
+      span.tool-tip.float-right [data-toggle="tooltip"
+                                 data-html='true'
+                                 data-placement="top"
+                                 title="<b>#{title}</b><p>#{content}</p>"
+                                 data-controller='tooltip']
         i.fa.fa-info-circle
       .input-group-custom data-controller="internship-agreement-field"
         - if edit_enable && !disabled
@@ -21,8 +25,11 @@
             = form.rich_text_area field,
                                   class: 'form-control',
                                   required: required,
-                                  data: { 'action': 'input->internship-agreement-field#checkRequiredTrixField',
-                                  aria: {labelledby: "label_#{form.object_name}_#{field}"} }
+                                  data: { 'action': 'input->internship-agreement-field#checkRequiredTrixField', :'internship-agreement-form-target' => 'textField' },
+                                  aria: { labelledby: "label_#{form.object_name}_#{field}" }
         - else
           div id="#{field}" class="text-muted mt-2 trix-header-vanisher"
-            = form.rich_text_area field, class: 'form-control', disabled: disabled
+            = form.rich_text_area field,
+                                  class: 'form-control',
+                                  data: {:'internship-agreement-form-target' => 'textField' },
+                                  disabled: disabled

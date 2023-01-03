@@ -98,6 +98,7 @@ RailsAdmin.config do |config|
                               Users::SchoolManagement
                               Users::Statistician
                               Users::MinistryStatistician
+                              Users::EducationStatistician
                               Users::Operator
                               Users::Employer
                               Users::God]

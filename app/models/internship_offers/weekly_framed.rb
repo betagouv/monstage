@@ -60,7 +60,6 @@ module InternshipOffers
         field :title
         field :description
         field :group
-        field :school_track
         field :max_candidates
         field :max_students_per_group
         field :total_applications_count

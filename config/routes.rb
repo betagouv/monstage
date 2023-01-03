@@ -49,6 +49,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :favorites, only: %i[create destroy index]
+
   namespace :api, path: 'api' do
     resources :internship_offers, only: %i[create update destroy index]
     resources :schools, only: [] do
@@ -116,6 +118,7 @@ Rails.application.routes.draw do
   get 'account(/:section)', to: 'users#edit', as: 'account'
   patch 'account', to: 'users#update'
   patch 'account_password', to: 'users#update_password'
+  patch 'answer_survey', to: 'users#answer_survey'
 
   get '/reset-cache', to: 'pages#reset_cache', as: 'reset_cache'
   get '/accessibilite', to: 'pages#accessibilite'

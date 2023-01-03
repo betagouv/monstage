@@ -9,7 +9,7 @@ module InternshipOffers::InternshipApplications
 
     test 'PATCH #update with approve! any no custom message transition sends email' do
       school = create(:school, :with_school_manager)
-      class_room = create(:class_room, :troisieme_generale, school: school)
+      class_room = create(:class_room, school: school)
       student = create(:student, school:school, class_room: class_room)
       internship_application = create(
         :weekly_internship_application,
@@ -40,7 +40,7 @@ module InternshipOffers::InternshipApplications
 
     test 'PATCH #update with approve! when employer is a statistician it does not create internship agreement' do
       school = create(:school, :with_school_manager)
-      class_room = create(:class_room, :troisieme_generale, school: school)
+      class_room = create(:class_room, school: school)
       student = create(:student, school:school, class_room: class_room)
       internship_application = create(
         :weekly_internship_application,
@@ -64,7 +64,7 @@ module InternshipOffers::InternshipApplications
 
     test 'PATCH #update with approve! when employer is a statistician that can sign agreements , it does create internship agreement' do
       school = create(:school, :with_school_manager)
-      class_room = create(:class_room, :troisieme_generale, school: school)
+      class_room = create(:class_room, school: school)
       student = create(:student, school:school, class_room: class_room)
       internship_application = create(
         :weekly_internship_application,
@@ -91,7 +91,7 @@ module InternshipOffers::InternshipApplications
 
     test 'PATCH #update with approve! when employer is an operator it does not create internship agreement' do
       school = create(:school, :with_school_manager)
-      class_room = create(:class_room, :troisieme_generale, school: school)
+      class_room = create(:class_room, school: school)
       student = create(:student, school:school, class_room: class_room)
       internship_application = create(
         :weekly_internship_application,
@@ -115,7 +115,7 @@ module InternshipOffers::InternshipApplications
 
     test 'PATCH #update with approve! when school has no school_manager it does not create internship agreement' do
       school = create(:school)
-      class_room = create(:class_room, :troisieme_generale, school: school)
+      class_room = create(:class_room, school: school)
       student = create(:student, school:school, class_room: class_room)
       internship_application = create(
         :weekly_internship_application,
@@ -133,22 +133,6 @@ module InternshipOffers::InternshipApplications
           assert_redirected_to internship_application.internship_offer.employer.after_sign_in_path
       end
       assert_equal 0, InternshipAgreement.count
-    end
-
-    test 'PATCH #update with approve! does not create agreement if segpa offer' do
-      school = create(:school, :with_school_manager)
-      class_room = create(:class_room, school: school)
-      student = create(:student, school:school, class_room: class_room)
-      internship_application = create(:weekly_internship_application, :submitted, user_id: student.id)
-      internship_application.internship_offer.update(school_track: 'troisieme_segpa')
-      sign_in(internship_application.internship_offer.employer)
-
-      assert_difference('InternshipAgreement.count', 0) do
-        patch(dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
-              params: { transition: :approve! })
-        assert_redirected_to internship_application.internship_offer.employer.after_sign_in_path
-      end
-      assert_equal true, InternshipApplication.last.approved?
     end
 
     test 'PATCH #update with approve! and a custom message transition sends email' do
