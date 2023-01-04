@@ -95,7 +95,8 @@ export default function AddressInput({
               highlightedIndex,
             }) => (
               <div>
-                <div className="fr-callout">
+                {/* TODO withdraw d-none's callout's */}
+                <div className="fr-callout d-none">
                   <p className="fr-callout__text">
                     L'adresse postale est pré-remplie automatiquement lors du choix de l'entreprise. Vous pouvez cependant modifier cette adresse si elle ne correspond pas à l'adresse postale où le stage se déroulera.
                   </p>
