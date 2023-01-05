@@ -24,6 +24,8 @@ import InternshipOfferCard from "components/InternshipOfferCard";
 import FlashMessage from "components/FlashMessage";
 import SearchSchool from "components/SearchSchool";
 import SearchSchoolByName from "components/SearchSchoolByName";
+import CompanySummary from "components/CompanySummary";
+import SimpleAddressInput from "components/inputs/SimpleAddressInput";
 
 import CityInput from "components/search_internship_offer/CityInput";
 import KeywordInput from "components/search_internship_offer/KeywordInput";
@@ -43,11 +45,13 @@ ReactOnRails.register({
   FlashMessage,
   SearchSchool,
   SearchSchoolByName,
+  CompanySummary,
   DistanceIcon,
   CityInput,
   KeywordInput,
   CountryPhoneSelect,
   AddressInput,
   FullAddressInput,
-  SirenInput
+  SirenInput,
+  SimpleAddressInput,
 });

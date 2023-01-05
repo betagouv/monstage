@@ -95,18 +95,13 @@ export default function AddressInput({
               highlightedIndex,
             }) => (
               <div>
-                <div className="fr-callout">
-                  <p className="fr-callout__text">
-                    L'adresse postale est pré-remplie automatiquement lors du choix de l'entreprise. Vous pouvez cependant modifier cette adresse si elle ne correspond pas à l'adresse postale où le stage se déroulera.
-                  </p>
-                </div>
                 <label
                   {...getLabelProps({
                     className: 'label',
                     htmlFor: `${resourceName}_autocomplete`,
                   })}
                 >
-                  Adresse du lieu où se déroule le stage
+                  Sélectionner le lieu où se déroulera le stage
                   <abbr title="(obligatoire)" aria-hidden="true">
                     *
                   </abbr>
@@ -263,9 +258,9 @@ export default function AddressInput({
               required="required"
               value={zipcode}
               type="text"
+              readOnly
               name={`${resourceName}[zipcode]`}
               id={`${resourceName}_zipcode`}
-              readOnly
             />
           </div>
         </div>
