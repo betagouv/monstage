@@ -39,4 +39,24 @@ class GodMailer < ApplicationMailer
       subject: "Monitoring monstagede3e : Candidatures non répondues au #{@human_date}"
     )
   end
+
+  def weekly_expired_applications_email
+    internship_applications = InternshipApplication.expired.where('expired_at > :date', date: 15.days.ago)
+
+    @human_date = I18n.l Date.today,   format: '%d %B %Y'
+
+    attachment_name = "export_candidatures_expirees_depuis_15_jours.xlsx"
+    xlsx = render_to_string layout: false,
+                            handlers: [:axlsx],
+                            formats: [:xlsx],
+                            template: "reporting/internship_applications/expired",
+                            locals: { internship_applications: internship_applications,
+                                      presenter_for_dimension: Presenters::Reporting::DimensionByOffer }
+    attachments[attachment_name] = {mime_type: Mime[:xlsx], content: xlsx}
+
+    mail(
+      to: ENV['TEAM_EMAIL'],
+      subject: "Monitoring monstagede3e : Candidatures expirées depuis 15 jours au #{@human_date}"
+    )
+  end
 end
