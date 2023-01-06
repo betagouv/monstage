@@ -33,7 +33,6 @@ module Dashboard
           StudentMailer.account_created_by_teacher(teacher: current_user, student: student, token: token).deliver_later
           redirect_to new_dashboard_school_class_room_student_path(@class_room.school, @class_room), notice: 'Elève créé !'
         else
-          puts student.errors.full_messages
           redirect_to new_dashboard_school_class_room_student_path(@class_room.school, @class_room), flash: { danger: 'Erreur : Elève non créé.' }
         end
       end
