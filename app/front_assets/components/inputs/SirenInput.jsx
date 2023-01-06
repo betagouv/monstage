@@ -59,43 +59,26 @@ export default function SirenInput({
       .then((response) => response.json())
       .then((json) => {
         const [longitude, latitude] = retrieveGeoPosition(json);
-        if (longitude == 0 && latitude == 0) { console.log('coordinates are wrong') }
         setOrganisationLongitude(longitude);
         setOrganisationLatitude(latitude);
       });
   };
 
-  const retrieveGeoPosition = (json) => {
-    const coordinates = json.features[0].geometry.coordinates;
-    return [parseFloat(coordinates[0]), parseFloat(coordinates[1])];
-  }
+  const openTooggle = (event) => { event.preventDefault(); setManualEnter(!manualEnter); }
+  const resetSearch = (event) => { event.preventDefault(); setPristineSearch(); }
 
-  const downshiftWasUsed = () => {
-    return (organisationZipcode != '')
-  }
-
-  const openTooggle = (event) => {
-    event.preventDefault();
-    setManualEnter(!manualEnter);
-    console.log(manualEnter);
-  }
-
-  const splitAddressDetails = (selection) => {
-    setOrganisationSiret(selection.siret);
-    setOrganisationEmployerName(selection.uniteLegale.denominationUniteLegale);
-    setOrganisationZipcode(selection.adresseEtablissement.codePostalEtablissement);
-    setOrganisationCity(selection.adresseEtablissement.libelleCommuneEtablissement);
-    const organisationStreet = `${selection.adresseEtablissement.numeroVoieEtablissement} ${selection.adresseEtablissement.typeVoieEtablissement} ${selection.adresseEtablissement.libelleVoieEtablissement} `;
-    setOrganisationStreet(organisationStreet);
-    searchCoordinatesByAddress(`${organisationStreet} ${organisationZipcode} ${organisationCity}`);
-  }
+  useEffect(() => {
+    if (manualEnter && isAddressCompleted()) {
+      const fullAddress = `${organisationStreet} ${organisationZipcode} ${organisationCity}`;
+      searchCoordinatesByAddress(fullAddress);
+    }
+  }, [organisationEmployerName, organisationZipcode, organisationCity, organisationStreet]);
 
   useEffect(() => {
     document.getElementById('siren-error').classList.add('d-none');
     //  a number ?
     if (/^(?=.*\d)[\d ]+$/.test(siret)) {
       const cleanSiret = siret.replace(/\s/g, '');
-
       if (cleanSiret.length === 14) {
         searchCompanyBySiret(cleanSiret);
       } else {
@@ -107,6 +90,36 @@ export default function SirenInput({
     }
   }, [siret]);
 
+  // private methods --------------------------
+  const setPristineSearch = () => {
+    setOrganisationZipcode('');
+    setOrganisationStreet('');
+    setOrganisationCity('');
+    setOrganisationEmployerName('');
+    setOrganisationSiret('');
+  }
+  const downshiftWasUsed = () => { return (organisationZipcode != '') }
+
+  const splitAddressDetails = (selection) => {
+    setOrganisationSiret(selection.siret);
+    setOrganisationEmployerName(selection.uniteLegale.denominationUniteLegale);
+    const etablissement = selection.adresseEtablissement
+    setOrganisationZipcode(etablissement.codePostalEtablissement);
+    setOrganisationCity(etablissement.libelleCommuneEtablissement);
+    const concatenetedOrganisationStreet = `${etablissement.numeroVoieEtablissement} ${etablissement.typeVoieEtablissement} ${etablissement.libelleVoieEtablissement}`;
+    setOrganisationStreet(concatenetedOrganisationStreet);
+    searchCoordinatesByAddress(`${concatenetedOrganisationStreet} ${etablissement.codePostalEtablissement} ${etablissement.libelleCommuneEtablissement}`);
+  }
+
+  const isAddressCompleted = () => {
+    return organisationEmployerName && organisationZipcode && organisationCity && organisationStreet;
+  };
+
+  const retrieveGeoPosition = (json) => {
+    const coordinates = json.features[0].geometry.coordinates;
+    return [parseFloat(coordinates[0]), parseFloat(coordinates[1])];
+  }
+  //--------------------------------------------
 
   return (
     <div className="form-group" id="input-siren">
@@ -115,18 +128,29 @@ export default function SirenInput({
           (manualEnter) ?
           (<SimpleAddressInput
             resourceName={resourceName}
+            organisationEmployerName={organisationEmployerName}
+            organisationZipcode={organisationZipcode}
+            organisationCity={organisationCity}
+            organisationStreet={organisationStreet}
+            organisationSiret={organisationSiret}
+            setOrganisationEmployerName={setOrganisationEmployerName}
+            setOrganisationZipcode={setOrganisationZipcode}
+            setOrganisationCity={setOrganisationCity}
+            setOrganisationStreet={setOrganisationStreet}
+            setOrganisationSiret={setOrganisationSiret}
+            searchCoordinatesByAddress={searchCoordinatesByAddress}
           />)
           :
           (downshiftWasUsed() ?
             (<CompanySummary
+              resourceName={resourceName}
               organisationEmployerName={organisationEmployerName}
               organisationZipcode={organisationZipcode}
               organisationCity={organisationCity}
               organisationStreet={organisationStreet}
               organisationSiret={organisationSiret}
-              organisationLatitude={organisationLatitude}
-              organisationLongitude={organisationLongitude}
-            />)
+              resetSearch={resetSearch}
+              />)
             :
             (
               <Downshift
@@ -203,10 +227,20 @@ export default function SirenInput({
                     </div>
                   </div>
                 )}
-              </Downshift>  
+              </Downshift>
             )
           )
         }
+        <div>
+          <input type='hidden' name={`${resourceName}[employer_name]`} id={`${resourceName}_employer_name`} value={organisationEmployerName} />
+          <input type='hidden' name={`${resourceName}[street]`} id={`${resourceName}_street`} value={organisationStreet.trim()} />
+          <input type='hidden' name={`${resourceName}[city]`} id={`${resourceName}_city`} value={organisationCity.trim()} />
+          <input type='hidden' name={`${resourceName}[zipcode]`} id={`${resourceName}_zipcode`} value={organisationZipcode.trim()} />
+          <input type='hidden' name={`${resourceName}[siret]`} id={`${resourceName}_siret`} value={organisationSiret} />
+          <input type='hidden' name={`${resourceName}[coordinates][longitude]`} id={`${resourceName}_coordinates_longitude`} value={organisationLongitude} />
+          <input type='hidden' name={`${resourceName}[coordinates][latitude]`} id={`${resourceName}_coordinates_latitude`} value={organisationLatitude} />
+          <input type='hidden' name={`${resourceName}[manual_enter]`} id={`${resourceName}_manual_enter`} value={manualEnter} />
+        </div>
       </div>
     </div>
   )

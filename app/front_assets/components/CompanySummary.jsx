@@ -6,27 +6,31 @@ const CompanySummary = ({
   organisationCity,
   organisationStreet,
   organisationSiret,
-  organisationLongitude,
-  organisationLatitude,
+  organisationStreetComplement,
+  resetSearch,
 }) => (
   <div>
-    <h6>Siège de la société / administration :</h6>
-    <ul>
-      <li>Nom de la société employeuse : {organisationEmployerName.toUpperCase()}</li>
-      <li>SIRET : {organisationSiret}</li>
-      <li>Adresse du siège : {organisationStreet}</li>
-      <li>Ville, code postal : {organisationCity}, {organisationZipcode}</li>
-    </ul>
-    <div>
-      <input type='hidden' name='organisation[manual_enter]' id='organisation_manual_enter' value={false} />
-      <input type='hidden' name='organisation[employer_name]' id='organisation_employer_name' value={organisationEmployerName} />
-      <input type='hidden' name='organisation[street]' id='organisation_street' value={organisationStreet} />
-      <input type='hidden' name='organisation[city]' id='organisation_city' value={organisationCity} />
-      <input type='hidden' name='organisation[zipcode]' id='organisation_zipcode' value={organisationZipcode} />
-      <input type='hidden' name='organisation[siret]' id='organisation_siret' value={organisationSiret} />
-      <input type='hidden' name='organisation[coordinates_longitude]' id='organisation_coordinates_longitude' value={organisationLongitude} />
-      <input type='hidden' name='organisation[coordinates_latitude]' id='organisation_coordinates_latitude' value={organisationLatitude} />
+    <div className="fr-text--lg fr-mb-2w">Siège de la société / administration :</div>
+    <div className="fr-highlight">
+      <p className="fr-text--lg">
+        {organisationEmployerName.toUpperCase()}
+        <br/>
+        {organisationStreet}
+        <br />
+        {
+          organisationStreetComplement && ( organisationStreetComplement + <br /> )
+        }
+        {organisationCity}, {organisationZipcode}
+        <br/>
+        SIRET : {organisationSiret}
+        {/* <br/>
+        Longitude, latitude : {organisationLongitude}, {organisationLatitude} */}
+      </p>
     </div>
+    <div className = 'text-right fr-mr-8w'>
+      <a href='#' onClick={resetSearch}>... ou refaire une recherche</a>
+    </div>
+    
   </div>
 )
 
