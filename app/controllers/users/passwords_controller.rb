@@ -15,10 +15,31 @@ module Users
         redirect_to phone_edit_password_path(phone: safe_phone_param)
         return
       end
+      
+      super
+    end
+
+    def edit
+      @current_user = User.with_reset_password_token(params['reset_password_token'])
+      @teacher = User.find(params['teacher_id']) if params['teacher_id']
+      @teacher = User.last
+      super
+    end
+
+    def update
+      current_user = User.with_reset_password_token(params['reset_password_token'])
+      if current_user
+        current_user.confirmed_at = Time.now if current_user.created_by_teacher && current_user.confirmed_at.nil?
+        current_user.save
+      end
       super
     end
 
     def edit_by_phone; end
+
+
+    def set_up
+    end 
 
     def update_by_phone
       if fetch_user_by_phone.try(:check_phone_token?, params[:phone_token])

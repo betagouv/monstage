@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     post '/users/registrations/phone_validation', to: 'users/registrations#phone_validation', as: 'phone_validation'
     get '/users/password/edit_by_phone', to: 'users/passwords#edit_by_phone', as: 'phone_edit_password'
     put '/users/password/update_by_phone', to: 'users/passwords#update_by_phone', as: 'phone_update_password'
+    get '/users/password/set_up', to: 'users/passwords#set_up', as: 'set_up_password'
   end
   
   resources :identities, only: %i[new create edit update]
@@ -77,7 +78,7 @@ Rails.application.routes.draw do
       resources :internship_agreement_presets, only: %i[edit update],  module: 'schools'
 
       resources :class_rooms, only: %i[index new create edit update show destroy], module: 'schools' do
-        resources :students, only: %i[update index], module: 'class_rooms'
+        resources :students, only: %i[update index new create], module: 'class_rooms'
       end
       put '/update_students_by_group', to: 'schools/students#update_by_group', module: 'schools'
       get '/information', to: 'schools#information', module: 'schools'

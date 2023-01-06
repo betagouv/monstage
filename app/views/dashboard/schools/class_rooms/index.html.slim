@@ -42,8 +42,8 @@
         - if can?(:create, ClassRoom)
           = link_to "Ajouter une classe", new_dashboard_school_class_room_path(@school), class: 'fr-btn fr-icon-add-line fr-btn--icon-left'
 
-    .row
-      .col-12.fr-table.fr-table--white
+    .row.mt-3
+      .col-12.fr-table.fr-table-blue.fr-table--white
         table
           - cols = ["Classe",
               "Compte actif",
