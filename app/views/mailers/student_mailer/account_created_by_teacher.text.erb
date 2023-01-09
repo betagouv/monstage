@@ -2,7 +2,7 @@ Bonjour,
 
 <%= "Votre professeur #{@teacher} a procédé à votre inscription sur la plateforme Monstagedetroisieme.fr. Tout est prêt, vous n’avez plus qu'à créer votre mot de passe de votre choix en cliquant sur le lien ci-dessous." %>
 
-<%= link_to 'Créer mon mot de passe', root_url %>
+<%= link_to 'Créer mon mot de passe', edit_user_password_url(reset_password_token: @token, teacher_id: @teacher.id) %>
 
 A bientôt,
 L'équipe Mon Stage de 3e.

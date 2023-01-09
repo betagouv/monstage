@@ -169,7 +169,7 @@ class User < ApplicationRecord
   end
 
   def send_sms_token
-    return unless phone.present? && student?
+    return unless phone.present? && student? && !created_by_teacher
 
     create_phone_token
     message = "Votre code de validation : #{self.phone_token}"
