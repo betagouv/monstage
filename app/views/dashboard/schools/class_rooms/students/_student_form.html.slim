@@ -1,9 +1,11 @@
 
 .fr data-controller="signup" data-signup-channel-value="phone"
   = form_with(model: @student, 
+              scope: 'user',
               data: { turbo: false }, 
               url: dashboard_school_class_room_students_path(@class_room.school, @class_room), 
               id: "new_user") do |f|
+    = f.hidden_field :class_room_id, value: @class_room.id
     .body.registration.fr-grid-row
       .fr-col-12.fr-col-md-6.fr-pr-2w
         .form-group.custom-label-container

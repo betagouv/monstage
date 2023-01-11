@@ -5,7 +5,7 @@ p style=(p_styles)
 
 p style=p_styles
 = render partial: "mailers/call_to_action",
-          locals: { href: edit_user_password_url(reset_password_token: @token),
+          locals: { href: edit_user_password_url(reset_password_token: @token, teacher_id: @teacher.id),
                     label: "Créer mon mot de passe" }
 p style=p_styles
   |À bientôt,
