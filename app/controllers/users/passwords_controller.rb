@@ -21,7 +21,7 @@ module Users
 
     def edit
       @current_user = User.with_reset_password_token(params['reset_password_token'])
-      @teacher = User.find(params['teacher_id']) if params['teacher_id']
+      @teacher = User.find(params['teacher_id'])
       super
     end
 
@@ -29,8 +29,8 @@ module Users
       current_user = User.with_reset_password_token(params['user']['reset_password_token'])
       if current_user
         current_user.password = params['user']['password']
-        current_user.confirmed_at = Time.now if current_user.created_by_teacher && current_user.confirmed_at.nil?
         current_user.save
+        current_user.confirm if current_user.created_by_teacher && current_user.confirmed_at.nil?
         redirect_to new_user_session_path, flash: { success:  'Mot de passe enregistré !' }
       else
         super

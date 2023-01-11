@@ -19,7 +19,7 @@ module Dashboard
 
         @class_room = @school.class_rooms.find(params.require(:class_room_id))
         @student = Users::Student.new
-        @students = @class_room.students.kept #TO DO created_today
+        @students = @class_room.students.kept
                                .order(:created_at)
       end
 
@@ -70,7 +70,7 @@ module Dashboard
         else
           SendSmsJob.perform_later(
             user: @student,
-            message: "Votre professeur a créé votre compte, enregistez votre mot de passe sur : #{edit_user_password_url(reset_password_token: token, teacher_id: current_user.id)}"
+            message: "Votre professeur a créé votre compte, enregistrez votre mot de passe sur : #{edit_user_password_url(reset_password_token: token, teacher_id: current_user.id)}"
           )
 
         end
