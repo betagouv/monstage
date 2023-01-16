@@ -5,10 +5,9 @@
   .col
     h1.h2.mb-3 Déposer une offre de stage
 
-
 = form_with model: @organisation,
             url: dashboard_stepper_organisations_path(@organisation),
-            data: {turbo: false},
+            data: { turbo: false },
             method: :post do |form|
   = render "dashboard/stepper/steps"
   = render "layouts/form_errors", resource: @organisation, resource_name: :internship_offer

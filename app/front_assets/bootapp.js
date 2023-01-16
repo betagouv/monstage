@@ -30,10 +30,10 @@ import KeywordInput from "components/search_internship_offer/KeywordInput";
 
 import DistanceIcon from "components/icons/DistanceIcon";
 
-import FullAddressInput from "components/inputs/FullAddressInput";
 import SirenInput from "components/inputs/SirenInput";
 import CountryPhoneSelect from "components/inputs/CountryPhoneSelect";
 import AddressInput from "components/inputs/AddressInput";
+import AltAddressInput from "components/inputs/AltAddressInput";
 
 ReactOnRails.register({
   ReservedSchoolInput,
@@ -48,6 +48,7 @@ ReactOnRails.register({
   KeywordInput,
   CountryPhoneSelect,
   AddressInput,
-  FullAddressInput,
-  SirenInput
+  AltAddressInput,
+  SirenInput,
+  SimpleAddressInput,
 });

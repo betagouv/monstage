@@ -147,6 +147,7 @@ fr:
         city: Ville
         coordinates: Coordonnées GPS
         siren: Code Siren
+        manual_enter: Saisie manuelle
 
       operator: &operator_fields
         name: Nom
@@ -162,6 +163,8 @@ fr:
         new_daily_hours: Horaires journaliers
         daily_lunch_break: Pause déjeuner par jour
         weekly_lunch_break: Pause déjeuner
+        coordinates: Coordonnées GPS
+        manual_enter: Saisie manuelle
 
       tutor: &tutor_fields
         tutor_name: Nom du tuteur

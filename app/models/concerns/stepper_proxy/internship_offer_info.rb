@@ -5,6 +5,7 @@ module StepperProxy
     extend ActiveSupport::Concern
 
     included do
+      include Nearbyable
       after_initialize :init
 
       # Validations
@@ -20,13 +21,14 @@ module StepperProxy
                                 message: "Le nombre maximal d'élèves par groupe ne peut pas dépasser le nombre maximal d'élèves attendus dans l'année" }
       validates :description, presence: true,
                               length: { maximum: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT }
+      validates :manual_enter, presence: true
 
       validate :enough_weeks
 
       before_validation :replicate_description_rich_text_to_raw_field, unless: :from_api?
 
       # Relations
-      belongs_to :school, optional: true # reserved to school
+      belongs_to :school, optional: true # when offer is reserved to school
       belongs_to :sector
 
       has_rich_text :description_rich_text

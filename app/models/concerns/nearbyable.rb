@@ -37,8 +37,9 @@ module Nearbyable
     def coordinates=(coordinates)
       case coordinates
       when Hash
-        super(geo_point_factory(latitude: coordinates[:latitude],
-                                longitude: coordinates[:longitude]))
+        latitude =  coordinates[:latitude]
+        longitude = coordinates[:longitude]
+        super(geo_point_factory(latitude: latitude, longitude: longitude))
       when RGeo::Geographic::SphericalPointImpl
         super(coordinates)
       else
@@ -62,9 +63,14 @@ module Nearbyable
 
     validate :coordinates_are_valid?
     def coordinates_are_valid?
-      return true if [coordinates&.lat, coordinates&.lon].map(&:to_f).none?(&:zero?)
+      return true if coordinates&.lat && coordinates&.lon &&
+        no_zero_in_array?([coordinates&.lat, coordinates&.lon])
 
       errors.add(:coordinates, :blank)
+    end
+
+    def no_zero_in_array?(numbers)
+      numbers.compact.map(&:to_f).none?(&:zero?)
     end
 
   end

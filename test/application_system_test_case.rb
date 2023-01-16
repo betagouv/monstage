@@ -34,11 +34,26 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   include Html5Validator
 
   def setup
-    stub_request(:any, /api-adresse.data.gouv.fr/)
-        .to_return(status: 200, body: File.read(Rails.root.join(*%w[test
-                                                                  fixtures
-                                                                  files
-                                                                  api-address-paris-13.json])))
+    # General case
+    body = File.read(
+      Rails.root.join(*%w[test
+                          fixtures
+                          files
+                          api-address-paris-13.json]
+                     )
+    )
+    stub_request(:get, "api-adresse.data.gouv.fr").to_return(status: 200, body: body)
+
+    body = File.read(
+      Rails.root.join( *%w[test
+                           fixtures
+                           files
+                           api-insee-adresse-east-side-software-factory-site.json]
+                    )
+    )
+    stub_request(:get, "api-adresse.data.gouv.fr").with(query: {hash_including: {q: "12+rue+Origet+37000+Tours&limit=10"}})
+                                                  .to_return(status: 200, body: body, headers: {})
+
   end
 
   def after_teardown

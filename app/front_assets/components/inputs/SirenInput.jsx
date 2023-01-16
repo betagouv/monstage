@@ -9,10 +9,22 @@ import { endpoints } from '../../utils/api';
 export default function SirenInput({
   resourceName,
   currentSiret,
+  currentCity,
+  currentStreet,
+  currentZipcode,
+  currentEmployerName,
   railsEnv
 }) {
   const [siret, setSiret] = useState(currentSiret || '');
   const [searchResults, setSearchResults] = useState([]);
+  const [organisationZipcode, setOrganisationZipcode] = useState(currentZipcode || '')
+  const [organisationStreet, setOrganisationStreet] = useState(currentStreet ||  '')
+  const [organisationCity, setOrganisationCity] = useState(currentCity || '')
+  const [organisationEmployerName, setOrganisationEmployerName] = useState(currentEmployerName || '')
+  const [organisationSiret, setOrganisationSiret] = useState(currentSiret || '')
+  const [organisationLatitude, setOrganisationLatitude] = useState(0);
+  const [organisationLongitude, setOrganisationLongitude] = useState(0);
+  const [manualEnter, setManualEnter] = useState(false)
 
   const inputChange = (event) => {
     setSiret(event.target.value);
@@ -68,7 +80,8 @@ export default function SirenInput({
   }
 
   useEffect(() => {
-    document.getElementById('siren-error').classList.add('d-none');
+    const elem_error = document.getElementById('siren-error');
+    if (elem_error) { elem_error.classList.add('d-none'); }
     //  a number ?
     if (/^(?=.*\d)[\d ]+$/.test(siret)) {
       const cleanSiret = siret.replace(/\s/g, '');

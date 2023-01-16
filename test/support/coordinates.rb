@@ -12,4 +12,8 @@ class Coordinates
   def self.bordeaux
     { latitude: 44.837789, longitude: -0.57918 }
   end
+
+  def self.tours
+    { latitude: 47.387043, longitude: 0.680022 }
+  end
 end

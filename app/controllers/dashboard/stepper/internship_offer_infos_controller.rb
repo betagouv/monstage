@@ -21,11 +21,16 @@ module Dashboard::Stepper
         {}.merge(internship_offer_info_params)
           .merge(employer_id: current_user.id)
       )
+      @internship_offer_info.coordinates = {
+        longitude: internship_offer_info_params[:coordinates][:longitude],
+        latitude: internship_offer_info_params[:coordinates][:latitude]
+      }
       @internship_offer_info.save!
       redirect_to(new_dashboard_stepper_tutor_path(
                     organisation_id: params[:organisation_id],
-                    internship_offer_info_id: @internship_offer_info.id
-      ))
+                    internship_offer_info_id: @internship_offer_info.id),
+                  data: { turbo: false }
+      )
     rescue ActiveRecord::RecordInvalid
       @organisation = Organisation.find(params[:organisation_id])
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
@@ -71,12 +76,18 @@ module Dashboard::Stepper
               :description_rich_text,
               :max_candidates,
               :max_students_per_group,
+              :manual_enter,
+              :employer_name,
               :siret,
+              :street,
+              :city,
+              :zipcode,
               :weekly_lunch_break,
               weekly_hours: [],
               new_daily_hours: {},
               daily_lunch_break: {},
-              week_ids: []
+              week_ids: [],
+              coordinates: {}
               )
     end
   end
