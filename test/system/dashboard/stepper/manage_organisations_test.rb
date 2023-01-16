@@ -22,6 +22,12 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
         click_on "Suivant"
       end
     end
+    organisation = Organisation.last
+    assert_equal '18 RUE DE COTTE', organisation.street
+    assert_equal 'PARIS 12', organisation.city
+    assert_equal '75012', organisation.zipcode
+    assert_equal 2.365001, organisation.coordinates.longitude
+    assert_equal 48.8302, organisation.coordinates.latitude
   end
 
   # test 'can edit organisation' do

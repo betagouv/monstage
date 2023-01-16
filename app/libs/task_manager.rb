@@ -5,6 +5,12 @@ require 'pretty_console'
 #   task_name: 'say_something',
 #   arguments: ['once_str, only_str']
 # ).play_task_once(run_with_a_job: false)
+
+# Use Sample (will be played as a job)
+# TaskManager.new(
+#   allowed_environments: %w[all],
+#   task_name: 'migration:do_something',
+# ).play_task_once 
 class TaskManager
   def play_task_once(run_with_a_job: true)
     if messages_checking_tasks_ok.present?
@@ -35,7 +41,7 @@ class TaskManager
   private
 
   def initialize(allowed_environments:, task_name:, arguments: [])
-    @allowed_environments = allowed_environments
+    @allowed_environments = (allowed_environments == %w[all]) ? %w[development test review staging production] : allowed_environments
     @actual_environment = Rails.env
     @task_name = task_name
     @arguments = arguments
@@ -93,6 +99,8 @@ class TaskManager
   end
 
   def check_environment_context?
+    return true if allowed_environments == %w[all]
+
     actual_environment.in?(allowed_environments)
   end
 end

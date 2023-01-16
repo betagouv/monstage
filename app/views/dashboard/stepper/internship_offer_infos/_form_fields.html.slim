@@ -107,7 +107,7 @@
                             data: { :"internship-offer-infos-target" => "studentsMaxGroupInput",
                                     action: "change->internship-offer-infos#handleMaxCandidatesChanges"}
       // TODO A vérifier si utile
-      .form-group 
+      .form-group
         = react_component("ReservedSchoolInput",
                            props: { label:"Ville ou nom de l'établissement pour lequel le stage est reservé",
                                     required: false,
@@ -125,11 +125,16 @@
       .form-group
         = render partial: "dashboard/stepper/internship_offer_infos/daily_hours",
                  locals: { form: form, disabled: false }
+      .form-group
+        = react_component("AltAddressInput",
+                          props: { resourceName: form.object_name,
+                                   employerName: @organisation.employer_name,
+                                   addressTypeLabel: 'Adresse du lieu où se déroule le stage' })
 
       - if submit_button
         .row.mt-5
           .col-6.text-left style="display: flex;align-items: center"
-            = link_to edit_dashboard_stepper_organisation_path(params[:organisation_id],
+            / = link_to edit_dashboard_stepper_organisation_path(params[:organisation_id],
                                                                organisation_id: params[:organisation_id],
                                                                internship_offer_info_id: params[:internship_offer_info_id]),
                       class: 'fr-btn fr-fi-arrow-left-line fr-btn--icon-left' do

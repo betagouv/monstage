@@ -7,11 +7,16 @@
 
       - if can?(:supply_offers, current_user)
         - if current_user.ministry_statistician?
-          = render partial: "dashboard/stepper/organisations/form_ministry_statistician_specifics", locals: { form: form, resource: resource, submit_button: submit_button }
+          = render partial: "dashboard/stepper/organisations/form_ministry_statistician_specifics",
+                   locals: { form: form, resource: resource, submit_button: submit_button }
         - else
           = react_component("SirenInput",
                             props: { resourceName: form.object_name,
                                      currentSiren: resource.siret,
+                                     currentCity: resource.city,
+                                     currentStreet: resource.street,
+                                     currentZipcode: resource.zipcode,
+                                     currentEmployerName: resource.employer_name,
                                      railsEnv: Rails.env })
           .form-group
             .label

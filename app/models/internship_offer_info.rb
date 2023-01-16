@@ -9,7 +9,7 @@ class InternshipOfferInfo < ApplicationRecord
   belongs_to :employer, class_name: 'User'
 
   # Relation
-  belongs_to :internship_offer, optional: true
+  has_one :internship_offer
 
   def from_api?; false end
   def is_fully_editable?; true end
