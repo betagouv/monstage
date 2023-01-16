@@ -15,10 +15,33 @@ module Users
         redirect_to phone_edit_password_path(phone: safe_phone_param)
         return
       end
+      
       super
     end
 
+    def edit
+      @current_user = User.with_reset_password_token(params['reset_password_token'])
+      @teacher = User.find(params['teacher_id'])
+      super
+    end
+
+    def update
+      current_user = User.with_reset_password_token(params['user']['reset_password_token'])
+      if current_user
+        current_user.password = params['user']['password']
+        current_user.save
+        current_user.confirm if current_user.created_by_teacher && current_user.confirmed_at.nil?
+        redirect_to new_user_session_path, flash: { success:  'Mot de passe enregistré !' }
+      else
+        super
+      end
+    end
+
     def edit_by_phone; end
+
+
+    def set_up
+    end 
 
     def update_by_phone
       if fetch_user_by_phone.try(:check_phone_token?, params[:phone_token])

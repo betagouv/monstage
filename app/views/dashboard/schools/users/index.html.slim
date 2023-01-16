@@ -11,7 +11,7 @@
             p Seul le personnel actuel de l'établissement doit figurer sur cette liste. Vérifiez qu'elle est bien à jour.
 
       .row.row-fluid
-        .col-12.fr-table.fr-table--white
+        .col-12.fr-table.fr-table-blue.fr-table--white
             table.fr-mt-2w
               caption.fr-mt-2w Personnels employés
               thead.white
@@ -21,7 +21,7 @@
                   th.fr-col-4 scope="col" Fonction
                   th.fr-col-4 scope="col" Action
               tbody
-                - collection = @school.main_teachers.kept + @school.teachers.kept + @school.others.kept
+                - collection = @school.presenter.staff
                 = render partial: "dashboard/schools/users/school_employee",
                         collection: collection
     - else

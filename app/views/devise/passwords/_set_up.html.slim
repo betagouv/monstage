@@ -1,0 +1,54 @@
+header.header-account
+  h1.h2.text-dark = "Bienvenue, #{@current_user.try(:name)} !"
+hr
+.body
+  = form_with(model: resource,
+                    scope: resource_name,
+                    url: password_path(resource_name),
+                    data: { controller: "password", turbo: false },
+                    html: { method: :put}) do |f|
+    = render "layouts/form_errors", resource: resource, resource_name: :user
+    = f.hidden_field :reset_password_token
+    p = "Votre professeur #{@teacher.try(:name)} a procédé à votre inscription sur la plateforme \ 
+      Monstagedetroisieme.fr."
+
+    p = "Tout est prêt, vous n’avez plus qu’à créer le mot de passe de votre choix. \
+        Notez-le, il vous servira à vous connecter lors de vos prochaines visites sur la plateforme."
+
+    - if current_user.try(:phone)
+      .form-group.custom-label-container
+        = f.label :phone, class: "fr-label" do
+          span
+            | Numéro de téléphone indiqué par votre professeur
+          small.form-text.text-muted
+            | Ce numéro sera utilisé uniquement pour communiquer avec vous. Il vous servira également d’identifiant pour vous connecter.  
+        = f.text_field :phone, class: "fr-input", value: current_user.phone.gsub('+33', ''), disabled: true
+
+    - else 
+      .form-group.custom-label-container
+        = f.label :email, class: "fr-label" do
+          span
+            | Adresse email indiquée par votre professeur
+          small.form-text.text-muted
+            | Cette adresse sera utilisée uniquement pour communiquer avec vous. Elle vous servira également d’identifiant pour vous connecter.
+        = f.text_field :email, class: "fr-input", value: current_user.try(:email), disabled: true
+    
+    .row
+      .col-md-6.col-xs-12
+        .form-group
+          = f.label :password, for: 'user_password' do
+            = 'Créer un mot de passe'
+          = f.password_field :password, class: 'fr-input',
+            required: true, data: { action: 'input->password#checkPassword' }
+
+      .col-md-6.col-xs-12
+        .form-group
+          = f.label :password_confirmation, class: 'fr-label', for: 'user_password_confirmation' do
+            = 'Ressaisir le mot de passe'
+            = f.rg2a_required_content_tag
+          = f.password_field :password_confirmation, class: 'fr-input',
+            required: true, data: { action: 'input->password#checkPassword' }
+    .row
+      .col-md-12.col-xs-12
+        .actions.d-flex.d-sm-block.text-center.fr-mt-2w
+          = f.submit 'Finaliser mon inscritption', class: 'fr-btn btn-block', disabled: true, data: { :"password-target" => 'submitButton' }

@@ -99,7 +99,7 @@ class InternshipOffer < ApplicationRecord
   belongs_to :employer, polymorphic: true
   belongs_to :organisation, optional: true
   belongs_to :tutor, optional: true
-  has_one :internship_offer_info
+  belongs_to :internship_offer_info, optional: true
   has_many :favorites
   has_many :users, through: :favorites
 

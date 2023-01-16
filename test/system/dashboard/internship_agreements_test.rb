@@ -4,6 +4,48 @@ module Dashboard
   class InternshipAgreementTest < ApplicationSystemTestCase
     include Devise::Test::IntegrationHelpers
 
+    test 'employer reads internship agreement list and read his own agreements with student having a school with a school manager' do
+      employer =  create(:employer)
+      employer_2 =  create(:employer)
+
+      student = create(:student, school: create(:school))
+      refute student.school.school_manager.present?
+
+      internship_offer = create(:weekly_internship_offer, employer: employer)
+      internship_offer_2 = create(:weekly_internship_offer, employer: employer_2)
+      internship_application = create(
+        :weekly_internship_application,
+        internship_offer: internship_offer,
+        student: student)
+      internship_application_2 = create(:weekly_internship_application, internship_offer: internship_offer_2)
+      create(:internship_agreement, aasm_state: :draft, internship_application: internship_application)
+      create(:internship_agreement, aasm_state: :draft, internship_application: internship_application_2)
+
+      
+      sign_in(employer)
+      visit dashboard_internship_agreements_path
+
+      assert all('td[data-head="Statut"]').empty?
+    end
+
+    test 'school_manager reads internship agreement list and read his own agreements' do
+      school = create(:school, :with_school_manager)
+      school_2 = create(:school)
+      student = create(:student, school: school)
+      student_2 = create(:student, school: school_2)
+      internship_offer = create(:weekly_internship_offer)
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer, student: student)
+      internship_application_2 = create(:weekly_internship_application, internship_offer: internship_offer, student: student_2)
+      create(:internship_agreement, aasm_state: :draft, internship_application: internship_application)
+      create(:internship_agreement, aasm_state: :draft, internship_application: internship_application_2)
+      sign_in(school.school_manager)
+      visit dashboard_internship_agreements_path
+
+      within('td[data-head="Statut"]') do
+        assert_equal 1, all('div.actions').count
+      end
+    end
+
     test 'employer reads internship agreement table with correct indications - draft' do
       internship_agreement = create(:internship_agreement, aasm_state: :draft)
       sign_in(internship_agreement.employer)
