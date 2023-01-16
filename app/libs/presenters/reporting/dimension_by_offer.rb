@@ -87,7 +87,7 @@ module Presenters
       end
 
       def full_year
-        instance.type == InternshipOffers::FreeDate.name ? 'Oui' : 'Non'
+        'Non'
       end
 
       def full_school
