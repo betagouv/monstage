@@ -1,0 +1,95 @@
+{
+  "type": "FeatureCollection",
+  "version": "draft",
+  "features": [{
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [0.68909, 47.386913]
+    },
+    "properties": {
+      "label": "12 Rue Origet 37000 Tours",
+      "score": 0.9809881818181817,
+      "housenumber": "12",
+      "id": "37261_3690_00012",
+      "name": "12 Rue Origet",
+      "postcode": "37000",
+      "citycode": "37261",
+      "x": 525684.7,
+      "y": 6701058.93,
+      "city": "Tours",
+      "context": "37, Indre-et-Loire, Centre-Val de Loire",
+      "type": "housenumber",
+      "importance": 0.79087,
+      "street": "Rue Origet"
+    }
+  }, {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [0.688618, 47.386488]
+    },
+    "properties": {
+      "label": "Impasse 22 Rue Origet 37000 Tours",
+      "score": 0.6253206611570248,
+      "id": "37261_3686",
+      "name": "Impasse 22 Rue Origet",
+      "postcode": "37000",
+      "citycode": "37261",
+      "x": 525647.72,
+      "y": 6701012.79,
+      "city": "Tours",
+      "context": "37, Indre-et-Loire, Centre-Val de Loire",
+      "type": "street",
+      "importance": 0.6058,
+      "street": "Impasse 22 Rue Origet"
+    }
+  }, {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [0.686363, 47.386783]
+    },
+    "properties": {
+      "label": "Impasse 47 Rue origet 37000 Tours",
+      "score": 0.585499037433155,
+      "id": "37261_3687",
+      "name": "Impasse 47 Rue origet",
+      "postcode": "37000",
+      "citycode": "37261",
+      "x": 525478.63,
+      "y": 6701050.52,
+      "city": "Tours",
+      "context": "37, Indre-et-Loire, Centre-Val de Loire",
+      "type": "street",
+      "importance": 0.61696,
+      "street": "Impasse 47 Rue origet"
+    }
+  }, {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [0.683335, 47.386621]
+    },
+    "properties": {
+      "label": "Impasse Origet 37000 Tours",
+      "score": 0.5786127272727272,
+      "id": "37261_3685",
+      "name": "Impasse Origet",
+      "postcode": "37000",
+      "citycode": "37261",
+      "x": 525249.76,
+      "y": 6701039.23,
+      "city": "Tours",
+      "context": "37, Indre-et-Loire, Centre-Val de Loire",
+      "type": "street",
+      "importance": 0.66474,
+      "street": "Impasse Origet"
+    }
+  }],
+  "attribution": "BAN",
+  "licence": "ETALAB-2.0",
+  "query": "12 Rue Origet 37000 Tours",
+  "filters": {},
+  "limit": 10
+}

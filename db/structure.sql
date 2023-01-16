@@ -48,6 +48,9 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 -- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
 --
 
+COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
+
+
 --
 -- Name: agreement_signatory_role; Type: TYPE; Schema: public; Owner: -
 --
@@ -774,7 +777,13 @@ CREATE TABLE public.internship_offer_infos (
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
     max_students_per_group integer DEFAULT 1 NOT NULL,
-    remaining_seats_count integer DEFAULT 0
+    remaining_seats_count integer DEFAULT 0,
+    street character varying(255),
+    zipcode character varying(15),
+    city character varying(120),
+    coordinates public.geography(Point,4326),
+    employer_name character varying(200),
+    manual_enter character varying(30) DEFAULT 'from migration'::character varying NOT NULL
 );
 
 
@@ -2026,6 +2035,13 @@ CREATE INDEX index_internship_offer_info_weeks_on_week_id ON public.internship_o
 
 
 --
+-- Name: index_internship_offer_infos_on_coordinates; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offer_infos_on_coordinates ON public.internship_offer_infos USING gist (coordinates);
+
+
+--
 -- Name: index_internship_offer_infos_on_sector_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2840,6 +2856,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221123101159'),
 ('20221124170052'),
 ('20221219144134'),
-('20221223100742');
+('20221223100742'),
+('20230111170056');
 
 
