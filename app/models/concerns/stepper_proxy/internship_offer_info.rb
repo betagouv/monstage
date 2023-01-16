@@ -28,6 +28,7 @@ module StepperProxy
       # Relations
       belongs_to :school, optional: true # reserved to school
       belongs_to :sector
+      has_one :internship_offer_info, dependent: :destroy
 
       has_rich_text :description_rich_text
 
