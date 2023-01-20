@@ -33,6 +33,7 @@ default: &default
     - .ttf
     - .woff
     - .woff2
+    - .avif
 
   extensions:
     - .jsx
@@ -50,6 +51,7 @@ default: &default
     - .jpeg
     - .jpg
     - .erb
+    - .avif
 
 development:
   <<: *default
