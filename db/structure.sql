@@ -940,7 +940,8 @@ CREATE TABLE public.internship_offers (
     employer_manual_enter boolean DEFAULT false,
     tutor_role character varying,
     remaining_seats_count integer DEFAULT 0,
-    location_manual_enter character varying(30) DEFAULT 'from migration'::character varying NOT NULL
+    location_manual_enter character varying(30) DEFAULT 'from migration'::character varying NOT NULL,
+    db_interpolated boolean DEFAULT false
 );
 
 
@@ -1068,7 +1069,8 @@ CREATE TABLE public.organisations (
     siren character varying,
     siret character varying,
     is_paqte boolean,
-    manual_enter boolean DEFAULT false
+    manual_enter boolean DEFAULT false,
+    db_interpolated boolean DEFAULT false
 );
 
 
@@ -2859,6 +2861,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221219144134'),
 ('20221223100742'),
 ('20230111170056'),
-('20230116093704');
+('20230116093704'),
+('20230119134912');
 
 
