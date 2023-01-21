@@ -1,0 +1,36 @@
+.row.fr-pl-2w
+  .fr-col-12
+    .fr-text--lead.fr-mb-2w Informations sur l'entreprise ou l'administration
+.row.fr-pl-2w
+  .fr-col-md-12.fr-col-lg-6
+    .fr-text--lg.fr-mb-2w Adresse du siège
+    .fr-highlight
+      p.fr-text--lg
+        = organisation.employer_name
+        br
+        = organisation.street
+        br
+        = "#{organisation.city},  #{organisation.zipcode}"
+        - if organisation.siret
+          br
+          = organisation.siret
+  .fr-col-md-12.fr-col-lg-6
+    .fr-text--lg.fr-mb-2w Autres informations sur l'entreprise
+    .fr-highlight
+      p.fr-text--lg
+        ="Secteur : #{organisation.is_public ? 'Public' : 'Privé'}"
+        br
+        = "Groupe ou Institution de tutelle : #{organisation.group.nil? ? 'Indépendant' : organisation.group.name}"
+        br
+        = "Description de l'entreprise : " \
+          "#{organisation.employer_description_rich_text.blank? ? 'Non renseigné' : organisation.employer_description_rich_text}"
+        br
+        = "Site web : #{organisation.employer_website.blank? ? 'Non renseigné' : organisation.employer_website}"
+.row.fr-pl-2w
+  .fr-col-12
+    .actions
+    .row.fr-mb-8w
+      .col-8.text-center
+        = link_to edit_dashboard_stepper_organisation_path(organisation_id: organisation.id),
+                  class: 'fr-btn' do
+          |Modifier les informations de siège

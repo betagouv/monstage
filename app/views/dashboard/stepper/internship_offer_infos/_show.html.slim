@@ -1,0 +1,62 @@
+.row.fr-pl-2w
+  .fr-col-12
+    .fr-text--lead.fr-mb-2w Informations sur le stage
+  .fr-col-md-12.fr-col-lg-6
+    / .fr-text--lg.fr-mb-2w Autres informations sur l'entreprise
+    .fr-highlight
+      p.fr-text--lg
+        span.grey-on-grey = "Intitulé de stage : "
+        = internship_offer_info.title
+        br
+        span.grey-on-grey = "Secteur d'activité : "
+        = internship_offer_info.sector.name
+        br
+        .border
+          span.grey-on-grey = "Activités prévues : "
+          = internship_offer_info.description_rich_text.to_s
+      p.fr-text--lg
+        span.grey-on-grey = "Nombre d'élèves accueillis sur l'année : "
+        = internship_offer_info.max_candidates
+        - if internship_offer_info.max_candidates > 1
+          br
+          span.grey-on-grey = "Type de stage : "
+          = internship_offer_info.max_students_per_group > 1 ? "Collectif" : "Individuel"
+          br
+          span.grey-on-grey = "Nombre d'élèves maximal par session : "
+          = internship_offer_info.max_students_per_group
+        - if internship_offer_info.school
+          br
+          span.grey-on-grey = "Stage réservé à l'établissement : "
+          = internship_offer_info.school.name
+  .fr-col-md-12.fr-col-lg-6
+    / .fr-text--lg.fr-mb-2w Autres informations sur l'entreprise
+    .fr-highlight
+      p.fr-text--lg
+        span.grey-on-grey = "Semaine(s) d'accueil des stagiaires : "
+        - weeks = internship_offer_info.internship_offer_info_weeks.map {|ioiw| ioiw.week}
+        - presenter = Presenters::WeekList.new(weeks: weeks)
+        - presenter.split_weeks_in_trunks.each do |presenter_week_list|
+          .d-none.d-sm-block
+            span.badge.badge-pill.badge-secondary.mr-2.mt-2
+              = presenter_week_list.to_range_as_str
+          .d-block.d-sm-none
+            div.badge-pill.badge-secondary.mr-2.mt-2.py-2
+              = presenter_week_list.to_range_as_str
+      p.fr-text--lg
+        span.grey-on-grey = "Déroulé de la semaine : "
+        / ul
+        /   li
+        /     span.grey-on-grey = "Lundi : "
+        /     = "#{internship_offer_info.new_daily_hours[:lundi].first} à #{internship_offer_info.new_daily_hours[:lundi].last}"
+        /   li
+        /     span.grey-on-grey = "Mardi: "
+        /     = "#{internship_offer_info.new_daily_hours[:mardi].first} à #{internship_offer_info.new_daily_hours[:mardi].last}"
+
+.row.fr-pl-2w
+  .fr-col-12
+    .actions
+    .row.fr-mb-8w
+      .col-8
+        = link_to edit_dashboard_stepper_internship_offer_info_path(internship_offer_info: internship_offer_info.id),
+                  class: 'fr-btn' do
+          |Modifier les informations du stage
