@@ -1,5 +1,5 @@
 .onboarding-card.onboarding-card-sm.my-4.fr-p-2w
-  - if resource.password.nil?
+  - if @teacher.present?
     = render 'set_up', current_user: @current_user
   - else
     header.header-account
