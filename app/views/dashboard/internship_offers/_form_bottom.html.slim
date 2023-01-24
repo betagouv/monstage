@@ -1,0 +1,21 @@
+- show_organisation_only ||= false
+= render "layouts/form_errors",
+         resource: resource,
+         resource_name: resource_name
+
+= render partial: "dashboard/stepper/#{resource_name.to_s}s/form_fields",
+        locals: { resource: resource,
+                  form: form,
+                  show_organisation_only: show_organisation_only,
+                  edit: edit,
+                  warning_block: true,
+                  submit_button: false }
+.actions
+  .row.fr-mb-8w.fr-mt-3w
+    .col-8
+      = form.submit button_label, class: 'fr-btn'
+    .col-4 style="display: flex;align-items: center"
+      = link_to "Retourner vers mes stages",
+                dashboard_internship_offers_path,
+                title: 'Retourner sur mes stages',
+                class: 'ml-3 btn-back'
