@@ -248,7 +248,7 @@ class InternshipApplication < ApplicationRecord
   end
 
   def remaining_seats_count
-    internship_offer.max_candidates
+    internship_offer.remaining_seats_count
   end
 
   def internship_application_counter_hook
