@@ -14,25 +14,28 @@ export default function SirenInput({
   currentStreet,
   currentZipcode,
   currentEmployerName,
+  currentLatitude,
+  currentLongitude,
+  edit,
   railsEnv
 }) {
-  const [siret, setSiret] = useState(currentSiret || '');
+  // const [siret, setSiret] = useState(currentSiret || '');
   const [searchResults, setSearchResults] = useState([]);
-  const [organisationZipcode, setOrganisationZipcode] = useState(currentZipcode || '')
-  const [organisationStreet, setOrganisationStreet] = useState(currentStreet ||  '')
-  const [organisationCity, setOrganisationCity] = useState(currentCity || '')
-  const [organisationEmployerName, setOrganisationEmployerName] = useState(currentEmployerName || '')
-  const [organisationSiret, setOrganisationSiret] = useState(currentSiret || '')
-  const [organisationLatitude, setOrganisationLatitude] = useState(0);
-  const [organisationLongitude, setOrganisationLongitude] = useState(0);
+  const [organisationZipcode, setOrganisationZipcode] = useState(currentZipcode || '');
+  const [organisationStreet, setOrganisationStreet] = useState(currentStreet || '');
+  const [organisationCity, setOrganisationCity] = useState(currentCity || '');
+  const [organisationEmployerName, setOrganisationEmployerName] = useState(currentEmployerName || '');
+  const [organisationSiret, setOrganisationSiret] = useState(currentSiret || '');
+  const [organisationLatitude, setOrganisationLatitude] = useState(currentLatitude || 0);
+  const [organisationLongitude, setOrganisationLongitude] = useState(currentLongitude || 0);
   const [manualEnter, setManualEnter] = useState(false)
 
   const inputChange = (event) => {
-    setSiret(event.target.value);
+    setOrganisationSiret(event.target.value);
   };
 
-  const searchCompanyBySiret = (siret) => {
-    fetch(endpoints.searchCompanyBySiret({ siret }))
+  const searchCompanyBySiret = (organisationSiret) => {
+    fetch(endpoints.searchCompanyBySiret({ organisationSiret }))
       .then((response) => response.json())
       .then((json) => {
         if (json.etablissements !== undefined) {
@@ -68,8 +71,15 @@ export default function SirenInput({
       });
   };
 
-  const openTooggle = (event) => { event.preventDefault(); setManualEnter(!manualEnter); }
-  const resetSearch = (event) => { event.preventDefault(); setPristineSearch(); }
+  const openTooggle = (event) => {
+    event.preventDefault();
+    setManualEnter(!manualEnter);
+  }
+
+  const resetSearch = (event) => {
+    event.preventDefault();
+    setPristineSearch();
+  }
 
   useEffect(() => {
     if (manualEnter && isAddressCompleted()) {
@@ -82,18 +92,18 @@ export default function SirenInput({
     const elem_error = document.getElementById('siren-error');
     if (elem_error) { elem_error.classList.add('d-none'); }
     //  a number ?
-    if (/^(?=.*\d)[\d ]+$/.test(siret)) {
-      const cleanSiret = siret.replace(/\s/g, '');
+    if (/^(?=.*\d)[\d ]+$/.test(organisationSiret)) {
+      const cleanSiret = organisationSiret.replace(/\s/g, '');
       if (cleanSiret.length === 14) {
         searchCompanyBySiret(cleanSiret);
       } else {
         setSearchResults([]);
       }
     // a text
-    } else if (siret.length > 2) {
-        searchCompanyByName(siret);
+    } else if (organisationSiret.length > 2) {
+        searchCompanyByName(organisationSiret);
     }
-  }, [siret]);
+  }, [organisationSiret]);
 
   // private methods --------------------------
   const setPristineSearch = () => {
@@ -124,6 +134,7 @@ export default function SirenInput({
     const coordinates = json.features[0].geometry.coordinates;
     return [parseFloat(coordinates[0]), parseFloat(coordinates[1])];
   }
+
   //--------------------------------------------
 
   return (
@@ -131,30 +142,34 @@ export default function SirenInput({
       <div className="container-downshift">
         {
           (manualEnter) ?
-          (<SimpleAddressInput
-            resourceName={resourceName}
-            organisationEmployerName={organisationEmployerName}
-            organisationZipcode={organisationZipcode}
-            organisationCity={organisationCity}
-            organisationStreet={organisationStreet}
-            organisationSiret={organisationSiret}
-            setOrganisationEmployerName={setOrganisationEmployerName}
-            setOrganisationZipcode={setOrganisationZipcode}
-            setOrganisationCity={setOrganisationCity}
-            setOrganisationStreet={setOrganisationStreet}
-            setOrganisationSiret={setOrganisationSiret}
-            searchCoordinatesByAddress={searchCoordinatesByAddress}
+            (<SimpleAddressInput
+              employerFieldLabel="Nom de l'entreprise ou de l'administration"
+              addressTypeLabel= "Adresse du siège de l'entreprise ou de l'administration"
+              resourceName={resourceName}
+              currentEmployerName={organisationEmployerName}
+              zipcode={organisationZipcode}
+              city={organisationCity}
+              street={organisationStreet}
+              siret={organisationSiret}
+              setEmployerName={setOrganisationEmployerName}
+              setZipcode={setOrganisationZipcode}
+              setCity={setOrganisationCity}
+              setStreet={setOrganisationStreet}
+              setSiret={setOrganisationSiret}
+              searchCoordinatesByAddress={searchCoordinatesByAddress}
           />)
           :
           (downshiftWasUsed() ?
-            (<CompanySummary
-              resourceName={resourceName}
-              organisationEmployerName={organisationEmployerName}
-              organisationZipcode={organisationZipcode}
-              organisationCity={organisationCity}
-              organisationStreet={organisationStreet}
-              organisationSiret={organisationSiret}
-              resetSearch={resetSearch}
+              (<CompanySummary
+                resourceName={resourceName}
+                addressTypeLabel="
+                Adresse de l'entreprise ou de l'administration"
+                employerName={organisationEmployerName}
+                zipcode={organisationZipcode}
+                city={organisationCity}
+                street={organisationStreet}
+                siret={organisationSiret}
+                resetSearch={resetSearch}
               />)
             :
             (
@@ -181,13 +196,13 @@ export default function SirenInput({
                           htmlFor: `${resourceName}_siren`,
                         })}
                       >
-                        Rechercher votre société dans l’Annuaire des Entreprises {railsEnv === 'development' ? '(dev only : 90943224700015)' : ''}
+                        Rechercher votre société dans l’Annuaire des Entreprises{railsEnv === 'development' ? ' (dev only : 90943224700015)' : ''}
                       </label>
                       <div className="input-group input-siren">
                         <input
                           {...getInputProps({
                             onChange: inputChange,
-                            value: currentSiret,
+                            value: organisationSiret,
                             className: 'form-control rounded-0',
                             id: `${resourceName}_siren`,
                             placeholder: 'Rechercher un nom ou un SIRET',

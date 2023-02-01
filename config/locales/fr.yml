@@ -294,6 +294,8 @@ fr:
         school_year: Année
         internship_applications: Candidatures
         ministries: Ministères
+        employer_manual_enter: Saisie manuelle de l'employeur
+        location_manual_enter: Saisie manuelle de l'adresse de stage
 
       internship_application:
         student: Élève
@@ -386,7 +388,7 @@ fr:
             zipcode:
               blank: "Veuillez renseigner le code postal de l'employeur"
             street:
-              blank: "Veuillez renseigner la rue ou compléments d'adresse de l'offre de stage"
+              blank: "Veuillez renseigner la rue de l'adresse de l'offre de stage"
             city:
               blank: "Veuillez renseigner la ville l'employeur"
             public:

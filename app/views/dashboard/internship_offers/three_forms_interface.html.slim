@@ -1,6 +1,6 @@
-h1.h2.mb-3 Modifier une offre de stage
+h1.h2.my-3 Modifier une offre de stage
 - chosen_tab = params[:step].to_i
-- organisation = @internship_offer.organisation.reload
+- organisation = @organisation || @internship_offer.organisation.reload
 - show_organisation_only = organisation.db_interpolated?
 .fr-tabs
   ul.fr-tabs__list[role="tablist" aria-label="[Stages | Modifier les informations de stage"]
@@ -23,16 +23,7 @@ h1.h2.mb-3 Modifier une offre de stage
           aria-selected="#{chosen_tab == 3}"
           aria-controls="tabpanel-tutor-panel"]
           | Modifier le tuteur de stage
-  / used when posted from stepper
-  / = form.hidden_field :organisation_id,
-  /                     value: @internship_offer.organisation_id
-  / = form.hidden_field :internship_offer_info_id,
-  /                     value: @internship_offer.internship_offer_info_id
-  / = form.hidden_field :tutor_id,
-  /                     value: @internship_offer.tutor_id
-  /                       // used when
-  / = form.hidden_field :employer_id, value: current_user.id
-  / = form.hidden_field :employer_type, value: "User"
+
   div [id="tabpanel-headquarters-panel"
         class="fr-tabs__panel #{chosen_tab == 1 && 'fr-tabs__panel--selected'}"
         role="tabpanel"
@@ -59,7 +50,7 @@ h1.h2.mb-3 Modifier une offre de stage
         tabindex="0"]
     / InternshipOfferInfo
     p
-      - internship_offer_info = @internship_offer.internship_offer_info
+      - internship_offer_info = @internship_offer_info || @internship_offer.internship_offer_info
       = form_with( model: internship_offer_info,
                     url: dashboard_stepper_internship_offer_info_path(internship_offer_info),
                     scope: :internship_offer_info,

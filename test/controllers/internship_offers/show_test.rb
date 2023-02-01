@@ -422,7 +422,7 @@ module InternshipOffers
       assert_response :success
       assert_template 'dashboard/internship_offers/_navigation'
 
-      assert_select 'a[href=?]', edit_dashboard_internship_offer_path(internship_offer),
+      assert_select 'a[href=?]', edit_dashboard_internship_offer_path(internship_offer, step: 1),
                     { count: 1 },
                     'missing edit internship_offer link for employer'
 

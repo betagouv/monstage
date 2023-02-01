@@ -7,7 +7,7 @@ module Presenters
 
     def initialize(errors:)
       @errors = errors
-      @messages = errors.messages
+      @messages = errors.blank? ? [] : errors.messages
       @displayed_messages = selected_messages(messages: @messages)
       @count = @displayed_messages.count
     end

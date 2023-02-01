@@ -300,6 +300,8 @@ def populate_internship_offers
     tutor_role: 'Chef comptable',
     tutor_phone: '+33637607756',
     street: '128 rue brancion',
+    weekly_hours:['09:00','17:00'],
+    weekly_lunch_break: "entre 12h et 13h",
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
@@ -307,6 +309,8 @@ def populate_internship_offers
   )
   weeks = [].concat(Week.selectable_on_school_year[0..1], Week.selectable_on_school_year[3..5])
   InternshipOffers::WeeklyFramed.create!(
+    weekly_hours:['09:00','17:00'],
+    weekly_lunch_break: "entre 12h et 13h",
     employer: Users::Employer.first,
     siret: siret,
     max_candidates: 5,
@@ -335,6 +339,8 @@ def populate_internship_offers
     # 3eme generale public
   weeks =  Week.selectable_on_school_year
   InternshipOffers::WeeklyFramed.create!(
+    weekly_hours:['09:00','17:00'],
+    weekly_lunch_break: "entre 12h et 13h",
     max_candidates: 5,
     max_students_per_group: 5,
     employer: Users::Employer.first,
@@ -360,6 +366,8 @@ def populate_internship_offers
     employer_name: Group.is_public.last.name
   )
   InternshipOffers::WeeklyFramed.create!(
+    weekly_hours:['09:00','17:00'],
+    weekly_lunch_break: "entre 12h et 13h",
     max_candidates: 5,
     max_students_per_group: 5,
     employer: Users::Employer.first,
@@ -386,6 +394,8 @@ def populate_internship_offers
   )
   # dépubliée
   InternshipOffers::WeeklyFramed.create!(
+    weekly_hours:['09:00','17:00'],
+    weekly_lunch_break: "entre 12h et 13h",
     employer: Users::Employer.first,
     siret: siret,
     weeks: weeks,
@@ -417,6 +427,8 @@ def populate_internship_offers
   # 3eme_generale-2019:
   weeks =  Week.weeks_of_school_year(school_year: SchoolYear::Base::YEAR_START)
   InternshipOffers::WeeklyFramed.create!(
+    weekly_hours:['09:00','17:00'],
+    weekly_lunch_break: "entre 12h et 13h",
     employer: Users::Employer.first,
     siret: siret,
     weeks: weeks,
@@ -502,6 +514,8 @@ def populate_internship_offers
 MULTI_LINE
   weeks = Week.weeks_of_school_year(school_year: SchoolYear::Base::YEAR_START)
   InternshipOffers::WeeklyFramed.create!(
+    weekly_hours:['09:00','17:00'],
+    weekly_lunch_break: "entre 12h et 13h",
     max_candidates: 5,
     max_students_per_group: 5,
     employer: Users::Employer.first,
@@ -532,6 +546,8 @@ MULTI_LINE
 - Immersion au sein d’une équipe de gestionnaire de la boutique. Proposition de gestion de portefeuille de boutiques et de stands fictifs en fin de stage, avec les conseils du tuteur'.
 MULTI_LINE
   InternshipOffers::WeeklyFramed.create!(
+    weekly_hours:['09:00','17:00'],
+    weekly_lunch_break: "entre 12h et 13h",
     employer: Users::Employer.first,
     max_candidates: 5,
     max_students_per_group: 5,

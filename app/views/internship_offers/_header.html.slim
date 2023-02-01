@@ -13,7 +13,9 @@
 .row
   .col-12
     .h3.my-2= internship_offer.employer_name
-    .h6.my-3= Presenters::Address.new(instance: internship_offer).full_address
+    .h6.my-3 
+      |Lieu de stage : 
+      = Presenters::Address.new(instance: internship_offer).full_address
     = render 'internship_offers/tags', internship_offer: internship_offer
 
 .row.my-3

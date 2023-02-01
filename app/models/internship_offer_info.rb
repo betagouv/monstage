@@ -5,6 +5,8 @@ class InternshipOfferInfo < ApplicationRecord
   include StepperProxy::InternshipOfferInfo
   include StiPreload
 
+  validates :manual_enter, presence: true
+
   # for ACL
   belongs_to :employer, class_name: 'User'
 

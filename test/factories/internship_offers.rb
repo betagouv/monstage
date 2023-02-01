@@ -14,14 +14,20 @@ FactoryBot.define do
     tutor_role { 'comptable' }
     is_public { true }
     group { create(:group, is_public: true) }
-    employer { create(:employer) }  
-    employer_description { 'on envoie du parpaing' }
+    employer { create(:employer) }
+    employer_description { 'on envoie du bois' }
+    employer_description_rich_text { '<div>on envoie du <strong>bois</strong></div>'}
+    description_rich_text{ '<div>voir le lieu où on envoie du <strong>bois</strong></div>'}
     street { '1 rue du poulet' }
     zipcode { '75001' }
     city { 'Paris' }
     employer_name { 'Octo' }
     coordinates { Coordinates.paris }
     siret { '11122233300000' }
+    employer_website { 'https://www.ina.fr' }
+    weekly_lunch_break { ['12:00','13:00'] }
+    weekly_hours { ['9:00','17:00'] }
+    new_daily_hours { {} }
 
     trait :api_internship_offer do
       weeks { [Week.selectable_from_now_until_end_of_school_year.first] }

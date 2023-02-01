@@ -18,6 +18,16 @@ module Presenters
       ].compact.join(" ")
     end
 
+    def organisation_full_address
+      return "" if instance.organisation.nil?
+
+      [
+        instance.organisation.street,
+        instance.organisation.zipcode,
+        instance.organisation.city
+      ].compact.join(" ")
+    end
+
     private
 
     attr_reader :instance

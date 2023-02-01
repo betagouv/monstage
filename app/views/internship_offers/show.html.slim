@@ -29,7 +29,9 @@ div data-controller="internship-application-form"
           .col-12
             .h3.text-dark= @internship_offer.title
             .h4.my-2= @internship_offer.employer_name
-            .my-3= Presenters::Address.new(instance: @internship_offer).full_address
+            .my-3
+              | Adresse du siège : 
+              = Presenters::Address.new(instance: @internship_offer).organisation_full_address
         .row
           .col-12
             = render 'internship_offers/tags', internship_offer: @internship_offer

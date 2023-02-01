@@ -1,7 +1,8 @@
 FactoryBot.define do
   factory :organisation , aliases: [:public_organisation] do
     employer_name { "MyCorp" }
-    employer_website { "https://website.com" }
+    employer_website { 'https://www.ina.fr' }
+    employer_description_rich_text { '<div>Fournit des tickets restos, bien cool</div>'}
     employer_description { "MyText" }
     employer
     street { '1 rue du poulet' }

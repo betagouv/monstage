@@ -19,6 +19,8 @@
                             resource: @internship_offer_info,
                             submit_button: true}
 
-/ div [data-controller='broadcast-coordinates-changed'
-/      data-broadcast-coordinates-changed-latitude-value=@organisation.coordinates.lat
-/      data-broadcast-coordinates-changed-longitude-value=@organisation.coordinates.lon]
+/ helps employer to set the right school week in the week list
+/ todo : update this to use internship_offer location instead of organisation's
+div [data-controller='broadcast-coordinates-changed'
+     data-broadcast-coordinates-changed-latitude-value=@organisation.coordinates.lat
+     data-broadcast-coordinates-changed-longitude-value=@organisation.coordinates.lon]

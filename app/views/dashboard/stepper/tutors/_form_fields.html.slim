@@ -47,8 +47,9 @@
               = form.submit "Publier l'offre !", class: 'fr-btn' do
                 i.fas.fa-arrow-right
 
-            .col-8.text-left style="display: flex;align-items: center"
-              = link_to 'Précédent', edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]), title: 'Revenir à la modification de l\'offre'
+            / kept until it works
+            / .col-8.text-left style="display: flex;align-items: center"
+              / = link_to 'Précédent', edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]), title: 'Revenir à la modification de l\'offre'
 
   - warning_block = true if warning_block.nil?
   - if warning_block

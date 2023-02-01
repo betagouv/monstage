@@ -15,7 +15,8 @@
     .col-8
       = form.submit button_label, class: 'fr-btn'
     .col-4 style="display: flex;align-items: center"
-      = link_to "Retourner vers mes stages",
-                dashboard_internship_offers_path,
-                title: 'Retourner sur mes stages',
-                class: 'ml-3 btn-back'
+      button.fr-btn.fr-btn--secondary
+        = link_to "Retourner vers mes stages",
+                  dashboard_internship_offers_path,
+                  title: 'Retourner sur mes stages',
+                  class: 'btn-back'

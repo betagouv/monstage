@@ -92,7 +92,8 @@
               span.small
                 |un groupe de plusieurs élèves
 
-      div class="form-group form-group-select-max-students-per-group #{resource.is_individual? ? 'd-none' : ''}" data-internship-offer-infos-target='studentsMaxGroupGroup'
+      #max_students_per_group_group [class="form-group form-group-select-max-students-per-group #{resource.is_individual? ? 'd-none' : ''}" 
+           data-internship-offer-infos-target='studentsMaxGroupGroup']
         = form.label :max_students_per_group do
           = 'Nombre maximal d\'élèves par groupe'
           = form.rg2a_required_content_tag
@@ -115,21 +116,28 @@
                                     selectClassRoom: false,
                                     existingSchool: resource.school.as_json})
 
-      .form-group
+      #internship_offer_id_weeks.form-group
         = render partial: "weeks/checkbox_inputs",
                           locals: {current_weeks: @available_weeks,
                                    form: form,
                                    render_employer_components: true,
                                    label: "Choisir la ou les semaine(s) où vous pouvez accueillir un stagiaire" }
-
-      .form-group
-        = render partial: "dashboard/stepper/internship_offer_infos/daily_hours",
-                 locals: { form: form, disabled: false }
       .form-group
         = react_component("AltAddressInput",
                           props: { resourceName: form.object_name,
-                                   employerName: @organisation.employer_name,
+                                   currentEmployerName: resource.employer_name || @organisation&.employer_name,
+                                   currentStreet: resource.street || '',
+                                   currentCity: resource.city || '',
+                                   currentZipcode: resource.zipcode || '',
+                                   currentLongitude: resource.coordinates&.longitude || 0,
+                                   currentLatitude: resource.coordinates&.latitude || 0,
+                                   employerFieldLabel: "Nom de l'employeur",
                                    addressTypeLabel: 'Adresse du lieu où se déroule le stage' })
+
+      .form-group
+        = render partial: "dashboard/stepper/internship_offer_infos/daily_hours",
+          locals: { form: form, disabled: false }
+
 
       - if submit_button
         .row.mt-5

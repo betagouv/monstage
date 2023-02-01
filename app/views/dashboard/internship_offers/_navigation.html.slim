@@ -32,7 +32,8 @@
 
         - if can?(:update, @internship_offer)
           div data-turbo="false"
-            a.nav-link.px-1.px-sm-2.text-center.fr-raw-link href=edit_dashboard_internship_offer_path(@internship_offer.to_param)
+            - link = edit_dashboard_internship_offer_path(@internship_offer, step: 1)
+            a.nav-link.px-1.px-sm-2.text-center.fr-raw-link href=link
               i.fas.fa-pen
               small.d-block
                 | Modifier

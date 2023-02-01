@@ -1,9 +1,8 @@
 import React from 'react';
 
 export default function SimpleAddressInput({
-  addressTypeLabel,
-  withEmployerName,
   employerName,
+  employerFieldLabel,
   zipcode,
   city,
   street,
@@ -15,28 +14,26 @@ export default function SimpleAddressInput({
 }) {
   return (
     <div>
-      <div className="h6">{addressTypeLabel}</div>
-      {withEmployerName && (<div className="form-row">
-          <div className="col-sm-12">
-            <div className="form-group">
-              <label htmlFor={`${resourceName}_employer_name`}>
-                Nom de l'entreprise / administration
-                <abbr title="(obligatoire)" aria-hidden="true">
-                  *
-                </abbr>
-              </label>
-              <input
-                className="form-control"
-                type="text"
-                name={`${resourceName}[employer_name]`}
-                id={`${resourceName}_employer_name`}
-                value={employerName}
-                onChange={event => (setEmployerName(event.target.value))}
-              />
-            </div>
+      <div className="form-row">
+        <div className="col-sm-12">
+          <div className="form-group">
+            <label htmlFor={`${resourceName}_employer_name`}>
+              {employerFieldLabel}
+              <abbr title="(obligatoire)" aria-hidden="true">
+                *
+              </abbr>
+            </label>
+            <input
+              className="form-control"
+              type="text"
+              name={`${resourceName}[employer_name]`}
+              id={`${resourceName}_employer_name`}
+              value={employerName}
+              onChange={event => (setEmployerName(event.target.value))}
+            />
           </div>
         </div>
-      )}
+      </div>
       <div className="form-row">
         <div className="col-sm-12">
           <div className="form-group">

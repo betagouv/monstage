@@ -11,19 +11,28 @@ import { broadcast, newCoordinatesChanged } from '../../utils/events';
 // see: https://geo.api.gouv.fr/adresse
 export default function AltAddressInput({
   resourceName,
-  employerName,
-  addressTypeLabel
+  currentEmployerName,
+  currentStreet, 
+  currentZipcode,
+  currentCity,
+  currentLatitude,
+  currentLongitude,
+  employerFieldLabel,
+  edit,
+  addressTypeLabel,
+
 }) {
   const [helpVisible, setHelpVisible] = useState(false);
   const [fullAddress, setFullAddress] = useState('');
-  const [street, setStreet] = useState('');
-  const [city, setCity] = useState('');
-  const [zipcode, setZipcode] = useState('');
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
+  const [employerName, setEmployerName] = useState(currentEmployerName || '');
+  const [street, setStreet] = useState(currentStreet ||'');
+  const [city, setCity] = useState(currentCity || '');
+  const [zipcode, setZipcode] = useState(currentZipcode ||'');
+  const [latitude, setLatitude] = useState(currentLatitude || 0);
+  const [longitude, setLongitude] = useState(currentLongitude || 0);
   const [searchResults, setSearchResults] = useState([]);
   const [queryString, setQueryString] = useState('');
-  const [manualEnter, setManualEnter] = useState(false)
+  const [manualEnter, setManualEnter] = useState(false);
   const [fullAddressDebounced] = useDebounce(fullAddress, 100);
 
   const inputChange = (event) => {
@@ -131,20 +140,23 @@ export default function AltAddressInput({
             (manualEnter) ?
               (<SimpleAddressInput
                 addressTypeLabel={addressTypeLabel}
-                withEmployerName={false}
+                employerFieldLabel={employerFieldLabel}
                 resourceName={resourceName}
+                employerName={employerName}
                 zipcode={zipcode}
                 city={city}
                 street={street}
                 setZipcode={setZipcode}
                 setCity={setCity}
                 setStreet={setStreet}
+                setEmployerName={setEmployerName}
               />)
               :
               (downshiftWasUsed() ?
                 (<CompanySummary
-                  resourceName={resourceName}
                   addressTypeLabel = {addressTypeLabel}
+                  employerFieldLabel={employerFieldLabel}
+                  resourceName={resourceName}
                   employerName={employerName}
                   zipcode={zipcode}
                   city={city}

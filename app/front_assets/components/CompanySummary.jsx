@@ -23,7 +23,7 @@ const CompanySummary = ({
       </p>
     </div>
     <div className = 'text-right fr-mr-8w'>
-      <a href='#' onClick={resetSearch}>... ou refaire une recherche</a>
+      <a href='#' onClick={resetSearch}>... ou faire une recherche</a>
     </div>
   </div>
 )

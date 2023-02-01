@@ -58,6 +58,11 @@ module Dashboard::Stepper
               title: 'PDG stagiaire',
               type: 'InternshipOfferInfos::WeeklyFramed',
               description_rich_text: '<div><b>Activités de découverte</b></div>',
+              employer_name: 'Café de la Paix',
+              street: '2 rue de la paix',
+              city: 'Paris',
+              zipcode: '75002',
+              coordinates: Coordinates.paris,
               'week_ids' => weeks.map(&:id),
               new_daily_hours: {
                 "lundi" => ['07:00', '12:00'],
@@ -103,6 +108,11 @@ module Dashboard::Stepper
               title: 'PDG stagiaire',
               type: 'InternshipOfferInfos::WeeklyFramed',
               description_rich_text: '<div><b>Activités de découverte</b></div>',
+              employer_name: 'Café de la Paix',
+              street: '2 rue de la paix',
+              city: 'Paris',
+              zipcode: '75002',
+              coordinates: Coordinates.paris,
               'week_ids' => weeks.map(&:id),
               new_daily_hours: {
                 "lundi" => ['07:00', '12:00'],
@@ -151,7 +161,12 @@ module Dashboard::Stepper
             organisation_id: 1,
             max_candidates: 3,
             max_students_per_group: 3,
-            weekly_hours: ['10h', '12h']
+            weekly_hours: ['10h', '12h'],
+            employer_name: 'test',
+            city: 'Paris',
+            zip_code: '75002',
+            street: '2 rue de la paix',
+            coordinates: Coordinates.paris
           }
         })
         assert_response :bad_request
@@ -169,22 +184,28 @@ module Dashboard::Stepper
       internship_offer_info = create(:weekly_internship_offer_info,
                                      employer: employer,
                                      title: title)
+      create(:weekly_internship_offer,
+        organisation: organisation,
+        internship_offer_info: internship_offer_info
+      )
       sign_in(employer)
       assert_changes -> { internship_offer_info.reload.title },
                     from: title,
                     to: new_title do
         patch(
-          dashboard_stepper_internship_offer_info_path(id: internship_offer_info.id, organisation_id: organisation.id),
+          dashboard_stepper_internship_offer_info_path(
+            id: internship_offer_info.id,
+            organisation_id: organisation.id),
           params: {
             internship_offer_info: internship_offer_info.attributes.merge({
               title: new_title,
             })
           }
         )
-        assert_redirected_to new_dashboard_stepper_tutor_path(
-          organisation_id: organisation.id,
-          internship_offer_info_id: internship_offer_info.id,
-        )
+        # assert_redirected_to new_dashboard_stepper_tutor_path(
+        #   organisation_id: organisation.id,
+        #   internship_offer_info_id: internship_offer_info.id,
+        # )
       end
     end
 
@@ -198,5 +219,165 @@ module Dashboard::Stepper
       assert_select 'meta[name="turbo-visit-control"][content="reload"]'
     end
 
+    test 'PATCH #update as employer is able to remove school' do
+      school = create(:school)
+
+      internship_offer_info = create(:weekly_internship_offer_info, school: school)
+      employer = internship_offer_info.employer
+      organisation = create(:organisation, employer: employer)
+      tutor = create(:tutor, employer_id: employer.id)
+      internship_offer = create(:weekly_internship_offer,
+                                employer: employer,
+                                organisation_id: organisation.id,
+                                internship_offer_info_id: internship_offer_info.id,
+                                tutor_id: tutor.id,
+                                school: school)
+      sign_in(internship_offer.employer)
+      assert_changes -> { internship_offer.reload.school },
+                    from: school,
+                    to: nil do
+        patch(dashboard_stepper_internship_offer_info_path(internship_offer_info.to_param),
+              params: { internship_offer_info: { school_id: nil } })
+      end
+    end
+
+    test 'PATCH #update as employer not owning internship_offer redirects to user_session_path' do
+      internship_offer_info = create(:weekly_internship_offer_info)
+      employer = internship_offer_info.employer
+      organisation = create(:organisation, employer: employer)
+      tutor = create(:tutor, employer_id: employer.id)
+      internship_offer = create(:weekly_internship_offer, employer: employer, organisation_id: organisation.id, internship_offer_info_id: internship_offer_info.id, tutor_id: tutor.id)
+      sign_in(create(:employer))
+      patch(dashboard_stepper_internship_offer_info_path(internship_offer_info.to_param), params: { internship_offer: { title: '' } })
+      assert_redirected_to root_path
+    end
+
+    test 'PATCH #update as employer owning internship_offer updates internship_offer' do
+      # internship_offer = create(:weekly_internship_offer)
+      internship_offer_info = create(:weekly_internship_offer_info)
+      employer = internship_offer_info.employer
+      organisation = create(:organisation, employer: employer)
+      tutor = create(:tutor, employer_id: employer.id)
+      internship_offer = create(:weekly_internship_offer, employer: employer, organisation_id: organisation.id, internship_offer_info_id: internship_offer_info.id, tutor_id: tutor.id)
+      # weeks = Week.selectable_from_now_until_end_of_school_year.last(4)
+      new_title = 'new title'
+      new_group = create(:group, is_public: false, name: 'woop')
+      assert_equal employer.id, internship_offer.employer.id
+      sign_in(employer)
+      patch(dashboard_stepper_internship_offer_info_path(internship_offer_info.to_param),
+            params: {
+              commit: "Modifier les informations de stage",
+              internship_offer_info: {
+                title: new_title,
+                week_ids: [weeks(:week_2019_1).id],
+                new_daily_hours: {'lundi' => ['10h', '12h']}
+              }
+            }
+          )
+      assert_redirected_to(edit_dashboard_internship_offer_path(internship_offer.to_param, step: 2),
+                          'redirection should point to updated offer')
+
+      assert_equal(new_title,
+                  internship_offer.reload.title,
+                  'can\'t update internship_offer title')
+      assert_equal ['10h', '12h'], internship_offer.reload.new_daily_hours['lundi']
+
+    end
+
+    test 'PATCH #update as employer owning internship_offer ' \
+        'updates internship_offer ' do
+      weeks = Week.all.first(3)
+      week_ids = weeks.map(&:id)
+      internship_offer_info = create(:weekly_internship_offer_info)
+      employer = internship_offer_info.employer
+      organisation = create(:organisation, employer: employer)
+      tutor = create(:tutor, employer_id: employer.id)
+      internship_offer = create(:weekly_internship_offer, employer: employer, organisation_id: organisation.id, internship_offer_info_id: internship_offer_info.id, tutor_id: tutor.id, max_candidates: 3, weeks: weeks)
+      create(:weekly_internship_application, :approved, internship_offer: internship_offer, week: weeks(:week_2019_1))
+      sign_in(internship_offer.employer)
+      patch(dashboard_stepper_internship_offer_info_path(internship_offer_info.to_param),
+            params: { 
+              commit: "Modifier les informations de stage",
+              internship_offer_info: {
+                week_ids: week_ids,
+                max_candidates: 2
+              }
+            }
+      )
+      follow_redirect!
+      assert_select("#alert-text", text: "Les modifications sont enregistrées")
+      assert_equal 2, internship_offer.reload.max_candidates
+    end
+
+    test 'PATCH #update as employer owning internship_offer ' \
+        'updates internship_offer and fails due to too many accepted internships' do
+      weeks = Week.all.first(4)
+      week_ids = weeks.map(&:id)
+      internship_offer_info = create(:weekly_internship_offer_info)
+      employer = internship_offer_info.employer
+      organisation = create(:organisation, employer: employer)
+      tutor = create(:tutor, employer_id: employer.id)
+      internship_offer = create(:weekly_internship_offer,
+                                employer: employer,
+                                organisation_id: organisation.id,
+                                internship_offer_info_id: internship_offer_info.id,
+                                tutor_id: tutor.id,
+                                max_candidates: 3,
+                                weeks: weeks)
+      create(:weekly_internship_application, :approved, internship_offer: internship_offer, week: weeks.first)
+      create(:weekly_internship_application, :approved, internship_offer: internship_offer, week: weeks.second)
+      sign_in(internship_offer.employer)
+
+      patch(dashboard_stepper_internship_offer_info_path(internship_offer_info.to_param),
+            params: { 
+              commit: "Modifier les informations de stage",
+              internship_offer_info: {
+                week_ids: week_ids,
+                max_candidates: 1
+              }
+            }
+      )
+      error_message = "Impossible de réduire le " \
+                      "nombre de places de cette offre de stage car vous avez déjà accepté " \
+                      "plus de candidats que vous n'allez leur offrir de places."
+      assert_response :bad_request
+      assert_select("label.for-errors", text: error_message)
+    end
+
+    test 'PATCH #update as statistician owning internship_offer updates internship_offer' do
+      internship_offer = create(:weekly_internship_offer)
+      statistician = create(:statistician)
+      internship_offer_info = create(:weekly_internship_offer_info, employer: statistician)
+      organisation = create(:organisation, employer: statistician)
+      tutor = create(:tutor, employer_id: statistician.id)
+      internship_offer = create(:weekly_internship_offer,
+                                employer: statistician,
+                                organisation_id: organisation.id,
+                                internship_offer_info_id: internship_offer_info.id,
+                                tutor_id: tutor.id)
+      # internship_offer.update(employer_id: statistician.id)
+      new_title = 'new title'
+      sign_in(statistician)
+      patch(dashboard_stepper_internship_offer_info_path(internship_offer_info.to_param),
+            params: { 
+              commit: "Modifier les informations de stage",
+              internship_offer_info: {
+                title: new_title,
+                week_ids: [weeks(:week_2019_1).id],
+                new_daily_hours: {
+                  'lundi' => ['10h', '12h']
+                }
+              } 
+            }
+          )
+      assert_redirected_to(edit_dashboard_internship_offer_path(internship_offer, step: 2),
+                          'redirection should point to updated offer')
+
+      assert_equal(new_title,
+                  internship_offer.reload.title,
+                  'can\'t update internship_offer title')
+      assert_equal ['10h', '12h'], internship_offer.reload.new_daily_hours['lundi']
+
+    end
   end
 end

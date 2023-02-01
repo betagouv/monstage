@@ -3,9 +3,15 @@
 require 'application_system_test_case'
 
 module Product
+
   class DashboardTest < ApplicationSystemTestCase
     include Html5Validator
     include Devise::Test::IntegrationHelpers
+    include StubsForApiGouvRequests
+
+    setup do
+      stub_gouv_api_requests
+    end
 
     test 'USE_W3C, dashboard_internship_offers_path' do
       employer = create(:employer)

@@ -1,22 +1,33 @@
+- show_organisation_only ||= false
 .row
   .col-md-6.order-md-1.order-2
     fieldset data-controller='organisation-form'
       legend Informations sur l'entreprise
       = form.rg2a_explain_required_asterisk
       = form.hidden_field :manual_enter, value: false
-
       - if can?(:supply_offers, current_user)
         - if current_user.ministry_statistician?
           = render partial: "dashboard/stepper/organisations/form_ministry_statistician_specifics",
                    locals: { form: form, resource: resource, submit_button: submit_button }
         - else
+          - if show_organisation_only
+            .fr-alert.fr-alert--info.fr-mb-2w
+                h3.fr-alert__title Information manquante
+                p 
+                  |
+                    Lors de votre dernière création d'offre de stage, nous 
+                    n'avons pas noté l'adresse du siège de votre 
+                    administration ou de votre entreprise. Est-ce celle-ci ?
           = react_component("SirenInput",
                             props: { resourceName: form.object_name,
-                                     currentSiren: resource.siret,
+                                     currentSiret: resource.siret,
                                      currentCity: resource.city,
                                      currentStreet: resource.street,
                                      currentZipcode: resource.zipcode,
                                      currentEmployerName: resource.employer_name,
+                                     currentLongitude: resource&.coordinates&.longitude || 0,
+                                     currentLatitude: resource&.coordinates&.latitude || 0,
+                                     edit: edit,
                                      railsEnv: Rails.env })
           .form-group
             .label
@@ -35,8 +46,7 @@
                           "Groupe ou Institution de tutelle",
                           data: {:"organisation-form-target" => 'groupLabel'}
             = form.select :group_id,
-                          options_for_select(options_for_groups,
-                          resource.group.try(:id)),
+                          options_for_select(options_for_groups, resource.group.try(:id)),
                           { prompt: '-- Indépendant --' },
                           class: "form-control",
                           data: {:"organisation-form-target" => 'selectGroupName'}

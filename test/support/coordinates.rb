@@ -4,6 +4,9 @@ class Coordinates
   def self.paris
     { latitude: 48.866667, longitude: 2.333333 }
   end
+  def self.paris_12
+    { latitude: 48.849917, longitude: 2.378092 }
+  end
 
   def self.verneuil
     { latitude: 48.9793, longitude: 1.9754 }

@@ -42,7 +42,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
 
   test 'search by location (zipcodes) works' do
     internship_offer_at_paris = create(:weekly_internship_offer,
-                                       coordinates: Coordinates.paris)
+                                       coordinates: Coordinates.paris_12)
     internship_offer_at_bordeaux = create(:weekly_internship_offer,
                                           coordinates: Coordinates.bordeaux)
 

@@ -184,9 +184,9 @@ class InternshipOffer < ApplicationRecord
                     tutor_name tutor_phone tutor_email tutor_role employer_website
                     employer_name street zipcode city department region academy
                     is_public group school_id coordinates first_date last_date
-                    siret employer_manual_enter
+                    siret employer_manual_enter location_manual_enter
                     internship_offer_info_id organisation_id tutor_id
-                    weekly_hours new_daily_hours]
+                    weekly_hours new_daily_hours employer_id organisation_id]
 
     generate_offer_from_attributes(white_list)
   end
@@ -194,10 +194,10 @@ class InternshipOffer < ApplicationRecord
   def duplicate_without_location
     white_list_without_location = %w[type title sector_id max_candidates
                     tutor_name tutor_phone tutor_email tutor_role employer_website
-                    employer_name is_public group school_id coordinates
-                    first_date last_date siret employer_manual_enter
+                    employer_name is_public group school_id
+                    first_date last_date siret employer_manual_enter location_manual_enter
                     internship_offer_info_id organisation_id tutor_id
-                    weekly_hours new_daily_hours]
+                    weekly_hours new_daily_hours employer_id organisation_id]
 
     generate_offer_from_attributes(white_list_without_location)
   end
@@ -251,7 +251,7 @@ class InternshipOffer < ApplicationRecord
 
   def update_all_favorites
     if approved_applications_count >= max_candidates || Time.now > last_date
-      Favorite.where(internship_offer_id: id).destroy_all 
+      Favorite.where(internship_offer_id: id).destroy_all
     end
   end
 end

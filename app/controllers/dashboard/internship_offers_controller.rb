@@ -39,41 +39,48 @@ module Dashboard
     end
 
     def edit
-      @internship_offer = InternshipOffer.find(params[:id])
+      @internship_offer     = InternshipOffer.find(params[:id])
+      internship_offer_tree = InternshipOfferTree.new(internship_offer: @internship_offer)
+                                                 .check_or_create_underlying_objects
       authorize! :update, @internship_offer
       @available_weeks = @internship_offer.available_weeks
+      url_params = { internship_offer_id: @internship_offer.id,
+                     step: params[:step] || '1' }
+      @organisation = @internship_offer.organisation
     end
 
     def update
-      internship_offer_builder.update(instance: InternshipOffer.find(params[:id]),
-                                      params: internship_offer_params) do |on|
-
-      on.success do |updated_internship_offer|
-        @internship_offer = updated_internship_offer
-        respond_to do |format|
-          format.turbo_stream
-          format.html do
-            redirect_to(internship_offer_path(updated_internship_offer),
-                        flash: { success: 'Votre annonce a bien été modifiée' })
+      # Still used for publishing updates
+      instance = InternshipOffer.find(params[:id])
+      authorize! :update, instance
+        internship_offer_builder.update(instance: instance,
+                                        params: internship_offer_params) do |on|
+        on.success do |updated_internship_offer|
+          @internship_offer = updated_internship_offer
+          respond_to do |format|
+            format.turbo_stream
+            format.html do
+              redirect_to(internship_offer_path(updated_internship_offer),
+                          flash: { success: 'Votre annonce a bien été modifiée' })
+            end
+          end
+        end
+        on.failure do |failed_internship_offer|
+          respond_to do |format|
+            format.html do
+              @internship_offer = failed_internship_offer
+              @available_weeks = failed_internship_offer.available_weeks
+              render :edit, status: :bad_request
+            end
           end
         end
       end
-      on.failure do |failed_internship_offer|
-        respond_to do |format|
-          format.html do
-            @internship_offer = failed_internship_offer
-            @available_weeks = failed_internship_offer.available_weeks
-            render :edit, status: :bad_request
-          end
-        end
-      end
-      rescue ActionController::ParameterMissing
-        respond_to do |format|
-          format.html do
-            @internship_offer = InternshipOffer.find(params[:id])
-            @available_weeks = @internship_offer.available_weeks
-            render :edit, status: :bad_request
-          end
+    rescue ActionController::ParameterMissing
+      respond_to do |format|
+        format.html do
+          @internship_offer = InternshipOffer.find(params[:id])
+          @available_weeks = @internship_offer.available_weeks
+          render :edit, status: :bad_request
         end
       end
     end
@@ -102,7 +109,18 @@ module Dashboard
         @internship_offer = internship_offer.duplicate
       end
 
+      if @internship_offer.valid?
+        @internship_offer.save
+      else
+        puts '================'
+        puts "@internship_offer.errors.full_messages : #{@internship_offer.errors.full_messages}"
+        puts '================'
+        puts ''
+        raise 'boom'
+      end
+
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
+      redirect_to(edit_dashboard_internship_offer_path(@internship_offer))
     end
 
     private
@@ -176,6 +194,7 @@ module Dashboard
                     :is_public, :group_id, :published_at, :type,
                     :employer_id, :employer_type, :school_id, :verb,
                     :employer_description_rich_text, :siret, :employer_manual_enter,
+                    :location_manual_enter,
                     :weekly_lunch_break, coordinates: {}, week_ids: [],
                     new_daily_hours: {}, daily_lunch_break: {}, weekly_hours:[])
     end

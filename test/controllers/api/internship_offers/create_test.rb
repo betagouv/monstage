@@ -162,6 +162,7 @@ module Api
       assert_equal remote_id, internship_offer.remote_id
       assert_equal permalink, internship_offer.permalink
       assert_equal 2, internship_offer.max_candidates
+      assert_equal 2, internship_offer.remaining_seats_count
 
       assert_equal JSON.parse(internship_offer.to_json), json_response
     end

@@ -1,5 +1,5 @@
 - disabled = defined?(disabled) ? disabled : !can?(:edit_weekly_hours, form.object)
-div data-controller="daily-hours"
+div data-controller="daily-hours" data-daily-hours-model-value="#{form.object_name}"
   .fr-checkbox-group.fr-checkbox-group--sm.mb-1
     - if disabled
       = check_box_tag 'same_daily_planning',
@@ -55,10 +55,11 @@ div data-controller="daily-hours"
 
   #daily-planning[class="mt-3 #{'d-none' if form.object.weekly_planning?}"]
     - %w(lundi mardi mercredi jeudi vendredi samedi).each_with_index do |weekday, i|
-      .row.mt-3
+      .row.mt-3.test
         .col-12
-          .fr-label= weekday.capitalize
-      .row
+          div class="fr-label" id="#{weekday}-label"
+            = weekday.capitalize
+      div class='row' id="row-#{weekday}"
         .col-5
           - if disabled
             = select_tag :"#{form.object_name}[new_daily_hours][#{weekday}][]",

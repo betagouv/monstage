@@ -8,6 +8,7 @@ module StepperProxy
       include Nearbyable
       after_initialize :init
 
+
       # Validations
       validates :title, presence: true, length: { maximum: InternshipOffer::TITLE_MAX_CHAR_COUNT }
       validates :max_candidates,
@@ -21,7 +22,6 @@ module StepperProxy
                                 message: "Le nombre maximal d'élèves par groupe ne peut pas dépasser le nombre maximal d'élèves attendus dans l'année" }
       validates :description, presence: true,
                               length: { maximum: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT }
-      validates :manual_enter, presence: true
 
       validate :enough_weeks
 
@@ -31,6 +31,10 @@ module StepperProxy
       belongs_to :school, optional: true # when offer is reserved to school
       belongs_to :sector
 
+      has_many :internship_offer_info_weeks, dependent: :destroy,
+                                             foreign_key: :internship_offer_info_id,
+                                             inverse_of: :internship_offer_info
+      has_many :weeks, through: :internship_offer_info_weeks
       has_rich_text :description_rich_text
 
       def is_individual?
@@ -81,6 +85,39 @@ module StepperProxy
         school_year = SchoolYear::Floating.new(date: weeks.first.week_date)
 
         Week.selectable_on_specific_school_year(school_year: school_year)
+      end
+
+      def self.attributes_from_internship_offer(internship_offer_id:)
+        internship_offer = InternshipOffers::WeeklyFramed.find_by(id: internship_offer_id)
+        return {} if internship_offer.nil?
+
+        {
+          title: internship_offer.title,
+          employer_name: internship_offer.employer_name,
+          employer_id: internship_offer.employer_id,
+          description_rich_text: (internship_offer.description_rich_text.present? ? internship_offer.description_rich_text.to_s : internship_offer.description),
+          max_candidates: internship_offer.max_candidates,
+          max_students_per_group: internship_offer.max_students_per_group,
+          description: internship_offer.description,
+          sector_id: internship_offer.sector.id,
+          school_id: internship_offer&.school&.id,
+          street: internship_offer.street,
+          city: internship_offer.city,
+          zipcode: internship_offer.zipcode,
+          weekly_hours: internship_offer.weekly_hours,
+          new_daily_hours: internship_offer.new_daily_hours,
+          daily_lunch_break: internship_offer.daily_lunch_break,
+          weekly_lunch_break: internship_offer.weekly_lunch_break,
+          coordinates: internship_offer.coordinates,
+          week_ids: internship_offer.week_ids
+        }
+      end
+
+      def synchronize(internship_offer)
+        parameters = InternshipOffers::WeeklyFramed.preprocess_internship_offer_info_to_params(self)
+                                                   .merge(internship_offer_info_id: id)
+        internship_offer.update(parameters)
+        internship_offer
       end
     end
   end

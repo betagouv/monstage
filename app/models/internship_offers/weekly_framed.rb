@@ -156,5 +156,52 @@ module InternshipOffers
                           .count
       self.remaining_seats_count = max_candidates - reserved_places
     end
+
+    def self.preprocess_organisation_to_params(organisation)
+      {
+        employer_name: organisation.employer_name,
+        employer_website: organisation.employer_website,
+        employer_description_rich_text: organisation.employer_description,
+        is_public: organisation.is_public,
+        group_id: organisation.group_id,
+        siret: organisation.siret,
+        employer_manual_enter: organisation.manual_enter
+      }
+    end
+
+    def self.preprocess_internship_offer_info_to_params(internship_offer_info)
+      week_ids = InternshipOfferInfoWeek.where(internship_offer_info_id: internship_offer_info)
+                                        .map{|ioiw| ioiw.week_id}
+      {
+        title: internship_offer_info.title,
+        description_rich_text: (internship_offer_info.description_rich_text.present? ? internship_offer_info.description_rich_text.to_s : internship_offer_info.description),
+        max_candidates: internship_offer_info.max_candidates,
+        max_students_per_group: internship_offer_info.max_students_per_group,
+        school_id: internship_offer_info.school_id,
+        weekly_hours: internship_offer_info.weekly_hours,
+        new_daily_hours: internship_offer_info.new_daily_hours,
+        sector_id: internship_offer_info.sector_id,
+        daily_lunch_break: internship_offer_info.daily_lunch_break,
+        weekly_lunch_break: internship_offer_info.weekly_lunch_break,
+        type: internship_offer_info.type.gsub('Info', ''),
+        remaining_seats_count: internship_offer_info.max_candidates,
+        location_manual_enter: internship_offer_info.manual_enter,
+        coordinates: internship_offer_info.coordinates,
+        employer_name: internship_offer_info.employer_name,
+        street: internship_offer_info.street,
+        zipcode: internship_offer_info.zipcode,
+        city: internship_offer_info.city,
+        week_ids: week_ids
+      }
+    end
+
+    def self.preprocess_tutor_to_params(tutor)
+      {
+        tutor_name: tutor.tutor_name,
+        tutor_email: tutor.tutor_email,
+        tutor_phone: tutor.tutor_phone,
+        tutor_role: tutor.tutor_role
+      }
+    end
   end
 end

@@ -4,6 +4,11 @@ require 'application_system_test_case'
 
 class ManageInternshipOffersTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
+  include StubsForApiGouvRequests
+
+  setup do
+    stub_gouv_api_requests
+  end
 
   def wait_form_submitted
     find('.alert-sticky')
@@ -13,32 +18,22 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   #   find(:xpath, "//trix-editor[@id='#{id}']").click.set(with)
   # end
 
-  test 'Employer can edit internship offer' do
-    travel_to(Date.new(2019, 3, 1)) do
-      employer = create(:employer)
-      internship_offer = create(:weekly_internship_offer, employer: employer)
-
-      sign_in(employer)
-      visit edit_dashboard_internship_offer_path(internship_offer)
-      find('input[name="internship_offer[employer_name]"]').fill_in(with: 'NewCompany')
-
-      click_on "Modifier l'offre"
-
-      wait_form_submitted
-      assert /NewCompany/.match?(internship_offer.reload.employer_name)
-    end
-  end
-
   test 'Employer can see which week is choosen by nearby schools on edit' do
-    employer = create(:employer)
-    sign_in(employer)
+
     travel_to(Date.new(2019, 3, 1)) do
       week_with_school = Week.find_by(number: 10, year: Date.today.year)
       week_without_school = Week.find_by(number: 11, year: Date.today.year)
       create(:school, weeks: [week_with_school])
-      internship_offer = create(:weekly_internship_offer, employer: employer, weeks: [week_with_school])
-
+      # For the sake of this test, we have to create underling tables.
+      organisation = create(:organisation)
+      employer = organisation.employer
+      internship_offer_info = create(:weekly_internship_offer_info, employer_id: employer.id)
+      tutor= create(:tutor, employer_id: employer.id)
+      weeks = Week.selectable_from_now_until_end_of_school_year.last(4)
+      internship_offer = create(:weekly_internship_offer, employer: employer, organisation_id: organisation.id, weeks: [week_with_school])
+      sign_in(employer)
       visit edit_dashboard_internship_offer_path(internship_offer)
+      find('button#tabpanel-internship').click
       find(".bg-success-20[data-week-id='#{week_with_school.id}']")
       find(".bg-dark-70[data-week-id='#{week_without_school.id}']")
     end
@@ -77,21 +72,28 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
   test 'Employer can change max candidates parameter back and forth' do
     travel_to(Date.new(2022, 1, 10)) do
-      employer = create(:employer)
+      # For the sake of this test, we have to create underling tables.
+      organisation = create(:organisation)
+      employer = organisation.employer
+      internship_offer_info = create(:weekly_internship_offer_info, employer_id: employer.id)
+      tutor= create(:tutor, employer_id: employer.id)
       weeks = Week.selectable_from_now_until_end_of_school_year.last(4)
-      internship_offer = create(:weekly_internship_offer, employer: employer, weeks: weeks)
+      internship_offer = create(:weekly_internship_offer, employer: employer, weeks: weeks, organisation_id: organisation.id)
       assert_equal 1, internship_offer.max_candidates
       sign_in(employer)
       visit dashboard_internship_offers_path(internship_offer: internship_offer)
       page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
 
       click_link("Modifier")
+      find('button#tabpanel-internship').click
       find('label[for="internship_type_false"]').click # max_candidates can be set to many now
-      within('.form-group-select-max-candidates') do
-        fill_in('Nombre total d\'élèves que vous souhaitez accueillir sur l\'année scolaire', with: 4)
+      execute_script("document.querySelector('label[for=\"internship_type_false\"]').click()")
+      within(".form-group-select-max-candidates") do
+        fill_in('Nombre total d\'élèves que vous souhaitez accueillir sur l\'année scolaire', with: '4')
+        execute_script("document.getElementById('max_students_per_group_group').classList.remove('d-none')")
+        execute_script("document.getElementById('internship_offer_info_max_students_per_group').value = '2';")
       end
-      execute_script("document.getElementById('internship_offer_max_students_per_group').value = '2';")
-      click_button('Modifier l\'offre')
+      click_button('Modifier les informations de stage')
       assert_equal 4,
                   internship_offer.reload.max_candidates,
                   'faulty max_candidates'
@@ -99,11 +101,8 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
                   internship_offer.max_students_per_group,
                   'faulty max_students_per_group'
 
-      visit dashboard_internship_offers_path(internship_offer: internship_offer)
-      page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
-      click_link("Modifier")
       find('label[for="internship_type_true"]').click # max_candidates is now set to 1
-      click_button('Modifier l\'offre')
+      click_button('Modifier les informations de stage')
       assert_equal 4, internship_offer.reload.max_candidates
       assert_equal 1, internship_offer.reload.max_students_per_group
     end
