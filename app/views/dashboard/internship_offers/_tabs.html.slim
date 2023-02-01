@@ -13,7 +13,7 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
                                           aria-selected="#{is_active}"
                                           aria-controls="tabpanel-404-panel"]
         .my-auto
-          = "En cours "
+          = "Publiées "
           - if is_active
             span.badge-pill.badge-danger.small
               = badge_counter.pending_internship_offers_actions(internship_offers)
@@ -26,7 +26,7 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
                                               role="tab"
                                               aria-selected="#{is_active}"
                                               aria-controls="tabpanel-404-panel"]
-        .my-auto = "Dépubliées"
+        .my-auto = "Masquées"
 
   - is_active = controller_name == 'internship_offers' && params[:filter] == 'past'
   li
