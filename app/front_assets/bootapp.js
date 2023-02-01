@@ -5,9 +5,6 @@ import ReactOnRails from 'react-on-rails';
 import { Application } from 'stimulus';
 import { definitionsFromContext } from 'stimulus/webpack-helpers';
 
-// icons
-import 'fonts/fontawesome';
-
 Rails.start();
 const application = Application.start()
 
