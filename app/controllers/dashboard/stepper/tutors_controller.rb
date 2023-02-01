@@ -66,10 +66,6 @@ module Dashboard::Stepper
       )
       # or with standard update process
       if (params[:commit] == update_button_label)
-        # destination = dashboard_internship_offer_three_forms_interface_path(
-        #   internship_offer_id: internship_offer.id,
-        #   step: '3'
-        # )
         destination = edit_dashboard_internship_offer_path(
           internship_offer,
           step: '3'

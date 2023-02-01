@@ -72,21 +72,6 @@ module Builders
       @callback = InternshipOfferCallback.new
     end
 
-    # def preprocess_api_params(params, fallback_weeks:)
-    #   return params unless from_api?
-
-    #   opts = { params: params,
-    #            user: user,
-    #            fallback_weeks: fallback_weeks }
-
-    #   Dto::ApiParamsAdapter.new(opts)
-    #                        .sanitize
-    # end
-
-    def from_api?
-      context == :api
-    end
-
     def deal_with_max_candidates_change(params: , instance: )
       return instance unless max_candidates_will_change?(params: params, instance: instance)
 
@@ -114,12 +99,6 @@ module Builders
     def max_candidates_will_change?(params: , instance: )
       params[:max_candidates] && params[:max_candidates] != instance.max_candidates
     end
-
-    # def model
-    #   return ::InternshipOffers::Api if from_api?
-
-    #   InternshipOffer
-    # end
 
     # def duplicate?(internship_offer)
     #   Array(internship_offer.errors.details[:remote_id])

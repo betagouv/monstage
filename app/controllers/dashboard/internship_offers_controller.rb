@@ -112,11 +112,7 @@ module Dashboard
       if @internship_offer.valid?
         @internship_offer.save
       else
-        puts '================'
-        puts "@internship_offer.errors.full_messages : #{@internship_offer.errors.full_messages}"
-        puts '================'
-        puts ''
-        raise 'boom'
+        # TODO: handle errors
       end
 
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
