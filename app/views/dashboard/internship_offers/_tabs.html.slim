@@ -15,8 +15,10 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
         .my-auto
           = "Publiées "
           - if is_active
-            span.badge-pill.badge-danger.small
-              = badge_counter.pending_internship_offers_actions(internship_offers)
+            - pending_internship_applications_count = badge_counter.pending_internship_offers_actions(internship_offers)
+            - if pending_internship_applications_count.positive?
+              p.fr-badge.fr-badge--new.fr-badge--no-icon.fr-mb-0
+                = pending_internship_applications_count
 
   - is_active = controller_name == 'internship_offers' && params[:filter] == 'unpublished'
   li
@@ -55,4 +57,5 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
             | Mes conventions de stages &nbsp;
             - todos = badge_counter.pending_agreements_actions_count
             - if todos.positive?
-              span.badge-pill.badge-danger.small= todos
+              p.fr-badge.fr-badge--new.fr-badge--no-icon.fr-mb-0
+                = todos
