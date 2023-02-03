@@ -49,5 +49,5 @@ ReactOnRails.register({
   CountryPhoneSelect,
   AddressInput,
   FullAddressInput,
-  SirenInput
+  SirenInput,
 });
