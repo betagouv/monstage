@@ -21,7 +21,7 @@ class GodMailer < ApplicationMailer
   end
 
   def weekly_pending_applications_email
-    internship_applications = InternshipApplication.submitted.where('submitted_at > :date', date: 30.days.ago).where(canceled_at: nil)
+    internship_applications = InternshipApplication.submitted.where('submitted_at > :date', date: InternshipApplication::EXPIRATION_DURATION.ago).where(canceled_at: nil)
 
     @human_date = I18n.l Date.today,   format: '%d %B %Y'
 
