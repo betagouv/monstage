@@ -158,6 +158,12 @@ $sortLinkOffset: 15px;
   background-size: cover;
 }
 
+.tutor-box{
+  display: block;
+  width: 550px;
+  min-height:150px;
+}
+
 // custom dimension table for dashboard/internship_offers#index
 @include media-breakpoint-up(sm) {
   .table-dashboard-internship-offers {

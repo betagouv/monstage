@@ -6,24 +6,73 @@ module Dashboard::Stepper
     include ThreeFormsHelper
     before_action :authenticate_user!
 
+    def index
+      authorize! :index, Organisation
+      current_process = params[:current_process]
+      @title = set_title(current_process)
+      # @edit = params[:internship_offer_id].present?
+      # if @edit
+      #   raise 'boom'
+      #   @internship_offer_id = params[:internship_offer_id]
+      #   @internship_offer     = InternshipOffer.find(@internship_offer_id)
+      #   # internship_offer_tree = InternshipOfferTree.new(internship_offer: @internship_offer)
+      #                                             #  .check_or_create_underlying_objects
+      #   # Authorization step
+      #   @organisation = internship_offer_tree.organisation
+      # end
+      params[:checked_organisations_list] = true
+      @organisations = current_user.organisations.order(updated_at: :desc)
+    end
+
     # render step 1
     def new
       authorize! :create, Organisation
+      current_process = params[:current_process]
+      @title = set_title(current_process)
+      @internship_offer_id = params[:internship_offer_id]
 
+      user_has_not_checked_list = params[:checked_organisations_list].nil?
+      existing_organisations = current_user.organisations.count.positive?
+      if existing_organisations && user_has_not_checked_list
+        option = {}
+        if @internship_offer_id.present?
+          option = {
+            internship_offer_id: @internship_offer_id,
+            current_process: current_process
+          }
+        end
+        redirect_to dashboard_stepper_organisations_path(option)
+        return
+      end
       @organisation = Organisation.new
+      # @organisation = Organisation.new(organisation_params) if organisation_params&.present?
     end
 
-    # process step 1
     def create
       authorize! :create, Organisation
-
       if organisation_params[:siret].present?
         @organisation = Organisation.find_by(siret: organisation_params[:siret])
       end
-      @organisation ||= Organisation.new(organisation_params)
+      @organisation ||= Organisation.new(organisation_params.merge(db_interpolated: false))
 
       if @organisation.save
-        redirect_to new_dashboard_stepper_internship_offer_info_path(organisation_id: @organisation.id)
+        notice = "Vos informations sont enregistrées"
+        current_process = params[:organisation][:current_process]
+        if current_process.blank?
+          # internship_offer creation
+          redirect_to new_dashboard_stepper_internship_offer_info_path(organisation_id: @organisation.id),
+                      notice: notice
+        elsif current_process == 'offer_update'
+          internship_offer = InternshipOffer.find(params[:organisation][:internship_offer_id])
+          internship_offer.update(organisation_id: @organisation.id)
+
+          redirect_to edit_dashboard_internship_offer_path(
+            internship_offer,
+            internship_offer_id: params[:organisation][:internship_offer_id],
+            organisation_id: @organisation.id,
+            current_process: current_process,
+            step: '2'), notice: notice
+        end
       else
         render :new, status: :bad_request
       end
@@ -33,6 +82,8 @@ module Dashboard::Stepper
 
     # render back to step 1
     def edit
+      @current_process = params[:current_process]
+      @title = set_title(@current_process)
       @organisation = Organisation.find(params[:id])
       authorize! :edit, @organisation
     end
@@ -44,41 +95,40 @@ module Dashboard::Stepper
       @organisation = Organisation.find(params[:id])
       authorize! :update, @organisation
 
-      update_button_label = 'Modifier le siège'
-      was_interpolated = @organisation.db_interpolated?
-      @internship_offer = InternshipOffers::WeeklyFramed.find_by(organisation_id: @organisation.id)
       parameters = organisation_params.merge!(db_interpolated: false)
-      ActiveRecord::Base.transaction do
+      current_process = params[:organisation][:current_process]
+      if current_process.blank?
+        # internship_offer creation
         if @organisation.update(parameters)
-          @internship_offer = offer_tree(@internship_offer).synchronize(@organisation)
-          destination = update_destination(
-            params: params,
-            update_button_label: update_button_label,
-            internship_offer: @internship_offer
+          redirect_to new_dashboard_stepper_internship_offer_info_path(
+            organisation_id: @organisation.id
           )
-          redirect_to destination, notice: notice(was_interpolated), data:{ turbo: false}
         else
-          params[:step] = 1
-          @available_weeks = @internship_offer.available_weeks
-          render_when_error(update_button_label)
+          render :edit, status: :bad_request
+        end
+      elsif current_process == 'offer_update'
+        # internship_offer edition
+        update_button_label = 'Modifier'
+        was_interpolated = @organisation.db_interpolated?
+        @internship_offer = InternshipOffers::WeeklyFramed.find_by(organisation_id: @organisation.id)
+
+        ActiveRecord::Base.transaction do
+          if @organisation.update(parameters)
+            # @internship_offer.update(organisation_id: @organisation.id)
+            @internship_offer = offer_tree(@internship_offer).synchronize(@organisation)
+            destination = edit_dashboard_internship_offer_path( @internship_offer, step: '1', current_process: current_process)
+            redirect_to destination, notice: "Les modifications sont enregistrées.",
+                                     data:{ turbo: false }
+          else
+            params[:step] = 1
+            @available_weeks = @internship_offer.available_weeks
+            render_when_error(update_button_label)
+          end
         end
       end
     end
 
     private
-
-    def update_destination(update_button_label: , params: , internship_offer: )
-      # process for new organisations update following a back to step 1 from step 2
-      destination = new_dashboard_stepper_internship_offer_info_path(organisation_id: internship_offer.organisation.id)
-      #  or standard update process
-      if (params[:commit] == update_button_label)
-        destination = edit_dashboard_internship_offer_path(
-          internship_offer,
-          step: '1'
-        )
-      end
-      destination
-    end
 
     def organisation_params
       params.require(:organisation)
@@ -100,11 +150,11 @@ module Dashboard::Stepper
             .merge(employer_id: current_user.id)
     end
 
-    def notice(was_interpolated)
-      notice = "Les modifications sont enregistrées."
-      extended_notice = "#{notice} Les onglets 'Modifier le stage' et 'Modifier' " \
-                        "le tuteur de stage' sont maintenant disponibles en haut de page"
-      was_interpolated ? extended_notice : notice
-    end
+    # def notice(was_interpolated)
+    #   notice = "Les modifications sont enregistrées."
+    #   extended_notice = "#{notice} Les onglets 'Modifier le stage' et 'Modifier' " \
+    #                     "le tuteur de stage' sont maintenant disponibles en haut de page"
+    #   was_interpolated ? extended_notice : notice
+    # end
   end
 end

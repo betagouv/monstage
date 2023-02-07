@@ -18,6 +18,7 @@ module Dashboard::Stepper
     # process step 2
     def create
       authorize! :create, InternshipOfferInfo
+      current_process = params[:current_process]
       @internship_offer_info = InternshipOfferInfo.new(
         {}.merge(internship_offer_info_params)
           .merge(employer_id: current_user.id)
@@ -27,11 +28,12 @@ module Dashboard::Stepper
         latitude: internship_offer_info_params[:coordinates][:latitude]
       }
       @internship_offer_info.save!
-      redirect_to(new_dashboard_stepper_tutor_path(
+      @internship_offer = InternshipOffers::WeeklyFramed.find_by(internship_offer_info_id: @internship_offer_info.id)
+      redirect_to dashboard_stepper_tutors_path(
                     organisation_id: params[:organisation_id],
+                    current_process: current_process,
                     internship_offer_info_id: @internship_offer_info.id),
                   data: { turbo: false }
-      )
     rescue ActiveRecord::RecordInvalid
       @organisation = Organisation.find(params[:organisation_id])
       @available_weeks = Week.selectable_from_now_until_end_of_school_year

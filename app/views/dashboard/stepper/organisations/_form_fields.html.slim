@@ -1,8 +1,11 @@
 - show_organisation_only ||= false
+- current_process = params[:current_process]&.present? ? params[:current_process] : nil
 .row
   .col-md-6.order-md-1.order-2
     fieldset data-controller='organisation-form'
       legend Informations sur l'entreprise
+      = form.hidden_field :internship_offer_id, value: @internship_offer_id
+      = form.hidden_field :current_process, value: current_process
       = form.rg2a_explain_required_asterisk
       = form.hidden_field :manual_enter, value: false
       - if can?(:supply_offers, current_user)
@@ -13,10 +16,10 @@
           - if show_organisation_only
             .fr-alert.fr-alert--info.fr-mb-2w
                 h3.fr-alert__title Information manquante
-                p 
+                p
                   |
-                    Lors de votre dernière création d'offre de stage, nous 
-                    n'avons pas noté l'adresse du siège de votre 
+                    Lors de votre dernière création d'offre de stage, nous
+                    n'avons pas noté l'adresse du siège de votre
                     administration ou de votre entreprise. Est-ce celle-ci ?
           = react_component("SirenInput",
                             props: { resourceName: form.object_name,
@@ -27,7 +30,7 @@
                                      currentEmployerName: resource.employer_name,
                                      currentLongitude: resource&.coordinates&.longitude || 0,
                                      currentLatitude: resource&.coordinates&.latitude || 0,
-                                     edit: edit,
+                                     edit: edit_offer,
                                      railsEnv: Rails.env })
           .form-group
             .label
@@ -64,13 +67,23 @@
           = form.url_field :employer_website, class: 'form-control', placeholder: "https://"
         - if submit_button
           .mt-3
-            - if params[:internship_offer_info_id].present?
-              = link_to edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]),
-                        class: 'fr-btn fr-fi-arrow-right-line fr-btn--icon-right' do
-                = 'Suivant '
-            - else
-              = button_tag :submit, class: 'fr-btn fr-fi-arrow-right-line fr-btn--icon-right' do
-                = "Suivant "
+            - label = 'Valider'
+            - extra_class = ''
+            h6 = params[:internship_offer_info_id]
+            - if params[:internship_offer_info_id].present? # internship_offer update mode
+              -label = edit_offer ? 'Valider' : 'Modifier les informations de siège'
+            -else # internship_offer creation mode
+              -label = edit_offer ? 'Enregistrer' : 'Suivant '
+              - extra_class = 'fr-fi-arrow-right-line fr-btn--icon-right' unless edit_offer
+            = button_tag :submit, class: "fr-btn #{extra_class}" do
+              = label
+            /   = link_to edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]),
+            /             class: 'fr-btn' do
+            /     = edit ? 'Valider' : 'Modifier les informations de siège'
+            / - else # creation mode
+            /   = button_tag :submit, class: "fr-btn #{edit ? '' : 'fr-fi-arrow-right-line fr-btn--icon-right'}" do
+            /     = edit ? 'Enregistrer' : 'Suivant '
+
   - warning_block = true if warning_block.nil?
   - if warning_block
     .col-md-6.order-md-2.order-1

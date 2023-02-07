@@ -414,7 +414,7 @@ module InternshipOffers
       assert_response :redirect
     end
 
-    test 'GET #show as Employer displays internship_applications link' do
+    test 'GET #show as Employer displays internship_application\'s links' do
       published_at = 2.weeks.ago
       internship_offer = create(:weekly_internship_offer, published_at: published_at)
       sign_in(internship_offer.employer)
@@ -422,7 +422,7 @@ module InternshipOffers
       assert_response :success
       assert_template 'dashboard/internship_offers/_navigation'
 
-      assert_select 'a[href=?]', edit_dashboard_internship_offer_path(internship_offer, step: 1),
+      assert_select 'a[href=?]', edit_dashboard_internship_offer_path(internship_offer, step: 1,internship_offer_update: true),
                     { count: 1 },
                     'missing edit internship_offer link for employer'
 

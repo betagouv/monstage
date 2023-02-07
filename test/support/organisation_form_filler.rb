@@ -1,54 +1,6 @@
 module OrganisationFormFiller
-  def stub_gouv_api_requests
-    stub_request(:post, "https://api.insee.fr/token").
-      with(
-        body: {"grant_type"=>"client_credentials"},
-        headers: {
-              'Accept'=>'*/*',
-              'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'Authorization'=>"Basic #{ENV['API_SIRENE_SECRET']}",
-              'Content-Type'=>'application/x-www-form-urlencoded',
-              'Host'=>'api.insee.fr',
-              'User-Agent'=>'Ruby'
-        }).
-      to_return(status: 200, body: {access_token: 'TOKEN'}.to_json, headers: {})
-
-#---------
-    body = File.read(
-      Rails.root.join(
-        *%w[test
-            fixtures
-            files
-            api-insee-adresse-east-side-software.json]
-      )
-    )
-    stub_request(:get, "https://api.insee.fr/entreprises/sirene/V3/siret?q=siret:90943224700015").
-      with(
-        headers: {
-              'Accept'=>'application/json',
-              'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'Authorization'=>'Bearer TOKEN',
-              'Content-Type'=>'application/json',
-              'Host'=>'api.insee.fr',
-              'User-Agent'=>'Ruby'
-        }).
-      to_return(status: 200, body: body, headers: {})
-    stub_request(:get, "https://api.insee.fr/entreprises/sirene/V3/siret?q=siret:undefined").
-          with(
-            headers: {
-                  'Accept'=>'application/json',
-                  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-                  'Authorization'=>'Bearer TOKEN',
-                  'Content-Type'=>'application/json',
-                  'Host'=>'api.insee.fr',
-                  'User-Agent'=>'Ruby'
-            }).
-          to_return(status: 200, body: body, headers: {})
-  end
-
   def fill_in_organisation_form(is_public:, group:)
-    stub_gouv_api_requests
-    fill_in "Rechercher votre société dans l’Annuaire des Entreprises", with: '90943224700015', wait: 25
+    fill_in "Rechercher votre société dans l’Annuaire des Entreprises", with: '90943224700015'
     find("div.search-in-sirene ul[role='listbox'] li[id='downshift-0-item-0']").click
     find('label', text: 'Public').click if is_public  # Default is private
     select group.name, from: 'organisation_group_id' if group

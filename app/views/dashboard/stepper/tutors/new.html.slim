@@ -1,10 +1,11 @@
+- current_process = params[:current_process] || 'offer_new'
 = render 'layouts/breadcrumb',
           links: [ [dashboard_internship_offers_path, 'Mes offres de stage'],
                    ['', 'Déposer une offre de stage']]
 .row
   .col
     h1.h2.mb-3
-      | Déposer une offre de stage
+      = @title
 .row
   .col-12
     = form_with(model: @tutor,
@@ -12,9 +13,8 @@
                 internship_offer_info_id: params[:internship_offer_info_id]),
                 scope: :tutor,
                 data: { turbo: false }) do |form|
-      = render "dashboard/stepper/steps"
+      = render "dashboard/stepper/steps" unless current_process.in?(['offer_update', 'offer_duplicate'])
       = render "layouts/form_errors", resource: @tutor, resource_name: :tutor
-
       = render 'dashboard/stepper/tutors/form_fields', { resource: @tutor,
                                                          form: form,
                                                          edit: false,

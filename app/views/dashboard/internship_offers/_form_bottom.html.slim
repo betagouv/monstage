@@ -7,16 +7,18 @@
         locals: { resource: resource,
                   form: form,
                   show_organisation_only: show_organisation_only,
-                  edit: edit,
+                  internship_offer_id: internship_offer_id,
+                  edit_offer: edit_offer,
                   warning_block: true,
                   submit_button: false }
 .actions
   .row.fr-mb-8w.fr-mt-3w
     .col-8
       = form.submit button_label, class: 'fr-btn'
-    .col-4 style="display: flex;align-items: center"
-      button.fr-btn.fr-btn--secondary
-        = link_to "Retourner vers mes stages",
-                  dashboard_internship_offers_path,
-                  title: 'Retourner sur mes stages',
-                  class: 'btn-back'
+    - if current_process.in?(['update_offer', 'offer_duplicate'])
+      .col-4 style="display: flex;align-items: center"
+        button.fr-btn.fr-btn--secondary
+          = link_to "J'ai fini. Retourner vers mes stages",
+                    dashboard_internship_offers_path,
+                    title: "J'ai fini. Retourner sur mes stages",
+                    class: 'btn-back'

@@ -122,8 +122,8 @@ class Ability
     can %i[create], InternshipOfferInfo
     can %i[update edit renew], InternshipOfferInfo, employer_id: user.id
     can %i[create], Organisation
-    can %i[update edit], Organisation, employer_id: user.id
-    can %i[create update], Tutor
+    can %i[update edit index], Organisation, employer_id: user.id
+    can %i[create update index], Tutor
     can %i[create], InternshipAgreement
 
     can %i[index update], InternshipApplication
@@ -277,8 +277,8 @@ class Ability
     can %i[update edit], InternshipOfferInfo, employer_id: user.id
 
     can %i[create], Organisation
-    can %i[update edit], Organisation, employer_id: user.id
-    can %i[create edit update], Tutor , employer_id: user.id
+    can %i[update edit index], Organisation, employer_id: user.id
+    can %i[create edit update index], Tutor , employer_id: user.id
 
     can %i[index], Acl::InternshipOfferDashboard
     can %i[see_reporting_dashboard

@@ -25,7 +25,7 @@
         = "#{organisation.group.nil? ? 'Indépendant' : organisation.group.name}"
         br
         span.grey-on-grey =  "Description de l'entreprise : "
-        = "#{organisation.employer_description_rich_text.blank? ? 'Non renseigné' : organisation.employer_description_rich_text}"
+        = "#{organisation.employer_description_rich_text.blank? ? 'Non renseigné' : organisation.employer_description_rich_text.to_s}"
         br
         span.grey-on-grey = "Site web : "
         = "#{organisation.employer_website.blank? ? 'Non renseigné' : organisation.employer_website}"

@@ -139,7 +139,7 @@ export default function SirenInput({
 
   return (
     <div className="form-group" id="input-siren">
-      <div className="container-downshift">
+      <div className="container-downshift" id="container-downshift-address">
         {
           (manualEnter) ?
             (<SimpleAddressInput
@@ -160,17 +160,21 @@ export default function SirenInput({
           />)
           :
           (downshiftWasUsed() ?
-              (<CompanySummary
-                resourceName={resourceName}
-                addressTypeLabel="
-                Adresse de l'entreprise ou de l'administration"
-                employerName={organisationEmployerName}
-                zipcode={organisationZipcode}
-                city={organisationCity}
-                street={organisationStreet}
-                siret={organisationSiret}
-                resetSearch={resetSearch}
-              />)
+              (<div>
+                <CompanySummary
+                  resourceName={resourceName}
+                  addressTypeLabel="
+                  Adresse de l'entreprise ou de l'administration"
+                  employerName={organisationEmployerName}
+                  zipcode={organisationZipcode}
+                  city={organisationCity}
+                  street={organisationStreet}
+                  siret={organisationSiret}
+                />
+                <div className='text-right fr-mr-8w'>
+                  <a href='#' onClick={resetSearch}>... ou faire une recherche</a>
+                </div>
+              </div>)
             :
             (
               <Downshift

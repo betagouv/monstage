@@ -1,10 +1,10 @@
 - content_for :page_title, "#{t(".page_title", name: @internship_offer.title)} | Monstage"
 
-h1.h2.my-3 Modifier une offre de stage
+h1.h2.my-3 = @title
 - chosen_tab = params[:step].to_i
 - organisation = @organisation || @internship_offer.organisation.reload
 - show_organisation_only = organisation.db_interpolated?
-.fr-tabs
+#organisation-list.fr-tabs
   ul.fr-tabs__list[role="tablist" aria-label="[Stages | Modifier les informations de stage"]
     li
       button#tabpanel-headquarters.fr-tabs__tab [tabindex="#{chosen_tab == 1 ? '0' : '-1'}"
@@ -33,58 +33,41 @@ h1.h2.my-3 Modifier une offre de stage
         tabindex="0"]
     / Organisation
     p
-      = form_with( model: organisation,
-                    url: dashboard_stepper_organisation_path(organisation),
-                    scope: :organisation,
-                    method: :patch,
-                    data: { turbo: false }) do |form|
-        = render partial: '/dashboard/internship_offers/form_bottom',
-                locals: { resource: @organisation,
-                          resource_name: :organisation,
-                          show_organisation_only: show_organisation_only,
-                          form: form,
-                          edit: true,
-                          button_label: "Modifier le siège"}
-  div [id="tabpanel-internship-panel"
-        class="fr-tabs__panel #{chosen_tab == 2 ? 'fr-tabs__panel--selected' : ''} #{show_organisation_only == true ? "d-none" : ''}"
-        role="tabpanel"
-        aria-labelledby="tabpanel-internship"
-        tabindex="0"]
-    / InternshipOfferInfo
-    p
-      - internship_offer_info = @internship_offer_info || @internship_offer.internship_offer_info
-      = form_with( model: internship_offer_info,
-                    url: dashboard_stepper_internship_offer_info_path(internship_offer_info),
-                    scope: :internship_offer_info,
-                    method: :patch,
-                    data: { turbo: false }) do |form|
-        = render partial: '/dashboard/internship_offers/form_bottom',
-                locals: { resource: internship_offer_info,
-                          resource_name: :internship_offer_info,
-                          show_organisation_only: show_organisation_only,
-                          form: form,
-                          edit: true,
-                          button_label: "Modifier les informations de stage"}
-
-  div [id="tabpanel-tutor-panel"
-        class="fr-tabs__panel #{chosen_tab == 3 ? 'fr-tabs__panel--selected' : ''} #{show_organisation_only == 'true'? "d-none" : ''}"
-        role="tabpanel"
-        aria-labelledby="tabpanel-tutor"
-        tabindex="0"]
-    / Tutor
-    p
-      - tutor = @internship_offer.tutor
-      = form_with( model: tutor,
-                   url: dashboard_stepper_tutor_path(id: tutor.id),
-                   scope: :tutor,
-                   method: :patch,
-                   data: { turbo: false }) do |form|
-
-        = render partial: '/dashboard/internship_offers/form_bottom',
-                  locals: { resource: tutor,
-                            resource_name: :tutor,
+      - options = {internship_offer_id: @internship_offer.id}
+      - options.merge!({current_process: @current_process}) if @current_process == "offer_update"
+      = render partial: 'dashboard/stepper/organisations/index', locals: options
+  - unless show_organisation_only
+    div [id="tabpanel-internship-panel"
+          class="fr-tabs__panel #{chosen_tab == 2 ? 'fr-tabs__panel--selected' : ''} #{show_organisation_only == true ? "d-none" : ''}"
+          role="tabpanel"
+          aria-labelledby="tabpanel-internship"
+          tabindex="0"]
+      / InternshipOfferInfo
+      p
+        - internship_offer_info = @internship_offer_info || @internship_offer.internship_offer_info
+        = form_with( model: internship_offer_info,
+                      url: dashboard_stepper_internship_offer_info_path(internship_offer_info),
+                      scope: :internship_offer_info,
+                      method: :patch,
+                      data: { turbo: false }) do |form|
+          = render partial: '/dashboard/internship_offers/form_bottom',
+                  locals: { resource: internship_offer_info,
+                            resource_name: :internship_offer_info,
                             show_organisation_only: show_organisation_only,
-                            edit: true,
                             form: form,
-                            button_label: "Modifier les informations du tuteur"}
+                            edit_offer: true,
+                            current_process: @current_process,
+                            internship_offer_id: @internship_offer&.id,
+                            button_label: "Modifier les informations de stage"}
+
+    div [id="tabpanel-tutor-panel"
+          class="fr-tabs__panel #{chosen_tab == 3 ? 'fr-tabs__panel--selected' : ''} #{show_organisation_only == 'true'? "d-none" : ''}"
+          role="tabpanel"
+          aria-labelledby="tabpanel-tutor"
+          tabindex="0"]
+      / Tutor
+      p
+        - options = {internship_offer_id: @internship_offer.id}
+        - options.merge!({current_process: @current_process}) if @current_process.in?(['offer_update', 'offer_duplicate'])
+        = render partial: 'dashboard/stepper/tutors/index', locals: options
 

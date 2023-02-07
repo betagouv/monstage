@@ -85,13 +85,18 @@ Rails.application.routes.draw do
     end
 
     resources :internship_offers, except: %i[show] do
+      member do
+        post :duplicate
+        patch :reuse_organisation
+        patch :reuse_tutor
+      end
       resources :internship_applications, only: %i[update index], module: 'internship_offers'
     end
 
     namespace :stepper do
-      resources :organisations,          only: %i[create new edit update]
+      resources :organisations,          only: %i[create new edit update index]
       resources :internship_offer_infos, only: %i[create new edit update]
-      resources :tutors,                 only: %i[create new edit update]
+      resources :tutors,                 only: %i[create new edit update index]
     end
 
     namespace :students, path: '/:student_id/' do

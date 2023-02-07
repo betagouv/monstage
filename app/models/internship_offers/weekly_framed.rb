@@ -203,5 +203,13 @@ module InternshipOffers
         tutor_role: tutor.tutor_role
       }
     end
+
+    def tree
+      InternshipOfferTree.new(internship_offer: self)
+    end
+
+    def check_or_create_underlying_objects
+      tree.check_or_create_underlying_objects
+    end
   end
 end

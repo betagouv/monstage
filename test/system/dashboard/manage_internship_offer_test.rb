@@ -108,25 +108,28 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     end
   end
 
-  test 'Employer can renew an old internship offer' do
-    employer = create(:employer)
-    older_weeks = [Week.of_previous_school_year.first]
-    old_internship_offer = create(
-      :weekly_internship_offer,
-      employer: employer,
-      weeks: older_weeks
-    )
-    sign_in(employer)
-    visit dashboard_internship_offers_path(internship_offer: old_internship_offer, filter: 'past')
-    page.find("a[data-test-id=\"#{old_internship_offer.id}\"]").click
-    find('.test-renew-button').click
-    assert_selector('h1', text: "Renouveler l'offre pour l'année en cours")
-    click_button("Renouveler l'offre")
-    assert_selector(
-      "#alert-text",
-      text: "Votre offre de stage a été renouvelée pour cette année scolaire."
-    )
-  end
+  # ==================================================
+  # This functionality is now off. It is to be redesigned in the future.
+  # ==================================================
+  # test 'Employer can renew an old internship offer' do
+  #   employer = create(:employer)
+  #   older_weeks = [Week.of_previous_school_year.first]
+  #   old_internship_offer = create(
+  #     :weekly_internship_offer,
+  #     employer: employer,
+  #     weeks: older_weeks
+  #   )
+  #   sign_in(employer)
+  #   visit dashboard_internship_offers_path(internship_offer: old_internship_offer, filter: 'past')
+  #   page.find("a[data-test-id=\"#{old_internship_offer.id}\"]").click
+  #   find('.test-renew-button').click
+  #   assert_selector('h1', text: "Renouveler l'offre pour l'année en cours")
+  #   click_button("Renouveler l'offre")
+  #   assert_selector(
+  #     "#alert-text",
+  #     text: "Votre offre de stage a été renouvelée pour cette année scolaire."
+  #   )
+  # end
 
   test 'Employer can duplicate an internship offer' do
     employer = create(:employer)
@@ -140,12 +143,10 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     visit dashboard_internship_offers_path(internship_offer: current_internship_offer)
     page.find("a[data-test-id=\"#{current_internship_offer.id}\"]").click
     find(".test-duplicate-button").click
-    find('h1', text: "Dupliquer une offre")
-    click_button('Dupliquer l\'offre')
+    find('h1', text: "Dupliquer une offre de stage")
     assert_selector(
       "#alert-text",
-      text: "L'offre de stage a été dupliquée en tenant " \
-            "compte de vos éventuelles modifications."
+      text: "L'offre de stage a été dupliquée, mais n'est pas encore publiée."
     )
   end
 

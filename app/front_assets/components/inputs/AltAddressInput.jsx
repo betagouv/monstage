@@ -135,7 +135,7 @@ export default function AltAddressInput({
   return (
     <div>
       <div className="form-group" id="test-input-full-address">
-        <div className="container-downshift">
+        <div className="container-downshift" id='container-downshift-address'>
           {
             (manualEnter) ?
               (<SimpleAddressInput
@@ -153,16 +153,20 @@ export default function AltAddressInput({
               />)
               :
               (downshiftWasUsed() ?
-                (<CompanySummary
-                  addressTypeLabel = {addressTypeLabel}
-                  employerFieldLabel={employerFieldLabel}
-                  resourceName={resourceName}
-                  employerName={employerName}
-                  zipcode={zipcode}
-                  city={city}
-                  street={street}
-                  resetSearch={resetSearch}
-                />)
+                (<div>
+                  <CompanySummary
+                    addressTypeLabel = {addressTypeLabel}
+                    employerFieldLabel={employerFieldLabel}
+                    resourceName={resourceName}
+                    employerName={employerName}
+                    zipcode={zipcode}
+                    city={city}
+                    street={street}
+                  />
+                  <div className='text-right fr-mr-8w'>
+                    <a href='#' onClick={resetSearch}>... ou faire une recherche</a>
+                  </div>
+                 </div>)
                 :
                 (
                   <Downshift

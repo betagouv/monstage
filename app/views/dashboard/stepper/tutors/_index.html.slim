@@ -1,0 +1,68 @@
+- internship_offer_id = params[:internship_offer_id]
+- current_process = params[:current_process]
+- internship_offer_option = {}
+- internship_offer_option.merge!({ internship_offer_id: @internship_offer.id, current_process: current_process }) if current_process
+= render "dashboard/stepper/steps" unless current_process || internship_offer_id
+- unless @tutors.size.zero?
+  h4.fr-my-2w = "Tuteurs déjà enregistrés"
+  .d-flex
+    - @tutors.each do |tutor|
+      .flex-fill
+        div class="tutor-box fr-mb-2w fr-mr-2w border #{@internship_offer&.tutor&.id == tutor.id ? 'border-primary' : 'border-grey'}"
+          .row.fr-mt-2w.align-self-center
+            .col-4
+              p.fr-ml-1w.text-left
+                = link_to "Modifier",
+                          edit_dashboard_stepper_tutor_path(tutor, internship_offer_option),
+                          class: 'fr-btn fr-ml-1w fr-btn--secondary fr-btn--sm',
+                          id: "update-tutor-btn-#{tutor.id}"
+                / offer creation
+                div.fr-mb-1v
+                - if @internship_offer.nil?
+                  = link_to "Choisir",
+                            new_dashboard_stepper_internship_offer_info_path({tutor_id: tutor.id}.merge(internship_offer_option)),
+                            class: 'fr-btn fr-ml-2w fr-btn--sm',
+                            id: "reuse-tutor-btn-#{tutor.id}"
+                / offer edition
+                - else
+                  - if @internship_offer.tutor_id == tutor.id
+                      p.fr-badge.fr-badge--info.fr-px-2w.fr-py-2v.fr-ml-2w
+                        | Sélectionné
+                  - else
+                    = form_with model: @internship_offer,
+                            data: { turbo: false},
+                            method: :patch,
+                            url: reuse_tutor_dashboard_internship_offer_path(@internship_offer, tutor_id: tutor.id) do |form|
+                      input.fr-btn.fr-ml-2w.fr-btn--sm [type="submit"
+                                                        id="reuse-btn-tutor-#{tutor.id}"
+                                                        value="Choisir"]
+            .col-8
+              .fr-highlight
+                p.fr-text
+                  = tutor.tutor_name
+                  br
+                  = tutor.tutor_role
+                  br
+                  = tutor.tutor_email
+                  br
+                  = tutor.tutor_phone
+                  br
+  p.fr-my-4w ou bien
+
+
+.actions
+  .row.fr-mb-8w.fr-mt-3w
+    .col-8
+      - option = { checked_tutors_list: true }
+      - option.merge!(internship_offer_id: @internship_offer.id, current_process: current_process) if current_process
+      = link_to "Ajouter un tuteur",
+                new_dashboard_stepper_tutor_path(option),
+                class: 'fr-btn fr-icon-add-line fr-btn fr-btn--icon-left',
+                id: 'add-organisation-btn'
+    .col-4 style="display: flex;align-items: center"
+      - if current_process.in?(['update_offer', 'offer_duplicate' ])
+        button.fr-btn.fr-btn--secondary
+          = link_to "J'ai fini. Retourner vers mes stages",
+                    dashboard_internship_offers_path,
+                    title: 'Retourner sur mes stages',
+                    class: 'btn-back'

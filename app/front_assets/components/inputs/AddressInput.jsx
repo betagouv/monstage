@@ -74,7 +74,7 @@ export default function AddressInput({
   return (
     <div>
       <div className="form-group" id="test-input-full-address">
-        <div className="container-downshift">
+        <div className="container-downshift" id="container-downshift-address"> 
           <Downshift
             initialInputValue={fullAddress}
             onChange={setFullAddressComponents}

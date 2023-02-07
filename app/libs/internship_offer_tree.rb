@@ -1,8 +1,11 @@
 # This class purpose is the following :
 # --------------------------
 # some attributes are specific to the internship_offer table,
-# all attrbutes of the internship_offer_info table , organisation table and
-# tutor table are also attributes of the internship_offer table,
+# but all attributes of
+# - internship_offer_info table ,
+# - organisation table and
+# - tutor table
+# are also attributes of the internship_offer table,
 # these common attributes are to be updated in their root table,
 # and then synchronized with the internship_offer table.
 class InternshipOfferTree
@@ -15,17 +18,36 @@ class InternshipOfferTree
       internship_offer.reload
       internship_offer.update(db_interpolated: true) if interpolated
     end
+    self
   end
 
   def synchronize(instance)
+    # instance is either an organisation or an internship_offer_info or a tutor
+    raise 'misuse of synchronize with an internhisp_offer' if instance.is_a?(InternshipOffer)
+
     instance.synchronize(internship_offer)
     return internship_offer
   end
 
+  def switch_organisation(target_organisation: )
+    internship_offer.update(organisation_id: target_organisation, db_interpolated: false)
+    organisation = internship_offer.organisation
+    organisation.update(db_interpolated: false)
+    organisation.synchronize(internship_offer)
+    internship_offer.reload
+  end
+
+  def switch_tutor(new_tutor_id: )
+    internship_offer.update(tutor_id: new_tutor_id)
+    tutor = internship_offer.tutor
+    tutor.synchronize(internship_offer)
+    internship_offer.reload
+  end
+
   attr_accessor :internship_offer, :internship_offer_info, :organisation, :tutor
 
-  private
 
+  private
 
   def initialize(internship_offer:)
     @internship_offer = internship_offer

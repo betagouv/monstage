@@ -2,6 +2,7 @@
 
 module Dashboard
   class InternshipOffersController < ApplicationController
+    include ThreeFormsHelper
     before_action :authenticate_user!
     helper_method :order_direction
 
@@ -14,39 +15,99 @@ module Dashboard
     end
 
     # duplicate submit
-    def create
-      internship_offer_builder.create(params: internship_offer_params) do |on|
-        on.success do |created_internship_offer|
-          success_message = if params[:commit] == 'Renouveler l\'offre'
-                              'Votre offre de stage a été renouvelée pour cette année scolaire.'
-                            else
-                              "L'offre de stage a été dupliquée en tenant compte" \
-                              ' de vos éventuelles modifications.'
-                            end
-          redirect_to(internship_offer_path(created_internship_offer),
-                      flash: { success: success_message })
-        end
-        on.failure do |failed_internship_offer|
-          @internship_offer = failed_internship_offer || InternshipOffer.new
-          @available_weeks = Week.selectable_from_now_until_end_of_school_year
-          render :new, status: :bad_request
-        end
-      end
-    rescue ActionController::ParameterMissing
-      @internship_offer = InternshipOffer.new
-      @available_weeks = Week.selectable_from_now_until_end_of_school_year
-      render :new, status: :bad_request
-    end
+    # TODO see if it is used with apis
+    # def create
+    #   raise 'not used anymore'
+    #   internship_offer_builder.create(params: internship_offer_params) do |on|
+    #     on.success do |created_internship_offer|
+    #       success_message = if params[:commit] == 'Renouveler l\'offre'
+    #                           'Votre offre de stage a été renouvelée pour cette année scolaire.'
+    #                         else
+    #                           "L'offre de stage a été dupliquée en tenant compte" \
+    #                           ' de vos éventuelles modifications.'
+    #                         end
+    #       redirect_to(internship_offer_path(created_internship_offer),
+    #                   flash: { success: success_message })
+    #     end
+    #     on.failure do |failed_internship_offer|
+    #       @internship_offer = failed_internship_offer || InternshipOffer.new
+    #       @available_weeks = Week.selectable_from_now_until_end_of_school_year
+    #       render :new, status: :bad_request
+    #     end
+    #   end
+    # rescue ActionController::ParameterMissing
+    #   @internship_offer = InternshipOffer.new
+    #   @available_weeks = Week.selectable_from_now_until_end_of_school_year
+    #   render :new, status: :bad_request
+    # end
 
     def edit
-      @internship_offer     = InternshipOffer.find(params[:id])
-      internship_offer_tree = InternshipOfferTree.new(internship_offer: @internship_offer)
-                                                 .check_or_create_underlying_objects
+      @current_process = params[:current_process].present? ? params[:current_process] : "offer_update"
+      @title = set_title(@current_process)
+      @organisations = current_user.organisations
+      @tutors = current_user.tutors
+      @internship_offer = InternshipOffer.find(params[:id])
       authorize! :update, @internship_offer
+
+      @internship_offer.check_or_create_underlying_objects
       @available_weeks = @internship_offer.available_weeks
-      url_params = { internship_offer_id: @internship_offer.id,
-                     step: params[:step] || '1' }
       @organisation = @internship_offer.organisation
+    end
+
+
+    def reuse_organisation
+      @internship_offer = InternshipOffer.find(params[:id])
+      authorize! :update, @internship_offer
+
+      @internship_offer = @internship_offer.tree
+                                           .switch_organisation(target_organisation: params[:organisation_id])
+      redirect_to edit_dashboard_internship_offer_path(
+                    @internship_offer.reload,
+                    current_process: "offer_update",
+                    step: 2,
+                    organisation_id: @internship_offer.reload.organisation.id),
+                  notice: "Les informations de siège ont été prises en compte."
+    end
+
+    def duplicate
+      @internship_offer_reference = InternshipOffer.find(params[:id])
+      @internship_offer_reference = @internship_offer_reference.tree
+                                                               .check_or_create_underlying_objects
+                                                               .internship_offer
+
+      # create a new internship_offer_info only and use reference to
+      # organisation an tutor then with the same attributes as the reference
+      new_internship_offer_info_params = InternshipOfferInfo.attributes_from_internship_offer(
+        internship_offer_id: @internship_offer_reference.id
+      )
+      new_internship_offer_info_params.merge!(
+        remaining_seats_count: @internship_offer_reference.max_candidates
+      )
+      new_internship_offer_info = ::InternshipOfferInfo.new(new_internship_offer_info_params)
+      new_internship_offer_info.save!
+
+      parameters = {}
+      [Organisation, InternshipOfferInfo, Tutor].each do |klass|
+        ref_params = klass.attributes_from_internship_offer(
+          internship_offer_id: @internship_offer_reference.id
+        )
+        parameters.merge!(ref_params)
+      end
+      parameters.merge!({
+        organisation_id: @internship_offer_reference.organisation_id,
+        internship_offer_info_id: new_internship_offer_info.id,
+        tutor_id: @internship_offer_reference.tutor_id,
+        published_at: nil,
+        remaining_seats_count: @internship_offer_reference.max_candidates
+      })
+      @internship_offer = ::InternshipOffers::WeeklyFramed.new(parameters)
+      @internship_offer.employer = current_user
+      @internship_offer.save!
+      redirect_to edit_dashboard_internship_offer_path(
+        @internship_offer,
+        current_process: "offer_duplicate",
+        step: 1
+      ), notice: "L'offre de stage a été dupliquée, mais n'est pas encore publiée."
     end
 
     def update
@@ -100,6 +161,7 @@ module Dashboard
 
     # duplicate form
     def new
+      raise 'new internship_offer'
       authorize! :create, InternshipOffer
       internship_offer = current_user.internship_offers.find(params[:duplicate_id]).duplicate
 

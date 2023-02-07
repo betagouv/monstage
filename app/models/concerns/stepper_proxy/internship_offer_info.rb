@@ -37,6 +37,8 @@ module StepperProxy
       has_many :weeks, through: :internship_offer_info_weeks
       has_rich_text :description_rich_text
 
+      attr_accessor :current_process
+
       def is_individual?
         max_students_per_group == 1
       end
@@ -91,16 +93,17 @@ module StepperProxy
         internship_offer = InternshipOffers::WeeklyFramed.find_by(id: internship_offer_id)
         return {} if internship_offer.nil?
 
+        description_rich_text = internship_offer.description_rich_text.present? ? internship_offer.description_rich_text.to_s : internship_offer.description
         {
           title: internship_offer.title,
           employer_name: internship_offer.employer_name,
           employer_id: internship_offer.employer_id,
-          description_rich_text: (internship_offer.description_rich_text.present? ? internship_offer.description_rich_text.to_s : internship_offer.description),
+          description_rich_text: description_rich_text,
           max_candidates: internship_offer.max_candidates,
           max_students_per_group: internship_offer.max_students_per_group,
           description: internship_offer.description,
-          sector_id: internship_offer.sector.id,
-          school_id: internship_offer&.school&.id,
+          sector_id: internship_offer.sector_id,
+          school_id: internship_offer.school_id,
           street: internship_offer.street,
           city: internship_offer.city,
           zipcode: internship_offer.zipcode,
@@ -109,7 +112,7 @@ module StepperProxy
           daily_lunch_break: internship_offer.daily_lunch_break,
           weekly_lunch_break: internship_offer.weekly_lunch_break,
           coordinates: internship_offer.coordinates,
-          week_ids: internship_offer.week_ids
+          week_ids: internship_offer.week_ids,
         }
       end
 

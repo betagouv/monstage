@@ -12,6 +12,7 @@ module StepperProxy
       validates :tutor_role,
                 length: { minimum: 2, maximum: 150} ,
                 unless: -> { tutor_role.blank? }
+      attr_accessor :current_process
 
       def self.attributes_from_internship_offer(internship_offer_id:)
         internship_offer = InternshipOffer.find_by(id: internship_offer_id)
@@ -28,7 +29,7 @@ module StepperProxy
 
       def synchronize(internship_offer)
         parameters = InternshipOffers::WeeklyFramed.preprocess_tutor_to_params(self)
-        internship_offer.update(parameters)
+        internship_offer.update(parameters.merge(tutor_id: id))
         internship_offer
       end
     end

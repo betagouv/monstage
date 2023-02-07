@@ -1,0 +1,79 @@
+- internship_offer_id = params[:internship_offer_id]
+- current_process = params[:current_process]&.present? ? params[:current_process] : nil
+- internship_offer_option = {}
+- internship_offer_option.merge!({ internship_offer_id: @internship_offer.id, current_process: current_process }) if current_process
+
+= render "dashboard/stepper/steps" unless current_process || internship_offer_id
+- unless @organisations.size.zero?
+  h4.fr-my-2w = "Sièges de sociétés ou administrations déjà enregistrées"
+  - @organisations.each do |organisation|
+    div class="border fr-mb-2w #{@internship_offer&.organisation&.id == organisation.id ? 'border-primary' : 'border-grey'}"
+      .row.fr-mt-2w
+        .col-4
+          .fr-mr-2w.fr-p-2w.fr-ml-n3w
+            = react_component("CompanySummary", props: { addressTypeLabel: "",
+                                                         employerFieldLabel: "test",
+                                                         resourceName: "organisation",
+                                                         employerName: organisation.employer_name,
+                                                         zipcode: organisation.zipcode,
+                                                         city: organisation.city || "",
+                                                         siret: organisation.siret || "",
+                                                         street: organisation&.street || "" })
+          p.fr-ml-1w
+            = link_to "Modifier",
+                      edit_dashboard_stepper_organisation_path(organisation, internship_offer_option),
+                      class: 'fr-btn fr-ml-2w fr-btn--secondary fr-btn--sm',
+                      id: "update-organisation-btn-#{organisation.id}"
+            / offer creation
+            - if @internship_offer.nil?
+              = link_to "Choisir (création)",
+                        new_dashboard_stepper_internship_offer_info_path({organisation_id: organisation.id}.merge(internship_offer_option)),
+                        class: 'fr-btn fr-ml-2w fr-btn--sm',
+                        id: "reuse-organisation-btn-#{organisation.id}"
+            / offer edition
+            - else
+              - if @internship_offer.organisation_id == organisation.id
+                p.fr-badge.fr-badge--info.fr-px-2w.fr-py-2v.fr-ml-2w
+                  | Sélectionné
+              - else
+                = form_with model: @internship_offer,
+                            data: { turbo: false},
+                            method: :patch,
+                            url: reuse_organisation_dashboard_internship_offer_path(@internship_offer, organisation_id: organisation.id) do |form|
+
+                  input.fr-btn.fr-ml-2w.fr-btn--sm [type="submit"
+                                                    id="reuse-btn-organisation-#{organisation.id}"
+                                                    value="Choisir"]
+
+        .col-8
+          p.fr-text--lg
+            span.grey-on-grey = "Secteur : "
+            = "#{organisation.is_public ? 'Public' : 'Privé'}"
+            br
+            span.grey-on-grey = "Groupe ou Institution de tutelle : "
+            = "#{organisation.group.nil? ? 'Indépendant' : organisation.group.name}"
+            br
+            span.grey-on-grey = "Description de l'entreprise : "
+            = "#{organisation.employer_description_rich_text.blank? ? 'Non renseigné' : organisation.employer_description_rich_text.body.to_s}"
+            br
+            span.grey-on-grey = "Site web : "
+            = "#{organisation.employer_website.blank? ? 'Non renseigné' : organisation.employer_website}"
+
+  p.fr-my-4w ou bien
+
+.actions
+  .row.fr-mb-8w.fr-mt-3w
+    .col-8
+      - option = { checked_organisations_list: true }
+      - option.merge!(internship_offer_id: @internship_offer.id, current_process: current_process) if current_process
+      = link_to "Ajouter une adresse de siège",
+                new_dashboard_stepper_organisation_path(option),
+                class: 'fr-btn fr-icon-add-line fr-btn fr-btn--icon-left',
+                id: 'add-organisation-btn'
+    .col-4 style="display: flex;align-items: center"
+      - if current_process.in?(['update_offer', 'offer_duplicate' ])
+        button.fr-btn.fr-btn--secondary
+          = link_to "J'ai fini. Retourner vers mes stages",
+                    dashboard_internship_offers_path,
+                    title: 'Retourner sur mes stages',
+                    class: 'btn-back'

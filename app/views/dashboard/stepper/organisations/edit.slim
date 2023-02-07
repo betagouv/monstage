@@ -3,13 +3,15 @@
                    ['', 'Déposer une offre de stage']]
 .row
   .col-12
-      h1.h2.mb-3 Déposer une offre de stage
+    h1.h2.mb-3 = @title
 
 .row
   .col-12
     = form_with model: @organisation,
+                data: { turbo: false },
+                method: :patch,
                 url: dashboard_stepper_organisation_path(id: @organisation.id) do |form|
-      = render "dashboard/stepper/steps"
+      = render "dashboard/stepper/steps" unless @current_process == "offer_update"
       = render "layouts/form_errors",
                resource: @organisation,
                resource_name: :internship_offer
@@ -17,5 +19,5 @@
                { resource: @organisation,
                  form: form,
                  submit_button: true,
-                 edit: true,
+                 edit_offer: true,
                  warning_block: true }

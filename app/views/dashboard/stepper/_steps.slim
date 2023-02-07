@@ -5,7 +5,7 @@
         .nav-link.trailing-nav-link-icon.nav-link-icon-with-label.nav-link-icon-with-label-success
           span.d-inline-flex.align-items-center.nav-link-icon
             span.number
-              - if @internship_offer_info&.present? || @tutor&.present?
+              - if @organisation&.present?
                 i.fa.fa-check
               - else
                 | 1
@@ -15,7 +15,7 @@
         .nav-link.nav-link-icon-with-label class=('nav-link-icon-with-label-success' if (@internship_offer_info.present? || @tutor.present? ))
           span.d-inline-flex.align-items-center.nav-link-icon
             span.number
-              - if @internship_offer&.present? || @tutor&.present?
+              - if @internship_offer_info&.present?
                 i.fa.fa-check
               - else
                 | 2

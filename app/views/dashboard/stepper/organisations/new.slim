@@ -1,18 +1,27 @@
+- organisation_edit = current_request?(controller: 'organisations', action: 'edit')
+- internship_offer_edit = params[:internship_offer_id]&.present?
+- current_process = params[:current_process] || 'offer_new'
 = render 'layouts/breadcrumb',
           links: [ [dashboard_internship_offers_path, 'Mes offres de stage'],
                    ['', 'Déposer une offre de stage']]
 .row
   .col
-    h1.h2.mb-3 Déposer une offre de stage
+    h1.h2.mb-3 = @title
+    h2 = "edit offer" if current_process.in?(["offer_update", "offer_duplicate"])
+    h2 = "create offer" unless current_process.in?(["offer_update", "offer_duplicate"])
+    h3 = "edit organisation" if organisation_edit
+    h3 = "create organisation" unless organisation_edit
 
 = form_with model: @organisation,
             url: dashboard_stepper_organisations_path(@organisation),
             data: { turbo: false },
             method: :post do |form|
-  = render "dashboard/stepper/steps"
+  = render "dashboard/stepper/steps" unless current_process.in?(["update_process", "offer_duplicate"])
   = render "layouts/form_errors", resource: @organisation, resource_name: :internship_offer
   = render 'dashboard/stepper/organisations/form_fields', { resource: @organisation,
                                                             warning_block: true,
                                                             form: form,
-                                                            edit: false,
+                                                            edit_offer: organisation_edit,
+                                                            current_process: current_process,
+                                                            internship_offer_id: params[:internship_offer_id] ,
                                                             submit_button: true }

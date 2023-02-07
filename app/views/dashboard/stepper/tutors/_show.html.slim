@@ -1,3 +1,5 @@
+/ Remove me
+h1 | NOT USED
 .row.fr-pl-2w
   .fr-col-12
     .fr-text--lead.fr-mb-2w Informations sur l'entreprise ou l'administration
@@ -23,7 +25,7 @@
         = "Groupe ou Institution de tutelle : #{organisation.group.nil? ? 'Indépendant' : organisation.group.name}"
         br
         = "Description de l'entreprise : " \
-          "#{organisation.employer_description_rich_text.blank? ? 'Non renseigné' : organisation.employer_description_rich_text}"
+          "#{organisation.employer_description_rich_text.blank? ? 'Non renseigné' : organisation.employer_description_rich_text.to_s}"
         br
         = "Site web : #{organisation.employer_website.blank? ? 'Non renseigné' : organisation.employer_website}"
 .row.fr-pl-2w

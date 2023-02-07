@@ -51,7 +51,6 @@ module ApplicationHelper
     controller.controller_name.to_s == controller_name.to_s
   end
 
-
   def page_title
     if content_for?(:page_title)
       content_for :page_title
@@ -62,5 +61,17 @@ module ApplicationHelper
       dyn_page_name = t(i18n_key, default: default)
       "#{dyn_page_name} | #{default}" unless dyn_page_name == default
     end
+  end
+
+  # TODO check use of this method
+  def current_request?(*requests)
+    # use : current_request?(controller: 'users', action: ['new', 'create'])
+    requests.each do |request|
+      if request[:controller] == controller.controller_name
+        return true if request[:action].is_a?(Array) && request[:action].include?(controller.action_name)
+        return true if request[:action] == controller.action_name
+      end
+    end
+    false
   end
 end

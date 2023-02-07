@@ -39,6 +39,8 @@ module StepperProxy
       before_validation :replicate_employer_description_rich_text_to_raw_field, unless: :from_api?
       before_validation :clean_siret
 
+      attr_accessor :current_process
+
       def replicate_employer_description_rich_text_to_raw_field
         self.employer_description = employer_description_rich_text.to_plain_text if employer_description_rich_text.present?
       end
@@ -79,42 +81,19 @@ module StepperProxy
 
       def synchronize(internship_offer)
         extra_parameters = {
-          street: street,
-          zipcode: zipcode,
-          city: city,
           organisation_id: id,
-          coordinates: coordinates,
+          employer_description: employer_description,
           db_interpolated: db_interpolated
         }
         parameters = InternshipOffers::WeeklyFramed.preprocess_organisation_to_params(self)
-                                                  .merge(extra_parameters)
+                                                   .merge(extra_parameters)
         internship_offer.update(parameters)
         internship_offer
       end
 
-      # def update_internship_offer
-      #   puts '================'
-      #   puts "self.class.name : #{self.class.name}"
-      #   puts "self.organisation_id : #{self.attributes}"
-      #   puts '================'
-      #   puts ''
-      #   id = (self.class.name == 'Organisation') ? self.id : self.organisation_id
-      #   organisation = ::Organisation.find_by(id: id)
-      #   internship_offer = InternshipOffers::WeeklyFramed.find_by(organisation_id: id)
-      #   if internship_offer.present?
-      #     internship_offer.organisation_id = organisation.id
-      #     internship_offer.employer_name = organisation.employer_name
-      #     internship_offer.employer_website = organisation.employer_website
-      #     internship_offer.employer_description = organisation.employer_description
-      #     internship_offer.employer_description_rich_text = organisation.employer_description
-      #     internship_offer.is_public = organisation.is_public
-      #     internship_offer.group_id = organisation.group_id
-      #     internship_offer.siret = organisation.siret
-      #     internship_offer.employer_manual_enter = organisation.manual_enter
-
-      #     internship_offer.save!
-      #   end
-      # end
+      def presenter
+        @presenter ||= Presenters::Dashboard::Organisation.new(self)
+      end
     end
   end
 end
