@@ -6,6 +6,7 @@ class InternshipApplication < ApplicationRecord
   include StiPreload
   include AASM
   PAGE_SIZE = 10
+  EXPIRATION_DURATION = 45.days
 
   belongs_to :internship_offer, polymorphic: true
   # has_many :internship_agreements
@@ -43,7 +44,7 @@ class InternshipApplication < ApplicationRecord
   }
 
   scope :expirable, lambda {
-    submitted.where('submitted_at < :date', date: 30.days.ago)
+    submitted.where('submitted_at < :date', date: InternshipApplication::EXPIRATION_DURATION.ago)
   }
 
   #
