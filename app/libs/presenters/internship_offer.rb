@@ -8,7 +8,7 @@ module Presenters
 
     def remaining_seats
       count = internship_offer.remaining_seats_count
-      "#{count} #{"place".pluralize(count)} #{"disponible".pluralize(count)}"
+      "#{count} #{"place".pluralize(count)}"
     end
 
     private

@@ -37,6 +37,10 @@ a.heavy-blue-link {
   border-bottom: 1px solid #eee
 }
 
+.fat-line-below{
+  border-bottom: 4px solid #F9F8F6
+}
+
 .employer {
   position: sticky;
   top: 20px;
@@ -120,6 +124,13 @@ $sortLinkOffset: 15px;
   .sort-link.active{
     opacity: 1;
 
+  }
+}
+
+.map-container-offer {
+  height: 263px;
+  .leaflet-container {
+    height: 100% !important;
   }
 }
 

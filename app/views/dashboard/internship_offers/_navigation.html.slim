@@ -1,57 +1,13 @@
-.row.mt-n4.bb-1.bc-light
-  .col-12.d-print-none
+.row.fr-py-4w.fr-mb-2w.fat-line-below
+  .col-8.d-print-none
     ul.nav.navbar.px-0
       = render partial: "dashboard/internship_offers/publish_status",
                    locals: { internship_offer: @internship_offer }
-
-      - if can?(:read, @internship_offer) && can?(:index, InternshipApplication)
-        - if current_page?(dashboard_internship_offer_internship_applications_path(@internship_offer))
-          li.nav-item
-            .nav-link.px-0.px-lg-3
-              = "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
-        - else
-          li.nav-item
-            = link_to dashboard_internship_offer_internship_applications_path(@internship_offer),
-                      class: 'nav-link px-0 px-lg-3 fr-raw-link' do
-              = "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
-
-      li.ml-auto.d-flex
-        - if can?(:discard, @internship_offer)
-          a.nav-link.px-1.px-sm-2.ml-auto.text-center.fr-raw-link data-toggle="modal" data-target="#discard-internship-offer-modal" href=javascript_required_path
-            i.fas.fa-trash
-            small.d-block
-              | Supprimer
-
-        - if can?(:update, @internship_offer) && @internship_offer.reload.published_at?
-          = render partial: 'dashboard/internship_offers/unpublish_form',
-                  locals: { internship_offer: @internship_offer }
-
-        - if can?(:update, @internship_offer) && !@internship_offer.reload.published_at?
-          = render partial: 'dashboard/internship_offers/publish_form',
-                  locals: { internship_offer: @internship_offer }
-
+  .col-4.d-print-none
+    .d-flex.justify-content-start
         - if can?(:update, @internship_offer)
-          div data-turbo="false"
-            a.nav-link.px-1.px-sm-2.text-center.fr-raw-link href=edit_dashboard_internship_offer_path(@internship_offer.to_param)
-              i.fas.fa-pen
-              small.d-block
-                | Modifier
-
-        - if can?(:read, @internship_offer)
-          div data-turbo="false"
-            a.nav-link.px-1.px-sm-2.text-center.d-none.d-md-block.fr-raw-link href=javascript_required_path onclick='window.print();return false;'
-              i.fas.fa-print
-              small.d-block
-                | Imprimer
-
-          div data-turbo="false"
-            a.nav-link.pl-1.pr-0.pr-sm-0.pl-sm-2.text-center.fr-raw-link href=new_dashboard_stepper_organisation_path
-              i.fas.fa-plus
-              small.d-none.d-sm-block
-                | Déposer une offre
-              small.d-block.d-sm-none
-                | Ajouter
-
-.row.mt-3
-  .col-12
-    = render "internship_offers/header", internship_offer: @internship_offer
+          .fr-mx-1w data-turbo="false"
+            = link_to '', edit_dashboard_internship_offer_path(@internship_offer.to_param), class: 'fr-btn fr-icon-edit-fill'
+        - if can?(:discard, @internship_offer)
+          .fr-mx-1w
+            button.fr-btn.fr-icon-delete-line.fr-btn--icon.fr-btn--secondary data-fr-opened="false" aria-controls="discard-internship-offer-modal"
