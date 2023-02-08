@@ -3,5 +3,6 @@
     = @internship_offer.presenter.weeks_boundaries
   .fr-tag.fr-icon-search-fill.fr-tag--icon-left.m-2.test-city
     = @internship_offer.city.capitalize
-  .fr-tag.fr-icon-info-fill.fr-tag--icon-left.m-2.test-city
-    = @internship_offer.presenter.remaining_seats
+  - unless @internship_offer.from_api?
+    .fr-tag.fr-icon-info-fill.fr-tag--icon-left.m-2.test-city
+      = @internship_offer.from_api?

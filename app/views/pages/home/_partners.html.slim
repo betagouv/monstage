@@ -2,8 +2,8 @@
   h2 Nos associations partenaires
 .pt-2
   .row
-    - partners_map_of_colored_logo_url.each do |partner|
+    - partners_map_logo.each do |partner|
       = render partial: "pages/home/partner_link",
                 locals: { partner_url: partner[:url],
-                          partner_logo: partner[:logo],
+                          partner_css: partner[:css],
                           partner_height: partner[:height] }

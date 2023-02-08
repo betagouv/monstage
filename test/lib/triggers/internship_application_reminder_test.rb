@@ -37,10 +37,10 @@ module Triggers
 
     test '.enqueue_all do queue when ' \
          'there is an internship_applications with pending status ' \
-         'for more than 30 days' do
+         'for more than 45 days' do
       create(:weekly_internship_application,
              :submitted,
-             submitted_at: 30.days.ago,
+             submitted_at: InternshipApplication::EXPIRATION_DURATION.ago,
              internship_offer: @internship_offer)
 
       assert_enqueued_with(job: Triggered::InternshipApplicationsReminderJob,

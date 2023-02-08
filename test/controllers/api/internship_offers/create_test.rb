@@ -162,8 +162,62 @@ module Api
       assert_equal remote_id, internship_offer.remote_id
       assert_equal permalink, internship_offer.permalink
       assert_equal 2, internship_offer.max_candidates
+      assert_equal 2, internship_offer.remaining_seats_count
 
       assert_equal JSON.parse(internship_offer.to_json), json_response
+    end
+
+    test 'POST #create as operator without max_candidates works and set up remaing_seats_count to 1' do
+      operator = create(:user_operator, api_token: SecureRandom.uuid)
+      week_instances = [weeks(:week_2019_1), weeks(:week_2019_2)]
+      sector = create(:sector, uuid: SecureRandom.uuid)
+      title = 'title'
+      description = 'description'
+      employer_name = 'employer_name'
+      employer_description = 'employer_description'
+      employer_website = 'http://google.fr'
+      coordinates = { latitude: 1, longitude: 1 }
+      street = "Avenue de l'opéra"
+      zipcode = '75002'
+      city = 'Paris'
+      siret = FFaker::CompanyFR.siret
+      sector_uuid = sector.uuid
+      week_params = [
+        "#{week_instances.first.year}-W#{week_instances.first.number}",
+        "#{week_instances.last.year}-W#{week_instances.last.number}"
+      ]
+      remote_id = 'test'
+      permalink = 'https://www.google.fr'
+      assert_difference('InternshipOffer.count', 1) do
+        documents_as(endpoint: :'internship_offers/create', state: :created) do
+          post api_internship_offers_path(
+            params: {
+              token: "Bearer #{operator.api_token}",
+              internship_offer: {
+                title: title,
+                description: description,
+                employer_name: employer_name,
+                employer_description: employer_description,
+                employer_website: employer_website,
+                siret: siret,
+                'coordinates' => coordinates,
+                street: street,
+                zipcode: zipcode,
+                city: city,
+                sector_uuid: sector_uuid,
+                weeks: week_params,
+                remote_id: remote_id,
+                permalink: permalink
+              }
+            }
+          )
+        end
+        assert_response :created
+      end
+
+      internship_offer = InternshipOffers::Api.first
+      assert_equal 1, internship_offer.max_candidates
+      assert_equal 1, internship_offer.remaining_seats_count
     end
 
     test 'POST #create as operator with no weeks params use all selectable week from now until end of school year' do

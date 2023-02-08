@@ -121,6 +121,9 @@ class InternshipOffer < ApplicationRecord
   delegate :phone, to: :employer, prefix: true, allow_nil: true
   delegate :name, to: :sector, prefix: true
 
+  # Callbacks
+  before_save :update_remaining_seats
+
   def departement
     Department.lookup_by_zipcode(zipcode: zipcode)
   end
@@ -253,5 +256,12 @@ class InternshipOffer < ApplicationRecord
     if approved_applications_count >= max_candidates || Time.now > last_date
       Favorite.where(internship_offer_id: id).destroy_all 
     end
+  end
+
+  def update_remaining_seats
+    reserved_places = internship_offer_weeks
+                        .where('internship_offer_weeks.blocked_applications_count > 0')
+                        .count
+    self.remaining_seats_count = max_candidates - reserved_places
   end
 end

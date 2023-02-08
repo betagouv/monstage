@@ -41,5 +41,7 @@ module Monstage
     config.exceptions_app = self.routes
 
     config.action_view.form_with_generates_remote_forms = false
+    
+    config.action_view.image_loading = :lazy
   end
 end
