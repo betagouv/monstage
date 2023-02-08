@@ -55,6 +55,7 @@ gem "sentry-rails"
 gem 'airtable'
 gem 'geocoder'
 gem 'bitly'
+gem 'mime-types'
 
 # acl
 gem 'cancancan'

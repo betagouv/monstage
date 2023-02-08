@@ -20,7 +20,7 @@ module Services
 
     # public API
     def add_contact(user:, list_name: 'newsletter')
-      list_id = fetch_list_id(list_name: list_name)
+      list_id = fetch_list_id({list_name: list_name})
       return :unexisting_list if list_id.blank?
 
       search_result = search_contact_by_email(email: user.email, list_id: list_id)

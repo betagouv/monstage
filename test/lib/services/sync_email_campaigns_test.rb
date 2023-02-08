@@ -12,21 +12,28 @@ module Services
       fake_fetch_list_id = Minitest::Mock.new
       fake_fetch_list_id.expect :call,
                                 fake_list_id,
-                                [ { list_name: 'newsletter' }]
+                                [],
+                                list_name: 'newsletter'
       fake_search_result = Minitest::Mock.new
       fake_search_result.expect :call,
                                 nil,
-                                [{email: user.email, list_id: fake_list_id}]
+                                [],
+                                email: user.email, list_id: fake_list_id
       fake_add_contact_to_list = Minitest::Mock.new
       fake_add_contact_to_list.expect :call,
                                       OpenStruct.new(code: 200, body: expected_result.to_json),
-                                      [{user: user, list_id: 42}]
+                                      [],
+                                      user: user, list_id: 42
+      # fake_deliver_later_with_additional_delay = Minitest::Mock.new
+      # fake_deliver_later_with_additional_delay.expect :call, nil, [], wait: 1.second
 
-
+# ArgumentError: mocked method :deliver_later expects 1 arguments, got []
       sync.stub :fetch_list_id, fake_fetch_list_id do
         sync.stub :search_contact_by_email, fake_search_result do
           sync.stub :add_contact_to_list, fake_add_contact_to_list do
-            assert_equal expected_result, sync.add_contact(user: user)
+            # sync.stub :deliver_later_with_additional_delay, fake_deliver_later_with_additional_delay do
+              assert_equal expected_result, sync.add_contact(user: user)
+            # end
           end
         end
       end
@@ -41,16 +48,19 @@ module Services
       fake_fetch_list_id = Minitest::Mock.new
       fake_fetch_list_id.expect :call,
                                 fake_list_id,
-                                [{ list_name: 'newsletter' }]
+                                [],
+                                list_name: 'newsletter'
 
       fake_search_contact_by_email = Minitest::Mock.new
       fake_search_contact_by_email.expect :call,
                                           "something",
-                                          [{email: user.email, list_id: fake_list_id}]
+                                          [],
+                                          email: user.email,
+                                          list_id: fake_list_id
 
       sync.stub :fetch_list_id, fake_fetch_list_id do
         sync.stub :search_contact_by_email, fake_search_contact_by_email do
-            assert_equal :previously_existing_email, sync.add_contact(user: user)
+          assert_equal :previously_existing_email, sync.add_contact(user: user)
         end
       end
     end

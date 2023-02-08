@@ -169,7 +169,7 @@ class User < ApplicationRecord
   end
 
   def send_sms_token
-    return unless phone.present? && student?
+    return unless phone.present? && student? && !created_by_teacher
 
     create_phone_token
     message = "Votre code de validation : #{self.phone_token}"
@@ -208,6 +208,11 @@ class User < ApplicationRecord
   #   class_room.nil?
   # end
 
+  def send_confirmation_instructions
+    return if created_by_teacher
+    super
+  end
+
   def send_reconfirmation_instructions
     @reconfirmation_required = false
     unless @raw_confirmation_token
@@ -216,7 +221,7 @@ class User < ApplicationRecord
     if add_email_to_phone_account?
       self.confirm
     else
-      unless @skip_confirmation_notification || whitelisted?
+      unless @skip_confirmation_notification || whitelisted? || created_by_teacher
         devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email })
                      .deliver_later
       end
@@ -251,6 +256,14 @@ class User < ApplicationRecord
     Presenters::User.new(self)
   end
 
+  def create_reset_password_token
+    raw, hashed = Devise.token_generator.generate(User, :reset_password_token)
+    self.reset_password_token = hashed
+    self.reset_password_sent_at = Time.now.utc
+    self.save
+    raw
+  end
+  
   def satisfaction_survey
     Rails.env.production? ? try(:satisfaction_survey_id) : ENV['TALLY_STAGING_SURVEY_ID']
   end
@@ -264,6 +277,8 @@ class User < ApplicationRecord
       AgreementsAPosterioriJob.perform_later(user_id: id)
     end
   end
+
+  
 
   private
 

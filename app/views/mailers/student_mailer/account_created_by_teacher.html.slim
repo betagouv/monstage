@@ -1,0 +1,13 @@
+p style=(p_styles)
+  |Bonjour,
+p style=(p_styles)
+  = "Votre professeur #{@teacher} a procédé à votre inscription sur la plateforme Monstagedetroisieme.fr. Tout est prêt, vous n’avez plus qu'à créer votre mot de passe de votre choix en cliquant sur le bouton ci-dessous."
+
+p style=p_styles
+= render partial: "mailers/call_to_action",
+          locals: { href: edit_user_password_url(reset_password_token: @token, teacher_id: @teacher.id),
+                    label: "Créer mon mot de passe" }
+p style=p_styles
+  |À bientôt,
+  br
+  |L'équipe Mon Stage de Troisième.

@@ -75,7 +75,7 @@ table.table-scrollable {
   display: table
 }
 
-.fr-table thead {
+.fr-table-blue thead {
   background-color: $blue-france;
 }
 
@@ -157,4 +157,8 @@ table.table-scrollable {
       background: white
     }
   }
+}
+
+.grey-border {
+  border: solid 1px #eee;
 }

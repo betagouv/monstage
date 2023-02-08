@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="fr" >
   <head>
-    <% if content_for?(:canonical_url) %>
-      <link rel='canonical' href='<%= yield(:canonical_url) %>' />
-    <% end %>
-    <title><%= page_title %></title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="MonStageDeTroisieme permet aux éléves de REP et REP+ de trouver des stages de troisième de qualité près de chez eux.">
+    <meta name="author" content="MonStageDeTroisieme">
+    <meta name="turbo-visit-control" content="reload">
+    <link rel='canonical' href='https://www.monstagedetroisieme.fr' />
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= action_cable_meta_tag %>
-    <meta name="turbo-visit-control" content="reload">
+    <title><%= page_title %></title>
     <%= favicon_link_tag asset_pack_path('media/images/favicon.png') %>
     <%= stylesheet_pack_tag "application.css", 'data-turbo-track': "reload", media: "all" %>
     <%= javascript_pack_tag "application.js", 'data-turbo-track': "reload", defer: true %>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap" rel="stylesheet">
   </head>
 
   <body class="<%= env_class_name %> <%= body_class_name %>">

@@ -22,4 +22,13 @@ class StudentMailer < ApplicationMailer
     mail(to: @internship_application.student.email,
          subject: "Une de vos candidatures a été annulée")
   end
+
+  def account_created_by_teacher(student:, teacher:, token:)
+    @student = student
+    @teacher = teacher
+    @token = token
+
+    mail(to: @student.email,
+         subject: "Votre inscription sur MonStageDeTroisieme.fr")
+  end
 end
