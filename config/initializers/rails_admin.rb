@@ -1,6 +1,8 @@
 # postgis type
 require "nested_form/engine"
 require "nested_form/builder_mixin"
+require "school_year/base"
+require "school_year/current"
 class RailsAdmin::Config::Fields::Types::Geography < RailsAdmin::Config::Fields::Types::Hidden
   RailsAdmin::Config::Fields::Types.register(self)
 end
@@ -28,6 +30,9 @@ end
 
 require Rails.root.join('lib', 'rails_admin', 'kpi.rb')
 require Rails.root.join('lib', 'rails_admin', 'switch_user.rb')
+# require Rails.root.join('libs', 'school_year', 'base.rb')
+# require Rails.root.join('libs', 'school_year', 'current.rb')
+stats_path = "/reporting/dashboards?school_year=#{SchoolYear::Current.new.beginning_of_period.year}"
 
 RailsAdmin.config do |config|
 
@@ -105,7 +110,7 @@ RailsAdmin.config do |config|
 
   config.navigation_static_links = {
     "Ajouter un établissement" => "/schools/new",
-    "Stats" => "/reporting/dashboards?school_year=#{SchoolYear::Current.new.beginning_of_period.year}",
+    "Stats" => stats_path,
     "Sidekiq" => "/sidekiq",
     "Zammad (Support)" => "https://monstage.zammad.com",
     "AB Testing" => "/split"
