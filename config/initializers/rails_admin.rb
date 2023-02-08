@@ -30,8 +30,6 @@ end
 
 require Rails.root.join('lib', 'rails_admin', 'kpi.rb')
 require Rails.root.join('lib', 'rails_admin', 'switch_user.rb')
-# require Rails.root.join('libs', 'school_year', 'base.rb')
-# require Rails.root.join('libs', 'school_year', 'current.rb')
 stats_path = "/reporting/dashboards?school_year=#{SchoolYear::Current.new.beginning_of_period.year}"
 
 RailsAdmin.config do |config|
