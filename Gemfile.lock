@@ -197,6 +197,7 @@ GEM
     irb (1.6.2)
       reline (>= 0.3.0)
     jmespath (1.6.2)
+    json (2.6.3)
     jwt (2.3.0)
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
@@ -487,6 +488,7 @@ GEM
     zeitwerk (2.6.6)
 
 PLATFORMS
+  ruby
   x86_64-linux
 
 DEPENDENCIES
@@ -537,7 +539,7 @@ DEPENDENCIES
   rails_admin (~> 3.0)
   rails_admin-i18n
   rails_admin_aasm
-  react_on_railss
+  react_on_rails
   redis (~> 4.0)
   redis-namespace
   rest-client
