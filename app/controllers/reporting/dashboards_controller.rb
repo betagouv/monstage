@@ -45,15 +45,15 @@ module Reporting
     end
 
     def metabase_iframe
-      year = params[:school_year].to_i  
+      year = params[:school_year].to_i
       payload = {
         resource: { dashboard: eval("#{current_user.class.to_s}::METABASE_DASHBOARD_ID") },
         params: {
           "d%C3%A9partement": [params[:department]],
-          "ann%C3%A9e_scolaire": "#{year}/#{year+1}" 
+          "ann%C3%A9e_scolaire": "#{year}/#{year+1}"
         },
         exp: Time.now.to_i + (60 * 10) # 10 minute expiration
-      } 
+      }
 
       payload[:params][:groupe] = current_user.ministries.map(&:name) if can?(:see_ministry_dashboard, current_user)
 
@@ -62,10 +62,11 @@ module Reporting
     end
 
     def last_db_update
-      now = DateTime.now
+      now = DateTime.current
       minutes = now.min % 10
       seconds = now.sec
-      (now - minutes.minutes - seconds.seconds).strftime("%d/%m/%Y à %H:%M")
+      offset = (now.offset * 24).to_i
+      (now - minutes.minutes - seconds.seconds + offset.hour).strftime("%d/%m/%Y à %H:%M")
     end
   end
 end
