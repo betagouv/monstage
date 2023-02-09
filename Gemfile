@@ -42,7 +42,7 @@ gem "aws-sdk-s3", require: false
 
 # admin
 
-gem 'rails_admin', '~> 3.0'
+gem 'rails_admin', '~> 3.0', '< 3.1'
 gem 'rails_admin-i18n'
 gem 'rails_admin_aasm'
 
