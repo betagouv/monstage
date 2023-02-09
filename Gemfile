@@ -46,6 +46,8 @@ gem 'rails_admin', '~> 3.0', '< 3.1'
 gem 'rails_admin-i18n'
 gem 'rails_admin_aasm'
 
+gem 'rack', '~> 2.2' # explicit gem installation that should not be mentioned '2.2.6.2' expected
+
 # instrumentation
 gem "lograge"
 gem 'ovh-rest'
