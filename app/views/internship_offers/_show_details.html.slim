@@ -6,10 +6,6 @@
     h1.h3.text-dark role="heading" aria-level="1"
       = internship_offer.title
 
-/ .row.my-3.thin-line-below
-/   .col-12.py-2
-/     .reboot-trix-content= internship_offer.description_rich_text.to_s.present? ? internship_offer.description_rich_text.to_s : internship_offer.description
-
 .row
   .col-12.my-4
     h2.h4 Informations sur le stage
@@ -21,31 +17,7 @@
     h2.h4 Déroulé de la semaine
 
   .col-12.py-2
-    - if internship_offer.weekly_planning?
-      - hours = internship_offer.weekly_hours
-      - lunch_break = internship_offer.weekly_lunch_break
-      - daily_schedule = [ "de #{hours[0]} à #{hours[1]}".gsub!(':', 'h') ]
-
-      - %w(lundi mardi mercredi jeudi vendredi).map do |day|
-        .fr-my-2w
-          .fr-tag.fr-icon-calendar-fill.fr-tag--icon-left
-            = "#{day.capitalize} : #{daily_schedule.join(', ')}"
-        - if lunch_break.present?
-          div
-            = "Pause déjeuner : #{lunch_break}"
-
-    - else
-      - %w(lundi mardi mercredi jeudi vendredi).map do |day|
-        - hours = internship_offer.new_daily_hours[day]
-        - lunch_break = internship_offer.daily_lunch_break[day]
-        - next if hours.blank? || hours.size != 2
-        - daily_schedule = [ "de #{hours[0]} à #{hours[1]}".gsub!(':', 'h') ]
-        .fr-my-2w
-          .fr-tag.fr-icon-calendar-fill.fr-tag--icon-left
-            = "#{day.capitalize} : #{daily_schedule.join(', ')}"
-        - if lunch_break.present?
-          div
-            = "Pause déjeuner : #{lunch_break}"
+    = Presenters::InternshipOffer.new(internship_offer).internship_week_description
 
     .row.d-block.d-sm-none
       .col-12.fr-py-2w

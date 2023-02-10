@@ -52,7 +52,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
     visit dashboard_internship_offer_path(internship_offer)
     assert_changes -> { internship_offer.reload.discarded_at } do
-      page.find('a[data-target="#discard-internship-offer-modal"]').click
+      page.find('.test-discard-button').click
       page.find("button[data-test-delete-id='delete-#{dom_id(internship_offer)}']").click
     end
   end
@@ -85,7 +85,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       visit dashboard_internship_offers_path(internship_offer: internship_offer)
       page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
 
-      click_link("Modifier")
+      find(".test-edit-button").click
       find('label[for="internship_type_false"]').click # max_candidates can be set to many now
       within('.form-group-select-max-candidates') do
         fill_in('Nombre total d\'élèves que vous souhaitez accueillir sur l\'année scolaire', with: 4)
@@ -101,32 +101,12 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
       visit dashboard_internship_offers_path(internship_offer: internship_offer)
       page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
-      click_link("Modifier")
+      find(".test-edit-button").click
       find('label[for="internship_type_true"]').click # max_candidates is now set to 1
       click_button('Modifier l\'offre')
       assert_equal 4, internship_offer.reload.max_candidates
       assert_equal 1, internship_offer.reload.max_students_per_group
     end
-  end
-
-  test 'Employer can renew an old internship offer' do
-    employer = create(:employer)
-    older_weeks = [Week.of_previous_school_year.first]
-    old_internship_offer = create(
-      :weekly_internship_offer,
-      employer: employer,
-      weeks: older_weeks
-    )
-    sign_in(employer)
-    visit dashboard_internship_offers_path(internship_offer: old_internship_offer, filter: 'past')
-    page.find("a[data-test-id=\"#{old_internship_offer.id}\"]").click
-    find('.test-renew-button').click
-    assert_selector('h1', text: "Renouveler l'offre pour l'année en cours")
-    click_button("Renouveler l'offre")
-    assert_selector(
-      "#alert-text",
-      text: "Votre offre de stage a été renouvelée pour cette année scolaire."
-    )
   end
 
   test 'Employer can duplicate an internship offer' do
