@@ -52,6 +52,12 @@ module Presenters
       user
     end
 
+    def sing_feminine(word)
+      return "#{word}e" if user.gender == 'f'
+
+      word
+    end
+
     private
 
     def anonymized_message
