@@ -8,6 +8,7 @@ module Users
     after_action :switch_back, only: %i[destroy]
 
     def new
+      params[:as] = session[:as] if session[:as].present?
       super and return if confirmed? ||
                           params[:check_confirmation].nil?
 

@@ -6,7 +6,7 @@
       <div class='col-12 text-center text-sm-left'>
         <h1 class="mb-1 ">Connexion</h1>
         <p class="fr-text--sm pb-1 text-blue-france mb-1" >
-          <%= link_to "Vous n'avez pas encore de compte&nbsp;?".html_safe, users_choose_profile_path, class: "fr-raw-link " %>
+          <%= link_to "Vous n'avez pas encore de compte&nbsp;?".html_safe, (params[:as].present? ? new_identity_path(as: params[:as]) : users_choose_profile_path), class: "fr-raw-link " %>
         </p>
         <hr class="py-1 "/>
       </div>
