@@ -265,7 +265,7 @@ class User < ApplicationRecord
   end
   
   def satisfaction_survey
-    Rails.env.production? ? try(:satisfaction_survey_id) : ENV['TALLY_STAGING_SURVEY_ID']
+    Rails.env.production? ? satisfaction_survey_id : ENV['TALLY_STAGING_SURVEY_ID']
   end
 
   protected
