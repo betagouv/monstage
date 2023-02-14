@@ -49,7 +49,7 @@ module Users
 
     def fetch_user_by_email
       param_email = params[:user][:email]
-      return User.find_by(email: params[:user][:email]) if param_email.present?
+      return User.find_by(email: param_email) if param_email.present?
     end
 
     # If you have extra params to permit, append them to the sanitizer.

@@ -78,6 +78,7 @@ gem 'bootsnap', require: false
 
 group :development, :test do
   gem "dotenv-rails", require: "dotenv/rails-now"
+  gem "better_errors"
   gem "debug"
   gem 'ffaker'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
