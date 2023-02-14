@@ -96,6 +96,18 @@
   cursor: pointer;
 }
 
+.heart-disabled {
+  width: 25px;
+  height: 20px;
+  background-image: url('../images/icons/disabled_heart.svg');
+  background-position: center center;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 10;
+  cursor: not-allowed;;
+}
+
 .clear-button {
   cursor: pointer
 }

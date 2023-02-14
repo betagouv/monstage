@@ -1,38 +1,43 @@
-.row.my-3.thin-line-below
+.row.fr-pb-3w.thin-line-below
+  .col-12
+    .fr-text--lg
+      = internship_offer.sector.name 
+  .col-12
+    h1.h3.text-dark role="heading" aria-level="1"
+      = internship_offer.title
+
+.row
+  .col-12.my-4
+    h2.h4 Informations sur le stage
   .col-12.py-2
     .reboot-trix-content= internship_offer.description_rich_text.to_s.present? ? internship_offer.description_rich_text.to_s : internship_offer.description
 
-.row.py-3.mt-3.thin-line-below
+.row.fr-pb-3w.thin-line-below
   .col-12.my-4
-    h2.h4.text-dark Informations sur le stage
-  .col-12.my-4
-    .row
-      .col-4
-        .fr-tile
-          .fr-tile__body
-            h4.fr-tile__title
-              .text-dark= internship_offer.is_individual? ? 'Stage individuel' : 'Stage collectif'
-          .fr-tile__img
-            = image_tag asset_pack_path("media/images/internship_offer_show/#{internship_offer.is_individual? ? 'user' : 'people'}.png"), alt: '', class: 'fr-responsive-img'
+    h2.h4 Déroulé de la semaine
 
+  .col-12.py-2
+    = Presenters::InternshipOffer.new(internship_offer).internship_week_description
 
+    .row.d-block.d-sm-none
+      .col-12.fr-py-2w
+        = render "internship_offers/show_side_details", internship_offer: internship_offer
 
 .row.py-3.mt-3
   .col-12
-    .row
-      .col-12.my-4
-        h2.h4.text-dark Informations sur l'entreprise
-    .row
+    .row.fr-mb-1w
       .col-12
         .h4= internship_offer.employer_name
-
     .row
+      .col-12
+        .fr-pl-1w.blue-france= Presenters::Address.new(instance: internship_offer).full_address
+    .row.fr-my-1w
       .col-12
         - if internship_offer.employer_description_rich_text.present? || internship_offer.employer_description.present?
           .reboot-trix-content.mt-2.test-description= internship_offer.employer_description_rich_text.to_s.present? ? internship_offer.employer_description_rich_text.to_s : internship_offer.employer_description
 
     .row
-      .col-12.my-4
+      .col-12.fr-my-1w
          - if internship_offer.employer_website.present?
             = link_to internship_offer.employer_website,
                       internship_offer.employer_website,
@@ -40,10 +45,39 @@
                       class: 'test-employer-website',
                       title: "#{internship_offer.employer_website} (nouvelle fenêtre)",
                       rel: "external noopener noreferrer"
-
+    .row 
+      .col-12
+        = react_component("Map",
+                    props: { internshipOffer: { id: internship_offer.id, lat: internship_offer.coordinates.latitude, lon: internship_offer.coordinates.longitude } })
+    
     .row
-      .col-12.my-4
-        = Presenters::Address.new(instance: internship_offer).full_address
-.row.thin-line-below.d-none.d-sm-block
+      .col-12 
+        .fr-my-4w.d-none.d-sm-block
+          = render "internship_offers/apply_cta", internship_offer: internship_offer
+
+.row.fr-mb-2w.d-block.d-sm-none
+  .col-12 
+    .d-flex.align-items-center.justify-content-center
+      = render "internship_applications/call_to_action/visitor", internship_offer: internship_offer
+
+.row
+  .col-6
+    .d-none.d-flex.align-items-center.fr-px-1w
+      - if @previous_internship_offer && support_listable?(current_user)
+        = link_to listable_internship_offer_path(@previous_internship_offer),
+                  class: 'list-item-previous d-flex align-items-center fr-raw-link' do
+          span.fr-icon-arrow-left-line aria-hidden="true"
+          span
+            | Offre précédente
+
+  .col-6
+    .d-none.d-flex.align-items-center.justify-content-end.fr-px-1w
+      - if @next_internship_offer && support_listable?(current_user)
+        = link_to listable_internship_offer_path(@next_internship_offer),
+                  class: 'list-item-next d-flex align-items-center fr-raw-link' do
+          span
+            | Offre suivante
+          span.fr-icon-arrow-right-line aria-hidden="true"
+  
 
 
