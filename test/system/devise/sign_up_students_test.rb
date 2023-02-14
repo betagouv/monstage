@@ -91,7 +91,6 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     # click_link '
     first(:link, 'Je postule').click
     find('a.fr-raw-link', text: "Vous n'avez pas encore de compte ?").click
-    first(:link, 'Je suis élève de 3e').click
 
 
     # mistaking with password confirmation
