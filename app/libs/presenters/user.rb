@@ -59,6 +59,48 @@ module Presenters
       url_helpers.root_path
     end
 
+    def show_when_subscribe?(as: , field:)
+      common_fields = %i[
+        first_name
+        last_name
+        email
+        password
+        password_confirmation
+        accept_terms
+      ]
+      return true if field.in?(common_fields)
+      return true if field.in?(subscribe_fields(as: as))
+      
+      false
+    end
+
+    def subscription_incipit(as:)
+      case as
+      when :employer
+        "Déposez vos offres de stages à l'aide de votre compte personnalisé. " \
+        "Il vous permettra à tout moment de modifier vos offres et de " \
+        "suivre leur avancement."
+      when :statistician
+        "Vous êtes référent départemental et souhaitez accéder aux " \
+        "statistiques relatives aux offres de stage de votre département."
+      else
+        ''
+      end
+    end
+
+    def subscribe_fields(as:)
+      case as
+      when :student
+        %i[gender email phone school_id class_room_id birth_date handicap_present handicap]
+      when :employer
+        %i[email employer_role]
+      when :school_management
+        %i[email school_id class_room_id role]
+      else
+        []
+      end
+    end
+
     protected
 
     attr_reader :user
