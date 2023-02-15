@@ -242,7 +242,6 @@ class User < ApplicationRecord
   def employer? ; false end
   def operator? ; false end
   def school_management? ; false end
-  def school_manager? ; false end
   def god? ; false end
   def employer_like? ; false end
 

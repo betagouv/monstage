@@ -5,15 +5,16 @@ main#content[role="main"
              data-controller="signup"
              data-signup-channel-value="#{channel_value}"]
 
-  .fr-container
-    = render 'layouts/breadcrumb', links: [ ['', "Connexion"] ]
   .fr-container.fr-container--fluid
     .fr-grid-row.fr-grid-row-gutters.fr-grid-row--center
       .fr-col-12.fr-col-md-8.fr-col-lg-6
+        .fr-container.fr-px-md-0
+          .fr-grid-row.fr-grid-row-gutters.fr-grid-row--left
+            = render 'layouts/breadcrumb', links: [ ['', "Connexion"] ]
         .fr-container.fr-background-alt--grey.fr-px-md-0.fr-py-10v.fr-py-md-14v
           .fr-grid-row.fr-grid-row-gutters.fr-grid-row--center
             .fr-col-12.fr-col-md-9.fr-col-lg-8
-              h1.fr-h2
+              h1.fr-h4
                 | Connexion à monstagedetroisième.fr
               - flash.keys.map do |key|
                 div class="fr-alert fr-alert--#{key == "notice" ? "success" : "error"} fr-mb-2v"
@@ -21,7 +22,7 @@ main#content[role="main"
               div
                 = form_with(model: resource,
                             scope: resource_name,
-                            data: {turbo: false},
+                            data: { turbo: false },
                             local: true,
                             html: { id: "sign_in_form" },
                             id: "login-1760",
@@ -31,22 +32,10 @@ main#content[role="main"
                   = render "layouts/form_errors",
                             resource: resource,
                             resource_name: :user
-                  / h6 = resource.errors.full_messages
-                  / h6 = "-#{@existing_errors}-"
-
                   fieldset#login-1760-fieldset.fr-fieldset[aria-labelledby="login-1760-fieldset-legend login-1760-fieldset-messages"]
                     legend#login-1760-fieldset-legend.fr-fieldset__legend
-
-                    / h2
-                    /   | Connexion à monstagedetroisième.fr
-                    / .fr-fieldset__element
-                      / p.fr-text--sm
-                        | Description — Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                     .fr-fieldset__element
                       fieldset#credentials.fr-fieldset[aria-labelledby="credentials-messages"]
-                        / .fr-fieldset__element
-                        /   span.fr-hint-text
-                        /     | Sauf mention contraire, tous les champs sont obligatoires.
                         .fr-fieldset__element
                           = render "users/select_channel",
                                     label: "Choisissez votre méthode de connexion",
@@ -55,20 +44,7 @@ main#content[role="main"
                                     resource: resource,
                                     phone: "Par téléphone"
 
-                        / .fr-fieldset__element
-                          .fr-input-group
-                            label.fr-label[for="username-1757"]
-                              |  Identifiant
-                              span.fr-hint-text
-                                | Format attendu : nom@domaine.fr
-                            input#username-1757.fr-input[autocomplete="username"
-                                                         aria-required="true"
-                                                         aria-describedby="username-1757-messages"
-                                                         name="username"
-                                                         type="text"]
-                            #username-1757-messages.fr-messages-group[aria-live="assertive"]
-
-                        .fr-fieldset__element
+                        .fr-fieldset__element.fr-mt-n2w
                           #password-1758.fr-password
                             label [class="fr-label  #{error_status ? 'text-input-error' : ''}"
                                    for="user_password"]
@@ -80,32 +56,23 @@ main#content[role="main"
                                                   :'aria-required' => true,
                                                   required: true,
                                                   autofocus: !params[:email].blank?
-                            / #password-1758-input-messages.fr-messages-group[aria-live="assertive"]
-
-                            / .fr-password__checkbox.fr-checkbox-group.fr-checkbox-group--sm
-                            /   input#password-1758-show[aria-label="Afficher le mot de passe"
-                            /                            type="checkbox"
-                            /                            aria-describedby="password-1758-show-messages"]
-                            /   label.fr-password__checkbox.fr-label[for="password-1758-show"]
-                            /     |  Afficher
-                            /   #password-1758-show-messages.fr-messages-group[aria-live="assertive"]
-
-                            p
-                              - if devise_mapping.recoverable? && controller_name != "passwords" && controller_name != "registrations"
-                                .fr-fieldset__element
-                                  = link_to t("devise.passwords.new.forgot_your_password"),
-                                            new_password_path(resource_name),
-                                            class: 'fr-link'
+                            - if devise_mapping.recoverable? && controller_name != "passwords" && controller_name != "registrations"
+                              .fr-fieldset__element
+                                = link_to t("devise.passwords.new.forgot_your_password"),
+                                          new_password_path(resource_name),
+                                          class: 'fr-link'
+                            .fr-password__checkbox.fr-checkbox-group.fr-checkbox-group--sm
+                              input aria-label="Afficher le mot de passe" id="password-1138-show" type="checkbox" aria-describedby="password-1138-show-messages"
+                              label class="fr-password__checkbox fr-label" for="password-1138-show"
+                                | Afficher 
+                              .fr-messages-group id="password-1138-show-messages" aria-live="assertive"
                         #credentials-messages.fr-messages-group[aria-live="assertive"]
 
-                    .fr-fieldset__element
+                    .fr-fieldset__element.fr-mt-n4w
                       .fr-checkbox-group.fr-checkbox-group--sm
                         = f.check_box :remember_me,
                                       id: 'remember-1759',
                                       :'aria-described' => "remember-1759-messages"
-                        / input#remember-1759[name="remember"
-                        /                     type="checkbox"
-                        /                     aria-describedby="remember-1759-messages"]
                         label.fr-label[for="remember-1759"]
                           |  Se souvenir de moi
                         #remember-1759-messages.fr-messages-group[aria-live="assertive"]
@@ -117,7 +84,7 @@ main#content[role="main"
                     #login-1760-fieldset-messages.fr-messages-group[aria-live="assertive"]
 
               hr
-              h2.fr-h2
+              h2.fr-h4
                 | Vous n’avez pas de compte ?
               ul.fr-btns-group
                 li.fr-mt-1w
@@ -125,7 +92,7 @@ main#content[role="main"
                             new_user_registration_path,
                             class: "fr-btn fr-btn--secondary"
 
-              h2.fr-mt-6w.fr-h2
+              h2.fr-mt-6w.fr-h4
                 | Vous n’avez pas reçu le message d'activation ?
               ul.fr-btns-group.fr-mt-2w
                 li.fr-mt-1w

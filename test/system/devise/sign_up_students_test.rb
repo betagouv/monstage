@@ -14,13 +14,13 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     identity = create(:identity)
     visit new_user_registration_path(as: 'Student', identity_token: identity.token)
     fill_in 'Adresse électronique', with: 'email@free.fr'
-    assert find("#select-channel-email").selected?
+    assert find("#select-channel-email", visible: false).selected?
     find("#select-channel-phone", visible: false)
 
-    find('label', text: 'Par téléphone (SMS)').click
+    find('label', text: 'Par téléphone').click
 
     fill_in 'Numéro de téléphone', with: '0623042525'
-    assert find("#select-channel-phone").selected?
+    assert find("#select-channel-phone", visible: false).selected?
     find("#select-channel-email", visible: false)
   end
 
@@ -40,7 +40,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     # fails to create student with existing email and display email channel
     assert_difference('Users::Student.count', 0) do
-      find('label', text: 'Par e-mail').click
+      find('label', text: 'Par email').click
       fill_in 'Adresse électronique', with: existing_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
@@ -52,7 +52,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     # create student
     assert_difference('Users::Student.count', 1) do
-      find('label', text: 'Par e-mail').click
+      find('label', text: 'Par email').click
       fill_in 'Adresse électronique', with: 'another@email.com'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
@@ -90,7 +90,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     visit internship_offer_path(offer)
     # click_link '
     first(:link, 'Je postule').click
-    find('a.fr-raw-link', text: "Vous n'avez pas encore de compte ?").click
+    find('a.fr-btn', text: "Créer un compte").click
     first(:link, 'Je suis élève de 3e').click
 
 
@@ -112,7 +112,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     # real signup as student
     assert_difference('Users::Student.count', 1) do
       assert_difference('Users::Student.count', 1) do
-        fill_in 'Adresse électronique (e-mail)', with: email, wait: 4
+        fill_in 'Adresse électronique', with: email, wait: 4
         fill_in 'Créer un mot de passe', with: password, wait: 4
         fill_in 'Ressaisir le mot de passe', with: password, wait: 4
         find('label[for="user_accept_terms"]').click
@@ -215,7 +215,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     find('label', text: 'Par téléphone').click
     execute_script("document.getElementById('phone-input').value = '#{student.phone}';")
     find("input[name='user[password]']").fill_in with: password
-    find("input[type='submit'][value='Connexion']").click
+    find("input[type='submit'][value='Se connecter']").click
     page.find('h1', text: 'Votre candidature')
     # redirected page is a show of targeted internship_offer
     assert_equal "/internship_offers/#{offer.id}/internship_applications/new", current_path

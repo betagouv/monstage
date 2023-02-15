@@ -1,5 +1,5 @@
 - error_status = error_status || false
-fieldset.select-channel.fr-fieldset
+fieldset.select-channel.fr-fieldset.fr-mt-n4w
   - if block_given?
     legend.fr-fieldset__legend.fr-text--regular
       = yield
@@ -10,7 +10,8 @@ fieldset.select-channel.fr-fieldset
                         "email",
                         id: "select-channel-email",
                         "data-action" => "change->signup#checkEmail",
-                        "data-signup-target" => "emailRadioButton"  do
+                        "data-signup-target" => "emailRadioButton",
+                        checked: (cookies[:prefered_channel] == "email")  do
       label.fr-label for="select-channel-email"
         | Par email
     .fr-radio-group.text-right
@@ -18,31 +19,31 @@ fieldset.select-channel.fr-fieldset
                           "phone",
                           id: "select-channel-phone",
                           "data-action" => "change->signup#checkPhone",
-                          "data-signup-target" => "phoneRadioButton"
+                          "data-signup-target" => "phoneRadioButton",
+                          checked: (cookies[:prefered_channel] == "phone")
       label.fr-label for="select-channel-phone"
         | Par téléphone
 
   .fr-fieldset__element.d-none.registration[data-signup-target="emailBloc"]
-    div class="fr-input-group #{error_status ? 'fr-input-group--error' : ''}"
-      / = form.rg2a_explain_required_asterisk(p_class_name: "mb-0")
+    div class="fr-input-group"
       = form.label :email, class: "fr-label #{error_status ? 'text-input-error' : ''}" do
         span[data-signup-target="label"]
-          = resource.school_manager? ? "Adresse électronique académique" : "Adresse électronique (e-mail)"
+          = resource.school_manager? ? "Adresse électronique académique" : "Adresse électronique"
         small.form-text.text-muted
           | Format attendu : nom@domaine.fr
         small#email-explanation.form-text.text-muted[data-signup-target="emailExplanation"]
 
       = form.email_field :email,
-                        class: "fr-input #{error_status ? 'fr-input--error' : ''} ",
-                        value: resource.email.blank? ? params[:email] : resource.email,
-                        placeholder: "ex: nom@exemple.fr",
-                        autofocus: params[:email].blank? ? true : false,
-                        :'aria-describedby' => "user_email",
-                        data: {action: 'change->signup#onBlurEmailInput', :"signup-target" => 'emailInput'}
+                          class: "fr-input",
+                          value: resource.email.blank? ? params[:email] : resource.email,
+                          placeholder: "ex: nom@exemple.fr",
+                          autofocus: params[:email].blank? ? true : false,
+                          :'aria-describedby' => "user_email",
+                          data: {action: 'change->signup#onBlurEmailInput', :"signup-target" => 'emailInput'}
       small.d-none[data-signup-target="emailHint"]
   .fr-input-group.phone.d-none[data-signup-target="phoneBloc"]
     = form.label :phone,
-                  class: "fr-label #{error_status ? 'text-input-error' : ''}",
+                  class: "fr-label",
                  'data-action' => "click->signup#focusPhone",
                  for: 'phone-input' do
       span
