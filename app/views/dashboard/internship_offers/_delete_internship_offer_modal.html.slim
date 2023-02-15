@@ -1,14 +1,18 @@
-div.modal id="discard-internship-offer-modal" tabindex="-1" role="dialog"
-  .modal-dialog role="document"
-    .modal-content
-      .modal-body
-        p Souhaitez-vous réellement supprimer cette annonce ?
-      .modal-footer.actions
-        .row.w-100
-          .col-6
-            button type="button" class="fr-btn" data-dismiss="modal" Non
-          .col-6
-            = button_to "Oui",
+dialog.fr-modal id="discard-internship-offer-modal" role="dialog"
+  .fr-container.fr-container--fluid.fr-container-md
+    .fr-grid-row.fr-grid-row--center
+      .fr-col-12.fr-col-md-8.fr-col-lg-6
+        .fr-modal__body
+          .fr-modal__header
+            button.fr-link--close.fr-link[aria-controls="discard-internship-offer-modal"]
+              | Fermer
+          .fr-modal__content
+            h1#fr-modal-2-title.fr-modal__title
+              |  Supprimer l'offre
+            p
+              | En confirmant cette action l’offre n’apparaitra plus sur votre tableau de bord.
+          .fr-modal__footer
+            = button_to "Confirmer",
                         dashboard_internship_offer_path(internship_offer),
                         class: "fr-btn",
                         data: {turbo: false, 'test-delete-id': "delete-#{dom_id(internship_offer)}" },

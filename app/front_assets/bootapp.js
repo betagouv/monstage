@@ -18,9 +18,11 @@ import ReservedSchoolInput from "components/ReservedSchoolInput";
 import InternshipOfferResults from "components/InternshipOfferResults";
 import InternshipOfferFavorites from "components/InternshipOfferFavorites";
 import InternshipOfferCard from "components/InternshipOfferCard";
+import InternshipOfferFavoriteButton from "components/InternshipOfferFavoriteButton";
 import FlashMessage from "components/FlashMessage";
 import SearchSchool from "components/SearchSchool";
 import SearchSchoolByName from "components/SearchSchoolByName";
+import Map from "components/Map";
 
 import CityInput from "components/search_internship_offer/CityInput";
 import KeywordInput from "components/search_internship_offer/KeywordInput";
@@ -37,6 +39,7 @@ ReactOnRails.register({
   InternshipOfferResults,
   InternshipOfferFavorites,
   InternshipOfferCard,
+  InternshipOfferFavoriteButton,
   FlashMessage,
   SearchSchool,
   SearchSchoolByName,
@@ -47,4 +50,5 @@ ReactOnRails.register({
   AddressInput,
   FullAddressInput,
   SirenInput,
+  Map,
 });

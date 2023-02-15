@@ -89,7 +89,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     visit internship_offer_path(offer)
     # click_link '
-    first(:link, 'Je postule').click
+    first(:link, 'Postuler').click
     find('a.fr-btn', text: "Créer un compte").click
     first(:link, 'Je suis élève de 3e').click
 
@@ -107,7 +107,6 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
       click_on "Valider mes informations"
     end
-    
 
     # real signup as student
     assert_difference('Users::Student.count', 1) do
@@ -168,7 +167,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     visit internship_offer_path(offer.id)
 
-    first(:link, 'Je postule').click
+    first(:link, 'Postuler').click
     # below : 'Pas encore de compte ? Inscrivez-vous'
     # within('.onboarding-card.onboarding-card-sm') do
     #   click_link 'Me connecter'
@@ -206,7 +205,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     visit internship_offer_path(offer.id)
 
 
-    first(:link, 'Je postule').click
+    first(:link, 'Postuler').click
     # below : 'Pas encore de compte ? Inscrivez-vous'
     # within('.onboarding-card.onboarding-card-sm') do
     #   click_link 'Me connecter'

@@ -72,12 +72,8 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     travel_to(Date.new(2019, 9, 1)) do
       sign_in(student)
       visit internship_offer_path(internship_offer)
-      # check application form opener and check form is hidden by default
-      page.find '#internship-application-closeform', visible: false
 
       all('a', text: 'Postuler').first.click
-      # check application is now here, ensure feature is here
-      page.find '#internship-application-closeform', visible: true
       # check for phone fields disabled
       page.find "input[name='internship_application[student_attributes][phone]'][disabled]", visible: true
       # check for email fields
@@ -259,7 +255,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     employer = create(:employer)
     internship_offer = create(:weekly_internship_offer)
     visit internship_offer_path(internship_offer.id)
-    first(:link, 'Je postule').click
+    first(:link, 'Postuler').click
     fill_in("Adresse électronique", with: employer.email)
     fill_in("Mot de passe", with: employer.password)
     click_button('Se connecter')

@@ -55,7 +55,6 @@ import './internship_offers_new/paper.svg';
 import './internship_offer_show/offer_default_img.jpg';
 import './internship_offer_show/people.png';
 import './internship_offer_show/user.png';
-import './internship_offer_show/offer-header-illustration.svg';
 
 import './internship_applications/boy.svg';
 import './internship_applications/girl.svg';
@@ -75,6 +74,7 @@ import './icons/noun_group_establishment.svg';
 import './icons/noun_people_3139638.svg';
 import './icons/full_heart.svg';
 import './icons/empty_heart.svg';
+import './icons/disabled_heart.svg';
 
 import './pages/statistics/hand_left.svg';
 import './pages/statistics/hand_right.svg';
