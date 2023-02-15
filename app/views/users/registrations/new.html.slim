@@ -1,0 +1,179 @@
+- if params[:identity_token]
+  = render 'identities/register'
+- else
+  .onboarding-card.mb-4.fr-mt-6w [data-controller="signup email-confirmation"
+                                  data-signup-channel-value="#{@resource_channel}"]
+    header.header-account.header-onboarding-card.my-0
+      .row.mx-0
+        .col-12.h-100
+          h1.fr-h1
+            | Inscription
+          = link_to "Vous avez déjà un compte ?",
+                    new_user_session_path,
+                    class: "fr-raw-link"
+    - if params[:as] == 'Employer'
+      = render 'pages/home/minister_video'
+    - else
+      hr.fr-mx-4w.fr-my-1w
+    = form_with(model: resource,
+                scope: resource_name,
+                data: { turbo: false },
+                local: true,
+                url: registration_path(resource_name, as: resource.type.demodulize),
+                id: "new_user") do |f|
+      .body.registration.fr-grid-row
+        .col-12
+          = f.rg2a_explain_required_asterisk
+          = render "layouts/form_errors", resource: resource, resource_name: :user
+          = f.hidden_field :type
+          = f.hidden_field :targeted_offer_id, value: params.dig(:user, :targeted_offer_id)
+        - if can?(:choose_school, resource)
+          .fr-col-sm-12.fr-px-2w
+            = react_component("SearchSchool", props: { classes: "col-12",
+                                                label: 'Nom (ou ville) de mon établissement REP ou REP+',
+                                                required: true,
+                                                resourceName: :user,
+                                                selectClassRoom: can?(:choose_class_room, resource),
+                                                existingSchool: resource.school.as_json,
+                                                existingClassRoom: resource.try(:class_room).try(:as_json),
+                            })
+        .fr-col-12.fr-col-md-6.fr-px-2w
+          .form-group.custom-label-container
+            = f.label :first_name, class: "fr-label" do
+              |  Prénom 
+              = f.rg2a_required_content_tag
+            = f.text_field :first_name, class: "fr-input", required: true
+        .fr-col-12.fr-col-md-6.fr-px-2w
+          .form-group.custom-label-container
+            = f.label :last_name, class: "fr-label" do
+              |  Nom 
+              = f.rg2a_required_content_tag
+            = f.text_field :last_name, class: "fr-input", required: true
+      .body.mb-3.registration.fr-grid-row
+        - if can?(:choose_role, resource)
+          .fr-col-sm-12.fr-px-2w
+            .form-group.custom-label-container
+              = f.label :role, class: "fr-label" do
+                |  Fonction 
+                = f.rg2a_required_content_tag
+              = f.select :role,
+                          options_from_collection_for_select(user_roles_to_select, :value, :text, resource.role),
+                          { prompt: "-- Veuillez choisir une fonction --" },
+                          { class: "fr-select", required: true, data: { action: "change->signup#refreshEmailFieldLabel", :'signup-target' => "roleInput" } }
+        - if can?(:choose_function, resource)
+          .fr-col-12.fr-px-2w
+            .form-group.custom-label-container
+              = f.label :employer_role, class: "fr-label" do
+                |  Fonction au sein de l'entreprise 
+                = f.rg2a_required_content_tag
+              = f.text_field :employer_role,
+                              class: "fr-input",
+                              maxlength: "150",
+                              required: true
+        - if can?(:register_with_phone, resource)
+          .fr-col-12.fr-col-md-6.fr-px-2w
+            = render "users/select_channel",
+                      label: "Comment vous contacter ?",
+                      form: f,
+                      resource: resource,
+                      chan: @resource_channel,
+                      phone: "SMS" do
+            small.small.form-text.text-muted
+              |  Recevoir une réponse à une candidature, réinitialiser votre mot de passe, être contacté par un employeur… 
+        - else
+          div class="fr-px-2w #{params[:as].present? && params[:as].in?(['MinistryStatistician', 'Statistician', 'EducationStatistician', 'Employer','SchoolManagement']) ? 'fr-col-sm-12' : 'fr-col-md-6'}" 
+            - # <% following avoids javascript errors
+            span[data-signup-target="emailBloc"]
+            span[data-signup-target="emailRadioButton"]
+            span[data-signup-target="phoneInput"]
+            span[data-signup-target="phoneBloc"]
+            .form-group.custom-label-container
+              = f.label :email, class: "fr-label" do
+                span[data-signup-target="label"]
+                  = resource.school_manager? ? "Adresse électronique académique" : "Adresse électronique (e-mail)"
+                = f.rg2a_required_content_tag
+              small.form-text.text-muted.fr-mb-2v[data-signup-target="emailExplanation"]
+                - unless resource.school_manager?
+                  |  Cette adresse sera utilisée uniquement pour communiquer avec vous. 
+              = f.email_field :email,
+                              class: "fr-input",
+                              value: resource.email.blank? ? params[:email] : resource.email,
+                              required: true,
+                              placeholder: "ex: nom@exemple.fr",
+                              data: { action: "change->signup#onBlurEmailInput", :"signup-target" => "emailInput" }
+              small.d-none[data-signup-target="emailHint"]
+            .form-group.custom-label-container[data-email-confirmation-target="confirmation"]
+              = f.label :confirmation_email, class: "fr-label" do
+                span
+                  | Confirmation de l'email
+                = f.rg2a_required_content_tag
+              = f.email_field :confirmation_email,
+                              class: "fr-input",
+                              value: '',
+                              placeholder: "indiquez le même email que ci-dessus"
+        .fr-col-12.fr-col-md-6.fr-px-2w
+          .form-group.custom-label-container
+            = f.label :password, class: "fr-label" do
+              |  Créer un mot de passe 
+              = f.rg2a_required_content_tag
+            = f.password_field :password, autocomplete: "new-password", class: "fr-input", required: true, data: { action: "change->signup#checkPassword", :"signup-target" => "passwordInput" }
+            small.text-muted[data-signup-target="passwordHint"]
+              = I18n.t("devise.shared.minimum_password_length", count: @minimum_password_length)
+        .fr-col-12.fr-col-md-6.fr-px-2w
+          .form-group.custom-label-container
+            = f.label :password_confirmation, class: "fr-label" do
+              |  Ressaisir le mot de passe 
+              = f.rg2a_required_content_tag
+            = f.password_field :password_confirmation, autocomplete: "new-password", class: "fr-input", required: true, data: { action: "change->signup#checkPasswordConfirmation", :"signup-target" => "passwordConfirmationInput" }
+            small.text-muted[data-signup-target="passwordConfirmationHint"]
+        - if can?(:choose_operator, :sign_up)
+          .fr-col-12.fr-col-md-6.fr-px-2w
+            .form-group.custom-label-container
+              = f.label :operator_id, class: "fr-label" do
+                |  Opérateur 
+                = f.rg2a_required_content_tag
+              = f.select :operator_id,
+                          options_from_collection_for_select(Operator.all, :id, :name, resource.operator),
+                          { prompt: operator_options_for_default },
+                          class: "fr-select"
+        - if can?(:choose_handicap, resource)
+          .fr-col-12.fr-col-md-6.fr-pl-2w
+            .form-group
+              .fr-checkbox-group.fr-checkbox-group--sm
+                = f.label :handicap_present, class: "" do
+                  i.fas.fa-universal-access.float-right.fa-3x.ml-2[style="color: rgb(42,120,228);"]
+                  |  J'aurai besoin d'une aide adaptée pendant mon stage, en raison de mon handicap. 
+                  small.text-muted
+                    | (optionnel)
+              = f.check_box :handicap_present, data: { action: "change->signup#toggleHandicap" }
+            div class="form-group custom-label-container #{ resource.handicap_present ? "" : "d-none" }" data-signup-target="handicapGroup"
+            = f.text_area :handicap, class: "form-control"
+            = f.label :handicap, class: "fr-label" do
+              |  Indiquez ce dont vous avez besoin 
+              = f.rg2a_required_content_tag
+        .fr-col-12
+          .form-group.label.rg2a-checkbox.fr-pl-2w
+            = f.rg2a_required_content_tag
+            .fr-checkbox-group.fr-checkbox-group--sm
+              = f.check_box :accept_terms
+              = f.label :accept_terms, class: "fr-label", for: "user_accept_terms" do
+                |  J'accepte les   
+                = link_to "conditions d'utilisation",
+                          conditions_d_utilisation_path,
+                          target: "_blank",
+                          title: "conditions d'utilisation (nouvelle fenêtre)",
+                          rel: "external noopener noreferrer",
+                          class: "font-weight-normal"
+                | . 
+                p
+                  = link_to "Lire la Politique de confidentialité",
+                            politique_de_confidentialite_path,
+                            title: "Lire la Politique de confidentialité (nouvelle fenètre)",
+                            target: "_blank",
+                            rel: "external noopener noreferrer",
+                            class: "font-weight-normal"
+                  span.font-weight-normal
+                    = " pour connaître les modalités d'utilisations de mes informations récoltées."
+        .fr-col-12
+          .actions.d-flex.d-sm-block.text-center.fr-mx-2w
+            = f.submit "Valider mes informations", class: "btn-block fr-btn", id: "test-create-user"
