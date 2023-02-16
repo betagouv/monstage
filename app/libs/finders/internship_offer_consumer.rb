@@ -10,7 +10,7 @@ module Finders
         Users::Visitor.name => :visitor_query,
         Users::SchoolManagement.name => :school_management_query,
         Users::Student.name => :school_members_query,
-        Users::Statistician.name => :statistician_query,
+        Users::PrefectureStatistician.name => :statistician_query,
         Users::MinistryStatistician.name => :ministry_statistician_query,
         Users::EducationStatistician.name => :statistician_query,
         Users::God.name => :visitor_query

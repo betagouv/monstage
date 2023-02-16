@@ -230,7 +230,7 @@ def populate_users
   EmailWhitelists::Statistician.create!(email: statistician_email, zipcode: 75)
   EmailWhitelists::EducationStatistician.create!(email: education_statistician_email, zipcode: 75)
   ministry_email_whitelist = EmailWhitelists::Ministry.create!(email: ministry_statistician_email, groups: last_public_groups)
-  with_class_name_for_defaults(Users::Statistician.new(email: statistician_email, password: 'review')).save!
+  with_class_name_for_defaults(Users::PrefectureStatistician.new(email: statistician_email, password: 'review')).save!
   with_class_name_for_defaults(Users::EducationStatistician.new(email: education_statistician_email, password: 'review')).save!
   with_class_name_for_defaults(Users::MinistryStatistician.new(email: ministry_statistician_email, password: 'review')).save!
 end

@@ -99,7 +99,7 @@ RailsAdmin.config do |config|
                               Tutor
                               Users::Student
                               Users::SchoolManagement
-                              Users::Statistician
+                              Users::PrefectureStatistician
                               Users::MinistryStatistician
                               Users::EducationStatistician
                               Users::Operator

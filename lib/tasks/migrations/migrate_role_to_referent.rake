@@ -125,7 +125,7 @@ namespace :migrations do
           user_id: user.id
         )
         # skip emails sending from user existence test
-        user.becomes!(Users::Statistician)
+        user.becomes!(Users::PrefectureStatistician)
         user.save!
         message = "User email: #{user.email} is now an departmental statistician " \
                   "in #{short_zipcode} department"

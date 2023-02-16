@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Users
-  class Statistician < User
+  class PrefectureStatistician < User
     include Signatorable
 
     has_many :internship_offers, as: :employer,
@@ -16,7 +16,7 @@ module Users
     has_many :tutors
     has_many :internship_offer_infos
     has_one :email_whitelist,
-            class_name: 'EmailWhitelists::Statistician',
+            class_name: 'EmailWhitelists',
             foreign_key: :user_id,
             dependent: :destroy
 
@@ -50,7 +50,7 @@ module Users
     def statistician? ; true end
 
     def presenter
-      Presenters::Statistician.new(self)
+      Presenters::PrefectureStatistician.new(self)
     end
 
     def dashboard_name
