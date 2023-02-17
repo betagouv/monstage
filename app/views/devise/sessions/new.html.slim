@@ -68,7 +68,8 @@ main#content[role="main"
                             .fr-messages-group id="password-1138-show-messages" aria-live="assertive"
                       #credentials-messages.fr-messages-group[aria-live="assertive"]
 
-                  .fr-fieldset__element.fr-mt-n4w
+                  .fr-fieldset__element.fr-mt-n4w[aria-labelledby="remember-1759-messages"]
+                    legend#login-extra-fields-fieldset-legend.fr-fieldset__legend
                     .fr-checkbox-group.fr-checkbox-group--sm
                       = f.check_box :remember_me,
                                     id: 'remember-1759',
