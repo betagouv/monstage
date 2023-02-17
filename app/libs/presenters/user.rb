@@ -60,42 +60,68 @@ module Presenters
     end
 
     def show_when_subscribe?(as: , field:)
-      common_fields = %i[
-        first_name
-        last_name
-        email
-        password
-        password_confirmation
-        accept_terms
-      ]
-      return true if field.in?(common_fields)
+      # common_fields = %i[
+      #   first_name
+      #   last_name
+      #   email
+      #   password
+      #   password_confirmation
+      #   accept_terms
+      # ]
+      # return true if field.in?(common_fields)
       return true if field.in?(subscribe_fields(as: as))
       
       false
     end
 
     def subscription_incipit(as:)
+      title = "Inscription"
+      subtitle = ""
+
       case as
-      when :employer
-        "Déposez vos offres de stages à l'aide de votre compte personnalisé. " \
+      when "Employer"
+        title = "Se créer un compte en tant qu'offreur"
+        subtitle = "Déposez " \
+        "vos offres de stages à l'aide de votre compte personnalisé. " \
         "Il vous permettra à tout moment de modifier vos offres et de " \
         "suivre leur avancement."
-      when :statistician
-        "Vous êtes référent départemental et souhaitez accéder aux " \
+      when "Statistician"
+        title = "Se créer un compte en tant que référent départemental"
+        subtitle = "Vous êtes " \
+        "référent départemental et souhaitez accéder aux " \
         "statistiques relatives aux offres de stage de votre département."
-      else
-        ''
+      when "MinistryStatistician"
+        title = "Se créer un compte en tant que référent d'administration centrale"
+        subtitle = "Vous êtes référent d'administration centrale et " \
+        "souhaitez accéder aux statistiques relatives aux offres de stage" \
+        "de votre administration."
+      when "EducationStatistician"
+        title = "Se créer un compte en tant que référent dsden"
+        subtitle = "Vous êtes référent départemental du ministère " \
+        "de l'éducation nationale et souhaitez accéder aux statistiques " \
+        "relatives aux offres de stage de votre département."
+      when "SchoolManagement"
+        title = "Se créer un compte en tant que gestionnaire d'établissement scolaire"
+        subtitle = "Vous souhaitez que vos élèves trouvent un stage " \
+        "de qualité. Cet outil vous permettra d'accéder à un tableau " \
+        "de suivi de vos élèves tout au long de leurs recherches de leur stage." 
       end
+      {
+        title: title,
+        subtitle: subtitle
+      }
     end
 
     def subscribe_fields(as:)
       case as
-      when :student
-        %i[gender email phone school_id class_room_id birth_date handicap_present handicap]
-      when :employer
-        %i[email employer_role]
-      when :school_management
-        %i[email school_id class_room_id role]
+      # when "Student"
+      #   %i[email gender phone school_id class_room_id birth_date handicap_present handicap]
+      when "Employer"
+        %i[employer_role email minister_video]
+      when "SchoolManagement"
+        %i[school email school_id class_room_id role ]
+      when 'MinistryStatistician', 'Statistician', 'EducationStatistician'
+        %i[email minister_video]
       else
         []
       end

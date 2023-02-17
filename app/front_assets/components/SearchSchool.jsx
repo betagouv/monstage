@@ -165,7 +165,7 @@ export default function SearchSchool({
                     onClick={onResetSearch}
                     aria-label="Réinitialiser la recherche"
                   >
-                    <i className="fas fa-times" />
+                    <span className="fr-icon-arrow-go-back-fill fr-icon--sm" aria-hidden="true"></span>
                   </button>
                 )}
                 {currentRequest && (

@@ -33,14 +33,6 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :password_confirmation, class: "fr-label" do %>
-      Confirmation du mot de passe
-      <%= f.rg2a_required_content_tag %>
-    <% end %>
-    <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
-  </div>
-
-  <div class="form-group">
     <%= f.label :current_password, class: "fr-label" do %>
       Mot de passe actuel
       <small class="form-text text-muted"><%= t('.we_need_your_current_password_to_confirm_your_changes') %></small>

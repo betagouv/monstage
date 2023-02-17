@@ -32,10 +32,6 @@
        .form-group
          = f.label 'Créer un mot de passe', class: 'fr-label', for: 'user_password'
          = f.password_field :password, class: 'fr-input', required: true, autocomplete: "new-password", data: { action: "change->signup#checkPassword", :"signup-target" => "passwordInput" }
-     .col-md-6.col-xs-12
-       .form-group
-         = f.label 'Ressaisir le mot de passe', class: 'fr-label', for: 'user_password_confirmation'
-         = f.password_field :password_confirmation, class: 'fr-input', required: true
     .row
       .col-md-12.col-xs-12
         .form-group
