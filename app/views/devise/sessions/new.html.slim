@@ -72,8 +72,9 @@ main#content[role="main"
                     .fr-checkbox-group.fr-checkbox-group--sm
                       = f.check_box :remember_me,
                                     id: 'remember-1759',
-                                    :'aria-describedby' => "remember-1759-messages"
-                      label.fr-label[for="remember-1759"]
+                                    :'aria-describedby' => "remember-1759-messages",
+                                    :'aria-labelledby' => "remember-label"
+                      label#remember-label.fr-label[for="remember-1759"]
                         |  Se souvenir de moi
                       #remember-1759-messages.fr-messages-group[aria-live="assertive"]
 
