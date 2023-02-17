@@ -1,7 +1,7 @@
 - error_status = error_status || false
-fieldset.select-channel.fr-fieldset.fr-mt-n4w
-  - if block_given?
-    legend.fr-fieldset__legend.fr-text--regular
+fieldset.select-channel.fr-fieldset.fr-mt-n4w[aria-labelledby="channel-legend"]
+  legend#channel-legend.fr-fieldset__legend.fr-text--regular
+    - if block_given?
       = yield
 
   .fr-fieldset__content.fr-fieldset--inline
