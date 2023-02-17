@@ -45,7 +45,7 @@ module Users
                                  zipcode: '59')
 
       statistician = create(:statistician, email: whitelisted_email.email, email_whitelist: whitelisted_email)
-      assert_changes -> { EmailWhitelists::Statistician.count }, -1 do
+      assert_changes -> { EmailWhitelists::PrefectureStatistician.count }, -1 do
         statistician.destroy
       end
     end

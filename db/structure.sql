@@ -449,7 +449,7 @@ CREATE TABLE public.email_whitelists (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     user_id bigint,
-    type character varying DEFAULT 'EmailWhitelists::Statistician'::character varying NOT NULL,
+    type character varying DEFAULT 'EmailWhitelists::PrefectureStatistician'::character varying NOT NULL,
     group_id integer
 );
 

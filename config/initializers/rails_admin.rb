@@ -81,7 +81,7 @@ RailsAdmin.config do |config|
 
   config.default_items_per_page = 50
 
-  config.included_models = %w[EmailWhitelists::Statistician
+  config.included_models = %w[EmailWhitelists::PrefectureStatistician
                               EmailWhitelists::Ministry
                               EmailWhitelists::EducationStatistician
                               School

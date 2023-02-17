@@ -119,7 +119,7 @@ namespace :migrations do
       PrettyConsole.puts_in_red "User not found or not an employer"
     else
       ActiveRecord::Base.transaction do
-        whitelist = EmailWhitelists::Statistician.create_or_find_by(
+        whitelist = EmailWhitelists::PrefectureStatistician.create_or_find_by(
           email: email,
           zipcode: short_zipcode,
           user_id: user.id

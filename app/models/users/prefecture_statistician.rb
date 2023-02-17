@@ -16,7 +16,7 @@ module Users
     has_many :tutors
     has_many :internship_offer_infos
     has_one :email_whitelist,
-            class_name: 'EmailWhitelists',
+            class_name: 'EmailWhitelists::PrefectureStatistician',
             foreign_key: :user_id,
             dependent: :destroy
 
@@ -111,14 +111,14 @@ module Users
     private
 
     # on create, make sure to assign existing email whitelist
-    # EmailWhitelists::Statistician holds the user_id foreign key
+    # EmailWhitelists::PrefectureStatistician holds the user_id foreign key
     def assign_email_whitelist_and_confirm
-      self.email_whitelist = EmailWhitelists::Statistician.find_by(email: email)
+      self.email_whitelist = EmailWhitelists::PrefectureStatistician.find_by(email: email)
       self.confirmed_at = Time.now
     end
 
     def email_in_list
-      unless EmailWhitelists::Statistician.exists?(email: email)
+      unless EmailWhitelists::PrefectureStatistician.exists?(email: email)
         errors.add(
           :email,
           'Votre adresse électronique n\'est pas reconnue, veuillez la ' \

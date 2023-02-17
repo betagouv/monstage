@@ -175,7 +175,7 @@ class Ability
     can %i[read update export], InternshipOffer
     can %i[read update destroy export], InternshipApplication
     can :manage, EmailWhitelists::EducationStatistician
-    can :manage, EmailWhitelists::Statistician
+    can :manage, EmailWhitelists::PrefectureStatistician
     can :manage, EmailWhitelists::Ministry
     can :manage, InternshipOfferKeyword
     can :manage, Group

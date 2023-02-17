@@ -227,7 +227,7 @@ def populate_users
   ministry_statistician_email = 'ministry_statistician@ms3e.fr'
   education_statistician_email = 'education_statistician@ms3e.fr'
   last_public_groups = Group.where(is_public: true).last(2)
-  EmailWhitelists::Statistician.create!(email: statistician_email, zipcode: 75)
+  EmailWhitelists::PrefectureStatistician.create!(email: statistician_email, zipcode: 75)
   EmailWhitelists::EducationStatistician.create!(email: education_statistician_email, zipcode: 75)
   ministry_email_whitelist = EmailWhitelists::Ministry.create!(email: ministry_statistician_email, groups: last_public_groups)
   with_class_name_for_defaults(Users::PrefectureStatistician.new(email: statistician_email, password: 'review')).save!
