@@ -14,24 +14,34 @@ module Presenters
     end
 
     def internship_week_description
+      internship_offer.weekly_planning? ? internship_weekly_description : internship_daily_description
+    end
+    
+    def internship_weekly_description
+      hours = internship_offer.weekly_hours
+      lunch_break = internship_offer.weekly_lunch_break
+      daily_schedule = [ "#{hours[0]} à #{hours[1]}".gsub!(':', 'h') ]
+      
+      content_tag(:div,
+        content_tag(:div, "#{daily_schedule.join(', ')}", class: 'fr-tag fr-icon-calendar-fill fr-tag--icon-left'),
+        class: 'fr-mb-2w'
+       ) +
+      content_tag(:div, "Pause déjeuner : #{lunch_break}", class: 'fr-mb-3w') if lunch_break.present?
+      # html_safe
+    end
+
+    def internship_daily_description
       %w(lundi mardi mercredi jeudi vendredi).map do |day|
-        if internship_offer.weekly_planning?
-          hours = internship_offer.weekly_hours
-          lunch_break = internship_offer.weekly_lunch_break
-          daily_schedule = [ "de #{hours[0]} à #{hours[1]}".gsub!(':', 'h') ]
-        else
-          hours = internship_offer.new_daily_hours[day]
-          lunch_break = internship_offer.daily_lunch_break[day]
-          next if hours.blank? || hours.size != 2
-          daily_schedule = [ "de #{hours[0]} à #{hours[1]}".gsub!(':', 'h') ]
-        end
-  
+        hours = internship_offer.new_daily_hours[day]
+        lunch_break = internship_offer.daily_lunch_break[day]
+        next if hours.blank? || hours.size != 2
+        daily_schedule = [ "de #{hours[0]} à #{hours[1]}".gsub!(':', 'h') ]
+        
         content_tag(:div,
           content_tag(:div, "#{day.capitalize} : #{daily_schedule.join(', ')}", class: 'fr-tag fr-icon-calendar-fill fr-tag--icon-left'),
-          class: 'fr-my-2w'
+          class: 'fr-mb-2w'
          ) +
-        content_tag(:div, "Pause déjeuner : #{lunch_break}") if lunch_break.present?
-
+        content_tag(:div, "Pause déjeuner : #{lunch_break}", class: 'fr-mb-3w') if lunch_break.present?
       end.join.html_safe
     end
 
