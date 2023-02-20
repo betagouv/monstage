@@ -75,6 +75,7 @@ gem 'jwt'
 # dev utils
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'bootsnap', require: false
+gem 'rack', '2.2.6.2'
 
 group :development, :test do
   gem "dotenv-rails", require: "dotenv/rails-now"
