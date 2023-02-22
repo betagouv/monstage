@@ -3,6 +3,7 @@
   = render 'identities/register'
 - else
   - errors_any = flash.keys.any? { |key| key == "alert" }
+  - errors = Presenters::Error.new(errors: resource.errors)
   - as = params[:as]
   - incipit = user_presenter.subscription_incipit(as: as)
 
@@ -10,10 +11,9 @@
               data-controller="signup"
               data-signup-channel-value="#{@resource_channel}"]
 
-
     .fr-container.fr-container--fluid
       .fr-grid-row.fr-grid-row-gutters.fr-grid-row--center
-        .fr-col-12.fr-col-md-8.fr-col-lg-6
+        .fr-col-12.fr-col-md-10.fr-col-lg-8
           .fr-container.fr-px-md-0
             .fr-grid-row.fr-grid-row-gutters.fr-grid-row--left
               = render 'layouts/breadcrumb', links: [ ['', incipit[:title]]]
@@ -21,16 +21,14 @@
               = render 'pages/home/minister_video'
           .fr-container.fr-background-alt--grey.fr-px-md-0.fr-py-10v.fr-py-md-14v
             .fr-grid-row.fr-grid-row-gutters.fr-grid-row--center
-              .fr-text-left.fr-mx-3w
+              .text-left.fr-mx-3w
                 h1#subcription-title.fr-h4
                   = incipit[:title]
                 p = incipit[:subtitle]
                 p.fr-my-4w
                   | Sauf mention contraire, tous les champs sont obligatoires.
-              - flash.keys.map do |key|
-                div class="fr-alert fr-alert--#{key == "notice" ? "success" : "error"} fr-mb-2v"
-              = render "layouts/form_errors", resource: resource, resource_name: :user
-                  = flash[key]
+                p
+                  = render "layouts/form_errors", resource: resource, resource_name: :user
             fieldset#subscription-form.fr-mx-2w[aria-labelledby="subscription-title"]
               legend
               = form_with(model: resource,
@@ -51,24 +49,28 @@
                                                   existingSchool: resource&.school&.as_json,
                                                   existingClassRoom: resource.try(:class_room).try(:as_json),
                                       })
-                .fr-fieldset__element
-                  .fr-input-group.fr-mb-2v
-                    label.fr-label for="user_first_name"
-                      |Prénom
-                    = f.text_field :first_name,
-                          class: "fr-input",
-                          autocomplete: "on"
-                .fr-fieldset__element
-                  .fr-input-group.fr-mb-2v
-                    label.fr-label for="user_last_name"
-                      |Nom
-                    = f.text_field :last_name,
-                          class: "fr-input",
-                          autocomplete: "on"
+                = render partial: "users/registrations/input_field",
+                         locals: { f: f,
+                                   field_label: "Prénom",
+                                   field: :first_name,
+                                   resource: resource,
+                                   resource_name: resource_name,
+                                   option: { required: true },
+                                   errors: errors }
+                = render partial: "users/registrations/input_field",
+                         locals: { f: f,
+                                   field_label: "Nom",
+                                   field: :last_name,
+                                   resource: resource,
+                                   resource_name: resource_name,
+                                   option: { required: true },
+                                   errors: errors }
+
                 - if user_presenter.show_when_subscribe?(as: as, field: :role)
                   .fr-fieldset__element
-                    .fr-input-group.fr-mb-2v
-                      label.fr-label for="user_role"
+                    - error_tag  = errors.field_error_tag(resource_name: resource_name, resource: resource, field: :role)
+                    div class="fr-input-group fr-mb-2v #{error_tag.present? ? 'fr-input-group--error' : ''}"
+                      label.fr-label for="user_role" class="#{error_tag.present? ? 'fr-label--error' : ''}"
                         |Fonction
                       = f.select :role,
                           options_from_collection_for_select(user_roles_to_select, :value, :text, resource.role),
@@ -76,18 +78,20 @@
                           { class: "fr-select",
                                     required: true,
                                     data: { action: "change->signup#refreshEmailFieldLabel", :'signup-target' => "roleInput" } }
+                      = error_tag
                 - if user_presenter.show_when_subscribe?(as: as, field: :employer_role)
-                  .fr-fieldset__element
-                    .fr-input-group.fr-mb-2v
-                      label.fr-label for="user_employer_role"
-                        |Fonction au sein de l'entreprise
-                      = f.text_field :employer_role,
-                                     class: "fr-input",
-                                     maxlength: "150",
-                                     required: true
+                  = render partial: "users/registrations/input_field",
+                          locals: { f: f,
+                                    field_label: "Fonction au sein de l'entreprise",
+                                    field: :employer_role,
+                                    resource: resource,
+                                    resource_name: resource_name,
+                                    option: {required: true, maxlength: 150},
+                                    errors: errors }
 
                 .fr-fieldset__element
-                  .fr-input-group
+                  - error_tag = errors.field_error_tag(resource_name: resource_name, resource: resource, field: :email)
+                  div class="fr-input-group #{error_tag.present? ? 'fr-input-group--error' : ''}"
                     label.fr-label [for="user_email" data-signup-target="emailLabel"]
                       |Adresse électronique
                     p.fr-message[data-signup-target="emailExplanation"]
@@ -109,16 +113,18 @@
                 span[data-signup-target="phoneBloc"]
 
                 .fr-fieldset__element
-                  #password_group.fr-password.fr-mb-2v[data-signup-target="passwordGroup"]
-                    label#password_group_label.fr-label[for="user_password"]
+                  - error_tag = errors.field_error_tag(resource_name: resource_name, resource: resource, field: :password)
+                  div id="password_group" class="fr-password fr-mb-2v #{error_tag.present? ? 'fr-input-group--error' :''}" data-signup-target="passwordGroup"
+                    label id="password_group" class="fr-label #{error_tag.present? ? 'fr-label--error' : ''}" for="user_password"
                       |Créer un mot de passe
                     .fr-input-wrap
                       = f.password_field :password,
-                                        :'aria-describedby' => "user_password-messages",
-                                        autocomplete: "new-password",
-                                        class: "fr-password__input fr-input fr-password__input fr-input",
-                                        required: true,
-                                        data: { action: "change->signup#checkPassword", :"signup-target" => "passwordInput" }
+                                         :'aria-describedby' => "user_password-messages",
+                                         autocomplete: "new-password",
+                                         class: "fr-password__input fr-input fr-password__input fr-input #{error_tag.present? ? 'fr-input--error' : ''}",
+                                         required: true,
+                                         data: { action: "change->signup#checkPassword", :"signup-target" => "passwordInput" }
+                      = errors.field_error_tag(resource_name: resource_name, resource: resource, field: :password)
                     #user_password-messages.fr-messages-group[aria-live="assertive"]
 
                     .fr-password__checkbox.fr-checkbox-group.fr-checkbox-group--sm
@@ -129,20 +135,23 @@
                       label.fr-password__checkbox.fr-label[for="user_password-show"]
                         |  Afficher
                     #user_password-show-messages.fr-messages-group[aria-live="assertive"]
-                        p[data-signup-target="passwordHint"]
+                      p[data-signup-target="passwordHint"]
 
 
                 - if can?(:choose_operator, :sign_up)
                   .fr-fieldset__element
-                    .fr-input-group.fr-mb-2v
-                      label.fr-label for="user_operator"
+                    - error_tag  = errors.field_error_tag(resource_name: resource_name, resource: resource, field: :operator_id)
+                    div class="fr-input-group fr-mb-2v #{error_tag.present? ? 'fr-input-group--error' : ''}"
+                      label.fr-label for="user_operator" class="#{error_tag.present? ? 'fr-label--error' : ''}"
                         |Opérateur
                       = f.select :operator_id,
                           options_from_collection_for_select(Operator.all, :id, :name, resource.operator),
                           { prompt: operator_options_for_default },
                           class: "fr-select"
+                      = error_tag
                 .fr-fieldset__element
-                  .fr-checkbox-group.fr-mb-2v
+                  - error_tag  = errors.field_error_tag(resource_name: resource_name, resource: resource, field: :accept_terms)
+                  div class="fr-checkbox-group fr-mb-2v #{error_tag.present? ? 'fr-input-group--error' : ''}"
                     = f.check_box :accept_terms
                     label.fr-label for="user_accept_terms"
                       -link = link_to "conditions d'utilisation",
@@ -161,6 +170,7 @@
                                   class: "font-weight-normal"
                         span.font-weight-normal
                           = " pour connaître les modalités d'utilisations de mes informations récoltées."
+                    = error_tag
                 .fr-col-12
                   .actions.text-right
                     = f.submit "Valider", class: "fr-btn fr-mx-2w", id: "test-create-user"

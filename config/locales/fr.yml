@@ -176,6 +176,7 @@ fr:
         main_teacher_accept_terms: Validée par le professeur principal
         date_range: Dates du stage
         organisation_representative_full_name: Nom de l'employeur
+        organisation_representative_role: Fonction de l'employeur
         school_representative_full_name: Nom du chef d'établissement ou de son représentant
         school_representative_email: Courriel du chef d'établissement ou de son représentant
         school_representative_phone: Numéro de téléphone du chef d'établissement ou de son représentant
@@ -460,8 +461,6 @@ fr:
               invalid: "Le format de votre email semble incorrect"
             password:
               too_short: "Veuillez saisir un mot de passe d'au moins 6 caractères"
-            password_confirmation:
-              confirmation: "Les mots de passe saisis ne sont pas identiques."
             first_name:
               blank: Veuillez saisir un prénom
             last_name:

@@ -21,7 +21,6 @@ fr:
         last_sign_in_ip: IP de la dernière connexion
         locked_at: Verrouillé à
         password: Mot de passe
-        password_confirmation: Confirmation du mot de passe
         remember_created_at: Mémorisé à
         remember_me: Se souvenir de moi ?
         reset_password_sent_at: Clé de réinitialisation créée à

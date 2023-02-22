@@ -60,15 +60,6 @@ module Presenters
     end
 
     def show_when_subscribe?(as: , field:)
-      # common_fields = %i[
-      #   first_name
-      #   last_name
-      #   email
-      #   password
-      #   password_confirmation
-      #   accept_terms
-      # ]
-      # return true if field.in?(common_fields)
       return true if field.in?(subscribe_fields(as: as))
       
       false

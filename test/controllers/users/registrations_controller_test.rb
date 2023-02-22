@@ -15,7 +15,6 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
       last_name: 'Ref',
       email: white_list.email,
       password: 'password',
-      password_confirmation: 'password',
       type: 'Users::Statistician',
       accept_terms: true
     }
@@ -32,7 +31,6 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
       last_name: 'Ref',
       email: white_list.email,
       password: 'password',
-      password_confirmation: 'password',
       type: 'Users::MinistryStatistician',
       accept_terms: true
     }
@@ -49,7 +47,6 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
       last_name: 'Ref',
       email: white_list.email,
       password: 'password',
-      password_confirmation: 'password',
       type: 'Users::EducationStatistician',
       accept_terms: true
     }

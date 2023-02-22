@@ -18,17 +18,15 @@ class SignUpStatisticiansTest < ApplicationSystemTestCase
       find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       fill_in 'Adresse électronique', with: bad_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
-      fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      find('input[type="checkbox"]', visible: false).check
-      click_on "Valider mes informations"
+      all('input[type="checkbox"]', visible: false)[1].check
+      click_on "Valider"
     end
 
     assert_equal 0, Users::Statistician.count
     assert_difference('Users::Statistician.count', 1) do
       fill_in 'Adresse électronique', with: good_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
-      fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      click_on "Valider mes informations"
+      click_on "Valider"
     end
 
     # check created statistician has valid info

@@ -9,7 +9,6 @@ class OperatorRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'label', /Nom/
     assert_select 'label', /Adresse électronique/
     assert_select 'label', /Créer un mot de passe/
-    assert_select 'label', /Ressaisir le mot de passe/
     assert_select 'label', /Opérateur/
     assert_select 'label', /J'accepte les/
   end
@@ -25,7 +24,6 @@ class OperatorRegistrationsTest < ActionDispatch::IntegrationTest
     assert_difference('Users::Operator.count', 0) do
       post user_registration_path(params: { user: { email: 'operator@vvmt.fr',
                                                     password: 'okokok',
-                                                    password_confirmation: 'okokok',
                                                     type: 'Users::Operator',
                                                     first_name: 'Martin',
                                                     last_name: 'Fourcade',
@@ -40,7 +38,6 @@ class OperatorRegistrationsTest < ActionDispatch::IntegrationTest
     assert_difference('Users::Operator.count', 1) do
       post user_registration_path(params: { user: { email: 'operator@vvmt.fr',
                                                     password: 'okokok',
-                                                    password_confirmation: 'okokok',
                                                     type: 'Users::Operator',
                                                     first_name: 'Martin',
                                                     last_name: 'Fourcade',

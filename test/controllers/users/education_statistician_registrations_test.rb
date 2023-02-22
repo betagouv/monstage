@@ -14,7 +14,6 @@ class EducationStatisticianRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'label', /Nom/
     assert_select 'label', /Adresse électronique/
     assert_select 'label', /Créer un mot de passe/
-    assert_select 'label', /Ressaisir le mot de passe/
     assert_select 'label', /J'accepte les/
   end
 
@@ -26,7 +25,6 @@ class EducationStatisticianRegistrationsTest < ActionDispatch::IntegrationTest
                                                     first_name: 'Jean',
                                                     last_name: 'Ref',
                                                     password: 'okokok',
-                                                    password_confirmation: 'okokok',
                                                     type: 'Users::EducationStatistician',
                                                     accept_terms: '1' } })
       assert_response 302

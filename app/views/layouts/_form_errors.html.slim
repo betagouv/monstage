@@ -1,13 +1,15 @@
 - errors = Presenters::Error.new(errors: resource.errors)
+- resource_name ||= resource.class.model_name.human.downcase
 - if errors.count.positive?
-  p= I18n.t("errors.messages.not_saved", count: errors.count,
-                                          resource: resource.class.model_name.human.downcase)
-  ul.my-0
-  - errors.displayed_messages.each do |key, errors_message|
-    - errors_message.each do |error_message|
-        / label.for-errors.fr-label for="#{defined?(resource_name) ? resource_name : resource.class.name.downcase }_#{key}"
-        div class="fr-alert fr-alert--#{key == "notice" ? "success" : "error"} fr-mb-2v"
-          - translate_path = "activerecord.attributes.#{defined?(resource_name) ? resource_name : resource.class.name.downcase }.#{key}" 
-          = "#{I18n.t(translate_path)} : #{error_message}" 
+  p
+    strong
+      = I18n.t("errors.messages.not_saved", count: errors.count, resource: resource.class.model_name.human.downcase)
+  dl.my-0
+    dd
+      - errors.notice_messages(resource_name: resource_name, resource: resource).each do |notice_message|
+        div class="fr-alert fr-alert--success fr-mb-2v"
+          = notice_message
+      div class="fr-alert fr-alert--error fr-mb-2v"
+        = errors.error_messages(resource_name: resource_name, resource: resource, separator: "<br/>")
 
 
