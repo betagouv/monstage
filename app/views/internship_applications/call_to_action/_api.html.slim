@@ -1,10 +1,10 @@
-.actions.d-flex.d-sm-block.d-xs-stick.mb-0.justify-content-center
+.actions.d-flex.d-sm-block.mb-0.justify-content-center
   .mb-1.text-muted.small.d-none.d-sm-block
     = "Offre publiée par #{operator_name(internship_offer)}"
   - if current_user.nil? || current_user.student?
-    .actions.d-flex.d-sm-block.d-xs-stick.text-center
+    .actions.d-flex.text-center
       = link_to internship_offer.permalink,
-                class: 'fr-btn fr-icon-external-link-line fr-btn--icon-left',
+                class: 'fr-btn',
                 target: "_blank",
                 rel: "external noopener noreferrer",
                 title: "Je postule sur #{operator_name(internship_offer)} (nouvelle fenêtre)" do
