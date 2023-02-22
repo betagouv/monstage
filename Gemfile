@@ -49,7 +49,6 @@ gem 'rails_admin_aasm'
 # instrumentation
 gem "lograge"
 gem 'ovh-rest'
-gem 'prismic.io', require: 'prismic'
 gem "sentry-ruby"
 gem "sentry-rails"
 gem 'airtable'
