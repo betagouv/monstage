@@ -95,7 +95,7 @@ class InternshipAgreement < ApplicationRecord
                   to: :started_by_school_manager
     end
 
-    event :validate do
+    event :finalize do
       transitions from: %i[completed_by_employer started_by_school_manager],
                   to: :validated,
                   after: proc { |*_args|
