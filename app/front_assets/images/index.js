@@ -120,7 +120,7 @@ import './homepage/partenaires/Logo-moidans10ans.png';
 import './homepage/partenaires/Logo-telemaque.png';
 
 import './homepage/sponsors/logo-anct.svg';
-import './homepage/sponsors/logo-anct.avif';
+import './homepage/sponsors/logo-anct.png';
 import './homepage/sponsors/logo-ministere-education-nationale.svg';
 import './homepage/sponsors/logo-ministere-de-la-transition-ecologique.svg';
 
