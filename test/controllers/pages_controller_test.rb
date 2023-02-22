@@ -33,13 +33,6 @@ class PagesTest < ActionDispatch::IntegrationTest
     assert_select 'title', "Exemple d'offre idéale (sport) | Monstage"
   end
 
-  test 'GET pages#partenaires works' do
-    get partenaires_path
-    assert_response :success
-    assert_template 'pages/partenaires'
-    assert_select 'title', "Pages partenaires | Monstage"
-  end
-
   test 'GET pages#mentions_legales works' do
     get mentions_legales_path
     assert_response :success

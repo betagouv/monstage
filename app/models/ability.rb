@@ -55,7 +55,7 @@ class Ability
   end
 
   def school_manager_abilities(user:)
-    can :create_remote_internship_request, SupportTicket
+    can :create_remote_internship_request, SupportTicket # TO DO REMOVE
 
     can_manage_school(user: user) do
       can [:delete], User do |managed_user_from_school|
@@ -108,7 +108,7 @@ class Ability
     can :show, :account
 
     can :see_minister_video, User
-    can :create_remote_internship_request, SupportTicket
+    can :create_remote_internship_request, SupportTicket # TO DO REMOVE
 
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
