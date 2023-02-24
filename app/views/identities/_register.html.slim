@@ -47,7 +47,7 @@ main#content[role="main"
                 .fr-fieldset__element
                   - error_tag = errors.field_error_tag(resource_name: resource_name, resource: resource, field: :password)
                   div id="password_group" class="fr-password fr-mb-2v #{error_tag.present? ? 'fr-input-group--error' :''}" data-signup-target="passwordGroup"
-                    label id="password_group" class="fr-label #{error_tag.present? ? 'fr-label--error' : ''}" for="user_password"
+                    label id="password-group" class="fr-label #{error_tag.present? ? 'fr-label--error' : ''}" for="user_password"
                       |Créer un mot de passe
                     .fr-input-wrap
                       = f.password_field :password,
