@@ -29,7 +29,7 @@ Rails.application.routes.draw do
     get '/users/password/set_up', to: 'users/passwords#set_up', as: 'set_up_password'
   end
   
-  resources :identities, only: %i[new create edit update]
+  resources :identities, only: %i[new create ]
   resources :schools, only: %i[new create ]
 
   resources :internship_offer_keywords, only: [] do

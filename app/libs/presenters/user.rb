@@ -70,6 +70,8 @@ module Presenters
       subtitle = ""
 
       case as
+      when "Student"
+        title = "Se créer un compte en tant qu'élève"
       when "Employer"
         title = "Se créer un compte en tant qu'offreur"
         subtitle = "Déposez " \
@@ -105,8 +107,6 @@ module Presenters
 
     def subscribe_fields(as:)
       case as
-      # when "Student"
-      #   %i[email gender phone school_id class_room_id birth_date handicap_present handicap]
       when "Employer"
         %i[employer_role email minister_video]
       when "SchoolManagement"

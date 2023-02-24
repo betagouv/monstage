@@ -17,9 +17,8 @@ class SignUpMinistryStatisticiansTest < ApplicationSystemTestCase
       find("input[name='user[last_name]']").fill_in(with: 'Fourcade')
       fill_in 'Adresse électronique', with: bad_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
-      fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      find('input[type="checkbox"]', visible: false).check
-      click_on "Valider mes informations"
+      all('input[type="checkbox"]', visible: false)[1].check
+      click_on "Valider"
     end
 
     # create ministry_statistician with previously set email
@@ -29,9 +28,8 @@ class SignUpMinistryStatisticiansTest < ApplicationSystemTestCase
       find("input[name='user[last_name]']").fill_in(with: 'Fourcade')
       fill_in 'Adresse électronique', with: email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
-      fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      find('input[type="checkbox"]', visible: false).check
-      click_on "Valider mes informations"
+      all('input[type="checkbox"]', visible: false)[1].check
+      click_on "Valider"
     end
 
     # check created statistician has valid info

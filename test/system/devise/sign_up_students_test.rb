@@ -5,7 +5,7 @@ require 'application_system_test_case'
 class SignUpStudentsTest < ApplicationSystemTestCase
   # unfortunatelly on CI tests fails
   def safe_submit
-    click_on "Valider mon inscription"
+    click_on "Valider"
   rescue Selenium::WebDriver::Error::ElementClickInterceptedError
     execute_script("document.getElementById('new_user').submit()")
   end
@@ -14,13 +14,13 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     identity = create(:identity)
     visit new_user_registration_path(as: 'Student', identity_token: identity.token)
     fill_in 'Adresse électronique', with: 'email@free.fr'
-    assert find("#select-channel-email").selected?
+    assert find("#select-channel-email", visible: false).selected?
     find("#select-channel-phone", visible: false)
 
-    find('label', text: 'Par téléphone (SMS)').click
+    find('label', text: 'Par téléphone').click
 
     fill_in 'Numéro de téléphone', with: '0623042525'
-    assert find("#select-channel-phone").selected?
+    assert find("#select-channel-phone", visible: false).selected?
     find("#select-channel-email", visible: false)
   end
 
@@ -40,23 +40,21 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     # fails to create student with existing email and display email channel
     assert_difference('Users::Student.count', 0) do
-      find('label', text: 'Par e-mail').click
+      find("label[for='select-channel-email']",).click
       fill_in 'Adresse électronique', with: existing_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
-      fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       find('label[for="user_accept_terms"]').click
-      click_on "Valider mon inscription"
-      find('label', text: 'Un compte est déjà associé à cet email')
+      click_on "Valider"
+      find('.fr-alert.fr-alert--error', text: 'Courriel : Un compte est déjà associé à cet email')
       assert_equal existing_email, find('#user_email').value
     end
 
     # create student
     assert_difference('Users::Student.count', 1) do
-      find('label', text: 'Par e-mail').click
+      find('label', text: 'Par email').click
       fill_in 'Adresse électronique', with: 'another@email.com'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
-      fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      click_on "Valider mon inscription"
+      click_on "Valider"
     end
   end
 
@@ -105,16 +103,15 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
       find('label', text: 'Féminin').click
 
-      click_on "Valider mes informations"
+      click_on "Valider"
     end
     
 
     # real signup as student
     assert_difference('Users::Student.count', 1) do
       assert_difference('Users::Student.count', 1) do
-        fill_in 'Adresse électronique (e-mail)', with: email, wait: 4
+        fill_in 'Adresse électronique', with: email, wait: 4
         fill_in 'Créer un mot de passe', with: password, wait: 4
-        fill_in 'Ressaisir le mot de passe', with: password, wait: 4
         find('label[for="user_accept_terms"]').click
         sleep 0.2
         find("input[type='submit']").click
@@ -306,12 +303,11 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       fill_in 'Nom', with: 'Fourcade'
       fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
       find('label', text: 'Masculin').click
-      click_on "Valider mes informations"
+      click_on "Valider"
 
       find('label', text: 'Par téléphone').click
       execute_script("document.getElementById('phone-input').value = '#{existing_phone}';")
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
-      fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       execute_script("document.getElementById('user_accept_terms').checked = true;")
       safe_submit
     end

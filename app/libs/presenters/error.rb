@@ -18,18 +18,6 @@ module Presenters
       ).flatten
     end
 
-    def field_errors(resource_name: , resource:, field: )
-      filtered_messages = reject_none_messages(messages: reject_notice_messages(messages: messages))
-      filtered_messages = reject_empty_messages(messages: filtered_messages)
-      return "" if filtered_messages.blank?
-
-      filtered_messages.select do |key, notice_messages|
-        key.to_s == field.to_s
-      end.map do |key, notice_messages|
-        notice_messages
-      end.flatten.join(', ')
-    end
-
     def field_error_tag(resource_name: , resource:, field: )
       error_message = field_errors(
         resource_name: resource_name,
@@ -41,12 +29,12 @@ module Presenters
           :p,
           error_message,
           id: "p#text-#{field}-input-error-desc-error",
-          class: 'fr-error-text'
+          class: 'fr-error-text fr-mb-3w'
         )
       end
     end
 
-    attr_reader :error, :displayed_messages, :count, :messages
+    attr_reader :errors, :displayed_messages, :count, :messages
 
     private
 
@@ -55,6 +43,18 @@ module Presenters
       @messages           = errors.messages
       @displayed_messages = selected_messages(messages: @messages)
       @count              = @displayed_messages.count
+    end
+
+    def field_errors(resource_name: , resource:, field: )
+      filtered_messages = reject_none_messages(messages: reject_notice_messages(messages: messages))
+      filtered_messages = reject_empty_messages(messages: filtered_messages)
+      return "" if filtered_messages.blank?
+
+      filtered_messages.select do |key, notice_messages|
+        key.to_s == field.to_s
+      end.map do |key, notice_messages|
+        notice_messages
+      end.flatten.join(', ')
     end
 
     def sanitize_and_translate(resource_name: , resource:, given_messages:)

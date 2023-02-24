@@ -1,6 +1,6 @@
-- errors = Presenters::Error.new(errors: resource.errors)
+- errors = Presenters::Error.new(errors: resource.errors) if resource&.errors&.any?
 - resource_name ||= resource.class.model_name.human.downcase
-- if errors.count.positive?
+- unless errors.nil? || errors&.messages&.empty?
   p
     strong
       = I18n.t("errors.messages.not_saved", count: errors.count, resource: resource.class.model_name.human.downcase)

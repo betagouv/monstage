@@ -84,7 +84,7 @@ function RenderClassRoomsInput({
       )}
       {classRoomsSuggestions && classRoomsSuggestions.length === 0 && (
         <>
-          <label className='fr-label' htmlFor={`${resourceName}_class_room_id`}>Classe</label>
+          <label className='fr-label' htmlFor={`${resourceName}_class_room_id`}>Classe (optionnel)</label>
           <input
             placeholder="Aucune classe disponible"
             readOnly

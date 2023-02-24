@@ -2,7 +2,6 @@
 - if params[:identity_token]
   = render 'identities/register'
 - else
-  - errors_any = flash.keys.any? { |key| key == "alert" }
   - errors = Presenters::Error.new(errors: resource.errors)
   - as = params[:as]
   - incipit = user_presenter.subscription_incipit(as: as)

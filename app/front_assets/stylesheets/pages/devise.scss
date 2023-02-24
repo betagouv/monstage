@@ -21,6 +21,10 @@
 
   }
 }
+.full-size-setting{
+  display: block;
+  width: 100%;
+}
 
 .btn-clear-city{
   // background-color: $input-bg;
@@ -29,7 +33,6 @@
   // border-bottom-right-radius: $input-border-radius;
 
   // background-color: $grey-200;
-  color: $grey-200 !important;
   border: 1px solid $grey-200 !important;
   // border-bottom: 1px solid #ddd !important;
   box-shadow: none;
