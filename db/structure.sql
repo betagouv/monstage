@@ -697,7 +697,9 @@ CREATE TABLE public.internship_applications (
     internship_offer_id bigint NOT NULL,
     applicable_type character varying,
     internship_offer_type character varying NOT NULL,
-    week_id bigint
+    week_id bigint,
+    student_phone character varying,
+    student_email character varying
 );
 
 
@@ -2843,6 +2845,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221123101159'),
 ('20221124170052'),
 ('20221219144134'),
-('20221223100742');
+('20221223100742'),
+('20230223102039');
 
 

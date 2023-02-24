@@ -32,8 +32,7 @@ class InternshipApplicationsController < ApplicationController
     if params[:transition] == 'submit!'
       @internship_application.submit!
       @internship_application.save!
-      redirect_to completed_internship_offer_internship_application_path(@internship_offer, @internship_application),
-                  flash: { success: "Votre candidature a bien été envoyée. Poursuivez votre recherche d'un stage et notez que en l'absence de réponse dans un délai de 30 jours, votre candidature sera automatiquement annulée." }
+      redirect_to completed_internship_offer_internship_application_path(@internship_offer, @internship_application)
     else
       @internship_application.update(update_internship_application_params)
       redirect_to internship_offer_internship_application_path(@internship_offer, @internship_application)
@@ -109,6 +108,8 @@ class InternshipApplicationsController < ApplicationController
             :internship_offer_id,
             :internship_offer_type,
             :motivation,
+            :student_phone,
+            :student_email,
             student_attributes: %i[
               email
               phone
