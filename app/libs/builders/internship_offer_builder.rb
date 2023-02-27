@@ -27,7 +27,6 @@ module Builders
       yield callback if block_given?
       authorize :create, model
       create_params = preprocess_api_params(params, fallback_weeks: true)
-      create_params.merge!(remaining_seats_count: params[:max_candidates])
       internship_offer = model.create!(create_params)
       callback.on_success.try(:call, internship_offer)
     rescue ActiveRecord::RecordInvalid => e
@@ -102,9 +101,8 @@ module Builders
                         'vous n\'allez leur offrir de places.'
         instance.errors.add(:max_candidates, error_message)
         raise ActiveRecord::RecordInvalid, instance
-      else
-        instance.remaining_seats_count = next_max_candidates - approved_applications_count
       end
+
       instance
     end
 

@@ -42,8 +42,8 @@ const InternshipOfferFavorites = ({ internshipOffers }) => {
         {/* Cards */}
         { internshipOffers.length == 0 ? 
           (
-            <div className='col-12'>
-              <h1>Vous n'avez aucune annonce sauvegardée.</h1>
+            <div className='col-12 no-scroll-bars'>
+              <h2 className='h3'>Vous n'avez aucune annonce sauvegardée.</h2>
               <p className="fr-py-1w">Pour en ajouter une, effectuez une recherche et cliquez sur le coeur pour enregistrer l'annonce qui vous intéresse.</p>
               <a class="fr-btn fr-raw-link fr-px-8w" href="/internship_offers">Trouver un stage </a>
             </div>

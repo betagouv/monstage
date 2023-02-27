@@ -101,7 +101,6 @@ module InternshipOffers
                               message: "Le nombre maximal d'élèves par groupe ne peut pas dépasser le nombre maximal d'élèves attendus dans l'année" }
     after_initialize :init
     before_create :reverse_academy_by_zipcode
-    after_update :update_remaining_seats
 
     #---------------------
     # fullfilled scope isolates those offers that have reached max_candidates

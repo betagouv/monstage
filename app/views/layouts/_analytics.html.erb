@@ -1,7 +1,7 @@
 <% matomo_production_site_id = '2' %>
 <% matomo_other_env_site_id = '3' %>
 
-<% if Rails.env.development? || Rails.env.staging? || Rails.env.review? || Rails.env.production? %>
+<% if Rails.env.production? %>
   <!-- Matomo -->
   <script type="text/javascript">
     var _paq = window._paq || [];
@@ -24,17 +24,15 @@
       g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
     })();
   </script>
-  <!-- End Matomo Code -->
+  // <!-- End Matomo Code -->
 
 
-  <!-- Matomo Tag Manager -->
-<script type="text/javascript">
-var _mtm = window._mtm = window._mtm || [];
-_mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
-var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-g.type='text/javascript'; g.async=true; g.src='https://betagouv-matomo.osc-secnum-fr1.scalingo.io/js/container_pi6b6eL6.js'; s.parentNode.insertBefore(g,s);
-</script>
-<!-- End Matomo Tag Manager -->
-  <!-- End Matomo Tag Manager -->
-
+  // <!-- Matomo Tag Manager -->
+  <script type="text/javascript">
+  var _mtm = window._mtm = window._mtm || [];
+  _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+  g.type='text/javascript'; g.async=true; g.src='https://betagouv-matomo.osc-secnum-fr1.scalingo.io/js/container_pi6b6eL6.js'; s.parentNode.insertBefore(g,s);
+  </script>
+  // <!-- End Matomo Tag Manager -->
 <% end %>

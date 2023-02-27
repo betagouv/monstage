@@ -91,3 +91,7 @@ ul.class-room {
     cursor: pointer;
   }
 }
+
+.no-scroll-bar::-webkit-scrollbar {
+  display: none;
+}
