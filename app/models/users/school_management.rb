@@ -23,7 +23,6 @@ module Users
     has_many :internship_agreements, through: :internship_applications
 
     validates :school, presence: true, on: :create
-    validate :only_join_managed_school, on: :create, unless: :school_manager?
     validate :official_uai_email_address, on: :create, if: :school_manager?
     validate :official_email_address, on: :create
 
@@ -88,12 +87,6 @@ module Users
     private
 
     # validators
-    def only_join_managed_school
-      unless school.try(:school_manager).try(:present?)
-        errors.add(:base, "Le chef d'établissement ne s'est pas encore inscrit, il doit s'inscrire pour confirmer les professeurs principaux.")
-      end
-    end
-
     def official_email_address
       return if school_id.blank?
       unless email =~ /\A[^@\s]+@#{school.email_domain_name}\z/
