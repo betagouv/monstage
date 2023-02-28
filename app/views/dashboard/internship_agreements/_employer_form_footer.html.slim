@@ -11,13 +11,15 @@
             | Enregistrer et quitter
 
           = button_tag type: "button",
-                       data: { action: 'click->internship-agreement-form#checkFormValidity' },
+                       data: { action: 'click->internship-agreement-form#checkFormValidity', turbo: false, :'fr-opened' => "false" },
                        class: 'fr-btn mx-1',
-                       id: 'send_agreement' do
+                       id: 'send_agreement',
+                      :'aria-controls' => 'validation-modal' do
             i.fas.fa-check
             | Envoyer la convention
 
   = render "dashboard/internship_agreements/validation_modal",
+           form: form,
            title: 'Envoyer la convention',
            action: 'completeByEmployer',
            button: 'Envoyer la convention',
