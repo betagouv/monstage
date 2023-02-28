@@ -18,11 +18,11 @@ dialog#validation-modal.fr-modal [aria-labelledby="validation-modal-title"
               li
                 = button_tag type: "button",
                              data: { action: "click->internship-agreement-form##{action}" },
-                             class: 'fr-btn fr-fi-checkbox-line' do
+                             class: 'fr-btn' do
                   = button
               li.error-message.d-none
                 = link_to '#',
                           class: 'px-3 fr-btn btn-danger',
                           data: { 'dismiss': "modal" } do
-                  button.fr-btn.fr-fi-checkbox-line.fr-btn--secondary
+                  button.fr-btn.fr-btn--secondary
                     | Je vérifie mes informations
