@@ -4,68 +4,21 @@
 = render 'layouts/breadcrumb',
          links: [[back_to_internship_offers_from_internship_offer_path(current_user, request.original_url), 'Recherche de stage'], [internship_offer_path(@internship_offer), @internship_offer.title]]
 
-div data-controller="internship-application-form"
-  .row.no-gutters [data-controller='list-navigation'
-                   data-list-navigation-next-url-value=listable_internship_offer_path(@next_internship_offer)
-                   data-list-navigation-previous-url-value=listable_internship_offer_path(@previous_internship_offer)]
-
-    .col-12.col-sm-12
-      table.table.table-sticky-thead
-        thead
-          tr.tr-white
-            th
-              - if can?(:create, @internship_offer)
-                = render "dashboard/internship_offers/navigation",
-                         internship_offer: @internship_offer
-              - else
-                = render "internship_offers/header",
-                          internship_offer: @internship_offer,
-                          renewed: params[:renewed]
-
+div.fr-container
+  - if can?(:create, InternshipOffer)
+    = render "dashboard/internship_offers/navigation", internship_offer: @internship_offer
+  
   .row
-    .col-sm-3.col-12.mb-4
-      .sticky-top.fr-px-1w
-        .row.my-2.fr-pt-2w
-          .col-12
-            .h3.text-dark= @internship_offer.title
-            .h4.my-2= @internship_offer.employer_name
-            .my-3= Presenters::Address.new(instance: @internship_offer).full_address
-        .row
-          .col-12
-            = render 'internship_offers/tags', internship_offer: @internship_offer
-            .my-3.d-none.d-sm-block
-              = render "internship_offers/apply_cta",
-                       internship_offer: @internship_offer
-
-    .col-sm-7.col-12
+    .col-sm-8.col-12
       .fr-px-1w
         = render "internship_offers/show_details", internship_offer: @internship_offer
-  .row
-    .col-12.text-center.d-block.d-sm-none.fr-pb-1w.thin-line-below
-      - if can?(:renew, @internship_offer) || can?(:duplicate, @internship_offer)
-        = render "internship_offers/duplicate_or_renew", internship_offer: @internship_offer
-      - else
-        = render "internship_offers/apply_cta", internship_offer: @internship_offer
 
-  .row.mt-4
-    .col-3
-      .d-none.d-flex.align-items-center.fr-px-1w
-        - if @previous_internship_offer && support_listable?(current_user)
-          = link_to listable_internship_offer_path(@previous_internship_offer),
-                    class: 'list-item-previous d-flex align-items-center fr-raw-link' do
-            span.fr-icon-arrow-left-line aria-hidden="true"
-            span.mb-1
-              | Offre précédente
+    .col-sm-4.col-12.mb-4.d-none.d-sm-block
+      .sticky-top.fr-px-1w.fr-py-2w
+        = render "internship_offers/show_side_details", internship_offer: @internship_offer
 
-    .col-9
-      .d-none.d-flex.align-items-center.justify-content-end.fr-px-1w
-        - if @next_internship_offer && support_listable?(current_user)
-          = link_to listable_internship_offer_path(@next_internship_offer),
-                    class: 'list-item-next d-flex align-items-center fr-raw-link' do
-            span.mb-1
-              | Offre suivante
-            span.fr-icon-arrow-right-line aria-hidden="true"
-
+.d-flex.actions.d-flex.d-block.d-sm-none.d-xs-stick.fr-py-2w.align-items-center.justify-content-center
+  = render "internship_offers/apply_cta", internship_offer: @internship_offer
 
 - if can?(:discard, InternshipOffer)
   = render "dashboard/internship_offers/delete_internship_offer_modal",

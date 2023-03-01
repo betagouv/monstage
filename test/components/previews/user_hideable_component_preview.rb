@@ -1,3 +1,4 @@
+#TO TO REMOVE
 class UserHideableComponentPreview < ViewComponent::Preview
   layout "preview"
 

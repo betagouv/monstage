@@ -22,6 +22,8 @@ import '@gouvfr/dsfr/dist/utility/icons/icons-business/icons-business.css';
 import '@gouvfr/dsfr/dist/utility/icons/icons-design/icons-design.css';
 import '@gouvfr/dsfr/dist/utility/icons/icons-document/icons-document.css';
 import '@gouvfr/dsfr/dist/utility/icons/icons-media/icons-media.css';
+import '@gouvfr/dsfr/dist/utility/colors/colors.css';
+import '@gouvfr/dsfr/dist/utility/icons/icons-map/icons-map.css';
 
 import '@gouvfr/dsfr/dist/dsfr.module.js';
 

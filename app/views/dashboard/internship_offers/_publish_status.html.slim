@@ -1,10 +1,9 @@
 div id="pub_status_#{dom_id @internship_offer}"
   - if internship_offer.reload.published_at.present?
-    li.d-flex-inline.align-items-center.text-success.br-1.bc-light.pr-3
-      span.d-inline= "Annonce publiée"
-      br
-      span.d-inline.internship_offer-published_at
+    .d-flex.align-items-center
+      p.fr-badge.fr-badge--success.fr-mb-0 Offre publiée
+      span.internship_offer-published_at.fr-text--lg.fr-mx-2w.fr-mb-0.blue-france
         = "depuis le #{l(internship_offer.published_at, format: :human_mm_dd)}"
   - else
-    li.d-flex.align-items-center.br-1.bc-light.pr-3
-      = "Annonce dé-publiée"
+    p.fr-badge.fr-badge--warning
+      = "Offre masquée"

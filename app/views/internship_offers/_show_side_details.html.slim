@@ -1,0 +1,19 @@
+.row.thin-line-below
+  .col-12.fr-pb-1w
+    .fr-mb-5w.d-none.d-sm-block
+      = render "internship_offers/apply_cta", internship_offer: internship_offer
+    .fr-mt-1w
+      .fr-tag.fr-icon-user-fill.fr-tag--icon-left
+        = internship_offer.is_individual? ? 'Stage individuel' : 'Stage collectif'
+    .fr-my-1w
+       - unless internship_offer.from_api?
+        .fr-tag.fr-icon-check-line.fr-tag--icon-left
+          = internship_offer.presenter.remaining_seats
+.row.thin-line-below
+  .col-12.fr-py-2w
+    .fr-tag.fr-icon-calendar-fill.fr-tag--icon-left
+      = internship_offer.presenter.weeks_boundaries
+.row
+  .col-12.fr-py-2w
+    .fr-tag.fr-icon-map-pin-2-fill.fr-tag--icon-left.blue-france
+      .text-dark= internship_offer.city.capitalize

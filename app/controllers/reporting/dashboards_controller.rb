@@ -65,8 +65,7 @@ module Reporting
       now = DateTime.current
       minutes = now.min % 10
       seconds = now.sec
-      offset = (now.offset * 24).to_i
-      (now - minutes.minutes - seconds.seconds + offset.hour).strftime("%d/%m/%Y à %H:%M")
+      (now - minutes.minutes - seconds.seconds).strftime("%d/%m/%Y à %H:%M")
     end
   end
 end

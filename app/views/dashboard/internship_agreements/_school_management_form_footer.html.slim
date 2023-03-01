@@ -9,14 +9,16 @@
           | Enregistrer et quitter
 
         = button_tag type: "button",
-                      data: { toggle: 'modal', target: "#validation-modal", turbo: false },
+                      data: {  turbo: false, :'fr-opened' => "false" },
                       class: 'fr-btn mx-1',
-                      id: 'validate_agreement' do
+                      id: 'validate_agreement' ,
+                      :'aria-controls' => 'validation-modal' do
           i.fas.fa-check
           |  Valider la convention
 
-= render "dashboard/internship_agreements/validation_modal", form: form,
-                                                             title: 'Valider la convention',
-                                                             action: 'validate',
-                                                             button: 'Je valide la convention',
-                                                             content: 'En validant la convention, vous ne pourrez plus modifier les informations. L’offreur sera averti que la convention est validée, il sera invité à l’imprimer, la signer et vous la renvoyer.'
+= render "dashboard/internship_agreements/validation_modal",
+         form: form,
+         title: 'Valider la convention',
+         action: 'validate',
+         button: 'Je valide la convention',
+         content: 'En validant la convention, vous ne pourrez plus modifier les informations. L’offreur sera averti que la convention est validée, il sera invité à l’imprimer, la signer et vous la renvoyer.'

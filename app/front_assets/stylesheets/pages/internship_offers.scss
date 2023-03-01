@@ -37,6 +37,10 @@ a.heavy-blue-link {
   border-bottom: 1px solid #eee
 }
 
+.fat-line-below{
+  border-bottom: 4px solid #F9F8F6
+}
+
 .employer {
   position: sticky;
   top: 20px;
@@ -123,6 +127,13 @@ $sortLinkOffset: 15px;
   }
 }
 
+.map-container-offer {
+  height: 263px;
+  .leaflet-container {
+    height: 100% !important;
+  }
+}
+
 // sort links container
 .min-width-20{
   width: 20px;
@@ -148,15 +159,6 @@ $sortLinkOffset: 15px;
 }
 
 .container-downshift{position: relative;}
-
-.container-connexion-required{
-  min-height: 500px;
-  background-image: url('../images/internship_offer_show/connection-requise.png');
-  background-position: top right;
-  background-color: transparent;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
 
 // custom dimension table for dashboard/internship_offers#index
 @include media-breakpoint-up(sm) {

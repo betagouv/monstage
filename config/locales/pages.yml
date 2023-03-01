@@ -113,8 +113,6 @@ fr:
       page_title: 'Mentions légales'
     operators:
       page_title: 'Page opérateurs'
-    partenaires:
-      page_title: 'Pages partenaires'
     statistiques:
       page_title: 'Compte-rendu statistique'
   reporting:
