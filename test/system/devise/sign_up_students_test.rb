@@ -77,6 +77,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
   test 'Student with mail subscription with former internship_offer ' \
        'visit leads to offer page even when mistaking along the way' do
+    
     school_1 = create(:school, name: 'Etablissement Test 1',
                                city: 'Saint-Martin', zipcode: '77515')
     class_room_1 = create(:class_room, name: '3e A', school: school_1)
@@ -88,7 +89,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     visit internship_offer_path(offer)
     # click_link '
     first(:link, 'Postuler').click
-    find('a.fr-raw-link', text: "Vous n'avez pas encore de compte ?").click
+    find('a.fr-btn', text: "Créer un compte").click
     first(:link, 'Je suis élève de 3e').click
 
 
@@ -105,7 +106,6 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
       click_on "Valider"
     end
-    
 
     # real signup as student
     assert_difference('Users::Student.count', 1) do
@@ -212,7 +212,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     find('label', text: 'Par téléphone').click
     execute_script("document.getElementById('phone-input').value = '#{student.phone}';")
     find("input[name='user[password]']").fill_in with: password
-    find("input[type='submit'][value='Connexion']").click
+    find("input[type='submit'][value='Se connecter']").click
     page.find('h1', text: 'Votre candidature')
     # redirected page is a show of targeted internship_offer
     assert_equal "/internship_offers/#{offer.id}/internship_applications/new", current_path

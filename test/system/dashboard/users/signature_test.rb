@@ -28,10 +28,10 @@ module Dashboard
                                         motivation: 'au taquet',
                                         student: student,
                                         internship_offer: internship_offer)
-        internship_application.validate!
+        internship_application.finalize!
         internship_agreement_2 = InternshipAgreement.last
         internship_agreement_2.complete!
-        internship_agreement_2.validate!
+        internship_agreement_2.finalize!
         travel_to(weeks[0].week_date - 1.week) do
           sign_in(employer)
 
@@ -115,10 +115,10 @@ module Dashboard
                                         motivation: 'au taquet',
                                         student: student,
                                         internship_offer: internship_offer)
-        internship_application.validate!
+        internship_application.finalize!
         internship_agreement = InternshipAgreement.last
         internship_agreement.complete!
-        internship_agreement.validate!
+        internship_agreement.finalize!
         travel_to(weeks[0].week_date - 1.week) do
           sign_in(employer)
 
@@ -195,10 +195,10 @@ module Dashboard
                                         motivation: 'au taquet',
                                         student: student,
                                         internship_offer: internship_offer)
-        internship_application.validate!
+        internship_application.finalize!
         internship_agreement_2 = InternshipAgreement.last
         internship_agreement_2.complete!
-        internship_agreement_2.validate!
+        internship_agreement_2.finalize!
         travel_to(weeks[0].week_date - 1.week) do
           sign_in(school_manager)
 
@@ -281,7 +281,7 @@ module Dashboard
       internship_application.validate!
       internship_agreement_2 = InternshipAgreement.last
       internship_agreement_2.complete!
-      internship_agreement_2.validate!
+      internship_agreement_2.finalize!
 
       travel_to(weeks[0].week_date - 1.week) do
         sign_in(school_manager)

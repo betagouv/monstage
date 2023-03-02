@@ -132,7 +132,6 @@ Rails.application.routes.draw do
   get '/mentions-legales', to: 'pages#mentions_legales'
   get '/les-10-commandements-d-une-bonne-offre', to: 'pages#les_10_commandements_d_une_bonne_offre'
   get '/operators', to: 'pages#operators'
-  get '/partenaires', to: 'pages#partenaires'
   get '/politique-de-confidentialite', to: 'pages#politique_de_confidentialite'
   get '/statistiques', to: 'pages#statistiques'
   post '/newsletter', to: 'newsletter#subscribe'

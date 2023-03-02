@@ -17,6 +17,9 @@ div.fr-container
       .sticky-top.fr-px-1w.fr-py-2w
         = render "internship_offers/show_side_details", internship_offer: @internship_offer
 
+.d-flex.actions.d-flex.d-block.d-sm-none.d-xs-stick.fr-py-2w.align-items-center.justify-content-center
+  = render "internship_offers/apply_cta", internship_offer: @internship_offer
+
 - if can?(:discard, InternshipOffer)
   = render "dashboard/internship_offers/delete_internship_offer_modal",
            internship_offer: @internship_offer

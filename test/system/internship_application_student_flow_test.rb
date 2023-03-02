@@ -258,7 +258,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     first(:link, 'Postuler').click
     fill_in("Adresse électronique", with: employer.email)
     fill_in("Mot de passe", with: employer.password)
-    click_button('Connexion')
+    click_button('Se connecter')
 
     assert page.has_selector?("span#alert-text", text: "Vous n'êtes pas autorisé à effectuer cette action.")
   end

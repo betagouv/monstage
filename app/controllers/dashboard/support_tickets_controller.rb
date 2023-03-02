@@ -1,3 +1,4 @@
+# TO DO REMOVE
 module Dashboard
   class SupportTicketsController < ApplicationController
     before_action :authenticate_user!
