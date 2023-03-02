@@ -904,13 +904,11 @@ CREATE TABLE public.internship_offers (
     total_male_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
     remote_id character varying,
     permalink character varying,
-    total_custom_track_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
     view_count integer DEFAULT 0 NOT NULL,
     submitted_applications_count integer DEFAULT 0 NOT NULL,
     rejected_applications_count integer DEFAULT 0 NOT NULL,
     published_at timestamp without time zone,
     total_male_approved_applications_count integer DEFAULT 0,
-    total_custom_track_approved_applications_count integer DEFAULT 0,
     group_id bigint,
     first_date date NOT NULL,
     last_date date NOT NULL,
@@ -1335,7 +1333,6 @@ CREATE TABLE public.users (
     operator_id bigint,
     api_token character varying,
     handicap text,
-    custom_track boolean DEFAULT false NOT NULL,
     accept_terms boolean DEFAULT false NOT NULL,
     discarded_at timestamp without time zone,
     department character varying,
@@ -2843,6 +2840,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221123101159'),
 ('20221124170052'),
 ('20221219144134'),
-('20221223100742');
+('20221223100742'),
+('20230302162952');
 
 

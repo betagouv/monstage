@@ -282,10 +282,6 @@ class InternshipApplication < ApplicationRecord
     student.gender == 'f'
   end
 
-  def student_is_custom_track?
-    student.custom_track?
-  end
-
   def application_via_school_manager?
     internship_offer&.school
   end

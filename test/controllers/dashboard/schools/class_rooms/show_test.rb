@@ -27,7 +27,7 @@ module Dashboard
         class_room = create(:class_room, school: school)
         students = [
           create(:student, class_room: class_room, school: school, confirmed_at: 2.days.ago),
-          create(:student, class_room: class_room, school: school, custom_track: true),
+          create(:student, class_room: class_room, school: school),
           create(:student, class_room: class_room, school: school)
         ]
         sign_in(create(:school_manager, school: school))
@@ -41,15 +41,6 @@ module Dashboard
             assert_select ".test-student-#{student.id} .student_confirmed .fas.fa-check", 1
           else
             assert_select ".test-student-#{student.id} .student_confirmed .far.fa-square", 1
-          end
-
-          if student.custom_track?
-            assert_select ".test-student-#{student.id} .is_custom_track .fas.fa-square", 1
-            assert_select ".test-student-#{student.id} .is_custom_track .fas.fa-check", 1
-            assert_select 'a[href=?]', dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: false })
-          else
-            assert_select ".test-student-#{student.id} .is_custom_track .far.fa-square", 1
-            assert_select 'a[href=?]', dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: true })
           end
 
           student_stats = Presenters::Dashboard::StudentStats.new(student: student)
