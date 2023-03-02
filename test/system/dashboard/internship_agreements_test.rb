@@ -165,12 +165,16 @@ module Dashboard
       internship_agreement = create(:internship_agreement, aasm_state: :completed_by_employer)
       sign_in(internship_agreement.school_manager)
       visit dashboard_internship_agreements_path
+      find('a.button-component-cta-button', text: 'Remplir ma convention').click
       within('td[data-head="Statut"]') do
         find('div.actions', text: "Votre convention est remplie par l'offreur, mais vous ne l'avez pas renseignée.")
       end
-      find('a.button-component-cta-button', text: 'Remplir ma convention').click
+      text = "Le chef d'établissement a été nommé apte à signer les conventions par le conseil d'administration de l'établissement en date du"
+      fill_in text, with: "12/02/2015"
       click_button('Valider la convention')
       find('h1 span.fr-fi-arrow-right-line.fr-fi--lg', text: "Valider la convention")
+      click_button('Je valide la convention')
+      find("span#alert-text", text: "La convention est validée, le fichier pdf de la convention est maintenant disponible.")
     end
 
     test 'school_manager reads internship agreement table with correct indications - status: started_by_school_manager' do
