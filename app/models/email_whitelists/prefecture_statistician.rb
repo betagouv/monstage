@@ -1,5 +1,5 @@
 module EmailWhitelists
-  class Statistician < EmailWhitelist
+  class PrefectureStatistician < EmailWhitelist
     validates :zipcode, inclusion: { in: Department::MAP.keys }
     rails_admin do
       weight 9

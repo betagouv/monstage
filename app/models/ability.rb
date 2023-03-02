@@ -11,7 +11,7 @@ class Ability
       when 'Users::Employer' then employer_abilities(user: user)
       when 'Users::God' then god_abilities
       when 'Users::Operator' then operator_abilities(user: user)
-      when 'Users::Statistician' then statistician_abilities(user: user)
+      when 'Users::PrefectureStatistician' then statistician_abilities(user: user)
       when 'Users::EducationStatistician' then education_statistician_abilities(user: user)
       when 'Users::MinistryStatistician' then ministry_statistician_abilities(user: user)
       when 'Users::SchoolManagement'
@@ -175,7 +175,7 @@ class Ability
     can %i[read update export], InternshipOffer
     can %i[read update destroy export], InternshipApplication
     can :manage, EmailWhitelists::EducationStatistician
-    can :manage, EmailWhitelists::Statistician
+    can :manage, EmailWhitelists::PrefectureStatistician
     can :manage, EmailWhitelists::Ministry
     can :manage, InternshipOfferKeyword
     can :manage, Group

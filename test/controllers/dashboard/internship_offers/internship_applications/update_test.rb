@@ -47,7 +47,7 @@ module InternshipOffers::InternshipApplications
         :submitted,
         user_id: student.id
       )
-      internship_application.internship_offer.employer.update(type: 'Users::Statistician')
+      internship_application.internship_offer.employer.update(type: 'Users::PrefectureStatistician')
 
       sign_in(internship_application.internship_offer.employer)
 
@@ -72,7 +72,7 @@ module InternshipOffers::InternshipApplications
         user_id: student.id
       )
       employer = internship_application.internship_offer.employer
-      employer.becomes(Users::Statistician)
+      employer.becomes(Users::PrefectureStatistician)
       employer.update(agreement_signatorable: true)
 
       sign_in(employer)
