@@ -129,7 +129,7 @@ module Api
         }
       }
     end
-  
+
     def page_links
       {
         totalInternshipOffers: @internship_offers.total_count,

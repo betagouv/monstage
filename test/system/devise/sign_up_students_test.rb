@@ -79,6 +79,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
   test 'Student with mail subscription with former internship_offer ' \
        'visit leads to offer page even when mistaking along the way' do
+    
     school_1 = create(:school, name: 'Etablissement Test 1',
                                city: 'Saint-Martin', zipcode: '77515')
     class_room_1 = create(:class_room, name: '3e A', school: school_1)
