@@ -93,8 +93,8 @@ FactoryBot.define do
       sequence(:email) { |n| "lautre.#{n}@#{school.email_domain_name}" }
     end
 
-    factory :statistician, class: 'Users::Statistician', parent: :user do
-      type { 'Users::Statistician' }
+    factory :statistician, class: 'Users::PrefectureStatistician', parent: :user do
+      type { 'Users::PrefectureStatistician' }
       agreement_signatorable { false }
       before(:create) do |user|
         create(:statistician_email_whitelist, email: user.email, zipcode: '60', user: user)

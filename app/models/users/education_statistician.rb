@@ -49,7 +49,7 @@ module Users
     def statistician? ; true end
 
     def presenter
-      Presenters::Statistician.new(self)
+      Presenters::PrefectureStatistician.new(self)
     end
 
     def dashboard_name
