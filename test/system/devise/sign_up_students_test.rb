@@ -90,7 +90,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     visit internship_offer_path(offer)
     # click_link '
     first(:link, 'Postuler').click
-    find('a.fr-raw-link', text: "Vous n'avez pas de compte ?").click
+    find('a.fr-btn--secondary', text: "Créer un compte").click
 
     # mistaking with password confirmation
     assert_difference('Users::Student.count', 0) do
