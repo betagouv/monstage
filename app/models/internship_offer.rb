@@ -13,6 +13,7 @@ class InternshipOffer < ApplicationRecord
   include Listable
   include FindableWeek
   include Zipcodable
+  include Nearbyable
 
   include StepperProxy::InternshipOfferInfo
   include StepperProxy::Organisation
@@ -254,7 +255,7 @@ class InternshipOffer < ApplicationRecord
 
   def update_all_favorites
     if approved_applications_count >= max_candidates || Time.now > last_date
-      Favorite.where(internship_offer_id: id).destroy_all 
+      Favorite.where(internship_offer_id: id).destroy_all
     end
   end
 

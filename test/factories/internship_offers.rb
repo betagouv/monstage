@@ -20,7 +20,6 @@ FactoryBot.define do
     zipcode { '75001' }
     city { 'Paris' }
     employer_name { 'Octo' }
-    coordinates { Coordinates.paris }
     siret { '11122233300000' }
 
     trait :api_internship_offer do
@@ -32,6 +31,7 @@ FactoryBot.define do
     end
 
     trait :weekly_internship_offer do
+      coordinates { Coordinates.paris }
       weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
       employer { create(:employer) }
       description { 'Lorem ipsum dolor weekly_internship_offer' }
@@ -39,10 +39,12 @@ FactoryBot.define do
     end
 
     trait :last_year_weekly_internship_offer do
+      coordinates { Coordinates.paris }
       weeks { [Week.of_previous_school_year.first] }
     end
 
     trait :weekly_internship_offer_by_statistician do
+      coordinates { Coordinates.paris }
       weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
     end
 
