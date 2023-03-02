@@ -15,7 +15,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
       last_name: 'Ref',
       email: white_list.email,
       password: 'password',
-      type: 'Users::Statistician',
+      type: 'Users::PrefectureStatistician',
       accept_terms: true
     }
 

@@ -5,7 +5,7 @@ module Presenters
       'Users::Employer': 'Offreur',
       'Users::God': 'Administrateur',
       'Users::Operator': 'Operateur',
-      'Users::Statistician': 'Référent départemental',
+      'Users::PrefectureStatistician': 'Référent départemental',
       'Users::MinistryStatistician': 'Référent central',
       'Users::EducationStatistician': 'Référent éduc. nat.'
     }
@@ -26,8 +26,8 @@ module Presenters
         TYPE_TRANSLATOR['Users::God'.to_sym]
       when Users::Operator
         TYPE_TRANSLATOR['Users::Operator'.to_sym]
-      when Users::Statistician
-        TYPE_TRANSLATOR['Users::Statistician'.to_sym]
+      when Users::PrefectureStatistician
+        TYPE_TRANSLATOR['Users::PrefectureStatistician'.to_sym]
       when Users::MinistryStatistician
         TYPE_TRANSLATOR['Users::MinistryStatistician'.to_sym]
       when Users::EducationStatistician
