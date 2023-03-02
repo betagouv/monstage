@@ -68,7 +68,7 @@ module Dashboard::InternshipOffers
         order: 'view_count',
         school_year: '2020'
       }
-      get dashboard_internship_offers_path(filters)
+      get dashboard_internship_offers_path(**filters)
       assert_response :success
     end
 

@@ -4,7 +4,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.7.2'
+ruby File.read(".ruby-version").strip
 
 # fwk/server
 gem 'actionpack', ">= 6.1.3.2"

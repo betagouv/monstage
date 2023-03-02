@@ -25,7 +25,7 @@ module Builders
       yield callback if block_given?
       authorize :create, model
       create_params = preprocess_api_params(params, fallback_weeks: true)
-      internship_offer = model.create!(create_params)
+      internship_offer = model.create!(**create_params)
       callback.on_success.try(:call, internship_offer)
     rescue ActiveRecord::RecordInvalid => e
       if duplicate?(e.record)
@@ -77,7 +77,7 @@ module Builders
                user: user,
                fallback_weeks: fallback_weeks }
 
-      Dto::ApiParamsAdapter.new(opts)
+      Dto::ApiParamsAdapter.new(**opts)
                            .sanitize
     end
 

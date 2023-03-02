@@ -32,7 +32,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
   test 'navigation & interaction works for employer' do
     employer = create(:employer)
     internship_offer = create(:weekly_internship_offer, employer: employer)
-    old_internship_offer = create(:last_year_weekly_internship_offer, employer: employer)
+    old_internship_offer = create(:last_year_weekly_internship_offer, **{employer: employer})
     sign_in(employer)
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
