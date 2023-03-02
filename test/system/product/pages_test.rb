@@ -15,7 +15,6 @@ module Product
         les_10_commandements_d_une_bonne_offre_path
         exemple_offre_ideale_ministere_path
         exemple_offre_ideale_sport_path
-        partenaires_path
         mentions_legales_path
         conditions_d_utilisation_path
         politique_de_confidentialite_path

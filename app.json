@@ -1,6 +1,6 @@
 {
   "name": "Monstage",
-  "description": "Describe infrastructure.",
+  "description": "Help students to find quality internships",
   "website": "https://www.monstagedetroisieme.fr/",
 
   "repository": "https://github.com/betagouv/monstage",
@@ -18,11 +18,11 @@
       "formation": {
         "web": {
           "quantity": 1,
-          "size": "hobby"
+          "size": "basic"
         },
         "worker": {
           "quantity": 1,
-          "size": "hobby"
+          "size": "basic"
         }
       },
       "scripts": {
@@ -34,13 +34,19 @@
         "RAILS_MAX_THREADS": 6,
         "WEB_CONCURRENCY": 1,
         "CONVENTION_ENABLED": true,
-        "YARN_PRODUCTION": false
+        "YARN_PRODUCTION": false,
+        "WEBINAR_URL": "https://webinar.monstagedetroisieme.fr"
       },
       "addons": [
         {
-          "plan": "heroku-postgresql:hobby-basic",
+          "plan": "heroku-postgresql:mini",
           "options": {
-            "version": "12"
+            "version": "12",
+            "extensions": 
+              "public.pg_trgm, 
+              public.postgis, 
+              public.unaccent, 
+              public.geography"
           }
         },
         {

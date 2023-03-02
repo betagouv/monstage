@@ -160,15 +160,6 @@ $sortLinkOffset: 15px;
 
 .container-downshift{position: relative;}
 
-.container-connexion-required{
-  min-height: 500px;
-  background-image: url('../images/internship_offer_show/connection-requise.png');
-  background-position: top right;
-  background-color: transparent;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
 // custom dimension table for dashboard/internship_offers#index
 @include media-breakpoint-up(sm) {
   .table-dashboard-internship-offers {

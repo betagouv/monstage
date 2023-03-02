@@ -1,7 +1,5 @@
 import './favicon.png';
 import './logo-mon-stage-3e.svg';
-import './logo-mon-stage-3e-blanc-short.svg';
-import './beta-gouv-logo.png';
 import './danger_sign_blue.svg';
 import './notice_people.svg';
 import './search-no-result.svg';
@@ -53,17 +51,9 @@ import './onboarding/confirm-mobile-2.svg';
 import './internship_offers_new/fast_time.svg';
 import './internship_offers_new/paper.svg';
 import './internship_offer_show/offer_default_img.jpg';
-import './internship_offer_show/people.png';
-import './internship_offer_show/user.png';
 
 import './internship_applications/boy.svg';
 import './internship_applications/girl.svg';
-
-import './pages/logo_onisep.jpg';
-import './pages/logo_cget_texte.png';
-import './pages/remote_internships/webinar_2x.png';
-import './pages/remote_internships/face_to_face_2x.png';
-import './pages/remote_internships/digital_week_2x.png';
 
 import './icons/noun_Handshake_2803586-1.svg';
 import './icons/noun_job_offer_1461730-1.svg';
@@ -80,11 +70,7 @@ import './pages/statistics/hand_left.svg';
 import './pages/statistics/hand_right.svg';
 import './pages/statistics/handshake.svg';
 import './pages/statistics/ok.svg';
-import './pages/statistics/green_check.svg';
 import './pages/statistics/school.svg';
-import './pages/statistics/reseau.png';
-import './pages/statistics/la_poste.png';
-import './pages/statistics/carrefour.png';
 
 import './homepage/explications.svg';
 import './homepage/back-to-top.svg';
@@ -117,10 +103,9 @@ import './homepage/partenaires/Logo-tous-en-stage.jpg';
 import './homepage/partenaires/Logo-un-stage-et-apres.jpg';
 import './homepage/partenaires/Logo-viens-voir-mon-taf.jpg';
 import './homepage/partenaires/Logo-moidans10ans.png';
-import './homepage/partenaires/Logo-telemaque.png';
 
 import './homepage/sponsors/logo-anct.svg';
-import './homepage/sponsors/logo-anct.avif';
+import './homepage/sponsors/logo-anct.png';
 import './homepage/sponsors/logo-ministere-education-nationale.svg';
 import './homepage/sponsors/logo-ministere-de-la-transition-ecologique.svg';
 
@@ -130,14 +115,6 @@ import './documents_utiles/MS3_Programme-a-remplir.jpg';
 import './documents_utiles/USEA-Carnet-Stage-Education.jpg';
 import './documents_utiles/USEA-Cherchez-la-chercheuse.jpg';
 import './documents_utiles/versLinfini.jpg';
-
-import './modes_d_emploi/MS3_Guide-d-utilisation-global-2020.png';
-import './modes_d_emploi/MS3_Guide-stage-a-distance-2020.png';
-import './modes_d_emploi/MS3_Mode-d-emploi-eleves.png';
-import './modes_d_emploi/MS3_Mode-d-emploi-entreprises.png';
-import './modes_d_emploi/MS3_Mode-d-emploi-membres-pedagogique.png';
-import './modes_d_emploi/MS3_Mode-d-emploi-referents-departementaux.png';
-import './modes_d_emploi/MS3_Mode-d-emploi-global-2022.png';
 
 import './modes_d_emploi/miniature-MS3_Mode-d-emploi-eleves.jpg';
 import './modes_d_emploi/miniature-MS3_Mode-d-emploi-entreprises.jpg';

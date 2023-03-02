@@ -1,33 +1,33 @@
-.row.fr-pb-3w.thin-line-below
+.row.fr-py-3w.thin-line-below
   .col-12
-    .fr-text--lg
+    .fr-text--lg.fr-mb-1w
       = internship_offer.sector.name 
   .col-12
     h1.h3.text-dark role="heading" aria-level="1"
       = internship_offer.title
 
-.row
-  .col-12.my-4
-    h2.h4 Informations sur le stage
-  .col-12.py-2
+.row.fr-pt-3w
+  .col-12
+    h2.h4.fr-mb-2w Informations sur le stage
+  .col-12.pb-2w
     .reboot-trix-content= internship_offer.description_rich_text.to_s.present? ? internship_offer.description_rich_text.to_s : internship_offer.description
 
-.row.fr-pb-3w.thin-line-below
-  .col-12.my-4
-    h2.h4 Déroulé de la semaine
+.row.fr-pt-3w.thin-line-below
+  .col-12
+    h2.h4.fr-mb-2w Déroulé de la semaine
 
-  .col-12.py-2
+  .col-12.fr-pb-2
     = Presenters::InternshipOffer.new(internship_offer).internship_week_description
 
     .row.d-block.d-sm-none
       .col-12.fr-py-2w
         = render "internship_offers/show_side_details", internship_offer: internship_offer
 
-.row.py-3.mt-3
+.row.fr-pt-3w
   .col-12
-    .row.fr-mb-1w
+    .row
       .col-12
-        .h4= internship_offer.employer_name
+        .h4.fr-mb-2w= internship_offer.employer_name
     .row
       .col-12
         .fr-pl-1w.blue-france= Presenters::Address.new(instance: internship_offer).full_address
@@ -55,10 +55,6 @@
         .fr-my-4w.d-none.d-sm-block
           = render "internship_offers/apply_cta", internship_offer: internship_offer
 
-.row.fr-mb-2w.d-block.d-sm-none
-  .col-12 
-    .d-flex.align-items-center.justify-content-center
-      = render "internship_applications/call_to_action/visitor", internship_offer: internship_offer
 
 .row
   .col-6

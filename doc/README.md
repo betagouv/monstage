@@ -186,7 +186,7 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 * **internship_offer.employer_name** *(string, required)*
 * **internship_offer.employer_description** *(string, required *<= 275 caractères)
 * **internship_offer.employer_website** *(string, optional)*
-* **internship_offer.coordinates** *(object/geography, required)* : { "latitude" : 1, "longitude" : 1 }
+* **internship_offer.coordinates** *(object/geography, optional)* : { "latitude" : 1, "longitude" : 1 }
 * **internship_offer.street** *(text, optional)*
 * **internship_offer.zipcode** *(string, required)*
 * **internship_offer.city** *(string, required)*

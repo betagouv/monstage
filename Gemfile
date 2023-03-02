@@ -49,7 +49,6 @@ gem 'rails_admin_aasm'
 # instrumentation
 gem "lograge"
 gem 'ovh-rest'
-gem 'prismic.io', require: 'prismic'
 gem "sentry-ruby"
 gem "sentry-rails"
 gem 'airtable'
@@ -78,8 +77,8 @@ gem 'bootsnap', require: false
 
 group :development, :test do
   gem "dotenv-rails", require: "dotenv/rails-now"
+  gem "better_errors"
   gem "debug"
-  gem 'ffaker'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
 end
@@ -121,6 +120,7 @@ end
 
 group :test, :development, :review do
   gem 'factory_bot_rails'
+  gem 'ffaker'
 end
 
 
