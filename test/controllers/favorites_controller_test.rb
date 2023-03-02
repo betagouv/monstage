@@ -63,6 +63,6 @@ class FavoritesControllerTest < ActionDispatch::IntegrationTest
     end
     
     assert_equal student.favorites.count, 0
-    assert_equal student.favorites.last, nil
+    assert_nil student.favorites.last
   end 
 end

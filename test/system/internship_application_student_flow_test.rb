@@ -256,9 +256,9 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     internship_offer = create(:weekly_internship_offer)
     visit internship_offer_path(internship_offer.id)
     first(:link, 'Postuler').click
-    fill_in("Adresse électronique (e-mail)", with: employer.email)
+    fill_in("Adresse électronique", with: employer.email)
     fill_in("Mot de passe", with: employer.password)
-    click_button('Connexion')
+    click_button('Se connecter')
 
     assert page.has_selector?("span#alert-text", text: "Vous n'êtes pas autorisé à effectuer cette action.")
   end
