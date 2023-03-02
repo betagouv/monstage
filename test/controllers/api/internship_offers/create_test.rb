@@ -316,7 +316,7 @@ module Api
                 city: 'Coye la forêt',
                 sector_uuid: sector.uuid,
                 remote_id: 'remote_id',
-                permalink: 'http://google.fr/permalink'
+                permalink: 'http://google.fr/permalink',
               }
             }
           )

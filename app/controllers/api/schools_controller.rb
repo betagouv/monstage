@@ -6,20 +6,20 @@ module Api
     def search
       render_success(
         object: result,
+        status: 200,
         json_options: {
           methods: %i[pg_search_highlight_city pg_search_highlight_name]
-        },
-        status: 200
+        }
       )
     end
 
     def nearby
       render_success(
         object: School.nearby(latitude: params[:latitude], longitude: params[:longitude], radius: 60_000),
+        status: 200,
         json_options: {
           methods: %i[weeks]
-        },
-        status: 200
+        }
       )
     end
 
