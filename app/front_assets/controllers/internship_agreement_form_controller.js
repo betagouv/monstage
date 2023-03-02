@@ -42,7 +42,7 @@ export default class extends Controller {
   }
 
   validate() {
-    this.schoolManagerEventTarget.value = 'validate';
+    this.schoolManagerEventTarget.value = 'finalize';
     $('#submit').click();
   }
 
