@@ -52,13 +52,15 @@
         .row.fr-my-2w
           .col-6.col-xs-12
             .fr-label.required
-              | Adresse électronique (email)
+              = f.label :student_email do  
+                | Adresse électronique (email)
             .fr-input-group
               = f.email_field :student_email, class: 'fr-input', required: true
         .row.fr-my-2w.fr-mb-3w
           .col-6.col-xs-12
             .fr-label.required
-              | Numéro de téléphone élève ou parent
+              = f.label :student_phone do 
+                | Numéro de téléphone élève ou parent
             .fr-input-group
               = f.phone_field :student_phone, class: 'fr-input', required: true
 
