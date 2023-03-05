@@ -8,7 +8,7 @@ class UserManager
     'SchoolManagement' => Users::SchoolManagement,
     'Student' => Users::Student,
     'Operator' => Users::Operator,
-    'Statistician' => Users::PrefectureStatistician,
+    'PrefectureStatistician' => Users::PrefectureStatistician,
     'EducationStatistician' => Users::EducationStatistician,
     'MinistryStatistician' => Users::MinistryStatistician
   }.freeze
