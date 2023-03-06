@@ -57,29 +57,17 @@ module Users
 
     # POST /resource
     def create
-      # honey_pot checking
-      unless params[:user][:confirmation_email].blank? || EmailWhitelist.where(email: params[:user][:email]).first
-        notice = "Votre inscription a bien été prise en compte. " \
-                 "Vous recevrez un email de confirmation dans " \
-                 "les prochaines minutes."
-        redirect_to(root_path, flash: { notice: notice }) and return
+      [:statistician_registration_checking,
+       :honey_pot_checking,
+       :phone_reuse_checking].each do |check|
+
+        check_proc = send(check, params)
+        (check_proc.call and return) if check_proc.respond_to?(:call)
       end
       params[:user].delete(:confirmation_email) if params.dig(:user, :confirmation_email)
-
-      # students only
       params[:user] = merge_identity(params) if params.dig(:user, :identity_token)
-
-      # in case of phone number reusing.
-      if params && params.dig(:user, :phone) && fetch_user_by_phone && @user
-        redirect_to(
-          new_user_session_path(phone: fetch_user_by_phone.phone),
-          flash: { danger: I18n.t('devise.registrations.reusing_phone_number')}
-        ) and return
-      end
       # students only
       clean_phone_param
-      # employers and school_management only
-
       super do |resource|
         resource.targeted_offer_id ||= params && params.dig(:user, :targeted_offer_id)
         @current_ability = Ability.new(resource)
@@ -190,6 +178,43 @@ module Users
         class_room_id: identity.class_room_id,
         gender: identity.gender
       })
+    end
+
+    def statistician_registration_checking(params)
+      as = params[:as]
+      statisticians = %w[PrefectureStatistician MinistryStatistician EducationStatistitician]
+      if as.in?(statisticians) && EmailWhitelist.where(email: params[:user][:email]).first.nil?
+        unregistered_message = "Votre adresse email n'est pas " \
+                               "enregistrée dans notre base de données. "\
+                               "Veuillez contacter l'administrateur."
+        flash = { danger: unregistered_message }
+        destination = new_user_registration_path(first_name: params[:user][:first_name],
+                                                 last_name: params[:user][:last_name],
+                                                 email: params[:user][:email],
+                                                 accept_terms: params[:user][:accept_terms],
+                                                 as: as)
+        lambda { redirect_to destination, flash: flash }
+      end
+    end
+
+    def honey_pot_checking(params)
+      if params[:user][:confirmation_email].present?
+        notice = "Votre inscription a bien été prise en compte. " \
+                 "Vous recevrez un email de confirmation dans " \
+                 "les prochaines minutes."
+        lambda { redirect_to(root_path, flash: { notice: notice }) }
+      end
+    end
+
+    def phone_reuse_checking(params)
+      if params && params.dig(:user, :phone) && fetch_user_by_phone && @user
+        lambda {
+          redirect_to(
+            new_user_session_path(phone: fetch_user_by_phone.phone),
+            flash: { danger: I18n.t('devise.registrations.reusing_phone_number')}
+          )
+        }
+      end
     end
   end
 end

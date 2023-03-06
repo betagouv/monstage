@@ -4,7 +4,7 @@ require 'test_helper'
 
 class StatisticianRegistrationsTest < ActionDispatch::IntegrationTest
   test 'GET new as Statistician renders expected inputs' do
-    get new_user_registration_path(as: 'Statistician')
+    get new_user_registration_path(as: 'PrefectureStatistician')
 
     assert_response :success
     assert_select 'input', value: 'Statistician', hidden: 'hidden'
@@ -26,7 +26,7 @@ class StatisticianRegistrationsTest < ActionDispatch::IntegrationTest
                                                     last_name: 'artement',
                                                     password: 'okokok',
                                                     type: 'Users::PrefectureStatistician',
-                                                    accept_terms: '1' } })
+                                                    accept_terms: '1' }})
       assert_response 302
     end
     refute Users::PrefectureStatistician.last.agreement_signatorable

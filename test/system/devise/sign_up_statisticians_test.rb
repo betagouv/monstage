@@ -10,7 +10,7 @@ class SignUpStatisticiansTest < ApplicationSystemTestCase
 
     create(:statistician_email_whitelist, email: good_email, zipcode: 60)
 
-    visit new_user_registration_path(as: 'Statistician')
+    visit new_user_registration_path(as: 'PrefectureStatistician')
 
     # fails to create statistician with unexisting email in whitelist
     assert_difference('Users::PrefectureStatistician.count', 0) do
@@ -24,8 +24,11 @@ class SignUpStatisticiansTest < ApplicationSystemTestCase
 
     assert_equal 0, Users::PrefectureStatistician.count
     assert_difference('Users::PrefectureStatistician.count', 1) do
+      fill_in 'Prénom', with: 'Martin'
+      fill_in 'Nom', with: 'Fourcade'
       fill_in 'Adresse électronique', with: good_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
+      all('input[type="checkbox"]', visible: false)[1].check
       click_on "Valider"
     end
 
