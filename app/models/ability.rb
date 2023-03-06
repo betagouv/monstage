@@ -225,6 +225,7 @@ class Ability
             export_reporting_dashboard_data
             see_dashboard_associations_summary
             export_reporting_school], User
+    can :view, :department
   end
 
   def education_statistician_abilities(user:)
@@ -239,6 +240,7 @@ class Ability
             see_dashboard_department_summary
             export_reporting_dashboard_data
             see_dashboard_associations_summary], User
+    can :view, :department
   end
 
   def ministry_statistician_abilities(user: )
@@ -262,7 +264,7 @@ class Ability
       subscribe_to_webinar
       choose_to_sign_agreements
       ], User
-    can :view, :department
+    
     can %i[index update], InternshipApplication
     can %i[read create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
