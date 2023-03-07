@@ -486,8 +486,6 @@ fr:
 
         users/user_management:
           attributes:
-            school_manager:
-              blank: "Le chef d'établissement ne s'est pas encore inscrit, il doit s'inscrire pour confirmer les professeurs principaux."
             email:
               invalid: "Veuillez saisir une adresse électronique (e-mail) académique"
 
