@@ -34,8 +34,6 @@ module Reporting
         'sum(total_female_applications_count)',
       approved_applications_count:
         'sum(approved_applications_count)',
-      total_custom_track_approved_applications_count:
-        'sum(total_custom_track_approved_applications_count)',
       total_male_approved_applications_count:
         'sum(total_male_approved_applications_count)',
       total_female_approved_applications_count:

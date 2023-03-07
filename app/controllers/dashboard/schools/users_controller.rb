@@ -34,7 +34,7 @@ module Dashboard
       private
 
       def user_params
-        params.require(:user).permit(:custom_track)
+        params.require(:user)
       end
     end
   end
