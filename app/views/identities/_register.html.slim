@@ -21,11 +21,11 @@
     = f.hidden_field :identity_token, value: params[:identity_token]
     - if can?(:choose_school, resource)
       = render "users/select_channel",
-                      label: "Comment souhaitez-vous être contacté(e) ?",
-                      form: f,
-                      resource: resource,
-                      chan: @resource_channel,
-                      phone: "Par téléphone (SMS)" 
+               label: "Comment souhaitez-vous être contacté(e) ?",
+               form: f,
+               resource: resource,
+               chan: @resource_channel,
+               phone: "Par téléphone (SMS)"
 
     .row
      .col-md-6.col-xs-12
@@ -46,12 +46,12 @@
               small.text-muted
                 | (optionnel)
 
-        .form-group.custom-label-container class="#{resource.handicap_present ? '' : 'd-none'}" data-signup-target="handicapGroup" 
+        .form-group.custom-label-container class="#{resource.handicap_present ? '' : 'd-none'}" data-signup-target="handicapGroup"
           = f.label 'Indiquez ce dont vous avez besoin', class: "fr-label"
           = f.text_area :handicap, class: 'form-control'
 
     .row
-      .col-12 
+      .col-12
         .form-group.label
           .fr-checkbox-group.fr-checkbox-group--sm
             = f.check_box :accept_terms
