@@ -15,7 +15,7 @@ jobs: # a collection of steps
           PGUSER: monstage_test
           RAILS_ENV: test
           HOST: https://www.example.fr
-      - image: cimg/postgres:12.0-postgis # database image with support of current dir
+      - image: circleci/postgres:12.0-alpine-postgis # database image with support of current dir
         environment: # environment variables for database
           POSTGRES_DB: monstage_test
           POSTGRES_USER: monstage_test
