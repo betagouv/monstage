@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class InternshipApplicationsController < ApplicationController
+  before_action :persist_login_param, only: %i[new]
   before_action :authenticate_user!
   before_action :set_internship_offer
 
@@ -117,5 +118,9 @@ class InternshipApplicationsController < ApplicationController
               resume_languages
             ]
           )
+  end
+
+  def persist_login_param
+    session[:as] = params[:as]
   end
 end
