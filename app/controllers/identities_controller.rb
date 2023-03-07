@@ -5,11 +5,12 @@ class IdentitiesController < ApplicationController
 
   def create
     @identity = Identity.new(identity_params)
+    parameters = {identity_token: @identity.token, as: 'Student'}
+    parameters.merge!({targeted_offer_id: params[:identity][:targeted_offer_id]}) if params[:identity][:targeted_offer_id].present?
+    flash = { success: I18n.t('devise.registrations.second_step') }
+
     if @identity.save
-      redirect_to(
-        new_user_registration_path(identity_token: @identity.token, as: 'Student', targeted_offer_id: params[:identity][:targeted_offer_id]),
-        flash: { success: I18n.t('devise.registrations.second_step')}
-      )
+      redirect_to new_user_registration_path(**parameters), flash: flash
     else
       flash[:error] = 'Erreur lors de la validation des informations'
       render :new
@@ -43,7 +44,7 @@ class IdentitiesController < ApplicationController
             :first_name,
             :last_name,
             :birth_date,
-            :gender,
+            :gender
           )
   end
 end

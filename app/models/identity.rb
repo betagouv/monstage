@@ -8,7 +8,7 @@ class Identity < ApplicationRecord
   validates :first_name, :last_name, :birth_date, :token,
             presence: true
 
-  before_validation :generate_token, unless: :token
+  after_initialize :generate_token, unless: :token
 
   private
 
