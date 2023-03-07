@@ -7,7 +7,7 @@ h1.h2.mb-3 = @internship_application.internship_offer.title
 .row
   .col-12.py-2
     = render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}",
-               locals: {internship_application: @internship_application, application_detail_tab: true }
+               locals: {internship_application: @internship_application }
 
     
 = render "internship_applications/show_details", internship_application: @internship_application
@@ -34,7 +34,7 @@ h1.h2.mb-3 = @internship_application.internship_offer.title
             fa_icon: "fa-ban"
 
 - if @internship_application.submitted? || @internship_application.approved?
-  .row
+  .row.next-step-test
     .col-12.py-2
       h3.h4 Prochaine étape, la convention de stage
       p La convention de stage est en signature dans la structure d'accueil du stage et chez le chef d'établissement. 

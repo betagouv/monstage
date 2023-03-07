@@ -182,7 +182,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     )
     assert page.has_selector?("a[href='#{url}']", count: 1)
     visit url
-    assert page.has_selector?("a[href='#tab-convention-detail']", count: 1)
+    assert page.has_selector?(".next-step-test", count: 1)
   end
 
   test 'student with submittted application can not see employer\'s address' do
