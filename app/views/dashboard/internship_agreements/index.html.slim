@@ -1,5 +1,5 @@
 = render 'layouts/breadcrumb',
-          links: [['', 'Mes conventions de stage']]
+          links: [['', 'Mon tableau de bord']]
 - # School managers and Employers do not have the same tabs  i.e. layout
 - if current_user.school_manager?
   = render partial: 'dashboard/internship_agreements/index_school_manager',
