@@ -7,7 +7,7 @@ class StatisticianRegistrationsTest < ActionDispatch::IntegrationTest
     get new_user_registration_path(as: 'PrefectureStatistician')
 
     assert_response :success
-    assert_select 'input', value: 'Statistician', hidden: 'hidden'
+    assert_select 'input', value: 'PrefectureStatistician', hidden: 'hidden'
     assert_select 'title', "Inscription | Monstage"
 
     assert_select 'label', /Prénom/

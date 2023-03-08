@@ -60,9 +60,7 @@ module Presenters
     end
 
     def show_when_subscribe?(as: , field:)
-      return true if field.in?(subscribe_fields(as: as))
-      
-      false
+      field.in?(subscribe_fields(as: as))
     end
 
     def subscription_incipit(as:)

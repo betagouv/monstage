@@ -42,18 +42,18 @@ fieldset.select-channel.fr-fieldset.fr-mt-n4w[aria-labelledby="channel-legend"]
                          :'aria-describedby' => "user_email",
                          data: {action: 'change->signup#onBlurEmailInput', :"signup-target" => 'emailInput'}
       small.d-none[data-signup-target="emailHint"]
-  .fr-input-group.phone.d-none.full-size-setting[data-signup-target="phoneBloc"]
+  .fr-fieldset__element.phone.d-none[data-signup-target="phoneBloc"]
     = form.label :phone,
                   class: "fr-label",
                  'data-action' => "click->signup#focusPhone",
                  for: 'phone-input' do
       span
         | Numéro de téléphone
+      br
       small.form-text.text-muted
-        | Ce numéro sera utilisé uniquement pour communiquer avec vous
+        | Ce numéro sera utilisé uniquement pour communiquer avec vous. Format attendu : +33 puis 06 11 22 33 44, par exemple.
     = react_component("CountryPhoneSelect",
                       props: { name: 'user[phone]',
                                value: resource.phone || params[:phone],
                                withTarget: true })
-    small.text-muted
-      | (+33 puis 06 11 22 33 44 par exemple)
+
