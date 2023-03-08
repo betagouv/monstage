@@ -5,7 +5,7 @@ require 'test_helper'
 module Users
   class StatisticianTest < ActiveSupport::TestCase
     test 'creation fails' do
-      statistician = Users::Statistician.new(email: 'chef@etablissement.com',
+      statistician = Users::PrefectureStatistician.new(email: 'chef@etablissement.com',
                                              password: 'tototo',
                                              password_confirmation: 'tototo',
                                              first_name: 'Chef',
@@ -20,7 +20,7 @@ module Users
       whitelisted_email = create(:statistician_email_whitelist,
                                  email: 'white@list.email',
                                  zipcode: '60')
-      statistician = Users::Statistician.new(email: whitelisted_email.email,
+      statistician = Users::PrefectureStatistician.new(email: whitelisted_email.email,
                                              password: 'tototo',
                                              password_confirmation: 'tototo',
                                              first_name: 'Chef',
@@ -45,7 +45,7 @@ module Users
                                  zipcode: '59')
 
       statistician = create(:statistician, email: whitelisted_email.email, email_whitelist: whitelisted_email)
-      assert_changes -> { EmailWhitelists::Statistician.count }, -1 do
+      assert_changes -> { EmailWhitelists::PrefectureStatistician.count }, -1 do
         statistician.destroy
       end
     end
@@ -53,7 +53,7 @@ module Users
     test 'active scope' do
       statistician = create(:statistician)
       statistician2 = create(:statistician, discarded_at: 1.minute.ago)
-      assert_equal Users::Statistician.active.count, 1
+      assert_equal Users::PrefectureStatistician.active.count, 1
     end
   end
 end

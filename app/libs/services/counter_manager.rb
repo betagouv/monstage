@@ -13,12 +13,10 @@ module Services
         approved_applications_count: 0,
         total_male_approved_applications_count: 0,
         total_female_approved_applications_count: 0,
-        total_custom_track_approved_applications_count: 0,
         rejected_applications_count: 0,
         convention_signed_applications_count: 0,
         total_male_convention_signed_applications_count: 0,
-        total_female_convention_signed_applications_count: 0,
-        total_custom_track_convention_signed_applications_count: 0
+        total_female_convention_signed_applications_count: 0
       )
       InternshipOfferWeek.update_all(
         blocked_applications_count: 0
@@ -39,12 +37,10 @@ module Services
           approved_applications_count: 0,
           total_male_approved_applications_count: 0,
           total_female_approved_applications_count: 0,
-          total_custom_track_approved_applications_count: 0,
           rejected_applications_count: 0,
           convention_signed_applications_count: 0,
           total_male_convention_signed_applications_count: 0,
-          total_female_convention_signed_applications_count: 0,
-          total_custom_track_convention_signed_applications_count: 0
+          total_female_convention_signed_applications_count: 0
         )
 
         if internship_offer.is_a?(InternshipOffers::WeeklyFramed)

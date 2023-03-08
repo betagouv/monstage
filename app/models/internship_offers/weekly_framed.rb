@@ -28,7 +28,6 @@ module InternshipOffers
                        :total_male_convention_signed_applications_count,
                        :total_female_applications_count,
                        :total_female_convention_signed_applications_count,
-                       :total_custom_track_convention_signed_applications_count,
                        :submitted_applications_count,
                        :rejected_applications_count,
                        :tutor
