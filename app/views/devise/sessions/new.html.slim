@@ -24,7 +24,7 @@ main#content[role="main"
                 h1.fr-h4.fr-mb-n1w
                   | Connexion à monstagedetroisième.fr
                 - flash.keys.map do |key|
-                  div class="fr-alert fr-alert--#{key == "notice" ? "success" : "error"} fr-mb-2v"
+                  div class="fr-alert fr-alert--#{key == "notice" ? "success" : "error"} fr-my-2v"
                     = flash[key]
                 = f.hidden_field :targeted_offer_id,
                                   value: params.dig(:user, :targeted_offer_id)
