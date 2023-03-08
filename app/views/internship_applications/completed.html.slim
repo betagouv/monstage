@@ -28,7 +28,7 @@ div.fr-container style="overflow: hidden;"
 
   .suggestion-bloc
     .row
-      - InternshipOffer.last(3).each do |internship_offer|
+      - @suggested_offers.each do |internship_offer|
         .col-12.col-sm-4.fr-my-2w
           .fr-card.fr-enlarge-link data-test-id="#{internship_offer.id}"
             .fr-card__body
