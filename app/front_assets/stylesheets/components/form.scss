@@ -6,10 +6,6 @@
   flex: 0 auto !important;
 }
 
-.custom-select{
-  box-shadow: 0px 1px 3px rgba(0,0,0,.2);
-  border-radius: 5px;
-}
 .custom-control-checkbox-list{
   height: 380px;
   overflow: scroll;
@@ -246,9 +242,9 @@ trix-editor {
 }
 
 .fr-callout-blue {
-  background-color: $blue-france;
-  color: #fff !important;
-  .fr-label {
-    color: #fff !important;
-  }
+  // background-color: $blue-france;
+  // color: #fff !important;
+  // .fr-label {
+  //   color: #fff !important;
+  // }
 }
