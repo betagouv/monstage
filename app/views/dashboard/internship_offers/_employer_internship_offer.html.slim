@@ -1,45 +1,40 @@
-tr class="test-internship-offer test-internship-offer-#{employer_internship_offer.id} hoverable-row-with-btn internship-offer"
+tr class="test-internship-offer test-internship-offer-#{employer_internship_offer.id} internship-offer"
   td.text-left.title data-head="#{cols[:title].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
     = link_to internship_offer_path(employer_internship_offer, origin: 'dashboard'),
               data: { "test-id": "#{employer_internship_offer.id}" },
               class: 'heavy-blue-link' do
       p.internship-item-title.fr-pl-1v.mb-0= employer_internship_offer.title
-    p.text-muted.internship-item-city.small.fr-pl-1v.mb-0= employer_internship_offer.city.capitalize
 
-  td.text-center.align-middle.d-none.d-md-table-cell.views data-head=cols[:view_count]
-    span.badge.badge-view-count= employer_internship_offer.view_count
+  - ok_applications_count = cols[:approved_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')
+  td.text-center.align-middle.accepted-offers data-head="#{ok_applications_count}"
+    = employer_internship_offer.approved_applications_count
 
-  td.text-center.align-middle.applications_rejected data-head="#{cols[:rejected_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
-    span.badge= employer_internship_offer.rejected_applications_count
-
-  td.text-center.align-middle.accepted-offers data-head="#{cols[:approved_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
-    span.px-3.badge= employer_internship_offer.approved_applications_count
-
-
-  td.align-middle.expected_answers data-head="#{cols[:submitted_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
-    - if employer_internship_offer.submitted_applications_count.positive?
-        .d-inline-flex
-          .fr-text--lg.mb-1.text-center.fr-tag-rounded.btn-hoverable-none
-            = employer_internship_offer.submitted_applications_count
-          = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer),
-                    title: "Répondre aux candidatures",
-                    class: 'fr-raw-link' do
-            span#eye1.fr-icon-eye-line.fr-pl-2v.fr-pt-2v.btn-hoverable aria-hidden="true"
-            span.sr-only | Répondre aux candidatures
-    - else
-      span.badge.mx-2
-        = employer_internship_offer.submitted_applications_count
-
-
-  td.align-middle.applications data-head="#{cols[:total_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
+  td.text-center.align-middle.remaining_seats data-head="#{cols[:remaining_seats_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
+    = employer_internship_offer.remaining_seats_count
+  td.text-center data-head="#{cols[:published_at].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
+    = render partial: "dashboard/internship_offers/toggle_publish_form",
+             locals: { internship_offer: employer_internship_offer }
+  td.text-center.align-middle.applications
     .d-flex.justify-content-start
-      span.fa-fw.badge
-        strong = employer_internship_offer.total_applications_count
-      - if employer_internship_offer.total_applications_count.positive?
-        span.pl-2
-          = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer),
-                    class: 'btn-hoverable d-inline-block fr-raw-link',
-                    title: "Voir les candidatures",
-                    aria: { label: "Voir l'offre" } do
-            span#eye2.fr-icon-eye-line aria-hidden="true" 
-            span.sr-only | Voir les candidatures
+      = link_to(dashboard_internship_offer_path(employer_internship_offer),
+                class: 'btn-hoverable d-inline-block fr-raw-link',
+                title: "Voir l'offre",
+                aria: { label: "Voir l'offre" }) do
+        button.fr-btn.fr-icon-eye-line.fr-btn--secondary.fr-mr-2w title="Voir l'offre"
+          | Voir l'offre
+      = link_to '',
+                new_dashboard_internship_offer_path(duplicate_id: employer_internship_offer.to_param),
+                class: 'fr-btn fr-icon-file-add-line fr-btn--icon fr-btn--secondary test-duplicate-button'
+      / button.fr-btn.fr-icon-file-add-line.fr-btn--secondary title="Dupliquer l'offre"
+      /   | Dupliquer l'offre
+
+      / span.fa-fw.badge
+      /   strong = employer_internship_offer.total_applications_count
+      / - if employer_internship_offer.total_applications_count.positive?
+      /   span.pl-2
+      /     = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer),
+      /               class: 'btn-hoverable d-inline-block fr-raw-link',
+      /               title: "Voir les candidatures",
+      /               aria: { label: "Voir l'offre" } do
+      /       span#eye2.fr-icon-eye-line aria-hidden="true"
+      /       span.sr-only | Voir les candidatures

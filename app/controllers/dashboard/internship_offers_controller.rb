@@ -9,7 +9,6 @@ module Dashboard
       authorize! :index,
                  Acl::InternshipOfferDashboard.new(user: current_user)
       @internship_offers = finder.all
-      @internship_offers = @internship_offers.merge(filter_scope)
       @internship_offers = @internship_offers.order(order_column => order_direction)
     end
 
@@ -121,13 +120,6 @@ module Dashboard
       VALID_ORDER_COLUMNS.include?(params[:order])
     end
 
-    def filter_scope
-      case params[:filter]
-      when 'unpublished'                 then InternshipOffer.unpublished
-      when 'past'                        then InternshipOffer.in_the_past
-      else InternshipOffer.published.in_the_future
-      end
-    end
 
     def finder
       @finder ||= Finders::InternshipOfferPublisher.new(

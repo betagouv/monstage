@@ -1,14 +1,11 @@
-- cols = { title: "Offres publiées",
-           view_count: "Vues",
-           rejected_applications_count: "Candidatures refusées",
+- cols = { title: "Nom de l'offre",
            approved_applications_count: "Candidatures acceptées",
-           submitted_applications_count: "Réponses à donner",
-           total_applications_count: "Candidatures",
-         }
-.fr-table.fr-table-blue
+           remaining_seats_count: "Places restantes",
+           published_at: "Statut de l'offre" }
+.fr-table
   table.employer.mb-0
-    thead= render partial: "dashboard/internship_offers/table_header",
-                  locals: {cols: cols}
-    tbody= render partial: "employer_internship_offer",
-                  collection: @internship_offers,
-                  locals: {cols: cols}
+    thead = render partial: "dashboard/internship_offers/table_header",
+                   locals: { cols: cols }
+    tbody = render partial: "employer_internship_offer",
+                   collection: @internship_offers,
+                   locals: { cols: cols }
