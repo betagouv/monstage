@@ -2,7 +2,7 @@ tr class="test-internship-offer test-internship-offer-#{employer_internship_offe
   td.text-left.title data-head="#{cols[:title].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
     = link_to internship_offer_path(employer_internship_offer, origin: 'dashboard'),
               data: { "test-id": "#{employer_internship_offer.id}" },
-              class: 'heavy-blue-link' do
+              class: 'text-dark' do
       p.internship-item-title.fr-pl-1v.mb-0= employer_internship_offer.title
 
   - ok_applications_count = cols[:approved_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')
@@ -25,16 +25,4 @@ tr class="test-internship-offer test-internship-offer-#{employer_internship_offe
       = link_to '',
                 new_dashboard_internship_offer_path(duplicate_id: employer_internship_offer.to_param),
                 class: 'fr-btn fr-icon-file-add-line fr-btn--icon fr-btn--secondary test-duplicate-button'
-      / button.fr-btn.fr-icon-file-add-line.fr-btn--secondary title="Dupliquer l'offre"
-      /   | Dupliquer l'offre
 
-      / span.fa-fw.badge
-      /   strong = employer_internship_offer.total_applications_count
-      / - if employer_internship_offer.total_applications_count.positive?
-      /   span.pl-2
-      /     = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer),
-      /               class: 'btn-hoverable d-inline-block fr-raw-link',
-      /               title: "Voir les candidatures",
-      /               aria: { label: "Voir l'offre" } do
-      /       span#eye2.fr-icon-eye-line aria-hidden="true"
-      /       span.sr-only | Voir les candidatures
