@@ -1,12 +1,17 @@
 tr
   - cols.map do |sort_column, i18n|
-    th class="align-middle bg-blue sortable-th #{sort_column == :view_count ? 'd-none d-md-table-cell' : ''}"
+    th class="align-middle sortable-th #{sort_column == :view_count ? 'd-none d-md-table-cell' : ''}"
       .row.no-gutters
         .col-auto
           .col-label-sorting
-            .fr-text--xs.pl-1 = i18n.html_safe
-        .col
-          = render partial: "dashboard/internship_offers/sort_links",
-                   locals: { order: sort_column,
-                             sort_by_i18n: i18n,
-                             direction: order_direction }
+            .fr-text--xs.pl-1= i18n.html_safe
+          / = render partial: "dashboard/internship_offers/sort_links",
+          /          locals: { order: sort_column,
+          /                    sort_by_i18n: i18n,
+          /                    direction: order_direction }
+  th class="align-middle sortable-th"
+    .row.no-gutters
+      .col-auto
+          .col-label-sorting
+            .fr-text--xs.pl-1
+              | Actions
