@@ -24,5 +24,6 @@ tr class="test-internship-offer test-internship-offer-#{employer_internship_offe
           | Voir l'offre
       = link_to '',
                 new_dashboard_internship_offer_path(duplicate_id: employer_internship_offer.to_param),
-                class: 'fr-btn fr-icon-file-add-line fr-btn--icon fr-btn--secondary test-duplicate-button'
+                title: 'Dupliquer l\'offre',
+                class: 'fr-btn fr-icon-clipboard-line fr-btn--icon fr-btn--secondary test-duplicate-button'
 
