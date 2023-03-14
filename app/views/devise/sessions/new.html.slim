@@ -21,17 +21,17 @@ main#content[role="main"
                           html: { id: "sign_in_form" },
                           id: "login-1760",
                           url: session_path(resource_name)) do |f|
-                h1.fr-h4
+                h1.fr-h4.fr-mb-n1w
                   | Connexion à monstagedetroisième.fr
                 - flash.keys.map do |key|
-                  div class="fr-alert fr-alert--#{key == "notice" ? "success" : "error"} fr-mb-2v"
+                  div class="fr-alert fr-alert--#{key == "notice" ? "success" : "error"} fr-my-2v"
                     = flash[key]
                 = f.hidden_field :targeted_offer_id,
                                   value: params.dig(:user, :targeted_offer_id)
                 = render "layouts/form_errors",
                           resource: resource,
                           resource_name: :user
-                fieldset#login-1760-fieldset.fr-fieldset[aria-labelledby="login-1760-fieldset-legend login-1760-fieldset-messages"]
+                fieldset#login-1760-fieldset.fr-fieldset.fr-mb-0[aria-labelledby="login-1760-fieldset-legend login-1760-fieldset-messages"]
                   legend#login-1760-fieldset-legend.fr-fieldset__legend
                   .fr-fieldset__element
                     fieldset#credentials.fr-fieldset[aria-labelledby="credentials-messages"]
@@ -44,7 +44,7 @@ main#content[role="main"
                                   resource: resource,
                                   phone: "Par téléphone"
 
-                      .fr-fieldset__element.fr-mt-n2w
+                      .fr-fieldset__element.fr-mt-n3w.fr-mb-n1w
                         #password-1758.fr-password
                           label [class="fr-label  #{error_status ? 'text-input-error' : ''}"
                                   for="user_password"]
@@ -85,19 +85,20 @@ main#content[role="main"
                         = f.submit "Se connecter", class: 'fr-mt-2v fr-btn'
                   #login-1760-fieldset-messages.fr-messages-group[aria-live="assertive"]
 
-              hr
+              hr.fr-mb-0
               h2.fr-h4
                 | Vous n’avez pas de compte ?
               ul.fr-btns-group
-                li.fr-mt-1w
+                li
                   = link_to "Créer un compte",
-                            new_user_registration_path,
+                            (params[:as].present? ? new_identity_path(as: params[:as]) : users_choose_profile_path),
                             class: "fr-btn fr-btn--secondary"
 
-              h2.fr-mt-6w.fr-h4
+              hr.fr-mb-0
+              h2.fr-h4
                 | Vous n’avez pas reçu le message d'activation ?
               ul.fr-btns-group.fr-mt-2w
-                li.fr-mt-1w
+                li
                   = link_to "Renvoyer le message d'activation",
                              new_user_confirmation_path(resource_name),
                              class: 'fr-btn fr-btn--tertiary'

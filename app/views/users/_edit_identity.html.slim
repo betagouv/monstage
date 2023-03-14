@@ -38,10 +38,17 @@
           .form-group
             = f.label :ministry, class: 'fr-label', for: 'user_ministry' do
               = "Administration centrale"
-            = f.text_field :ministry,
-                            value: current_user.ministries.map(&:name).join(', '),
-                            class: "fr-input",
-                            disabled: true
+            = f.text_area :ministry,
+                          class: 'fr-input',
+                          rows: 3,
+                          value: current_user.ministries.map(&:name).join("\n"),
+                          disabled: true
+            p.fr-p-1w.text-muted.fr-mt-1w
+              small 
+                = %Q[La liste ci-dessus est établie à l'inscription, veuillez \
+                    joindre #{link_to("l'administrateur", contact_path)} \
+                    du site monstagedetroisieme.fr pour demander \
+                    d'éventuelles modifications].html_safe
       - if can?(:change, :department) || can?(:view, :department)
         .col-md-6.col-xs-12
           .form-group
