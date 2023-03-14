@@ -34,7 +34,19 @@ module Dashboard
                       flash: { warning: 'Cette candidature a déjà été traitée' }
       end
 
+      def user_internship_applications
+        authorize! :index, Acl::InternshipOfferDashboard.new(user: current_user)
+        @internship_offers = current_user.internship_offers
+        @internship_applications = fetch_user_internship_applications
+      end
+
       private
+
+      def fetch_user_internship_applications
+        InternshipApplications::WeeklyFramed.where(
+          internship_offer_id: current_user.internship_offers.ids
+        )
+      end
 
       def filter_by_week_or_application_date(internship_offer, params_order)
         includings = %i[ week

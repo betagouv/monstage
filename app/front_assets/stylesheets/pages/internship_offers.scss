@@ -101,7 +101,7 @@ table.employer tbody tr td.title {
 
 .col-label-sorting{
   display: block;
-  height: 25px;
+  height: 35px;
 }
 // sorting headers for dashboard/internship_offers#index
 $sortLinkOffset: 15px;
@@ -110,9 +110,9 @@ $sortLinkOffset: 15px;
   display: inline-block;
   position: absolute;
   top: 35%;
-  margin-top: -$sort-arrow-height;
+  margin-top: 2px;
   .currently-sorting{
-    color: yellow !important;
+    color: blue !important;
   }
 
   .sort-link{
@@ -120,10 +120,10 @@ $sortLinkOffset: 15px;
     height: $sort-arrow-height;
     line-height: 8px;
     text-decoration: none;
+    padding-left: 10px;
   }
   .sort-link.active{
     opacity: 1;
-
   }
 }
 
@@ -296,4 +296,43 @@ $sortLinkOffset: 15px;
 }
 .fr-toggle input[type=checkbox] {
   margin-top: -5px ;
+}
+
+.dashboard-container{
+  display: flex;
+}
+.dashboard-container-child{
+  flex: 1 1 auto;
+}
+.dashboard-container-child:first-child{
+  flex: 1 1 $sidemenu-width;
+  min-width: $sidemenu-width;
+}
+
+.menu-ladder{
+  position: relative;
+  height: 130px;
+}
+.publish-adjust-position{
+  position: absolute;
+  bottom: 0;
+  right:0
+}
+
+.fr-sidemenu__list {
+  .sidemenu-box{
+    display: flex;
+    .sidemenu-box-left {
+      display: block;
+      width: 140px;
+      padding-left: 0;
+      text-align: left;
+    }
+    .sidemenu-box-right {
+      display: block;
+      text-align: right;
+      width: 40px;
+      padding-right: 0;
+    }
+  }
 }

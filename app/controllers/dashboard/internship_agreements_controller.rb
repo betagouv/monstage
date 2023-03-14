@@ -79,10 +79,11 @@ module Dashboard
 
     def index
       authorize! :create, InternshipAgreement
+      @internship_offers = current_user.internship_offers
       @internship_agreements = current_user.internship_agreements
                                            .includes(
                                               internship_application: [
-                                                { student: :school }, 
+                                                { student: :school },
                                                 { internship_offer: [:employer, :rich_text_employer_description_rich_text, :rich_text_description_rich_text]}
                                                 ]
                                               )

@@ -4,14 +4,15 @@ tr
       .row.no-gutters
         .col-auto
           .col-label-sorting
-            .fr-text--sm.pl-1= i18n.html_safe
-          / = render partial: "dashboard/internship_offers/sort_links",
-          /          locals: { order: sort_column,
-          /                    sort_by_i18n: i18n,
-          /                    direction: order_direction }
+            .fr-text--sm.pl-1.fr-py-n1w
+              = i18n.html_safe
+              / = render partial: "dashboard/internship_offers/sort_links",
+              /          locals: { order: sort_column,
+              /                    sort_by_i18n: i18n,
+              /                    direction: order_direction }
   th class="align-middle sortable-th"
     .row.no-gutters
       .col-auto
           .col-label-sorting
-            .fr-text--xs.pl-1
+            .fr-text--sm.pl-1
               | Actions

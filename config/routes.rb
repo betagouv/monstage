@@ -28,7 +28,7 @@ Rails.application.routes.draw do
     put '/users/password/update_by_phone', to: 'users/passwords#update_by_phone', as: 'phone_update_password'
     get '/users/password/set_up', to: 'users/passwords#set_up', as: 'set_up_password'
   end
-  
+
   resources :identities, only: %i[new create edit update]
   resources :schools, only: %i[new create ]
 
@@ -62,7 +62,7 @@ Rails.application.routes.draw do
   end
 
   namespace :dashboard, path: 'dashboard' do
-    resources :internship_agreements,  except: %i[destroy] 
+    resources :internship_agreements,  except: %i[destroy]
     resources :users, only: %i[update], module: 'group_signing' do
       member do
         post 'start_signing'
@@ -72,6 +72,8 @@ Rails.application.routes.draw do
         post 'handwrite_sign'
       end
     end
+
+    get 'user_internship_applications', to: 'internship_offers/internship_applications#user_internship_applications'
 
     resources :schools, only: %i[index edit update show] do
       resources :users, only: %i[destroy update index], module: 'schools'
