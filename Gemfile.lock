@@ -520,6 +520,7 @@ DEPENDENCIES
   letter_opener
   listen
   lograge
+  matrix
   mime-types
   minitest-reporters
   minitest-retry

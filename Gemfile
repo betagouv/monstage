@@ -12,6 +12,7 @@ gem "rails", "~> 7.0.3"
 gem 'puma'
 # db
 gem 'pg'
+gem 'matrix'
 
 # pg extension for geo queries
 # wait for : https://github.com/rgeo/activerecord-postgis-adapter/tree/ar61 to be merge into master
@@ -122,7 +123,3 @@ group :test, :development, :review do
   gem 'factory_bot_rails'
   gem 'ffaker'
 end
-
-
-
-
