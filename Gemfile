@@ -51,7 +51,6 @@ gem "lograge"
 gem 'ovh-rest'
 gem "sentry-ruby"
 gem "sentry-rails"
-gem 'airtable'
 gem 'geocoder'
 gem 'bitly'
 gem 'mime-types'

@@ -101,8 +101,6 @@ Rails.application.routes.draw do
 
   namespace :reporting, path: 'reporting' do
     get '/dashboards', to: 'dashboards#index'
-    get '/import_data', to: 'dashboards#import_data'
-    post '/dashboards/refresh', to: 'dashboards#refresh'
 
     get '/schools', to: 'schools#index'
     get '/employers_internship_offers', to: 'internship_offers#employers_offers'
