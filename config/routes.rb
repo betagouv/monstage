@@ -27,12 +27,12 @@ Rails.application.routes.draw do
 
     devise_scope :user do
       get 'utilisateurs/choisir_profil', to: 'users/registrations#choose_profile', as: 'users_choose_profile'
-      get '/utilisateurs/registrations/standby', to: 'users/registrations#confirmation_standby', as: 'users_registrations_standby'
-      get '/utilisateurs/registrations/phone_standby', to: 'users/registrations#confirmation_phone_standby', as: 'users_registrations_phone_standby'
-      post '/utilisateurs/registrations/phone_validation', to: 'users/registrations#phone_validation', as: 'phone_validation'
-      get '/utilisateurs/password/edit_by_phone', to: 'users/passwords#edit_by_phone', as: 'phone_edit_password'
-      put '/utilisateurs/password/update_by_phone', to: 'users/passwords#update_by_phone', as: 'phone_update_password'
-      get '/utilisateurs/password/set_up', to: 'users/passwords#set_up', as: 'set_up_password'
+      get '/utilisateurs/inscriptions/en-attente', to: 'users/registrations#confirmation_standby', as: 'users_registrations_standby'
+      get '/utilisateurs/inscriptions/en-attente-telephone', to: 'users/registrations#confirmation_phone_standby', as: 'users_registrations_phone_standby'
+      post '/utilisateurs/inscriptions/validation-telephone', to: 'users/registrations#phone_validation', as: 'phone_validation'
+      get '/utilisateurs/mot-de-passe/modification-par-telephone', to: 'users/passwords#edit_by_phone', as: 'phone_edit_password'
+      put '/utilisateurs/mot-de-passe/update_by_phone', to: 'users/passwords#update_by_phone', as: 'phone_update_password'
+      get '/utilisateurs/mot-de-passe/initialisation', to: 'users/passwords#set_up', as: 'set_up_password'
     end
     
     resources :identities, path: 'identites', only: %i[new create edit update]
@@ -69,7 +69,7 @@ Rails.application.routes.draw do
 
     namespace :dashboard, path: 'tableau-de-bord' do
       resources :internship_agreements,  path: 'conventions-de-stage', except: %i[destroy] 
-      resources :users, only: %i[update], module: 'group_signing' do
+      resources :users, path: 'signatures', only: %i[update], module: 'group_signing' do
         member do
           post 'start_signing'
           post 'reset_phone_number'
