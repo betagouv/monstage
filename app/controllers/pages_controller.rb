@@ -4,11 +4,6 @@ class PagesController < ApplicationController
   WEBINAR_URL = ENV.fetch('WEBINAR_URL').freeze
   layout 'homepage', only: :home
 
-  def reset_cache
-    Rails.cache.clear if can?(:reset_cache, current_user)
-    redirect_to root_path
-  end
-
   def register_to_webinar
     authorize! :subscribe_to_webinar, current_user
     # Remove comments after #31/12/2022

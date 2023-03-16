@@ -80,7 +80,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       page.find "input[name='internship_application[student_attributes][email]']", visible: true
       select weeks.first.human_select_text_method, from: 'internship_application_week_id'
       page.find("input[type='submit'][value='Valider']").click
-      assert page.has_selector?(".fr-card__title a[href='/internship_offers/#{internship_offer.id}']", count: 1)
+      assert page.has_selector?(".fr-card__title a[href='/offres-de-stage/#{internship_offer.id}']", count: 1)
       click_button('Envoyer')
       page.find('h1', text: 'Félicitations !')
     end
