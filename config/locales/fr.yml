@@ -311,6 +311,7 @@ fr:
         class_room: "Classe"
         class_room_id: ID de la classe
         confirmed_at: Confirmé le
+        email_whitelist: Liste blanche
         first_name: Prénom
         gender: Sexe
         birth_date: Date de naissance

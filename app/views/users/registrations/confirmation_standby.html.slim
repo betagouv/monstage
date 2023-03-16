@@ -36,7 +36,9 @@
           p.text-dark
             |Une fois votre compte validé, connectez-vous avec le bouton ci-dessous pour trouver un stage et y postuler
           p.mt-3
-            = link_to new_user_session_path(check_confirmation: true, id: user.id),
-                      class: 'fr-btn' do
-              | Se connecter et trouver un stage !
+            - label = "Se connecter"
+            - label = "#{label} et trouver un stage !" if @confirmable_user.student?
+            = link_to new_user_session_path(check_confirmation: true, id: user.id) do
+              button  class="fr-btn" disabled="disabled"
+                = label
 

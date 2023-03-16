@@ -87,7 +87,7 @@ module Presenters
         "souhaitez accéder aux statistiques relatives aux offres de stage" \
         "de votre administration."
       when "EducationStatistician"
-        title = "Se créer un compte en tant que référent dsden"
+        title = "Se créer un compte en tant que référent DSDEN"
         subtitle = "Vous êtes référent départemental du ministère " \
         "de l'éducation nationale et souhaitez accéder aux statistiques " \
         "relatives aux offres de stage de votre département."
