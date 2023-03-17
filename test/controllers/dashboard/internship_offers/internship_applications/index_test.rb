@@ -55,8 +55,8 @@ module InternshipApplications
       assert_select '.school-name', school.name
       assert_select '.school-city', school.city
       assert_select '.student-age', "#{student.age} ans"
-      assert_select '.student-email', student.email
-      assert_select '.student-phone', student.phone
+      assert_select '.student-email', internship_application.student_email
+      assert_select '.student-phone', internship_application.student_phone
       assert_select '.reboot-trix-content', student.resume_educational_background.to_plain_text
       assert_select '.reboot-trix-content', student.resume_other.to_plain_text
       assert_select '.reboot-trix-content', student.resume_languages.to_plain_text

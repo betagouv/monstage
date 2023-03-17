@@ -4,6 +4,8 @@ FactoryBot.define do
   factory :internship_application do
     student { create(:student_with_class_room_3e) }
     motivation { 'Suis hyper motivé' }
+    student_phone { '0606060606' }
+    student_email { 'paul@gmail.com' }
 
     trait :drafted do
       aasm_state { :drafted }
