@@ -44,7 +44,7 @@ module Reporting
           online: params[:operator][:online_count].to_i,
           workshop: params[:operator][:workshop_count].to_i,
           public: params[:operator][:public_count].to_i,
-          private: params[:operator][:private_count].to_i,
+          private: calulate_total_count - params[:operator][:public_count].to_i,
         }
       }
     end

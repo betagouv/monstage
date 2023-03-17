@@ -19,7 +19,7 @@
                       id: "target_count_#{operator.id}"
   .td.align-middle.bl-1.bc-light
     = operator.realized_count.dig(params[:school_year].to_s, "total") || 0
-  - %w(onsite hybrid online workshop public private).each do |type|
+  - %w(onsite hybrid online workshop public).each do |type|
     .td.align-middle.bl-1.bc-light
       = f.number_field "#{type}_count".to_sym,
                       value: operator.realized_count.dig(params[:school_year].to_s, type) || 0,
@@ -27,6 +27,8 @@
                       inputmode: "numeric",
                       class: 'fr-input',
                       id: "#{type}_count_#{operator.id}"
+  .td.align-middle.bl-1.bc-light
+    = operator.realized_count.dig(params[:school_year].to_s, "private") || 0
 
 
   .td.align-middle.bl-1.bc-light
