@@ -592,7 +592,9 @@ def populate_applications
         student: students.first,
         motivation: 'Au taquet',
         internship_offer: offer,
-        week: offer.internship_offer_weeks.sample.week
+        week: offer.internship_offer_weeks.sample.week,
+        student_phone: '0606060606',
+        student_email: 'paul@gmail.com'
       )
     else
       InternshipApplications::WeeklyFramed.create!(
@@ -601,7 +603,9 @@ def populate_applications
         student: students.first,
         motivation: 'Au taquet',
         internship_offer: offer,
-        week: offer.internship_offer_weeks.sample.week
+        week: offer.internship_offer_weeks.sample.week,
+        student_phone: '0606060606',
+        student_email: 'paul@gmail.com'
       )
     end
   end
@@ -616,7 +620,9 @@ def populate_applications
     student: students.second,
     motivation: 'Au taquet',
     internship_offer: offers.first,
-    week: offers.first.internship_offer_weeks.first.week
+    week: offers.first.internship_offer_weeks.first.week,
+    student_phone: '0606060606',
+    student_email: 'paul@gmail.com'
   )
 
   puts  "second 3e generale stud is canceled by employer of last internship_offer"
@@ -628,7 +634,9 @@ def populate_applications
     student: students.second,
     motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
     internship_offer: offers.second,
-    week: offers.first.internship_offer_weeks.first.week
+    week: offers.first.internship_offer_weeks.first.week,
+    student_phone: '0606060606',
+    student_email: 'paul@gmail.com'
   )
   #-----------------
   # third student [1 approved, 1 canceled_by_student]
@@ -640,7 +648,9 @@ def populate_applications
     student: students.third,
     motivation: 'Au taquet',
     internship_offer: offers.third,
-    week: offers.first.internship_offer_weeks.second.week
+    week: offers.first.internship_offer_weeks.second.week,
+    student_phone: '0606060606',
+    student_email: 'paul@gmail.com'
   )
   puts  "third 3e generale stud cancels his application to first offer"
   InternshipApplications::WeeklyFramed.create!(
@@ -651,7 +661,9 @@ def populate_applications
     student: students.third,
     motivation: 'Au taquet',
     internship_offer: offers.fourth,
-    week: offers.second.internship_offer_weeks.second.week
+    week: offers.second.internship_offer_weeks.second.week,
+    student_phone: '0606060606',
+    student_email: 'paul@gmail.com'
   )
   #-----------------
   # 4th student [1 approved]
@@ -663,7 +675,9 @@ def populate_applications
     student: students[4],
     motivation: 'Au taquet',
     internship_offer: offers.fourth,
-    week: offers.first.internship_offer_weeks.third.week
+    week: offers.first.internship_offer_weeks.third.week,
+    student_phone: '0606060606',
+    student_email: 'paul@gmail.com'
   )
   InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
@@ -672,7 +686,9 @@ def populate_applications
     student: students[5],
     motivation: 'Assez motivé pour ce stage',
     internship_offer: offers.fifth,
-    week: offers.fifth.internship_offer_weeks.third.week
+    week: offers.fifth.internship_offer_weeks.third.week,
+    student_phone: '0606060606',
+    student_email: 'paul@gmail.com'
   )
   InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
@@ -681,7 +697,9 @@ def populate_applications
     student: students[3],
     motivation: 'motivé moyennement pour ce stage, je vous préviens',
     internship_offer: offers[5],
-    week: offers[5].internship_offer_weeks.first.week
+    week: offers[5].internship_offer_weeks.first.week,
+    student_phone: '0606060606',
+    student_email: 'paul@gmail.com'
   )
   InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
@@ -690,7 +708,9 @@ def populate_applications
     student: students[2],
     motivation: 'motivé moyennement pour ce stage, je vous préviens',
     internship_offer: offers[6],
-    week: offers[6].internship_offer_weeks.second.week
+    week: offers[6].internship_offer_weeks.second.week,
+    student_phone: '0606060606',
+    student_email: 'paul@gmail.com'
   )
   # InternshipApplications::WeeklyFramed.create!(
   #   aasm_state: :approved,

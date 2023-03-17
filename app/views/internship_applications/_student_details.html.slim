@@ -1,0 +1,23 @@
+
+- student_presenter = Presenters::Student.new(internship_application.student)
+.row
+  .col-md-4.col-sm-8.col-xs-12.my-2.py-2
+    h6.mb-0.text-dark Elève
+    .student-name= student_presenter.name
+  .col-md-4.col-sm-8.col-xs-12.my-2.py-2
+    h6.mb-0.text-dark Âge
+    .student-age= "#{student_presenter.age}"
+.row
+  .col-md-4.col-sm-8.col-xs-12.my-2.py-2
+    h6.mb-0.text-dark Email
+    .student-email= "#{internship_application.student_email || 'Non communiqué'}"
+  .col-md-4.col-sm-8.col-xs-12.my-2.py-2
+    h6.mb-0.text-dark Téléphone élève ou parents
+    .student-phone= "#{internship_application.student_phone || 'Non communiqué'}"
+.row
+  .col-md-4.col-sm-8.col-xs-12.my-2.py-2
+    h6.mb-0.text-dark Etablissement
+    .school-name= student_presenter.school_name
+  .col-md-4.col-sm-8.col-xs-12.my-2.py-2
+    h6.mb-0.text-dark Ville
+    .school-city= student_presenter.school_city
