@@ -1,16 +1,15 @@
 = render 'layouts/breadcrumb', links: [ ['', "Formulaire de contact"] ]
-.alert.alert-danger.alert-outlined
-  .row.align-items-center.no-gutters
-    .col-1.col-sm-auto.text-center.mr-2
-      i.fa.fa-exclamation-triangle.fa-2x
-    .col
-      p.mb-0
-        = " "
-        | Avant de contacter
-        = " "
-        strong le support de la plateforme de monstagedetroisieme.fr
-        |, merci de vérifier si la réponse à votre question est présente dans notre
-        = " "
-        = link_to "centre d'aide", helpdesk_url, title: "Centre d'aide de la plateforme monstagedetroisieme.fr"
+.fr-notice.fr-notice--info.fr-my-2w
+  .fr-container
+    .fr-notice__body
+      .fr-notice__title
+        p
+          = " "
+          | Avant de contacter
+          = " "
+          strong le support de la plateforme de monstagedetroisieme.fr
+          |, merci de vérifier si la réponse à votre question est présente dans notre
+          = " "
+          = link_to "centre d'aide", helpdesk_url, title: "Centre d'aide de la plateforme monstagedetroisieme.fr"
 
 #feedback-form data-controller='contact-page'
