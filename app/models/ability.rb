@@ -188,7 +188,6 @@ class Ability
     end
     can %i[index_and_filter], Reporting::InternshipOffer
     can :manage, InternshipAgreement
-    can :reset_cache, User
     can %i[ switch_user
             read
             update
@@ -202,8 +201,7 @@ class Ability
             see_reporting_enterprises
             see_dashboard_enterprises_summary
             see_dashboard_administrations_summary
-            see_dashboard_associations_summary
-            reset_cache ], User
+            see_dashboard_associations_summary], User
     can :manage, Operator
     can :see_minister_video, User
   end

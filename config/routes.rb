@@ -2,100 +2,107 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  authenticate :user, lambda { |u| u.is_a?(Users::God) } do
-    mount Sidekiq::Web => '/sidekiq'
-    match "/split" => Split::Dashboard,
-        anchor: false,
-        via: [:get, :post, :delete]
-  end
-
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  mount ActionCable.server => '/cable'
-
-  devise_for :users, controllers: {
-    confirmations: 'users/confirmations',
-    registrations: 'users/registrations',
-    sessions: 'users/sessions',
-    passwords: 'users/passwords'
-  }
-
-  devise_scope :user do
-    get 'users/choose_profile', to: 'users/registrations#choose_profile'
-    get '/users/registrations/standby', to: 'users/registrations#confirmation_standby'
-    get '/users/registrations/phone_standby', to: 'users/registrations#confirmation_phone_standby'
-    post '/users/registrations/phone_validation', to: 'users/registrations#phone_validation', as: 'phone_validation'
-    get '/users/password/edit_by_phone', to: 'users/passwords#edit_by_phone', as: 'phone_edit_password'
-    put '/users/password/update_by_phone', to: 'users/passwords#update_by_phone', as: 'phone_update_password'
-    get '/users/password/set_up', to: 'users/passwords#set_up', as: 'set_up_password'
-  end
-  
-  resources :identities, only: %i[new create edit update]
-  resources :schools, only: %i[new create ]
-
-  resources :internship_offer_keywords, only: [] do
-    collection do
-      post :search
+  scope(path_names: { new: 'nouveau', edit: 'modification' }) do
+    authenticate :user, lambda { |u| u.is_a?(Users::God) } do
+      mount Sidekiq::Web => '/sidekiq'
+      match "/split" => Split::Dashboard,
+          anchor: false,
+          via: [:get, :post, :delete]
     end
-  end
 
-  resources :internship_offers, only: %i[index show] do
-    collection do
-      get :search
+    mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+    mount ActionCable.server => '/cable'
+
+    devise_for :users, path: 'utilisateurs', path_names: {
+      sign_in: 'connexion',
+      sign_out: 'deconnexion',
+      sign_up: 'inscription',
+      password: 'mot-de-passe'
+    }, controllers: {
+      confirmations: 'users/confirmations',
+      registrations: 'users/registrations',
+      sessions: 'users/sessions',
+      passwords: 'users/passwords'
+    }
+
+    devise_scope :user do
+      get 'utilisateurs/choisir_profil', to: 'users/registrations#choose_profile', as: 'users_choose_profile'
+      get '/utilisateurs/inscriptions/en-attente', to: 'users/registrations#confirmation_standby', as: 'users_registrations_standby'
+      get '/utilisateurs/inscriptions/en-attente-telephone', to: 'users/registrations#confirmation_phone_standby', as: 'users_registrations_phone_standby'
+      post '/utilisateurs/inscriptions/validation-telephone', to: 'users/registrations#phone_validation', as: 'phone_validation'
+      get '/utilisateurs/mot-de-passe/modification-par-telephone', to: 'users/passwords#edit_by_phone', as: 'phone_edit_password'
+      put '/utilisateurs/mot-de-passe/update_by_phone', to: 'users/passwords#update_by_phone', as: 'phone_update_password'
+      get '/utilisateurs/mot-de-passe/initialisation', to: 'users/passwords#set_up', as: 'set_up_password'
     end
-    resources :internship_applications, only: %i[new create index show update] do
-      member do
-        get :completed
-      end
-    end
-  end
+    
+    resources :identities, path: 'identites', only: %i[new create edit update]
+    resources :schools, only: %i[new create ]
 
-  resources :favorites, only: %i[create destroy index]
-
-  namespace :api, path: 'api' do
-    resources :internship_offers, only: %i[create update destroy index]
-    resources :schools, only: [] do
+    resources :internship_offer_keywords, only: [] do
       collection do
-        post :nearby
         post :search
       end
     end
-  end
 
-  namespace :dashboard, path: 'dashboard' do
-    resources :internship_agreements,  except: %i[destroy] 
-    resources :users, only: %i[update], module: 'group_signing' do
-      member do
-        post 'start_signing'
-        post 'reset_phone_number'
-        post 'resend_sms_code'
-        post 'signature_code_validate'
-        post 'handwrite_sign'
+    resources :internship_offers, path: 'offres-de-stage', only: %i[index show] do
+      collection do
+        get :search, path: 'recherche'
+      end
+      resources :internship_applications, path: 'candidatures', only: %i[new create index show update] do
+        member do
+          get :completed
+        end
       end
     end
 
-    resources :schools, only: %i[index edit update show] do
-      resources :users, only: %i[destroy update index], module: 'schools'
-      resources :internship_agreement_presets, only: %i[edit update],  module: 'schools'
+    resources :favorites, only: %i[create destroy index]
 
-      resources :class_rooms, only: %i[index new create edit update show destroy], module: 'schools' do
-        resources :students, only: %i[update index new create], module: 'class_rooms'
+    namespace :api, path: 'api' do
+      resources :internship_offers, only: %i[create update destroy index]
+      resources :schools, only: [] do
+        collection do
+          post :nearby
+          post :search
+        end
       end
-      put '/update_students_by_group', to: 'schools/students#update_by_group', module: 'schools'
-      get '/information', to: 'schools#information', module: 'schools'
     end
 
-    resources :internship_offers, except: %i[show] do
-      resources :internship_applications, only: %i[update index], module: 'internship_offers'
-    end
+    namespace :dashboard, path: 'tableau-de-bord' do
+      resources :internship_agreements,  path: 'conventions-de-stage', except: %i[destroy] 
+      resources :users, path: 'signatures', only: %i[update], module: 'group_signing' do
+        member do
+          post 'start_signing'
+          post 'reset_phone_number'
+          post 'resend_sms_code'
+          post 'signature_code_validate'
+          post 'handwrite_sign'
+        end
+      end
 
-    namespace :stepper do
-      resources :organisations,          only: %i[create new edit update]
-      resources :internship_offer_infos, only: %i[create new edit update]
-      resources :tutors,                 only: %i[create new]
-    end
+      resources :schools, path: 'ecoles', only: %i[index edit update show] do
+        resources :users, path: 'utilisateurs', only: %i[destroy update index], module: 'schools'
+        resources :internship_agreement_presets, only: %i[edit update],  module: 'schools'
 
-    namespace :students, path: '/:student_id/' do
-      resources :internship_applications, only: %i[index show]
+        resources :class_rooms, path: 'classes', only: %i[index new create edit update show destroy], module: 'schools' do
+          resources :students, path: 'eleves', only: %i[update index new create], module: 'class_rooms'
+        end
+        put '/update_students_by_group', to: 'schools/students#update_by_group', module: 'schools'
+        get '/information', to: 'schools#information', module: 'schools'
+      end
+
+      resources :internship_offers, path: 'offres-de-stage', except: %i[show] do
+        resources :internship_applications, only: %i[update index], module: 'internship_offers'
+      end
+
+      namespace :stepper, path: 'etapes' do
+        resources :organisations, only: %i[create new edit update]
+        resources :internship_offer_infos, path: 'offre-de-stage-infos', only: %i[create new edit update]
+        resources :tutors, path: 'tuteurs', only: %i[create new]
+      end    
+
+      namespace :students, path: '/:student_id/' do
+        resources :internship_applications, path: 'candidatures', only: %i[index show]
+      end
     end
   end
 
@@ -115,18 +122,15 @@ Rails.application.routes.draw do
   get 'api_sirene_proxy/search', to: 'api_sirene_proxy#search', as: :api_sirene_proxy_search
   get 'api_entreprise_proxy/search', to: 'api_entreprise_proxy#search', as: :api_entreprise_proxy_search
 
-  get 'account(/:section)', to: 'users#edit', as: 'account'
-  patch 'account', to: 'users#update'
+  get 'mon-compte(/:section)', to: 'users#edit', as: 'account'
+  patch 'mon-compte', to: 'users#update'
   patch 'account_password', to: 'users#update_password'
   patch 'answer_survey', to: 'users#answer_survey'
 
-  get '/reset-cache', to: 'pages#reset_cache', as: 'reset_cache'
   get '/accessibilite', to: 'pages#accessibilite'
   get '/conditions-d-utilisation', to: 'pages#conditions_d_utilisation'
   get '/conditions-d-utilisation-service-signature', to: 'pages#conditions_utilisation_service_signature'
   get '/contact', to: 'pages#contact'
-  get '/exemple-offre-ideale-ministere', to: 'pages#exemple_offre_ideale_ministere'
-  get '/exemple-offre-ideale-sport', to: 'pages#exemple_offre_ideale_sport'
   get '/documents-utiles', to: 'pages#documents_utiles'
   get '/javascript-required', to: 'pages#javascript_required'
   get '/mentions-legales', to: 'pages#mentions_legales'
@@ -135,6 +139,8 @@ Rails.application.routes.draw do
   get '/politique-de-confidentialite', to: 'pages#politique_de_confidentialite'
   get '/statistiques', to: 'pages#statistiques'
   post '/newsletter', to: 'newsletter#subscribe'
+  get '/inscription-permanence', to: 'pages#register_to_webinar'
+  # To be removed after june 2023
   get '/register_to_webinar', to: 'pages#register_to_webinar'
 
   # Redirects

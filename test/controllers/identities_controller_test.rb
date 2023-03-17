@@ -16,7 +16,7 @@ class IdentitiesControllerTest < ActionDispatch::IntegrationTest
       post identities_path(identity: student_params)
     end
     identity = Identity.last
-    assert_redirected_to "/users/sign_up?as=Student&identity_token=#{identity.token}"
+    assert_redirected_to "/utilisateurs/inscription?as=Student&identity_token=#{identity.token}"
     follow_redirect!
     assert_select 'span#alert-text',  { text: 'Informations bien enregistrées' }, 1
   end

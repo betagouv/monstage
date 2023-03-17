@@ -37,7 +37,7 @@
                                 root_path,
                                 class: "fr-link text-decoration-none mr-4 #{current_page?(root_path) ? 'active' : ''}"
                     li
-                      - active = current_page?(internship_offers_path) && !request.url.include?('origin=dashboard') ? 'active' : ''
+                      - active = current_page?(internship_offers_path) && !request.url.include?('origine=dashboard') ? 'active' : ''
                       = link_to 'Recherche',
                                 user_presenter.default_internship_offers_path,
                                 class: "fr-link text-decoration-none mr-4 #{active}"
@@ -47,7 +47,7 @@
                                 class: "fr-link text-decoration-none mr-4  #{custom_dashboard_controller?(user: current_user) ? 'active' : ''}"
                     - if can?(:supply_offers, current_user) && !current_user.operator? && !current_user.employer?
                       li
-                        - active = current_page?(dashboard_internship_offers_path) || request.url.include?('origin=dashboard') ? 'active' : ''
+                        - active = current_page?(dashboard_internship_offers_path) || request.url.include?('origine=dashboard') ? 'active' : ''
                         = link_to 'Mes offres',
                                   dashboard_internship_offers_path,
                                   class: "fr-link text-decoration-none mr-4 #{active}"
