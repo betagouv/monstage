@@ -486,6 +486,7 @@ GEM
     zeitwerk (2.6.6)
 
 PLATFORMS
+  ruby
   x86_64-linux
 
 DEPENDENCIES
@@ -536,6 +537,7 @@ DEPENDENCIES
   rails_admin (~> 3.0, < 3.1)
   rails_admin-i18n
   rails_admin_aasm
+  rake
   react_on_rails
   redis (~> 4.0)
   redis-namespace
