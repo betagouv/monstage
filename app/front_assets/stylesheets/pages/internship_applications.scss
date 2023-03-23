@@ -98,3 +98,30 @@ $line-height: 4px;
     color: #d64d00;
   }
 }
+
+// media phone
+@media (max-width: 767px) {
+  .success-banner {
+    .image-character {
+      height: 300px;
+      margin-top: -150px;
+    }
+    .h1 {
+      padding-left: 0 !important;
+    }
+  }
+
+  .competitors-bloc {
+    .h1 {
+      font-size: 100px;
+      line-height: 100px;
+    }
+  }
+
+  .no-xs-padding {
+    padding: 0 !important;
+  }
+  .no-xs-margin {
+    margin: 0 !important;
+  }
+}

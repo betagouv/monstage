@@ -1,4 +1,5 @@
 / - if can? :show, internship_application
+h6 Votre candidature
 .row.bg-dark-light.mt-3
   .col-12
     h6.text-dark Motivation
@@ -17,7 +18,7 @@
         h6.text-dark.mb-1.mt-4 Langues vivantes
         .reboot-trix-content= internship_application.student.resume_languages.to_s
 
-h6.mb-1.mt-2 Votre identité
+h6.fr-mt-2w Votre identité
 .row
   .col-12.mb-3
-    = render partial: "users/resume_details", locals: {student: internship_application.student}
+    = render partial: "internship_applications/student_details", locals: {internship_application: internship_application}

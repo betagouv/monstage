@@ -81,58 +81,32 @@ def populate_operators
   Operator.create(name: "Un stage et après !",
                   website: "",
                   logo: 'Logo-un-stage-et-apres.jpg',
-                  target_count: 120,
-                  airtable_reporting_enabled: true,
-                  airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
-                  airtable_id: ENV['AIRTABLE_EMBEDDED_ID_TEST'])
+                  target_count: 120)
   # this one is for test
   Operator.create(name: "JobIRL",
                   website: "",
                   logo: 'Logo-jobirl.jpg',
-                  target_count: 32,
-                  airtable_reporting_enabled: true,
-                  airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
-                  airtable_id: ENV['AIRTABLE_EMBEDDED_ID_TEST'])
+                  target_count: 32)
   Operator.create(name: "Le Réseau",
                   website: "",
                   logo: 'Logo-le-reseau.jpg',
-                  target_count: 710,
-                  airtable_reporting_enabled: true,
-                  airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
-                  airtable_id: ENV['AIRTABLE_EMBEDDED_ID_TEST'])
-  Operator.create(name: "Institut Télémaque",
-                  website: "",
-                  logo: 'Logo-telemaque.png',
-                  target_count: 1200,
-                  airtable_reporting_enabled: false)
+                  target_count: 710)
   Operator.create(name: "Myfuture",
                   website: "",
                   logo: 'Logo-moidans10ans.png',
-                  target_count: 1200,
-                  airtable_reporting_enabled: true,
-                  airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
-                  airtable_id: ENV['AIRTABLE_EMBEDDED_ID_TEST'])
+                  target_count: 1200)
   Operator.create(name: "Les entreprises pour la cité (LEPC)",
                   website: "",
                   logo: 'Logo-les-entreprises-pour-la-cite.jpg',
-                  target_count: 1200,
-                  airtable_reporting_enabled: true,
-                  airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
-                  airtable_id: ENV['AIRTABLE_EMBEDDED_ID_TEST'])
+                  target_count: 1200)
   Operator.create(name: "Tous en stage",
                   website: "",
                   logo: 'Logo-tous-en-stage.jpg',
-                  target_count: 1200,
-                  airtable_reporting_enabled: true,
-                  airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
-                  airtable_id: ENV['AIRTABLE_EMBEDDED_ID_TEST'])
+                  target_count: 1200)
   Operator.create(name: "Viens voir mon taf",
                   website: "",
                   logo: 'Logo-viens-voir-mon-taf.jpg',
-                  target_count: 1200,
-                  airtable_reporting_enabled: true,
-                  airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
-                  airtable_id: ENV['AIRTABLE_EMBEDDED_ID_TEST'])
+                  target_count: 1200)
 end
 
 def populate_sectors
@@ -218,7 +192,7 @@ def populate_users
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: "other@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: "teacher@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
 
-  Operator.reportable.map do |operator|
+  Operator.all.map do |operator|
     with_class_name_for_defaults(Users::Operator.new(email: "#{operator.name.parameterize}@ms3e.fr", password: 'review', operator: operator)).save!
   end
   with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', operator: Operator.first)).save!
@@ -618,7 +592,9 @@ def populate_applications
         student: students.first,
         motivation: 'Au taquet',
         internship_offer: offer,
-        week: offer.internship_offer_weeks.sample.week
+        week: offer.internship_offer_weeks.sample.week,
+        student_phone: '0606060606',
+        student_email: 'paul@gmail.com'
       )
     else
       InternshipApplications::WeeklyFramed.create!(
@@ -627,7 +603,9 @@ def populate_applications
         student: students.first,
         motivation: 'Au taquet',
         internship_offer: offer,
-        week: offer.internship_offer_weeks.sample.week
+        week: offer.internship_offer_weeks.sample.week,
+        student_phone: '0606060606',
+        student_email: 'paul@gmail.com'
       )
     end
   end
@@ -642,7 +620,9 @@ def populate_applications
     student: students.second,
     motivation: 'Au taquet',
     internship_offer: offers.first,
-    week: offers.first.internship_offer_weeks.first.week
+    week: offers.first.internship_offer_weeks.first.week,
+    student_phone: '0606060606',
+    student_email: 'paul@gmail.com'
   )
 
   puts  "second 3e generale stud is canceled by employer of last internship_offer"
@@ -654,7 +634,9 @@ def populate_applications
     student: students.second,
     motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
     internship_offer: offers.second,
-    week: offers.first.internship_offer_weeks.first.week
+    week: offers.first.internship_offer_weeks.first.week,
+    student_phone: '0606060606',
+    student_email: 'paul@gmail.com'
   )
   #-----------------
   # third student [1 approved, 1 canceled_by_student]
@@ -666,7 +648,9 @@ def populate_applications
     student: students.third,
     motivation: 'Au taquet',
     internship_offer: offers.third,
-    week: offers.first.internship_offer_weeks.second.week
+    week: offers.first.internship_offer_weeks.second.week,
+    student_phone: '0606060606',
+    student_email: 'paul@gmail.com'
   )
   puts  "third 3e generale stud cancels his application to first offer"
   InternshipApplications::WeeklyFramed.create!(
@@ -677,7 +661,9 @@ def populate_applications
     student: students.third,
     motivation: 'Au taquet',
     internship_offer: offers.fourth,
-    week: offers.second.internship_offer_weeks.second.week
+    week: offers.second.internship_offer_weeks.second.week,
+    student_phone: '0606060606',
+    student_email: 'paul@gmail.com'
   )
   #-----------------
   # 4th student [1 approved]
@@ -689,7 +675,9 @@ def populate_applications
     student: students[4],
     motivation: 'Au taquet',
     internship_offer: offers.fourth,
-    week: offers.first.internship_offer_weeks.third.week
+    week: offers.first.internship_offer_weeks.third.week,
+    student_phone: '0606060606',
+    student_email: 'paul@gmail.com'
   )
   InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
@@ -698,7 +686,9 @@ def populate_applications
     student: students[5],
     motivation: 'Assez motivé pour ce stage',
     internship_offer: offers.fifth,
-    week: offers.fifth.internship_offer_weeks.third.week
+    week: offers.fifth.internship_offer_weeks.third.week,
+    student_phone: '0606060606',
+    student_email: 'paul@gmail.com'
   )
   InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
@@ -707,7 +697,9 @@ def populate_applications
     student: students[3],
     motivation: 'motivé moyennement pour ce stage, je vous préviens',
     internship_offer: offers[5],
-    week: offers[5].internship_offer_weeks.first.week
+    week: offers[5].internship_offer_weeks.first.week,
+    student_phone: '0606060606',
+    student_email: 'paul@gmail.com'
   )
   InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
@@ -716,7 +708,9 @@ def populate_applications
     student: students[2],
     motivation: 'motivé moyennement pour ce stage, je vous préviens',
     internship_offer: offers[6],
-    week: offers[6].internship_offer_weeks.second.week
+    week: offers[6].internship_offer_weeks.second.week,
+    student_phone: '0606060606',
+    student_email: 'paul@gmail.com'
   )
   # InternshipApplications::WeeklyFramed.create!(
   #   aasm_state: :approved,
@@ -806,49 +800,8 @@ def populate_agreements
   ).save!
 end
 
-def populate_airtable_records
-  (25..50).to_a.shuffle.first.times do |n|
-    AirTableRecord.create!(make_airtable_single_record)
-  end
-end
-
-def make_airtable_single_record
-  is_public = [true, false].shuffle.first
-  nb_spot_available =  (30..50).to_a.shuffle.first
-  nb_spot_used =  nb_spot_available - (0..7).to_a.shuffle.first
-  nb_spot_male = (1..nb_spot_used).to_a.shuffle.first
-  group_id = Group.where(is_public: is_public).shuffle.first.id
-  random_week = nb_spot_available.even? ? Week.of_previous_school_year : Week.selectable_for_school_year(school_year: SchoolYear::Current.new)
-  {
-    remote_id: make_airtable_rec_id,
-    is_public: is_public,
-    nb_spot_available: nb_spot_available,
-    nb_spot_used: nb_spot_used,
-    nb_spot_male: nb_spot_male,
-    nb_spot_female: nb_spot_used - nb_spot_male,
-    department_name: Department::MAP.values.shuffle.first,
-    internship_offer_type: AirTableRecord::INTERNSHIP_OFFER_TYPE.values.shuffle.first,
-    comment: nil,
-    school_id: School.all.shuffle.first.id,
-    group_id: group_id,
-    sector_id: Sector.all.shuffle.first.id,
-    week_id: random_week.to_a.shuffle.first.id,
-    operator_id: Operator.all.to_a.shuffle.first.id,
-    created_by: 'tech@monstagedetroisieme.fr'
-  }
-end
-
 ActiveSupport::Notifications.subscribe /seed/ do |event|
   puts "#{event.name} done! #{event.duration}"
-end
-
-def make_airtable_rec_id
-  az = ('a'..'z').to_a + ('A'..'Z').to_a
-  digits = (0..9).to_a
-  chars = []
-  2.times{ |i| chars << digits.shuffle.first }
-  12.times{ |i| chars << az.shuffle.first }
-  "rec#{chars.shuffle.join('')}"
 end
 
 def call_method_with_metrics_tracking(methods)
@@ -879,8 +832,7 @@ if Rails.env == 'review' || Rails.env.development?
     :populate_students,
     :populate_school_weeks,
     :populate_applications,
-    :populate_agreements,
-    :populate_airtable_records
+    :populate_agreements
   ])
   School.update_all(updated_at: Time.now)
   prevent_sidekiq_to_run_job_after_seed_loaded

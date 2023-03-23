@@ -134,7 +134,7 @@ module Dashboard
       click_button('Confirmer')
       click_link('+ Tout afficher')
       find('.student-name', text: "#{student_1.first_name} #{student_1.last_name}")
-      find('.student-email', text: student_1.email)
+      find('.student-email', text: application_for_week_1.student_email)
     end
   end
 end

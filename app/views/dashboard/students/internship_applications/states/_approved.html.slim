@@ -1,11 +1,4 @@
-- application_detail_tab ||= false
-
-- if application_detail_tab
-  .fr-alert.fr-alert--success
-    h3.fr-alert__title
-      = "Candidature envoyée le #{localize(internship_application.submitted_at, format: :human_mm_dd)}"
-    = "et acceptée le #{localize(internship_application.approved_at, format: :human_mm_dd)}"
-- else
-  .fr-alert.fr-alert--success
-    h3.fr-alert__title
-      = "Candidature acceptée le #{localize(internship_application.approved_at, format: :human_mm_dd)}."
+.fr-alert.fr-alert--success
+  h3.fr-alert__title
+    = "Candidature envoyée le #{localize(internship_application.submitted_at, format: :human_mm_dd)}"
+  = "et acceptée le #{localize(internship_application.approved_at, format: :human_mm_dd)}"
