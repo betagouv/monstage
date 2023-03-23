@@ -50,6 +50,12 @@ module FormatableWeek
         .map(&:strip)
         .join(' ')
     end
+    def select_text_method_with_year
+      ['Semaine', number, '- du', beginning_of_week, 'au', end_of_week, year]
+        .map(&:to_s)
+        .map(&:strip)
+        .join(' ')
+    end
 
     def week_date
       Date.commercial(year, number)

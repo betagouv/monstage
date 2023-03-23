@@ -29,7 +29,7 @@ module Dashboard::InternshipOffers
       assert_select "#internship_offer_max_candidates[value=#{internship_offer.max_candidates}]", count: 1
 
       internship_offer.available_weeks.each do |week|
-        assert_select 'label', text: week.select_text_method
+        assert_select 'label', text: week.select_text_method_with_year
       end
       assert_response :success
     end
@@ -76,7 +76,8 @@ module Dashboard::InternshipOffers
         assert_select 'input#all_year_long[disabled]'
 
         internship_offer.weeks.each do |week|
-          assert_select 'label', text: week.select_text_method
+          assert_select "label[for='internship_offer_week_ids_#{week.id}_checkbox']",
+                        text: week.select_text_method_with_year
         end
 
         assert_select("input#internship_offer_week_ids_#{internship_offer.internship_offer_weeks[1].week_id}[disabled='disabled']",

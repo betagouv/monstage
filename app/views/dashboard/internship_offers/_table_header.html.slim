@@ -1,14 +1,22 @@
 tr
   - cols.map do |sort_column, i18n|
+    - next if i18n.html_safe == "Statut de l'offre"
     th class="align-middle sortable-th #{sort_column == :view_count ? 'd-none d-md-table-cell' : ''}"
       .row.no-gutters
-        .col-auto
+        .col-auto.fr-pr-3w
           .col-label-sorting
-            .fr-text--sm.pl-1= i18n.html_safe          
-          / = render partial: "dashboard/internship_offers/sort_links",
-          /          locals: { order: sort_column,
-          /                    sort_by_i18n: i18n,
-          /                    direction: order_direction }
+            .fr-text--sm.pl-1.d-flex.flex-row
+              .d-block = i18n.html_safe
+              .d-block = render partial: "dashboard/internship_offers/sort_links",
+                        locals: { order: sort_column,
+                                  sort_by_i18n: i18n,
+                                  direction: order_direction }
+  th class="align-middle sortable-th"
+    .row.no-gutters
+      .col-auto
+          .col-label-sorting
+            .fr-text--sm.pl-1
+              | Statut de l'offre
   th class="align-middle sortable-th"
     .row.no-gutters
       .col-auto

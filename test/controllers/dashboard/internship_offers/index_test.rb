@@ -65,8 +65,7 @@ module Dashboard::InternshipOffers
       filters = {
         direction: 'asc',
         filter: '2',
-        order: 'view_count',
-        school_year: '2020'
+        order: 'approved_applications_count'
       }
       get dashboard_internship_offers_path(filters)
       assert_response :success
@@ -162,27 +161,6 @@ module Dashboard::InternshipOffers
     #   end
     # end
 
-    test 'GET #index tabs forward expected params' do
-      sign_in(create(:employer))
-
-      forwarded_to_tabs_links = {
-        latitude: Coordinates.bordeaux[:latitude],
-        longitude: Coordinates.bordeaux[:longitude],
-        radius: 1_000,
-        city: 'bingobangobang',
-        keyword: 'bloop',
-        order: 'total_applications_count',
-        direction: 'desc'
-      }
-      get dashboard_internship_offers_path(forwarded_to_tabs_links)
-      assert_select 'li a[href=?]',
-                    dashboard_internship_offers_path({ filter: 'unpublished' }.merge(forwarded_to_tabs_links))
-      assert_select 'li a[href=?]',
-                    dashboard_internship_offers_path({ filter: 'past' }.merge(forwarded_to_tabs_links))
-      assert_select 'li a[href=?]',
-                    dashboard_internship_offers_path(forwarded_to_tabs_links)
-    end
-
     test 'GET #index filters as Employer show published, unpublished, in past when required' do
       employer = create(:employer)
       internship_offer_published = create(:weekly_internship_offer,
@@ -206,45 +184,12 @@ module Dashboard::InternshipOffers
                     { count: 1 },
                     'should not have found published offer')
       assert_select(".test-internship-offer-#{internship_offer_unpublished.id}",
-                    { count: 0 },
-                    'should found unpublished offer')
-      assert_select(".test-internship-offer-#{internship_offer_in_the_past.id}",
-                    { count: 0 },
-                    'should not have found offer in the past')
-
-      get dashboard_internship_offers_path(filter: :unpublished)
-      assert_select(".test-internship-offer-#{internship_offer_published.id}",
-                    { count: 0 },
-                    'should not have found published offer')
-      assert_select(".test-internship-offer-#{internship_offer_unpublished.id}",
                     { count: 1 },
-                    'should found unpublished offer')
-      assert_select(".test-internship-offer-#{internship_offer_in_the_past.id}",
-                    { count: 0 },
-                    'should not have found offer in the past')
-
-      get dashboard_internship_offers_path(filter: :past)
-      assert_select(".test-internship-offer-#{internship_offer_published.id}",
-                    { count: 0 },
-                    'should not have found published offer')
-      assert_select(".test-internship-offer-#{internship_offer_unpublished.id}",
-                    { count: 0 },
                     'should found unpublished offer')
       assert_select(".test-internship-offer-#{internship_offer_in_the_past.id}",
                     { count: 1 },
                     'should not have found offer in the past')
-    end
 
-    test 'GET #index as Employer show view_count' do
-      internship_offer = create(:weekly_internship_offer, view_count: 10)
-
-      sign_in(internship_offer.employer)
-      get dashboard_internship_offers_path
-
-      assert_response :success
-      assert_select ".test-internship-offer-#{internship_offer.id} .badge-view-count",
-                    text: internship_offer.view_count.to_s,
-                    count: 1
     end
 
     test 'GET #index returns sortable table' do
@@ -252,37 +197,49 @@ module Dashboard::InternshipOffers
       sign_in(internship_offer.employer)
       get dashboard_internship_offers_path
       assert_select 'a[href=?]',
-                    dashboard_internship_offers_path(order: 'view_count',
+                    dashboard_internship_offers_path(order: 'remaining_seats_count',
                                                      direction: 'desc')
     end
 
     test 'GET #index with order & direction works' do
       employer = create(:employer)
-      internship_offer_1 = create(:weekly_internship_offer, view_count: 2,
-                                                            employer: employer)
-      internship_offer_2 = create(:weekly_internship_offer, view_count: 1,
-                                                            employer: employer)
+      travel_to(Date.new(2019, 9, 1)) do
+        internship_offer_1 = create(:weekly_internship_offer,
+                                    weeks: Week.selectable_from_now_until_end_of_school_year.first(2),
+                                    max_candidates: 2,
+                                    remaining_seats_count: 2,
+                                    max_students_per_group: 2,
+                                    employer: employer)
+      internship_offer_2 = create(:weekly_internship_offer,
+                                  max_candidates: 1,
+                                  remaining_seats_count: 1,
+                                  max_students_per_group: 1,
+                                  employer: employer)
       sign_in(employer)
-      get dashboard_internship_offers_path(order: :view_count, direction: :desc)
-      assert_select 'a.fr-raw-link[href=?]',
-                    dashboard_internship_offers_path(order: :view_count,
+      get dashboard_internship_offers_path(order: :remaining_seats_count, direction: :desc)
+      # puts '----'
+      # JSON.parse(response.body)
+      # puts '----'
+      assert_select 'a[href=?]',
+                    dashboard_internship_offers_path(order: :remaining_seats_count,
                                                      direction: :asc),
                     count: 1
       assert_select 'a.currently-sorting[href=?]',
-                    dashboard_internship_offers_path(order: :view_count, direction: :desc), count: 0
+                    dashboard_internship_offers_path(order: :remaining_seats_count, direction: :desc), count: 0
       assert_select 'table tbody tr:first .internship-item-title',
                     text: internship_offer_1.title
       assert_select 'table tbody tr:last .internship-item-title',
                     text: internship_offer_2.title
-      get dashboard_internship_offers_path(order: :view_count, direction: :asc)
+      get dashboard_internship_offers_path(order: :remaining_seats_count, direction: :asc)
       assert_select 'a.currently-sorting[href=?]',
-                    dashboard_internship_offers_path(order: :view_count, direction: :desc), count: 1
+                    dashboard_internship_offers_path(order: :remaining_seats_count, direction: :desc), count: 1
       assert_select 'a.currently-sorting[href=?]',
-                    dashboard_internship_offers_path(order: :view_count, direction: :asc), count: 0
+                    dashboard_internship_offers_path(order: :remaining_seats_count, direction: :asc), count: 0
       assert_select 'table tbody tr:last .internship-item-title',
                     text: internship_offer_1.title
       assert_select 'table tbody tr:first .internship-item-title',
                     text: internship_offer_2.title
+      end
     end
 
     test 'GET #index with order success with all valid column' do
@@ -299,34 +256,6 @@ module Dashboard::InternshipOffers
 
       get dashboard_internship_offers_path(order: 'bimg', direction: :desc)
       assert_response :redirect
-    end
-
-    test 'GET #index as Employer displays links to internship_application' do
-      travel_to(Date.new(2019, 9, 1)) do
-        employer = create(:employer)
-        void_internship_offer = create(:weekly_internship_offer,
-                                      employer: employer)
-        internship_offer_with_pending_response = create(
-          :weekly_internship_offer, employer: employer
-        )
-        create(:weekly_internship_application, :submitted,
-              internship_offer: internship_offer_with_pending_response)
-        internship_offer_with_application = create(:weekly_internship_offer,
-                                                  employer: employer)
-        create(:weekly_internship_application, :approved,
-              internship_offer: internship_offer_with_application)
-
-        sign_in(employer)
-        get dashboard_internship_offers_path
-        assert_response :success
-        assert_select '.test-internship-offer', count: 3
-        assert_select 'a[href=?]',
-                      dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Répondre', count: 0
-        assert_select 'a[href=?]',
-                      dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Afficher', count: 0
-        assert_select 'a[href=?]',
-                      dashboard_internship_offer_internship_applications_path(internship_offer_with_application)
-      end
     end
 
     test 'GET #index as Employer displays pending submitted applications for kept internship_offers only' do
@@ -355,7 +284,7 @@ module Dashboard::InternshipOffers
 
         sign_in(employer)
         get dashboard_internship_offers_path
-        assert_select '.fr-tag-rounded',
+        assert_select '.fr-badge.fr-badge--new',
                        text: '2',
                        count: 1
       end

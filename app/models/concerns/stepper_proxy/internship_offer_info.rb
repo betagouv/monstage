@@ -78,7 +78,11 @@ module StepperProxy
 
         school_year = SchoolYear::Floating.new(date: weeks.first.week_date)
 
-        Week.selectable_on_specific_school_year(school_year: school_year)
+        [Week.selectable_on_specific_school_year(school_year: school_year),
+         Week.selectable_from_now_until_end_of_school_year,
+         Week.next_school_year].map(&:to_a)
+                               .flatten
+                               .uniq
       end
     end
   end

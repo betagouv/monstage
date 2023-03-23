@@ -133,9 +133,9 @@ class InternshipOffer < ApplicationRecord
     employer.operator
   end
 
-  def published?
-    published_at.present?
-  end
+  def published? ; published_at.present? end
+  def publish! ; update(published_at: Time.zone.now) end
+  def unpublish! ; update(published_at: nil) end
 
   def from_api?
     permalink.present?

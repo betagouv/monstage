@@ -106,11 +106,11 @@ table.employer tbody tr td.title {
 // sorting headers for dashboard/internship_offers#index
 $sortLinkOffset: 15px;
 .sort-links{
-  $sort-arrow-height: 10px;
+  $sort-arrow-height: 15px;
   display: inline-block;
   position: absolute;
   top: 35%;
-  margin-top: 2px;
+  margin-top: -11px;
   .currently-sorting{
     color: $blue-france !important;
   }

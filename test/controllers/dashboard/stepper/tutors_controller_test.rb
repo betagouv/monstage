@@ -11,7 +11,7 @@ module Dashboard::Stepper
       sign_in(employer)
       travel_to(Date.new(2019, 3, 1)) do
         organisation = create(:organisation, employer: employer)
-        internship_offer_info = create(:internship_offer_info)
+        internship_offer_info = create(:weekly_internship_offer_info, weeks: [Week.fetch_by_date(date: Date.today + 2.weeks)])
         get new_dashboard_stepper_tutor_path(organisation_id: organisation.id,
                                              internship_offer_info_id: internship_offer_info.id)
 
@@ -45,7 +45,7 @@ module Dashboard::Stepper
       assert_redirected_to user_session_path
     end
 
-    test 'POST #createas visitor redirects to internship_offers' do
+    test 'POST #create as visitor redirects to internship_offers' do
       employer = create(:employer)
       internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
       organisation = create(:organisation, employer: employer)
@@ -161,16 +161,18 @@ module Dashboard::Stepper
     end
 
     test 'POST #create as employer with missing params' do
-      employer = create(:employer)
-      sign_in(employer)
-      organisation = create(:organisation, employer: employer)
-      internship_offer_info = create(:internship_offer_info)
-      post(
-        dashboard_stepper_tutors_path(organisation_id: organisation.id,
-                                      internship_offer_info_id: internship_offer_info.id),
-        params: {}
-      )
-      assert_response :bad_request
+      travel_to(Time.zone.local(2020, 1, 1)) do
+        employer = create(:employer)
+        sign_in(employer)
+        organisation = create(:organisation, employer: employer)
+        internship_offer_info = create(:weekly_internship_offer_info, weeks: [Week.next])
+        post(
+          dashboard_stepper_tutors_path(organisation_id: organisation.id,
+                                        internship_offer_info_id: internship_offer_info.id),
+          params: {}
+        )
+        assert_response :bad_request
+      end
     end
   end
 end

@@ -137,7 +137,6 @@ module InternshipOffers
       after_week(week: Week.current)
     }
 
-
     def visible
       published? ? "oui" : "non"
     end
@@ -146,13 +145,6 @@ module InternshipOffers
       InternshipApplication.where(internship_offer_id: id)
                            .where(aasm_state: ['approved', 'convention_signed'])
                            .count
-    end
-
-    def requires_update?
-      return true if last_date < Date.today + 1.week
-      return true if remaining_seats_count < 1
-
-      false
     end
   end
 end

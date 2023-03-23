@@ -18,7 +18,7 @@
                     submit: false
 - else
   = form_with(model: internship_offer,
-              url: edit_dashboard_internship_offer_path(internship_offer.to_param),
+              url: republish_dashboard_internship_offer_path(internship_offer.to_param),
               method: :patch,
               data: {turbo: false}) do |f|
     = f.hidden_field :published_at, value: toggled_published_at

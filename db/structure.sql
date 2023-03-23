@@ -931,7 +931,8 @@ CREATE TABLE public.internship_offers (
     max_students_per_group integer DEFAULT 1 NOT NULL,
     employer_manual_enter boolean DEFAULT false,
     tutor_role character varying,
-    remaining_seats_count integer DEFAULT 0
+    remaining_seats_count integer DEFAULT 0,
+    employer_hidden boolean DEFAULT false
 );
 
 
@@ -2841,6 +2842,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221124170052'),
 ('20221219144134'),
 ('20221223100742'),
-('20230302162952');
+('20230302162952'),
+('20230321104203');
 
 

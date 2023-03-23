@@ -87,6 +87,7 @@ Rails.application.routes.draw do
     end
 
     resources :internship_offers, except: %i[show] do
+      patch :republish, to: 'internship_offers#republish', on: :member
       resources :internship_applications, only: %i[update index], module: 'internship_offers'
     end
 

@@ -52,6 +52,26 @@ class Week < ApplicationRecord
     school_year = SchoolYear::Floating.new(date: Date.today)
 
     from_date_to_date(from: school_year.updated_beginning_of_period,
+                      to: school_year.end_of_period
+    )
+  }
+
+  scope :selectable_from_now_until_next_school_year, lambda {
+    school_year = SchoolYear::Floating.new(date: Date.today)
+    next_year = SchoolYear::Floating.new(date: Date.today + 1.year)
+
+    from_date_to_date(from: school_year.updated_beginning_of_period,
+                      to: school_year.end_of_period
+    ).or(
+      from_date_to_date(from: next_year.beginning_of_period,
+                        to: next_year.end_of_period)
+      )
+  }
+
+  scope :next_school_year, lambda {
+    school_year = SchoolYear::Floating.new(date: Date.today + 1.year)
+
+    from_date_to_date(from: school_year.beginning_of_period,
                       to: school_year.end_of_period)
   }
 
@@ -90,9 +110,26 @@ class Week < ApplicationRecord
 
   WEEK_DATE_FORMAT = '%d/%m/%Y'
 
+  def <(other_week)
+    year < other_week.year || (year == other_week.year && number < other_week.number)
+  end
+
+  def in_the_passed?
+    self < Week.current
+  end
+
   def self.current
     current_date = Date.today
     Week.find_by(number: current_date.cweek, year: current_date.year)
+  end
+  
+  def self.fetch_by_date(date:)
+    Week.find_by(number: date.cweek, year: date.year)
+  end
+
+  def self.next
+    date = Date.today + 1.week
+   fetch_by_date(date: date)
   end
 
   rails_admin do

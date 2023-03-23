@@ -1,0 +1,11 @@
+.fr-toggle
+  = check_box_tag 'toggle_publish',
+                  published,
+                  published,
+                  id: id,
+                  class:'fr-toggle__input',
+                  :'aria-describedby' => "#{id}-hint-text",
+                  onChange: "#{submit} && (this.form.submit())"
+  = label_tag id,
+              '',
+              class: "fr-toggle__label"
