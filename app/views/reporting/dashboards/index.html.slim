@@ -151,16 +151,6 @@
                   .col-8
                     h2.text-body#operator-stats
                       | Stages pourvus hors plateforme
-                      = link_to "Rafraichir", reporting_dashboards_refresh_path, method: :post, class: 'fr-btn btn-success ml-4', data: {test_refresh: 1}
-
-                  .col-4
-                    - if dashboard_finder.operator_last_modified_at.present?
-                      h2.text-body.text-right.font-weight-light
-                        = "au "
-                        = I18n.localize(dashboard_finder.operator_last_modified_at, format: :human_mm_dd_hh)
-                    - if dashboard_finder.operator_last_synchro.present?
-                      p.text-right.text-muted.small= "Dernière mise à jour il y a  #{time_ago_in_words(dashboard_finder.operator_last_synchro)}"
-
 
             .row.mt-3.align-items-center.no-gutters.bg-light-blue.py-4
               .col-12.col-md-3.text-center
@@ -179,7 +169,7 @@
                         = inline_svg_pack_tag('media/images/icons/noun_Computer_2646597.svg', class: 'fill-purple-custom')
                       .col.align-self-center À distance
                       .col.align-self-center.text-right.h2.mb-0.text-purple-custom
-                        span.mr-3= dashboard_finder.operator_count_remote || "0"
+                        span.mr-3= dashboard_finder.operator_count_online || "0"
                 .row
                   .col-12
                     hr.separator.p-0.mt-0.mb-0.ml-0.mr-3
@@ -189,7 +179,7 @@
                       .offset-3.col-6.align-self-center.text-center
                         = inline_svg_pack_tag('media/images/icons/noun_group_Computeur_People.svg', class: 'fill-purple-custom mx-3')
                         | Hybride
-                        span.h2.mb-0.mx-3.text-purple-custom= dashboard_finder.operator_count_by_type(AirTableRecord::INTERNSHIP_OFFER_TYPE[:hybrid_internship_offer]) || "0"
+                        span.h2.mb-0.mx-3.text-purple-custom= "0"
 
             // TODO REMOVE AS SOON AS MINISTRY DASHBAORD IS AVAILABLE
             - unless current_user.ministry_statistician?
@@ -205,10 +195,7 @@
                         .col
                           .row.no-gutters
                             .col.align-self-center Secteur privé
-                            .col.align-self-center.text-right.h2.mb-0.text-cyan-custom= dashboard_finder.operator_count_by_private_sector(is_public: false) || "0"
-                          .row.no-gutters.mt-3
-                            .col.align-self-center Dont PaQte
-                            .col.align-self-center.text-right.h3.mb-0.text-cyan-custom= dashboard_finder.operator_count_by_private_sector_paqte || "0"
+                            .col.align-self-center.text-right.h2.mb-0.text-cyan-custom= dashboard_finder.operator_count_by_private_sector || "0"
                     .col-6
                       .row.h-100
                         .col-auto.align-self-center
@@ -217,7 +204,7 @@
                           .row.no-gutters
                             .col.align-self-center Secteur public
                             .col.align-self-center.text-right.h2.mb-0.text-cyan-custom
-                              span.mr-3= dashboard_finder.operator_count_by_private_sector(is_public: true) || "0"
+                              span.mr-3= dashboard_finder.operator_count_by_public_sector || "0"
 
               .row.mt-3.align-items-center.no-gutters.bg-less-light-blue.py-4
                 .col-12.col-md-3
