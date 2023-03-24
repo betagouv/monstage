@@ -11,7 +11,7 @@ module Dashboard::Stepper
       sign_in(employer)
       travel_to(Date.new(2019, 3, 1)) do
         organisation = create(:organisation, employer: employer)
-        internship_offer_info = create(:weekly_internship_offer_info, weeks: [Week.fetch_by_date(date: Date.today + 2.weeks)])
+        internship_offer_info = create(:weekly_internship_offer_info, weeks: [Week.fetch_from(date: Date.today + 2.weeks)])
         get new_dashboard_stepper_tutor_path(organisation_id: organisation.id,
                                              internship_offer_info_id: internship_offer_info.id)
 

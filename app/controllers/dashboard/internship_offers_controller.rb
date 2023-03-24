@@ -41,7 +41,7 @@ module Dashboard
 
     def edit
       authorize! :update, @internship_offer
-      @available_weeks = @internship_offer.available_weeks
+      @available_weeks = @internship_offer.available_weeks_when_editing
     end
 
     def republish
@@ -81,7 +81,7 @@ module Dashboard
         respond_to do |format|
           format.html do
             @internship_offer = failed_internship_offer
-            @available_weeks = failed_internship_offer.available_weeks
+            @available_weeks = failed_internship_offer.available_weeks_when_editing
             render :edit, status: :bad_request
           end
         end
@@ -89,7 +89,7 @@ module Dashboard
       rescue ActionController::ParameterMissing
         respond_to do |format|
           format.html do
-            @available_weeks = @internship_offer.available_weeks
+            @available_weeks = @internship_offer.available_weeks_when_editing
             render :edit, status: :bad_request
           end
         end

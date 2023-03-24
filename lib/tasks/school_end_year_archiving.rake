@@ -10,7 +10,7 @@ task school_end_year_archiving: :environment do
       print('.')
     end
     puts ''
-    PrettyConsole.say_in_yellow " end of archiving students. "
+    PrettyConsole.say_in_yellow "End of archiving students. "
 
     # duplicate all internship offers with dates stepping over next school years
     InternshipOffers::WeeklyFramed.kept
@@ -23,8 +23,8 @@ task school_end_year_archiving: :environment do
       ) unless new_internship_offer.nil?
     end
     puts ''
-    PrettyConsole.say_in_yellow " end of duplicating internship_offers with weeks on future school year. "
+    PrettyConsole.say_in_yellow "End of duplicating internship_offers with weeks spread on next school year."
   end
 
-  PrettyConsole.say_in_green 'All students are archived. Older internship offers are duplicated when possible.'
+  PrettyConsole.say_in_green 'Archiving done.'
 end

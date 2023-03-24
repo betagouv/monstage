@@ -74,16 +74,29 @@ module StepperProxy
       def available_weeks
         return Week.selectable_from_now_until_end_of_school_year unless respond_to?(:weeks)
         return Week.selectable_from_now_until_end_of_school_year unless persisted?
-        return Week.selectable_for_school_year(school_year: SchoolYear::Floating.new(date: Date.today)) if weeks&.first.nil?
+        if weeks&.first.nil?
+          return Week.selectable_for_school_year(
+            school_year: SchoolYear::Floating.new(date: Date.today)
+          )
+        end
 
         school_year = SchoolYear::Floating.new(date: weeks.first.week_date)
 
-        [Week.selectable_on_specific_school_year(school_year: school_year),
-         Week.selectable_from_now_until_end_of_school_year,
-         Week.next_school_year].map(&:to_a)
-                               .flatten
-                               .uniq
+        Week.selectable_on_specific_school_year(school_year: school_year)
       end
+    end
+
+    def available_weeks_when_editing
+      raise 'Wrong !!' unless persisted? && respond_to?(:weeks) # temporary
+      return nil unless persisted? && respond_to?(:weeks)
+
+
+      school_year = SchoolYear::Floating.new(date: weeks.first.week_date)
+
+      [Week.selectable_on_specific_school_year(school_year: school_year),
+       Week.selectable_on_school_year_when_editing].map(&:to_a)
+                                                   .flatten
+                                                   .uniq
     end
   end
 end

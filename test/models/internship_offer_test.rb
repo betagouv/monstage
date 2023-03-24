@@ -89,13 +89,11 @@ class InternshipOfferTest < ActiveSupport::TestCase
   test 'scope available_weeks when may' do
     travel_to(Date.new(2021, 5, 7)) do
       now = Date.today
-      weeks = [Week.where(year: now.year, number: now.cweek).first]
+      weeks = [Week.fetch_from(date: now)]
       september_first = Date.new(2020, 9, 1)
       may_thirty_first = Date.new(2021, 5, 31)
       expected_weeks = Week.where('number >= ? and year = ?', september_first.cweek, 2020)
                            .or(Week.where('number <= ? and year = ?', may_thirty_first.cweek, 2021))
-                           .or(Week.where('number >= ? and year = ?', (september_first + 1.year + 1.week).cweek, 2021))
-                           .or(Week.where('number <= ? and year = ?', (may_thirty_first + 1.year).cweek, 2022))
       internship_offer_info = create(:weekly_internship_offer_info, weeks: weeks)
       assert_equal expected_weeks.ids, internship_offer_info.available_weeks.map(&:id)
     end

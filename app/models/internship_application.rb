@@ -144,7 +144,7 @@ class InternshipApplication < ApplicationRecord
                     arg_hash = {internship_application: self, main_teacher: main_teacher}
                     accepted_student_notify
                     if type == "InternshipApplications::WeeklyFramed" && student&.school&.school_manager&.present?
-                      create_agreement
+                      create_agreement unless internship_offer.employer.operator?
                       if main_teacher.present?
                         MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
                                           .deliver_later

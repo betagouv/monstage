@@ -8,7 +8,9 @@ module Finders
     end
 
     def pending_internship_offers_actions(internship_offers)
-       internship_offers.map(&:internship_applications)
+      return 0 if internship_offers.blank?
+
+      internship_offers.map(&:internship_applications)
                         .map(&:submitted)
                         .map(&:count)
                         .sum

@@ -286,19 +286,31 @@ module InternshipsOffers
       assert_equal 10, new_internship_offer.remaining_seats_count
       assert_equal first_week_of_next_year, new_internship_offer.weeks.first
       refute new_internship_offer.employer_hidden
-      # tester tous les compteurs ! et les remettre à zero, le cas échéant !
     end
 
     test '#split_in_two with weeks on current year only' do
-      within_2_weeks_week = Week.find_by(year: Week.current.year, number: Week.current.number + 2)
-      internship_offer = create(
-        :weekly_internship_offer,
-        weeks: [within_2_weeks_week],
-        max_candidates: 10,
-        max_students_per_group: 10
-      )
+      travel_to(Date.new(2020, 2, 1)) do
+        within_2_weeks_week = Week.find_by(
+          year: Week.current.year,
+          number: Week.current.number + 2
+        )
+        within_3_weeks_week = Week.find_by(
+          year: Week.current.year,
+          number: Week.current.number + 3
+        )
+        internship_offer = create(
+          :weekly_internship_offer,
+          weeks: [within_2_weeks_week, within_3_weeks_week],
+          max_candidates: 10,
+          max_students_per_group: 10
+        )
 
-      assert_nil internship_offer.split_in_two
+        assert_nil internship_offer.split_in_two
+
+        assert_equal 2, internship_offer.weeks.count
+        assert_equal 10, internship_offer.max_candidates
+        assert_equal 10, internship_offer.remaining_seats_count
+      end
     end
   end
 end

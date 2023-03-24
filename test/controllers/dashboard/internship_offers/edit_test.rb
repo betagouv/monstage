@@ -28,7 +28,7 @@ module Dashboard::InternshipOffers
       get edit_dashboard_internship_offer_path(internship_offer.to_param)
       assert_select "#internship_offer_max_candidates[value=#{internship_offer.max_candidates}]", count: 1
 
-      internship_offer.available_weeks.each do |week|
+      internship_offer.available_weeks_when_editing.each do |week|
         assert_select 'label', text: week.select_text_method_with_year
       end
       assert_response :success

@@ -65,16 +65,18 @@ module InternshipOffers
       }
 
       scope :with_weeks_next_year, lambda {
-        beginning_of_next_year = SchoolYear::Current.new
-                                                    .next_year
-                                                    .beginning_of_period
-        next_year_weeks = Week.from_date_to_date(
-          from: beginning_of_next_year,
-          to: beginning_of_next_year + 1.year - 1.day
-        )
+        # beginning_of_year = SchoolYear::Current.new
+        #                                        .beginning_of_period
+        # beginning_of_next_year = SchoolYear::Current.new
+        #                                             .next_year
+        #                                             .beginning_of_period
+        # from = Week.current.ahead_of_school_year_start? ? beginning_of_year : beginning_of_next_year
+        # to = from + 1.year - 1.day
+        # next_year_weeks_ids = Week.from_date_to_date( from: from, to: to ).ids
+       
         joins(:internship_offer_weeks).where(
-          internship_offer_weeks: { week_id:  next_year_weeks.ids }
-        ).uniq
+          internship_offer_weeks: { week_id:  Week.selectable_on_next_school_year }
+        ).distinct
       }
 
       def having_weeks_over_several_school_years?
@@ -123,7 +125,7 @@ module InternshipOffers
 
       def next_year_week_ids
         weeks.to_a
-             .intersection(Week.next_school_year.to_a)
+             .intersection(Week.selectable_on_next_school_year.to_a)
              .map(&:id)
       end
 
@@ -149,6 +151,7 @@ module InternshipOffers
 
       def split_in_two
         original_week_ids = week_ids
+        print '.'
         return nil if next_year_week_ids.empty?
 
         internship_offer = duplicate

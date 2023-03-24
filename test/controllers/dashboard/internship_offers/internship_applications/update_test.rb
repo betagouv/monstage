@@ -79,11 +79,8 @@ module InternshipOffers::InternshipApplications
 
       assert_enqueued_emails 2 do
         patch(
-          dashboard_internship_offer_internship_application_path(
-            internship_application.internship_offer, 
-            internship_application),
-          params: { transition: :approve! }
-        )
+          dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
+          params: { transition: :approve! })
         assert_redirected_to employer.after_sign_in_path
       end
       assert_equal 1, InternshipAgreement.count
@@ -98,17 +95,18 @@ module InternshipOffers::InternshipApplications
         :submitted,
         user_id: student.id
       )
-      internship_application.internship_offer.employer.update(type: 'Users::Operator')
+      employer = internship_application.internship_offer.employer
+      employer.update(type: 'Users::Operator', operator_id: create(:operator).id)
+      operator = Users::Operator.find_by(id: employer.id)
 
-      sign_in(internship_application.internship_offer.employer)
+      sign_in(operator)
 
       assert_enqueued_emails 1 do
         patch(
-          dashboard_internship_offer_internship_application_path(
-            internship_application.internship_offer,
-            internship_application ),
-            params: { transition: :approve! })
-          assert_redirected_to internship_application.internship_offer.employer.after_sign_in_path
+          dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
+          params: { transition: :approve! }
+        )
+        assert_redirected_to operator.after_sign_in_path
       end
       assert_equal 0, InternshipAgreement.count
     end

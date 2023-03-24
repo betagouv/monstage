@@ -42,6 +42,7 @@ module Users
     end
 
     def operator? ; true end
+    def employer_like? ; true end
 
     def presenter
       Presenters::Operator.new(self)
