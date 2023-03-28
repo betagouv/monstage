@@ -3,13 +3,23 @@ wb = xlsx_package.workbook
 wb.add_worksheet(name: 'Associations') do |sheet|
   # headers
   sheet.add_row(
-    ['Association', 'Objectif annuel', 'Date de mise à jour']
+    ['Association', 'Objectif annuel', 'Total réalisé', 'Dont présentiels', 'Dont hybrides', 'Dont à distance', 'Ateliers', 'Public', 'Privé']
   )
 
   # raws
   @operators.each do |operator|
     sheet.add_row(    
-      [operator.name, operator.target_count, operator.updated_at.strftime('%d-%m-%Y')]  
+      [
+        operator.name, 
+        operator.target_count,
+        operator.realized_count.dig(@school_year.to_s, 'total') || 0,
+        operator.realized_count.dig(@school_year.to_s, 'onsite') || 0,
+        operator.realized_count.dig(@school_year.to_s, 'hybrid') || 0,
+        operator.realized_count.dig(@school_year.to_s, 'online') || 0,
+        operator.realized_count.dig(@school_year.to_s, 'workshop') || 0,
+        operator.realized_count.dig(@school_year.to_s, 'public') || 0,
+        operator.realized_count.dig(@school_year.to_s, 'private') || 0,
+      ]  
     )
   end
 end
