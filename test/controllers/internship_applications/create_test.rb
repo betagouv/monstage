@@ -8,7 +8,7 @@ module InternshipApplications
     include ActionMailer::TestHelper
 
     test 'POST #create internship application as student' do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       school = create(:school, weeks: [internship_offer.weeks.first])
       student = create(:student, school: school, class_room: create(:class_room, school: school))
       sign_in(student)
@@ -50,7 +50,7 @@ module InternshipApplications
     end
 
     test 'POST #create internship application as student to offer posted by statistician' do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       internship_offer.update(employer_id: create(:statistician).id)
       school = create(:school, weeks: [internship_offer.weeks.first])
       student = create(:student, school: school, class_room: create(:class_room, school: school))
@@ -95,7 +95,7 @@ module InternshipApplications
 
 
     test 'POST #create internship application as student without class_room' do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       school = create(:school, weeks: [internship_offer.weeks.first])
       student = create(:student, school: school)
       sign_in(student)

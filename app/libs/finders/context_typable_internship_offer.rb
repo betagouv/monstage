@@ -102,11 +102,9 @@ module Finders
 
     def weekly_framed_scopes(scope, args = nil)
       if args.nil?
-        InternshipOffers::WeeklyFramed.send(scope)
-          .or(InternshipOffers::Api.send(scope))
+        InternshipOffer.send(scope).or(InternshipOffers::Api.send(scope))
       else
-        InternshipOffers::WeeklyFramed.send(scope, args)
-        .or(InternshipOffers::Api.send(scope, args))
+        InternshipOffer.send(scope, args).or(InternshipOffers::Api.send(scope, args))
       end
     end
   end

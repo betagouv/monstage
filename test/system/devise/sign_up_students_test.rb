@@ -86,7 +86,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     birth_date = 14.years.ago
     email = 'yetanother@gmail.com'
     password = 'kikoololletest'
-    offer = create(:weekly_internship_offer)
+    offer = create(:internship_offer)
 
     visit internship_offer_path(offer)
     # click_link '
@@ -162,7 +162,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     class_room_1 = create(:class_room, name: '3e A', school: school_1)
     student = create(:student, school: school_1, class_room: class_room_1,
                                password: password)
-    offer = create(:weekly_internship_offer)
+    offer = create(:internship_offer)
 
     visit internship_offer_path(offer.id)
 
@@ -199,7 +199,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     class_room_1 = create(:class_room, name: '3e A', school: school_1)
     student = create(:student, :registered_with_phone, school: school_1,
                                                        class_room: class_room_1, password: password)
-    offer = create(:weekly_internship_offer)
+    offer = create(:internship_offer)
 
     visit internship_offer_path(offer.id)
 
@@ -229,7 +229,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     birth_date = 14.years.ago
     password = 'kikoololletest'
     valid_phone_number = '+330637607756'
-    offer = create(:weekly_internship_offer)
+    offer = create(:internship_offer)
 
     visit internship_offers_path
     # click_on 'Je postule'

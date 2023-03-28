@@ -57,7 +57,7 @@ FactoryBot.define do
     end
 
     transient do
-      weekly_internship_offer_helper {create(:weekly_internship_offer)}
+      weekly_internship_offer_helper {create(:internship_offer)}
     end
 
     trait :weekly do

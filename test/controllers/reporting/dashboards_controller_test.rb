@@ -64,7 +64,7 @@ module Reporting
              'ministry_statistician associated group should have been public'
       # ministry internship offer with 1
       first_offer = create(
-        :weekly_internship_offer,
+        :internship_offer,
         :troisieme_generale_internship_offer,
         weeks: weeks_of_current_year,
         group: ministry_group,
@@ -73,7 +73,7 @@ module Reporting
 
       # private independant internship_offer with 10
       create(
-        :weekly_internship_offer,
+        :internship_offer,
         :troisieme_generale_internship_offer,
         max_candidates: 10,
         max_students_per_group: 10,
@@ -83,7 +83,7 @@ module Reporting
 
       # private internship offer with 20
       create(
-        :weekly_internship_offer,
+        :internship_offer,
         :troisieme_generale_internship_offer,
         max_candidates: 20,
         max_students_per_group: 20,

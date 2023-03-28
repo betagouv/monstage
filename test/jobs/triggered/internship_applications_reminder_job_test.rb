@@ -9,7 +9,7 @@ module Triggered
     # @warning: sometimes it fails ; surprising,
     # try to empty deliveries before running the spec
     setup do
-      @internship_offer = create(:weekly_internship_offer)
+      @internship_offer = create(:internship_offer)
       ActionMailer::Base.deliveries = []
     end
     teardown { ActionMailer::Base.deliveries = [] }

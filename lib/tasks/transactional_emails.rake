@@ -35,7 +35,7 @@ task employers_with_potential_agreeements: :environment do
     if offer_ids.empty?
     puts "no count"
   else
-    emails = InternshipOffers::WeeklyFramed.where(offers[:id].in(offer_ids))
+    emails = InternshipOffer.where(offers[:id].in(offer_ids))
                                            .includes(:employer)
                                            .map { |offer| offer.employer.email }
                                            .uniq

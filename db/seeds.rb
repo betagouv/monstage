@@ -280,7 +280,7 @@ end
 def populate_internship_offers
   # 3eme_generale: public sector
   weeks = Week.selectable_on_school_year
-  InternshipOffers::WeeklyFramed.create!(
+  InternshipOffer.create!(
     employer: Users::Employer.first,
     siret: siret,
     max_candidates: 5,
@@ -306,7 +306,7 @@ def populate_internship_offers
     employer_name: Group.is_paqte.first.name
   )
   weeks = [].concat(Week.selectable_on_school_year[0..1], Week.selectable_on_school_year[3..5])
-  InternshipOffers::WeeklyFramed.create!(
+  InternshipOffer.create!(
     employer: Users::Employer.first,
     siret: siret,
     max_candidates: 5,
@@ -334,7 +334,7 @@ def populate_internship_offers
 
     # 3eme generale public
   weeks =  Week.selectable_on_school_year
-  InternshipOffers::WeeklyFramed.create!(
+  InternshipOffer.create!(
     max_candidates: 5,
     max_students_per_group: 5,
     employer: Users::Employer.first,
@@ -359,7 +359,7 @@ def populate_internship_offers
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: Group.is_public.last.name
   )
-  InternshipOffers::WeeklyFramed.create!(
+  InternshipOffer.create!(
     max_candidates: 5,
     max_students_per_group: 5,
     employer: Users::Employer.first,
@@ -385,7 +385,7 @@ def populate_internship_offers
     employer_name: 'Du temps pour moi'
   )
   # dépubliée
-  InternshipOffers::WeeklyFramed.create!(
+  InternshipOffer.create!(
     employer: Users::Employer.first,
     siret: siret,
     weeks: weeks,
@@ -416,7 +416,7 @@ def populate_internship_offers
 
   # 3eme_generale-2019:
   weeks =  Week.weeks_of_school_year(school_year: SchoolYear::Base::YEAR_START)
-  InternshipOffers::WeeklyFramed.create!(
+  InternshipOffer.create!(
     employer: Users::Employer.first,
     siret: siret,
     weeks: weeks,
@@ -501,7 +501,7 @@ def populate_internship_offers
 - Immersion au sein d’un bureau de douane (gestion des procédures, déclarations en douane, dédouanement, contrôles des déclarations et des marchandises).
 MULTI_LINE
   weeks = Week.weeks_of_school_year(school_year: SchoolYear::Base::YEAR_START)
-  InternshipOffers::WeeklyFramed.create!(
+  InternshipOffer.create!(
     max_candidates: 5,
     max_students_per_group: 5,
     employer: Users::Employer.first,
@@ -531,7 +531,7 @@ MULTI_LINE
 - Présentation des principes fondamentaux du métier.
 - Immersion au sein d’une équipe de gestionnaire de la boutique. Proposition de gestion de portefeuille de boutiques et de stands fictifs en fin de stage, avec les conseils du tuteur'.
 MULTI_LINE
-  InternshipOffers::WeeklyFramed.create!(
+  InternshipOffer.create!(
     employer: Users::Employer.first,
     max_candidates: 5,
     max_students_per_group: 5,
@@ -561,7 +561,7 @@ MULTI_LINE
 - Immersion au sein d’une équipe d'admiistrateurs de comptes de la banque. Proposition de gestion de portefeuille de clients en fin de stage, avec les conseils du tuteur'.
 MULTI_LINE
   weeks = Week.weeks_of_school_year(school_year: (SchoolYear::Base::YEAR_START + 1))
-  acme = InternshipOffers::WeeklyFramed.create!(
+  acme = InternshipOffer.create!(
     max_candidates: 5,
     max_students_per_group: 5,
     employer: Users::Employer.first,
@@ -608,7 +608,7 @@ end
 
 def populate_applications
   students = Users::Student.all
-  offers = InternshipOffers::WeeklyFramed.all
+  offers = InternshipOffer.all
   puts "every 3e generale offers receives an application from first 3e generale stud"
   offers.first(4).each do |offer|
     if offer.id.to_i.even?

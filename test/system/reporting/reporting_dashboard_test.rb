@@ -18,11 +18,11 @@ class ReportingDashboardTest < ApplicationSystemTestCase
 
   test 'Offers deleted are displayed' do
     travel_to(Date.new(2020, 9, 3)) do
-      3.times { create(:weekly_internship_offer,
+      3.times { create(:internship_offer,
                        zipcode: 60_000,
                        group: @group1)
       }
-      create(:weekly_internship_offer,
+      create(:internship_offer,
                        zipcode: 60_000,
                        group: @group1).discard!
       sign_in(@statistician)

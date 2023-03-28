@@ -116,7 +116,7 @@ module InternshipOffers
 
     scope :uncompleted_with_max_candidates, lambda {
       offers_ar       = InternshipOffer.arel_table
-      full_offers_ids = InternshipOffers::WeeklyFramed.fulfilled.ids
+      full_offers_ids = InternshipOffer.fulfilled.ids
 
       where(offers_ar[:id].not_in(full_offers_ids))
     }

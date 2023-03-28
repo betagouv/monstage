@@ -1,4 +1,4 @@
-module InternshipOffers
+
   # wraps weekly logic
   module WeeklyFramable
     extend ActiveSupport::Concern
@@ -103,4 +103,4 @@ module InternshipOffers
       end
     end
   end
-end
+

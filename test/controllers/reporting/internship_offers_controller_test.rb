@@ -14,20 +14,20 @@ module Reporting
       @student_female1 = create(:student, :female)
       @group_with_no_offer = create(:group, name: "no offer", is_public: false)
       # Following will be discarded
-      @internship_offer_agri_0 = create(:weekly_internship_offer,
+      @internship_offer_agri_0 = create(:internship_offer,
                                         sector: @sector_agri,
                                         max_candidates: 1,
                                         discarded_at: Date.today,
                                         max_students_per_group: 1)
-      @internship_offer_agri_1 = create(:weekly_internship_offer,
+      @internship_offer_agri_1 = create(:internship_offer,
                                         sector: @sector_agri,
                                         max_candidates: 1,
                                         max_students_per_group: 1)
-      @internship_offer_agri_2 = create(:weekly_internship_offer,
+      @internship_offer_agri_2 = create(:internship_offer,
                                         sector: @sector_agri,
                                         max_candidates: 1,
                                         max_students_per_group: 1)
-      @internship_offer_wood = create(:weekly_internship_offer,
+      @internship_offer_wood = create(:internship_offer,
                                       sector: @sector_wood,
                                       max_candidates: 10,
                                       max_students_per_group: 10)
@@ -57,7 +57,7 @@ module Reporting
     test 'GET #index as GOD success and has a page title' do
       god = create(:god)
       sign_in(god)
-      create(:weekly_internship_offer)
+      create(:internship_offer)
       get reporting_internship_offers_path
       assert_response :success
       assert_select 'title', "Statistiques des offres | Monstage"
@@ -67,7 +67,7 @@ module Reporting
          'when department params match his departement_name' do
       statistician = create(:statistician)
       department = statistician.department # Oise
-      create(:weekly_internship_offer, department: department)
+      create(:internship_offer, department: department)
       sign_in(statistician)
 
       get reporting_internship_offers_path(department: department, is_public: false)
@@ -132,7 +132,7 @@ module Reporting
     test 'GET #index.xlsx as statistician success ' \
          'when department params match his departement_name' do
       god = create(:god)
-      create(:weekly_internship_offer)
+      create(:internship_offer)
       create(:api_internship_offer)
       sign_in(god)
 
@@ -151,7 +151,7 @@ module Reporting
     test 'GET call async Job as god success ' \
          'when department params match his departement_name' do
       god = create(:god)
-      create(:weekly_internship_offer)
+      create(:internship_offer)
       create(:api_internship_offer)
       sign_in(god)
 

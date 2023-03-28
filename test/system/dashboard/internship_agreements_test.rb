@@ -11,8 +11,8 @@ module Dashboard
       student = create(:student, school: create(:school))
       refute student.school.school_manager.present?
 
-      internship_offer = create(:weekly_internship_offer, employer: employer)
-      internship_offer_2 = create(:weekly_internship_offer, employer: employer_2)
+      internship_offer = create(:internship_offer, employer: employer)
+      internship_offer_2 = create(:internship_offer, employer: employer_2)
       internship_application = create(
         :weekly_internship_application,
         internship_offer: internship_offer,
@@ -33,7 +33,7 @@ module Dashboard
       school_2 = create(:school)
       student = create(:student, school: school)
       student_2 = create(:student, school: school_2)
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       internship_application = create(:weekly_internship_application, internship_offer: internship_offer, student: student)
       internship_application_2 = create(:weekly_internship_application, internship_offer: internship_offer, student: student_2)
       create(:internship_agreement, aasm_state: :draft, internship_application: internship_application)
@@ -236,7 +236,7 @@ module Dashboard
     # =================== Statistician ===================
 
     test 'statistician without rights attempt to reach internship agreement table fails' do
-      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: false))
+      internship_offer = create(:internship_offer, employer: create(:statistician, agreement_signatorable: false))
       internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
       internship_agreement = create(:internship_agreement, aasm_state: :draft)
       sign_in(internship_offer.employer)
@@ -245,7 +245,7 @@ module Dashboard
     end
 
     test 'statistician reads internship agreement table with correct indications - draft' do
-      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: true))
+      internship_offer = create(:internship_offer, employer: create(:statistician, agreement_signatorable: true))
       internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
       internship_agreement = create(:internship_agreement, aasm_state: :draft, internship_application: internship_application)
       sign_in(internship_offer.employer)
@@ -257,7 +257,7 @@ module Dashboard
     end
 
     test 'statistician reads internship agreement table with correct indications - status: started_by_employer' do
-      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: true))
+      internship_offer = create(:internship_offer, employer: create(:statistician, agreement_signatorable: true))
       internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
       internship_agreement = create(:internship_agreement, aasm_state: :started_by_employer, internship_application: internship_application)
       sign_in(internship_offer.employer)
@@ -269,7 +269,7 @@ module Dashboard
     end
 
     test 'statistician reads internship agreement table with correct indications - status: completed_by_employer /' do
-      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: true))
+      internship_offer = create(:internship_offer, employer: create(:statistician, agreement_signatorable: true))
       internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
       internship_agreement = create(:internship_agreement, aasm_state: :completed_by_employer, internship_application: internship_application)
       sign_in(internship_offer.employer)
@@ -281,7 +281,7 @@ module Dashboard
     end
 
     test 'statistician reads internship agreement table with correct indications - status: started_by_school_manager' do
-      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: true))
+      internship_offer = create(:internship_offer, employer: create(:statistician, agreement_signatorable: true))
       internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
       internship_agreement = create(:internship_agreement, aasm_state: :started_by_school_manager, internship_application: internship_application)
       sign_in(internship_offer.employer)
@@ -293,7 +293,7 @@ module Dashboard
     end
 
     test 'statistician reads internship agreement table with correct indications - status: validated' do
-      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: true))
+      internship_offer = create(:internship_offer, employer: create(:statistician, agreement_signatorable: true))
       internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
       internship_agreement = create(:internship_agreement, aasm_state: :validated, internship_application: internship_application)
       sign_in(internship_offer.employer)
@@ -306,7 +306,7 @@ module Dashboard
     end
 
     test 'statistician reads internship agreement table with correct indications - status: signatures_started with employer' do
-      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: true))
+      internship_offer = create(:internship_offer, employer: create(:statistician, agreement_signatorable: true))
       employer = internship_offer.employer
       internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
       internship_agreement = create(:internship_agreement, aasm_state: :signatures_started, internship_application: internship_application)
@@ -321,7 +321,7 @@ module Dashboard
     end
 
     test 'statistician reads internship agreement table with correct indications - status: signatures_started with school_manager' do
-      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: true))
+      internship_offer = create(:internship_offer, employer: create(:statistician, agreement_signatorable: true))
       employer = internship_offer.employer
       internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
       internship_agreement = create(:internship_agreement, aasm_state: :signatures_started, internship_application: internship_application)
@@ -337,7 +337,7 @@ module Dashboard
     end
 
     test 'statistician reads internship agreement table with correct indications - status: signed_by_all' do
-      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: true))
+      internship_offer = create(:internship_offer, employer: create(:statistician, agreement_signatorable: true))
       employer = internship_offer.employer
       internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
       internship_agreement = create(:internship_agreement, aasm_state: :signed_by_all, internship_application: internship_application)

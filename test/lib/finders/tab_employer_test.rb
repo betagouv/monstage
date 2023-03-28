@@ -6,7 +6,7 @@ module Finders
   class TabEmployerTest < ActiveSupport::TestCase
     test 'pending_agreements_count only draft agreements' do
       employer = create(:employer)
-      internship_offer = create(:weekly_internship_offer, employer: employer, max_students_per_group: 2, max_candidates: 2)
+      internship_offer = create(:internship_offer, employer: employer, max_students_per_group: 2, max_candidates: 2)
       draft_application = create(:weekly_internship_application, :approved, internship_offer: internship_offer)
       completed_application = create(:weekly_internship_application, :approved, internship_offer: internship_offer)
       completed_application.internship_agreement.update(aasm_state: :completed_by_employer)
@@ -21,7 +21,7 @@ module Finders
       2.times do 
         InternshipApplication.aasm.states.each do |state|
           student = create(:student)
-          wio = create(:weekly_internship_offer, employer: employer)
+          wio = create(:internship_offer, employer: employer)
           create(
             :weekly_internship_application,
             aasm_state: state.name.to_sym,
@@ -38,11 +38,11 @@ module Finders
 
     test '.pending_agreements_actions_count with 1 signature by employer' do
       employer         = create(:employer)
-      internship_offer = create(:weekly_internship_offer, employer: employer)
+      internship_offer = create(:internship_offer, employer: employer)
       status_count = InternshipAgreement.aasm.states.count
       status_count.times do
         student = create(:student)
-        wio = create(:weekly_internship_offer, employer: employer)
+        wio = create(:internship_offer, employer: employer)
         create(
           :weekly_internship_application,
           :submitted,
@@ -72,11 +72,11 @@ module Finders
 
     test '.pending_agreements_actions_count without signature by employer' do
       employer         = create(:employer)
-      internship_offer = create(:weekly_internship_offer, employer: employer)
+      internship_offer = create(:internship_offer, employer: employer)
       status_count = InternshipAgreement.aasm.states.count
       status_count.times do
         student = create(:student)
-        wio = create(:weekly_internship_offer, employer: employer)
+        wio = create(:internship_offer, employer: employer)
         create(
           :weekly_internship_application,
           :submitted,

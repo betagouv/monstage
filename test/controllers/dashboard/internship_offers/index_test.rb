@@ -20,7 +20,7 @@ module Dashboard::InternshipOffers
     end
 
     test 'GET #index as Employer displays internship_applications link' do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       sign_in(internship_offer.employer)
       get dashboard_internship_offers_path
       assert_response :success
@@ -30,9 +30,9 @@ module Dashboard::InternshipOffers
 
     test 'GET #index as employer returns his internship_offers' do
       employer = create(:employer)
-      included_internship_offer = create(:weekly_internship_offer,
+      included_internship_offer = create(:internship_offer,
                                          employer: employer, title: 'Hellow-me')
-      excluded_internship_offer = create(:weekly_internship_offer,
+      excluded_internship_offer = create(:internship_offer,
                                          title: 'Not hellow-me')
       sign_in(employer)
       get dashboard_internship_offers_path
@@ -43,9 +43,9 @@ module Dashboard::InternshipOffers
 
     test 'GET #index as employer returns his internship_offers with applications on them' do
       employer = create(:employer)
-      included_internship_offer = create(:weekly_internship_offer,
+      included_internship_offer = create(:internship_offer,
                                          employer: employer, title: 'Hellow-me')
-      excluded_internship_offer = create(:weekly_internship_offer,
+      excluded_internship_offer = create(:internship_offer,
                                          title: 'Not hellow-me')
       student = create(:student)
       internship_application = create( :weekly_internship_application,
@@ -78,11 +78,11 @@ module Dashboard::InternshipOffers
       user_operator_1 = create(:user_operator, operator: operator)
       user_operator_1_bis = create(:user_operator, operator: operator)
       user_operator_2 = create(:user_operator, operator: operator_2)
-      included_internship_offer_1 = create(:weekly_internship_offer,
+      included_internship_offer_1 = create(:internship_offer,
                                            employer: user_operator_1)
-      included_internship_offer_1_bis = create(:weekly_internship_offer,
+      included_internship_offer_1_bis = create(:internship_offer,
                                                employer: user_operator_1_bis)
-      excluded_internship_offer = create(:weekly_internship_offer,
+      excluded_internship_offer = create(:internship_offer,
                                          employer: user_operator_2)
       sign_in(user_operator_1)
       get dashboard_internship_offers_path
@@ -96,10 +96,10 @@ module Dashboard::InternshipOffers
       operator = create(:operator)
       user_operator = create(:user_operator, operator: operator,
                                              department: nil)
-      included_internship_offer = create(:weekly_internship_offer,
+      included_internship_offer = create(:internship_offer,
                                          employer: user_operator,
                                          zipcode: 60_580)
-      excluded_internship_offer = create(:weekly_internship_offer,
+      excluded_internship_offer = create(:internship_offer,
                                          employer: user_operator,
                                          zipcode: 95_270)
       sign_in(user_operator)
@@ -114,9 +114,9 @@ module Dashboard::InternshipOffers
       operator = create(:operator)
       user_operator = create(:user_operator, operator: operator,
                                              department: nil)
-      excluded_internship_offer = create(:weekly_internship_offer, employer: user_operator,
+      excluded_internship_offer = create(:internship_offer, employer: user_operator,
                                                                    coordinates: Coordinates.paris)
-      included_internship_offer = create(:weekly_internship_offer, employer: user_operator,
+      included_internship_offer = create(:internship_offer, employer: user_operator,
                                                                    coordinates: Coordinates.bordeaux)
       sign_in(user_operator)
       get dashboard_internship_offers_path(
@@ -145,7 +145,7 @@ module Dashboard::InternshipOffers
     #     school_weeks = Week.selectable_on_school_year[0..2]
     #     school = create(:school, weeks: school_weeks)
     #     student = create(:student, school: school)
-    #     internship_offer = create(:weekly_internship_offer, weeks: [school_weeks.first] )
+    #     internship_offer = create(:internship_offer, weeks: [school_weeks.first] )
     #     internship_offer_api = create(:api_internship_offer, weeks: [school_weeks.last] )
     #     week = internship_offer.internship_offer_weeks.first.week
     #     week_api = internship_offer_api.internship_offer_weeks.first.week
@@ -185,14 +185,14 @@ module Dashboard::InternshipOffers
 
     test 'GET #index filters as Employer show published, unpublished, in past when required' do
       employer = create(:employer)
-      internship_offer_published = create(:weekly_internship_offer,
+      internship_offer_published = create(:internship_offer,
                                           employer: employer)
-      internship_offer_unpublished = create(:weekly_internship_offer,
+      internship_offer_unpublished = create(:internship_offer,
                                             employer: employer)
       internship_offer_unpublished.update_column(:published_at, nil)
       two_weeks_ago = 2.weeks.ago
       internship_offer_in_the_past = create(
-        :weekly_internship_offer,
+        :internship_offer,
         employer: employer,
         weeks: [Week.where(number: two_weeks_ago.to_date.cweek == 53 ? 1 : two_weeks_ago.to_date.cweek,
                            year: two_weeks_ago.year)
@@ -236,7 +236,7 @@ module Dashboard::InternshipOffers
     end
 
     test 'GET #index as Employer show view_count' do
-      internship_offer = create(:weekly_internship_offer, view_count: 10)
+      internship_offer = create(:internship_offer, view_count: 10)
 
       sign_in(internship_offer.employer)
       get dashboard_internship_offers_path
@@ -248,7 +248,7 @@ module Dashboard::InternshipOffers
     end
 
     test 'GET #index returns sortable table' do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       sign_in(internship_offer.employer)
       get dashboard_internship_offers_path
       assert_select 'a[href=?]',
@@ -258,9 +258,9 @@ module Dashboard::InternshipOffers
 
     test 'GET #index with order & direction works' do
       employer = create(:employer)
-      internship_offer_1 = create(:weekly_internship_offer, view_count: 2,
+      internship_offer_1 = create(:internship_offer, view_count: 2,
                                                             employer: employer)
-      internship_offer_2 = create(:weekly_internship_offer, view_count: 1,
+      internship_offer_2 = create(:internship_offer, view_count: 1,
                                                             employer: employer)
       sign_in(employer)
       get dashboard_internship_offers_path(order: :view_count, direction: :desc)
@@ -287,9 +287,9 @@ module Dashboard::InternshipOffers
 
     test 'GET #index with order success with all valid column' do
       employer = create(:employer)
-      internship_offer_1 = create(:weekly_internship_offer, view_count: 2,
+      internship_offer_1 = create(:internship_offer, view_count: 2,
                                                             employer: employer)
-      internship_offer_2 = create(:weekly_internship_offer, view_count: 1,
+      internship_offer_2 = create(:internship_offer, view_count: 1,
                                                             employer: employer)
       sign_in(employer)
       Dashboard::InternshipOffersController::VALID_ORDER_COLUMNS.map do |column|
@@ -304,14 +304,14 @@ module Dashboard::InternshipOffers
     test 'GET #index as Employer displays links to internship_application' do
       travel_to(Date.new(2019, 9, 1)) do
         employer = create(:employer)
-        void_internship_offer = create(:weekly_internship_offer,
+        void_internship_offer = create(:internship_offer,
                                       employer: employer)
         internship_offer_with_pending_response = create(
-          :weekly_internship_offer, employer: employer
+          :internship_offer, employer: employer
         )
         create(:weekly_internship_application, :submitted,
               internship_offer: internship_offer_with_pending_response)
-        internship_offer_with_application = create(:weekly_internship_offer,
+        internship_offer_with_application = create(:internship_offer,
                                                   employer: employer)
         create(:weekly_internship_application, :approved,
               internship_offer: internship_offer_with_application)
@@ -332,12 +332,12 @@ module Dashboard::InternshipOffers
     test 'GET #index as Employer displays pending submitted applications for kept internship_offers only' do
       travel_to(Date.new(2019, 9, 1)) do
         employer = create(:employer)
-        discarded_internship_offer = create(:weekly_internship_offer,
+        discarded_internship_offer = create(:internship_offer,
                                             :discarded, employer: employer,
                                             max_candidates: 10,
                                             max_students_per_group: 5,
                                             weeks: Week.selectable_from_now_until_end_of_school_year.first(10))
-        kept_internship_offer = create(:weekly_internship_offer,
+        kept_internship_offer = create(:internship_offer,
                                       employer: employer,
                                       max_candidates: 10,
                                       max_students_per_group: 5,
@@ -373,10 +373,10 @@ module Dashboard::InternshipOffers
 
     test 'GET #index as Operator works with geolocation params' do
       operator = create(:user_operator)
-      internship_offer_at_paris = create(:weekly_internship_offer,
+      internship_offer_at_paris = create(:internship_offer,
                                          employer: operator,
                                          coordinates: Coordinates.paris)
-      internship_offer_at_bordeaux = create(:weekly_internship_offer,
+      internship_offer_at_bordeaux = create(:internship_offer,
                                             employer: operator,
                                             coordinates: Coordinates.bordeaux)
       sign_in(operator)

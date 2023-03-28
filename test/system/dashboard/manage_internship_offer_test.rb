@@ -16,7 +16,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   test 'Employer can edit internship offer' do
     travel_to(Date.new(2019, 3, 1)) do
       employer = create(:employer)
-      internship_offer = create(:weekly_internship_offer, employer: employer)
+      internship_offer = create(:internship_offer, employer: employer)
 
       sign_in(employer)
       visit edit_dashboard_internship_offer_path(internship_offer)
@@ -36,7 +36,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       week_with_school = Week.find_by(number: 10, year: Date.today.year)
       week_without_school = Week.find_by(number: 11, year: Date.today.year)
       create(:school, weeks: [week_with_school])
-      internship_offer = create(:weekly_internship_offer, employer: employer, weeks: [week_with_school])
+      internship_offer = create(:internship_offer, employer: employer, weeks: [week_with_school])
 
       visit edit_dashboard_internship_offer_path(internship_offer)
       find(".bg-success-20[data-week-id='#{week_with_school.id}']")
@@ -46,7 +46,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
   test 'Employer can discard internship_offer' do
     employer = create(:employer)
-    internship_offer = create(:weekly_internship_offer, employer: employer)
+    internship_offer = create(:internship_offer, employer: employer)
 
     sign_in(employer)
 
@@ -58,7 +58,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   end
 
   test 'Employer can publish/unpublish internship_offer' do
-    internship_offer = create(:weekly_internship_offer)
+    internship_offer = create(:internship_offer)
     sign_in(internship_offer.employer)
 
     visit internship_offer_path(internship_offer)
@@ -79,7 +79,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     travel_to(Date.new(2022, 1, 10)) do
       employer = create(:employer)
       weeks = Week.selectable_from_now_until_end_of_school_year.last(4)
-      internship_offer = create(:weekly_internship_offer, employer: employer, weeks: weeks)
+      internship_offer = create(:internship_offer, employer: employer, weeks: weeks)
       assert_equal 1, internship_offer.max_candidates
       sign_in(employer)
       visit dashboard_internship_offers_path(internship_offer: internship_offer)
@@ -113,7 +113,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     employer = create(:employer)
     older_weeks = [Week.selectable_from_now_until_end_of_school_year.first]
     current_internship_offer = create(
-      :weekly_internship_offer,
+      :internship_offer,
       employer: employer,
       weeks: older_weeks
     )
@@ -140,7 +140,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
         week_3 = Week.find_by(year: 2021, number: 2)  #2020-21
 
         # 2019-20
-        create(:weekly_internship_offer,
+        create(:internship_offer,
               weeks: [week_1, week_2],
               employer: employer,
               title: '2019/2020',
@@ -149,24 +149,24 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
         assert week_2.id.in?(InternshipOffer.last.internship_offer_weeks.map(&:week_id))
 
         # 2020-21
-        target_offer = create(:weekly_internship_offer,
+        target_offer = create(:internship_offer,
               weeks: [week_3],
               employer: employer,
               title: '2020/2021',
               last_date: week_3.beginning_of_week)
 
         # wrong employer
-        create(:weekly_internship_offer,
+        create(:internship_offer,
               weeks: [week_2],
               title: 'wrong employer',
               last_date: week_2.beginning_of_week)
 
-        create(:weekly_internship_offer,
+        create(:internship_offer,
               employer: employer,
               title: 'an offer')
 
         # 2019-20 unpublished
-        io = create(:weekly_internship_offer,
+        io = create(:internship_offer,
                     employer: employer,
                     weeks: [week_1, week_2],
                     title: '2019/2020 unpublished',

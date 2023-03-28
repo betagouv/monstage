@@ -27,7 +27,7 @@ module Dashboard
       school_weeks = Week.selectable_on_school_year[0..2]
       school = create(:school, weeks: school_weeks)
       sign_in(create(:school_manager, school: school))
-      internship_offer = create(:weekly_internship_offer, weeks: school_weeks)
+      internship_offer = create(:internship_offer, weeks: school_weeks)
 
       class_room = create(:class_room, school: school)
       student = create(:student, school: school, class_room: class_room)

@@ -23,11 +23,11 @@ module Finders
     test '.pending_agreements_count with 1 signature by school_manager' do
       school           = create(:school, :with_school_manager)
       school_manager   = school.school_manager
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       status_count     = InternshipAgreement.aasm.states.count
       status_count.times do
         student = create(:student, school: school)
-        wio = create(:weekly_internship_offer)
+        wio = create(:internship_offer)
         create(
           :weekly_internship_application,
           :submitted,
@@ -58,11 +58,11 @@ module Finders
     test '.pending_agreements_count with 1 signature by employer' do
       school           = create(:school, :with_school_manager)
       school_manager   = school.school_manager
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       status_count     = InternshipAgreement.aasm.states.count
       status_count.times do
         student = create(:student, school: school)
-        wio = create(:weekly_internship_offer)
+        wio = create(:internship_offer)
         create(
           :weekly_internship_application,
           :submitted,

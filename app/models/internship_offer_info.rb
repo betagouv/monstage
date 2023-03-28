@@ -17,4 +17,11 @@ class InternshipOfferInfo < ApplicationRecord
   def weekly_planning?
     weekly_hours.any?(&:present?)
   end
+
+  validates :weeks, presence: true
+  has_many :internship_offer_info_weeks, dependent: :destroy,
+                                         foreign_key: :internship_offer_info_id,
+                                         inverse_of: :internship_offer_info
+
+  has_many :weeks, through: :internship_offer_info_weeks
 end

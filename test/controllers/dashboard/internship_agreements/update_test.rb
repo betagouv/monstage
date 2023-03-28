@@ -33,7 +33,7 @@ module Dashboard::InternshipAgreements
 
     # As Employer
     test 'PATCH #update as employer not owning internship_offer redirects to root path' do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       internship_agreement = create(:internship_agreement, employer_accept_terms: true)
       sign_in(create(:employer))
       patch dashboard_internship_agreement_path(internship_agreement.id),
@@ -98,7 +98,7 @@ module Dashboard::InternshipAgreements
 
     # As School Manager
     test 'PATCH #update as school manager not owning student redirects to user_session_path' do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       internship_agreement = create(:internship_agreement, employer_accept_terms: true)
       sign_in(create(:school_manager))
       patch dashboard_internship_agreement_path(internship_agreement.id),

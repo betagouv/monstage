@@ -9,6 +9,6 @@ FactoryBot.define do
     end
 
     week { school_year_week }
-    internship_offer { create(:weekly_internship_offer, weeks: [school_year_week]) }
+    internship_offer { create(:internship_offer, weeks: [school_year_week]) }
   end
 end

@@ -7,7 +7,7 @@ module Triggers
     include ActiveJob::TestHelper
 
     setup do
-      @internship_offer = create(:weekly_internship_offer)
+      @internship_offer = create(:internship_offer)
       @reminder_service = InternshipApplicationReminder.new
     end
 

@@ -36,7 +36,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
 
   test 'employer can withdraw a school she formerly associated with an offer' do
     employer = create(:employer)
-    internship_offer = create(:weekly_internship_offer, employer: employer, school: create(:school))
+    internship_offer = create(:internship_offer, employer: employer, school: create(:school))
     sign_in(employer)
     visit edit_dashboard_internship_offer_path(internship_offer)
     found_school_name = find('input[name="internship_offer[school_name]"]').value

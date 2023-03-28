@@ -7,20 +7,20 @@ module Dashboard::InternshipOffers
     include Devise::Test::IntegrationHelpers
 
     test 'PATCH #update as visitor redirects to user_session_path' do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       patch(dashboard_internship_offer_path(internship_offer.to_param), params: {})
       assert_redirected_to user_session_path
     end
 
     test 'PATCH #update as employer not owning internship_offer redirects to user_session_path' do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       sign_in(create(:employer))
       patch(dashboard_internship_offer_path(internship_offer.to_param), params: { internship_offer: { title: '' } })
       assert_redirected_to root_path
     end
 
     test 'PATCH #update as employer owning internship_offer updates internship_offer' do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       new_title = 'new title'
       new_group = create(:group, is_public: false, name: 'woop')
       sign_in(internship_offer.employer)
@@ -47,7 +47,7 @@ module Dashboard::InternshipOffers
          'updates internship_offer ' do
       weeks = Week.all.first(3)
       week_ids = weeks.map(&:id)
-      internship_offer = create(:weekly_internship_offer, max_candidates: 3, weeks: weeks)
+      internship_offer = create(:internship_offer, max_candidates: 3, weeks: weeks)
       create(:weekly_internship_application, :approved, internship_offer: internship_offer, week: weeks(:week_2019_1))
       sign_in(internship_offer.employer)
       patch(dashboard_internship_offer_path(internship_offer.to_param),
@@ -64,7 +64,7 @@ module Dashboard::InternshipOffers
          'updates internship_offer and fails due to too many accepted internships' do
       weeks = Week.all.first(4)
       week_ids = weeks.map(&:id)
-      internship_offer = create(:weekly_internship_offer, max_candidates: 3, weeks: weeks)
+      internship_offer = create(:internship_offer, max_candidates: 3, weeks: weeks)
       create(:weekly_internship_application, :approved, internship_offer: internship_offer, week: weeks.first)
       create(:weekly_internship_application, :approved, internship_offer: internship_offer, week: weeks.second)
       sign_in(internship_offer.employer)
@@ -82,7 +82,7 @@ module Dashboard::InternshipOffers
     end
 
     test 'PATCH #update as statistician owning internship_offer updates internship_offer' do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       statistician = create(:statistician)
       internship_offer.update(employer_id: statistician.id)
       new_title = 'new title'
@@ -108,7 +108,7 @@ module Dashboard::InternshipOffers
     end
 
     test 'PATCH #update as employer owning internship_offer can publish/unpublish offer' do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       published_at = 2.days.ago.utc
       sign_in(internship_offer.employer)
       assert_changes -> { internship_offer.reload.published_at.to_i },
@@ -121,7 +121,7 @@ module Dashboard::InternshipOffers
 
     test 'PATCH #update as employer is able to remove school' do
       school = create(:school)
-      internship_offer = create(:weekly_internship_offer, school: school)
+      internship_offer = create(:internship_offer, school: school)
       sign_in(internship_offer.employer)
       assert_changes -> { internship_offer.reload.school },
                      from: school,

@@ -24,19 +24,19 @@ class IndexTest < ActionDispatch::IntegrationTest
 
   def create_offers
     offer_paris_1 = create(
-      :weekly_internship_offer,
+      :internship_offer,
       title: 'Vendeur'
     )
     offer_paris_2 = create(
-      :weekly_internship_offer,
+      :internship_offer,
       title: 'Comptable'
     )
     offer_paris_3 = create(
-      :weekly_internship_offer,
+      :internship_offer,
       title: 'Infirmier'
     )
     offer_bordeaux_1 = create(
-      :weekly_internship_offer,
+      :internship_offer,
       title: 'Infirmier',
       city: 'Bordeaux',
       coordinates: Coordinates.bordeaux
@@ -70,7 +70,7 @@ class IndexTest < ActionDispatch::IntegrationTest
 
   test 'GET #index ignore default radius in suggestions' do
     offer_paris_1 = create(
-      :weekly_internship_offer,
+      :internship_offer,
       title: 'Vendeur'
     )
 
@@ -86,27 +86,27 @@ class IndexTest < ActionDispatch::IntegrationTest
 
   test 'GET #index with wrong keyword and Paris location as Visitor returns no results' do
     offer_paris_1 = create(
-      :weekly_internship_offer,
+      :internship_offer,
       title: 'Vendeur'
     )
     offer_paris_2 = create(
-      :weekly_internship_offer,
+      :internship_offer,
       title: 'Comptable'
     )
     offer_paris_3 = create(
-      :weekly_internship_offer,
+      :internship_offer,
       title: 'Infirmier'
     )
     # not displayed
     offer_bordeaux_1 = create(
-      :weekly_internship_offer,
+      :internship_offer,
       title: 'Infirmier',
       city: 'Bordeaux',
       coordinates: Coordinates.bordeaux
     )
     # not displayed
     offer_bordeaux_2 = create(
-      :weekly_internship_offer,
+      :internship_offer,
       title: 'Infirmier',
       city: 'Bordeaux',
       coordinates: Coordinates.bordeaux
@@ -125,27 +125,27 @@ class IndexTest < ActionDispatch::IntegrationTest
 
   test 'GET #index with wrong keyword and wrong weeks as Visitor returns no results with weeks suggestions' do
     offer_paris_1 = create(
-      :weekly_internship_offer,
+      :internship_offer,
       title: 'Vendeur'
     )
     offer_paris_2 = create(
-      :weekly_internship_offer,
+      :internship_offer,
       title: 'Comptable'
     )
     # not displayed
     offer_paris_3 = create(
-      :weekly_internship_offer,
+      :internship_offer,
       title: 'Infirmier',
       week_ids: [1, 2, 3]
     )
     offer_bordeaux_1 = create(
-      :weekly_internship_offer,
+      :internship_offer,
       title: 'Infirmier',
       city: 'Bordeaux',
       coordinates: Coordinates.bordeaux
     )
     offer_bordeaux_2 = create(
-      :weekly_internship_offer,
+      :internship_offer,
       title: 'Infirmier',
       city: 'Bordeaux',
       coordinates: Coordinates.bordeaux
@@ -174,18 +174,18 @@ class IndexTest < ActionDispatch::IntegrationTest
 
   test 'GET #index as student ignores internship_offers with existing application' do
     internship_offer_without_application = create(
-      :weekly_internship_offer,
+      :internship_offer,
       title: 'offer without_application'
     )
 
-    assert_equal 1, InternshipOffers::WeeklyFramed.count
+    assert_equal 1, InternshipOffer.count
 
     weeks = internship_offer_without_application.weeks
     school = create(:school, weeks: weeks)
     class_room = create(:class_room,  school: school)
     student = create(:student, school: school, class_room: class_room)
     internship_offer_with_application = create(
-      :weekly_internship_offer,
+      :internship_offer,
       max_candidates: 2,
       max_students_per_group: 2,
       title: 'offer with_application',
@@ -198,7 +198,7 @@ class IndexTest < ActionDispatch::IntegrationTest
       student: student,
       week: weeks.first)
 
-    assert_equal 2, InternshipOffers::WeeklyFramed.count
+    assert_equal 2, InternshipOffer.count
     assert_equal 1, InternshipApplication.count
     assert_equal 1, InternshipApplication.approved.count
     assert_equal 1, internship_offer_with_application.reload.remaining_seats_count
@@ -206,7 +206,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
-        assert_equal 2, InternshipOffers::WeeklyFramed.uncompleted_with_max_candidates.count
+        assert_equal 2, InternshipOffer.uncompleted_with_max_candidates.count
         get internship_offers_path, params: { format: :json }
         assert_response :success
         assert_equal 1, json_response['internshipOffers'].count
@@ -224,8 +224,8 @@ class IndexTest < ActionDispatch::IntegrationTest
 
   test 'GET #index as student. ignores internship offers not published' do
     api_internship_offer         = create(:api_internship_offer)
-    internship_offer_published   = create(:weekly_internship_offer)
-    internship_offer_unpublished = create(:weekly_internship_offer)
+    internship_offer_published   = create(:internship_offer)
+    internship_offer_unpublished = create(:internship_offer)
     internship_offer_unpublished.update_column(:published_at, nil)
     student = create(:student)
     sign_in(student)
@@ -241,9 +241,9 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as visitor does not show discarded offers' do
-    discarded_internship_offer = create(:weekly_internship_offer,
+    discarded_internship_offer = create(:internship_offer,
                                         discarded_at: 2.days.ago)
-    not_discarded_internship_offer = create(:weekly_internship_offer,
+    not_discarded_internship_offer = create(:internship_offer,
                                             discarded_at: nil)
     get internship_offers_path, params: { format: :json }
     assert_json_presence_of(json_response, not_discarded_internship_offer)
@@ -251,9 +251,9 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as visitor does not show unpublished offers' do
-    published_internship_offer = create(:weekly_internship_offer,
+    published_internship_offer = create(:internship_offer,
                                         published_at: 2.days.ago)
-    not_published_internship_offer = create(:weekly_internship_offer)
+    not_published_internship_offer = create(:internship_offer)
     not_published_internship_offer.update!(published_at: nil)
     get internship_offers_path, params: { format: :json }
     assert_json_presence_of(json_response, published_internship_offer)
@@ -273,7 +273,7 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as visitor or student default shows both middle school and high school offers' do
-    internship_offer_weekly = create(:weekly_internship_offer)
+    internship_offer_weekly = create(:internship_offer)
     # Visitor
     get internship_offers_path
     # Student
@@ -293,7 +293,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     student = create(:student, school: school,
                                class_room: create(:class_room,
                                                   school: school))
-    internship_offer = create(:weekly_internship_offer,
+    internship_offer = create(:internship_offer,
                               max_candidates: max_candidates,
                               weeks: [week]
                               )
@@ -314,7 +314,7 @@ class IndexTest < ActionDispatch::IntegrationTest
   test 'GET #index as student keeps internship_offers having ' \
        'as less than blocked_applications_count as max_candidates number' do
     max_candidates = 2
-    internship_offer = create(:weekly_internship_offer,
+    internship_offer = create(:internship_offer,
                               max_candidates: max_candidates,
                               max_students_per_group: max_candidates,
                               internship_offer_weeks: [
@@ -338,7 +338,7 @@ class IndexTest < ActionDispatch::IntegrationTest
                                                             week: internship_weeks[0])
     not_blocked_internship_week = build(:internship_offer_week, blocked_applications_count: 0,
                                                                 week: internship_weeks[1])
-    internship_offer = create(:weekly_internship_offer, max_candidates: max_candidates,
+    internship_offer = create(:internship_offer, max_candidates: max_candidates,
                                                         internship_offer_weeks: [blocked_internship_week,
                                                                                  not_blocked_internship_week])
     sign_in(create(:student, school: school))
@@ -355,7 +355,7 @@ class IndexTest < ActionDispatch::IntegrationTest
         Week.selectable_from_now_until_end_of_school_year.first,
         Week.selectable_from_now_until_end_of_school_year.last
       ]
-      internship_offer = create(:weekly_internship_offer,
+      internship_offer = create(:internship_offer,
                                 max_candidates: max_candidates, weeks: internship_weeks)
       blocked_internship_week = create(:weekly_internship_application,
                                        internship_offer: internship_offer,
@@ -387,7 +387,7 @@ class IndexTest < ActionDispatch::IntegrationTest
                                                             week: internship_weeks[0])
     not_blocked_internship_week = build(:internship_offer_week, blocked_applications_count: 0,
                                                                 week: internship_weeks[1])
-    internship_offer = create(:weekly_internship_offer, max_candidates: max_candidates,
+    internship_offer = create(:internship_offer, max_candidates: max_candidates,
                                                         internship_offer_weeks: [blocked_internship_week,
                                                                                  not_blocked_internship_week])
 
@@ -403,7 +403,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     internship_offers = (InternshipOffer::PAGE_SIZE + 1)
                         .times
                         .map do
-      create(:weekly_internship_offer,
+      create(:internship_offer,
              max_candidates: 1)
     end
 
@@ -448,9 +448,9 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'search by location (radius) works' do
-    internship_offer_at_paris = create(:weekly_internship_offer,
+    internship_offer_at_paris = create(:internship_offer,
                                        coordinates: Coordinates.paris)
-    internship_offer_at_verneuil = create(:weekly_internship_offer,
+    internship_offer_at_verneuil = create(:internship_offer,
                                           coordinates: Coordinates.verneuil)
 
     get internship_offers_path(latitude: Coordinates.paris[:latitude],
@@ -472,10 +472,10 @@ class IndexTest < ActionDispatch::IntegrationTest
     week = Week.find_by(year: 2019, number: 10)
     school_at_paris = create(:school, :at_paris)
     student = create(:student, school: school_at_paris)
-    internship_offer_at_paris = create(:weekly_internship_offer,
+    internship_offer_at_paris = create(:internship_offer,
                                        weeks: [week],
                                        coordinates: Coordinates.paris)
-    internship_offer_at_bordeaux = create(:weekly_internship_offer,
+    internship_offer_at_bordeaux = create(:internship_offer,
                                           weeks: [week],
                                           coordinates: Coordinates.bordeaux)
 
@@ -496,7 +496,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     week = Week.find_by(year: 2019, number: 10)
     school_at_bordeaux = create(:school, :at_bordeaux)
     student = create(:student, school: school_at_bordeaux)
-    create(:weekly_internship_offer, weeks: [week],
+    create(:internship_offer, weeks: [week],
                                      coordinates: Coordinates.paris)
 
     InternshipOffer.stub :by_weeks, InternshipOffer.all do
@@ -515,9 +515,9 @@ class IndexTest < ActionDispatch::IntegrationTest
     school = create(:school, weeks: [week])
     student = create(:student, school: school,
                                class_room: create(:class_room, school: school))
-    offer_overlaping_school_weeks = create(:weekly_internship_offer,
+    offer_overlaping_school_weeks = create(:internship_offer,
                                            weeks: [week])
-    offer_not_overlaping_school_weeks = create(:weekly_internship_offer,
+    offer_not_overlaping_school_weeks = create(:internship_offer,
                                                weeks: [Week.find_by(
                                                  year: 2019, number: 11
                                                )])
@@ -536,9 +536,9 @@ class IndexTest < ActionDispatch::IntegrationTest
     school = create(:school, weeks: [week])
     student = create(:student, school: school,
                                class_room: create(:class_room, school: school))
-    offer_overlaping_school_weeks = create(:weekly_internship_offer,
+    offer_overlaping_school_weeks = create(:internship_offer,
                                            weeks: [week])
-    offer_not_overlaping_school_weeks = create(:weekly_internship_offer,
+    offer_not_overlaping_school_weeks = create(:internship_offer,
                                                weeks: [Week.find_by(
                                                  year: 2019, number: 11
                                                )])
@@ -560,11 +560,11 @@ class IndexTest < ActionDispatch::IntegrationTest
     student = create(:student, school: create(:school))
     sign_in(student)
 
-    internship_limited_to_another_school = create(:weekly_internship_offer,
+    internship_limited_to_another_school = create(:internship_offer,
                                                   school: create(:school))
-    internship_limited_to_student_school = create(:weekly_internship_offer,
+    internship_limited_to_student_school = create(:internship_offer,
                                                   school: student.school)
-    internship_not_restricted_to_school = create(:weekly_internship_offer)
+    internship_not_restricted_to_school = create(:internship_offer)
 
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
@@ -581,9 +581,9 @@ class IndexTest < ActionDispatch::IntegrationTest
   #
   test 'GET #index as employer returns all internship offers' do
     employer = create(:employer)
-    included_internship_offer = create(:weekly_internship_offer,
+    included_internship_offer = create(:internship_offer,
                                        employer: employer, title: 'Hellow-me')
-    excluded_internship_offer = create(:weekly_internship_offer,
+    excluded_internship_offer = create(:internship_offer,
                                        title: 'Not hellow-me')
     sign_in(employer)
     get internship_offers_path, params: { format: :json }
@@ -594,8 +594,8 @@ class IndexTest < ActionDispatch::IntegrationTest
 
   test 'GET #index as god returns all internship_offers' do
     sign_in(create(:god))
-    internship_offer_1 = create(:weekly_internship_offer, title: 'Hellow-me')
-    internship_offer_2 = create(:weekly_internship_offer,
+    internship_offer_1 = create(:internship_offer, title: 'Hellow-me')
+    internship_offer_2 = create(:internship_offer,
                                 title: 'Not hellow-me')
     get internship_offers_path, params: { format: :json }
     assert_response :success
@@ -604,7 +604,7 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as god. does not return discarded offers' do
-    discarded_internship_offer = create(:weekly_internship_offer)
+    discarded_internship_offer = create(:internship_offer)
     discarded_internship_offer.discard
     god = create(:god)
 
@@ -618,9 +618,9 @@ class IndexTest < ActionDispatch::IntegrationTest
 
   test 'GET #index as Visitor with search keyword find internship offer' do
     keyword = 'foobar'
-    foundable_internship_offer = create(:weekly_internship_offer,
+    foundable_internship_offer = create(:internship_offer,
                                         title: keyword)
-    ignored_internship_offer = create(:weekly_internship_offer, title: 'bom')
+    ignored_internship_offer = create(:internship_offer, title: 'bom')
 
     dictionnary_api_call_stub
     SyncInternshipOfferKeywordsJob.perform_now

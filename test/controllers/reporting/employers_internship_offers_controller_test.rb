@@ -15,15 +15,15 @@ module Reporting
       statistician = create(:statistician) # Oise is the department
       paqte_group = create(:group, is_paqte: true)
       public_internship_offer = create(
-        :weekly_internship_offer, # public internship by default
+        :internship_offer, # public internship by default
         zipcode: 75012 # Paris
       )
       public_internship_offer = create(
-        :weekly_internship_offer, # public internship by default
+        :internship_offer, # public internship by default
         zipcode: 60580 # this zipcode belongs to Oise
       ) # 1 public Oise
       private_internship_offer = create(
-        :weekly_internship_offer,
+        :internship_offer,
         :with_private_employer_group,
         group: paqte_group,
         max_candidates: 10,
@@ -31,7 +31,7 @@ module Reporting
         zipcode: 60580
       ) # 10 paqte(private) Oise
       private_internship_offer_no_group = create(
-        :weekly_internship_offer,
+        :internship_offer,
         is_public: false,
         group: nil,
         max_candidates: 20,
@@ -124,16 +124,16 @@ module Reporting
       ministry_statistician = create(:ministry_statistician) # Oise is the department
       paqte_group = create(:group, is_paqte: true)
       public_internship_offer = create(
-        :weekly_internship_offer, # public internship by default
+        :internship_offer, # public internship by default
         zipcode: 75012 # Paris
       )
       public_internship_offer = create(
-        :weekly_internship_offer, # public internship by default
+        :internship_offer, # public internship by default
         group_id: ministry_statistician.ministries.first.id,
         zipcode: 60580 # this zipcode belongs to Oise
       ) # 1 public Oise
       private_internship_offer = create(
-        :weekly_internship_offer,
+        :internship_offer,
         :with_private_employer_group,
         group: paqte_group,
         max_candidates: 10,
@@ -141,7 +141,7 @@ module Reporting
         zipcode: 60580
       ) # 10 paqte(private) Oise
       private_internship_offer_no_group = create(
-        :weekly_internship_offer,
+        :internship_offer,
         is_public: false,
         group: nil,
         max_candidates: 20,
@@ -169,18 +169,18 @@ module Reporting
          'it filters results by department' do
       statistician = create(:statistician) #Oise
       public_internship_offer = create(
-        :weekly_internship_offer,
+        :internship_offer,
         zipcode: 60580
       )
       private_internship_offer = create(
-        :weekly_internship_offer,
+        :internship_offer,
         :with_private_employer_group,
         max_candidates: 10,
         max_students_per_group: 10,
         zipcode: 75001
       )
       private_internship_offer_no_group = create(
-        :weekly_internship_offer,
+        :internship_offer,
         is_public: false,
         group: nil,
         max_candidates: 20,

@@ -7,9 +7,7 @@ module InternshipOffersHelper
 
     is_preselectable_entity = [
       InternshipOfferInfo,
-      InternshipOfferInfos::WeeklyFramed,
-      InternshipOffer,
-      InternshipOffers::WeeklyFramed
+      InternshipOffer
     ]
     is_preselectable_entity.any?{ |klass| object.is_a?(klass) }
   end

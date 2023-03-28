@@ -6,7 +6,7 @@ namespace :data_migrations do
   task :update_remaining_seats_count => :environment do |task|
     PrettyConsole.puts_with_white_background "Starting task : #{task.name}"
     ActiveRecord::Base.transaction do
-      InternshipOffers::WeeklyFramed.kept.each do |offer|
+      InternshipOffer.kept.each do |offer|
         offer.update(remaining_seats_count: offer.update_remaining_seats)
         print '.'
       end

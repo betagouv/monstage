@@ -10,7 +10,7 @@ module InternshipApplications
       employer = create(:employer)
       school = create(:school, :with_school_manager, :with_weeks)
       student = create(:student, :troisieme_generale, school: school)
-      internship_offer = create(:weekly_internship_offer, weeks: school.weeks)
+      internship_offer = create(:internship_offer, weeks: school.weeks)
       internship_application = create(:weekly_internship_application,
                                       :approved,
                                       internship_offer: internship_offer,
@@ -27,7 +27,7 @@ module InternshipApplications
       employer = create(:employer)
       school = create(:school, :with_school_manager, :with_weeks)
       student = create(:student, :troisieme_generale, school: school)
-      internship_offer = create(:weekly_internship_offer, weeks: school.weeks)
+      internship_offer = create(:internship_offer, weeks: school.weeks)
       internship_application = create(:weekly_internship_application,
                                       :approved,
                                       internship_offer: internship_offer,
@@ -47,7 +47,7 @@ module InternshipApplications
       employer = create(:employer)
       school = create(:school, :with_school_manager, :with_weeks)
       student = create(:student, :troisieme_generale, school: school)
-      internship_offer = create(:weekly_internship_offer, weeks: school.weeks)
+      internship_offer = create(:internship_offer, weeks: school.weeks)
       internship_application = create(:weekly_internship_application,
                                       :approved,
                                       internship_offer: internship_offer,

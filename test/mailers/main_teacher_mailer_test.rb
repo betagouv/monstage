@@ -8,7 +8,7 @@ class MainTeacherMailerTest < ActionMailer::TestCase
   test '#internship_application_approved_with_no_agreement_email' do
     school = create(:school, :with_school_manager, :with_weeks)
     student = create(:student_with_class_room_3e, school: school)
-    internship_offer = create(:weekly_internship_offer, weeks: school.weeks)
+    internship_offer = create(:internship_offer, weeks: school.weeks)
     internship_application = create(:weekly_internship_application,
                                     :approved,
                                     internship_offer: internship_offer,
@@ -29,7 +29,7 @@ class MainTeacherMailerTest < ActionMailer::TestCase
   test '#internship_application_approved_with_no_agreement_email sent to all main_teachers' do
     school = create(:school, :with_school_manager, :with_weeks)
     student = create(:student_with_class_room_3e, school: school)
-    internship_offer = create(:weekly_internship_offer, weeks: school.weeks)
+    internship_offer = create(:internship_offer, weeks: school.weeks)
     internship_application = create(:weekly_internship_application,
                                     :approved,
                                     internship_offer: internship_offer,

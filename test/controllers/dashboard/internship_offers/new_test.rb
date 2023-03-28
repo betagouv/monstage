@@ -8,7 +8,7 @@ module Dashboard::InternshipOffers
 
     test 'GET #new as Employer with duplicate_id' do
       operator = create(:user_operator)
-      internship_offer = create(:weekly_internship_offer, employer: operator,
+      internship_offer = create(:internship_offer, employer: operator,
                                                           is_public: true,
                                                           max_candidates: 2,
                                                           max_students_per_group: 2)

@@ -14,7 +14,7 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   test 'Student' do
-    internship_offer = create(:weekly_internship_offer)
+    internship_offer = create(:internship_offer)
     school = create(:school, weeks: [internship_offer.weeks.first])
     student = create(:student, class_room: create(:class_room, school: school))
     ability = Ability.new(student)
@@ -57,8 +57,8 @@ class AbilityTest < ActiveSupport::TestCase
 
     employer = create(:employer)
     another_employer = create(:employer)
-    internship_offer = create(:weekly_internship_offer, employer: employer)
-    alt_internship_offer = create(:weekly_internship_offer, employer: another_employer)
+    internship_offer = create(:internship_offer, employer: employer)
+    alt_internship_offer = create(:internship_offer, employer: another_employer)
     internship_offer_api = create(:api_internship_offer, employer: employer)
     internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
     internship_agreement   = create(:internship_agreement, :created_by_system,
@@ -151,7 +151,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert ability.can?(:manage, Group)
     assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
     assert ability.can?(:index, Acl::Reporting.new(user: god, params: {}))
-    refute ability.can?(:apply, create(:weekly_internship_offer))
+    refute ability.can?(:apply, create(:internship_offer))
     refute ability.can?(:apply, create(:api_internship_offer))
     assert ability.can?(:new, InternshipAgreement)
     assert ability.can?(:see_reporting_dashboard, User)
@@ -187,7 +187,7 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:index, Acl::Reporting.new(user: statistician, params: {}))
     assert(ability.can?(:index, Acl::Reporting, &:allowed?))
 
-    refute ability.can?(:apply, create(:weekly_internship_offer))
+    refute ability.can?(:apply, create(:internship_offer))
     refute ability.can?(:apply, create(:api_internship_offer))
 
     assert ability.can?(:see_reporting_dashboard, User)
@@ -235,7 +235,7 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:index, Acl::Reporting.new(user: statistician, params: {}))
     assert(ability.can?(:index, Acl::Reporting, &:allowed?))
 
-    refute ability.can?(:apply, create(:weekly_internship_offer))
+    refute ability.can?(:apply, create(:internship_offer))
     refute ability.can?(:apply, create(:api_internship_offer))
 
     assert ability.can?(:see_reporting_dashboard, User)
@@ -278,13 +278,13 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:destroy, User)
     assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
 
-    offer = create(:weekly_internship_offer,
+    offer = create(:internship_offer,
        group_id: ministry.id,
        employer: ministry_statistician,
        is_public: true
     )
 
-    refute ability.can?(:apply, create(:weekly_internship_offer))
+    refute ability.can?(:apply, create(:internship_offer))
     refute ability.can?(:apply, create(:api_internship_offer))
 
     assert ability.can?(:see_reporting_dashboard, User)

@@ -222,7 +222,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'transition from submited to approved create internship_agreement for student in troisieme_generale.class_room' do
-    internship_offer = create(:weekly_internship_offer)
+    internship_offer = create(:internship_offer)
     school = create(:school, :with_school_manager, weeks: internship_offer.weeks)
     class_room = create(:class_room,  school: school)
     student = create(:student, class_room: class_room)
@@ -360,8 +360,8 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   test 'transition via signed! cancel internship_application.student other applications on same week' do
     weeks = [weeks(:week_2019_1), weeks(:week_2019_2)]
     student = create(:student)
-    internship_offer = create(:weekly_internship_offer, weeks: weeks)
-    internship_offer_2 = create(:weekly_internship_offer, weeks: weeks)
+    internship_offer = create(:internship_offer, weeks: weeks)
+    internship_offer_2 = create(:internship_offer, weeks: weeks)
     internship_application_to_be_canceled_by_employer = create(
       :weekly_internship_application, :approved,
       internship_offer: internship_offer,

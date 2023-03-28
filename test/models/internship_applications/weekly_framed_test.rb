@@ -8,7 +8,7 @@ module InternshipApplications
       max_candidates = 1
       internship_offer_week_1 = build(:internship_offer_week, blocked_applications_count: 1,
                                                               week: Week.find_by(number: 1, year: 2019))
-      internship_offer = create(:weekly_internship_offer, max_candidates: max_candidates,
+      internship_offer = create(:internship_offer, max_candidates: max_candidates,
                                                           internship_offer_weeks: [
                                                             internship_offer_week_1
                                                           ])
@@ -26,7 +26,7 @@ module InternshipApplications
                                                               week: Week.find_by(number: 2, year: 2019))
       internship_offer_week_3 = build(:internship_offer_week, blocked_applications_count: 1,
                                                               week: Week.find_by(number: 3, year: 2019))
-      internship_offer = create(:weekly_internship_offer, max_candidates: max_candidates,
+      internship_offer = create(:internship_offer, max_candidates: max_candidates,
                                                           internship_offer_weeks: [
                                                             internship_offer_week_1,
                                                             internship_offer_week_2,
@@ -42,7 +42,7 @@ module InternshipApplications
     test 'is not applicable twice on same week by same student' do
       weeks = [Week.find_by(number: 1, year: 2019)]
       student = create(:student)
-      internship_offer = create(:weekly_internship_offer, weeks: weeks)
+      internship_offer = create(:internship_offer, weeks: weeks)
       internship_application_1 = create(:weekly_internship_application, student: student,
                                                                         internship_offer: internship_offer,
                                                                         week: internship_offer.internship_offer_weeks.first.week)
@@ -56,7 +56,7 @@ module InternshipApplications
     test 'is not applicable twice on different week by same student' do
       weeks = [Week.find_by(number: 1, year: 2019), Week.find_by(number: 2, year: 2019)]
       student = create(:student)
-      internship_offer = create(:weekly_internship_offer, weeks: weeks)
+      internship_offer = create(:internship_offer, weeks: weeks)
       internship_application_1 = create(:weekly_internship_application,
                                         internship_offer: internship_offer,
                                         student: student,
@@ -70,7 +70,7 @@ module InternshipApplications
     end
 
     test 'application updates remaining_seats_count along with approved applications' do
-      offer = create(:weekly_internship_offer)
+      offer = create(:internship_offer)
       assert_equal offer.max_candidates, offer.remaining_seats_count
       application = create(:weekly_internship_application, internship_offer: offer)
       assert_equal offer.max_candidates, offer.remaining_seats_count
@@ -87,7 +87,7 @@ module InternshipApplications
     end
 
     test 'application updates offer favorites along with approved applications' do
-      offer = create(:weekly_internship_offer, max_candidates: 1)
+      offer = create(:internship_offer, max_candidates: 1)
       favorite = create(:favorite, internship_offer: offer)
       assert_equal Favorite.count, 1
       other_favorite = create(:favorite)
@@ -102,7 +102,7 @@ module InternshipApplications
     end
 
     test 'application updates old offer favorites along with approved applications' do
-      old_offer = create(:weekly_internship_offer, last_date: 7.days.ago)
+      old_offer = create(:internship_offer, last_date: 7.days.ago)
       favorite = create(:favorite, internship_offer: old_offer)
       assert_equal Favorite.count, 1
       other_favorite = create(:favorite)

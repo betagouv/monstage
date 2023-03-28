@@ -89,8 +89,7 @@ RailsAdmin.config do |config|
                               Group
                               User
                               InternshipOfferKeyword
-                              InternshipOffers::WeeklyFramed
-                              InternshipOffers::FreeDate
+                              InternshipOffer
                               InternshipOffers::Api
                               InternshipApplication
                               InternshipAgreement

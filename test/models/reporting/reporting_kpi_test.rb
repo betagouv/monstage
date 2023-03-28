@@ -10,7 +10,7 @@ class ReportingKpiTest < ActiveSupport::TestCase
       three_next_weeks = next_weeks.first(3).to_a
       two_next_weeeks = next_weeks.first(2).to_a
       create(
-        :weekly_internship_offer,
+        :internship_offer,
         :with_private_employer_group,
         :unpublished,
         max_candidates: 3,
@@ -18,12 +18,12 @@ class ReportingKpiTest < ActiveSupport::TestCase
       )
 
       internship_offer = create(
-        :weekly_internship_offer, #public by default
+        :internship_offer, #public by default
         max_candidates: 2,
         weeks: two_next_weeeks
       )
       internship_offer = create(
-        :weekly_internship_offer,
+        :internship_offer,
         :with_private_employer_group,
         max_candidates: 3,
         weeks: three_next_weeks

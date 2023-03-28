@@ -2,7 +2,7 @@ module Services
   class AgreementsAPosteriori
     def perform
       ActiveRecord::Base.transaction do
-        InternshipOffers::WeeklyFramed.where(employer: employer)
+        InternshipOffer.where(employer: employer)
                                       .in_the_future
                                       .each do |offer|
 

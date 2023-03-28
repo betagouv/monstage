@@ -34,7 +34,7 @@ module Presenters
       end
 
       test '.internship_location' do
-        internship_offer = create(:weekly_internship_offer, street: '7 rue du puits',
+        internship_offer = create(:internship_offer, street: '7 rue du puits',
                                                            city: 'Coye la foret',
                                                            zipcode: '60580')
         create(:weekly_internship_application,
@@ -53,7 +53,7 @@ module Presenters
         }
         StudentStats::Tutor.new(**tutor_kwargs)
         internship_offer = create(
-          :weekly_internship_offer,
+          :internship_offer,
           **tutor_kwargs)
         weekly_internship_application = create(
           :weekly_internship_application,

@@ -7,7 +7,7 @@ namespace :retrofit do
     PrettyConsole.say_in_green "Starting"
     counter = 0
     week_ids = ((Week.current.id + 1)..(Week.current.id.to_i + 33)).to_a
-    employer_internship_offer_ids = InternshipOffers::WeeklyFramed.kept
+    employer_internship_offer_ids = InternshipOffer.kept
                                                                   .published
                                                                   .where(employer_id: User.employers.ids)
     ias = InternshipApplications::WeeklyFramed.approved

@@ -14,7 +14,7 @@ namespace :offers do
       csv << [].concat(targeted_fields, ['environment'])
 
       fetch_weeks.each do |week|
-        weekly_framed = InternshipOffers::WeeklyFramed.kept
+        weekly_framed = InternshipOffer.kept
                                                       .published
                                                       .joins(:internship_offer_weeks)
                                                       .where({internship_offer_weeks: {week_id: week.id}})

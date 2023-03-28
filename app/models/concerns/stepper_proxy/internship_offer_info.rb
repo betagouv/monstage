@@ -53,12 +53,6 @@ module StepperProxy
       end
 
       def enough_weeks
-        weekly_framed_types = [
-          'InternshipOfferInfos::WeeklyFramed',
-          'InternshipOffers::WeeklyFramed'
-        ]
-        return unless type.in? weekly_framed_types
-
         weeks = self.try(:internship_offer_weeks) || self&.internship_offer_info_weeks
         return if weeks.size.zero?
         return if (max_candidates / max_students_per_group - weeks.size) <= 0
