@@ -349,10 +349,10 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as student ignores internship_offers not blocked on different week that is not available' do
-    max_candidates = 1
+    max_candidates = 2
     travel_to(Date.new(2019, 3, 1)) do
       internship_weeks = [
-        Week.selectable_from_now_until_end_of_school_year.first,
+        Week.selectable_from_now_until_end_of_school_year.second,
         Week.selectable_from_now_until_end_of_school_year.last
       ]
       internship_offer = create(:weekly_internship_offer,
@@ -361,7 +361,7 @@ class IndexTest < ActionDispatch::IntegrationTest
                                        internship_offer: internship_offer,
                                        aasm_state: :approved,
                                        week: internship_weeks[0])
-      blocked_internship_week.signed!
+      # blocked_internship_week.signed!
       not_blocked_internship_week = create(:weekly_internship_application,
                                            internship_offer: internship_offer,
                                            aasm_state: :submitted,

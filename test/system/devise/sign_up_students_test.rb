@@ -203,23 +203,13 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     visit internship_offer_path(offer.id)
 
-
     first(:link, 'Postuler').click
-    # below : 'Pas encore de compte ? Inscrivez-vous'
-    # within('.onboarding-card.onboarding-card-sm') do
-    #   click_link 'Me connecter'
-    # end
-    # sign_in as Student
     find('label', text: 'Par téléphone').click
     execute_script("document.getElementById('phone-input').value = '#{student.phone}';")
     find("input[name='user[password]']").fill_in with: password
     find("input[type='submit'][value='Se connecter']").click
     page.find('h1', text: 'Votre candidature')
-    # redirected page is a show of targeted internship_offer
     assert_equal "/internship_offers/#{offer.id}/internship_applications/new", current_path
-    # targeted offer id at student's level is now empty
-    # assert_nil student.reload.targeted_offer_id,
-    #            'targeted offer should have been reset'
   end
 
   test 'Student with phone subscription with former internship_offer choice leads to offer page' do

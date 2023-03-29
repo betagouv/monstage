@@ -12,6 +12,8 @@ module InternshipOffers
 
       has_many :weeks, through: :internship_offer_weeks
 
+      attr_accessor :republish
+
       scope :ignore_already_applied, lambda { |user:|
         where(type: ['InternshipOffers::WeeklyFramed', 'InternshipOffers::Api'])
           .where.not(id: InternshipApplication.where(user_id: user.id).map(&:internship_offer_id))
@@ -84,21 +86,6 @@ module InternshipOffers
                                                   .next_year
                                                   .beginning_of_period
         last_date > next_year_first_date
-      end
-
-      def missing_weeks_in_the_future?
-        current_week_id = Week.current.id
-        internship_offer_weeks.map(&:week_id).none? do |week_id|
-          week_id.to_i > current_week_id.to_i + 1
-        end
-      end
-
-      def missing_seats?
-        remaining_seats_count < 1
-      end
-
-      def requires_update?
-        missing_weeks_in_the_future? || missing_seats?
       end
 
       def weeks_count

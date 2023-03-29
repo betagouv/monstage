@@ -133,7 +133,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   test "Employer can edit internship offer when it's missing weeks" do
     employer = create(:employer)
     current_internship_offer = nil
-    travel_to(Date.new(2019, 9,1)) do
+    travel_to(Date.new(2019, 10,1)) do
       older_weeks = [Week.selectable_from_now_until_end_of_school_year.first]
       current_internship_offer = create(
         :weekly_internship_offer,
@@ -149,10 +149,9 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       find(".test-edit-button").click
       find('h1', text: "Modifier une offre")
       click_button('Modifier l\'offre')
-      assert_selector(
-        "#alert-text",
-        text: "Vous devez ajouter des semaines de stage dans le futur"
-      )
+      find("#error_explanation p", text: "Une erreur à corriger :")
+      find("#error_explanation li label", text: "Vous devez sélectionner au moins une semaine dans le futur")
+
       within(".custom-control-checkbox-list") do
         find("label[for='internship_offer_week_ids_142_checkbox']").click
       end
@@ -222,7 +221,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
         select('2019/2020', from: "Années scolaires")
         find('.active', text: "Passées")
         assert_equal 2, all(".test-internship-offer").count
-        
+
         select('2020/2021', from: "Années scolaires")
         sleep 0.5
         find('.active', text: "Passées")

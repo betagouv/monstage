@@ -81,6 +81,8 @@ module InternshipOffers
       end
     end
 
+    attr_accessor :republish
+
     validates :street,
               :city,
               :tutor_name,
@@ -145,6 +147,15 @@ module InternshipOffers
       InternshipApplication.where(internship_offer_id: id)
                            .where(aasm_state: ['approved', 'convention_signed'])
                            .count
+    end
+
+    def self.archive_older_internship_offers
+      to_be_unpublished = published.where('last_date < ?', Time.now.utc).to_a
+      to_be_unpublished += published.where('remaining_seats_count < 1').to_a
+      to_be_unpublished.uniq.each do |offer|
+        print '.'
+        offer.unpublish!
+      end
     end
   end
 end

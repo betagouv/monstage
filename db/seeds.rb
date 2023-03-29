@@ -246,13 +246,13 @@ def populate_students
   with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: find_default_school_during_test, class_room: ClassRoom.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   # sans classe
   with_class_name_for_defaults(Users::Student.new(email: 'enzo@ms3e.fr', password: 'review', first_name: 'Enzo', last_name: 'Clerc', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 3.days.ago)).save!
-  
+
   5.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_1)).save! }
-  
+
   2.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_2)).save! }
   with_class_name_for_defaults(Users::Student.new(email: 'louis@ms3e.fr', password: 'review', first_name: 'Louis', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'np', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'leon@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Luanco', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
-  
+
   2.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_3)).save! }
   with_class_name_for_defaults(Users::Student.new(email: 'raphaelle@ms3e.fr', password: 'review',first_name: 'Raphaëlle', last_name: 'Mesnard',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Chotin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
@@ -280,7 +280,7 @@ end
 def populate_internship_offers
   # 3eme_generale: public sector
   weeks = Week.selectable_on_school_year
-  InternshipOffers::WeeklyFramed.create!(
+  iow = InternshipOffers::WeeklyFramed.new(
     employer: Users::Employer.first,
     siret: siret,
     max_candidates: 5,
@@ -305,8 +305,12 @@ def populate_internship_offers
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: Group.is_paqte.first.name
   )
+  iow.save(validate: false)
+  iow.unpublish! if iow.check_missing_seats_or_weeks
+
+
   weeks = [].concat(Week.selectable_on_school_year[0..1], Week.selectable_on_school_year[3..5])
-  InternshipOffers::WeeklyFramed.create!(
+  iow = InternshipOffers::WeeklyFramed.new(
     employer: Users::Employer.first,
     siret: siret,
     max_candidates: 5,
@@ -331,10 +335,12 @@ def populate_internship_offers
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: Group.is_paqte.first.name
   )
+  iow.save(validate: false)
+  iow.unpublish! if iow.check_missing_seats_or_weeks
 
     # 3eme generale public
   weeks =  Week.selectable_on_school_year
-  InternshipOffers::WeeklyFramed.create!(
+  iow = InternshipOffers::WeeklyFramed.new(
     max_candidates: 5,
     max_students_per_group: 5,
     employer: Users::Employer.first,
@@ -359,7 +365,10 @@ def populate_internship_offers
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: Group.is_public.last.name
   )
-  InternshipOffers::WeeklyFramed.create!(
+  iow.save(validate: false)
+  iow.unpublish! if iow.check_missing_seats_or_weeks
+
+  iow = InternshipOffers::WeeklyFramed.new(
     max_candidates: 5,
     max_students_per_group: 5,
     employer: Users::Employer.first,
@@ -384,8 +393,10 @@ def populate_internship_offers
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
     employer_name: 'Du temps pour moi'
   )
+  iow.save(validate: false)
+  iow.unpublish! if iow.check_missing_seats_or_weeks
   # dépubliée
-  InternshipOffers::WeeklyFramed.create!(
+  iow = InternshipOffers::WeeklyFramed.new(
     employer: Users::Employer.first,
     siret: siret,
     weeks: weeks,
@@ -410,13 +421,12 @@ def populate_internship_offers
     max_candidates: 7,
     max_students_per_group: 7
   )
-  io = InternshipOffer.last
-  io.published_at = nil
-  io.save
+  iow.save(validate: false)
+  iow.unpublish!
 
   # 3eme_generale-2019:
   weeks =  Week.weeks_of_school_year(school_year: SchoolYear::Base::YEAR_START)
-  InternshipOffers::WeeklyFramed.create!(
+  iow = InternshipOffers::WeeklyFramed.new(
     employer: Users::Employer.first,
     siret: siret,
     weeks: weeks,
@@ -439,9 +449,11 @@ def populate_internship_offers
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: 'Editegis'
   )
+  iow.save(validate: false)
+  iow.unpublish! if iow.check_missing_seats_or_weeks
   # 3eme generale API
   weeks =  Week.selectable_on_school_year
-  InternshipOffers::Api.create!(
+  iow = InternshipOffers::Api.new(
     employer: Users::Operator.first,
     siret: siret,
     weeks: weeks,
@@ -466,9 +478,11 @@ def populate_internship_offers
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: 'IBM'
   )
+  iow.save(validate: false)
+  iow.unpublish! if iow.check_missing_seats_or_weeks
   # 3eme generale API
   weeks = Week.of_previous_school_year
-  InternshipOffers::Api.create!(
+  iow = InternshipOffers::Api.new(
     employer: Users::Operator.first,
     siret: siret,
     weeks: weeks,
@@ -493,6 +507,8 @@ def populate_internship_offers
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
     employer_name: 'Ministère de l\'Education Nationale'
   )
+  iow.save(validate: false)
+  iow.unpublish! if iow.check_missing_seats_or_weeks
 
   # 3eme generale multi-line
   multiline_description = <<-MULTI_LINE
@@ -501,7 +517,7 @@ def populate_internship_offers
 - Immersion au sein d’un bureau de douane (gestion des procédures, déclarations en douane, dédouanement, contrôles des déclarations et des marchandises).
 MULTI_LINE
   weeks = Week.weeks_of_school_year(school_year: SchoolYear::Base::YEAR_START)
-  InternshipOffers::WeeklyFramed.create!(
+  iow = InternshipOffers::WeeklyFramed.new(
     max_candidates: 5,
     max_students_per_group: 5,
     employer: Users::Employer.first,
@@ -525,13 +541,15 @@ MULTI_LINE
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: 'Douanes Assistance Corp.'
   )
+  iow.save(validate: false)
+  iow.unpublish! if iow.check_missing_seats_or_weeks
   # 3eme generale multi-line
   multiline_description = <<-MULTI_LINE
 - Présentation des services de la succursale MetaBoutShop
 - Présentation des principes fondamentaux du métier.
 - Immersion au sein d’une équipe de gestionnaire de la boutique. Proposition de gestion de portefeuille de boutiques et de stands fictifs en fin de stage, avec les conseils du tuteur'.
 MULTI_LINE
-  InternshipOffers::WeeklyFramed.create!(
+  iow = InternshipOffers::WeeklyFramed.new(
     employer: Users::Employer.first,
     max_candidates: 5,
     max_students_per_group: 5,
@@ -554,6 +572,8 @@ MULTI_LINE
     coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
     employer_name: 'MetaBoutShop'
   )
+  iow.save(validate: false)
+  iow.unpublish! if iow.check_missing_seats_or_weeks
   # 3eme generale multi-line
   multiline_description = <<-MULTI_LINE
 - Présentation des services de la direction régionale de la banque Acme Corp. (banque de dépôt).
@@ -561,7 +581,7 @@ MULTI_LINE
 - Immersion au sein d’une équipe d'admiistrateurs de comptes de la banque. Proposition de gestion de portefeuille de clients en fin de stage, avec les conseils du tuteur'.
 MULTI_LINE
   weeks = Week.weeks_of_school_year(school_year: (SchoolYear::Base::YEAR_START + 1))
-  acme = InternshipOffers::WeeklyFramed.create!(
+  acme = InternshipOffers::WeeklyFramed.new(
     max_candidates: 5,
     max_students_per_group: 5,
     employer: Users::Employer.first,
@@ -584,6 +604,8 @@ MULTI_LINE
     coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
     employer_name: 'Oyonnax Corp.'
   )
+  acme.save(validate: false)
+  acme.unpublish! if acme.check_missing_seats_or_weeks
 end
 
 def find_default_school_during_test

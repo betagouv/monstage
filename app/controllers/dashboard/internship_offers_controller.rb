@@ -4,7 +4,6 @@ module Dashboard
   class InternshipOffersController < ApplicationController
     before_action :authenticate_user!
     before_action :set_internship_offer, only: %i[edit update destroy republish]
-    before_action :check_weeks_in_the_future, only: %i[update  create]
     helper_method :order_direction
 
     def index
@@ -16,6 +15,8 @@ module Dashboard
 
     # duplicate submit
     def create
+      authorize! :create, InternshipOffer
+      # render :edit, status: :bad_request if params[:internship_offer].blank?
       internship_offer_builder.create(params: internship_offer_params) do |on|
         on.success do |created_internship_offer|
           success_message = if params[:commit] == 'Renouveler l\'offre'
@@ -41,29 +42,26 @@ module Dashboard
 
     def edit
       authorize! :update, @internship_offer
+      @republish = true if params[:republish]
       @available_weeks = @internship_offer.available_weeks_when_editing
     end
 
     def republish
-      #temporary for republishing internship_offer
-      raise 'faulty implementation' unless @internship_offer.missing_seats? || @internship_offer.missing_weeks_in_the_future? || @internship_offer.published?
-      #temporary for republishing internship_offer
-
-      @internship_offer.publish!
-
       anchor = "max_candidates_fields"
-      warning = 'Votre annonce a bien été republiée, mais il faut ajouter des places et des semaines de stage'
-      if @internship_offer.missing_seats? && !@internship_offer.missing_weeks_in_the_future?
-        warning = 'Votre annonce a bien été republiée, mais il faut ajouter des places de stage'
-      elsif !@internship_offer.missing_seats? && @internship_offer.missing_weeks_in_the_future?
+      warning = "Votre annonce n'est pas encore republiée, car il faut ajouter des places et des semaines de stage"
+
+      if (@internship_offer.remaining_seats_count.zero?) && !@internship_offer.missing_weeks_info?
+        warning = "Votre annonce n'est pas encore republiée, car il faut ajouter des places de stage"
+      elsif (@internship_offer.remaining_seats_count > 0) && @internship_offer.missing_weeks_info?
         anchor = "weeks_container"
-        warning = 'Votre annonce a bien été republiée, mais il faut ajouter des semaines de stage'
+        warning = "Votre annonce n'est pas encore republiée, car il faut ajouter des semaines de stage"
       end
-      redirect_to edit_dashboard_internship_offer_path(@internship_offer, anchor: anchor),
+      redirect_to edit_dashboard_internship_offer_path(@internship_offer, anchor: anchor, republish: true),
                   flash: { warning: warning}
     end
 
     def update
+      authorize! :update, @internship_offer
       internship_offer_builder.update(instance: @internship_offer,
                                       params: internship_offer_params) do |on|
 
@@ -181,29 +179,12 @@ module Dashboard
                     :max_students_per_group, :tutor_name, :tutor_phone, :tutor_role,
                     :tutor_email, :employer_website, :employer_name, :street,
                     :zipcode, :city, :department, :region, :academy, :renewed,
-                    :is_public, :group_id, :published_at, :type,
+                    :is_public, :group_id, :published_at, :republish, :type,
                     :employer_id, :employer_type, :school_id, :verb,
-                    :employer_description_rich_text, :siret, :employer_manual_enter,
-                    :weekly_lunch_break, coordinates: {}, week_ids: [],
+                    :employer_description_rich_text, :siret, :user_update,
+                    :employer_manual_enter, :weekly_lunch_break,
+                    coordinates: {}, week_ids: [],
                     new_daily_hours: {}, daily_lunch_break: {}, weekly_hours:[])
-    end
-
-    def missing_weeks_in_the_future?
-      if internship_offer_params[:week_ids].nil?
-        return @internship_offer.last_date < Date.today + 7.days
-      end
-
-      current_week_id = Week.current.id
-      internship_offer_params[:week_ids].all? do |week_id|
-        week_id.to_i < current_week_id.to_i + 1
-      end
-    end
-
-    def check_weeks_in_the_future
-      return unless missing_weeks_in_the_future? && @internship_offer.missing_weeks_in_the_future?
-
-      redirect_to edit_dashboard_internship_offer_path(@internship_offer),
-                  flash: { warning: 'Vous devez ajouter des semaines de stage dans le futur' }
     end
 
     def set_internship_offer

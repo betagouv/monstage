@@ -191,54 +191,62 @@ module Dashboard::InternshipOffers
         follow_redirect!
         assert_select(
           "span#alert-text",
-          text: "Votre annonce a bien été republiée, mais il faut ajouter des places de stage")
-        assert internship_offer.reload.published?
+          text: "Votre annonce n'est pas encore republiée, car il faut ajouter des places de stage")
+        refute internship_offer.reload.published?
       end
     end
 
     test 'PATCH #republish as employer with missing weeks' do
-      employer = create(:employer)
-      internship_offer = create(:weekly_internship_offer,
-                                employer: employer,
-                                weeks: [Week.current])
-      internship_offer.update(published_at: nil)
+      travel_to Date.new(2019,10,1) do
+        employer = create(:employer)
+        internship_offer = create(:weekly_internship_offer,
+                                  employer: employer,
+                                  weeks: [Week.current])
+        internship_offer.update(published_at: nil)
 
-      sign_in(employer)
-      patch republish_dashboard_internship_offer_path(
-        internship_offer.to_param
-      )
-      follow_redirect!
-      assert_select(
-        "span#alert-text",
-        text: "Votre annonce a bien été republiée, mais il faut ajouter des semaines de stage"
-      )
-      assert internship_offer.reload.published?
+        sign_in(employer)
+        patch republish_dashboard_internship_offer_path(
+          internship_offer.to_param
+        )
+        follow_redirect!
+        assert_select(
+          "span#alert-text",
+          text: "Votre annonce n'est pas encore republiée, car il faut ajouter des semaines de stage"
+        )
+        refute internship_offer.reload.published?
+      end
     end
 
     test 'PATCH #republish as employer with missing weeks and seats' do
-       employer = create(:employer)
-      internship_offer = create(:weekly_internship_offer,
-                                employer: employer,
-                                max_candidates: 1,
-                                weeks: [Week.current],
-                                max_students_per_group: 1)
-      internship_application = create(:weekly_internship_application,
-                                      :submitted,
-                                      internship_offer: internship_offer)
-      internship_application.approve!
-      assert_equal 0, internship_offer.reload.remaining_seats_count
-      internship_offer.update(published_at: nil)
+      weeks = []
+      travel_to Date.new(2019, 9, 1) do
+        weeks = Week.selectable_from_now_until_end_of_school_year.first(1)
+      end
+      travel_to Date.new(2019, 10, 1) do
+        employer = create(:employer)
+        internship_offer = create(:weekly_internship_offer,
+                                  employer: employer,
+                                  max_candidates: 1,
+                                  weeks: weeks,
+                                  max_students_per_group: 1)
+        internship_application = create(:weekly_internship_application,
+                                        :submitted,
+                                        internship_offer: internship_offer)
+        internship_application.approve!
+        assert_equal 0, internship_offer.reload.remaining_seats_count
+        refute internship_offer.published? #self.reload.published_at.nil?
 
-      sign_in(employer)
-      patch republish_dashboard_internship_offer_path(
-        internship_offer.to_param
-      )
-      follow_redirect!
-      assert_select(
-        "span#alert-text",
-        text: "Votre annonce a bien été republiée, mais il faut ajouter des places et des semaines de stage"
-      )
-      assert internship_offer.reload.published?
+        sign_in(employer)
+        patch republish_dashboard_internship_offer_path(
+          internship_offer.to_param
+        )
+        follow_redirect!
+        assert_select(
+          "span#alert-text",
+          text: "Votre annonce n'est pas encore republiée, car il faut ajouter des places et des semaines de stage"
+        )
+        refute internship_offer.reload.published?
+      end
     end
   end
 end

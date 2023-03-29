@@ -46,15 +46,17 @@ module Dashboard::Stepper
     end
 
     test 'POST #create as visitor redirects to internship_offers' do
-      employer = create(:employer)
-      internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
-      organisation = create(:organisation, employer: employer)
-      post(
-        dashboard_stepper_tutors_path(organisation_id: organisation.id,
-                                       internship_offer_info_id: internship_offer_info.id),
-        params: {}
-      )
-      assert_redirected_to user_session_path
+      travel_to Date.new(2019, 9, 1) do
+        employer = create(:employer)
+        internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
+        organisation = create(:organisation, employer: employer)
+        post(
+          dashboard_stepper_tutors_path(organisation_id: organisation.id,
+                                        internship_offer_info_id: internship_offer_info.id),
+          params: {}
+        )
+        assert_redirected_to user_session_path
+      end
     end
 
     test 'POST #create/InternshipOffers::WeeklyFramed as employer creates the post' do

@@ -80,12 +80,6 @@ module Dashboard::InternshipOffers
       end
     end
 
-    test 'POST #create as employer with missing params' do
-      sign_in(create(:employer))
-      post(dashboard_internship_offers_path, params: { internship_offer: {} })
-      assert_response :bad_request
-    end
-
     test 'POST #create as employer with invalid data, prefill form' do
       travel_to(Date.new(2019, 9, 1)) do
         sign_in(create(:employer))

@@ -5,6 +5,7 @@ module StepperProxy
     extend ActiveSupport::Concern
 
     included do
+      attr_accessor :republish, :user_update
       after_initialize :init
 
       # Validations
@@ -20,6 +21,8 @@ module StepperProxy
                                 message: "Le nombre maximal d'élèves par groupe ne peut pas dépasser le nombre maximal d'élèves attendus dans l'année" }
       validates :description, presence: true,
                               length: { maximum: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT }
+      validate :check_missing_seats_or_weeks, unless: :from_api? , on: :create
+      validate :check_missing_seats_or_weeks, if: :user_update?, on: :update
 
       validate :enough_weeks
 
@@ -97,6 +100,48 @@ module StepperProxy
        Week.selectable_on_school_year_when_editing].map(&:to_a)
                                                    .flatten
                                                    .uniq
+    end
+
+    def weeks_class
+      respond_to?(:internship_offer_weeks) ? :internship_offer_weeks : :internship_offer_info_weeks
+    end
+
+    def missing_weeks_info?
+      self.send(weeks_class).map(&:week_id).all? do |week_id|
+        week_id < Week.current.id.to_i + 1
+      end
+    end
+
+    def missing_weeks_in_the_future
+      # return false if is_a?(InternshipOffers::Api)
+      return false if published_at.nil? && republish.nil?
+
+      if missing_weeks_info?
+        errors.add(weeks_class, 'Vous devez sélectionner au moins une semaine dans le futur')
+      end
+    end
+
+    def check_for_missing_seats
+      if remaining_seats_count.zero?
+        errors.add(:max_candidates, 'Augmentez Le nombre de places disponibles pour accueillir des élèves')
+      end
+    end
+
+    def check_missing_seats_or_weeks
+      return false if self.is_a?(::InternshipOfferInfo)
+      return false unless published?
+
+      missing_weeks_in_the_future && check_for_missing_seats
+    end
+
+    def requires_update_at_toggle_time?
+      return false if published?
+
+      missing_weeks_info? || remaining_seats_count.zero?
+    end
+
+    def user_update?
+      user_update == "true"
     end
   end
 end

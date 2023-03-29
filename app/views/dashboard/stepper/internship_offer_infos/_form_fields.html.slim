@@ -7,7 +7,9 @@
 
       = form.rg2a_explain_required_asterisk
       = form.hidden_field :type, data: { :"internship-offer-infos-target" => "type" }
-
+      - if @republish
+        = form.hidden_field :republish, value: @republish
+      = form.hidden_field :user_update, value: true
       .form-group
         = form.label :title, class: 'fr-label' do
           = "Intitulé du stage"
@@ -44,7 +46,7 @@
                               aria: { labelledby: 'label_internship_offer_info_description_rich_text' }
         small.form-text data-maxlength-input-target="trixElementCharCount"
 
-        - if resource.missing_seats? && edit_mode
+        - if resource.remaining_seats_count.zero? && edit_mode
           #max_candidates_fields.fr-mb-2w
             .fr-alert.fr-alert--info
               h3.fr-alert__title Ajoutez des places pour ce stage
@@ -120,7 +122,7 @@
                                     resourceName: form.object_name,
                                     selectClassRoom: false,
                                     existingSchool: resource.school.as_json})
-      - if resource.missing_weeks_in_the_future? && edit_mode
+      - if resource.missing_weeks_info? && edit_mode
         #weeks_container.fr-mb-2w
           .fr-alert.fr-alert--info
             h3.fr-alert__title Ajoutez des semaines aux précédentes
