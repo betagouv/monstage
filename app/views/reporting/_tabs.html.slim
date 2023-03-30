@@ -19,7 +19,4 @@ ul.fr-tabs__list aria-label=("stats-tab") role="tablist"
     = link_to reporting_employers_internship_offers_path(default_reporting_url_options(current_user, dimension: 'group')) do
       li role="presentation"
         button#employers.fr-tabs__tab aria-controls="employers-panel" aria-selected="#{current_page?(reporting_employers_internship_offers_path)}" role="tab" tabindex="0" Entreprises
-  - if current_user.is_a?(Users::Operator) && can?(:import_data, Acl::Reporting) && current_user.operator.airtable_reporting_enabled && current_user.operator.airtable_link
-    = link_to reporting_import_data_path do
-      li role="presentation"
-        button#import.fr-tabs__tab aria-controls="import-panel" aria-selected="#{current_page?(reporting_import_data_path)}" role="tab" tabindex="0" Importer des données
+ 

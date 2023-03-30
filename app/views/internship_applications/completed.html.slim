@@ -1,50 +1,51 @@
 = render 'layouts/breadcrumb', links: [['/', 'Recherche de stage'], [internship_offer_path(@internship_offer), @internship_offer.title], ['', 'Je Postule']]
 
-.success-banner.fr-mt-8w
-  .row.fr-mx-5w
-    .col-3
-      = image_tag asset_pack_path("media/images/internship_applications/#{@internship_application.student.gender == 'f' ? 'girl' : 'boy'}.svg"), alt: '', class: 'image-character'
-    .col-9.fr-pl-4w.d-flex.align-items-center
-      .bloc
-        .h1
-          h1 Félicitations !
-        .fr-text--lead.text-blue-france Votre candidature vient d'être transmise à l'entreprise.
+div.fr-container style="overflow: hidden;"
+  .success-banner.fr-mt-8w
+    .row.fr-mx-5w.no-xs-margin
+      .col-12.col-sm-3.fr-mb-4w.fr-mb-sm-0
+        = image_tag asset_pack_path("media/images/internship_applications/#{@internship_application.student.gender == 'f' ? 'girl' : 'boy'}.svg"), alt: '', class: 'image-character'
+      .col-12.col-sm-9.fr-pl-4w.d-flex.align-items-center.pl-xs-1
+        .bloc
+          .h1.fr-pl-2w.ml-xs-0
+            h1 Félicitations !
+          .fr-text--lead.text-blue-france Votre candidature vient d'être transmise à l'entreprise.
 
 
-.competitors-bloc.fr-my-8w
-  .row.fr-mx-1w
-    .col-1
-      h2.h1.display-1
-        = @internship_application.internship_offer.total_applications_count
-    .col-11.fr-pl-8w.d-flex.align-items-center
-      .bloc
-        p.main-text
-          | C’est le nombre d’élèves qui ont déja candidaté pour cette offre.
-        p
-          = "Alors afin d’augmenter vos chances d’obtenir un stage, nous vous avons \
-          selectionné ci dessous d’autres offres de stages similaires ou proches du stage \
-          #{@internship_application.internship_offer.title}"
+  .competitors-bloc.fr-my-8w
+    .row.fr-mx-1w
+      .col-12.col-sm-1.d-flex.align-items-center.justify-content-center
+        h2.h1.display-1
+          = @internship_application.internship_offer.total_applications_count
+      .col-12.col-sm-11.fr-pl-8w.d-flex.align-items-center.no-xs-padding
+        .bloc
+          p.main-text
+            | C’est le nombre d’élèves qui ont déja candidaté pour cette offre.
+          p
+            = "Alors afin d’augmenter vos chances d’obtenir un stage, nous vous avons \
+            selectionné ci dessous d’autres offres de stages similaires ou proches du stage \
+            #{@internship_application.internship_offer.title}"
 
-.suggestion-bloc
-  .row
-    - @suggested_offers.each do |internship_offer|
-      .col-4.fr-my-2w
-        .fr-card.fr-enlarge-link data-test-id="#{internship_offer.id}"
-          .fr-card__body
-            .fr-card__content
-              h4.fr-card__title
-                = link_to internship_offer.title, internship_offer_path(internship_offer), class: "row-link text-dark"
-              p.fr-card__detail
-                = internship_offer.employer_name
-              .fr-card__desc
-                p.blue-france
-                  = internship_offer.city.capitalize
-                .blue-france.fr-text--bold.my-2
-                  = "Du #{I18n.localize(internship_offer.first_date, format: :human_mm_dd_yyyy)} au #{I18n.localize(internship_offer.last_date, format: :human_mm_dd_yyyy)}"
-          .fr-card__header
-            .fr-card__img
-              = image_tag asset_pack_path("media/images/sectors/#{internship_offer.sector.cover}"), alt: '', class: 'fr-responsive-img'
-            ul.fr-badges-group
-              li
-                .fr-tag
-                  = internship_offer.sector.name
+  .suggestion-bloc
+    .row
+      - @suggested_offers.each do |internship_offer|
+        .col-12.col-sm-4.fr-my-2w
+          .fr-card.fr-enlarge-link data-test-id="#{internship_offer.id}"
+            .fr-card__body
+              .fr-card__content
+                h4.fr-card__title
+                  = link_to internship_offer.title, internship_offer_path(internship_offer), class: "row-link text-dark"
+                p.fr-card__detail
+                  = internship_offer.employer_name
+                .fr-card__desc
+                  p.blue-france
+                    = internship_offer.city.capitalize
+                  .blue-france.fr-text--bold.my-2
+                    = "Du #{I18n.localize(internship_offer.first_date, format: :human_mm_dd_yyyy)} au #{I18n.localize(internship_offer.last_date, format: :human_mm_dd_yyyy)}"
+            .fr-card__header
+              .fr-card__img
+                = image_tag asset_pack_path("media/images/sectors/#{internship_offer.sector.cover}"), alt: '', class: 'fr-responsive-img'
+              ul.fr-badges-group
+                li
+                  .fr-tag
+                    = internship_offer.sector.name

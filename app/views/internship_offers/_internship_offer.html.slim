@@ -1,7 +1,7 @@
 div class="hoverable-row-with-btn bb-1 bc-light row" id="#{dom_id internship_offer}"
   .col-12.py-4.d-block
     .row
-      = link_to listable_internship_offer_path(internship_offer, origin: 'search'), class: 'col-12 col-sm-8 text-decoration-none fr-raw-link', data: { test_id: internship_offer.id.to_s } do
+      = link_to listable_internship_offer_path(internship_offer, origine: 'search'), class: 'col-12 col-sm-8 text-decoration-none fr-raw-link', data: { test_id: internship_offer.id.to_s } do
 
         p.h5.font-weight-bold.internship-item-title= internship_offer.title
         p.small.font-weight-bold.mb-3.gray-666= internship_offer.employer_name
@@ -28,5 +28,5 @@ div class="hoverable-row-with-btn bb-1 bc-light row" id="#{dom_id internship_off
                    locals: {internship_offer: internship_offer}
 
           br
-        = link_to "Voir l'annonce", listable_internship_offer_path(internship_offer, origin: 'search'),
+        = link_to "Voir l'annonce", listable_internship_offer_path(internship_offer, origine: 'search'),
                   class: 'fr-link fr-icon-eye-line fr-link--icon-left fr-raw-link'

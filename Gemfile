@@ -12,6 +12,7 @@ gem "rails", "~> 7.0.3"
 gem 'puma'
 # db
 gem 'pg'
+gem 'rake'
 
 # pg extension for geo queries
 # wait for : https://github.com/rgeo/activerecord-postgis-adapter/tree/ar61 to be merge into master
@@ -51,7 +52,6 @@ gem "lograge"
 gem 'ovh-rest'
 gem "sentry-ruby"
 gem "sentry-rails"
-gem 'airtable'
 gem 'geocoder'
 gem 'bitly'
 gem 'mime-types'
