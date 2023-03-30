@@ -6,7 +6,7 @@ nav.fr-sidemenu.fr-sidemenu--sticky aria-labelledby="dashboard-title"
     #fr-sidemenu-wrapper.fr-collapse
       ul.fr-sidemenu__list
         - [{label: "Offres de stage", path: dashboard_internship_offers_path},
-           {label: "Candidatures", path: dashboard_user_internship_applications_path, notice: applications_notice},
+           {label: "Candidatures", path: dashboard_candidatures_path, notice: applications_notice},
            {label: "Conventions", path: dashboard_internship_agreements_path, notice: agreements_notice}].each do |link_material|
           - current_page_active = current_page?(link_material[:path])
           - li_extra_class = current_page_active ? "fr-sidemenu__item--active" : ""

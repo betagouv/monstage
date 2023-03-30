@@ -12,16 +12,6 @@ module Reporting
       render locals: { dashboard_finder: dashboard_finder }
     end
 
-    def refresh
-      Airtable::BaseSynchronizer.new.pull_all
-
-      redirect_to redirect_back_with_anchor_to_stats, flash: { success: 'Les statistiques seront rafraichies dans 5 minutes.' }
-    end
-
-    def import_data
-      @user = current_user
-    end
-
     private
 
     # inspired by : https://github.com/rails/rails/blob/75ac626c4e21129d8296d4206a1960563cc3d4aa/actionpack/lib/action_controller/metal/redirecting.rb#L90

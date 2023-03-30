@@ -50,7 +50,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
     sign_in(employer)
 
-    visit dashboard_internship_offer_path(internship_offer)
+    visit internship_offer_path(internship_offer)
     assert_changes -> { internship_offer.reload.discarded_at } do
       page.find('.test-discard-button').click
       page.find("button[data-test-delete-id='delete-#{dom_id(internship_offer)}']").click
@@ -61,7 +61,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     internship_offer = create(:weekly_internship_offer)
     sign_in(internship_offer.employer)
 
-    visit dashboard_internship_offer_path(internship_offer)
+    visit internship_offer_path(internship_offer)
     assert_changes -> { internship_offer.reload.published_at } do
       page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
       sleep 0.2
