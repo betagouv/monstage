@@ -5,6 +5,7 @@ require 'test_helper'
 module Dashboard::InternshipAgreements
   class UpdateTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
+    include ActionMailer::TestHelper
 
     # As Visitor
     test 'PATCH #update as visitor redirects to new_user_session_path' do
@@ -169,6 +170,34 @@ module Dashboard::InternshipAgreements
       assert_equal(new_school_representative_full_name,
                    internship_agreement.reload.school_representative_full_name,
                    'can\'t update internship_agreement school representative full name')
+    end
+
+    test 'PATCH #update with complete!transition sends email' do
+      internship_application = create( :weekly_internship_application,
+                                       :approved )
+      internship_agreement = create(:internship_agreement,
+                                    :started_by_employer,
+                                    school_manager_accept_terms: true,
+                                    organisation_representative_full_name: 'John Doe',
+                                    organisation_representative_role: 'CEO',
+                                    tutor_email: 'test@honer.com',
+                                    internship_application: internship_application)
+      sign_in(internship_application.internship_offer.employer)
+
+      assert_enqueued_emails 1 do
+        patch_url = dashboard_internship_agreement_path(internship_agreement.id)
+        params = { 'internship_agreement' => {
+          school_manager_event: 'complete',
+          school_representative_full_name: 'badoo'
+          }
+        }
+        patch( patch_url, params: params)
+        assert_redirected_to dashboard_internship_agreements_path
+      end
+      follow_redirect!
+      assert_equal "completed_by_employer", internship_agreement.reload.aasm_state
+      validation_text = "La convention a été envoyée au chef d'établissement."
+      assert_select('#alert-text', text: validation_text)
     end
   end
 end

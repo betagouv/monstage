@@ -150,8 +150,6 @@ class InternshipApplication < ApplicationRecord
                                           .deliver_later
                       end
                     else
-                      SchoolManagerMailer.internship_application_approved_with_no_agreement_email(arg_hash)
-                                          .deliver_later
                       if main_teacher.present?
                         MainTeacherMailer.internship_application_approved_with_no_agreement_email(arg_hash)
                                           .deliver_later
@@ -240,9 +238,6 @@ class InternshipApplication < ApplicationRecord
     agreement.skip_validations_for_system = true
     agreement.save!
 
-    SchoolManagerMailer.internship_application_approved_with_agreement_email(
-      internship_agreement: internship_agreement
-    ).deliver_later
     EmployerMailer.internship_application_approved_with_agreement_email(
       internship_agreement: internship_agreement
     ).deliver_now

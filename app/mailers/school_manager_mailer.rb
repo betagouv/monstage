@@ -10,37 +10,23 @@ class SchoolManagerMailer < ApplicationMailer
          to: school_manager.email)
   end
 
-  def internship_application_approved_with_agreement_email(internship_agreement: )
+  def internship_agreement_completed_by_employer_email(internship_agreement: )
     internship_application = internship_agreement.internship_application
     @internship_offer      = internship_application.internship_offer
     student                = internship_application.student
+    is_public              = @internship_offer.is_public
+    entreprise             = is_public ? "L'entreprise" : "L'administration publique"
+    @entreprise            = "#{entreprise} #{@internship_offer.employer.name}"
     @prez_stud             = student.presenter
-    school_manager         = student.school.school_manager
-    @url = edit_dashboard_internship_agreement_url(
+    @school_manager        = student.school&.school_manager
+    @week                  = internship_application.week
+    @url = dashboard_internship_agreements_url(
       id: internship_agreement.id,
-      mtm_campaign: 'ETB - Convention Almost Ready'
+      mtm_campaign: 'SchoolManager - Convention To Fill In'
     ).html_safe
 
-    to = school_manager&.email
-    subject = 'Une convention de stage sera bientôt disponible.'
-
-    send_email(to: to, subject: subject)
-  end
-
-  def internship_application_approved_with_no_agreement_email(internship_application: , main_teacher: nil)
-    @internship_application = internship_application
-    @internship_offer = internship_application.internship_offer
-    @student = @internship_application.student
-    @student_presenter = Presenters::User.new(@student)
-
-    to = @student.school_manager_email
-    @url = internship_offer_url(
-      id: @internship_offer.id,
-      mtm_campaign: 'application-details-with-no-agreement',
-      mtm_kwd: 'email'
-    ).html_safe
-
-    subject = "Un de vos élèves a été accepté à un stage"
+    to = @school_manager&.email
+    subject = 'Vous avez une convention de stage à renseigner.'
 
     send_email(to: to, subject: subject)
   end
