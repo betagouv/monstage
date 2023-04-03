@@ -32,7 +32,6 @@ module InternshipOffers
                        :total_male_convention_signed_applications_count,
                        :total_female_applications_count,
                        :total_female_convention_signed_applications_count,
-                       :total_custom_track_convention_signed_applications_count,
                        :submitted_applications_count,
                        :rejected_applications_count,
                        :tutor
@@ -64,7 +63,6 @@ module InternshipOffers
         field :title
         field :description
         field :group
-        field :school_track
         field :max_candidates
         field :max_students_per_group
         field :total_applications_count
@@ -95,13 +93,15 @@ module InternshipOffers
               presence: true
 
 
-    validates :max_candidates, numericality: { only_integer: true,
-                                               greater_than: 0,
-                                               less_than_or_equal_to: MAX_CANDIDATES_HIGHEST }
-    validates :max_students_per_group, numericality: { only_integer: true,
-                                                       greater_than: 0,
-                                                       less_than_or_equal_to: :max_candidates,
-                                                       message: "Le nombre maximal d'élèves par groupe ne peut pas dépasser le nombre maximal d'élèves attendus dans l'année" }
+    validates :max_candidates,
+              numericality: { only_integer: true,
+                              greater_than: 0,
+                              less_than_or_equal_to: MAX_CANDIDATES_HIGHEST }
+    validates :max_students_per_group,
+              numericality: { only_integer: true,
+                              greater_than: 0,
+                              less_than_or_equal_to: :max_candidates,
+                              message: "Le nombre maximal d'élèves par groupe ne peut pas dépasser le nombre maximal d'élèves attendus dans l'année" }
     after_initialize :init
     before_create :reverse_academy_by_zipcode
 

@@ -7,9 +7,8 @@
         .row
           .col-8
             h2.h3.mb-0= "#{@class_room.name}"
-
         .row
-          .col-12.fr-table.fr-table--white
+          .col-12.fr-table.fr-table-blue.fr-table--white
             table
               thead
                 tr.tr-blue
@@ -17,8 +16,6 @@
                     small Élève
                   th.col-2.align-self-end
                     small Confirmé
-                  th.col-2.align-self-end
-                    small Cordée de réussite / Parcours d'excellence
                   th.col-2.align-self-end
                     small Candidatures
                   th.col-1.text-center.align-self-end
@@ -28,7 +25,9 @@
                             collection: @students, locals: {}
 
         .row
-          .col-12.text-right
+          .col-6
+            = link_to "Ajouter des élèves à cette classe", new_dashboard_school_class_room_student_path(@school, @class_room), class: 'fr-btn fr-btn--secondary'
+          .col-6.text-right
             = button_tag 'Enregistrer les modifications',
                         disabled: true,
                         class: 'fr-btn fr-icon-save-line fr-btn--icon-left',

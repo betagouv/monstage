@@ -88,18 +88,18 @@ module Dashboard
                         "missing link to add class_room for #{role}"
 
           # destroy links
-          assert_select 'a.float-right[href=?]',
+          assert_select 'a[href=?]',
                         dashboard_school_class_room_path(school, class_room_without_student),
                         { count: 1 },
                         "missing link to destroy class_room for #{role}"
 
-          assert_select 'a.float-right[href=?]',
+          assert_select 'a[href=?]',
                         dashboard_school_class_room_path(school, class_room_with_student),
                         { count: 0 }, # do not show destroy on classrooms with students,
                         "link to destroy class_room with student present for #{role}"
 
           # edit links
-          assert_select 'a.float-right[href=?]',
+          assert_select 'a[href=?]',
                         edit_dashboard_school_class_room_path(school, class_room_without_student),
                         { count: 1 },
                         "missing link to edit class_room for #{role}"

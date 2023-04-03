@@ -32,21 +32,6 @@ export default class extends Controller {
     }
   }
 
-  toggleInternshipApplicationContent(event) {
-    const $collapsibleTarget = $(this.internshipApplicationContentTarget);
-    const $linkIconContainer = $(this.linkIconContainerTarget);
-    const isCollapseVisible = isVisible($collapsibleTarget);
-
-    if (isCollapseVisible) {
-      hideElement($collapsibleTarget);
-      $linkIconContainer.find('svg').replaceWith(`<i class="fas fa-chevron-right mr-1"></i>`);
-    } else {
-      showElement($collapsibleTarget);
-      $linkIconContainer.find('svg').replaceWith(`<i class="fas fa-chevron-down mr-1"></i>`);
-    }
-    this.stopEventPropagation(event);
-  }
-
   updateMenu(enabledTarget) {
     $(this.linkInternshipOfferDetailTarget).removeClass(MENU_ITEM_ACTIVE_CLASS_NAME);
     $(this.linkInternshipApplicationDetailTarget).removeClass(MENU_ITEM_ACTIVE_CLASS_NAME);
@@ -113,10 +98,10 @@ export default class extends Controller {
   }
 
   connect() {
-    if (window.location.hash) {
-      this.initWithLocationHash();
-    } else {
-      this.initWithDataState();
-    }
+    // if (window.location.hash) {
+    //   this.initWithLocationHash();
+    // } else {
+    //   this.initWithDataState();
+    // }
   }
 }

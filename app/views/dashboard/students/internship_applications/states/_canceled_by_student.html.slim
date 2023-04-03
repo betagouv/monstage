@@ -1,6 +1,3 @@
-.alert.alert-secondary.alert-outlined.opacity-05.px-1.py-2
-  .row.align-items-center.no-gutters
-    .col-1.col-sm-auto.text-center.mr-2
-      i.fas.fa-ban
-    .col
-      span.alert-internship-application-state.canceled= "Candidature annulée le #{localize(internship_application.canceled_at, format: :human_mm_dd)}."
+ .fr-alert.fr-alert--error
+    h3.fr-alert__title
+      = "Candidature annulée le #{localize(internship_application.canceled_at, format: :human_mm_dd)}."

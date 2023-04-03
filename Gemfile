@@ -12,6 +12,7 @@ gem "rails", "~> 7.0.3"
 gem 'puma'
 # db
 gem 'pg'
+gem 'rake'
 
 # pg extension for geo queries
 # wait for : https://github.com/rgeo/activerecord-postgis-adapter/tree/ar61 to be merge into master
@@ -34,7 +35,7 @@ gem 'caxlsx_rails'
 gem "split", require: "split/dashboard"
 
 # background jobs
-gem 'sidekiq'
+gem 'sidekiq', '<7'
 gem 'redis-namespace' # plug redis queues on same instance for prod/staging
 # Use Redis for Action Cable
 gem "redis", "~> 4.0"
@@ -42,19 +43,18 @@ gem "aws-sdk-s3", require: false
 
 # admin
 
-gem 'rails_admin', '~> 3.0'
+gem 'rails_admin', '~> 3.0', '< 3.1'
 gem 'rails_admin-i18n'
 gem 'rails_admin_aasm'
 
 # instrumentation
 gem "lograge"
 gem 'ovh-rest'
-gem 'prismic.io', require: 'prismic'
 gem "sentry-ruby"
 gem "sentry-rails"
-gem 'airtable'
 gem 'geocoder'
 gem 'bitly'
+gem 'mime-types'
 
 # acl
 gem 'cancancan'
@@ -77,8 +77,8 @@ gem 'bootsnap', require: false
 
 group :development, :test do
   gem "dotenv-rails", require: "dotenv/rails-now"
+  gem "better_errors"
   gem "debug"
-  gem 'ffaker'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
 end
@@ -120,6 +120,7 @@ end
 
 group :test, :development, :review do
   gem 'factory_bot_rails'
+  gem 'ffaker'
 end
 
 

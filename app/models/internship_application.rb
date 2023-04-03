@@ -6,6 +6,7 @@ class InternshipApplication < ApplicationRecord
   include StiPreload
   include AASM
   PAGE_SIZE = 10
+  EXPIRATION_DURATION = 45.days
 
   belongs_to :internship_offer, polymorphic: true
   # has_many :internship_agreements
@@ -43,7 +44,7 @@ class InternshipApplication < ApplicationRecord
   }
 
   scope :expirable, lambda {
-    submitted.where('submitted_at < :date', date: 30.days.ago)
+    submitted.where('submitted_at < :date', date: InternshipApplication::EXPIRATION_DURATION.ago)
   }
 
   #
@@ -89,6 +90,11 @@ class InternshipApplication < ApplicationRecord
 
   scope :not_drafted, ->{ where.not(aasm_state: 'drafted') }
 
+  scope :approved_or_signed, lambda {
+    applications = InternshipApplication.arel_table
+    where(applications[:aasm_state].in(['approved', 'signed']))
+  }
+
   #
   # Other stuffs
   #
@@ -97,10 +103,6 @@ class InternshipApplication < ApplicationRecord
   scope :not_by_id, ->(id:) { where.not(id: id) }
 
   scope :weekly_framed, -> { where(type: InternshipApplications::WeeklyFramed.name) }
-  singleton_class.send(:alias_method, :troisieme_generale, :weekly_framed)
-
-  scope :free_date, -> { where(type: InternshipApplications::FreeDate.name) }
-  singleton_class.send(:alias_method, :voie_pro, :free_date)
 
   # add an additional delay when sending email using richtext
   # sometimes email was sent before action_texts_rich_text was persisted
@@ -137,25 +139,25 @@ class InternshipApplication < ApplicationRecord
       transitions from: %i[submitted cancel_by_employer rejected],
                   to: :approved,
                   after: proc { |*_args|
-                          update!("approved_at": Time.now.utc)
-                          main_teacher = student.main_teacher
-                          arg_hash = {internship_application: self, main_teacher: main_teacher}
-                          accepted_student_notify
-                          if student.school.internship_agreement_open? && type == "InternshipApplications::WeeklyFramed"
-                            create_agreement
-                            if main_teacher.present?
-                              MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
-                                               .deliver_later
-                            end
-                          else
-                            SchoolManagerMailer.internship_application_approved_with_no_agreement_email(arg_hash)
-                                               .deliver_later
-                            if main_teacher.present?
-                              MainTeacherMailer.internship_application_approved_with_no_agreement_email(arg_hash)
-                                               .deliver_later
-                            end
-                          end
-                        }
+                    update!("approved_at": Time.now.utc)
+                    main_teacher = student.main_teacher
+                    arg_hash = {internship_application: self, main_teacher: main_teacher}
+                    accepted_student_notify
+                    if type == "InternshipApplications::WeeklyFramed" && student&.school&.school_manager&.present?
+                      create_agreement
+                      if main_teacher.present?
+                        MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
+                                          .deliver_later
+                      end
+                    else
+                      SchoolManagerMailer.internship_application_approved_with_no_agreement_email(arg_hash)
+                                          .deliver_later
+                      if main_teacher.present?
+                        MainTeacherMailer.internship_application_approved_with_no_agreement_email(arg_hash)
+                                          .deliver_later
+                      end
+                    end
+                  }
     end
 
     event :reject do
@@ -231,7 +233,7 @@ class InternshipApplication < ApplicationRecord
 
 
   def create_agreement
-    return if internship_offer.school_track != 'troisieme_generale'
+    return unless internship_agreement_creation_allowed?
 
     agreement = Builders::InternshipAgreementBuilder.new(user: Users::God.new)
                                                     .new_from_application(self)
@@ -246,10 +248,9 @@ class InternshipApplication < ApplicationRecord
     ).deliver_now
   end
 
-  scope :approved_or_signed, lambda {
-    applications = InternshipApplication.arel_table
-    where(applications[:aasm_state].in(['approved', 'signed']))
-  }
+  def remaining_seats_count
+    internship_offer.remaining_seats_count
+  end
 
   def internship_application_counter_hook
     case self
@@ -281,10 +282,6 @@ class InternshipApplication < ApplicationRecord
     student.gender == 'f'
   end
 
-  def student_is_custom_track?
-    student.custom_track?
-  end
-
   def application_via_school_manager?
     internship_offer&.school
   end
@@ -292,13 +289,6 @@ class InternshipApplication < ApplicationRecord
   def anonymize
     motivation.try(:delete)
   end
-
-  # def new_format?
-  #   return true if new_record?
-  #   return false if created_at < Date.parse('01/09/2020')
-
-  #   true
-  # end
 
   def short_target_url(application)
     target = Rails.application
@@ -332,5 +322,14 @@ class InternshipApplication < ApplicationRecord
         end
       end
     end
+  end
+
+  private
+
+  def internship_agreement_creation_allowed?
+    return false unless student.school&.school_manager&.email
+    return false unless internship_offer.employer.employer_like?
+
+    true
   end
 end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class InternshipApplicationsController < ApplicationController
+  before_action :persist_login_param, only: %i[new]
   before_action :authenticate_user!
   before_action :set_internship_offer
 
@@ -32,8 +33,7 @@ class InternshipApplicationsController < ApplicationController
     if params[:transition] == 'submit!'
       @internship_application.submit!
       @internship_application.save!
-      redirect_to dashboard_students_internship_applications_path(@internship_application.student, @internship_application),
-                  flash: { success: "Votre candidature a bien été envoyée. Poursuivez votre recherche d'un stage et notez que en l'absence de réponse dans un délai de 30 jours, votre candidature sera automatiquement annulée." }
+      redirect_to completed_internship_offer_internship_application_path(@internship_offer, @internship_application)
     else
       @internship_application.update(update_internship_application_params)
       redirect_to internship_offer_internship_application_path(@internship_offer, @internship_application)
@@ -56,7 +56,23 @@ class InternshipApplicationsController < ApplicationController
                                                              @internship_application)
   rescue ActiveRecord::RecordInvalid => e
     @internship_application = e.record
-    render 'internship_offers/show', status: :bad_request
+    puts @internship_application.errors.messages
+    render 'new', status: :bad_request
+  end
+
+  def completed
+    set_internship_offer
+    @internship_application = @internship_offer.internship_applications.find(params[:id])
+    authorize! :submit_internship_application, @internship_application
+
+    @suggested_offers = Finders::InternshipOfferConsumer.new(
+      params: {
+        latitude: @internship_application.student.school.coordinates.latitude,
+        longitude: @internship_application.student.school.coordinates.longitude,
+        week_ids: [@internship_application.week_id]
+      },
+      user: current_user_or_visitor
+    ).all.includes([:sector]).order(id: :desc).last(6)
   end
 
   private
@@ -93,6 +109,8 @@ class InternshipApplicationsController < ApplicationController
             :internship_offer_id,
             :internship_offer_type,
             :motivation,
+            :student_phone,
+            :student_email,
             student_attributes: %i[
               email
               phone
@@ -101,5 +119,9 @@ class InternshipApplicationsController < ApplicationController
               resume_languages
             ]
           )
+  end
+
+  def persist_login_param
+    session[:as] = params[:as]
   end
 end

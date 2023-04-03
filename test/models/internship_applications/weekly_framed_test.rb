@@ -68,5 +68,53 @@ module InternshipApplications
                                        week: internship_offer.internship_offer_weeks.first.week)
       refute internship_application_2.valid?
     end
+
+    test 'application updates remaining_seats_count along with approved applications' do
+      offer = create(:weekly_internship_offer)
+      assert_equal offer.max_candidates, offer.remaining_seats_count
+      application = create(:weekly_internship_application, internship_offer: offer)
+      assert_equal offer.max_candidates, offer.remaining_seats_count
+      assert_equal "drafted", application.aasm_state
+
+      application.submit!
+      assert_equal "submitted", application.aasm_state
+      assert_equal offer.max_candidates, offer.reload.remaining_seats_count
+
+      application.approve!
+      assert_equal "approved", application.aasm_state
+      assert_equal 1, application.internship_offer.internship_offer_weeks.first.blocked_applications_count
+      assert_equal offer.max_candidates - 1, offer.reload.remaining_seats_count
+    end
+
+    test 'application updates offer favorites along with approved applications' do
+      offer = create(:weekly_internship_offer, max_candidates: 1)
+      favorite = create(:favorite, internship_offer: offer)
+      assert_equal Favorite.count, 1
+      other_favorite = create(:favorite)
+      application = create(:weekly_internship_application, internship_offer: offer)
+
+      application.submit!
+      assert_equal Favorite.count, 2
+
+      application.approve!
+      assert_equal "approved", application.aasm_state
+      assert_equal Favorite.count, 1
+    end
+
+    test 'application updates old offer favorites along with approved applications' do
+      old_offer = create(:weekly_internship_offer, last_date: 7.days.ago)
+      favorite = create(:favorite, internship_offer: old_offer)
+      assert_equal Favorite.count, 1
+      other_favorite = create(:favorite)
+      application = create(:weekly_internship_application, internship_offer: old_offer)
+
+      application.submit!
+      assert_equal Favorite.count, 2
+
+      application.approve!
+      assert_equal "approved", application.aasm_state
+      assert_equal Favorite.count, 1
+      assert_operator Favorite.last.internship_offer.last_date, :>, Time.now
+    end
   end
 end

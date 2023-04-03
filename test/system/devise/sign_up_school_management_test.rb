@@ -5,7 +5,6 @@ require 'application_system_test_case'
 class SignUpSchoolManagersTest < ApplicationSystemTestCase
   test 'navigation & interaction works until school manager creation' do
     existing_email = 'ce.0750655E@ac-paris.fr'
-    a_phone_number = '0625298847'
     
     school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin')
     create(:student, email: existing_email)
@@ -22,7 +21,6 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       fill_in 'Prénom', with: 'Martin'
       find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       fill_in 'Adresse électronique', with: existing_email # error
-      find("input[name='user[phone_suffix]']").fill_in with: a_phone_number
       fill_in 'Créer un mot de passe', with: password
       fill_in 'Ressaisir le mot de passe', with: password
       find('input[type="checkbox"]', visible: false).check
@@ -35,7 +33,6 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
         fill_in 'Adresse électronique', with: "ce.#{school_nr}E@ac-paris.fr"
         fill_in 'Créer un mot de passe', with: password
         fill_in 'Ressaisir le mot de passe', with: password
-        find("input[name='user[phone_suffix]']").fill_in with: a_phone_number
         fill_in 'Prénom', with: 'Martin'
         find("input[name='user[last_name]']").fill_in with: 'Fourcade'
         click_on "Valider mes informations"
@@ -51,7 +48,6 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
     class_room_2 = create(:class_room, name: '3e B', school: school_2)
     existing_email = 'fourcade.m@gmail.com'
     another_email = 'another@free.fr'
-    a_phone_number = '0625298847'
 
     # go to signup as teacher
     visit new_user_registration_path(as: 'SchoolManagement')
@@ -68,7 +64,6 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       fill_in 'Adresse électronique', with: existing_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      find("input[name='user[phone_suffix]']").fill_in with: a_phone_number
       find('input[type="checkbox"]', visible: false).check
       click_on "Valider mes informations"
     end
@@ -87,7 +82,6 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       fill_in 'Adresse électronique', with: "another@#{school_1.email_domain_name}"
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      find("input[name='user[phone_suffix]']").fill_in with: a_phone_number
       find('input[type="checkbox"]', visible: false).check
       click_on "Valider mes informations"
     end

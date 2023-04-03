@@ -41,29 +41,9 @@ module InternshipOffers
       end
     end
 
-    test 'GET #show does not show form as Student with class_room.troisieme, and internship_offer with free_date' do
-      internship_offer = create(:free_date_internship_offer)
-      school = create(:school, :with_school_manager)
-      sign_in(create(:student,
-                     class_room: create(:class_room, :troisieme_generale, school: school),
-                     school: school))
-      get internship_offer_path(internship_offer)
-      assert_select 'a', text: 'Je postule', count: 0
-    end
-
-    test 'GET #show form as Student with class_room.troisieme_segpa, and internship_offer with free_date' do
-      internship_offer = create(:free_date_internship_offer)
-      school = create(:school, :with_school_manager)
-      sign_in(create(:student,
-                     class_room: create(:class_room, :troisieme_segpa, school: school),
-                     school: school))
-      get internship_offer_path(internship_offer)
-      assert_template 'internship_offers/_apply_cta'
-    end
-
     # test 'GET #show as Student displays application form' do
     #   school = create(:school)
-    #   student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
+    #   student = create(:student, school: school, class_room: create(:class_room, school: school))
     #   sign_in(student)
     #   get internship_offer_path(create(:weekly_internship_offer))
 
@@ -73,7 +53,7 @@ module InternshipOffers
 
     # test 'GET #show as Student when school has no weeks it shows caution message and weeks offer select' do
     #   school = create(:school, weeks: [])
-    #   student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
+    #   student = create(:student, school: school, class_room: create(:class_room, school: school))
     #   sign_in(student)
     #   internship_offer = create(:weekly_internship_offer)
     #   get internship_offer_path(internship_offer)
@@ -96,13 +76,10 @@ module InternshipOffers
     #   travel_to(weeks[0].week_date) do
     #     school = create(:school, :with_school_manager, weeks: weeks)
     #     sign_in(create(:student,
-    #                    class_room: create(:class_room, :troisieme_generale, school: school),
+    #                    class_room: create(:class_room, school: school),
     #                    school: school))
     #     get internship_offer_path(internship_offer)
-    #     assert_template 'internship_applications/call_to_action/_weekly'
-    #     assert_template 'internship_applications/forms/_weekly_and_free'
-    #     assert_select 'option', text: weeks.first.human_select_text_method, count: 1
-    #     assert_select '.btn-primary', text: 'Je postule'
+    #     assert_select 'a.fr-btn', text: 'Postuler'
     #   end
     # end
 
@@ -123,7 +100,7 @@ module InternshipOffers
     # test 'GET #show as Student who can apply to a reserved internship offer' do
     #   weeks = [Week.find_by(number: 1, year: 2020)]
     #   school = create(:school, weeks: weeks)
-    #   student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
+    #   student = create(:student, school: school, class_room: create(:class_room, school: school))
     #   internship_offer = create(:weekly_internship_offer, school: student.school, weeks: weeks)
     #   sign_in(student)
     #   get internship_offer_path(internship_offer)
@@ -146,7 +123,7 @@ module InternshipOffers
     #                                                       internship_offer_weeks: [blocked_internship_week,
     #                                                                                available_internship_week])
     #   travel_to(internship_weeks[0].week_date - 1.week) do
-    #     sign_in(create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school)))
+    #     sign_in(create(:student, school: school, class_room: create(:class_room, school: school)))
     #     get internship_offer_path(internship_offer)
 
     #     assert_select 'select option', text: blocked_internship_week.week.human_select_text_method, count: 0
@@ -158,7 +135,7 @@ module InternshipOffers
     #   weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
     #   internship_offer = create(:weekly_internship_offer, weeks: weeks)
     #   school = create(:school, weeks: weeks)
-    #   student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
+    #   student = create(:student, school: school, class_room: create(:class_room, school: school))
     #   internship_offer_week = create(:internship_offer_week, week: weeks.last, internship_offer: internship_offer)
     #   internship_application = create(:weekly_internship_application,
     #                                   :drafted,
@@ -186,7 +163,7 @@ module InternshipOffers
 
     #   school = create(:school, weeks: [matching_week])
     #   sign_in(create(:student,
-    #                  class_room: create(:class_room, :troisieme_generale, school: school),
+    #                  class_room: create(:class_room, school: school),
     #                  school: school))
     #   travel_to(matching_week.week_date - 1.month) do
     #     get internship_offer_path(internship_offer)
@@ -208,7 +185,7 @@ module InternshipOffers
 
     #   school = create(:school, weeks: [school_week])
     #   sign_in(create(:student,
-    #                  class_room: create(:class_room, :troisieme_generale, school: school),
+    #                  class_room: create(:class_room, school: school),
     #                  school: school))
     #   travel_to(school_week.week_date - 1.month) do
     #     get internship_offer_path(internship_offer)
@@ -326,13 +303,12 @@ module InternshipOffers
     # test 'GET #show as Student when school.weeks is empty show alert form' do
     #   internship_offer = create(:weekly_internship_offer)
     #   school = create(:school)
-    #   student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
+    #   student = create(:student, school: school, class_room: create(:class_room, school: school))
 
     #   sign_in(student)
 
     #   get internship_offer_path(internship_offer)
     #   assert_template 'internship_applications/call_to_action/_weekly'
-    #   assert_template 'internship_applications/forms/_weekly_and_free'
     # end
 
     #
@@ -358,7 +334,7 @@ module InternshipOffers
 
     test 'GET #show as Visitor - canonical links works' do
       internship_offer = create(:weekly_internship_offer)
-      regexp = Regexp.new("<link rel='canonical' href='http:\/\/www.example.com\/internship_offers\/(.*)' \/>")
+      regexp = Regexp.new("<link rel='canonical' href='http:\/\/www.example.com\/offres-de-stage\/(.*)' \/>")
 
       forwarded_params = { city: 'Mantes-la-Jolie' }
       get internship_offer_path({ id: internship_offer.id }.merge(forwarded_params))
@@ -450,12 +426,8 @@ module InternshipOffers
                     { count: 1 },
                     'missing edit internship_offer link for employer'
 
-      assert_select 'a[href=?]', dashboard_internship_offer_internship_applications_path(internship_offer),
-                    { text: '0 candidatures', count: 1 },
-                    'missing link to internship_applications for employer'
-
-      assert_select 'a[data-target="#discard-internship-offer-modal"]',
-                    { count: 1 },
+      assert_select 'button[aria-controls="discard-internship-offer-modal"]',
+                    { count: 2 },
                     'missing discard link for employer'
 
       assert_select 'span.internship_offer-published_at',
@@ -473,7 +445,7 @@ module InternshipOffers
 
       get internship_offer_path(internship_offer)
       assert_response :success
-      assert_select '.test-renew-button', count: 2 # mobile and desktop
+      assert_select '.test-duplicate-button', count: 1 # mobile and desktop
     end
 
     test 'GET #show as employer does show duplicate  button when internship_offer has been created durent current_year' do
@@ -483,15 +455,11 @@ module InternshipOffers
 
       get internship_offer_path(internship_offer)
       assert_response :success
-      # count 2 comes from mobile and desktop different location in the view
-      assert_select '.test-duplicate-button',  count: 2
-      assert_select '.test-duplicate-without-location-button', count: 2
-      assert_select '.test-renew-button', count: 0
+      assert_select '.test-duplicate-button', count: 1
     end
 
     test 'sentry#1813654266, god can see api internship offer' do
       weekly_internship_offer = create(:weekly_internship_offer)
-      free_date_internship_offer = create(:free_date_internship_offer)
       api_internship_offer = create(:api_internship_offer)
 
       sign_in(create(:god))
@@ -502,8 +470,6 @@ module InternshipOffers
       get internship_offer_path(api_internship_offer)
       assert_response :success
 
-      get internship_offer_path(free_date_internship_offer)
-      assert_response :success
     end
   end
 end

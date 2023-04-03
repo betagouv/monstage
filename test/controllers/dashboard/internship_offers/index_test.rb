@@ -70,10 +70,6 @@ module Dashboard::InternshipOffers
       }
       get dashboard_internship_offers_path(filters)
       assert_response :success
-      assert_select '.test-search-container'
-      filters.map do |input_name, input_value|
-        assert_select "input[name=\"#{input_name}\"]"
-      end
     end
 
     test 'GET #index as operator returns his internship_offers but not other offers even from similar operator' do
@@ -174,7 +170,6 @@ module Dashboard::InternshipOffers
         longitude: Coordinates.bordeaux[:longitude],
         radius: 1_000,
         city: 'bingobangobang',
-        school_track: 'troisieme_generale',
         keyword: 'bloop',
         order: 'total_applications_count',
         direction: 'desc'

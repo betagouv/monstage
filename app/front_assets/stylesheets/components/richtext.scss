@@ -1,6 +1,7 @@
 
-trix-editor.form-control {
+trix-editor {
   height: auto;
+  max-height: 400px !important;
 }
 .reboot-trix-content .trix-content{
   font-family: $font-family-base;
@@ -39,5 +40,6 @@ body{
     border-top-right-radius: 0;
     border-bottom-left-radius: .5rem;
     border-bottom-right-radius: .5rem;
+    overflow-y: auto;
   }
 }

@@ -184,7 +184,7 @@ $(function() {
     this._script_location = '/assets/form/form.js'
     this._css_location    = '/assets/form/form.css'
 
-    this._src = "https://monstage.zammad.com/assets/form/form.js"
+    this._src = "https://zammad.mon-stage-de-troisieme.incubateur.anct.gouv.fr/assets/form/form.js"
     this.css_location = this._src.replace(this._script_location, this._css_location)
     this.endpoint_config = this._src.replace(this._script_location, this._endpoint_config)
     this.endpoint_submit = this._src.replace(this._script_location, this._endpoint_submit)

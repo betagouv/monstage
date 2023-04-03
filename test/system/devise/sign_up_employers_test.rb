@@ -6,7 +6,6 @@ require 'pretty_console'
 class SignUpEmployersTest < ApplicationSystemTestCase
   test 'navigation & interaction works until employer creation' do
     existing_email = 'fourcade.m@gmail.com'
-    a_phone_number = '0625298847'
     create(:employer, email: existing_email)
 
     # go to signup as employer
@@ -16,8 +15,7 @@ class SignUpEmployersTest < ApplicationSystemTestCase
     assert_difference('Users::Employer.count', 0) do
       fill_in 'Prénom', with: 'Madame'
       find("input[name='user[last_name]']").fill_in with: 'Accor'
-      fill_in 'Adresse électronique (e-mail)', with: existing_email
-      find("input[name='user[phone_suffix]']").fill_in with: a_phone_number
+      fill_in 'Adresse électronique', with: existing_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in "Fonction au sein de l'entreprise", with: "chef d'entreprise"
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
@@ -27,8 +25,7 @@ class SignUpEmployersTest < ApplicationSystemTestCase
 
     # create employer
     assert_difference('Users::Employer.count', 1) do
-      fill_in 'Adresse électronique (e-mail)', with: 'another@gmail.com'
-      find("input[name='user[phone_suffix]']").fill_in with: a_phone_number
+      fill_in 'Adresse électronique', with: 'another@gmail.com'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       click_on "Valider mes informations"

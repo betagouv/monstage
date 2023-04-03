@@ -7,15 +7,67 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     get new_user_registration_path
     assert_redirected_to users_choose_profile_path
   end
+  
+  test 'POST #registrations as statistician whitelisted' do
+    white_list = create(:statistician_email_whitelist)
+    data = {
+      first_name: 'James',
+      last_name: 'Ref',
+      email: white_list.email,
+      password: 'password',
+      password_confirmation: 'password',
+      type: 'Users::PrefectureStatistician',
+      accept_terms: true
+    }
+
+    post user_registration_path(user: data)
+
+    assert_redirected_to reporting_dashboards_path(department: Department::MAP[white_list.zipcode], school_year: SchoolYear::Current.new.beginning_of_period.year)
+  end
+
+  test 'POST #registrations as ministry statistician whitelisted' do
+    white_list = create(:ministry_statistician_email_whitelist)
+    data = {
+      first_name: 'James',
+      last_name: 'Ref',
+      email: white_list.email,
+      password: 'password',
+      password_confirmation: 'password',
+      type: 'Users::MinistryStatistician',
+      accept_terms: true
+    }
+
+    post user_registration_path(user: data)
+
+    assert_redirected_to Users::MinistryStatistician.last.custom_dashboard_path
+  end
+
+  test 'POST #registrations as education statistician whitelisted' do
+    white_list = create(:education_statistician_email_whitelist)
+    data = {
+      first_name: 'James',
+      last_name: 'Ref',
+      email: white_list.email,
+      password: 'password',
+      password_confirmation: 'password',
+      type: 'Users::EducationStatistician',
+      accept_terms: true
+    }
+
+    post user_registration_path(user: data)
+
+    assert_redirected_to Users::EducationStatistician.last.custom_dashboard_path
+  end
+
 
   test 'GET #choose_profile' do
     get users_choose_profile_path
     assert_select 'title', "Création de compte | Monstage"
-    assert_select 'a[href=?]', '/identities/new?as=Student'
-    assert_select 'a[href=?]', '/users/sign_up?as=Employer'
-    assert_select 'a[href=?]', '/users/sign_up?as=SchoolManagement'
-    assert_select 'a[href=?]', '/users/sign_up?as=Statistician'
-    assert_select 'a[href=?]', '/users/sign_up?as=MinistryStatistician'
+    assert_select 'a[href=?]', '/identites/nouveau?as=Student'
+    assert_select 'a[href=?]', '/utilisateurs/inscription?as=Employer'
+    assert_select 'a[href=?]', '/utilisateurs/inscription?as=SchoolManagement'
+    assert_select 'a[href=?]', '/utilisateurs/inscription?as=Statistician'
+    assert_select 'a[href=?]', '/utilisateurs/inscription?as=MinistryStatistician'
   end
 
   test 'GET #registrations_standby as student using path?id=#id with pending account' do

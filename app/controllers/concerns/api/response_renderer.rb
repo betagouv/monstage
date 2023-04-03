@@ -45,6 +45,12 @@ module Api
                      status: :unprocessable_entity)
       end
 
+      def render_not_authorized
+        render_error(code: 'UNAUTHORIZED',
+                     error: 'access denied',
+                     status: :unauthorized)
+      end
+
       #
       # success renderers
       #

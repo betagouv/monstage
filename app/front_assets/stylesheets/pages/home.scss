@@ -142,6 +142,39 @@ img.covering {
   max-height: 475px;
 }
 
+.video-ministry {
+  .video-ministry-wrapper {
+    position: relative;
+    margin: 0 auto;
+    max-width: 1200px;
+    
+  }
+
+  .video-ministry-responsive {
+    position: relative;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .video-ministry-responsive::before {
+    display: block;
+    content: "";
+    padding-top: 56.25%;
+    margin: auto;
+  }
+
+  .video-ministry-responsive-item {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+}
+
 .video-shadow-frame {
   position: absolute;
   margin: 0 auto;
@@ -159,18 +192,18 @@ img.covering {
   height: 450px;
   }
 
-  .video-responsive {
-    position: relative;
-    display: block;
-    width: 100%;
-    overflow: hidden;
-  }
+.video-responsive {
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+}
 
-  .video-responsive::before {
-    display: block;
-    content: "";
-    padding-top: 100%;
-    margin: auto;
+.video-responsive::before {
+  display: block;
+  content: "";
+  padding-top: 100%;
+  margin: auto;
 }
 
 .video-responsive-item {
@@ -264,33 +297,8 @@ img.covering {
   }
 }
 
-// alert
-.bg-covid-19-notice {
-  .relative {
-    position: relative;
-  }
-.close {
-    opacity: 1;
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-}
 // pills customization
 @include media-breakpoint-down(xs) {
-  .bg-covid-19-notice .close {
-    right: 5px !important;
-    top: 5px !important;
-  }
-    .text-center-left {
-      text-align: center;
-    }
-}
-
-
-// bgs
-.bg-covid-19-notice {
-  background-color: #080091;
 }
 
 .bg-light-blue {
@@ -310,4 +318,39 @@ img.covering {
 }
 .fr-header__tools-links .fr-links-group> :not(:last-child)>.fr-link::after {
   right: -1.5rem;
+}
+
+.bg-logo_viens_voir_mon_taf {
+  width: 282px; height: 100px;
+  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -10px -10px;
+}
+
+.bg-logo_jobirl {
+  width: 282px; height: 100px;
+  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -10px -130px;
+}
+
+.bg-logo_entreprises_pour_la_cite {
+  width: 282px; height: 100px;
+  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -312px -10px;
+}
+
+.bg-logo_un_stage_et_apres {
+  width: 282px; height: 100px;
+  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -312px -130px;
+}
+
+.bg-logo_le_reseau {
+  width: 282px; height: 100px;
+  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -10px -250px;
+}
+
+.bg-logo_moi_dans_10_ans_my_future {
+  width: 282px; height: 100px;
+  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -312px -250px;
+}
+
+.bg-logo_tous_en_stage {
+  width: 282px; height: 100px;
+  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -10px -370px;
 }

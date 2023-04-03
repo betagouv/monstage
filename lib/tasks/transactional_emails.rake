@@ -27,7 +27,6 @@ task employers_with_potential_agreeements: :environment do
                                                   .approved
                                                   .merge(School.from_departments(department_str_array: department_str_array))
                                                   .merge(Week.in_the_future)
-                                                  .where(class_rooms[:school_track].eq('troisieme_generale'))
                                                   .includes(:internship_offer)
                                                   .to_a
                                                   .map(&:internship_offer)

@@ -1,6 +1,6 @@
 - has_white_bg = current_page?(root_path) || current_page?(internship_offers_path)
 div [class="test-search-container #{has_white_bg ? 'search-container py-2' : ''} #{render_as_partial ? 'd-none d-md-block rounded-6' : ''}"
-     data-controller='search-form search-popover search-school-track-select search-week-checkboxes']
+     data-controller='search-form search-popover search-week-checkboxes']
   = form_with url: url,
               method: :get,
               skip_enforcing_utf8: true,
@@ -27,7 +27,7 @@ div [class="test-search-container #{has_white_bg ? 'search-container py-2' : ''}
                                    radius: default_values[:radius],
                                    whiteBg: has_white_bg } )
 
-      = render partial: "internship_offers/search/track_and_weeks",
+      = render partial: "internship_offers/search/weeks",
                locals: {f: form,
                         render_as_partial: render_as_partial,
                         default_values: default_values,

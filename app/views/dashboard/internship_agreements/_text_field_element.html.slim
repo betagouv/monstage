@@ -3,6 +3,7 @@
 - hint ||= ''
 - title ||= ''
 - content ||= ''
+- limit ||= nil
 - required = required.nil?
 .col-12.pt-3
   .form-group.form-group-tooltip
@@ -17,13 +18,13 @@
       - if edit_enable && !disabled
         = form.text_field field,
                           class: 'fr-input',
-                          required: required
+                          required: required,
+                          data: {:'internship-agreement-form-target' => 'textField' }
 
       - else
-        = form.text_field field,
-                          class: 'form-control',
-                          required: required,
-                          disabled: true
+        - options = { class: 'form-control', disabled: true , required: required }
+        - options[:maxlength] = limit if limit
+        = form.text_field field, options
         = form.hidden_field field, class: 'form-control', id: "#{sanitize_to_id(form.object_name)}_#{field}_hidden"
 
     - if hint.present?

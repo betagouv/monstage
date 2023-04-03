@@ -5,10 +5,9 @@
   "dependencies": {
     "@babel/core": "^7.7.2",
     "@babel/preset-react": "^7.0.0",
-    "@fortawesome/fontawesome-svg-core": "^1.2.18",
     "@fortawesome/free-regular-svg-icons": "^5.8.2",
     "@fortawesome/free-solid-svg-icons": "^5.8.2",
-    "@gouvfr/dsfr": "^1.7.0",
+    "@gouvfr/dsfr": "^1.8.5",
     "@hotwired/stimulus": "^3.0.1",
     "@hotwired/turbo-rails": "^7.1.1",
     "@popperjs/core": "^2.11.2",

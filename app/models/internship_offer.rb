@@ -47,12 +47,18 @@ class InternshipOffer < ApplicationRecord
     where(sector_id: sector_id)
   }
 
+  scope :with_seats, lambda {
+    where('remaining_seats_count > 0')
+  }
+
   scope :limited_to_department, lambda { |user:|
     where(department: user.department)
   }
 
   scope :limited_to_ministry, lambda { |user:|
-    where(group_id: user.ministry_id)
+    return none if user.ministries.empty?
+
+    where(group_id: user.ministries.map(&:id))
   }
 
   scope :from_api, lambda {
@@ -75,24 +81,12 @@ class InternshipOffer < ApplicationRecord
     all # TODO : max_candidates specs for FreeDate required
   }
 
-  # scope :ignore_max_internship_offer_weeks_reached, lambda {
-  #   all # TODO : specs for FreeDate required
-  # }
-
-  scope :school_track, lambda { |school_track:|
-    where(school_track: school_track)
-  }
-
   scope :unpublished, -> { where(published_at: nil) }
   scope :published, -> { where.not(published_at: nil) }
 
   scope :weekly_framed, lambda {
     where(type: [InternshipOffers::WeeklyFramed.name,
                  InternshipOffers::Api.name])
-  }
-
-  scope :free_date, lambda {
-    where(type: InternshipOffers::FreeDate.name)
   }
 
   scope :ignore_already_applied, lambda { |user:|
@@ -104,9 +98,10 @@ class InternshipOffer < ApplicationRecord
 
   belongs_to :employer, polymorphic: true
   belongs_to :organisation, optional: true
-
   belongs_to :tutor, optional: true
-  has_one :internship_offer_info
+  belongs_to :internship_offer_info, optional: true
+  has_many :favorites
+  has_many :users, through: :favorites
 
   has_rich_text :employer_description_rich_text
 
@@ -125,6 +120,9 @@ class InternshipOffer < ApplicationRecord
   delegate :email, to: :employer, prefix: true, allow_nil: true
   delegate :phone, to: :employer, prefix: true, allow_nil: true
   delegate :name, to: :sector, prefix: true
+
+  # Callbacks
+  before_save :update_remaining_seats
 
   def departement
     Department.lookup_by_zipcode(zipcode: zipcode)
@@ -189,7 +187,7 @@ class InternshipOffer < ApplicationRecord
                     tutor_name tutor_phone tutor_email tutor_role employer_website
                     employer_name street zipcode city department region academy
                     is_public group school_id coordinates first_date last_date
-                    school_track siret employer_manual_enter
+                    siret employer_manual_enter
                     internship_offer_info_id organisation_id tutor_id
                     weekly_hours new_daily_hours]
 
@@ -200,7 +198,7 @@ class InternshipOffer < ApplicationRecord
     white_list_without_location = %w[type title sector_id max_candidates
                     tutor_name tutor_phone tutor_email tutor_role employer_website
                     employer_name is_public group school_id coordinates
-                    first_date school_track last_date siret employer_manual_enter
+                    first_date last_date siret employer_manual_enter
                     internship_offer_info_id organisation_id tutor_id
                     weekly_hours new_daily_hours]
 
@@ -248,5 +246,22 @@ class InternshipOffer < ApplicationRecord
 
   def weekly_planning?
     weekly_hours.any?(&:present?)
+  end
+
+  def presenter
+    Presenters::InternshipOffer.new(self)
+  end
+
+  def update_all_favorites
+    if approved_applications_count >= max_candidates || Time.now > last_date
+      Favorite.where(internship_offer_id: id).destroy_all 
+    end
+  end
+
+  def update_remaining_seats
+    reserved_places = internship_offer_weeks
+                        .where('internship_offer_weeks.blocked_applications_count > 0')
+                        .count
+    self.remaining_seats_count = max_candidates - reserved_places
   end
 end

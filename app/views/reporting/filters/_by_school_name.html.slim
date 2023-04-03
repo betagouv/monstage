@@ -4,4 +4,4 @@
                                               required: true,
                                               chosenSchoolName: schools&.first&.name || '',
                                               resourceName: :user,
-                                              statisticianDepartment: current_user.statistician? && current_user.department})
+                                              statisticianDepartment: current_user.department_statistician? && current_user.department})

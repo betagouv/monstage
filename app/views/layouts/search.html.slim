@@ -15,6 +15,7 @@ html lang="fr"
     = stylesheet_link_tag "https://unpkg.com/leaflet@1.8.0/dist/leaflet.css", media: "all"
     = javascript_pack_tag "application.js", defer: true, 'data-turbo-track': "reload"
     = javascript_include_tag "https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+    = render 'layouts/crisp'
 
   body class="#{env_class_name} #{body_class_name}"
     a name="top" id="top"
@@ -22,6 +23,7 @@ html lang="fr"
       header.custom-navbar role="banner"
         .col.px-0
           = render "layouts/navbar"
+          = render 'layouts/webinar_banner' if can?(:subscribe_to_webinar, current_user_or_visitor)
       = content_for(:custom_header)
       .container-x
         = render 'layouts/flash'

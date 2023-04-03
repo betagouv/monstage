@@ -88,3 +88,43 @@ $line-height: 4px;
   color: var(--grey-425-625);
 }
 
+.success-banner {
+  background-color: #F5F5FF;
+  .image-character {
+    height: 420px;
+    margin-top: -200px;
+  }
+}
+
+.competitors-bloc {
+  .h1, .main-text {
+    color: #d64d00;
+  }
+}
+
+// media phone
+@media (max-width: 767px) {
+  .success-banner {
+    .image-character {
+      height: 300px;
+      margin-top: -150px;
+    }
+    .h1 {
+      padding-left: 0 !important;
+    }
+  }
+
+  .competitors-bloc {
+    .h1 {
+      font-size: 100px;
+      line-height: 100px;
+    }
+  }
+
+  .no-xs-padding {
+    padding: 0 !important;
+  }
+  .no-xs-margin {
+    margin: 0 !important;
+  }
+}

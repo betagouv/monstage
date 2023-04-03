@@ -8,40 +8,36 @@
   .col-md-8
     h1.h6.my-3 Votre candidature
 
-    - if @internship_offer.weekly?
-      - applicable_weeks = current_user.school.has_weeks_on_current_year? ?  InternshipOfferWeek.applicable(user: current_user, internship_offer: @internship_offer).map(&:week).uniq.sort_by(&:id) & @internship_offer.weeks : @internship_offer.weeks.in_the_future
+    - applicable_weeks = current_user.school.has_weeks_on_current_year? ?  InternshipOfferWeek.applicable(user: current_user, internship_offer: @internship_offer).map(&:week).uniq.sort_by(&:id) & @internship_offer.weeks : @internship_offer.weeks.in_the_future
 
     - is_creating = @internship_application.try(:new_record?)
 
     = form_with({model: @internship_application,
+                data: {turbo: false},
                  url: (is_creating ? internship_offer_internship_applications_path(@internship_offer) : internship_offer_internship_application_path(@internship_offer, @internship_application)),
                  scope: :internship_application,
                  html: {method: is_creating ? :post : :patch, id: 'new_internship_application'} }) do |f|
       = render "layouts/form_errors",
                resource: @internship_application,
-               resource_name: :internship_applications
-      - if @internship_offer.free_date? && current_user.student?
-        = f.hidden_field :user_id
-      = f.hidden_field :type, value: @internship_offer.weekly? ? 'InternshipApplications::WeeklyFramed' : 'InternshipApplications::FreeDate'
+               resource_name: :internship_application
+
+      = f.hidden_field :type, value: 'InternshipApplications::WeeklyFramed'
       = f.hidden_field :internship_offer_id
       = f.hidden_field :internship_offer_type
 
       fieldset.mb-4
 
-        - if @internship_offer.weekly?
-          .fr-select-group class=('fr-callout-blue py-5 px-5' unless current_user.school.has_weeks_on_current_year?)
-            - unless current_user.school.has_weeks_on_current_year?
-              p.font-weight-bold
-                | Attention, vérifiez bien que les dates de stage proposées dans l'annonce correspondent à vos dates de stage. Votre chef d'établissement n'a en effet pas renseigné les dates de stage de votre établissement.
-            = f.label :internship_offer_week_id, class: 'required fr-label' do
-              | Quelle semaine ?
-            - unless current_user.school.has_weeks_on_current_year?
-              = render partial: "internship_applications/forms/student_missing_school_weeks"
-            = f.select :week_id,
-                       options_from_collection_for_select(applicable_weeks, :id, :human_select_text_method, @internship_application.week_id),
-                       { prompt: 'Choisir une semaine'},
-                       class: "fr-select col-6",
-                       required: true
+        - unless current_user.school.has_weeks_on_current_year?
+          = render partial: "internship_applications/forms/student_missing_school_weeks"
+        .fr-select-group
+          = f.label :internship_offer_week_id, class: 'required fr-label' do
+            | Quelle semaine ?
+
+          = f.select :week_id,
+                      options_from_collection_for_select(applicable_weeks, :id, :human_select_text_method, @internship_application.week_id),
+                      { prompt: 'Choisir une semaine'},
+                      class: "fr-select",
+                      required: true
         div class="form-group"
           .fr-label.required data-controller="rich-text-label" data-rich-text-label-for-value="internship_application_motivation" data-rich-text-label-enable-value=""
             = "Pourquoi ce stage me motive"
@@ -51,25 +47,27 @@
         = f.fields_for :student do |resume_form|
           = render partial: "users/resume_fields",
                   locals: { form: resume_form, phone_mail_disabled: true, disabled: false}
-        = f.fields_for :student do |identify_form|
-          = render partial: "internship_applications/forms/identity_fields",
-                  locals: { form: identify_form, phone_mail_disabled: true, disabled: true}
+        .fr-my-2w
+          .h4 Pour être recontacté par l'entreprise
+        .row.fr-my-2w
+          .col-xs-12.col-sm-6
+            .fr-label.required
+              = f.label :student_email do  
+                | Adresse électronique (email)
+            .fr-input-group
+              = f.email_field :student_email, class: 'fr-input', required: true
+        .row.fr-my-2w.fr-mb-3w
+          .col-xs-12.col-sm-6
+            .fr-label.required
+              = f.label :student_phone do 
+                | Numéro de téléphone élève ou parent
+            .fr-input-group
+              = f.phone_field :student_phone, class: 'fr-input', required: true
+
         .actions.d-flex.justify-content-between.flex-row
           .d-inline-flex= link_to internship_offer_path(@internship_offer), class: 'fr-btn fr-btn--secondary' do
             | Annuler
-          .d-inline-flex= f.submit "Valider", { class: 'fr-btn' }
+          .d-inline-flex= f.submit "Valider ma candidature", { class: 'fr-btn' }
 
 
-  .col-md-3.offset-md-1
-    / h6 Voici de quoi vous aider
-
-    / .fr-card.mt-3
-    /   .fr-card__body
-    /     h4.fr-card__title
-    /       = link_to 'Comment rédiger un CV', '#', class: 'fr-card__link'
-    /     p.fr-card__desc.blue
-    /       | lorem ipsum
-    /     p.fr-card__detail
-    /       | Détail
-    /   .fr-card__img
-    /     = image_tag asset_pack_path("media/images/internship_offer_show/offer_default_img.jpg"), alt: '', class: 'fr-responsive-img'
+ 

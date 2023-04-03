@@ -1,4 +1,4 @@
-= render 'layouts/breadcrumb', links: [ ['', 'Mes offres de stage'] ]
+= render 'layouts/breadcrumb', links: [ ['', 'Mon tableau de bord'] ]
 .row.no-gutters.employer
   .col-6
     h1.h3.fr-mb-8w Mes offres de stages
@@ -7,7 +7,7 @@
       = link_to new_dashboard_stepper_organisation_path,
                 class: 'ml-auto',
                 id: 'test-create-offer' do
-        button.fr-icon-add-line.fr-btn.fr-btn--icon-left Déposer une offre
+        button.fr-icon-add-line.fr-btn.fr-btn--icon-left Publier une offre
 .fr-tabs.fr-mb-9w.w-100
   = render partial: "dashboard/internship_offers/tabs",
             locals: { internship_offers: @internship_offers,
@@ -17,18 +17,20 @@
     = render partial: 'dashboard/internship_offers/offers_and_agreements_content',
              locals: { params: params }
 
-  - if @internship_offers.total_pages > @internship_offers.current_page
-    .row.d-flex.d-sm-none
-      .col-12.mt-3
-        .actions.d-flex.d-sm-block
-          = link_to path_to_next_page(@internship_offers),
-                    class: 'fr-btn' do
-            | Plus de resultats
+    - if @internship_offers.total_pages > @internship_offers.current_page
+      .row.d-flex.d-sm-none
+        .col-12.mt-3
+          .actions.d-flex.d-sm-block
+            = link_to path_to_next_page(@internship_offers),
+                      class: 'fr-btn' do
+              | Plus de resultats
 
-  .row.d-none.d-sm-flex
-    .col-12.mt-3= paginate(@internship_offers)
+    .row.d-none.d-sm-flex
+      .col-12.mt-3= paginate(@internship_offers)
 
 - if @internship_offers.empty?
   .row.fr-mb-2w
     .col-12
       h1.h2.mt-4 Aucune offre n'a été publiée selon ces critères
+
+= render 'dashboard/satisfaction_survey'

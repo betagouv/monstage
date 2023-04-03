@@ -28,6 +28,7 @@
   .row
     .col-12
       ul.list-group.mx-n3
+        / - collection = @school.presenter.staff
         - @invitations.each do |invitation|
           = render partial: "dashboard/schools/users/invited_school_employee",
                   locals: { invitation: invitation}

@@ -1,5 +1,5 @@
 #agreement-button-panel [
-  class="margin-to-header #{current_user.employer? ? 'fr-tabs__panel fr-tabs__panel--selected' : ''}"
+  class="margin-to-header #{(current_user.employer_like?) ? 'fr-tabs__panel fr-tabs__panel--selected' : ''}"
   aria-labelled-by="agreement-button"
   role="tabpanel"
   tabindex="0"]
@@ -13,7 +13,7 @@
         Vous préférez la signature traditionnelle en version papier ? 
         Optez pour l’impression.
 
-  - if @internship_agreements.empty?
+  - if @internship_agreements.empty? && current_user.employer_like?
     = render partial: 'empty_agreement_list'
 
   - else

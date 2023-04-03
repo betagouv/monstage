@@ -1,4 +1,4 @@
-<% unless flash.keys.size.zero? %>
+<% unless flash.keys.size.zero? || (flash[:alert]&.include?("numéro de téléphone ou mot de passe incorrects"))%>
   <div data-controller="flash">
     <% %w[primary secondary success danger warning info light dark notice alert].map do |flash_kind| %>
       <% if flash.keys.include?(flash_kind) %>

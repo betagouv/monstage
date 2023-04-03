@@ -18,7 +18,7 @@
       span data-profile-target="label"= current_user.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'
       = form.rg2a_required_content_tag
     = form.text_field :email,
-                   {class: 'fr-input', required: true, data: {action: 'change->profile#onBlurEmailInput', :"profile-target" => 'emailInput'}}.merge(current_user.is_a?(Users::Statistician) ? { readonly: true } : {})
+                   {class: 'fr-input', required: true, data: {action: 'change->profile#onBlurEmailInput', :"profile-target" => 'emailInput'}}.merge(current_user.is_a?(Users::PrefectureStatistician) ? { readonly: true } : {})
     small.d-none data-profile-target="emailHint"
   .col-6
     .form-group.fr-select-group--disabled

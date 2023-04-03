@@ -1,10 +1,4 @@
-- if !internship_application.student.troisieme_generale? || !internship_application.student.school.internship_agreement_open?
-  div.d-flex.align-items-center.text-warning.mt-3
-    .d-inline-flex-mr-1
-      i.fas.fa-hourglass-start.fa-2x.fa-fw
-    .d-inline-flex data-test='no-yet-supported'
-      = "Convention à gérer hors plateforme"
-- elsif internship_agreement.try(:confirmed_by?, user: current_user)
+- if internship_agreement.try(:confirmed_by?, user: current_user)
   - if ready_to_print?
     = link_to dashboard_internship_agreement_path(internship_agreement, format: :pdf),
               target: "_blank",

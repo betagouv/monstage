@@ -41,9 +41,6 @@ module Api
       end
       assert_response :bad_request
       assert_equal 'VALIDATION_ERROR', json_code
-      assert_equal ['Missing coordinates'],
-                   json_error['coordinates'],
-                   'bad coordinates message'
       assert_equal ['Missing title'],
                    json_error['title'],
                    'bad title message'
@@ -83,6 +80,17 @@ module Api
                                                          .merge(sector_uuid: sector.uuid,
                                                                 weeks: week_params,
                                                                 coordinates: { latitude: 1, longitude: 1 })
+      
+      geocoder_response = {
+        status: 200,
+        body: [{
+          "address": {"office": "Ministère de l'Éducation Nationale", "road": "Rue de Grenelle", "suburb": "", "city_district": "7th Arrondissement", "city": "Paris", "municipality": "Paris", "county": "Paris", "country": "France", "postcode": "75002", "country_code": "fr"}, 
+          "lat": 1,
+          "lon": 1,
+        }].to_json
+      }
+      stub_request(:get, "https://nominatim.openstreetmap.org/search?accept-language=en&addressdetails=1&format=json&q=75001,%20France").to_return(geocoder_response)
+
       documents_as(endpoint: :'internship_offers/create', state: :conflict) do
         post api_internship_offers_path(
           params: {
@@ -161,10 +169,129 @@ module Api
       end
       assert_equal remote_id, internship_offer.remote_id
       assert_equal permalink, internship_offer.permalink
-      assert_equal 'troisieme_generale', internship_offer.school_track
       assert_equal 2, internship_offer.max_candidates
+      assert_equal 2, internship_offer.remaining_seats_count
 
       assert_equal JSON.parse(internship_offer.to_json), json_response
+    end
+
+    test 'POST #create when missing coordinates works to create internship_offers' do
+      operator = create(:user_operator, api_token: SecureRandom.uuid)
+      week_instances = [weeks(:week_2019_1), weeks(:week_2019_2)]
+      sector = create(:sector, uuid: SecureRandom.uuid)
+      title = 'title'
+      description = 'description'
+      coordinates = { latitude: 48.8602244, longitude: 2.333 }
+      employer_name = 'employer_name'
+      employer_description = 'employer_description'
+      employer_website = 'http://google.fr'
+      street = "Avenue de l'opéra"
+      zipcode = '75002'
+      city = 'Paris'
+      siret = FFaker::CompanyFR.siret
+      sector_uuid = sector.uuid
+      week_params = [
+        "#{week_instances.first.year}-W#{week_instances.first.number}",
+        "#{week_instances.last.year}-W#{week_instances.last.number}"
+      ]
+      remote_id = 'test'
+      permalink = 'https://www.google.fr'
+      
+      geocoder_response = {
+        status: 200,
+        body: [{
+          "address": {"office": "Ministère de l'Éducation Nationale", "road": "Rue de Grenelle", "suburb": "", "city_district": "7th Arrondissement", "city": "Paris", "municipality": "Paris", "county": "Paris", "country": "France", "postcode": "75002", "country_code": "fr"}, 
+          "lat": coordinates[:latitude],
+          "lon": coordinates[:longitude],
+        }].to_json
+      }
+      stub_request(:get, "https://nominatim.openstreetmap.org/search?accept-language=en&addressdetails=1&format=json&q=75002,%20France").to_return(geocoder_response)
+
+      assert_difference('InternshipOffer.count', 1) do
+        documents_as(endpoint: :'internship_offers/create', state: :created) do
+          post api_internship_offers_path(
+            params: {
+              token: "Bearer #{operator.api_token}",
+              internship_offer: {
+                title: title,
+                description: description,
+                employer_name: employer_name,
+                employer_description: employer_description,
+                employer_website: employer_website,
+                siret: siret,
+                street: street,
+                zipcode: zipcode,
+                city: city,
+                sector_uuid: sector_uuid,
+                weeks: week_params,
+                remote_id: remote_id,
+                permalink: permalink,
+                max_candidates: 2
+              }
+            }
+          )
+        end
+        assert_response :created
+      end
+
+      internship_offer = InternshipOffers::Api.first
+      assert_equal title, internship_offer.title
+      assert_equal coordinates[:latitude], internship_offer.coordinates.latitude
+      assert_equal coordinates[:longitude], internship_offer.coordinates.longitude
+      assert_equal JSON.parse(internship_offer.to_json), json_response
+    end  
+
+    test 'POST #create as operator without max_candidates works and set up remaing_seats_count to 1' do
+      operator = create(:user_operator, api_token: SecureRandom.uuid)
+      week_instances = [weeks(:week_2019_1), weeks(:week_2019_2)]
+      sector = create(:sector, uuid: SecureRandom.uuid)
+      title = 'title'
+      description = 'description'
+      employer_name = 'employer_name'
+      employer_description = 'employer_description'
+      employer_website = 'http://google.fr'
+      coordinates = { latitude: 1, longitude: 1 }
+      street = "Avenue de l'opéra"
+      zipcode = '75002'
+      city = 'Paris'
+      siret = FFaker::CompanyFR.siret
+      sector_uuid = sector.uuid
+      week_params = [
+        "#{week_instances.first.year}-W#{week_instances.first.number}",
+        "#{week_instances.last.year}-W#{week_instances.last.number}"
+      ]
+      remote_id = 'test'
+      permalink = 'https://www.google.fr'
+      assert_difference('InternshipOffer.count', 1) do
+        documents_as(endpoint: :'internship_offers/create', state: :created) do
+          post api_internship_offers_path(
+            params: {
+              token: "Bearer #{operator.api_token}",
+              internship_offer: {
+                title: title,
+                description: description,
+                employer_name: employer_name,
+                employer_description: employer_description,
+                employer_website: employer_website,
+                siret: siret,
+                'coordinates' => coordinates,
+                street: street,
+                zipcode: zipcode,
+                city: city,
+                sector_uuid: sector_uuid,
+                weeks: week_params,
+                remote_id: remote_id,
+                permalink: permalink
+              }
+            }
+          )
+        end
+        assert_response :created
+      end
+
+      internship_offer = InternshipOffers::Api.first
+      assert_equal 1, internship_offer.max_candidates
+      assert_equal 1, internship_offer.remaining_seats_count
     end
 
     test 'POST #create as operator with no weeks params use all selectable week from now until end of school year' do
@@ -189,7 +316,7 @@ module Api
                 city: 'Coye la forêt',
                 sector_uuid: sector.uuid,
                 remote_id: 'remote_id',
-                permalink: 'http://google.fr/permalink'
+                permalink: 'http://google.fr/permalink',
               }
             }
           )

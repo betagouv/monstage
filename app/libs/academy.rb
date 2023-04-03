@@ -32,7 +32,8 @@ class Academy
     'Académie de Nantes' => %w[44 49 53 72 85],
     "Académie d'Aix-Marseille" => %w[04 05 13 84],
     'Académie de Nice' => %w[06 83],
-    'Académie de La Réunion' => %w[974]
+    'Académie de La Réunion' => %w[974],
+    'Académie de Mayotte' => %w[976],
   }.freeze
 
   MAP_EMAIL_DOMAIN = {
@@ -65,7 +66,8 @@ class Academy
     'Académie de Nantes' => 'ac-nantes.fr',
     "Académie d'Aix-Marseille" => 'ac-aix-marseille.fr',
     'Académie de Nice' => 'ac-nice.fr',
-    'Académie de La Réunion' => 'ac-reunion.fr'
+    'Académie de La Réunion' => 'ac-reunion.fr',
+    'Académie de Mayotte' => 'ac-mayotte.fr'
   }.freeze
 
   def self.to_select(only: nil)

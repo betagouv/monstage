@@ -27,32 +27,6 @@ tr class="test-student-#{student.id}"
         small
           i.far.fa-square.fa-stack-2x
 
-  td.col-2.is_custom_track data-head="Cordée de réussite / Parcours d'excellence"
-    - if can?(:update, student) && student.custom_track?
-      = link_to dashboard_school_user_path(school_id: student.school.id,
-                                           id: student.id,
-                                           user: { custom_track: false }),
-                                           method: :patch,
-                                           class: 'mx-1 fr-raw-link blue-france' do
-        span.fa-stack
-          small
-            i.fas.fa-square.fa-stack-2x
-            i.fas.fa-check.fa-stack-1x.fa-inverse
-    - elsif can?(:update, student) && !student.custom_track?
-      = link_to dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: true }), method: :patch, class: 'mx-1 fr-raw-link blue-france' do
-        span.fa-stack
-          small
-            i.far.fa-square.fa-stack-2x
-    - elsif student.custom_track?
-      span.fa-stack
-        small.blue-france
-          i.fas.fa-square.fa-stack-2x
-          i.fas.fa-check.fa-stack-1x.fa-inverse
-    - else
-      span.fa-stack
-        small.blue-france
-          i.far.fa-square.fa-stack-2x
-
   td.col-2 data-head="Nombre de candidatures"
     span.applications_count= student_stats.applications_count
   td.col-1.half-height data-head="Réponses"

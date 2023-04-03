@@ -3,7 +3,7 @@
 class UsersController < ApplicationController
   include Phonable
   before_action :authenticate_user!
-  skip_before_action :check_school_requested, only: [:edit, :update]
+  skip_before_action :check_school_requested, only: [:edit, :update, :answer_survey]
 
   def edit
     authorize! :update, current_user
@@ -18,7 +18,6 @@ class UsersController < ApplicationController
 
   def update
     authorize! :update, current_user
-    params[:user] = concatenate_phone_fields
     current_user.update!(user_params)
     redirect_back fallback_location: account_path, flash: { success: current_flash_message }
   rescue ActiveRecord::RecordInvalid
@@ -40,6 +39,11 @@ class UsersController < ApplicationController
     render :edit, status: :bad_request
   end
 
+  def answer_survey
+    current_user.update(survey_answered: true)
+    render json: 'Survey answered', status: 200
+  end
+
   helper_method :current_section
 
   private
@@ -49,9 +53,12 @@ class UsersController < ApplicationController
               then "Nous allons prévenir votre chef d'établissement pour que vous puissiez postuler"
               else 'Compte mis à jour avec succès.'
               end
-    message += "Un courriel a été envoyé à l'ancienne adresse électronique (e-mail). " \
-               "Veuillez cliquer sur le lien contenu dans le courriel pour " \
-               "confirmer votre nouvelle adresse électronique (e-mail)." if current_user.unconfirmed_email
+
+    if current_user.unconfirmed_email
+      message += " Un courriel a été envoyé à l'ancienne adresse électronique (e-mail). " \
+                "Veuillez cliquer sur le lien contenu dans le courriel pour " \
+                "confirmer votre nouvelle adresse électronique (e-mail)." 
+    end
     message = 'Etablissement mis à jour avec succès.' if current_user.school_id_previously_changed?
     message
   end
@@ -59,6 +66,7 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:school_id,
                                  :missing_weeks_school_id,
+                                 :agreement_signatorable,
                                  :first_name,
                                  :last_name,
                                  :email,

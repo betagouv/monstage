@@ -1,0 +1,34 @@
+.onboarding-card.onboarding-card-sm.my-4.fr-p-2w
+  - if @teacher.present?
+    = render 'set_up', current_user: @current_user
+  - else
+    header.header-account
+      h1.h2.text-center = current_user
+
+    .body
+      = form_with(model: resource,
+                    scope: resource_name,
+                    url: password_path(resource_name),
+                    data: { turbo: false },
+                    html: { method: :put}) do |f|
+        = f.rg2a_explain_required_asterisk
+        = render "layouts/form_errors", resource: resource, resource_name: :user
+        = f.hidden_field :reset_password_token
+
+        .form-group.custom-label-container
+          = f.label :password, class: "fr-label" do
+            = t('.new_password')
+            - if @minimum_password_length
+              small.form-text.text-muted= t('devise.shared.minimum_password_length', count: @minimum_password_length)
+            = f.rg2a_required_content_tag
+          = f.password_field :password, autofocus: true, autocomplete: "new-password", class: "fr-input"
+              
+
+        .form-group.custom-label-container
+          = f.label :password_confirmation, class: "fr-label" do
+            = t('.confirm_new_password')
+            = f.rg2a_required_content_tag
+          = f.password_field :password_confirmation, autocomplete: "off", class: "fr-input"
+
+        .actions.d-flex.d-sm-block.text-center.fr-mt-1w
+          = f.submit t(".change_my_password"), class: "fr-btn"

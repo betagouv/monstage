@@ -17,21 +17,8 @@ module InternshipApplications
 
       assert_select "form[action=\"#{internship_offer_internship_application_path(internship_offer, internship_application, transition: :submit!)}\"]"
       assert_select "#submit_application_form[method='post'] input[name='_method'][value='patch']"
-      assert_select '.student-email', internship_application.student.email
-      assert_select '.student-phone', internship_application.student.phone
-    end
-
-    test 'GET #show renders free_date_internship_offer preview for student owning internship_application' do
-      internship_offer = create(:free_date_internship_offer)
-      internship_application = create(:free_date_internship_application, :drafted, internship_offer: internship_offer)
-      sign_in(internship_application.student)
-      get internship_offer_internship_application_path(internship_offer,
-                                                       internship_application)
-      assert_response :success
-      assert_select "form[action=\"#{internship_offer_internship_application_path(internship_offer, internship_application, transition: :submit!)}\"]"
-      assert_select "#submit_application_form[method='post'] input[name='_method'][value='patch']"
-      assert_select '.student-email', internship_application.student.email
-      assert_select '.student-phone', internship_application.student.phone
+      assert_select '.student-email', internship_application.student_email
+      assert_select '.student-phone', internship_application.student_phone
     end
 
     test 'GET #show renders preview for school_manager' do

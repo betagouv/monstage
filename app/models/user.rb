@@ -8,6 +8,11 @@ class User < ApplicationRecord
   include UserAdmin
   include ActiveModel::Dirty
 
+  has_many :favorites
+  
+  # has_many :users_internship_offers
+  # has_many :internship_offers, through: :users_internship_offers
+
   attr_accessor :phone_prefix, :phone_suffix
 
   devise :database_authenticatable, :registerable,
@@ -17,7 +22,7 @@ class User < ApplicationRecord
 
   include DelayedDeviseEmailSender
 
-  before_validation :clean_phone
+  before_validation :concatenate_and_clean
   after_create :send_sms_token
 
   # school_managements includes different roles
@@ -53,15 +58,15 @@ class User < ApplicationRecord
 
   MAX_DAILY_PHONE_RESET = 3
 
+  scope :employers, -> { where(type: 'Users::Employer') }
+
   def channel ; :email end
 
   def default_search_options
     opts = {}
 
     opts = opts.merge(school.default_search_options) if has_relationship?(:school)
-    opts = opts.merge(school_track: school_track) if has_relationship?(:school_track)
-    opts = opts.merge(school_track: :troisieme_generale) if self.is_a?(Users::SchoolManagement)
-    if (has_relationship?(:class_room) && class_room.troisieme_generale?) || self.is_a?(Users::SchoolManagement)
+    if has_relationship?(:class_room) || self.is_a?(Users::SchoolManagement)
       week_ids = school.weeks
                        .where(id: Week.selectable_on_school_year.pluck(:id))
                        .pluck(:id)
@@ -134,7 +139,9 @@ class User < ApplicationRecord
     }
     update_columns(fields_to_reset)
 
-    discard!
+    EmailWhitelist.destroy_by(email: email_for_job)
+
+    discard! unless discarded?
 
     unless email_for_job.blank?
       AnonymizeUserJob.perform_later(email: email_for_job) if send_email
@@ -162,7 +169,7 @@ class User < ApplicationRecord
   end
 
   def send_sms_token
-    return unless phone.present? && student?
+    return unless phone.present? && student? && !created_by_teacher
 
     create_phone_token
     message = "Votre code de validation : #{self.phone_token}"
@@ -201,6 +208,11 @@ class User < ApplicationRecord
   #   class_room.nil?
   # end
 
+  def send_confirmation_instructions
+    return if created_by_teacher
+    super
+  end
+
   def send_reconfirmation_instructions
     @reconfirmation_required = false
     unless @raw_confirmation_token
@@ -209,7 +221,7 @@ class User < ApplicationRecord
     if add_email_to_phone_account?
       self.confirm
     else
-      unless @skip_confirmation_notification
+      unless @skip_confirmation_notification || whitelisted? || created_by_teacher
         devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email })
                      .deliver_later
       end
@@ -224,15 +236,16 @@ class User < ApplicationRecord
   end
 
   def statistician? ; false end
+  def department_statistician? ; false end
   def ministry_statistician? ; false end
   def student? ; false end
   def employer? ; false end
   def operator? ; false end
   def school_management? ; false end
-  def school_manager? ; false end
   def god? ; false end
+  def employer_like? ; false end
 
-  def already_signed?(internship_aggreement_id:); true end
+  def already_signed?(internship_agreement_id:); true end
   def create_signature_phone_token ; nil end
   def send_signature_sms_token ; nil end
   def signatory_role ; nil end
@@ -242,12 +255,50 @@ class User < ApplicationRecord
     Presenters::User.new(self)
   end
 
+  def create_reset_password_token
+    raw, hashed = Devise.token_generator.generate(User, :reset_password_token)
+    self.reset_password_token = hashed
+    self.reset_password_sent_at = Time.now.utc
+    self.save
+    raw
+  end
+  
+  def satisfaction_survey
+    Rails.env.production? ? satisfaction_survey_id : ENV['TALLY_STAGING_SURVEY_ID']
+  end
+
+  def satisfaction_survey_id
+    nil
+  end
+
+  protected
+
+  # TODO : this is to move to a statistician model
+
+  def trigger_agreements_creation
+    if changes[:agreement_signatorable] == [false, true]
+      AgreementsAPosterioriJob.perform_later(user_id: id)
+    end
+  end
+
+  
 
   private
 
+  def concatenate_and_clean
+    # if prefix and suffix phone are given,
+    # this means an update temptative
+    if phone_prefix.present? && !phone_suffix.nil?
+      self.phone = "#{phone_prefix}#{phone_suffix}".gsub(/\s+/, '')
+      self.phone_prefix = nil
+      self.phone_suffix = nil
+    end
+    clean_phone
+  end
+
   def clean_phone
-    self.phone = nil if phone == '+33'
     self.phone = phone.delete(' ') unless phone.nil?
+    self.phone = nil if phone == '+33'
   end
 
   def add_email_to_phone_account?
@@ -267,5 +318,9 @@ class User < ApplicationRecord
         'Il faut conserver un email valide pour assurer la continuité du service'
       )
     end
+  end
+
+  def whitelisted?
+    !!EmailWhitelist.find_by_email(email)
   end
 end

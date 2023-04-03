@@ -16,16 +16,16 @@ li.list-group-item.teachers-list
             span.ml-2= prez.role_name
           p.mb-md-3.mb-sm-2.text-muted
             = image_tag asset_pack_path('media/images/pages/invitations/email_icon.svg'),
-                alt: "personnel inscrit",
-                class: 'mr-2 grey-icon',
-                width: 16
+                        alt: "personnel inscrit",
+                        class: 'mr-2 grey-icon',
+                        width: 16
             span.ml-2 = school_employee.email
 
         .col-lg-6.col-md-5.col-12.d-flex.green-check-room
           - unless school_employee.confirmed_at.nil?
             p.mb-2.align-self-center
               span.text-muted
-                = image_tag asset_pack_path('media/images/pages/statistics/green_check.svg'),
+                = image_tag asset_pack_path('media/images/pages/statistics/ok.svg'),
                             alt: "personnel inscrit",
                             class: 'align-top mr-2',
                             height: 16

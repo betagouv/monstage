@@ -25,10 +25,11 @@
                 class: 'fr-btn btn-danger',
                 data: {turbolinks: false} do
         i.fas.fa-download
-        span =" Exporter les statistiques des offrffffes"
+        span =" Exporter les statistiques des offres"
       - if params[:department] || can?(:export_reporting_dashboard_data, current_user)
         = link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)),
-                  class: 'ml-3 fr-btn btn-danger',
+                  class: "ml-3 fr-btn #{params[:school_year] == '' ? '' : 'btn-danger'}",
+                  disabled: params[:school_year] == '',
                   data: {turbolinks: false} do
           i.fas.fa-download
           span =" Exporter les offres"
@@ -51,8 +52,6 @@
             th= InternshipOffer.human_attribute_name(:total_female_applications_count)
             th= InternshipOffer.human_attribute_name(:total_no_gender_applications_count)
             th.bl-1.bc-light= InternshipOffer.human_attribute_name(:total)
-            th
-              accr title="Cordée de la réussite, parcours d'excellence"= InternshipOffer.human_attribute_name(:total_custom_track_approved_applications_count)
             th= InternshipOffer.human_attribute_name(:total_male_approved_applications_count)
             th= InternshipOffer.human_attribute_name(:total_female_approved_applications_count)
             th.border-right= InternshipOffer.human_attribute_name(:total_no_gender_approved_applications_count)

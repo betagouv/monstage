@@ -24,7 +24,6 @@ module Users
     has_many :internship_agreements, through: :internship_applications
 
     validates :school, presence: true, on: :create
-    validate :only_join_managed_school, on: :create, unless: :school_manager?
     validate :official_uai_email_address, on: :create, if: :school_manager?
     validate :official_email_address, on: :create
 
@@ -79,15 +78,6 @@ module Users
       Signature.signatory_roles[:school_manager] if role == 'school_manager'
     end
 
-    def already_signed?(internship_agreement_id:)
-      return false unless role == 'school_manager'
-
-      InternshipAgreement.joins(:signatures)
-                         .where(id: internship_agreement_id)
-                         .where(signatures: {user_id: id})
-                         .exists?
-    end
-
     def school_management? ; true end
     def school_manager? ; role == 'school_manager' end
 
@@ -98,12 +88,6 @@ module Users
     private
 
     # validators
-    def only_join_managed_school
-      unless school.try(:school_manager).try(:present?)
-        errors.add(:base, "Le chef d'établissement ne s'est pas encore inscrit, il doit s'inscrire pour confirmer les professeurs principaux.")
-      end
-    end
-
     def official_email_address
       return if school_id.blank?
       unless email =~ /\A[^@\s]+@#{school.email_domain_name}\z/
@@ -117,8 +101,10 @@ module Users
     def official_uai_email_address
       return if school_id.blank?
 
-      unless email =~ /\Ace\.\d{7}\S@#{school.email_domain_name}\z/
-        errors.add(:email, "L'adresse email utilisée doit être l'adresse officielle de l'établissement.<br>ex: ce.MON_CODE_UAI@ac-MON_ACADEMIE.fr".html_safe)
+      unless official_uai_email_address?
+        message = "L'adresse email utilisée doit être l'adresse officielle " \
+                  "de l'établissement.<br>ex: ce.MON_CODE_UAI@ac-MON_ACADEMIE.fr"
+        errors.add(:email, message.html_safe)
       end
     end
 
@@ -133,6 +119,14 @@ module Users
                                        member: self)
                            .deliver_later
       end
+    end
+
+    def official_uai_email_address?
+      email =~ /\Ace\.\d{7}\S@#{school.email_domain_name}\z/
+    end
+
+    def satisfaction_survey_id
+      ['teacher', 'main_teacher'].include?(role) ? ENV['TALLY_TEACHER_SURVEY_ID'] : ENV['TALLY_SCHOOL_MANAGEMENT_SURVEY_ID']
     end
   end
 end

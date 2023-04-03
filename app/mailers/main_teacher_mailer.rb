@@ -14,7 +14,9 @@ class MainTeacherMailer < ApplicationMailer
     ).html_safe
     @message = "Aucune convention n'est prévue sur ce site, bon stage à #{@student_presenter.civil_name} !"
 
-    to = main_teacher&.email
+    # TO DO Remove when main_teachers are cleaned
+    main_teachers = @student.class_room.school_managements&.main_teachers
+    to = main_teachers.blank? ? nil : main_teachers.map(&:email)
     subject = "La candidature d'un de vos élèves a été acceptée"
     cc = @student.school_manager_email
 
@@ -32,7 +34,9 @@ class MainTeacherMailer < ApplicationMailer
       mtm_kwd: 'email'
     ).html_safe
 
-    to = main_teacher&.email
+    # TO DO Remove when main_teachers are cleaned
+    main_teachers = @student.class_room.school_managements&.main_teachers    
+    to = main_teachers.blank? ? nil : main_teachers.map(&:email)
     subject = "Un de vos élèves a été accepté à un stage"
     cc = nil
 

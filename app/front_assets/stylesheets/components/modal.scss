@@ -13,6 +13,7 @@
 }
 .alert.alert-sticky.alert-warning{
   background-color: var(--warning);
+  color: var(--grey-900);
 }
 .alert.alert-sticky.alert-danger{
   background-color: $red-marianne;

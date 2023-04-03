@@ -22,19 +22,11 @@ module Dashboard
                internship_offer: create(:weekly_internship_offer,
                                         employer: @employer))
       end
-      free_date_internship_applications = AASM_STATES.map do |state|
-        create(:free_date_internship_application,
-               state,
-               internship_offer: create(:free_date_internship_offer,
-                                        employer: @employer))
-      end
 
       sign_in(@employer)
       visit dashboard_internship_offers_path
 
-      [].concat(weekly_internship_applications,
-                free_date_internship_applications)
-        .map do |internship_application|
+      weekly_internship_applications.each do |internship_application|
         internship_offer = internship_application.internship_offer
         find(".test-internship-offer-#{internship_offer.id}")
       end
@@ -49,7 +41,7 @@ module Dashboard
       visit dashboard_internship_offer_internship_applications_path(weekly_internship_application.internship_offer)
       find "div[data-test-id=\"internship-application-#{weekly_internship_application.id}\"]"
       click_link('+ Tout afficher')
-      click_on 'Accepter' 
+      click_on 'Accepter'
       assert_changes -> { weekly_internship_application.reload.approved? },
                      from: false,
                      to: true do
@@ -108,7 +100,7 @@ module Dashboard
       find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]"
 
       click_link(internship_offer.title)
-      find('div.h3', text: internship_offer.title, exact_text: true)
+      find('.h3', text: internship_offer.title, exact_text: true)
     end
 
     test 'weekly_internship_applications show student details anyway' do
@@ -142,24 +134,7 @@ module Dashboard
       click_button('Confirmer')
       click_link('+ Tout afficher')
       find('.student-name', text: "#{student_1.first_name} #{student_1.last_name}")
-      find('.student-email', text: student_1.email)
-    end
-
-    test 'show free_date_internship_applications internship offers' do
-      free_date_internship_application = create(:free_date_internship_application,
-                                                :submitted,
-                                                internship_offer: create(:free_date_internship_offer, employer: @employer))
-      sign_in(@employer)
-
-      visit dashboard_internship_offer_internship_applications_path(free_date_internship_application.internship_offer)
-      find "div[data-test-id=\"internship-application-#{free_date_internship_application.id}\"]"
-      click_on 'Refuser'
-      assert_changes -> { free_date_internship_application.reload.rejected? },
-                     from: false,
-                     to: true do
-        click_on 'Confirmer'
-        find '#alert-text', text: 'Candidature mise à jour avec succès'
-      end
+      find('.student-email', text: application_for_week_1.student_email)
     end
   end
 end

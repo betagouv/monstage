@@ -85,41 +85,6 @@
                         remote_achieved: "4 527",
                         total_achieved: "19 251" }
 
-
-  / .row.mt-5.mb-3
-  /   .col-12.text-center
-  /     = image_tag asset_pack_path('media/images/pages/statistics/reseau.png'),
-  /                 alt: "Le réseau",
-  /                 height: 47
-  /     br
-  /     h1.h6.pt-2.mb-0 Année scolaire 2019 / 2020
-  /     h2.h4.text-dark Le réseau
-  / .row
-  / .row.mt-3
-  /   .col-12.text-center
-  /     |Pour cette année scolaire, les deux entreprises
-  /     br
-  /     | signataires du PaQte les plus actives ont été :
-  / .row.mt-4
-  /   = render partial: 'pages/statistics/best_partners',
-  /             locals: { entreprise_name: 'La Poste',
-  /                       image: 'la_poste.png',
-  /                       bg_height: '110px',
-  /                       offers_proposed_count: 1340,
-  /                       accepted_offers_count: 354}
-  /   = render partial: 'pages/statistics/best_partners',
-  /             locals: { entreprise_name: 'Carrefour',
-  /                       image: 'carrefour.png',
-  /                       bg_height: '110px',
-  /                       offers_proposed_count: 800,
-  /                       accepted_offers_count: 288}
-  / .row.mb-5.mt-2
-  /   .col-12.text-center
-  /     p Ces chiffres décomptent des accueils de stagiaires en présentiel uniquement
-
-
-  / 2020 / 2021
-
   .hr.my-5
 
   .row.my-5

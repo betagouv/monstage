@@ -17,8 +17,8 @@ FactoryBot.define do
     factory :student, class: 'Users::Student', parent: :user do
       type { 'Users::Student' }
 
-      first_name { FFaker::NameFR.first_name  }
-      last_name { FFaker::NameFR.last_name }
+      first_name { FFaker::NameFR.first_name.capitalize  }
+      last_name { FFaker::NameFR.last_name.capitalize }
       gender { 'm' }
       birth_date { 14.years.ago }
       school { create(:school, :with_school_manager) }
@@ -93,26 +93,41 @@ FactoryBot.define do
       sequence(:email) { |n| "lautre.#{n}@#{school.email_domain_name}" }
     end
 
-    factory :statistician, class: 'Users::Statistician', parent: :user do
-      type { 'Users::Statistician' }
+    factory :statistician, class: 'Users::PrefectureStatistician', parent: :user do
+      type { 'Users::PrefectureStatistician' }
+      agreement_signatorable { false }
       before(:create) do |user|
         create(:statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
       end
     end
 
+    factory :education_statistician, class: 'Users::EducationStatistician', parent: :user do
+      type { 'Users::EducationStatistician' }
+      agreement_signatorable { false }
+      before(:create) do |user|
+        create(:education_statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
+      end
+    end
+
     factory :ministry_statistician, class: 'Users::MinistryStatistician', parent: :user do
+      type { 'Users::MinistryStatistician' }
+      agreement_signatorable { false }
       transient do
         white_list { create(:ministry_statistician_email_whitelist) }
       end
-      type { 'Users::MinistryStatistician' }
       email { white_list.email }
-      ministry_id { white_list.group.id }
     end
 
     factory :user_operator, class: 'Users::Operator', parent: :user do
       type { 'Users::Operator' }
       operator
       api_token { SecureRandom.uuid }
+
+      trait :fully_authorized do
+        after(:create) do |user|
+          user.operator.update(api_full_access: true)
+        end
+      end
     end
 
 
@@ -121,15 +136,7 @@ FactoryBot.define do
     #
     # traits to create a student[with a school] having a specific class_rooms
     trait :troisieme_generale do
-      class_room { build(:class_room, :troisieme_generale, school: school) }
-    end
-
-    trait :troisieme_segpa do
-      class_room { build(:class_room, :troisieme_segpa, school: school) }
-    end
-
-    trait :troisieme_prepa_metiers do
-      class_room { build(:class_room, :troisieme_prepa_metiers, school: school) }
+      class_room { build(:class_room, school: school) }
     end
   end
 end

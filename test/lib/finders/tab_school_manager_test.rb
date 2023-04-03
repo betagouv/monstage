@@ -19,5 +19,75 @@ module Finders
       school_tab = TabSchoolManager.new(school: school)
       assert_equal 1, school_tab.pending_agreements_count
     end
+
+    test '.pending_agreements_count with 1 signature by school_manager' do
+      school           = create(:school, :with_school_manager)
+      school_manager   = school.school_manager
+      internship_offer = create(:weekly_internship_offer)
+      status_count     = InternshipAgreement.aasm.states.count
+      status_count.times do
+        student = create(:student, school: school)
+        wio = create(:weekly_internship_offer)
+        create(
+          :weekly_internship_application,
+          :submitted,
+          internship_offer: wio,
+          student: student
+        )
+      end
+      InternshipAgreement.aasm.states.each_with_index do |state, index|
+        create(
+          :internship_agreement,
+          aasm_state: state.name.to_sym,
+          internship_application: InternshipApplication.all.to_a[index],
+        )
+      end
+      create(
+        :signature,
+        signatory_role: 'school_manager', # test specfic case
+        internship_agreement_id: InternshipAgreement.find_by(aasm_state: :signatures_started).id
+      )
+      tab_value = TabSchoolManager.new(school: school).pending_agreements_count
+      assert_equal 3, tab_value
+      # 1 for :draft
+      # 1 for :started_by_employer
+      # 1 for :validated
+      # 0 for :signatures_started
+    end
+
+    test '.pending_agreements_count with 1 signature by employer' do
+      school           = create(:school, :with_school_manager)
+      school_manager   = school.school_manager
+      internship_offer = create(:weekly_internship_offer)
+      status_count     = InternshipAgreement.aasm.states.count
+      status_count.times do
+        student = create(:student, school: school)
+        wio = create(:weekly_internship_offer)
+        create(
+          :weekly_internship_application,
+          :submitted,
+          internship_offer: wio,
+          student: student
+        )
+      end
+      InternshipAgreement.aasm.states.each_with_index do |state, index|
+        create(
+          :internship_agreement,
+          aasm_state: state.name.to_sym,
+          internship_application: InternshipApplication.all.to_a[index],
+        )
+      end
+      create(
+        :signature,
+        signatory_role: 'employer', # test specfic case
+        internship_agreement_id: InternshipAgreement.find_by(aasm_state: :signatures_started).id
+      )
+      tab_value = TabSchoolManager.new(school: school).pending_agreements_count
+      assert_equal 4, tab_value
+      # 1 for :draft
+      # 1 for :started_by_employer
+      # 1 for :validated
+      # 1 for :signatures_started
+    end
   end
 end

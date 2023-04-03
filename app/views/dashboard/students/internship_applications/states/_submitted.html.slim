@@ -1,9 +1,6 @@
-.alert.alert-info.alert-outlined.px-1.py-2
-  .row.align-items-center.no-gutters
-    .col-1.col-sm-auto.text-center.mr-2
-      i.fas.fa-hourglass-start
-    .col
-      span.alert-internship-application-state= "Candidature envoyée le #{localize(internship_application.submitted_at, format: :human_mm_dd)}."
-      - if internship_application.submitted?
-        br
-        span= "En attente de réponse"
+.fr-alert.fr-alert--info
+  h3.fr-alert__title
+    = "Candidature envoyée le #{localize(internship_application.submitted_at, format: :human_mm_dd)}."
+  - if internship_application.submitted?
+    p= "En attente de réponse"
+        

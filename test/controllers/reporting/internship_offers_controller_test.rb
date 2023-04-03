@@ -83,7 +83,6 @@ module Reporting
         assert_equal 3, retrieve_html_value('test-total-male-applications', 'test-total-female-applications', response)
         assert_equal 1, retrieve_html_value('test-total-female-applications','test-approved-applications', response)
         assert_equal 0, retrieve_html_value('test-total-no-gender-applications','test-approved-applications', response)
-        assert_equal 1, retrieve_html_value('test-approved-applications','test-custom-track-approved-applications', response)
         assert_equal 1, retrieve_html_value('test-male-approved-applications', 'test-approved-applications', response)
         assert_equal 0, retrieve_html_value('test-female-approved-applications', 'test-male-approved-applications', response)
         assert_equal 0, retrieve_html_value('test-no-gender-approved-applications', 'test-male-approved-applications', response)
@@ -95,7 +94,6 @@ module Reporting
         assert_equal 2, retrieve_html_value('test-total-male-applications', 'test-total-female-applications', response)
         assert_equal 1, retrieve_html_value('test-total-female-applications','test-approved-applications', response)
         assert_equal 0, retrieve_html_value('test-total-no-gender-applications','test-approved-applications', response)
-        assert_equal 1, retrieve_html_value('test-approved-applications','test-custom-track-approved-applications', response)
         assert_equal 1, retrieve_html_value('test-male-approved-applications', 'test-approved-applications', response)
         assert_equal 0, retrieve_html_value('test-female-approved-applications', 'test-male-approved-applications', response)
         assert_equal 0, retrieve_html_value('test-no-gender-approved-applications', 'test-male-approved-applications', response)
@@ -116,7 +114,6 @@ module Reporting
         assert_equal 2, retrieve_html_value('test-total-male-applications', 'test-total-female-applications', response)
         assert_equal 1, retrieve_html_value('test-total-female-applications','test-approved-applications', response)
         assert_equal 0, retrieve_html_value('test-total-no-gender-applications','test-approved-applications', response)
-        assert_equal 1, retrieve_html_value('test-approved-applications','test-custom-track-approved-applications', response)
         assert_equal 1, retrieve_html_value('test-male-approved-applications', 'test-approved-applications', response)
         assert_equal 0, retrieve_html_value('test-female-approved-applications', 'test-male-approved-applications', response)
         assert_equal 0, retrieve_html_value('test-no-gender-approved-applications', 'test-male-approved-applications', response)
@@ -144,6 +141,7 @@ module Reporting
         sector: :index_stats
       }.each_pair do |dimension, template|
         get(reporting_internship_offers_path(dimension: dimension,
+                                             school_year: 2022,
                                              format: :xlsx))
         assert_response :success
         assert_template template
@@ -158,7 +156,9 @@ module Reporting
       sign_in(god)
 
       get(reporting_internship_offers_path(dimension: 'offers',
-                                             format: :xlsx, school_year: 2019, department: 'Paris'))
+                                           format: :xlsx,
+                                           school_year: 2019,
+                                           department: 'Paris'))
       assert_response 302
       assert_redirected_to reporting_dashboards_path(department: 'Paris', school_year: 2019)
     end

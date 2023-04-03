@@ -5,9 +5,6 @@ import ReactOnRails from 'react-on-rails';
 import { Application } from 'stimulus';
 import { definitionsFromContext } from 'stimulus/webpack-helpers';
 
-// icons
-import 'fonts/fontawesome';
-
 Rails.start();
 const application = Application.start()
 
@@ -19,9 +16,13 @@ const componentRequireContext = require.context("components", true);
 
 import ReservedSchoolInput from "components/ReservedSchoolInput";
 import InternshipOfferResults from "components/InternshipOfferResults";
+import InternshipOfferFavorites from "components/InternshipOfferFavorites";
 import InternshipOfferCard from "components/InternshipOfferCard";
+import InternshipOfferFavoriteButton from "components/InternshipOfferFavoriteButton";
+import FlashMessage from "components/FlashMessage";
 import SearchSchool from "components/SearchSchool";
 import SearchSchoolByName from "components/SearchSchoolByName";
+import Map from "components/Map";
 
 import CityInput from "components/search_internship_offer/CityInput";
 import KeywordInput from "components/search_internship_offer/KeywordInput";
@@ -36,7 +37,10 @@ import AddressInput from "components/inputs/AddressInput";
 ReactOnRails.register({
   ReservedSchoolInput,
   InternshipOfferResults,
+  InternshipOfferFavorites,
   InternshipOfferCard,
+  InternshipOfferFavoriteButton,
+  FlashMessage,
   SearchSchool,
   SearchSchoolByName,
   DistanceIcon,
@@ -45,5 +49,6 @@ ReactOnRails.register({
   CountryPhoneSelect,
   AddressInput,
   FullAddressInput,
-  SirenInput
+  SirenInput,
+  Map,
 });

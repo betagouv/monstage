@@ -34,8 +34,6 @@ module Reporting
         'sum(total_female_applications_count)',
       approved_applications_count:
         'sum(approved_applications_count)',
-      total_custom_track_approved_applications_count:
-        'sum(total_custom_track_approved_applications_count)',
       total_male_approved_applications_count:
         'sum(total_male_approved_applications_count)',
       total_female_approved_applications_count:
@@ -76,7 +74,9 @@ module Reporting
     }
 
     scope :limited_to_ministry, lambda { |user:|
-      where(group_id: user.ministry_id)
+      return none unless user.ministry_statistician?
+
+      where(group_id: user.ministries.map(&:id))
     }
 
     scope :by_group, lambda { |group_id:|
@@ -85,10 +85,6 @@ module Reporting
 
     scope :by_academy, lambda { |academy:|
       where(academy: academy)
-    }
-
-    scope :by_school_track, lambda { |school_track:|
-      where(school_track: school_track)
     }
 
     scope :dimension_offer, lambda {

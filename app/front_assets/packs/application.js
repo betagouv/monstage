@@ -22,27 +22,8 @@ import '@gouvfr/dsfr/dist/utility/icons/icons-business/icons-business.css';
 import '@gouvfr/dsfr/dist/utility/icons/icons-design/icons-design.css';
 import '@gouvfr/dsfr/dist/utility/icons/icons-document/icons-document.css';
 import '@gouvfr/dsfr/dist/utility/icons/icons-media/icons-media.css';
-
-import '@gouvfr/dsfr/dist/fonts/Marianne-Bold_Italic.woff'
-import '@gouvfr/dsfr/dist/fonts/Marianne-Bold_Italic.woff2'
-import '@gouvfr/dsfr/dist/fonts/Marianne-Light_Italic.woff'
-import '@gouvfr/dsfr/dist/fonts/Marianne-Light_Italic.woff2'
-import '@gouvfr/dsfr/dist/fonts/Marianne-Medium_Italic.woff'
-import '@gouvfr/dsfr/dist/fonts/Marianne-Medium_Italic.woff2'
-import '@gouvfr/dsfr/dist/fonts/Marianne-Regular_Italic.woff'
-import '@gouvfr/dsfr/dist/fonts/Marianne-Regular_Italic.woff2'
-import '@gouvfr/dsfr/dist/fonts/Marianne-Regular.woff'
-import '@gouvfr/dsfr/dist/fonts/Marianne-Regular.woff2'
-import '@gouvfr/dsfr/dist/fonts/Marianne-Medium.woff'
-import '@gouvfr/dsfr/dist/fonts/Marianne-Medium.woff2'
-import '@gouvfr/dsfr/dist/fonts/Marianne-Light.woff'
-import '@gouvfr/dsfr/dist/fonts/Marianne-Light.woff2'
-import '@gouvfr/dsfr/dist/fonts/Marianne-Bold.woff'
-import '@gouvfr/dsfr/dist/fonts/Marianne-Bold.woff2'
-import '@gouvfr/dsfr/dist/fonts/Spectral-Regular.woff'
-import '@gouvfr/dsfr/dist/fonts/Spectral-Regular.woff2'
-import '@gouvfr/dsfr/dist/fonts/Spectral-ExtraBold.woff'
-import '@gouvfr/dsfr/dist/fonts/Spectral-ExtraBold.woff2'
+import '@gouvfr/dsfr/dist/utility/colors/colors.css';
+import '@gouvfr/dsfr/dist/utility/icons/icons-map/icons-map.css';
 
 import '@gouvfr/dsfr/dist/dsfr.module.js';
 
@@ -68,6 +49,4 @@ import '../leaflet-providers';
 
 import '../utils/zammad_form';
 
-import '../utils/confirm'
-
-
+import '../utils/confirm';
