@@ -1,5 +1,5 @@
 .fr-toggle data-controller='toggle-publish'
-  - options = { id: "axe-#{id}", class: 'fr-toggle__input', :'aria-describedby' => "#{id}-hint-text"}
+  - options = { id: "axe-#{id}", class: 'fr-toggle__input', :'aria-describedby' => "#{id}-hint-text", title: 'Publier / Masquer'}
   - options.merge!({ data: { action: 'change->toggle-publish#toggle', :'toggle-publish-target' => 'checkToggle' }}) if submit
   = check_box_tag 'toggle_publish',
                    published,

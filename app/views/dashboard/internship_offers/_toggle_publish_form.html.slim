@@ -1,4 +1,4 @@
-div id="toggle_status_#{dom_id(internship_offer)}"
+div id="toggle_status_#{dom_id(internship_offer)}"  name="toggle_status_#{dom_id(internship_offer)}"
   - published = internship_offer.published?
   - no_updates_mandatory = !internship_offer.requires_update_at_toggle_time?
   - toggled_published_at = (published == true) ? 'nil' : Time.zone.now
@@ -12,6 +12,7 @@ div id="toggle_status_#{dom_id(internship_offer)}"
         = link_to dashboard_internship_offer_path(internship_offer.to_param, internship_offer: {published_at: toggled_published_at}),
                   class: '',
                   data: { turbo: true },
+                  title: 'Publier / Masquer',
                   method: :patch do
           = render 'toggle_publish_element',
                     published: published,
