@@ -11,20 +11,6 @@
             p Seul le personnel actuel de l'établissement doit figurer sur cette liste. Vérifiez qu'elle est bien à jour.
 
 - if @school.has_staff?
-  - info = "Assurez-vous que chacun fait partie de l'établissement. " \
-           "Sinon, vous pouvez supprimer leur compte."
-  .row.px-0.mt-3
-    .col-12
-      .alert.mx-n3.alert-info.py-3.bg-blue-50 role="alert"
-        .row.no-gutters
-          .col-12.d-none.d-lg-block
-            i.fa.fa-info-circle
-            span.ml-3.font-weight-bolder = info
-          .col-1.d-lg-none
-            i.fa.fa-info-circle
-          .col-11.d-lg-none
-            span.font-weight-bolder = info
-
   .row
     .col-12
       ul.list-group.mx-n3

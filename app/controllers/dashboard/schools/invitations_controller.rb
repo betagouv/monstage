@@ -16,7 +16,7 @@ module Dashboard
 
         @invitation = current_user.invitations.build(invitation_params)
         @invitation.sent_at = Time.now
-        if @invitation.save && invite_staff(invitation: @invitation, from: current_user)
+        if @invitation.save! && invite_staff(invitation: @invitation, from: current_user)
           success_message = "un message d'invitation à " \
                             "#{@invitation.first_name} #{@invitation.last_name} " \
                             "vient d'être envoyé"

@@ -6,7 +6,7 @@ class InvitationTest < ActiveSupport::TestCase
     params = {
       first_name: 'Pablo',
       last_name: 'Picasso',
-      email: 'pablo@heavens.com',
+      email: 'pablo@ac-paris.fr',
       user_id: school_manager.id,
       role: 'teacher'
     }
@@ -15,7 +15,7 @@ class InvitationTest < ActiveSupport::TestCase
     invitation.save!
     assert_equal 'Pablo', invitation.first_name
     assert_equal 'Picasso', invitation.last_name
-    assert_equal 'pablo@heavens.com', invitation.email
+    assert_equal 'pablo@ac-paris.fr', invitation.email
     assert_equal 'teacher', invitation.role
     assert_equal school_manager.id, invitation.user_id
   end
@@ -24,7 +24,7 @@ class InvitationTest < ActiveSupport::TestCase
     school_manager = create(:school_manager)
     params = {
       last_name: 'Pablo',
-      email: 'pablo@heavens.com',
+      email: 'pablo@ac-paris.fr',
       user_id: school_manager.id,
       role: 'teacher'
     }
@@ -36,7 +36,7 @@ class InvitationTest < ActiveSupport::TestCase
     school_manager = create(:school_manager)
     params = {
       first_name: 'Pablo',
-      email: 'pablo@heavens.com',
+      email: 'pablo@ac-paris.fr',
       user_id: school_manager.id,
       role: 'teacher'
     }
@@ -61,7 +61,7 @@ class InvitationTest < ActiveSupport::TestCase
     params = {
       first_name: 'Pablo',
       last_name: 'Picasso',
-      email: 'pabloheavens.com',
+      email: 'pabloac-paris.fr',
       user_id: school_manager.id,
       role: 'teacher'
     }
@@ -74,7 +74,7 @@ class InvitationTest < ActiveSupport::TestCase
     params = {
       first_name: 'Pablo',
       last_name: 'Picasso',
-      email:'pablo@heavens.com',
+      email:'pablo@ac-paris.fr',
       user_id: school_manager.id
     }
     invitation = Invitation.new(params)
@@ -86,7 +86,7 @@ class InvitationTest < ActiveSupport::TestCase
     params = {
       first_name: 'Pablo',
       last_name: 'Picasso',
-      email: 'pablo@heavens.com',
+      email: 'pablo@ac-paris.fr',
       role: 'teacher'
     }
     invitation = Invitation.new(params)

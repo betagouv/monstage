@@ -11,7 +11,20 @@ class Invitation < ApplicationRecord
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :role, presence: true
-  validates :email,
-            format: { with: Devise.email_regexp },
-            on: :create
+  validate  :official_email_address
+
+
+  private
+
+  # validators
+  def official_email_address
+    return if school_manager.school.blank? || school_manager.email.nil?
+
+    unless self.email.split('@').second == school_manager.school.email_domain_name
+      errors.add(
+        :email,
+        "L'adresse email utilisée doit être officielle.<br>ex: XXXX@ac-academie.fr".html_safe
+      )
+    end
+  end
 end
