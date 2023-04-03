@@ -36,7 +36,7 @@ Rails.application.routes.draw do
     end
     
     resources :identities, path: 'identites', only: %i[new create edit update]
-    resources :schools, only: %i[new create ]
+    resources :schools, path: 'ecoles',only: %i[new create ]
 
     resources :internship_offer_keywords, only: [] do
       collection do
