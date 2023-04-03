@@ -3,7 +3,7 @@ class InvitationMailer < ApplicationMailer
 
     @from        = from.email
     @school_name = from.school.name
-    @from_name   = from.formal_name
+    @from_name   = from.presenter.formal_name
     @invitation  = invitation
     @to          = invitation.email
     @role        = invitation.role

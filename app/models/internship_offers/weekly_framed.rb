@@ -3,7 +3,6 @@
 module InternshipOffers
   class WeeklyFramed < InternshipOffer
     include WeeklyFramable
-    include ActiveAdminable
 
     after_initialize :init
     before_create :reverse_academy_by_zipcode
