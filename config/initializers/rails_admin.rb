@@ -107,7 +107,7 @@ RailsAdmin.config do |config|
                               Users::God]
 
   config.navigation_static_links = {
-    "Ajouter un établissement" => "/schools/new",
+    "Ajouter un établissement" => "/ecoles/nouveau",
     "Stats" => stats_path,
     "Sidekiq" => "/sidekiq",
     "Zammad (Support)" => "https://monstage.zammad.com",
