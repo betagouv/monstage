@@ -3,6 +3,7 @@
 module Dashboard
   class InternshipOffersController < ApplicationController
     before_action :authenticate_user!
+    before_action :set_internship_offer, only: %i[edit update destroy republish]
     helper_method :order_direction
 
     def index
@@ -14,6 +15,8 @@ module Dashboard
 
     # duplicate submit
     def create
+      authorize! :create, InternshipOffer
+      # render :edit, status: :bad_request if params[:internship_offer].blank?
       internship_offer_builder.create(params: internship_offer_params) do |on|
         on.success do |created_internship_offer|
           success_message = if params[:commit] == 'Renouveler l\'offre'
@@ -38,13 +41,28 @@ module Dashboard
     end
 
     def edit
-      @internship_offer = InternshipOffer.find(params[:id])
       authorize! :update, @internship_offer
-      @available_weeks = @internship_offer.available_weeks
+      @republish = true if params[:republish]
+      @available_weeks = @internship_offer.available_weeks_when_editing
+    end
+
+    def republish
+      anchor = "max_candidates_fields"
+      warning = "Votre annonce n'est pas encore republiée, car il faut ajouter des places et des semaines de stage"
+
+      if (@internship_offer.remaining_seats_count.zero?) && !@internship_offer.missing_weeks_info?
+        warning = "Votre annonce n'est pas encore republiée, car il faut ajouter des places de stage"
+      elsif (@internship_offer.remaining_seats_count > 0) && @internship_offer.missing_weeks_info?
+        anchor = "weeks_container"
+        warning = "Votre annonce n'est pas encore republiée, car il faut ajouter des semaines de stage"
+      end
+      redirect_to edit_dashboard_internship_offer_path(@internship_offer, anchor: anchor, republish: true),
+                  flash: { warning: warning}
     end
 
     def update
-      internship_offer_builder.update(instance: InternshipOffer.find(params[:id]),
+      authorize! :update, @internship_offer
+      internship_offer_builder.update(instance: @internship_offer,
                                       params: internship_offer_params) do |on|
 
       on.success do |updated_internship_offer|
@@ -61,7 +79,7 @@ module Dashboard
         respond_to do |format|
           format.html do
             @internship_offer = failed_internship_offer
-            @available_weeks = failed_internship_offer.available_weeks
+            @available_weeks = failed_internship_offer.available_weeks_when_editing
             render :edit, status: :bad_request
           end
         end
@@ -69,8 +87,7 @@ module Dashboard
       rescue ActionController::ParameterMissing
         respond_to do |format|
           format.html do
-            @internship_offer = InternshipOffer.find(params[:id])
-            @available_weeks = @internship_offer.available_weeks
+            @available_weeks = @internship_offer.available_weeks_when_editing
             render :edit, status: :bad_request
           end
         end
@@ -78,7 +95,7 @@ module Dashboard
     end
 
     def destroy
-      internship_offer_builder.discard(instance: InternshipOffer.find(params[:id])) do |on|
+      internship_offer_builder.discard(instance: @internship_offer) do |on|
         on.success do
           redirect_to(dashboard_internship_offers_path,
                       flash: { success: 'Votre annonce a bien été supprimée' })
@@ -101,19 +118,15 @@ module Dashboard
         @internship_offer = internship_offer.duplicate
       end
 
-      @available_weeks = Week.selectable_from_now_until_end_of_school_year
+      @available_weeks = Week.selectable_from_now_until_next_school_year
     end
 
     private
 
     VALID_ORDER_COLUMNS = %w[
       title
-      view_count
-      rejected_applications_count
       approved_applications_count
-      submitted_applications_count
-      convention_signed_applications_count
-      total_applications_count
+      remaining_seats_count
     ].freeze
 
     def valid_order_column?
@@ -148,8 +161,9 @@ module Dashboard
     end
 
     def order_direction
-      return params[:direction] if params[:direction] && %w[asc
-                                                            desc].include?(params[:direction])
+      if params[:direction] && %w[asc desc].include?(params[:direction])
+        return params[:direction]
+      end
 
       :desc
     end
@@ -165,11 +179,16 @@ module Dashboard
                     :max_students_per_group, :tutor_name, :tutor_phone, :tutor_role,
                     :tutor_email, :employer_website, :employer_name, :street,
                     :zipcode, :city, :department, :region, :academy, :renewed,
-                    :is_public, :group_id, :published_at, :type,
+                    :is_public, :group_id, :published_at, :republish, :type,
                     :employer_id, :employer_type, :school_id, :verb,
-                    :employer_description_rich_text, :siret, :employer_manual_enter,
-                    :weekly_lunch_break, coordinates: {}, week_ids: [],
+                    :employer_description_rich_text, :siret, :user_update,
+                    :employer_manual_enter, :weekly_lunch_break,
+                    coordinates: {}, week_ids: [],
                     new_daily_hours: {}, daily_lunch_break: {}, weekly_hours:[])
+    end
+
+    def set_internship_offer
+      @internship_offer = InternshipOffer.find(params[:id])
     end
   end
 end

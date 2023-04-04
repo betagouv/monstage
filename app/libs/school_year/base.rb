@@ -10,9 +10,9 @@ module SchoolYear
 
     def strict_beginning_of_period
       case current_month
-      when january_to_may, june_to_august
+      when january_to_may
         Date.new(current_year - 1, 9, 1)
-      when september_to_december
+      when september_to_december, june_to_august
         Date.new(current_year, 9, 1)
       end
     end

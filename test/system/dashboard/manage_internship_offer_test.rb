@@ -130,6 +130,39 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     )
   end
 
+  test "Employer can edit internship offer when it's missing weeks" do
+    employer = create(:employer)
+    current_internship_offer = nil
+    travel_to(Date.new(2019, 10,1)) do
+      older_weeks = [Week.selectable_from_now_until_end_of_school_year.first]
+      current_internship_offer = create(
+        :weekly_internship_offer,
+        employer: employer,
+        weeks: older_weeks,
+        published_at: nil
+      )
+    end
+    travel_to(Date.new(2021, 9, 1)) do
+      sign_in(employer)
+      visit dashboard_internship_offers_path(internship_offer: current_internship_offer)
+      page.find("a[data-test-id=\"#{current_internship_offer.id}\"]").click
+      find(".test-edit-button").click
+      find('h1', text: "Modifier une offre")
+      click_button('Modifier l\'offre')
+      find("#error_explanation p", text: "Une erreur à corriger :")
+      find("#error_explanation li label", text: "Vous devez sélectionner au moins une semaine dans le futur")
+
+      within(".custom-control-checkbox-list") do
+        find("label[for='internship_offer_week_ids_142_checkbox']").click
+      end
+      click_button('Modifier l\'offre')
+      assert_selector(
+        "#alert-text",
+        text: "Votre annonce a bien été modifiée"
+      )
+    end
+  end
+
   test 'Employer can filter internship_offers from dashboard filters' do
     if ENV['RUN_BRITTLE_TEST']
       travel_to(Date.new(2020, 10, 10)) do
@@ -188,7 +221,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
         select('2019/2020', from: "Années scolaires")
         find('.active', text: "Passées")
         assert_equal 2, all(".test-internship-offer").count
-        
+
         select('2020/2021', from: "Années scolaires")
         sleep 0.5
         find('.active', text: "Passées")

@@ -40,33 +40,37 @@ module InternshipApplications
     end
 
     test 'is not applicable twice on same week by same student' do
-      weeks = [Week.find_by(number: 1, year: 2019)]
-      student = create(:student)
-      internship_offer = create(:weekly_internship_offer, weeks: weeks)
-      internship_application_1 = create(:weekly_internship_application, student: student,
+      travel_to Date.new(2019, 1, 1) do
+        weeks = Week.selectable_from_now_until_end_of_school_year.first(2).last(1)
+        student = create(:student)
+        internship_offer = create(:weekly_internship_offer, weeks: weeks)
+        internship_application_1 = create(:weekly_internship_application, student: student,
+                                                                          internship_offer: internship_offer,
+                                                                          week: internship_offer.internship_offer_weeks.first.week)
+        assert internship_application_1.valid?
+        internship_application_2 = build(:weekly_internship_application, student: student,
                                                                         internship_offer: internship_offer,
                                                                         week: internship_offer.internship_offer_weeks.first.week)
-      assert internship_application_1.valid?
-      internship_application_2 = build(:weekly_internship_application, student: student,
-                                                                       internship_offer: internship_offer,
-                                                                       week: internship_offer.internship_offer_weeks.first.week)
-      refute internship_application_2.valid?
+        refute internship_application_2.valid?
+      end
     end
 
     test 'is not applicable twice on different week by same student' do
-      weeks = [Week.find_by(number: 1, year: 2019), Week.find_by(number: 2, year: 2019)]
-      student = create(:student)
-      internship_offer = create(:weekly_internship_offer, weeks: weeks)
-      internship_application_1 = create(:weekly_internship_application,
+      weeks = Week.selectable_from_now_until_end_of_school_year.first(3).last(2)
+      travel_to Date.new(2019, 1, 1) do
+        student = create(:student)
+        internship_offer = create(:weekly_internship_offer, weeks: weeks)
+        internship_application_1 = create(:weekly_internship_application,
+                                          internship_offer: internship_offer,
+                                          student: student,
+                                          week: weeks.first)
+        assert internship_application_1.valid?
+        internship_application_2 = build(:weekly_internship_application,
                                         internship_offer: internship_offer,
                                         student: student,
-                                        week: internship_offer.weeks.first)
-      assert internship_application_1.valid?
-      internship_application_2 = build(:weekly_internship_application,
-                                       internship_offer: internship_offer,
-                                       student: student,
-                                       week: internship_offer.internship_offer_weeks.first.week)
-      refute internship_application_2.valid?
+                                        week: internship_offer.internship_offer_weeks.first.week)
+        refute internship_application_2.valid?
+      end
     end
 
     test 'application updates remaining_seats_count along with approved applications' do
@@ -80,10 +84,13 @@ module InternshipApplications
       assert_equal "submitted", application.aasm_state
       assert_equal offer.max_candidates, offer.reload.remaining_seats_count
 
+      offer.unpublish! # avoids requires_update validation
       application.approve!
       assert_equal "approved", application.aasm_state
       assert_equal 1, application.internship_offer.internship_offer_weeks.first.blocked_applications_count
-      assert_equal offer.max_candidates - 1, offer.reload.remaining_seats_count
+      offer.reload
+      assert_equal 1, offer.max_candidates 
+      assert_equal 0, offer.remaining_seats_count
     end
 
     test 'application updates offer favorites along with approved applications' do

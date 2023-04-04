@@ -3,7 +3,11 @@ tr class="test-internship-offer test-internship-offer-#{employer_internship_offe
     = link_to internship_offer_path(employer_internship_offer, origine: 'dashboard'),
               data: { "test-id": "#{employer_internship_offer.id}" },
               class: 'text-dark' do
-      p.internship-item-title.fr-pl-1v.mb-0= employer_internship_offer.title
+      p.internship-item-title.fr-pl-1v.mb-0
+        = employer_internship_offer.title
+        br
+        = employer_internship_offer.city.capitalize
+
 
   - ok_applications_count = cols[:approved_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')
   td.text-center.align-middle.accepted-offers data-head="#{ok_applications_count}"
