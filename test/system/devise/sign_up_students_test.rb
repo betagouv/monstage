@@ -149,7 +149,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     find("input[name='user[password]']").fill_in with: password
     find("input[type='submit']").click
     # redirected page is a show of targeted internship_offer
-    assert_equal "/internship_offers/#{offer.id}/internship_applications/new", current_path
+    assert_equal "/offres-de-stage/#{offer.id}/candidatures/nouveau", current_path
     # targeted offer id at student's level is now empty
     assert_nil created_student.reload.targeted_offer_id,
               'targeted offer should have been reset'
@@ -216,7 +216,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     find("input[type='submit'][value='Se connecter']").click
     page.find('h1', text: 'Votre candidature')
     # redirected page is a show of targeted internship_offer
-    assert_equal "/internship_offers/#{offer.id}/internship_applications/new", current_path
+    assert_equal "/offres-de-stage/#{offer.id}/candidatures/nouveau", current_path
     # targeted offer id at student's level is now empty
     # assert_nil student.reload.targeted_offer_id,
     #            'targeted offer should have been reset'

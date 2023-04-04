@@ -74,7 +74,7 @@ export const endpoints = {
 
   // @get
   searchInternshipOffers: () => {
-    const endpoint = new URL(`${host}/internship_offers.json`);
+    const endpoint = new URL(`${host}/offres-de-stage.json`);
     const searchParams = new URLSearchParams();
 
     endpoint.search = searchParams.toString();

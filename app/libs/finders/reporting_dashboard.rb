@@ -2,58 +2,33 @@
 module Finders
   class ReportingDashboard
 
-    ### ooperator queries, those data are collected via airtable, synced with Airtable::TableSynchronizer,
-    ### then aggregated and summed here
-    # expects bool
-    def operator_count_by_private_sector(is_public:)
-      @operator_count_by_private_sector ||= operator_base_query.by_publicy
-
-      @operator_count_by_private_sector.select { |group| group.is_public == is_public }
-                                       .first
-                                       .try(:[], "total_count")
+    def operator_count_by_private_sector
+      @operator_count_by_private_sector ||= operator_base_query
+      @operator_count_by_private_sector.map { |o| o.realized_count.dig(params[:school_year].to_s, 'private').to_i || 0 }.sum
     end
 
-    # expects AirTableRecord::INTERNSHIP_OFFER_TYPE.key
-    def operator_count_by_type(type)
-      @operator_count_by_type ||= operator_base_query.by_type
+    def operator_count_by_public_sector
+      @operator_count_by_public_sector ||= operator_base_query
+      @operator_count_by_public_sector.map { |o| o.realized_count.dig(params[:school_year].to_s, 'public').to_i || 0 }.sum
+    end
 
-      @operator_count_by_type.select { |group| group.internship_offer_type == type }
-                             .first
-                             .try(:[], "total_count")
+    
+    def operator_count_by_type(type)
+      operator_base_query.map { |o| o.realized_count.dig(params[:school_year].to_s, type).to_i || 0 }.sum
     end
 
     def operator_count_onsite
       @operator_count_onsite ||= operator_base_query
-      @operator_count_onsite.onsite.map(&:nb_spot_used).compact.sum
+      @operator_count_onsite = @operator_count_onsite.map { |o| o.realized_count.dig(params[:school_year].to_s, 'onsite').to_i || 0 }.sum
     end
 
-    def operator_count_remote
-      @operator_count_remote ||= operator_base_query
-      @operator_count_remote.remote.map(&:nb_spot_used).compact.sum
-    end
-
-    def operator_count_by_private_sector_paqte
-      @operator_count_by_private_sector_paqte ||= operator_base_query.by_paqte
-                                                                     .entries
-                                                                     .first
-                                                                     .attributes
-                                                                     .try(:[], "total_count")
+    def operator_count_online
+      @operator_count_online ||= operator_base_query
+      @operator_count_online = @operator_count_online.map { |o| o.realized_count.dig(params[:school_year].to_s, 'online').to_i || 0 }.sum
     end
 
     def operator_total
-      operator_base_query.total
-                         .entries
-                         .first
-                         .attributes
-                         .try(:[], "total_count")
-    end
-
-    def operator_last_modified_at
-      operator_base_query.last_modified_at
-    end
-
-    def operator_last_synchro
-      operator_base_query.last_synchro
+      operator_base_query.map { |o| o.realized_count.dig(params[:school_year].to_s, 'total').to_i || 0 }.sum                         
     end
 
 
@@ -215,13 +190,7 @@ module Finders
     end
 
     def operator_base_query
-      query = AirTableRecord.all.without_workshop # /!\ Ateliers not counted
-      query = query.during_year(school_year: school_year) if school_year_param?
-      query = query.by_department(department: params[:department]) if department_param?
-      query = query.by_ministry(user: user) if user.ministry_statistician?
-      query = query.countable_in_grand_total
-
-      query
+      Operator.all
     end
 
     def department_param?

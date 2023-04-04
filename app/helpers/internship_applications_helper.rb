@@ -1,24 +1,6 @@
 # frozen_string_literal: true
 
 module InternshipApplicationsHelper
-  def timeline_step_1_ready?(internship_application)
-    internship_application.aasm_state == 'drafted' ||
-      internship_application.aasm_state == 'canceled_by_student' ||
-      timeline_step_2_ready?(internship_application) ||
-      timeline_step_3_ready?(internship_application)
-  end
-
-  def timeline_step_2_ready?(internship_application)
-    internship_application.aasm_state == 'submitted' ||
-      internship_application.aasm_state == 'rejected' ||
-      timeline_step_3_ready?(internship_application)
-  end
-
-  def timeline_step_3_ready?(internship_application)
-    internship_application.aasm_state == 'approved' ||
-      internship_application.aasm_state == 'convention_signed'
-  end
-
   def is_resume_empty?(internship_application)
     !has_resume_educational_background?(internship_application) &&
       !has_resume_other?(internship_application) &&

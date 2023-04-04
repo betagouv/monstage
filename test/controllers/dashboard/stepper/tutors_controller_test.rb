@@ -157,7 +157,7 @@ module Dashboard::Stepper
                    created_internship_offer.tutor_id,
                    'tutor_id not copied')
  
-      assert_redirected_to internship_offer_path(created_internship_offer, origin: 'dashboard')
+      assert_redirected_to internship_offer_path(created_internship_offer, origine: 'dashboard')
     end
 
     test 'POST #create as employer with missing params' do
