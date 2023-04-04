@@ -7,13 +7,13 @@ module Dashboard::InternshipOffers
     include Devise::Test::IntegrationHelpers
 
     test 'DELETE #destroy as visitor redirects to user_session_path' do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       delete(dashboard_internship_offer_path(internship_offer.to_param))
       assert_redirected_to user_session_path
     end
 
     test 'DELETE #destroy as employer not owning internship_offer redirects to user_session_path' do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       sign_in(create(:employer))
       delete(dashboard_internship_offer_path(internship_offer.to_param))
       assert_redirected_to root_path
@@ -28,7 +28,7 @@ module Dashboard::InternshipOffers
     end
 
     test 'DELETE #destroy as employer owning internship_offer updates internship_offer' do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       sign_in(internship_offer.employer)
       assert_changes -> { internship_offer.reload.discarded_at } do
         delete(dashboard_internship_offer_path(internship_offer.to_param))
@@ -49,7 +49,7 @@ module Dashboard::InternshipOffers
     end
 
     test 'DELETE #destroy twice as employer what does it do?' do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       sign_in(internship_offer.employer)
       assert_changes -> { internship_offer.reload.discarded_at } do
         delete(dashboard_internship_offer_path(internship_offer.to_param))

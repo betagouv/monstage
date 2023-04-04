@@ -55,7 +55,7 @@ module StepperProxy
       def enough_weeks
         weekly_framed_types = [
           'InternshipOfferInfos::WeeklyFramed',
-          'InternshipOffers::WeeklyFramed'
+          'InternshipOffers'
         ]
         return unless type.in? weekly_framed_types
 

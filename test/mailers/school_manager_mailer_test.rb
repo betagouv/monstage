@@ -29,8 +29,8 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
   test 'internship_application_with_no_agreement_email within troisieme generale context' do
     school = create(:school, :with_school_manager, :with_weeks)
     student = create(:student_with_class_room_3e, school: school)
-    internship_offer = create(:weekly_internship_offer, weeks: school.weeks)
-    internship_application = create(:weekly_internship_application,
+    internship_offer = create(:internship_offer, weeks: school.weeks)
+    internship_application = create(:internship_application,
                                     :approved,
                                     internship_offer: internship_offer,
                                     user_id: student.id)
@@ -49,8 +49,8 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
   test 'internship_application_with_no_agreement_email within troisieme generale context but no class_room' do
     school = create(:school, :with_school_manager, :with_weeks)
     student = create(:student_with_class_room_3e, school: school)
-    internship_offer = create(:weekly_internship_offer, weeks: school.weeks)
-    internship_application = create(:weekly_internship_application,
+    internship_offer = create(:internship_offer, weeks: school.weeks)
+    internship_application = create(:internship_application,
                                     :submitted,
                                     internship_offer: internship_offer,
                                     user_id: student.id)

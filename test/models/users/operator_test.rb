@@ -17,7 +17,7 @@ module Users
 
     test 'association.internship_offers' do
       operator = create(:user_operator)
-      internship_offer = create(:weekly_internship_offer, employer: operator)
+      internship_offer = create(:internship_offer, employer: operator)
       operator.reload
 
       assert_equal internship_offer, operator.internship_offers.first

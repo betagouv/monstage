@@ -12,6 +12,7 @@ class InternshipApplication < ApplicationRecord
   # has_many :internship_agreements
   belongs_to :student, class_name: 'Users::Student',
                        foreign_key: 'user_id'
+  belongs_to :week, class_name: 'Week'
   has_one :internship_agreement
   # has_many :internship_applications
 
@@ -102,7 +103,21 @@ class InternshipApplication < ApplicationRecord
   scope :for_user, ->(user:) { where(user_id: user.id) }
   scope :not_by_id, ->(id:) { where.not(id: id) }
 
-  scope :weekly_framed, -> { where(type: InternshipApplications::WeeklyFramed.name) }
+  # TO DO : remove this scope and remove the polymorphic association
+  # scope :weekly_framed, -> { where(type: InternshipApplications::WeeklyFramed.name) }
+  
+  # Callbacks 
+  before_validation :at_most_one_application_per_student?, on: :create
+  before_validation :internship_offer_has_spots_left?, on: :create
+  before_validation :internship_offer_week_has_spots_left?, on: :create
+  after_save :update_all_counters
+
+
+  # Validations
+  validates :week_id,
+            presence: true,
+            unless: :application_via_school_manager?
+  validates :student, uniqueness: { scope: [:internship_offer_id, :week_id] }
 
   # add an additional delay when sending email using richtext
   # sometimes email was sent before action_texts_rich_text was persisted
@@ -143,7 +158,7 @@ class InternshipApplication < ApplicationRecord
                     main_teacher = student.main_teacher
                     arg_hash = {internship_application: self, main_teacher: main_teacher}
                     accepted_student_notify
-                    if type == "InternshipApplications::WeeklyFramed" && student&.school&.school_manager&.present?
+                    if student&.school&.school_manager&.present?
                       create_agreement
                       if main_teacher.present?
                         MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
@@ -253,25 +268,11 @@ class InternshipApplication < ApplicationRecord
   end
 
   def internship_application_counter_hook
-    case self
-    when InternshipApplications::WeeklyFramed
-      InternshipApplicationCountersHooks::WeeklyFramed.new(internship_application: self)
-    when InternshipApplications::FreeDate
-      InternshipApplicationCountersHooks::FreeDate.new(internship_application: self)
-    else
-      raise 'can not process stats for this kind of internship_application'
-    end
+    InternshipApplicationCountersHook.new(internship_application: self)
   end
 
   def internship_application_aasm_message_builder(aasm_target:)
-    case self
-    when InternshipApplications::WeeklyFramed
-      InternshipApplicationAasmMessageBuilders::WeeklyFramed.new(internship_application: self, aasm_target: aasm_target)
-    when InternshipApplications::FreeDate
-      InternshipApplicationAasmMessageBuilders::FreeDate.new(internship_application: self, aasm_target: aasm_target)
-    else
-      raise 'can not build aasm message for this kind of internship_application'
-    end
+    InternshipApplicationAasmMessageBuilder.new(internship_application: self, aasm_target: aasm_target)
   end
 
   def student_is_male?
@@ -307,6 +308,45 @@ class InternshipApplication < ApplicationRecord
     "Candidature de " + student_name
   end
 
+  def approvable?
+    return false unless week.present?
+    return false unless internship_offer.has_spots_left?
+
+    true
+  end
+
+  def internship_offer_has_spots_left?
+    return unless week.present?
+
+    errors.add(:internship_offer, :has_no_spots_left) unless internship_offer.has_spots_left?
+  end
+
+  def internship_offer_week_has_spots_left?
+    return if internship_offer.internship_offer_weeks.find_by(week_id: week.id).try(:has_spots_left?)
+    errors.add(:week, :has_no_spots_left)
+  end
+
+  def at_most_one_application_per_student?
+    return unless week.present?
+
+    if internship_offer
+        .internship_applications
+        .where(week_id: week.id)
+        .where(user_id: user_id)
+        .count
+        .positive?
+
+      errors.add(:user_id, :duplicate)
+    end
+  end
+
+  def remaining_seats_count
+    max_places      = internship_offer.max_candidates
+    reserved_places = internship_offer.internship_offer_weeks&.sum(:blocked_applications_count)
+    max_places - reserved_places
+  end
+
+
   rails_admin do
     weight 14
     navigation_label 'Offres'
@@ -318,7 +358,7 @@ class InternshipApplication < ApplicationRecord
       field :aasm_state, :state
       field :week do
         pretty_value do
-          bindings[:object].internship_offer.is_a?(InternshipOffers::WeeklyFramed) ? value : ""
+          bindings[:object].internship_offer.is_a?(InternshipOffers) ? value : ""
         end
       end
     end

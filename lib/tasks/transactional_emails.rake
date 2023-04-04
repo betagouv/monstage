@@ -23,7 +23,7 @@ task employers_with_potential_agreeements: :environment do
   class_rooms          = ClassRoom.arel_table
   offers               = InternshipOffer.arel_table
   department_str_array = School.experimented_school_departments
-  offer_ids = InternshipApplications::WeeklyFramed.joins( :week , student: {class_room: :school})
+  offer_ids = InternshipApplication.joins( :week , student: {class_room: :school})
                                                   .approved
                                                   .merge(School.from_departments(department_str_array: department_str_array))
                                                   .merge(Week.in_the_future)
@@ -35,7 +35,7 @@ task employers_with_potential_agreeements: :environment do
     if offer_ids.empty?
     puts "no count"
   else
-    emails = InternshipOffers::WeeklyFramed.where(offers[:id].in(offer_ids))
+    emails = InternshipOffer.where(offers[:id].in(offer_ids))
                                            .includes(:employer)
                                            .map { |offer| offer.employer.email }
                                            .uniq

@@ -22,6 +22,8 @@ FactoryBot.define do
     employer_name { 'Octo' }
     coordinates { Coordinates.paris }
     siret { '11122233300000' }
+    weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
+    remaining_seats_count { max_candidates }
 
     trait :api_internship_offer do
       weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
@@ -72,13 +74,13 @@ FactoryBot.define do
                                    parent: :weekly_internship_offer
 
     factory :weekly_internship_offer, traits: [:weekly_internship_offer],
-                                      class: 'InternshipOffers::WeeklyFramed',
+                                      class: 'InternshipOffer',
                                       parent: :internship_offer
     factory :last_year_weekly_internship_offer, traits: [:last_year_weekly_internship_offer],
-                                                class: 'InternshipOffers::WeeklyFramed',
+                                                class: 'InternshipOffer',
                                                 parent: :internship_offer
     factory :weekly_internship_offer_by_statistician, traits: [:weekly_internship_offer_by_statistician],
-                                      class: 'InternshipOffers::WeeklyFramed',
+                                      class: 'InternshipOffer',
                                       parent: :internship_offer
 
   end

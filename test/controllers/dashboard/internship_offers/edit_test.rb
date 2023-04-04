@@ -7,7 +7,7 @@ module Dashboard::InternshipOffers
     include Devise::Test::IntegrationHelpers
 
     test 'GET #edit as visitor redirects to user_session_path' do
-      get edit_dashboard_internship_offer_path(create(:weekly_internship_offer).to_param)
+      get edit_dashboard_internship_offer_path(create(:internship_offer).to_param)
       assert_redirected_to user_session_path
     end
 
@@ -15,14 +15,14 @@ module Dashboard::InternshipOffers
 
     test 'GET #edit as employer not owning internship_offer redirects to user_session_path' do
       sign_in(create(:employer))
-      get edit_dashboard_internship_offer_path(create(:weekly_internship_offer).to_param)
+      get edit_dashboard_internship_offer_path(create(:internship_offer).to_param)
       assert_redirected_to root_path
     end
 
     test 'GET #edit as employer owning internship_offer renders success' do
       employer = create(:employer)
       sign_in(employer)
-      internship_offer = create(:weekly_internship_offer, employer: employer,
+      internship_offer = create(:internship_offer, employer: employer,
                                                           max_candidates: 2,
                                                           max_students_per_group: 2)
       get edit_dashboard_internship_offer_path(internship_offer.to_param)
@@ -44,7 +44,7 @@ module Dashboard::InternshipOffers
                          .first
 
         sign_in(employer)
-        internship_offer = create(:weekly_internship_offer, weeks: [first_week],
+        internship_offer = create(:internship_offer, weeks: [first_week],
                                                             employer: employer,
                                                             max_candidates: 2,
                                                             max_students_per_group: 2)
@@ -56,7 +56,7 @@ module Dashboard::InternshipOffers
     test 'GET #edit is not turboable' do
       employer = create(:employer)
       sign_in(employer)
-      internship_offer = create(:weekly_internship_offer, employer: employer)
+      internship_offer = create(:internship_offer, employer: employer)
       get edit_dashboard_internship_offer_path(internship_offer.to_param)
       assert_select 'meta[name="turbo-visit-control"][content="reload"]'
     end
@@ -65,8 +65,8 @@ module Dashboard::InternshipOffers
       employer = create(:employer)
       sign_in(employer)
       weeks = Week.selectable_on_school_year[0..1]
-      internship_offer = create(:weekly_internship_offer, employer: employer,weeks: weeks)
-      internship_application = create(:weekly_internship_application,
+      internship_offer = create(:internship_offer, employer: employer,weeks: weeks)
+      internship_application = create(:internship_application,
                                       :submitted,
                                       internship_offer: internship_offer,
                                       week: internship_offer.internship_offer_weeks[0].week)
@@ -96,7 +96,7 @@ module Dashboard::InternshipOffers
     test 'GET #edit with default fields' do
       employer = create(:employer)
       sign_in(employer)
-      internship_offer = create(:weekly_internship_offer, is_public: true,
+      internship_offer = create(:internship_offer, is_public: true,
                                                           max_candidates: 1,
                                                           tutor_name: 'fourtin mourcade',
                                                           tutor_email: 'fourtin@mour.cade',

@@ -11,7 +11,7 @@ module Dashboard::InternshipOffers
       assert_redirected_to user_session_path
     end
 
-    test 'POST #create (duplicate) /InternshipOffers::WeeklyFramed as employer creates the post' do
+    test 'POST #create (duplicate) /InternshipOffers as employer creates the post' do
       school = create(:school)
       employer = create(:employer)
       weeks = [weeks(:week_2019_1)]
@@ -19,7 +19,7 @@ module Dashboard::InternshipOffers
       sign_in(internship_offer.employer)
       params = internship_offer
                .attributes
-               .merge('type' => InternshipOffers::WeeklyFramed.name,
+               .merge('type' => InternshipOffers.name,
                       'week_ids' => weeks.map(&:id),
                       'coordinates' => { latitude: 1, longitude: 1 },
                       'school_id' => school.id,
@@ -32,7 +32,7 @@ module Dashboard::InternshipOffers
         post(dashboard_internship_offers_path, params: { internship_offer: params })
       end
       created_internship_offer = InternshipOffer.last
-      assert_equal InternshipOffers::WeeklyFramed.name, created_internship_offer.type
+      assert_equal InternshipOffers.name, created_internship_offer.type
       assert_equal employer, created_internship_offer.employer
       assert_equal school, created_internship_offer.school
       assert_equal weeks.map(&:id), created_internship_offer.week_ids
@@ -42,7 +42,7 @@ module Dashboard::InternshipOffers
       assert_redirected_to internship_offer_path(created_internship_offer)
     end
 
-    test 'POST #create (duplicate) /InternshipOffers::WeeklyFramed as ministry statistican creates the post' do
+    test 'POST #create (duplicate) /InternshipOffers as ministry statistican creates the post' do
       school = create(:school)
       employer = create(:ministry_statistician)
       weeks = [weeks(:week_2019_1)]
@@ -50,7 +50,7 @@ module Dashboard::InternshipOffers
       sign_in(internship_offer.employer)
       params = internship_offer
                .attributes
-               .merge('type' => InternshipOffers::WeeklyFramed.name,
+               .merge('type' => InternshipOffers.name,
                       'group' => employer.ministries.first,
                       'week_ids' => weeks.map(&:id),
                       'coordinates' => { latitude: 1, longitude: 1 },
@@ -63,7 +63,7 @@ module Dashboard::InternshipOffers
         post(dashboard_internship_offers_path, params: { internship_offer: params })
       end
       created_internship_offer = InternshipOffer.last
-      assert_equal InternshipOffers::WeeklyFramed.name, created_internship_offer.type
+      assert_equal InternshipOffers.name, created_internship_offer.type
       assert_equal employer, created_internship_offer.employer
       assert_equal school, created_internship_offer.school
       assert_equal weeks.map(&:id), created_internship_offer.week_ids

@@ -8,7 +8,7 @@ module InternshipApplications
     include ActionMailer::TestHelper
 
     test 'POST #create internship application as student' do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       school = create(:school, weeks: [internship_offer.weeks.first])
       student = create(:student, school: school, class_room: create(:class_room, school: school))
       sign_in(student)
@@ -19,7 +19,7 @@ module InternshipApplications
           user_id: student.id,
           internship_offer_id: internship_offer.id,
           internship_offer_type: InternshipOffer.name,
-          type: InternshipApplications::WeeklyFramed.name,
+          type: InternshipApplication.name,
           student_attributes: {
             phone: '+330656565400',
             resume_educational_background: 'resume_educational_background',
@@ -29,15 +29,15 @@ module InternshipApplications
         }
       }
 
-      assert_difference('InternshipApplications::WeeklyFramed.count', 1) do
+      assert_difference('InternshipApplication.count', 1) do
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
         assert_redirected_to internship_offer_internship_application_path(
           internship_offer,
-          InternshipApplications::WeeklyFramed.last
+          InternshipApplication.last
         )
       end
 
-      created_internship_application = InternshipApplications::WeeklyFramed.last
+      created_internship_application = InternshipApplication.last
       assert_equal internship_offer.internship_offer_weeks.first.week.id, created_internship_application.week.id
       assert_equal 'Je suis trop motivé wesh', created_internship_application.motivation.to_plain_text
       assert_equal student.id, created_internship_application.student.id
@@ -50,7 +50,7 @@ module InternshipApplications
     end
 
     test 'POST #create internship application as student to offer posted by statistician' do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       internship_offer.update(employer_id: create(:statistician).id)
       school = create(:school, weeks: [internship_offer.weeks.first])
       student = create(:student, school: school, class_room: create(:class_room, school: school))
@@ -62,7 +62,7 @@ module InternshipApplications
           user_id: student.id,
           internship_offer_id: internship_offer.id,
           internship_offer_type: InternshipOffer.name,
-          type: InternshipApplications::WeeklyFramed.name,
+          type: InternshipApplication.name,
           student_attributes: {
             phone: '+330656565400',
             resume_educational_background: 'resume_educational_background',
@@ -72,15 +72,15 @@ module InternshipApplications
         }
       }
 
-      assert_difference('InternshipApplications::WeeklyFramed.count', 1) do
+      assert_difference('InternshipApplication.count', 1) do
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
         assert_redirected_to internship_offer_internship_application_path(
           internship_offer,
-          InternshipApplications::WeeklyFramed.last
+          InternshipApplication.last
         )
       end
 
-      created_internship_application = InternshipApplications::WeeklyFramed.last
+      created_internship_application = InternshipApplication.last
       assert_equal internship_offer.internship_offer_weeks.first.week.id, created_internship_application.week.id
       assert_equal 'Je suis trop motivé wesh', created_internship_application.motivation.to_plain_text
       assert_equal student.id, created_internship_application.student.id
@@ -95,7 +95,7 @@ module InternshipApplications
 
 
     test 'POST #create internship application as student without class_room' do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       school = create(:school, weeks: [internship_offer.weeks.first])
       student = create(:student, school: school)
       sign_in(student)
@@ -106,7 +106,7 @@ module InternshipApplications
           user_id: student.id,
           internship_offer_id: internship_offer.id,
           internship_offer_type: InternshipOffer.name,
-          type: InternshipApplications::WeeklyFramed.name,
+          type: InternshipApplication.name,
           student_attributes: {
             phone: '+330656565400',
             resume_educational_background: 'resume_educational_background',
@@ -116,15 +116,15 @@ module InternshipApplications
         }
       }
 
-      assert_difference('InternshipApplications::WeeklyFramed.count', 1) do
+      assert_difference('InternshipApplication.count', 1) do
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
         assert_redirected_to internship_offer_internship_application_path(
           internship_offer,
-          InternshipApplications::WeeklyFramed.last
+          InternshipApplication.last
         )
       end
 
-      created_internship_application = InternshipApplications::WeeklyFramed.last
+      created_internship_application = InternshipApplication.last
       assert_equal internship_offer.internship_offer_weeks.first.week.id, created_internship_application.week.id
       assert_equal 'Je suis trop motivé wesh', created_internship_application.motivation.to_plain_text
       assert_equal student.id, created_internship_application.student.id

@@ -43,7 +43,7 @@ module Services
           total_female_convention_signed_applications_count: 0
         )
 
-        if internship_offer.is_a?(InternshipOffers::WeeklyFramed)
+        if internship_offer.is_a?(InternshipOffers)
           res &&= internship_offer.internship_offer_weeks
                                   .map { |iow| iow.update(blocked_applications_count: 0)}
                                   .all? { |update_result| !!update_result }
@@ -67,8 +67,8 @@ module Services
     end
 
     def self.reset_internship_offer_weeks_counter
-      InternshipOffers::WeeklyFramed.kept.find_each do |internship_offer|
-        InternshipOffers::WeeklyFramed.reset_counters(internship_offer.id, :internship_offer_weeks)
+      InternshipOffers.kept.find_each do |internship_offer|
+        InternshipOffers.reset_counters(internship_offer.id, :internship_offer_weeks)
       end
     end
   end

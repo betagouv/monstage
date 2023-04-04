@@ -17,7 +17,7 @@ class SchoolTest < ActiveSupport::TestCase
   test 'Agreement association' do
     school = create(:school, :with_agreement_presets, :with_school_manager)
     student = create(:student, :troisieme_generale, school: school)
-    internship_application = create(:weekly_internship_application, user_id: student.id)
+    internship_application = create(:internship_application, user_id: student.id)
     internship_agreement = create(:internship_agreement, :created_by_system,
                                   internship_application: internship_application)
 
@@ -50,7 +50,7 @@ class SchoolTest < ActiveSupport::TestCase
 
   test 'destroy nullilfy internship_offers.shcool_id' do
     school = create(:school)
-    internship_offer = create(:weekly_internship_offer, school: school)
+    internship_offer = create(:internship_offer, school: school)
 
     assert_changes -> { internship_offer.reload.school.blank? },
                    from: false,

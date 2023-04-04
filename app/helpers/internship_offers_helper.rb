@@ -9,7 +9,7 @@ module InternshipOffersHelper
       InternshipOfferInfo,
       InternshipOfferInfos::WeeklyFramed,
       InternshipOffer,
-      InternshipOffers::WeeklyFramed
+      InternshipOffers
     ]
     is_preselectable_entity.any?{ |klass| object.is_a?(klass) }
   end

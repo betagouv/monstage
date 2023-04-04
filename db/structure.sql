@@ -349,52 +349,6 @@ ALTER SEQUENCE public.active_storage_variant_records_id_seq OWNED BY public.acti
 
 
 --
--- Name: air_table_records; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.air_table_records (
-    id bigint NOT NULL,
-    remote_id text,
-    is_public boolean,
-    nb_spot_available integer DEFAULT 0,
-    nb_spot_used integer DEFAULT 0,
-    nb_spot_male integer DEFAULT 0,
-    nb_spot_female integer DEFAULT 0,
-    department_name text,
-    school_track text,
-    internship_offer_type text,
-    comment text,
-    school_id bigint,
-    group_id bigint,
-    sector_id bigint,
-    week_id bigint,
-    operator_id bigint,
-    created_by text,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: air_table_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.air_table_records_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: air_table_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.air_table_records_id_seq OWNED BY public.air_table_records.id;
-
-
---
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -693,7 +647,6 @@ CREATE TABLE public.internship_applications (
     expired_at timestamp without time zone,
     pending_reminder_sent_at timestamp without time zone,
     canceled_at timestamp without time zone,
-    type character varying DEFAULT 'InternshipApplications::WeeklyFramed'::character varying,
     internship_offer_id bigint NOT NULL,
     applicable_type character varying,
     internship_offer_type character varying NOT NULL,
@@ -1011,12 +964,8 @@ CREATE TABLE public.operators (
     website character varying,
     created_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.377616'::timestamp without time zone NOT NULL,
     updated_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.384734'::timestamp without time zone NOT NULL,
-    airtable_id character varying,
-    airtable_link character varying,
-    airtable_reporting_enabled boolean DEFAULT false,
-    airtable_table character varying,
-    airtable_app_id character varying,
-    api_full_access boolean DEFAULT false
+    api_full_access boolean DEFAULT false,
+    realized_count json DEFAULT '{}'::json
 );
 
 
@@ -1437,13 +1386,6 @@ ALTER TABLE ONLY public.active_storage_variant_records ALTER COLUMN id SET DEFAU
 
 
 --
--- Name: air_table_records id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.air_table_records ALTER COLUMN id SET DEFAULT nextval('public.air_table_records_id_seq'::regclass);
-
-
---
 -- Name: class_rooms id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1641,14 +1583,6 @@ ALTER TABLE ONLY public.active_storage_blobs
 
 ALTER TABLE ONLY public.active_storage_variant_records
     ADD CONSTRAINT active_storage_variant_records_pkey PRIMARY KEY (id);
-
-
---
--- Name: air_table_records air_table_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.air_table_records
-    ADD CONSTRAINT air_table_records_pkey PRIMARY KEY (id);
 
 
 --
@@ -1892,20 +1826,6 @@ CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_b
 --
 
 CREATE UNIQUE INDEX index_active_storage_variant_records_uniqueness ON public.active_storage_variant_records USING btree (blob_id, variation_digest);
-
-
---
--- Name: index_air_table_records_on_operator_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_air_table_records_on_operator_id ON public.air_table_records USING btree (operator_id);
-
-
---
--- Name: index_air_table_records_on_week_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_air_table_records_on_week_id ON public.air_table_records USING btree (week_id);
 
 
 --
@@ -2844,6 +2764,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221219144134'),
 ('20221223100742'),
 ('20230223102039'),
-('20230302162952');
+('20230302162952'),
+('20230307200802'),
+('20230328145032');
 
 

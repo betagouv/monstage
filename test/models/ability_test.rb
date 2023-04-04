@@ -14,11 +14,11 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   test 'Student' do
-    internship_offer = create(:weekly_internship_offer)
+    internship_offer = create(:internship_offer)
     school = create(:school, weeks: [internship_offer.weeks.first])
     student = create(:student, class_room: create(:class_room, school: school))
     ability = Ability.new(student)
-    internship_application = create(:weekly_internship_application,
+    internship_application = create(:internship_application,
                                     student: student,
                                     internship_offer: internship_offer,
                                     week: internship_offer.internship_offer_weeks.first.week)
@@ -42,7 +42,7 @@ class AbilityTest < ActiveSupport::TestCase
            'student should be able to choose handicap')
     assert(ability.can?(:dashboard_index, student))
     assert(ability.can?(:dashboard_show, internship_application))
-    assert(ability.cannot?(:dashboard_show, create(:weekly_internship_application)))
+    assert(ability.cannot?(:dashboard_show, create(:internship_application,)))
     assert(ability.cannot?(:index, Acl::InternshipOfferDashboard.new(user: student)),
            'employers should be able to index InternshipOfferDashboard')
 
@@ -57,10 +57,10 @@ class AbilityTest < ActiveSupport::TestCase
 
     employer = create(:employer)
     another_employer = create(:employer)
-    internship_offer = create(:weekly_internship_offer, employer: employer)
-    alt_internship_offer = create(:weekly_internship_offer, employer: another_employer)
+    internship_offer = create(:internship_offer, employer: employer)
+    alt_internship_offer = create(:internship_offer, employer: another_employer)
     internship_offer_api = create(:api_internship_offer, employer: employer)
-    internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+    internship_application = create(:internship_application, internship_offer: internship_offer)
     internship_agreement   = create(:internship_agreement, :created_by_system,
                                     internship_application: internship_application)
     ability = Ability.new(employer)
@@ -125,7 +125,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert ability.can?(:manage, Group)
     assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
     assert ability.can?(:index, Acl::Reporting.new(user: god, params: {}))
-    refute ability.can?(:apply, create(:weekly_internship_offer))
+    refute ability.can?(:apply, create(:internship_offer))
     refute ability.can?(:apply, create(:api_internship_offer))
     assert ability.can?(:new, InternshipAgreement)
     assert ability.can?(:see_reporting_dashboard, User)
@@ -161,7 +161,7 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:index, Acl::Reporting.new(user: statistician, params: {}))
     assert(ability.can?(:index, Acl::Reporting, &:allowed?))
 
-    refute ability.can?(:apply, create(:weekly_internship_offer))
+    refute ability.can?(:apply, create(:internship_offer))
     refute ability.can?(:apply, create(:api_internship_offer))
 
     assert ability.can?(:see_reporting_dashboard, User)
@@ -209,7 +209,7 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:index, Acl::Reporting.new(user: statistician, params: {}))
     assert(ability.can?(:index, Acl::Reporting, &:allowed?))
 
-    refute ability.can?(:apply, create(:weekly_internship_offer))
+    refute ability.can?(:apply, create(:internship_offer))
     refute ability.can?(:apply, create(:api_internship_offer))
 
     assert ability.can?(:see_reporting_dashboard, User)
@@ -252,13 +252,13 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:destroy, User)
     assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
 
-    offer = create(:weekly_internship_offer,
+    offer = create(:internship_offer,
        group_id: ministry.id,
        employer: ministry_statistician,
        is_public: true
     )
 
-    refute ability.can?(:apply, create(:weekly_internship_offer))
+    refute ability.can?(:apply, create(:internship_offer))
     refute ability.can?(:apply, create(:api_internship_offer))
 
     assert ability.can?(:see_reporting_dashboard, User)
@@ -284,7 +284,7 @@ class AbilityTest < ActiveSupport::TestCase
     school = student.school
     another_school = create(:school)
     school_manager = create(:school_manager, school: school)
-    internship_application = create(:weekly_internship_application, student: student)
+    internship_application = create(:internship_application, student: student)
     internship_agreement = create(:internship_agreement, :created_by_system,
                                   internship_application: internship_application)
     ability = Ability.new(school_manager)
@@ -306,7 +306,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:dashboard_show, internship_application))
     assert(ability.can?(:submit_internship_application, internship_application))
     assert(ability.can?(:validate_convention, internship_application))
-    assert(ability.cannot?(:dashboard_show, create(:weekly_internship_application)))
+    assert(ability.cannot?(:dashboard_show, create(:internship_application,)))
 
     assert(ability.can?(:see_tutor, InternshipOffer))
 
@@ -362,7 +362,7 @@ class AbilityTest < ActiveSupport::TestCase
     school_manager = create(:school_manager, school: school)
     class_room = create(:class_room, school: school)
     main_teacher = create(:main_teacher, school: school, class_room: class_room)
-    internship_application = create(:weekly_internship_application, student: student)
+    internship_application = create(:internship_application, student: student)
     internship_agreement   = create(:internship_agreement, :created_by_system,
                                     internship_application: internship_application)
     ability = Ability.new(main_teacher)
@@ -385,7 +385,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:dashboard_show, internship_application))
     assert(ability.can?(:submit_internship_application, internship_application))
     assert(ability.can?(:validate_convention, internship_application))
-    assert(ability.cannot?(:dashboard_show, create(:weekly_internship_application)))
+    assert(ability.cannot?(:dashboard_show, create(:internship_application,)))
 
     assert(ability.can?(:see_tutor, InternshipOffer))
 

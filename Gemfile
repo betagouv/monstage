@@ -12,6 +12,7 @@ gem "rails", "~> 7.0.3"
 gem 'puma'
 # db
 gem 'pg'
+gem 'rake'
 
 # pg extension for geo queries
 # wait for : https://github.com/rgeo/activerecord-postgis-adapter/tree/ar61 to be merge into master
@@ -51,7 +52,6 @@ gem "lograge"
 gem 'ovh-rest'
 gem "sentry-ruby"
 gem "sentry-rails"
-gem 'airtable'
 gem 'geocoder'
 gem 'bitly'
 gem 'mime-types'
@@ -77,7 +77,7 @@ gem 'bootsnap', require: false
 
 group :development, :test do
   gem "dotenv-rails", require: "dotenv/rails-now"
-  gem "better_errors"
+  # gem "better_errors"
   gem "debug"
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
@@ -110,8 +110,7 @@ group :test do
   gem 'webdrivers'
   gem 'rails-controller-testing'
   gem 'capybara-screenshot'
-gem "minitest-stub_any_instance"
-
+  gem "minitest-stub_any_instance"
 end
 
 group :review do

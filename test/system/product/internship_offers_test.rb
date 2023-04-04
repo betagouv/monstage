@@ -22,7 +22,7 @@ module Product
       %i[employer student].each do |role|
         run_request_and_cache_response(report_as: "internship_offer_path_#{role}") do
           sign_in(create(role))
-          # visit internship_offer_path(create(:weekly_internship_offer).to_param) TO DO Fix role button on Pin map
+          # visit internship_offer_path(create(:internship_offer).to_param) TO DO Fix role button on Pin map
         end
       end
     end

@@ -11,7 +11,7 @@ module Finders
     #   student_1 = create(:student, school: school, class_room: class_room)
     #   student_2 = create(:student, school: school, class_room: class_room)
 
-    #   approved_internship_application = create(:weekly_internship_application,
+    #   approved_internship_application = create(:internship_application,
     #                                            :approved,
     #                                            student: student_2)
     #   tab_main_teacher = TabMainTeacher.new(main_teacher: main_teacher)
@@ -24,10 +24,10 @@ module Finders
     #   main_teacher = create(:main_teacher, school: school, class_room: class_room)
     #   student = create(:student, school: school, class_room: class_room)
 
-    #   draft_internship_application = create(:weekly_internship_application,
+    #   draft_internship_application = create(:internship_application,
     #                                            :drafted,
     #                                            student: student)
-    #   approved_internship_application = create(:weekly_internship_application,
+    #   approved_internship_application = create(:internship_application,
     #                                            :approved,
     #                                            student: student)
     #   tab_main_teacher = TabMainTeacher.new(main_teacher: main_teacher)
@@ -40,7 +40,7 @@ module Finders
     #   main_teacher = create(:main_teacher, school: school, class_room: class_room)
     #   student = create(:student, school: school, class_room: class_room)
 
-    #   internship_application = create(:weekly_internship_application,
+    #   internship_application = create(:internship_application,
     #                                   :approved,
     #                                   student: student)
     #   create(:internship_agreement, internship_application: internship_application,
@@ -56,7 +56,7 @@ module Finders
     #   main_teacher = create(:main_teacher, school: school, class_room: class_room)
     #   student = create(:student, school: school, class_room: class_room)
 
-    #   internship_application = create(:weekly_internship_application,
+    #   internship_application = create(:internship_application,
     #                                   :approved)
     #   create(:internship_agreement, internship_application: internship_application,
     #                                 employer_accept_terms: false,
@@ -71,7 +71,7 @@ module Finders
     #   main_teacher = create(:main_teacher, school: school, class_room: class_room)
     #   student = create(:student, school: school, class_room: class_room)
 
-    #   internship_application = create(:weekly_internship_application,
+    #   internship_application = create(:internship_application,
     #                                   :approved,
     #                                   student: student)
     #   create(:internship_agreement, internship_application: internship_application,

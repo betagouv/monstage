@@ -11,8 +11,8 @@ module Users
 
     test '(rails6.1 upgrade) employer.kept_internship_offers' do
       employer = create(:employer)
-      kept_internship_offer = create(:weekly_internship_offer, employer: employer)
-      discarded_internship_offer = create(:weekly_internship_offer, employer: employer)
+      kept_internship_offer = create(:internship_offer, employer: employer)
+      discarded_internship_offer = create(:internship_offer, employer: employer)
       discarded_internship_offer.discard
 
       assert_equal 1, employer.kept_internship_offers.count
@@ -27,10 +27,10 @@ module Users
 
     test '(rails6.1 upgrade) employer.internship_applications' do
       employer = create(:employer)
-      kept_internship_offer = create(:weekly_internship_offer, employer: employer)
-      discarded_internship_offer = create(:weekly_internship_offer, employer: employer)
-      kept_internship_application = create(:weekly_internship_application, internship_offer: kept_internship_offer)
-      discarded_internship_application = create(:weekly_internship_application, internship_offer: discarded_internship_offer)
+      kept_internship_offer = create(:internship_offer, employer: employer)
+      discarded_internship_offer = create(:internship_offer, employer: employer)
+      kept_internship_application = create(:internship_application, internship_offer: kept_internship_offer)
+      discarded_internship_application = create(:internship_application, internship_offer: discarded_internship_offer)
 
       discarded_internship_offer.discard
 

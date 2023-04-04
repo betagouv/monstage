@@ -57,7 +57,7 @@ module Dashboard::Stepper
       assert_redirected_to user_session_path
     end
 
-    test 'POST #create/InternshipOffers::WeeklyFramed as employer creates the post' do
+    test 'POST #create/InternshipOffers as employer creates the post' do
       employer = create(:employer)
       sign_in(employer)
       internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
@@ -97,7 +97,7 @@ module Dashboard::Stepper
       assert_equal(internship_offer_info.sector_id,
                    created_internship_offer.sector_id,
                    'sector_id not copied')
-      assert_equal(InternshipOffers::WeeklyFramed.name,
+      assert_equal(InternshipOffers.name,
                    created_internship_offer.type,
                    'type not copied')
       assert_equal(internship_offer_info.weekly_hours,

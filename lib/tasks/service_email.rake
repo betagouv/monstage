@@ -15,8 +15,8 @@ end
 namespace :incident_2022_04_06 do
   desc 'april 13 2022 incident counterparts - applications'
   task applications_retrofit: :environment do
-    created_ones = InternshipApplications::WeeklyFramed.where('created_at >= ?', Date.new(2022,4,6)).where('created_at <= ?', DateTime.new(2022,4,13,13,0,0)).where(aasm_state: 'submitted')
-    updated_ones = InternshipApplications::WeeklyFramed.where('updated_at >= ?', Date.new(2022,4,6)).where('created_at <= ?', DateTime.new(2022,4,13,13,0,0)).where(aasm_state: 'submitted')
+    created_ones = InternshipApplication.where('created_at >= ?', Date.new(2022,4,6)).where('created_at <= ?', DateTime.new(2022,4,13,13,0,0)).where(aasm_state: 'submitted')
+    updated_ones = InternshipApplication.where('updated_at >= ?', Date.new(2022,4,6)).where('created_at <= ?', DateTime.new(2022,4,13,13,0,0)).where(aasm_state: 'submitted')
     (created_ones + updated_ones).to_a.uniq.each do |app|
       EmployerMailer.internship_application_submitted_email(internship_application: app).deliver_now
     end

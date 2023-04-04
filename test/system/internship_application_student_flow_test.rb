@@ -9,7 +9,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   test 'student not in class room can not ask for week' do
     school = create(:school, weeks: [])
     student = create(:student, school: school, class_room: create(:class_room, school: school))
-    internship_offer = create(:weekly_internship_offer, weeks: weeks)
+    internship_offer = create(:internship_offer, weeks: weeks)
 
     sign_in(student)
     visit internship_offer_path(internship_offer)
@@ -20,7 +20,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   test 'student can submit application wheen school has not choosen any week yet' do
     school = create(:school, weeks: [])
     student = create(:student, school: school, class_room: create(:class_room, school: school))
-    internship_offer = create(:weekly_internship_offer, weeks: weeks)
+    internship_offer = create(:internship_offer, weeks: weeks)
 
     sign_in(student)
     visit new_internship_offer_internship_application_path(internship_offer_id: internship_offer.id)
@@ -34,7 +34,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       weeks = Week.selectable_from_now_until_end_of_school_year.to_a.first(2)
       school = create(:school, weeks: [])
       student = create(:student, school: school)
-      internship_offer = create(:weekly_internship_offer, weeks: weeks)
+      internship_offer = create(:internship_offer, weeks: weeks)
 
       sign_in(student)
       visit internship_offer_path(internship_offer)
@@ -65,7 +65,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   test 'student with no class_room can submit an application when school has not choosen week' do
     # Pay attention when merging this very test: it's here to stay
     weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
-    internship_offer = create(:weekly_internship_offer, weeks: weeks)
+    internship_offer = create(:internship_offer, weeks: weeks)
     school           = create(:school,:with_school_manager, weeks: [])
     student          = create(:student, school: school)
     assert_equal 1, internship_offer.remaining_seats_count
@@ -92,12 +92,12 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     school = create(:school, :with_school_manager)
     student = create(:student, school: school)
     internship_applications = {
-      drafted: create(:weekly_internship_application, :drafted, student: student),
-      submitted: create(:weekly_internship_application, :submitted, student: student),
-      approved: create(:weekly_internship_application, :approved, student: student),
-      rejected: create(:weekly_internship_application, :rejected, student: student),
-      convention_signed: create(:weekly_internship_application, :convention_signed, student: student),
-      canceled_by_student: create(:weekly_internship_application, :canceled_by_student, student: student)
+      drafted: create(:internship_application, :drafted, student: student),
+      submitted: create(:internship_application, :submitted, student: student),
+      approved: create(:internship_application, :approved, student: student),
+      rejected: create(:internship_application, :rejected, student: student),
+      convention_signed: create(:internship_application, :convention_signed, student: student),
+      canceled_by_student: create(:internship_application, :canceled_by_student, student: student)
     }
     sign_in(student)
     visit '/'
@@ -119,10 +119,10 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   test 'GET #show as Student with existing draft application shows the draft' do
     if ENV['RUN_BRITTLE_TEST']
       weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
-      internship_offer      = create(:weekly_internship_offer, weeks: weeks)
+      internship_offer      = create(:internship_offer, weeks: weeks)
       school                = create(:school, weeks: weeks)
       student               = create(:student, school: school, class_room: create(:class_room, school: school))
-      internship_application = create(:weekly_internship_application,
+      internship_application = create(:internship_application,
                                       :drafted,
                                       motivation: 'au taquet',
                                       student: student,
@@ -213,7 +213,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                      class_room: create( :class_room,
                                          school: school)
                     )
-    internship_offer = create(:weekly_internship_offer, weeks: weeks)
+    internship_offer = create(:internship_offer, weeks: weeks)
 
     travel_to(weeks.first.week_date) do
       sign_in(student)
@@ -257,7 +257,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
 
   test 'when an employer tries to access application forms, he fails' do
     employer = create(:employer)
-    internship_offer = create(:weekly_internship_offer)
+    internship_offer = create(:internship_offer)
     visit internship_offer_path(internship_offer.id)
     first(:link, 'Postuler').click
     fill_in("Adresse électronique", with: employer.email)

@@ -11,7 +11,7 @@ class InternshipOfferKeywordsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test '#post search with existing find it' do
-    create(:weekly_internship_offer, title: 'Horticulteur',
+    create(:internship_offer, title: 'Horticulteur',
                                      description: 'Des plantes, des fleurs, des légumes',
                                      employer_description: 'De la nature, du bien être')
 
@@ -27,7 +27,7 @@ class InternshipOfferKeywordsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test '#post search with typo find it' do
-    create(:weekly_internship_offer, title: 'pâtissier',
+    create(:internship_offer, title: 'pâtissier',
                                      description: 'Des plantes, des fleurs, des légumes',
                                      employer_description: 'De la nature, du bien être')
 

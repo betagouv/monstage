@@ -19,9 +19,9 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
   end
 
   test 'search by location (city) works' do
-    internship_offer_at_paris = create(:weekly_internship_offer,
+    internship_offer_at_paris = create(:internship_offer,
                                        coordinates: Coordinates.paris)
-    internship_offer_at_bordeaux = create(:weekly_internship_offer,
+    internship_offer_at_bordeaux = create(:internship_offer,
                                           city: 'Bordeaux',
                                           coordinates: Coordinates.bordeaux)
 
@@ -41,9 +41,9 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
   end
 
   test 'search by location (zipcodes) works' do
-    internship_offer_at_paris = create(:weekly_internship_offer,
+    internship_offer_at_paris = create(:internship_offer,
                                        coordinates: Coordinates.paris)
-    internship_offer_at_bordeaux = create(:weekly_internship_offer,
+    internship_offer_at_bordeaux = create(:internship_offer,
                                           coordinates: Coordinates.bordeaux)
 
     visit internship_offers_path
@@ -64,8 +64,8 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
 
   test 'search by keyword works' do
     searched_keyword = 'helloworld'
-    searched_internship_offer = create(:weekly_internship_offer, title: searched_keyword)
-    not_searched_internship_offer = create(:weekly_internship_offer)
+    searched_internship_offer = create(:internship_offer, title: searched_keyword)
+    not_searched_internship_offer = create(:internship_offer)
     dictionnary_api_call_stub
     SyncInternshipOfferKeywordsJob.perform_now
     InternshipOfferKeyword.update_all(searchable: true)
@@ -88,9 +88,9 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
       searched_week = Week.selectable_from_now_until_end_of_school_year.first
       not_searched_week = Week.selectable_from_now_until_end_of_school_year.last
 
-      searched_internship_offer = create(:weekly_internship_offer,
+      searched_internship_offer = create(:internship_offer,
                                          weeks: [searched_week])
-      not_searched_internship_offer = create(:weekly_internship_offer,
+      not_searched_internship_offer = create(:internship_offer,
                                              weeks: [not_searched_week])
       visit internship_offers_path
       fill_in_week(week: searched_week, open_popover: true)
@@ -113,7 +113,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
                         coordinates: searched_location,
                         weeks: [searched_week]}
       # build findable
-      findable_internship_offer = create(:weekly_internship_offer, searched_opts)
+      findable_internship_offer = create(:internship_offer, searched_opts)
 
       # build ignored
       not_found_by_location = create(

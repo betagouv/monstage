@@ -15,7 +15,7 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
 
   test 'student troisieme try to apply to an offer while school manager has not open any internship week' do
     travel_to(Date.new(2019, 3, 1)) do
-      internship_offer = create(:weekly_internship_offer)
+      internship_offer = create(:internship_offer)
       school = create(:school, :with_school_manager, weeks: [])
       school_manager = school.school_manager
       class_room = create(:class_room, school: school)

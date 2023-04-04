@@ -14,7 +14,7 @@ namespace :offers do
       csv << [].concat(targeted_fields, ['environment'])
 
       fetch_weeks.each do |week|
-        weekly_framed = InternshipOffers::WeeklyFramed.kept
+        weekly_framed = InternshipOffer.kept
                                                       .published
                                                       .joins(:internship_offer_weeks)
                                                       .where({internship_offer_weeks: {week_id: week.id}})
@@ -24,7 +24,7 @@ namespace :offers do
                                    .where(internship_offer_weeks: { week_id: week.id })
         seats = weekly_framed.pluck(:max_candidates)
         api_seats = api.pluck(:max_candidates)
-        applications = InternshipApplications::WeeklyFramed.joins(:internship_offer_week)
+        applications = InternshipApplication.joins(:internship_offer_week)
                                                            .where(internship_offer_week: {week_id: week.id})
         schools = School.joins(:school_internship_weeks).where(school_internship_weeks: {week_id: week.id})
         offers = weekly_framed.count + api.count

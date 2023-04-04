@@ -7,13 +7,13 @@ module Triggers
     include ActiveJob::TestHelper
 
     setup do
-      @internship_offer = create(:weekly_internship_offer)
+      @internship_offer = create(:internship_offer)
       @reminder_service = InternshipApplicationReminder.new
     end
 
     test '.enqueue_all do not queue not queues job ' \
          'when internship_applications is pending for less than a week' do
-      create(:weekly_internship_application, :submitted,
+      create(:internship_application, :submitted,
              submitted_at: 1.day.ago,
              internship_offer: @internship_offer)
       assert_no_enqueued_jobs do
@@ -24,7 +24,7 @@ module Triggers
     test '.enqueue_all do queue when ' \
          'there is an internship_applications with pending status ' \
          'for more than 1 a week' do
-      create(:weekly_internship_application,
+      create(:internship_application,
              :submitted,
              submitted_at: 8.days.ago,
              internship_offer: @internship_offer)
@@ -38,7 +38,7 @@ module Triggers
     test '.enqueue_all do queue when ' \
          'there is an internship_applications with pending status ' \
          'for more than 45 days' do
-      create(:weekly_internship_application,
+      create(:internship_application,
              :submitted,
              submitted_at: InternshipApplication::EXPIRATION_DURATION.ago,
              internship_offer: @internship_offer)

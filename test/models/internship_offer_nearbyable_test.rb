@@ -5,7 +5,7 @@ require 'test_helper'
 class InternshipOfferNearbyableTest < ActiveSupport::TestCase
   test '.distance_from' do
     coordinates_bordeaux = Coordinates.bordeaux
-    create(:weekly_internship_offer, coordinates: Coordinates.paris)
+    create(:internship_offer, coordinates: Coordinates.paris)
     internship_offers = InternshipOffer.with_distance_from(latitude: coordinates_bordeaux[:latitude],
                                                            longitude: coordinates_bordeaux[:longitude])
                                        .all

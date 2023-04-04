@@ -98,7 +98,7 @@ class UserTest < ActiveSupport::TestCase
     employer = create(:employer, email: 'test@test.com', first_name: 'Toto', last_name: 'Tata',
                                  current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1')
 
-    internship_offer = create(:weekly_internship_offer, employer: employer)
+    internship_offer = create(:internship_offer, employer: employer)
 
     employer.anonymize
 
