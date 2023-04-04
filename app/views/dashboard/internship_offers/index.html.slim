@@ -1,16 +1,16 @@
 = render 'layouts/breadcrumb', links: [ ['', 'Mon tableau de bord'] ]
 = render layout: 'layouts/dashboards_with_menu' do
-  .row.fr-row--gutters.fr-mt-8w
+  .row.fr-row--gutters.fr-mt-7w
     .fr-col-6
-      h2.h4.fr-mx-2w.text-dark Les offres
+      h2.h4.fr-mr-2w.text-dark Les offres
     - if can?(:create, InternshipOffer)
       .fr-col-6.text-right.fr-pr-2w
         .menu-ladder
           = link_to new_dashboard_stepper_organisation_path,
-                    class: 'fr-mt-8w publish-adjust-position',
+                    class: 'fr-mt-5w publish-adjust-position',
                     id: 'test-create-offer' do
             button.fr-icon-add-line.fr-btn.fr-btn--icon-left Publier une offre
-  .row.fr-mt-4w.fr-grid-row--gutters
+  .row.fr-mt-1v.fr-grid-row--gutters
     .fr-col-12
       = render partial: 'dashboard/internship_offers/offers_and_agreements_content',
                locals: { params: params }
