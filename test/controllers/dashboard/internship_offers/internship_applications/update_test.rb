@@ -12,7 +12,7 @@ module InternshipOffers::InternshipApplications
       class_room = create(:class_room, school: school)
       student = create(:student, school:school, class_room: class_room)
       internship_application = create(
-        :weekly_internship_application,
+        :internship_application,
         :submitted,
         user_id: student.id
       )
@@ -43,7 +43,7 @@ module InternshipOffers::InternshipApplications
       class_room = create(:class_room, school: school)
       student = create(:student, school:school, class_room: class_room)
       internship_application = create(
-        :weekly_internship_application,
+        :internship_application,
         :submitted,
         user_id: student.id
       )
@@ -67,7 +67,7 @@ module InternshipOffers::InternshipApplications
       class_room = create(:class_room, school: school)
       student = create(:student, school:school, class_room: class_room)
       internship_application = create(
-        :weekly_internship_application,
+        :internship_application,
         :submitted,
         user_id: student.id
       )
@@ -94,7 +94,7 @@ module InternshipOffers::InternshipApplications
       class_room = create(:class_room, school: school)
       student = create(:student, school:school, class_room: class_room)
       internship_application = create(
-        :weekly_internship_application,
+        :internship_application,
         :submitted,
         user_id: student.id
       )
@@ -118,7 +118,7 @@ module InternshipOffers::InternshipApplications
       class_room = create(:class_room, school: school)
       student = create(:student, school:school, class_room: class_room)
       internship_application = create(
-        :weekly_internship_application,
+        :internship_application,
         :submitted,
         user_id: student.id
       )
@@ -140,7 +140,7 @@ module InternshipOffers::InternshipApplications
       class_room = create(:class_room, school: school)
       student = create(:student, school:school, class_room: class_room)
       internship_application = create(
-        :weekly_internship_application,
+        :internship_application,
         :submitted,
         user_id: student.id
       )
@@ -188,7 +188,7 @@ module InternshipOffers::InternshipApplications
       class_room = create(:class_room, school: school)
       student = create(:student, school:school, class_room: class_room)
       internship_application = create(
-        :weekly_internship_application,
+        :internship_application,
         :submitted,
         user_id: student.id
       )

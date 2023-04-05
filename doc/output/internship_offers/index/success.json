@@ -3,14 +3,27 @@
     "totalInternshipOffers": 31,
     "internshipOffersPerPage": 30,
     "totalPages": 2,
-    "currentPage": 9,
+    "currentPage": 2,
     "nextPage": null,
-    "prevPage": null,
+    "prevPage": "http://www.example.com/api/internship_offers?page=1",
     "isFirstPage": false,
-    "isLastPage": false,
+    "isLastPage": true,
     "pageUrlBase": "http://www.example.com/api/internship_offers"
   },
   "internshipOffers": [
-
+    {
+      "id": 433,
+      "title": "Stage de 3è - 41",
+      "description": "Lorem ipsum dolor",
+      "employer_name": "Octo",
+      "url": "http://www.example.com/offres-de-stage/433?page=2&utm_source=operator-16",
+      "city": "Paris",
+      "date_start": "10 avril 2023",
+      "date_end": "16 avril 2023",
+      "latitude": 48.866667,
+      "longitude": 2.333333,
+      "image": "http://www.example.com/packs-test/media/images/sectors/default_sector-e1b60d1832d3ebc2a8ccff663f1a8dd8.svg",
+      "sector": "secteur-55"
+    }
   ]
 }

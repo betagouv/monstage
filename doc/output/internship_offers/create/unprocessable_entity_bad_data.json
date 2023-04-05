@@ -1,4 +1,19 @@
 {
-  "code": "BAD_ARGUMENT",
-  "error": "bad week format: 2020-Wsem9-23, expecting ISO 8601 format"
+  "title": "title",
+  "description": "description",
+  "max_candidates": 1,
+  "employer_website": "http://employer_website.com",
+  "street": "N/A",
+  "zipcode": "75007",
+  "city": "Paris",
+  "employer_name": "Ministere",
+  "employer_description": "employer_description",
+  "remote_id": "remote_id",
+  "permalink": "http://google.fr/permalink",
+  "published_at": "2019-03-01T00:00:00.000+01:00",
+  "max_students_per_group": 1,
+  "formatted_coordinates": {
+    "latitude": 90.0,
+    "longitude": 14.0
+  }
 }

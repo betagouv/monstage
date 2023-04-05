@@ -400,13 +400,6 @@ class IndexTest < ActionDispatch::IntegrationTest
 
     InternshipOffer.stub :nearby, InternshipOffer.all do
       get internship_offers_path, params: { format: :json }
-      puts '-----------------'
-      puts '-----------------'
-      puts json_response
-      puts '-----------------'
-      puts internship_offer
-      puts '-----------------'
-      puts '-----------------'
       assert_json_presence_of(json_response, internship_offer)
     end
   end

@@ -48,7 +48,7 @@ module Dashboard::InternshipOffers
       excluded_internship_offer = create(:internship_offer,
                                          title: 'Not hellow-me')
       student = create(:student)
-      internship_application = create( :weekly_internship_application,
+      internship_application = create( :internship_application,
                                        internship_offer: included_internship_offer,
                                        student: student )
       internship_application.submit!

@@ -93,7 +93,6 @@ module Users
       internship_applications
         .where(aasm_state: %i[approved submitted drafted])
         .not_by_id(id: id)
-        .weekly_framed
         .select { |application| application.week.id == week.id }
         .map(&:expire!)
     end

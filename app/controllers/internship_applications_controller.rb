@@ -104,7 +104,6 @@ class InternshipApplicationsController < ApplicationController
   def create_internship_application_params
     params.require(:internship_application)
           .permit(
-            :type,
             :week_id,
             :internship_offer_id,
             :internship_offer_type,

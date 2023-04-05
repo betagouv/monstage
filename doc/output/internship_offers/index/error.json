@@ -12,18 +12,18 @@
   },
   "internshipOffers": [
     {
-      "id": 1491,
-      "title": "Stage de 3è - 1",
+      "id": 439,
+      "title": "Stage de 3è - 63",
       "description": "Lorem ipsum dolor",
       "employer_name": "Octo",
-      "url": "http://www.example.com/offres-de-stage/1491?page=not_a_number&radius=abc&utm_source=operator-2",
+      "url": "http://www.example.com/offres-de-stage/439?page=not_a_number&radius=abc&utm_source=operator-25",
       "city": "Paris",
-      "date_start": " 3 avril 2023",
-      "date_end": " 9 avril 2023",
+      "date_start": "10 avril 2023",
+      "date_end": "16 avril 2023",
       "latitude": 48.866667,
       "longitude": 2.333333,
       "image": "http://www.example.com/packs-test/media/images/sectors/default_sector-e1b60d1832d3ebc2a8ccff663f1a8dd8.svg",
-      "sector": "secteur-4"
+      "sector": "secteur-68"
     }
   ]
 }

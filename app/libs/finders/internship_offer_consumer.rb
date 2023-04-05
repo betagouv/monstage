@@ -27,7 +27,7 @@ module Finders
     end
 
     def school_management_query
-      puts 'school_management_query'
+      # puts 'school_management_query'
       common_filter do
         kept_published_future_offers_query.ignore_internship_restricted_to_other_schools(
           school_id: user.school_id
@@ -36,9 +36,9 @@ module Finders
     end
 
     def school_members_query
-      puts '-- school_members_query --'
-      puts school_management_query.ignore_already_applied(user: user).count
-      puts '---'
+      # puts '-- school_members_query --'
+      # puts school_management_query.ignore_already_applied(user: user).count
+      # puts '---'
       school_management_query.ignore_already_applied(user: user)
     end
 
@@ -53,7 +53,7 @@ module Finders
     end
 
     def visitor_query
-      puts 'visitor_query'
+      # puts 'visitor_query'
       # puts common_filter { kept_published_future_offers_query}.count
       common_filter { kept_published_future_offers_query}
     end
