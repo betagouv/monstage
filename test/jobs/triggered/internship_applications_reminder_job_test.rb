@@ -16,7 +16,7 @@ module Triggered
 
     test 'perform does not send email ' \
          'when internship_applications is pending for less than a week' do
-      internship_application = create(:weekly_internship_application, :submitted,
+      internship_application = create(:internship_application, :submitted,
                                       submitted_at: 1.day.ago,
                                       internship_offer: @internship_offer)
       InternshipApplicationsReminderJob.perform_now(@internship_offer.employer)
@@ -28,7 +28,7 @@ module Triggered
 
     test 'perform sends email and update pending_reminder_sent_at' \
          'when internship_applications is pending for more than 1 a week' do
-      internship_application = create(:weekly_internship_application, :submitted,
+      internship_application = create(:internship_application, :submitted,
                                         submitted_at: 8.days.ago,
                                         internship_offer: @internship_offer)
 
@@ -50,7 +50,7 @@ module Triggered
 
     test 'perform does sends email and expire!' \
          'when internship_applications is pending for more than 45 days' do
-      internship_application = create(:weekly_internship_application, :submitted,
+      internship_application = create(:internship_application, :submitted,
                                       submitted_at: (InternshipApplication::EXPIRATION_DURATION + 1.day).ago,
                                       pending_reminder_sent_at: 13.days.ago,
                                       internship_offer: @internship_offer)

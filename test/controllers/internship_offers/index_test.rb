@@ -190,6 +190,9 @@ class IndexTest < ActionDispatch::IntegrationTest
       max_students_per_group: 2,
       title: 'offer with_application',
       weeks: weeks)
+     puts internship_offer_with_application.remaining_seats_count
+     puts internship_offer_with_application.remaining_seats_count
+     puts internship_offer_with_application.remaining_seats_count
 
     internship_application = create(
       :internship_application,
@@ -209,6 +212,8 @@ class IndexTest < ActionDispatch::IntegrationTest
         assert_equal 2, InternshipOffer.uncompleted_with_max_candidates.count
         get internship_offers_path, params: { format: :json }
         assert_response :success
+        puts json_response
+        puts InternshipOffer.count
         assert_equal 1, json_response['internshipOffers'].count
         assert_json_presence_of(json_response, internship_offer_without_application)
       end
@@ -262,7 +267,7 @@ class IndexTest < ActionDispatch::IntegrationTest
 
   test 'GET #index as visitor does not show fulfilled offers' do
     travel_to(Date.new(2022,9,1)) do
-      internship_application = create(:weekly_internship_application, :submitted)
+      internship_application = create(:internship_application, :submitted)
       internship_offer = internship_application.internship_offer
       get internship_offers_path, params: { format: :json }
       assert_json_presence_of(json_response, internship_offer)
@@ -357,12 +362,12 @@ class IndexTest < ActionDispatch::IntegrationTest
       ]
       internship_offer = create(:internship_offer,
                                 max_candidates: max_candidates, weeks: internship_weeks)
-      blocked_internship_week = create(:weekly_internship_application,
+      blocked_internship_week = create(:internship_application,
                                        internship_offer: internship_offer,
                                        aasm_state: :approved,
                                        week: internship_weeks[0])
       blocked_internship_week.signed!
-      not_blocked_internship_week = create(:weekly_internship_application,
+      not_blocked_internship_week = create(:internship_application,
                                            internship_offer: internship_offer,
                                            aasm_state: :submitted,
                                            week: internship_weeks[1])
@@ -395,6 +400,13 @@ class IndexTest < ActionDispatch::IntegrationTest
 
     InternshipOffer.stub :nearby, InternshipOffer.all do
       get internship_offers_path, params: { format: :json }
+      puts '-----------------'
+      puts '-----------------'
+      puts json_response
+      puts '-----------------'
+      puts internship_offer
+      puts '-----------------'
+      puts '-----------------'
       assert_json_presence_of(json_response, internship_offer)
     end
   end

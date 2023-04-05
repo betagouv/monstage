@@ -48,7 +48,7 @@ module Dashboard::InternshipOffers
       weeks = Week.all.first(3)
       week_ids = weeks.map(&:id)
       internship_offer = create(:internship_offer, max_candidates: 3, weeks: weeks)
-      create(:weekly_internship_application, :approved, internship_offer: internship_offer, week: weeks(:week_2019_1))
+      create(:internship_application, :approved, internship_offer: internship_offer, week: weeks(:week_2019_1))
       sign_in(internship_offer.employer)
       patch(dashboard_internship_offer_path(internship_offer.to_param),
             params: { internship_offer: {
@@ -65,8 +65,8 @@ module Dashboard::InternshipOffers
       weeks = Week.all.first(4)
       week_ids = weeks.map(&:id)
       internship_offer = create(:internship_offer, max_candidates: 3, weeks: weeks)
-      create(:weekly_internship_application, :approved, internship_offer: internship_offer, week: weeks.first)
-      create(:weekly_internship_application, :approved, internship_offer: internship_offer, week: weeks.second)
+      create(:internship_application, :approved, internship_offer: internship_offer, week: weeks.first)
+      create(:internship_application, :approved, internship_offer: internship_offer, week: weeks.second)
       sign_in(internship_offer.employer)
 
       patch(dashboard_internship_offer_path(internship_offer.to_param),

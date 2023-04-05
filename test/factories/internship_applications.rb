@@ -6,6 +6,8 @@ FactoryBot.define do
     motivation { 'Suis hyper motivé' }
     student_phone { '0606060606' }
     student_email { 'paul@gmail.com' }
+    internship_offer { create(:internship_offer) }
+    week { internship_offer.weeks.first }
 
     trait :drafted do
       aasm_state { :drafted }
@@ -56,17 +58,9 @@ FactoryBot.define do
       convention_signed_at { 1.days.ago }
     end
 
-    transient do
-      weekly_internship_offer_helper {create(:internship_offer)}
-    end
+    # transient do
+    #   weekly_internship_offer_helper {create(:internship_offer)}
+    # end
 
-    trait :weekly do
-      internship_offer { weekly_internship_offer_helper }
-      week { internship_offer.weeks.first }
-    end
-
-    factory :weekly_internship_application, traits: [:weekly],
-                                            parent: :internship_application,
-                                            class: 'InternshipApplications::WeeklyFramed'
   end
 end

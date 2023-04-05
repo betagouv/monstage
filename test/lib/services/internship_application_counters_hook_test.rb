@@ -3,9 +3,9 @@ require 'test_helper'
 module Services
   class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
     test 'update_internship_offer_week_counters' do
-      internship_application       = create(:weekly_internship_application)
-      other_internship_application = create(:weekly_internship_application)
-      hook = InternshipApplicationCountersHooks::WeeklyFramed.new(
+      internship_application       = create(:internship_application,)
+      other_internship_application = create(:internship_application,)
+      hook = InternshipApplicationCountersHook.new(
         internship_application: internship_application
       )
       assert hook.update_internship_offer_week_counters

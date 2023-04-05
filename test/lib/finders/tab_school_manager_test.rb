@@ -9,10 +9,10 @@ module Finders
       student_1 = create(:student, school: school)
       student_2 = create(:student, school: school)
 
-      internship_application_1 = create(:weekly_internship_application,
+      internship_application_1 = create(:internship_application,
                                                :approved,
                                                student: student_1)
-      internship_application_2 = create(:weekly_internship_application,
+      internship_application_2 = create(:internship_application,
                                                :approved,
                                                student: student_2)
       internship_application_2.internship_agreement.update(aasm_state: :completed_by_employer)

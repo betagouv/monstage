@@ -8,7 +8,7 @@ module InternshipApplications
 
     test 'GET #show renders weekly_internship_application preview for student owning internship_application' do
       internship_offer = create(:internship_offer)
-      internship_application = create(:weekly_internship_application, :drafted, internship_offer: internship_offer)
+      internship_application = create(:internship_application, :drafted, internship_offer: internship_offer)
       sign_in(internship_application.student)
       get internship_offer_internship_application_path(internship_offer,
                                                        internship_application)
@@ -27,7 +27,7 @@ module InternshipApplications
       student = create(:student, class_room: class_room, school: school)
       main_teacher = create(:main_teacher, class_room: class_room, school: school)
       internship_offer = create(:internship_offer, school: school)
-      internship_application = create(:weekly_internship_application, :drafted, internship_offer: internship_offer, student: student)
+      internship_application = create(:internship_application, :drafted, internship_offer: internship_offer, student: student)
       sign_in(main_teacher)
       get internship_offer_internship_application_path(internship_offer,
                                                        internship_application)
@@ -38,7 +38,7 @@ module InternshipApplications
 
     test 'GET #show not owning internship_application is forbidden' do
       internship_offer = create(:internship_offer)
-      internship_application = create(:weekly_internship_application, :drafted, internship_offer: internship_offer)
+      internship_application = create(:internship_application, :drafted, internship_offer: internship_offer)
       sign_in(create(:student))
       get internship_offer_internship_application_path(internship_offer,
                                                        internship_application)

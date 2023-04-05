@@ -10,9 +10,15 @@ module Finders
              to: :listable_query_builder
 
     def base_query
-      send(mapping_user_type.fetch(user.type))
+      puts 'in base_query'
+      puts mapping_user_type.fetch(user.type)
+
+      t = send(mapping_user_type.fetch(user.type))
         .group(:id)
         .page(params[:page])
+
+      puts "base query end : #{t.to_a.count}"
+      t
     end
 
     def base_query_without_page
@@ -60,6 +66,8 @@ module Finders
     end
 
     def common_filter
+      puts 'in common_filter'
+      puts "yield: #{yield.count}"
       query = yield
       %i[
         keyword
@@ -70,6 +78,7 @@ module Finders
       end
       query = nearby_query(query) if coordinate_params
       query = school_year_query(query) if school_year_param
+      # puts "query final: #{query.count}"
       query
     end
 
@@ -102,9 +111,11 @@ module Finders
 
     def weekly_framed_scopes(scope, args = nil)
       if args.nil?
-        InternshipOffer.send(scope).or(InternshipOffers::Api.send(scope))
+        InternshipOffer.send(scope)
+          .or(InternshipOffers::Api.send(scope))
       else
-        InternshipOffer.send(scope, args).or(InternshipOffers::Api.send(scope, args))
+        InternshipOffer.send(scope, args)
+        .or(InternshipOffers::Api.send(scope, args))
       end
     end
   end

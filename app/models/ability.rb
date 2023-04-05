@@ -112,12 +112,12 @@ class Ability
 
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
-    can :renew, InternshipOffer do |internship_offer|
-      renewable?(internship_offer: internship_offer, user: user)
-    end
-    can :duplicate, InternshipOffer do |internship_offer|
-      duplicable?(internship_offer: internship_offer, user: user)
-    end
+    # can :renew, InternshipOffer do |internship_offer|
+    #   renewable?(internship_offer: internship_offer, user: user)
+    # end
+    # can :duplicate, InternshipOffer do |internship_offer|
+    #   duplicable?(internship_offer: internship_offer, user: user)
+    # end
     # internship_offer stepper
     can %i[create], InternshipOfferInfo
     can %i[update edit renew], InternshipOfferInfo, employer_id: user.id
@@ -157,7 +157,7 @@ class Ability
     can :show, :api_token
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
     can %i[index_and_filter], Reporting::InternshipOffer
-    can %i[index import_data], Acl::Reporting do |_acl|
+    can %i[index], Acl::Reporting do |_acl|
       true
     end
     can %i[see_reporting_internship_offers
@@ -172,7 +172,7 @@ class Ability
     can :manage, School
     can :manage, Sector
     can %i[destroy see_tutor], InternshipOffer
-    can %i[read update export], InternshipOffer
+    can %i[read update export unpublish], InternshipOffer
     can %i[read update destroy export], InternshipApplication
     can :manage, EmailWhitelists::EducationStatistician
     can :manage, EmailWhitelists::PrefectureStatistician

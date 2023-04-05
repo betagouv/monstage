@@ -87,7 +87,7 @@ module InternshipsOffers
       first_io_week = internship_offer.internship_offer_weeks.first
       second_io_week = internship_offer.internship_offer_weeks.second
       third_io_week = internship_offer.internship_offer_weeks.last
-      create(:weekly_internship_application,
+      create(:internship_application,
              :approved,
              internship_offer: first_io_week.internship_offer,
              week: first_io_week.week)
@@ -113,7 +113,7 @@ module InternshipsOffers
       first_io_week = internship_offer.internship_offer_weeks.first
       second_io_week = internship_offer.internship_offer_weeks.second
       third_io_week = internship_offer.internship_offer_weeks.last
-      create(:weekly_internship_application,
+      create(:internship_application,
              :approved,
              internship_offer: first_io_week.internship_offer,
              week: first_io_week.week)
@@ -139,7 +139,7 @@ module InternshipsOffers
       assert_equal 1, InternshipOffer.uncompleted.to_a.count
       # assert_equal 1, InternshipOffer.ignore_max_candidates_reached.to_a.count
       first_io_week = internship_offer.internship_offer_weeks.first
-      create(:weekly_internship_application,
+      create(:internship_application,
              :approved,
              internship_offer: first_io_week.internship_offer,
              week: first_io_week.week)
@@ -166,7 +166,7 @@ module InternshipsOffers
 
       internship_offer.internship_offer_weeks.each do |internship_offer_week|
         (internship_offer.max_candidates - 1).times do
-          create(:weekly_internship_application, internship_offer: internship_offer_week.internship_offer,
+          create(:internship_application, internship_offer: internship_offer_week.internship_offer,
                                                  week: internship_offer_week.week,
                                                  aasm_state: 'approved')
         end

@@ -7,8 +7,8 @@ module Finders
     test 'pending_agreements_count only draft agreements' do
       employer = create(:employer)
       internship_offer = create(:internship_offer, employer: employer, max_students_per_group: 2, max_candidates: 2)
-      draft_application = create(:weekly_internship_application, :approved, internship_offer: internship_offer)
-      completed_application = create(:weekly_internship_application, :approved, internship_offer: internship_offer)
+      draft_application = create(:internship_application, :approved, internship_offer: internship_offer)
+      completed_application = create(:internship_application, :approved, internship_offer: internship_offer)
       completed_application.internship_agreement.update(aasm_state: :completed_by_employer)
 
       employer_tab = TabEmployer.new(user: employer)

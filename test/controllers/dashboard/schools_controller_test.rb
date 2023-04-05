@@ -32,7 +32,7 @@ module Dashboard
       class_room = create(:class_room, school: school)
       student = create(:student, school: school, class_room: class_room)
       internship_offer.reload
-      internship_application = create(:weekly_internship_application,
+      internship_application = create(:internship_application,
                                       student: student,
                                       internship_offer: internship_offer,
                                       week: school_weeks.first)

@@ -8,9 +8,9 @@ namespace :retrofit do
     counter = 0
     week_ids = ((Week.current.id + 1)..(Week.current.id.to_i + 33)).to_a
     employer_internship_offer_ids = InternshipOffer.kept
-                                                                  .published
-                                                                  .where(employer_id: User.employers.ids)
-    ias = InternshipApplications::WeeklyFramed.approved
+                                                   .published
+                                                   .where(employer_id: User.employers.ids)
+    ias = InternshipApplication.approved
                                               .joins(:week)
                                               .where(week_id: week_ids)
                                               .where(internship_offer_id: employer_internship_offer_ids)
@@ -24,13 +24,12 @@ namespace :retrofit do
         main_teacher = student.main_teacher
         arg_hash     = {internship_application: internship_application, main_teacher: main_teacher}
 
-        if internship_application.type == "InternshipApplications::WeeklyFramed"
-          internship_application.create_agreement
-          if main_teacher.present?
-            MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
-                             .deliver_later
-          end
+        internship_application.create_agreement
+        if main_teacher.present?
+          MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
+                           .deliver_later
         end
+        
         counter += 1
       end
     end

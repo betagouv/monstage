@@ -19,7 +19,7 @@ module InternshipApplications
           user_id: student.id,
           internship_offer_id: internship_offer.id,
           internship_offer_type: InternshipOffer.name,
-          type: InternshipApplications::WeeklyFramed.name,
+          type: InternshipApplication.name,
           student_attributes: {
             phone: '+330656565400',
             resume_educational_background: 'resume_educational_background',
@@ -29,15 +29,15 @@ module InternshipApplications
         }
       }
 
-      assert_difference('InternshipApplications::WeeklyFramed.count', 1) do
+      assert_difference('InternshipApplication.count', 1) do
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
         assert_redirected_to internship_offer_internship_application_path(
           internship_offer,
-          InternshipApplications::WeeklyFramed.last
+          InternshipApplication.last
         )
       end
 
-      created_internship_application = InternshipApplications::WeeklyFramed.last
+      created_internship_application = InternshipApplication.last
       assert_equal internship_offer.internship_offer_weeks.first.week.id, created_internship_application.week.id
       assert_equal 'Je suis trop motivé wesh', created_internship_application.motivation.to_plain_text
       assert_equal student.id, created_internship_application.student.id
@@ -62,7 +62,7 @@ module InternshipApplications
           user_id: student.id,
           internship_offer_id: internship_offer.id,
           internship_offer_type: InternshipOffer.name,
-          type: InternshipApplications::WeeklyFramed.name,
+          type: InternshipApplication.name,
           student_attributes: {
             phone: '+330656565400',
             resume_educational_background: 'resume_educational_background',
@@ -72,15 +72,15 @@ module InternshipApplications
         }
       }
 
-      assert_difference('InternshipApplications::WeeklyFramed.count', 1) do
+      assert_difference('InternshipApplication.count', 1) do
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
         assert_redirected_to internship_offer_internship_application_path(
           internship_offer,
-          InternshipApplications::WeeklyFramed.last
+          InternshipApplication.last
         )
       end
 
-      created_internship_application = InternshipApplications::WeeklyFramed.last
+      created_internship_application = InternshipApplication.last
       assert_equal internship_offer.internship_offer_weeks.first.week.id, created_internship_application.week.id
       assert_equal 'Je suis trop motivé wesh', created_internship_application.motivation.to_plain_text
       assert_equal student.id, created_internship_application.student.id
@@ -106,7 +106,7 @@ module InternshipApplications
           user_id: student.id,
           internship_offer_id: internship_offer.id,
           internship_offer_type: InternshipOffer.name,
-          type: InternshipApplications::WeeklyFramed.name,
+          type: InternshipApplication.name,
           student_attributes: {
             phone: '+330656565400',
             resume_educational_background: 'resume_educational_background',
@@ -116,15 +116,15 @@ module InternshipApplications
         }
       }
 
-      assert_difference('InternshipApplications::WeeklyFramed.count', 1) do
+      assert_difference('InternshipApplication.count', 1) do
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
         assert_redirected_to internship_offer_internship_application_path(
           internship_offer,
-          InternshipApplications::WeeklyFramed.last
+          InternshipApplication.last
         )
       end
 
-      created_internship_application = InternshipApplications::WeeklyFramed.last
+      created_internship_application = InternshipApplication.last
       assert_equal internship_offer.internship_offer_weeks.first.week.id, created_internship_application.week.id
       assert_equal 'Je suis trop motivé wesh', created_internship_application.motivation.to_plain_text
       assert_equal student.id, created_internship_application.student.id

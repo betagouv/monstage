@@ -21,7 +21,7 @@ module InternshipApplicationCountersHooks
     end
 
     test '.update_internship_offer_counters ignores drafted applications with internship_offer.total_applications_count' do
-      create(:weekly_internship_application, :drafted,
+      create(:internship_application, :drafted,
              week: @internship_offer.weeks.first,
              internship_offer: @internship_offer)
 

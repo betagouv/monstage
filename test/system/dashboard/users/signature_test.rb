@@ -23,7 +23,7 @@ module Dashboard
         internship_offer = create(:internship_offer, weeks: weeks, employer: employer)
         student = create(:student, school: create(:school, weeks: weeks))
         create(:school_manager, school: student.school)
-        internship_application = create(:weekly_internship_application,
+        internship_application = create(:internship_application,
                                         :approved,
                                         motivation: 'au taquet',
                                         student: student,
@@ -110,7 +110,7 @@ module Dashboard
         internship_offer = create(:internship_offer, weeks: weeks, employer: employer)
         student = create(:student, school: create(:school, weeks: weeks))
         create(:school_manager, school: student.school)
-        internship_application = create(:weekly_internship_application,
+        internship_application = create(:internship_application,
                                         :approved,
                                         motivation: 'au taquet',
                                         student: student,
@@ -190,7 +190,7 @@ module Dashboard
         internship_offer = create(:internship_offer, weeks: weeks)
         school = school_manager.school
         student = create(:student, school: school, class_room: create(:class_room, school: school))
-        internship_application = create(:weekly_internship_application,
+        internship_application = create(:internship_application,
                                         :approved,
                                         motivation: 'au taquet',
                                         student: student,
@@ -273,7 +273,7 @@ module Dashboard
       internship_offer = create(:internship_offer, weeks: weeks)
       school = school_manager.school
       student2 = create(:student, school: school, class_room: create(:class_room, school: school))
-      internship_application = create(:weekly_internship_application,
+      internship_application = create(:internship_application,
                                       :approved,
                                       motivation: 'au taquet',
                                       student: student2,

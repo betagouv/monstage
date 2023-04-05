@@ -11,7 +11,7 @@ module Product
       employer = create(:employer)
       %i[drafted submitted approved rejected].map do |aasm_state|
         internship_offer = create(:internship_offer, employer: employer)
-        create(:weekly_internship_application, aasm_state: aasm_state, internship_offer: internship_offer)
+        create(:internship_application, aasm_state: aasm_state, internship_offer: internship_offer)
       end
       sign_in(employer)
       run_request_and_cache_response(report_as: 'dashboard_internship_offers_path') do
@@ -60,16 +60,16 @@ module Product
       school = create(:school, :with_agreement_presets, :with_school_manager)
       class_room = create(:class_room,  school: school)
 
-      internship_application_1 = create(:weekly_internship_application,
+      internship_application_1 = create(:internship_application,
                                                :approved,
                                                 student: create(:student, school: school, class_room: class_room))
-      internship_application_2 = create(:weekly_internship_application,
+      internship_application_2 = create(:internship_application,
                                                :approved,
                                                 student: create(:student, school: school, class_room: class_room))
-      internship_application_3 = create(:weekly_internship_application,
+      internship_application_3 = create(:internship_application,
                                                :approved,
                                                 student: create(:student, school: school, class_room: class_room))
-      internship_application_4 = create(:weekly_internship_application,
+      internship_application_4 = create(:internship_application,
                                                :approved,
                                                 student: create(:student, school: school, class_room: class_room))
 
@@ -89,7 +89,7 @@ module Product
     end
 
     test 'USE_W3C, employer dashboard_internship_applications_path' do
-      internship_application = create(:weekly_internship_application, :approved)
+      internship_application = create(:internship_application, :approved)
       sign_in(internship_application.internship_offer.employer)
       run_request_and_cache_response(report_as: 'dashboard_internship_applications_path') do
         visit dashboard_internship_applications_path

@@ -29,8 +29,8 @@ module Users
       employer = create(:employer)
       kept_internship_offer = create(:internship_offer, employer: employer)
       discarded_internship_offer = create(:internship_offer, employer: employer)
-      kept_internship_application = create(:weekly_internship_application, internship_offer: kept_internship_offer)
-      discarded_internship_application = create(:weekly_internship_application, internship_offer: discarded_internship_offer)
+      kept_internship_application = create(:internship_application, internship_offer: kept_internship_offer)
+      discarded_internship_application = create(:internship_application, internship_offer: discarded_internship_offer)
 
       discarded_internship_offer.discard
 

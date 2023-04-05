@@ -6,7 +6,7 @@ class SchoolTest < ActiveSupport::TestCase
   test 'Agreements association' do
     school = create(:school, :with_agreement_presets, :with_school_manager)
     student = create(:student_with_class_room_3e, school: school)
-    internship_application = create(:weekly_internship_application, user_id: student.id)
+    internship_application = create(:internship_application, user_id: student.id)
     internship_agreement = create(:internship_agreement, :created_by_system,
                                   internship_application: internship_application)
     internship_agreement_presets = school.internship_agreement_preset
@@ -17,7 +17,7 @@ class SchoolTest < ActiveSupport::TestCase
   test 'set school_delegation_to_sign_delivered_at first time populates internship_agreements created by system' do
     school = create(:school, :with_agreement_presets_missing_date, :with_school_manager)
     student = create(:student_with_class_room_3e, school: school)
-    internship_application = create(:weekly_internship_application, user_id: student.id)
+    internship_application = create(:internship_application, user_id: student.id)
     internship_agreement = create(:internship_agreement, :created_by_system,
                                   internship_application: internship_application)
     internship_agreement_presets = school.internship_agreement_preset

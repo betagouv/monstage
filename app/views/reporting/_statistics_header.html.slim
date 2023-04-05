@@ -5,7 +5,7 @@
 .container-monstage
   .row
     .col-8
-      h1.h3.pb-3 Statistiques
+      h1.h3.pb-3 Statistiques associations
   .row
     .col-12
       .fr-tabs
@@ -34,11 +34,6 @@
             li
               = link_to reporting_employers_internship_offers_path(default_reporting_url_options(current_user, dimension: 'group'))
                 button#entreprises.fr-tabs__tab aria-selected="#{current_page?(reporting_employers_internship_offers_path)}" Entreprises
-
-          - if can?(:import_data, Acl::Reporting) && current_user.operator? && current_user.operator.airtable_reporting_enabled && current_user.operator.airtable_link
-            li
-              = link_to reporting_import_data_path
-                button#import.fr-tabs__tab aria-selected="#{current_page?(reporting_import_data_path)}" Importer des données
         
         
         = render partial: "reporting/#{path}", locals: options

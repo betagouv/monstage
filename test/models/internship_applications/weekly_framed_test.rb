@@ -43,7 +43,7 @@ module InternshipApplications
       weeks = [Week.find_by(number: 1, year: 2019)]
       student = create(:student)
       internship_offer = create(:internship_offer, weeks: weeks)
-      internship_application_1 = create(:weekly_internship_application, student: student,
+      internship_application_1 = create(:internship_application, student: student,
                                                                         internship_offer: internship_offer,
                                                                         week: internship_offer.internship_offer_weeks.first.week)
       assert internship_application_1.valid?
@@ -57,7 +57,7 @@ module InternshipApplications
       weeks = [Week.find_by(number: 1, year: 2019), Week.find_by(number: 2, year: 2019)]
       student = create(:student)
       internship_offer = create(:internship_offer, weeks: weeks)
-      internship_application_1 = create(:weekly_internship_application,
+      internship_application_1 = create(:internship_application,
                                         internship_offer: internship_offer,
                                         student: student,
                                         week: internship_offer.weeks.first)
@@ -72,7 +72,7 @@ module InternshipApplications
     test 'application updates remaining_seats_count along with approved applications' do
       offer = create(:internship_offer)
       assert_equal offer.max_candidates, offer.remaining_seats_count
-      application = create(:weekly_internship_application, internship_offer: offer)
+      application = create(:internship_application, internship_offer: offer)
       assert_equal offer.max_candidates, offer.remaining_seats_count
       assert_equal "drafted", application.aasm_state
 
@@ -91,7 +91,7 @@ module InternshipApplications
       favorite = create(:favorite, internship_offer: offer)
       assert_equal Favorite.count, 1
       other_favorite = create(:favorite)
-      application = create(:weekly_internship_application, internship_offer: offer)
+      application = create(:internship_application, internship_offer: offer)
 
       application.submit!
       assert_equal Favorite.count, 2
@@ -106,7 +106,7 @@ module InternshipApplications
       favorite = create(:favorite, internship_offer: old_offer)
       assert_equal Favorite.count, 1
       other_favorite = create(:favorite)
-      application = create(:weekly_internship_application, internship_offer: old_offer)
+      application = create(:internship_application, internship_offer: old_offer)
 
       application.submit!
       assert_equal Favorite.count, 2

@@ -39,7 +39,7 @@ module Dashboard
         class_room = create(:class_room, school: school)
         student = create(:student, school: school, class_room: class_room)
         school_manager = create(:school_manager, school: school)
-        internship_application = create(:weekly_internship_application, :approved, student: student)
+        internship_application = create(:internship_application, :approved, student: student)
         sign_in(school_manager)
         get dashboard_students_internship_applications_path(student)
         assert_response :success
@@ -51,7 +51,7 @@ module Dashboard
         class_room = create(:class_room, school: school)
         student = create(:student, school: school, class_room: class_room)
         main_teacher = create(:main_teacher, school: school, class_room: class_room)
-        internship_application = create(:weekly_internship_application, :approved, student: student)
+        internship_application = create(:internship_application, :approved, student: student)
         sign_in(main_teacher)
         get dashboard_students_internship_applications_path(student)
         assert_response :success
@@ -80,7 +80,7 @@ module Dashboard
                     canceled_by_employer
                     canceled_by_student]
         internship_applications = states.each_with_object({}) do |state, accu|
-          accu[state] = create(:weekly_internship_application, state, student: student)
+          accu[state] = create(:internship_application, state, student: student)
         end
 
         sign_in(student)
@@ -114,7 +114,7 @@ module Dashboard
 
       test 'GET internship_applications#show not connected responds with redireciton' do
         student = create(:student)
-        internship_application = create(:weekly_internship_application, student: student)
+        internship_application = create(:internship_application, student: student)
         get dashboard_students_internship_application_path(student,
                                                            internship_application)
         assert_response :redirect
@@ -123,7 +123,7 @@ module Dashboard
       test 'GET internship_applications#show render navbar' do
         student = create(:student)
         sign_in(student)
-        internship_application = create(:weekly_internship_application, {
+        internship_application = create(:internship_application, {
                                           student: student,
                                           aasm_state: :approved,
                                           convention_signed_at: 1.days.ago,
@@ -144,7 +144,7 @@ module Dashboard
       test 'GET internship_applications#show with drafted can be submitted' do
         student = create(:student)
         sign_in(student)
-        internship_application = create(:weekly_internship_application, student: student)
+        internship_application = create(:internship_application, student: student)
 
         get dashboard_students_internship_application_path(student,
                                                            internship_application)

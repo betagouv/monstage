@@ -17,7 +17,7 @@ module Dashboard
 
     test 'list/filter internship offers ' do
       weekly_internship_applications = AASM_STATES.map do |state|
-        create(:weekly_internship_application,
+        create(:internship_application,
                state,
                internship_offer: create(:internship_offer,
                                         employer: @employer))
@@ -33,7 +33,7 @@ module Dashboard
     end
 
     test 'show weekly_internship_applications internship offers' do
-      weekly_internship_application = create(:weekly_internship_application,
+      weekly_internship_application = create(:internship_application,
                                              :submitted,
                                              internship_offer: create(:internship_offer, employer: @employer))
       sign_in(@employer)

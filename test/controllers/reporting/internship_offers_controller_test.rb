@@ -31,19 +31,19 @@ module Reporting
                                       sector: @sector_wood,
                                       max_candidates: 10,
                                       max_students_per_group: 10)
-      create(:weekly_internship_application,
+      create(:internship_application,
              :submitted,
              internship_offer: @internship_offer_agri_1,
              student: @student_female1)
-      create(:weekly_internship_application,
+      create(:internship_application,
              :submitted,
              internship_offer: @internship_offer_agri_1,
              student: @student_male1)
-      create(:weekly_internship_application,
+      create(:internship_application,
              :submitted,
              internship_offer: @internship_offer_agri_2,
              student: @student_male2)
-      create(:weekly_internship_application,
+      create(:internship_application,
              :approved,
              internship_offer: @internship_offer_agri_1,
              student: @student_male2)

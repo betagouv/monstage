@@ -92,12 +92,12 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     school = create(:school, :with_school_manager)
     student = create(:student, school: school)
     internship_applications = {
-      drafted: create(:weekly_internship_application, :drafted, student: student),
-      submitted: create(:weekly_internship_application, :submitted, student: student),
-      approved: create(:weekly_internship_application, :approved, student: student),
-      rejected: create(:weekly_internship_application, :rejected, student: student),
-      convention_signed: create(:weekly_internship_application, :convention_signed, student: student),
-      canceled_by_student: create(:weekly_internship_application, :canceled_by_student, student: student)
+      drafted: create(:internship_application, :drafted, student: student),
+      submitted: create(:internship_application, :submitted, student: student),
+      approved: create(:internship_application, :approved, student: student),
+      rejected: create(:internship_application, :rejected, student: student),
+      convention_signed: create(:internship_application, :convention_signed, student: student),
+      canceled_by_student: create(:internship_application, :canceled_by_student, student: student)
     }
     sign_in(student)
     visit '/'
@@ -122,7 +122,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       internship_offer      = create(:internship_offer, weeks: weeks)
       school                = create(:school, weeks: weeks)
       student               = create(:student, school: school, class_room: create(:class_room, school: school))
-      internship_application = create(:weekly_internship_application,
+      internship_application = create(:internship_application,
                                       :drafted,
                                       motivation: 'au taquet',
                                       student: student,

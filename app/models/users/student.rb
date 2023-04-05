@@ -8,12 +8,7 @@ module Users
 
     belongs_to :class_room, optional: true
 
-    has_many :internship_applications, dependent: :destroy,
-                                       foreign_key: 'user_id' do
-      def weekly_framed
-        where(type: InternshipApplications::WeeklyFramed.name)
-      end
-    end
+    has_many :internship_applications, dependent: :destroy, foreign_key: 'user_id'
     has_many :internship_agreements, through: :internship_applications
 
     # has_many :favorites

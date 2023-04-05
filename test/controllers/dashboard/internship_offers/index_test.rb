@@ -309,11 +309,11 @@ module Dashboard::InternshipOffers
         internship_offer_with_pending_response = create(
           :internship_offer, employer: employer
         )
-        create(:weekly_internship_application, :submitted,
+        create(:internship_application, :submitted,
               internship_offer: internship_offer_with_pending_response)
         internship_offer_with_application = create(:internship_offer,
                                                   employer: employer)
-        create(:weekly_internship_application, :approved,
+        create(:internship_application, :approved,
               internship_offer: internship_offer_with_application)
 
         sign_in(employer)
@@ -342,14 +342,14 @@ module Dashboard::InternshipOffers
                                       max_candidates: 10,
                                       max_students_per_group: 5,
                                       weeks: Week.selectable_from_now_until_end_of_school_year.first(10))
-        create(:weekly_internship_application, :submitted,
+        create(:internship_application, :submitted,
               internship_offer: discarded_internship_offer)
         2.times do
-          create(:weekly_internship_application, :submitted,
+          create(:internship_application, :submitted,
                 internship_offer: kept_internship_offer)
         end
         3.times do
-          create(:weekly_internship_application, :approved,
+          create(:internship_application, :approved,
                 internship_offer: kept_internship_offer)
         end
 

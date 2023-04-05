@@ -48,10 +48,10 @@ module Dashboard
                                 rich_text_resume_educational_background
                                 rich_text_resume_languages
                                 rich_text_resume_other]
-        internship_applications = InternshipApplications::WeeklyFramed.includes(*includings)
-                                                                      .includes(student: [*student_includings])
-                                                                      .where(internship_offer: internship_offer)
-                                                                      .not_drafted
+        internship_applications = InternshipApplication.includes(*includings)
+                                                        .includes(student: [*student_includings])
+                                                        .where(internship_offer: internship_offer)
+                                                        .not_drafted
         if params_order == ORDER_WITH_INTERNSHIP_DATE
           internship_applications.order(
             'week_id ASC',
