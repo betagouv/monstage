@@ -23,7 +23,7 @@ module Finders
           student = create(:student)
           wio = create(:internship_offer, employer: employer)
           create(
-            :weekly_internship_application,
+            :internship_application,
             aasm_state: state.name.to_sym,
             internship_offer: wio,
             student: student
@@ -44,7 +44,7 @@ module Finders
         student = create(:student)
         wio = create(:internship_offer, employer: employer)
         create(
-          :weekly_internship_application,
+          :internship_application,
           :submitted,
           internship_offer: wio,
           student: student
@@ -78,7 +78,7 @@ module Finders
         student = create(:student)
         wio = create(:internship_offer, employer: employer)
         create(
-          :weekly_internship_application,
+          :internship_application,
           :submitted,
           internship_offer: wio,
           student: student

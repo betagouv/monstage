@@ -66,7 +66,7 @@ module Dashboard
       )
 
       early_application_for_week_2 = create(
-        :weekly_internship_application,
+        :internship_application,
         aasm_state: :submitted,
         submitted_at: 3.days.ago,
         week: week_2,
@@ -75,7 +75,7 @@ module Dashboard
       )
 
       late_application_for_week_1 = create(
-        :weekly_internship_application,
+        :internship_application,
         aasm_state: :submitted,
         submitted_at: 2.days.ago,
         week: week_1,
@@ -117,7 +117,7 @@ module Dashboard
       )
 
       application_for_week_1 = create(
-        :weekly_internship_application,
+        :internship_application,
         aasm_state: :submitted,
         submitted_at: 3.days.ago,
         week: internship_offer.weeks.first,

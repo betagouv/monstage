@@ -4,7 +4,6 @@ module Finders
   # build base query to request internship offers as a linked-list
   class ListableInternshipOffer
     def all
-      # puts "in all : #{finder.base_query.to_a.count}"
       finder.base_query
     end
 

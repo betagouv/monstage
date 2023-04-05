@@ -152,7 +152,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                      phone: '+330612345678'
     )
     internship_application = create(
-      :weekly_internship_application,
+      :internship_application,
       :submitted,
       student: student
     )
@@ -171,7 +171,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                      class_room: create(:class_room, school: school)
     )
     internship_application = create(
-      :weekly_internship_application,
+      :internship_application,
       :approved,
       student: student
     )
@@ -194,7 +194,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                      class_room: create(:class_room, school: school)
     )
     internship_application = create(
-      :weekly_internship_application,
+      :internship_application,
       :submitted,
       student: student
     )

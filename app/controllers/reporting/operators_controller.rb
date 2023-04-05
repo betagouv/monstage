@@ -38,18 +38,18 @@ module Reporting
 
     def realized_count_hash
       { params[:operator][:school_year] => { 
-          total: calulate_total_count,
+          total: compute_total_count,
           onsite: params[:operator][:onsite_count].to_i,
           hybrid: params[:operator][:hybrid_count].to_i,
           online: params[:operator][:online_count].to_i,
           workshop: params[:operator][:workshop_count].to_i,
           public: params[:operator][:public_count].to_i,
-          private: calulate_total_count - params[:operator][:public_count].to_i,
+          private: compute_total_count - params[:operator][:public_count].to_i,
         }
       }
     end
 
-    def calulate_total_count
+    def compute_total_count
       onsite = params[:operator][:onsite_count].to_i
       hybrid = params[:operator][:hybrid_count].to_i
       online = params[:operator][:online_count].to_i

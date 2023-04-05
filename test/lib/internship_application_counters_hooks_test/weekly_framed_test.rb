@@ -6,7 +6,7 @@ module InternshipApplicationCountersHooks
     setup do
       @week = Week.find_by(number: 1, year: 2019)
       @internship_offer = create(:internship_offer, weeks: [@week])
-      @internship_application = build(:weekly_internship_application, week: @week,
+      @internship_application = build(:internship_application, week: @week,
                                                                       internship_offer: @internship_offer)
     end
 
@@ -112,7 +112,7 @@ module InternshipApplicationCountersHooks
         @internship_application.save!
       end
 
-      second_application = build(:weekly_internship_application, week: @internship_offer.weeks.first,
+      second_application = build(:internship_application, week: @internship_offer.weeks.first,
                                                                  internship_offer: @internship_offer,
                                                                  student: create(:student, gender: 'f'))
       second_application.aasm_state = :submitted

@@ -29,7 +29,7 @@ module Finders
         student = create(:student, school: school)
         wio = create(:internship_offer)
         create(
-          :weekly_internship_application,
+          :internship_application,
           :submitted,
           internship_offer: wio,
           student: student
@@ -64,7 +64,7 @@ module Finders
         student = create(:student, school: school)
         wio = create(:internship_offer)
         create(
-          :weekly_internship_application,
+          :internship_application,
           :submitted,
           internship_offer: wio,
           student: student

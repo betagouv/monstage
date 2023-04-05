@@ -5,7 +5,7 @@ require 'test_helper'
 module InternshipsOffers
   class WeeklyFramedTest < ActiveSupport::TestCase
     test 'should be valid' do
-      offer = build(:weekly_internship_offer)
+      offer = build(:internship_offer)
       assert_equal offer.max_candidates, offer.remaining_seats_count
       assert offer.valid?
       offer.save
@@ -92,12 +92,12 @@ module InternshipsOffers
              internship_offer: first_io_week.internship_offer,
              week: first_io_week.week)
       assert_equal 0, InternshipOffer.fulfilled.to_a.count
-      create(:weekly_internship_application,
+      create(:internship_application,
             :submitted,
             internship_offer: second_io_week.internship_offer,
             week: second_io_week.week)
       assert_equal 0, InternshipOffer.fulfilled.to_a.count
-      create(:weekly_internship_application,
+      create(:internship_application,
             :approved,
             internship_offer: second_io_week.internship_offer,
             week: third_io_week.week)
@@ -118,12 +118,12 @@ module InternshipsOffers
              internship_offer: first_io_week.internship_offer,
              week: first_io_week.week)
       assert_equal 1, InternshipOffer.uncompleted.count
-      create(:weekly_internship_application,
+      create(:internship_application,
             :submitted,
             internship_offer: second_io_week.internship_offer,
             week: second_io_week.week)
       assert_equal 1, InternshipOffer.uncompleted.count
-      create(:weekly_internship_application,
+      create(:internship_application,
             :approved,
             internship_offer: second_io_week.internship_offer,
             week: third_io_week.week)
@@ -144,12 +144,12 @@ module InternshipsOffers
              internship_offer: first_io_week.internship_offer,
              week: first_io_week.week)
       assert_equal 1, InternshipOffer.uncompleted.to_a.count
-      create(:weekly_internship_application,
+      create(:internship_application,
             :submitted,
             internship_offer: first_io_week.internship_offer,
             week: first_io_week.week)
       assert_equal 1, InternshipOffer.uncompleted.to_a.count
-      create(:weekly_internship_application,
+      create(:internship_application,
             :approved,
             internship_offer: first_io_week.internship_offer,
             week: first_io_week.week)

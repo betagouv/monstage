@@ -113,7 +113,7 @@ class InternshipOffer < ApplicationRecord
 
   scope :uncompleted, lambda {
     offers_ar       = InternshipOffer.arel_table
-    full_offers_ids = InternshipOffers.fulfilled.pluck(:id)
+    full_offers_ids = InternshipOffer.fulfilled.pluck(:id)
 
     where(offers_ar[:id].not_in(full_offers_ids))
   }

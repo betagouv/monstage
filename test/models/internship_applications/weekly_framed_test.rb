@@ -12,7 +12,7 @@ module InternshipApplications
                                                           internship_offer_weeks: [
                                                             internship_offer_week_1
                                                           ])
-      internship_application = build(:weekly_internship_application, week: internship_offer_week_1.week)
+      internship_application = build(:internship_application, week: internship_offer_week_1.week)
       internship_application.save
       assert internship_application.errors.include?(:week)
       assert_equal 1, internship_application.errors.where(:week, :has_no_spots_left).size
@@ -32,7 +32,7 @@ module InternshipApplications
                                                             internship_offer_week_2,
                                                             internship_offer_week_3
                                                           ])
-      internship_application = build(:weekly_internship_application, internship_offer: internship_offer_week_3.internship_offer,
+      internship_application = build(:internship_application, internship_offer: internship_offer_week_3.internship_offer,
                                                                      week: internship_offer_week_3.week)
       internship_application.save
       assert internship_application.errors.include?(:internship_offer)
@@ -47,7 +47,7 @@ module InternshipApplications
                                                                         internship_offer: internship_offer,
                                                                         week: internship_offer.internship_offer_weeks.first.week)
       assert internship_application_1.valid?
-      internship_application_2 = build(:weekly_internship_application, student: student,
+      internship_application_2 = build(:internship_application, student: student,
                                                                        internship_offer: internship_offer,
                                                                        week: internship_offer.internship_offer_weeks.first.week)
       refute internship_application_2.valid?
@@ -62,7 +62,7 @@ module InternshipApplications
                                         student: student,
                                         week: internship_offer.weeks.first)
       assert internship_application_1.valid?
-      internship_application_2 = build(:weekly_internship_application,
+      internship_application_2 = build(:internship_application,
                                        internship_offer: internship_offer,
                                        student: student,
                                        week: internship_offer.internship_offer_weeks.first.week)

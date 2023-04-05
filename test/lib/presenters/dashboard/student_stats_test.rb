@@ -56,7 +56,7 @@ module Presenters
           :internship_offer,
           **tutor_kwargs)
         weekly_internship_application = create(
-          :weekly_internship_application,
+          :internship_application,
           :convention_signed,
           student: @student,
           internship_offer: internship_offer

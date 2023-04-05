@@ -23,29 +23,15 @@ class InternshipOffersController < ApplicationController
         @params = query_params
       end
       format.json do
-        # puts 'in controller'
-        # puts params
         @internship_offers_all_without_page = finder.all_without_page
         @internship_offers = finder.all.includes([:sector]).order(id: :desc)
-        # puts '@internship_offers'
-        # puts @internship_offers.to_a.count
-        # puts InternshipOffer.all.to_a.count
 
         @is_suggestion = @internship_offers.to_a.count === 0
-        # puts '@is_suggestion'
         @internship_offers = alternative_internship_offers if @internship_offers.to_a.count == 0
-        # puts '@internship_offers after alternative'
 
         formatted_internship_offers = format_internship_offers(@internship_offers)
-        # puts 'formatted_internship_offers'
         @params = query_params
-        # puts '@params'
-        # p formatted_internship_offers
-        # puts 'formatted_internship_offers'
-        # puts calculate_seats
-        # puts 'calculate_seats'
-        # puts page_links
-        # puts 'pages_links'
+        
         data = {
           internshipOffers: formatted_internship_offers,
           pageLinks: page_links,

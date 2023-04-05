@@ -57,7 +57,7 @@ class ReportingKpiTest < ActiveSupport::TestCase
       }
       assert_equal updated_expected, Reporting::Kpi.new.last_week_kpis
       internship_application = create(
-        :weekly_internship_application,
+        :internship_application,
         :approved,
         student: student,
         internship_offer: internship_offer)

@@ -363,13 +363,13 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     internship_offer = create(:internship_offer, weeks: weeks)
     internship_offer_2 = create(:internship_offer, weeks: weeks)
     internship_application_to_be_canceled_by_employer = create(
-      :weekly_internship_application, :approved,
+      :internship_application, :approved,
       internship_offer: internship_offer,
       week: internship_offer.internship_offer_weeks.first.week,
       student: student
     )
     internship_application_to_be_signed = create(
-      :weekly_internship_application, :approved,
+      :internship_application, :approved,
       internship_offer: internship_offer_2,
       week: internship_offer_2.internship_offer_weeks.first.week,
       student: student

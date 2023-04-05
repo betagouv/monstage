@@ -14,7 +14,7 @@ module Dashboard
       internship_offer = create(:internship_offer, employer: employer)
       internship_offer_2 = create(:internship_offer, employer: employer_2)
       internship_application = create(
-        :weekly_internship_application,
+        :internship_application,
         internship_offer: internship_offer,
         student: student)
       internship_application_2 = create(:internship_application, internship_offer: internship_offer_2)

@@ -10,15 +10,9 @@ module Finders
              to: :listable_query_builder
 
     def base_query
-      # puts 'in base_query'
-      # puts mapping_user_type.fetch(user.type)
-
       send(mapping_user_type.fetch(user.type))
         .group(:id)
         .page(params[:page])
-
-      # puts "base query end : #{t.to_a.count}"
-      
     end
 
     def base_query_without_page
@@ -66,8 +60,6 @@ module Finders
     end
 
     def common_filter
-      # puts 'in common_filter'
-      # puts "yield: #{yield.count}"
       query = yield
       %i[
         keyword
@@ -78,7 +70,6 @@ module Finders
       end
       query = nearby_query(query) if coordinate_params
       query = school_year_query(query) if school_year_param
-      # puts "query final: #{query.count}"
       query
     end
 
