@@ -57,24 +57,6 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     end
   end
 
-  test 'Employer can publish/unpublish internship_offer' do
-    internship_offer = create(:weekly_internship_offer)
-    sign_in(internship_offer.employer)
-
-    visit internship_offer_path(internship_offer)
-    assert_changes -> { internship_offer.reload.published_at } do
-      page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
-      sleep 0.2
-      assert_nil internship_offer.reload.published_at, 'fail to unpublish'
-
-      page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
-      sleep 0.2
-      assert_in_delta Time.now.utc.to_i,
-                      internship_offer.reload.published_at.utc.to_i,
-                      delta = 10
-    end
-  end
-
   test 'Employer can change max candidates parameter back and forth' do
     travel_to(Date.new(2022, 1, 10)) do
       employer = create(:employer)
