@@ -4,18 +4,18 @@
   header.header-account
 
   - if !@confirmable_user || user.nil?
-    p.alert.alert-danger
-      = "Aucun compte n'est lié à cet identifiant : #{params[:id]}."
+    .fr-alert.fr-alert--error
+      h3.fr-alert__title= "Aucun compte n'est lié à cet identifiant : #{params[:id]}"
       br
       = "Veuillez "
-      = link_to "créer un compte", users_choose_profile_path, class: 'text-white'
+      = link_to "créer un compte", users_choose_profile_path
 
   - elsif @confirmable_user&.confirmed_at
-    p.alert.alert-success
-      = "Votre compte est déjà confirmé (#{user.email})."
+    .fr-alert.fr-alert--success
+      h3.fr-alert__title= "Votre compte est déjà confirmé (#{user.email})"
       br
       = "Veuillez vous "
-      = link_to "connecter", new_user_session_path(email: user.email), class: 'text-white'
+      = link_to "connecter", new_user_session_path(email: user.email)
 
   - else
     .room-for-explanation.py-4.px-3
