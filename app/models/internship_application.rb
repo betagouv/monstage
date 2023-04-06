@@ -114,6 +114,8 @@ class InternshipApplication < ApplicationRecord
   aasm do
     state :drafted, initial: true
     state :submitted,
+          :read_by_employer,
+          :examined,
           :approved,
           :rejected,
           :expired,
@@ -129,14 +131,28 @@ class InternshipApplication < ApplicationRecord
       }
     end
 
+    event :read do
+      transitions from: :submitted, to: :read_by_employer
+    end
+
+    event :examine do
+      transitions from: %i[submitted read_by_employer], to: :examined, after: proc { |*_args|
+        update!("examined_at": Time.now.utc)
+        # TODO expiration date extension
+        # TODO
+        # StudentMailer.internship_application_examined_email(internship_application: self)
+        #              .deliver_later
+      }
+    end
+
     event :expire do
-      transitions from: %i[approved submitted drafted], to: :expired, after: proc { |*_args|
+      transitions from: %i[read_by_employer approved submitted drafted], to: :expired, after: proc { |*_args|
         update!(expired_at: Time.now.utc)
       }
     end
 
     event :approve do
-      transitions from: %i[submitted cancel_by_employer rejected],
+      transitions from: %i[read_by_employer submitted examined cancel_by_employer rejected],
                   to: :approved,
                   after: proc { |*_args|
                     update!("approved_at": Time.now.utc)
@@ -161,7 +177,7 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :reject do
-      transitions from: :submitted,
+      transitions from: %i[read_by_employer submitted examined],
                   to: :rejected,
                   after: proc { |*_args|
                            update!("rejected_at": Time.now.utc)
@@ -174,7 +190,7 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :cancel_by_employer do
-      transitions from: %i[drafted submitted approved],
+      transitions from: %i[read_by_employer drafted submitted examined approved],
                   to: :canceled_by_employer,
                   after: proc { |*_args|
                            update!("canceled_at": Time.now.utc)
@@ -187,7 +203,7 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :cancel_by_student do
-      transitions from: %i[submitted approved],
+      transitions from: %i[submitted read_by_employer examined approved],
                   to: :canceled_by_student,
                   after: proc { |*_args|
                            update!("canceled_at": Time.now.utc)
@@ -197,16 +213,6 @@ class InternshipApplication < ApplicationRecord
                              )
                            end
                          }
-    end
-
-    event :signed do
-      transitions from: :approved, to: :convention_signed, after: proc { |*_args|
-        update!(convention_signed_at: Time.now.utc)
-        if respond_to?(:week)
-          student.expire_application_on_week(week: week,
-                                             keep_internship_application_id: id)
-        end
-      }
     end
   end
 
@@ -322,6 +328,10 @@ class InternshipApplication < ApplicationRecord
         end
       end
     end
+  end
+
+  def presenter
+    @presenter ||= Presenters::InternshipApplication.new(self)
   end
 
   private

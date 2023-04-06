@@ -133,6 +133,18 @@ $sortLinkOffset: 15px;
     height: 100% !important;
   }
 }
+.container-monstage-application {
+  max-width: 1000px;
+  margin: auto;
+  position: relative;
+  margin-left: 100px;
+}
+.grey-container-application{
+  padding: 2rem;
+}
+.grey-container-application.with-grey-background{
+  background-color: var(--background-default-grey-hover);
+}
 
 // sort links container
 .min-width-20{

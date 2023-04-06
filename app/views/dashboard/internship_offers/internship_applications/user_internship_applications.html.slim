@@ -1,3 +1,42 @@
 = render 'layouts/breadcrumb', links: [ ['', 'Mon tableau de bord'] ]
 = render layout: 'layouts/dashboards_with_menu' do
-  | Tableau des candidatures, toutes offres confondues
+  - selected_tab = params[:tab] || 'received'
+  h1.h4.text-dark.fr-my-8w Les candidatures
+  .fr-tabs
+    ul.fr-tabs__list[role="tablist" aria-label="[Candidatures par type]"]
+      li
+        button#tabpanel-received.fr-tabs__tab.fr-tabs__tab--icon-left[tabindex="0"
+                                                                 role="tab"
+                                                                 aria-selected="#{ selected_tab.in?(%w[submit! read! examine! expire!])}"
+                                                                 aria-controls="tabpanel-received-panel"]
+          | Reçues
+      li
+        button#tabpanel-approved.fr-tabs__tab.fr-tabs__tab--icon-left[tabindex="-1"
+                                                                 role="tab"
+                                                                 aria-selected="#{ selected_tab == 'approve!'}"
+                                                                 aria-controls="tabpanel-approved-panel"]
+          | Acceptées
+      li
+        button#tabpanel-refused.fr-tabs__tab.fr-tabs__tab--icon-left[tabindex="-1"
+                                                                 role="tab"
+                                                                 aria-selected="#{ selected_tab.in?(%w[reject! cancel_by_employer! cancel_by_student!])}"
+                                                                 aria-controls="tabpanel-refused-panel"]
+
+          | Refusées
+    #tabpanel-received-panel.fr-tabs__panel.fr-tabs__panel--selected[role="tabpanel"
+                                                                aria-labelledby="tabpanel-received"
+                                                                tabindex="0"]
+      = render 'dashboard/internship_offers/internship_applications/received',
+               internship_applications: @received_internship_applications
+
+    #tabpanel-approved-panel.fr-tabs__panel[role="tabpanel"
+                                       aria-labelledby="tabpanel-approved"
+                                       tabindex="0"]
+      = render 'dashboard/internship_offers/internship_applications/approved',
+               internship_applications: @approved_internship_applications
+
+    #tabpanel-refused-panel.fr-tabs__panel[role="tabpanel"
+                                       aria-labelledby="tabpanel-refused"
+                                       tabindex="0"]
+      = render 'dashboard/internship_offers/internship_applications/rejected',
+               internship_applications: @rejected_internship_applications

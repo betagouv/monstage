@@ -5,6 +5,8 @@ export default class extends Controller {
     'checkToggle'
   ];
   toggle(e) {
+    e.preventDefault();
+    e.stopPropagation();
     this.checkToggleTarget.closest('form').submit();
   }
 }

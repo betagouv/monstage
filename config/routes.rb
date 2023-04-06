@@ -78,7 +78,6 @@ Rails.application.routes.draw do
           post 'handwrite_sign'
         end
       end
-      get 'user_internship_applications', to: 'internship_offers/internship_applications#user_internship_applications'
 
       resources :schools, path: 'ecoles', only: %i[index edit update show] do
         resources :users, path: 'utilisateurs', only: %i[destroy update index], module: 'schools'
@@ -93,14 +92,16 @@ Rails.application.routes.draw do
 
       resources :internship_offers, path: 'offres-de-stage', except: %i[show] do
         patch :republish, to: 'internship_offers#republish', on: :member
-        resources :internship_applications, only: %i[update index], module: 'internship_offers'
+        resources :internship_applications, only: %i[update index show], module: 'internship_offers' do
+          patch :set_to_read, on: :member
+        end
       end
 
       namespace :stepper, path: 'etapes' do
         resources :organisations, only: %i[create new edit update]
         resources :internship_offer_infos, path: 'offre-de-stage-infos', only: %i[create new edit update]
         resources :tutors, path: 'tuteurs', only: %i[create new]
-      end    
+      end
 
       namespace :students, path: '/:student_id/' do
         resources :internship_applications, path: 'candidatures', only: %i[index show]

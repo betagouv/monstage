@@ -26,11 +26,16 @@ module Presenters
 
     def civil_name
       name = user.last_name.downcase.capitalize
+      "#{gender_text} #{name}".strip
+    end
+
+    def short_civil_full_name
+      name = full_name
       case user.gender
       when 'm'
-        "Monsieur #{name}"
+        "M. #{name}"
       when 'f'
-        "Madame #{name}"
+        "Mme #{name}"
       else
         name
       end

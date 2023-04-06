@@ -78,6 +78,10 @@ module Users
       url_helpers.dashboard_students_internship_applications_path(self)
     end
 
+    def custom_candidatures_path(parameters={})
+      custom_dashboard_path
+    end
+
     def dashboard_name
       'Candidatures'
     end

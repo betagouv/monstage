@@ -342,46 +342,6 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     end
   end
 
-  test 'transition via signed! changes aasm_state from approved to rejected' do
-    internship_application = create(:weekly_internship_application, :approved)
-    assert_changes -> { internship_application.reload.aasm_state },
-                   from: 'approved',
-                   to: 'convention_signed' do
-      freeze_time do
-        assert_changes -> { internship_application.reload.convention_signed_at },
-                       from: nil,
-                       to: Time.now.utc do
-          internship_application.signed!
-        end
-      end
-    end
-  end
-
-  test 'transition via signed! cancel internship_application.student other applications on same week' do
-    travel_to Date.new(2019, 1, 1) do
-      weeks = Week.selectable_from_now_until_end_of_school_year.first(3).last(2)
-      student = create(:student)
-      internship_offer = create(:weekly_internship_offer, weeks: weeks)
-      internship_offer_2 = create(:weekly_internship_offer, weeks: weeks)
-      internship_application_to_be_canceled_by_employer = create(
-        :weekly_internship_application, :approved,
-        internship_offer: internship_offer,
-        week: internship_offer.internship_offer_weeks.first.week,
-        student: student
-      )
-      internship_application_to_be_signed = create(
-        :weekly_internship_application, :approved,
-        internship_offer: internship_offer_2,
-        week: internship_offer_2.internship_offer_weeks.first.week,
-        student: student
-      )
-      assert_changes -> { internship_application_to_be_canceled_by_employer.reload.aasm_state },
-                    from: 'approved',
-                    to: 'expired' do
-        internship_application_to_be_signed.signed!
-      end
-    end
-  end
 
   test 'RGPD' do
     internship_application = create(:weekly_internship_application, motivation: 'amazing')

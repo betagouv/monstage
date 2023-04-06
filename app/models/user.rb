@@ -110,6 +110,10 @@ class User < ApplicationRecord
     'identity'
   end
 
+  def custom_candidatures_path(_options = {})
+    after_sign_in_path
+  end
+
   def custom_dashboard_paths
     [
       custom_dashboard_path

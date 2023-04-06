@@ -1,6 +1,7 @@
+p
 = link_to dashboard_candidatures_path,
-          class: 'fr-pt-8w' do
-  span.fr-icon-arrow-left-line.fr-btn--icon-left
+          class: 'fr-mt-8w' do
+  span.fr-icon-arrow-left-line.fr-btn--icon-left.fr-raw-link
     | retour
 
 .container-monstage-application
@@ -22,7 +23,9 @@
             h3.h6
               i.fa-fw.fas.fa-user
               | Informations sur l'élève
-            = render partial: "/users/resume_details", locals: {student: @internship_application.student}
+            = render partial: "/internship_applications/student_details",
+                      locals: { student: @internship_application.student,
+                              internship_application: @internship_application}
         .row
           - resume_content = @internship_application.student.resume_educational_background.to_s
           - resume_languages = @internship_application.student.resume_languages.to_s
@@ -45,17 +48,28 @@
             i.fas.fa-wheelchair
             Besoin d'accompagnement
           .reboot-trix-content.student-handicap = @internship_application.student.handicap.to_s
-  .grey-container-application
-    .d-flex.flex-row
-      = form_with( model: InternshipApplication,
-                   url: dashboard_internship_offer_internship_application_path(internship_offer_id: @internship_offer.id, id: @internship_application.id),
-                   data: {turbo: false},
-                   scope: :internship_application,
-                   method: :PATCH) do |f|
-        button#submit-refuse type="submit" class='fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-close-line fr-mr-2w'
-          = "Refuser"
-        button#submit-under-study type="submit" class='fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-settings-5-line fr-mr-2w'
-          = "Etudier"
-        button#submit-accept type="submit" class='fr-btn fr-btn--icon-left fr-icon-check-line'
-          = "Accepter"
+    .grey-container-application
+      - parameters = {internship_offer_id: @internship_offer.id, id: @internship_application.id}
+      .d-flex.flex-row data-controller='employer-decision'
+        = form_with( url: dashboard_internship_offer_internship_application_path(parameters),
+                     data: {turbo: false},
+                     method: :PATCH) do |form|
+          = form.hidden_field :transition, value: :reject!
+          button#submit-refuse [type="submit"
+                                class='fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-close-line fr-mr-2w']
+            = "Refuser"
+        = form_with( url: dashboard_internship_offer_internship_application_path(internship_offer_id: @internship_offer.id, id: @internship_application.id),
+                     data: {turbo: false},
+                     method: :PATCH) do |form|
+          = form.hidden_field :transition, value: :examine!
+          button#submit-examine [type="submit"
+                                class='fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-settings-5-line fr-mr-2w']
+            = "Etudier"
+        = form_with( url: dashboard_internship_offer_internship_application_path(internship_offer_id: @internship_offer.id, id: @internship_application.id),
+                     data: {turbo: false},
+                     method: :PATCH) do |form|
+          = form.hidden_field :transition, value: :approve!
+          button#submit-accept [type="submit"
+                                class='fr-btn fr-btn--icon-left fr-icon-check-line']
+            = "Accepter"
 

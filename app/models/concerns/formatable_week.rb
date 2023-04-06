@@ -65,6 +65,10 @@ module FormatableWeek
       I18n.localize(week_date.beginning_of_week, format: :human_mm_dd)
     end
 
+    def beginning_of_week_short
+      I18n.localize(week_date.beginning_of_week, format: :human_mm_dd)
+    end
+
     def beginning_of_week_with_year
       I18n.localize(week_date.beginning_of_week, format: :default)
     end

@@ -1,0 +1,31 @@
+.fr-table.fr-table--bordered
+  table
+    caption
+      | Candidatures refusées
+    thead
+      tr
+        th[scope="col"]
+          | Nom de l'élève
+        th[scope="col"]
+          | Inititulé du stage
+        th[scope="col"]
+          | Statut
+    - if internship_applications.empty?
+      tbody
+        tr
+          td.text-center[colspan="3"]
+            | Aucune candidature refusée
+    - else
+      tbody
+        - internship_applications.each do |internship_application|
+          - prez = internship_application.presenter
+          tr
+            td = prez.student.presenter.full_name
+            td
+              - prezo = Presenters::WeekList.new(weeks: prez.internship_offer.internship_offer_weeks.map(&:week))
+              = prez.internship_offer.title
+              br/
+              = prezo.trunk_list_label.join('<br/>').html_safe
+            td
+              p class="fr-mt-1w fr-badge fr-badge--sm fr-badge--#{prez.status[:badge_type]}"
+                = prez.status[:label]

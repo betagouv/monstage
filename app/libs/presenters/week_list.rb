@@ -26,14 +26,15 @@ module Presenters
       end
     end
 
-    def split_weeks_in_trunks
+    def split_weeks_in_trunks(basic: false)
       week_list, container = [weeks.dup.to_a, []]
+      week_list = week_list.sort_by(&:id)
       while week_list.present?
-        joined_weeks = [week_list.slice!(0)]
+        joined_weeks = [week_list.shift]
         while week_list.present? && week_list.first.consecutive_to?(joined_weeks.last)
-          joined_weeks << week_list.slice!(0)
+          joined_weeks << week_list.shift
         end
-        container << self.class.new(weeks: joined_weeks)
+        container << (basic ? joined_weeks : self.class.new(weeks: joined_weeks))
       end
       container
     end
@@ -53,6 +54,19 @@ module Presenters
 
     def split_range_string
       to_range_as_str.split(/(\d*\s?semaines?\s?:?)/)
+    end
+
+    def trunk_list_label
+      split_weeks_in_trunks(basic: true).map do |trunk| 
+        short_render_period(trunk)
+      end
+    end
+
+    def short_render_period(week_trunk)
+      first_monday = week_trunk.first.week_date.monday
+      last_sunday = week_trunk.last.week_date.sunday
+      "Du #{I18n.localize(first_monday, format: :human_dd_mm)} " \
+      "au #{I18n.localize(last_sunday, format: :human_dd_mm_yy)}"
     end
 
     protected
