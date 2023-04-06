@@ -653,7 +653,9 @@ CREATE TABLE public.internship_applications (
     internship_offer_type character varying NOT NULL,
     week_id bigint,
     student_phone character varying,
-    student_email character varying
+    student_email character varying,
+    read_at timestamp(6) without time zone,
+    examined_at timestamp(6) without time zone
 );
 
 
@@ -2827,6 +2829,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230223102039'),
 ('20230302162952'),
 ('20230307200802'),
-('20230321104203');
+('20230321104203'),
+('20230404154158');
 
 
