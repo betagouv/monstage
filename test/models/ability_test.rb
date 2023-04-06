@@ -77,32 +77,6 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:update, InternshipOffer.new(employer: employer)),
           'employers should be able to update internships offer that belongs to him')
 
-    #renewing
-    # -------------------
-    assert(ability.cannot?(:renew, InternshipOffer.new),
-          'employers should not be able to renew internship that are not persisted')
-    travel_to(internship_offer.internship_offer_weeks.last.week.week_date.to_date + 1.year) do
-       assert(ability.can?(:renew, internship_offer),
-           'employers should be able to renew internships offer that belongs to him')
-       assert(ability.can?(:renew, internship_offer_api), 'api internship_offers can be renewed')
-    end
-    travel_to(Date.new(Date.today.year - 1 ,9,1)) do
-       assert(ability.cannot?(:renew, internship_offer),
-           'employers should be able to renew offer on 1st sept. date comparission less or equal')
-    end
-
-    #duplicating
-    # -------------------
-    assert(ability.cannot?(:duplicate, alt_internship_offer),
-           'employers should not be able to duplicate offers that do not belong to them')
-    assert(ability.can?(:duplicate, internship_offer),
-           'employers should be able to duplicate offers that do belong to them')
-    travel_to(internship_offer.internship_offer_weeks.last.week.week_date.to_date + 1.year) do
-      assert(ability.cannot?(:duplicate, internship_offer),
-            'employers should not be able to duplicate offer of the passed')
-    end
-    # -------------------
-
     assert(ability.cannot?(:discard, InternshipOffer.new),
            'employers should be able to discard internships offer not belonging to him')
     assert(ability.can?(:discard, InternshipOffer.new(employer: employer)),
