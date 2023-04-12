@@ -8,6 +8,7 @@
     - elsif started_or_signed?
       = link_to dashboard_internship_agreement_path(internship_agreement, format: :pdf),
                 target: "_blank",
+                style: 'max-width: none;',
                 class: "#{classes} fr-btn--secondary",
                 data: { test: "active-internship-agreement-progress-#{internship_agreement.id}" } do
         = label[:text]
@@ -21,11 +22,12 @@
 
   .col-md-6.col-sm-12.mb-1
     - primary_button_classes = "fr-btn button-component-cta-button ml-2 text-center fr-high-buttons btn-sm"
-    - if second_label[:status] == 'disabled'
-        = link_to second_label[:text],
-                  '',
-                  class: "#{primary_button_classes} disabled"
-    - elsif internship_agreement.validated? || internship_agreement.signatures_started?
-      button class="#{primary_button_classes}"  data-group-signing-target="signingButton" data-group-signing-id-param="#{internship_agreement.id}" data-action="group-signing#toggleFromButton"
-        = second_label[:text]
+    - if second_label[:status] != 'hidden'
+      - if second_label[:status] == 'disabled'
+          = link_to second_label[:text],
+                    '',
+                    class: "#{primary_button_classes} disabled"
+      - elsif internship_agreement.validated? || internship_agreement.signatures_started?
+        button class="#{primary_button_classes}"  data-group-signing-target="signingButton" data-group-signing-id-param="#{internship_agreement.id}" data-action="group-signing#toggleFromButton"
+          = second_label[:text]
 

@@ -17,6 +17,7 @@ class Ability
       when 'Users::SchoolManagement'
         common_school_management_abilities(user: user)
         school_manager_abilities(user: user) if user.school_manager?
+        admin_officer_abilities(user: user) if user.admin_officer?
       end
 
       shared_signed_in_user_abilities(user: user)
@@ -54,6 +55,53 @@ class Ability
     can_read_dashboard_students_internship_applications(user: user)
   end
 
+  def admin_officer_abilities(user:)
+    can %i[
+      read
+      create
+      edit
+      sign_internship_agreements
+      sign
+      edit_activity_rating_rich_text
+      edit_complementary_terms_rich_text
+      edit_financial_conditions_rich_text
+      edit_legal_terms_rich_text
+      edit_main_teacher_full_name
+      edit_school_representative_full_name
+      edit_school_representative_phone
+      edit_school_representative_email
+      edit_school_representative_role
+      edit_school_delegation_to_sign_delivered_at
+      edit_student_refering_teacher_full_name
+      edit_student_refering_teacher_email
+      edit_student_refering_teacher_phone
+      edit_student_address
+      edit_student_class_room
+      edit_student_full_name
+      edit_student_phone
+      edit_student_legal_representative_email
+      edit_student_legal_representative_full_name
+      edit_student_legal_representative_phone
+      edit_student_legal_representative_2_email
+      edit_student_legal_representative_2_full_name
+      edit_student_legal_representative_2_phone
+      edit_student_school
+      see_intro
+      update
+    ], InternshipAgreement do |agreement|
+      byebug
+      agreement.internship_application.student.school_id == user.school_id
+    end
+    can %i[edit update], InternshipAgreementPreset do |internship_agreement_preset|
+      internship_agreement_preset.school_id == user.school_id
+    end
+    can :create, Signature  do |signature|
+      byebug
+      signature.internship_agreement.student.school == user.school
+    end
+  end
+
+
   def school_manager_abilities(user:)
     can :create_remote_internship_request, SupportTicket # TO DO REMOVE
 
@@ -63,6 +111,7 @@ class Ability
       end
     end
     can %i[
+      read
       create
       edit
       sign_internship_agreements
@@ -321,6 +370,9 @@ class Ability
           .positive?
     end
     can %i[see_tutor], InternshipOffer
+    can %i[read], InternshipAgreement do |agreement|
+      agreement.internship_application.student.school_id == user.school_id
+    end
   end
 
   def as_employers_signatory_abilities(user:)

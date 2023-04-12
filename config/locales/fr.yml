@@ -582,6 +582,8 @@ fr:
 
   enum:
     roles:
+      admin_officer: "Responsable administratif"
+      cpe: "CPE"
       school_manager: "Chef d'établissement"
       teacher: "Professeur"
       main_teacher: "Professeur principal"

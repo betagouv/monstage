@@ -431,6 +431,34 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:change, :class_room))
   end
 
+  test 'Admin Offcer' do
+    school = create(:school, :with_school_manager)
+    another_school = create(:school)
+    
+    admin_officer = create(:admin_officer, school: school)
+    ability = Ability.new(admin_officer)
+
+    assert(ability.can?(:manage_school_students, admin_officer.school))
+    assert(ability.cannot?(:manage_school_students, another_school))
+    assert(ability.can?(:manage, ClassRoom))
+    assert(ability.can?(:change, :class_room))
+    assert(ability.can?(:sign, InternshipAgreement))
+  end
+
+  test 'CPE' do
+    school = create(:school, :with_school_manager)
+    another_school = create(:school)
+    
+    admin_officer = create(:cpe, school: school)
+    ability = Ability.new(admin_officer)
+
+    assert(ability.can?(:manage_school_students, admin_officer.school))
+    assert(ability.cannot?(:manage_school_students, another_school))
+    assert(ability.can?(:manage, ClassRoom))
+    assert(ability.can?(:change, :class_room))
+    assert(ability.can?(:read, InternshipAgreement))
+  end
+
   test 'Operator' do
     operator = create(:user_operator)
     ability = Ability.new(operator)

@@ -33,6 +33,8 @@ class User < ApplicationRecord
     school_manager: 'school_manager',
     teacher: 'teacher',
     main_teacher: 'main_teacher',
+    cpe: 'CPE',
+    admin_officer: 'admin_officer',
     other: 'other'
   }
 

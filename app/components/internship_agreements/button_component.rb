@@ -1,6 +1,7 @@
 module InternshipAgreements
   class ButtonComponent < BaseComponent
     attr_reader :internship_agreement, :current_user, :label, :second_label
+    include CanCan::Ability
 
     def initialize(internship_agreement:,
                    current_user:,
@@ -61,9 +62,20 @@ module InternshipAgreements
       when 'draft', 'started_by_employer' ,'completed_by_employer', 'started_by_school_manager' then
         {status: 'hidden', text: ''}
       when 'validated', 'signatures_started' then
+        # TO DO Change condition
         user_signed_condition = @internship_agreement.signed_by?(user: current_user)
-        user_signed_condition ? {status: 'disabled', text: 'Déjà signée'} :
-                                {status: 'enabled', text: 'Ajouter aux signatures'}
+        byebug
+        if user_signed_condition 
+          {status: 'disabled', text: 'Déjà signée'}
+        elsif can?(:sign, @internship_agreement)
+          {status: 'enabled', text: 'Ajouter aux signatures'}
+        else
+          puts "Can't create signature"
+          puts "Can't create signature"
+          puts "Can't create signature"
+          puts "Can't create signature"
+          {status: 'hidden', text: ''}
+        end
       when 'signed_by_all' then {status: 'disabled', text: 'Signée de tous'}
       end
     end
