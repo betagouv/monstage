@@ -57,6 +57,7 @@ class Ability
   def school_manager_abilities(user:)
     can :list_invitations, Invitation
     can :create_invitation, Invitation
+    can :destroy_invitation, Invitation
     can :create_remote_internship_request, SupportTicket # TO DO REMOVE
 
     can_manage_school(user: user) do

@@ -1,39 +1,26 @@
-li.list-group-item.teachers-list
-  .row.no-gutters
-    .col-lg-8.col-9
-      .row
-        .col-lg-6.col-md-7.col-12
-          p.mb-3.font-weight-bolder
-            = "#{invitation.first_name} #{invitation.last_name}"
-          p.mb-2.text-muted
-            = image_tag asset_pack_path('media/images/pages/invitations/briefcase_icon.svg'),
-                            alt: "personnel inscrit",
-                            class: 'align-top mr-2',
-                            width: 16
-            span.ml-2= invitation.role
-          p.mb-md-3.mb-sm-2.text-muted
-            = image_tag asset_pack_path('media/images/pages/invitations/email_icon.svg'),
-                alt: "personnel inscrit",
-                class: 'mr-2 grey-icon',
-                width: 16
-            span.ml-2 = invitation.email
-
-        .col-lg-6.col-md-5.col-12.d-flex.green-check-room
-          p.mb-2.align-self-center
-            span.text-muted
-            table
-              tr
-                td = image_tag asset_pack_path('media/images/pages/invitations/person_icon.svg'),
-                                alt: "personnel inscrit",
-                                class: 'align-top mr-2',
-                                height: 16
-                td
-                  = "Inscription envoyée le #{l invitation.sent_at, format: :short_human_dd_mm_yyyy}"
-                  br
-                  = link_to "Renvoyer l'invitation ➔",
-                            dashboard_school_resend_invitation_path(@school.id, id: invitation.id),
-                            class: 'blue_bold text-decoration-none'
+- prez = invitation.presenter
+- unless prez.status[:status] == :subscribed
+  tr
+    td = prez.full_name
+    td = prez.email
+    td = prez.role
+    td
+      p class="fr-badge fr-badge--sm fr-mt-2w fr-badge--#{prez.status[:type]}"
+        = prez.status[:label]
+    td
+      = form_with(url: dashboard_school_invitation_path(@school.id, id: invitation.id),
+                  method: :delete,
+                  data:{ turbo: false, confirm: "Êtes-vous sûr de vouloir supprimer l'invitation de #{prez.full_name} ?"},
+                  local: true,
+                  class: 'd-inline-block') do |f|
+      button.fr-btn.fr-btn--secondary.fr-icon-delete-line.fr-mr-2w type="submit" title="Supprimer l'invitation" aria-label="Supprimer l'invitation"
+        | Supprimer l'invitation
+      - unless prez.status[:status] == :subscribed
+        = link_to dashboard_school_resend_invitation_path(@school.id, id: invitation.id),
+                  class: 'fr-raw-link' do
+          button.fr-btn.fr-btn--secondary.fr-icon-mail-line title="Renvoyer l'invitation" aria-label="Renvoyer l'invitation"
+            | Renvoyer l'invitation
 
 
-    .col-lg-4.col-3.d-flex.justify-content-end
+
 

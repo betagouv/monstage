@@ -5,5 +5,6 @@ FactoryBot.define do
     sequence(:email) { |n| "jean#{n}-claude@ac-paris.fr" }
     user_id { create(:school_manager).id }
     role { 'main_teacher' }
+    sent_at { 2.days.ago }
   end
 end

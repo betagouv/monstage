@@ -1,6 +1,7 @@
 class Invitation < ApplicationRecord
   belongs_to :school_manager, -> { where(role: :school_manager) },
-             class_name: 'Users::SchoolManagement', foreign_key: 'user_id'
+             class_name: 'Users::SchoolManagement',
+             foreign_key: 'user_id'
 
   enum role: {
     teacher: 'Professeur',
@@ -13,6 +14,14 @@ class Invitation < ApplicationRecord
   validates :role, presence: true
   validate  :official_email_address
 
+  scope :not_registered_in, ->(school_id:) {
+    where.not( email: Users::SchoolManagement.kept
+                                             .where(school_id: school_id)
+                                             .pluck(:email))
+  }
+  def presenter
+    @presenter ||= Presenters::Invitation.new(self)
+  end
 
   private
 

@@ -1,0 +1,42 @@
+- content_for :page_title, "#{t(".page_title")} | Monstage"
+= render 'layouts/breadcrumb', links: [ [dashboard_school_class_rooms_path, 'Mon établissement'],
+                                        [dashboard_school_users_path, 'Personnels'],
+                                        ['', 'Inviter un membre de l\'équipe']]
+h1.h3.text-dark Inviter un membre de l'équipe
+.fr-callout.fr-mt-4w
+  h3.fr-callout__title
+    | Concernant l'invitation
+  p.fr-callout__text
+    |
+      Vous avez la possibilité d'inviter tous les membres de votre équipe à 
+      collaborer sur la recherche de stage de vos élèves. Les membres invités 
+      recevront un e-mail leur permettant de procéder facilement à 
+      leur inscription.
+.row
+  .col-md-6.col-sm-12
+    = render 'form', invitation: @invitation
+  .col-md-6.col-sm-12
+    .border
+      .fr-my-3w
+        h2.h3.fr-ml-3w Liste des membres invités
+        .fr-table.fr-table--no-caption.fr-table--layout-fixed
+          table
+            thead
+              tr
+                th
+                  |Prénom
+                th
+                  |Nom
+                th
+                  |Email
+                th
+                  |Fonction
+            tbody
+              - if @invitations.count.positive?
+                - @invitations.each do |invitation|
+                  = render partial: "dashboard/schools/users/invited_school_employee_simple",
+                          locals: { invitation: invitation }
+              - else
+                tr
+                  td colspan="4"
+                    | Vous n'avez pas encore invité personne

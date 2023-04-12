@@ -1,61 +1,47 @@
-- new_invitation = @invitation || Invitation.new
-= form_with model: @invitation,
-            scope: :invitations,
-            url: dashboard_school_invitations_path,
-            method: (new_invitation.new_record? ? 'POST' : 'PATCH' ),
-            local: true  do |form|
 
-  = form.rg2a_explain_required_asterisk
-  .form-group
-    .row
-      .col-lg-6.col-md-12
-        .form-group.custom-label-container
-          = form.text_field :first_name,
-                              required: true,
-                              class: 'form-control',
-                              placeholder: 'Prénom de la personne invitée'
-          = form.label :first_name, class: 'invitations' do
-            | Prénom
-            = form.rg2a_required_content_tag
-      .col-lg-6.col-md-12.
-        .form-group.custom-label-container.invitations
-          = form.text_field :last_name,
-                            required: true,
-                            class: 'form-control',
-                            placeholder: 'Nom de la personne invitée'
-          = form.label :last_name, class: 'invitations' do
-            | Nom
-            = form.rg2a_required_content_tag
-    .row
-      .col-12
-        .form-group.custom-label-container
-          = form.text_field :email,
-                            required: true,
-                            class: 'form-control',
-                            placeholder: 'Adresse électronique(email)'
-          = form.label :email, class: 'invitations' do
-            | Adresse électronique
-            = form.rg2a_required_content_tag
-    .row.mb-5
-      .col-12
-        ul.list-group data-controller='child-click' data-child-click-selected-class='blue-overlay'
-          - Invitation.roles.each do |role, role_label|
-            li.list-group-item.teachers data-child-click-target='goal'
-              .form-check.py-1.radio
-                = form.radio_button :role,
-                                    role.to_s,
-                                    class: 'teacher-type-radio',
-                                    data: {'child-click-target': 'source', action: "change->child-click#colorizeParent"}
-                = form.label "role_#{role}".to_sym,
-                              role_label,
-                              class: 'form-check-label pt-1 pl-2'
-                .check
-    .actions.text-right
+  = form_with model: invitation,
+              scope: :invitations,
+              url: dashboard_school_invitations_path,
+              method: (invitation.new_record? ? 'POST' : 'PATCH' ),
+              local: true  do |form|
+    
+    = render partial: 'inputs/dsfr_input_field',
+              locals: {f: form,
+                        object: invitation,
+                        label: 'Nom',
+                        field: :last_name,
+                        placeholder: 'Nom de la personne invitée'}
+
+    = render partial: 'inputs/dsfr_input_field',
+              locals: {f: form,
+                        object: invitation,
+                        label: 'Prénom',
+                        field: :first_name,
+                        placeholder: 'Prénom de la personne invitée'}
+
+    = render partial: 'inputs/dsfr_input_field',
+              locals: {f: form,
+                        object: invitation,
+                        label: 'Adresse électronique',
+                        hint: "Format attendu : nom@ac-academie.fr",
+                        field: :email}
+
+    .fr-select-group
+      = form.label :roles,
+                    class: 'fr-label'
+        | Fonction
+      = form.select :roles,
+                    Invitation.roles.zip.map(&:flatten).map(&:reverse),
+                    {prompt: 'Sélectionnez une option'},
+                    {class: 'fr-select'}
+    .actions
       .row
-        .col-md-6.col-12.order-0
-        .col-md-3.col-xs-12.order-md-1.order-2
-          = link_to 'Annuler',
+        .col-md-3.col-xs-12.order-md-1.order-2.fr-mr-2w
+          = link_to 'Précédent',
                     dashboard_school_users_path(@school),
-                    class: 'btn btn-outline-primary col-lg-12 mr-2'
+                    class: 'fr-btn fr-btn--secondary fr-mr-2w'
         .col-md-3.col-xs-12.order-md-2.order-1.mb-2
-          = form.submit 'Inviter', class: 'btn btn-primary col-lg-12'
+          = form.submit "Inviter un membre de l'équipe",
+                        class: 'fr-btn'
+    
+

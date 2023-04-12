@@ -5,9 +5,14 @@ module Dashboard
       before_action :set_invitation, only: %i[destroy resend_invitation]
 
       def new
+        authorize! :create_invitation, Invitation
+        @school      = current_user.school
+        @invitation  = Invitation.new(user_id: current_user.id)
+        @invitations = Invitation.not_registered_in(school_id: @school.id)
       end
 
       def create
+        authorize! :create_invitation, Invitation
         redirect_to(
             dashboard_school_users_path,
             flash: { alert: "La personne que vous voulez inviter est déjà " \
@@ -33,9 +38,12 @@ module Dashboard
       end
 
       def index
+        authorize! :list_invitations, Invitation
+        @invitations = Invitations.not_by_id(school_id: current_user.school.id)
       end
 
       def destroy
+        authorize! :destroy_invitation, Invitation
         if @invitation.destroy
           success_message = 'L\'invitation a bien été supprimée'
           redirect_to dashboard_school_users_path,
@@ -48,6 +56,7 @@ module Dashboard
       end
 
       def resend_invitation
+        authorize! :create_invitation, Invitation
         invite_staff(invitation: @invitation, from: @invitation.school_manager )
         redirect_to dashboard_school_users_path,
                     flash: { success: 'Votre invitation a été renvoyée' }
