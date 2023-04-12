@@ -92,7 +92,7 @@ Rails.application.routes.draw do
 
       resources :internship_offers, path: 'offres-de-stage', except: %i[show] do
         patch :republish, to: 'internship_offers#republish', on: :member
-        resources :internship_applications, only: %i[update index show], module: 'internship_offers' do
+        resources :internship_applications, path: 'candidatures', only: %i[update index show], module: 'internship_offers' do
           patch :set_to_read, on: :member
         end
       end
