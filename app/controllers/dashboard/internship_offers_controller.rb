@@ -16,7 +16,6 @@ module Dashboard
     # duplicate submit
     def create
       authorize! :create, InternshipOffer
-      # render :edit, status: :bad_request if params[:internship_offer].blank?
       internship_offer_builder.create(params: internship_offer_params) do |on|
         on.success do |created_internship_offer|
           success_message = if params[:commit] == 'Renouveler l\'offre'
@@ -42,7 +41,7 @@ module Dashboard
 
     def edit
       authorize! :update, @internship_offer
-      @republish = true if params[:republish]
+      @republish = params[:republish].present?
       @available_weeks = @internship_offer.available_weeks_when_editing
     end
 

@@ -106,17 +106,17 @@ module StepperProxy
       respond_to?(:internship_offer_weeks) ? :internship_offer_weeks : :internship_offer_info_weeks
     end
 
-    def missing_weeks_info?
+    def missing_weeks_in_the_future?
       self.send(weeks_class).map(&:week_id).all? do |week_id|
         week_id < Week.current.id.to_i + 1
       end
     end
 
-    def missing_weeks_in_the_future
+    def check_for_weeks_in_the_future
       # return false if is_a?(InternshipOffers::Api)
       return false if published_at.nil? && republish.nil?
 
-      if missing_weeks_info?
+      if missing_weeks_in_the_future?
         errors.add(weeks_class, 'Vous devez sélectionner au moins une semaine dans le futur')
       end
     end
@@ -131,13 +131,13 @@ module StepperProxy
       return false if self.is_a?(::InternshipOfferInfo)
       return false unless published?
 
-      missing_weeks_in_the_future && check_for_missing_seats
+      check_for_weeks_in_the_future && check_for_missing_seats
     end
 
     def requires_update_at_toggle_time?
       return false if published?
 
-      missing_weeks_info? || remaining_seats_count.zero?
+      missing_weeks_in_the_future? || remaining_seats_count.zero?
     end
 
     def user_update?
