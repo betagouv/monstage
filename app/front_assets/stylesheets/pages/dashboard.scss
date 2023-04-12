@@ -66,22 +66,12 @@ tr:hover a.trash-user{
   border-radius: 0.5rem;
 }
 
-li.teachers-list:last-of-type {
-  .green-check-room {
-    margin-bottom: 15px;
-  }
-}
-
 input.teacher-type-radio[type="radio"]:checked+label {
   color: $blue
 }
 
 li.list-group-item.teachers .teacher-type-radio:checked {
   background-color: yellow;
-}
-
-.blue-overlay {
-  background-color: $blue_light;
 }
 
 .teachers .radio {

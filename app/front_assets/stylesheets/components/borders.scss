@@ -42,12 +42,6 @@
 .bc-stats{
   border-color: rgb(73,61,96);
 }
-.rounded-circle-right{
-  border-top-left-radius:0;
-  border-bottom-left-radius:0;
-  border-top-right-radius:100%;
-  border-bottom-right-radius:100%;
-}
 
 @include media-breakpoint-down(xs) {
   .rounded-xs-0{
