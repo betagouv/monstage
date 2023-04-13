@@ -34,7 +34,7 @@ function RenderSchoolSelectInput({
   return (
     <div className={`form-group ${isWaitingCitySelection ? 'opacity-05' : ''}`}>
       {isWaitingCitySelection && (
-        <div className="custom-label-container">
+        <div className="custom-label-container fr-mt-2w">
           <label className='fr-label' htmlFor={`${resourceName}_school_name`}>
             Collège
           </label>
