@@ -35,7 +35,6 @@ module Users
         role: :school_manager,
         email: "jean-pierre@#{school.email_domain_name}",
         password: 'tototo',
-        password_confirmation: 'tototo',
         first_name: 'Chef',
         last_name: 'Etablissement',
         phone: '+330602030405',

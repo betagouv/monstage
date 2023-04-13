@@ -35,7 +35,7 @@ Rails.application.routes.draw do
       get '/utilisateurs/mot-de-passe/initialisation', to: 'users/passwords#set_up', as: 'set_up_password'
     end
     
-    resources :identities, path: 'identites', only: %i[new create edit update]
+    resources :identities, path: 'identites', only: %i[new create]
     resources :schools, path: 'ecoles',only: %i[new create ]
 
     resources :internship_offer_keywords, only: [] do

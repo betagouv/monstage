@@ -6,10 +6,6 @@
   flex: 0 auto !important;
 }
 
-.custom-select{
-  box-shadow: 0px 1px 3px rgba(0,0,0,.2);
-  border-radius: 5px;
-}
 .custom-control-checkbox-list{
   height: 380px;
   overflow: scroll;
@@ -133,7 +129,6 @@
 
     button.btn-clear-city {
       background-color: $grey-200;
-      color: $grey-200 !important;
       border-color: $grey-200 !important;
     }
 

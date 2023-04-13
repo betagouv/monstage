@@ -7,7 +7,6 @@ module Users
     test 'creation fails' do
       statistician = Users::PrefectureStatistician.new(email: 'chef@etablissement.com',
                                              password: 'tototo',
-                                             password_confirmation: 'tototo',
                                              first_name: 'Chef',
                                              last_name: 'Departement',
                                              accept_terms: true)
@@ -22,7 +21,6 @@ module Users
                                  zipcode: '60')
       statistician = Users::PrefectureStatistician.new(email: whitelisted_email.email,
                                              password: 'tototo',
-                                             password_confirmation: 'tototo',
                                              first_name: 'Chef',
                                              last_name: 'Departement',
                                              accept_terms: true,

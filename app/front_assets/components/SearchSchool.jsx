@@ -115,6 +115,7 @@ export default function SearchSchool({
   }
 
   const renderAutocompleteInput = () => {
+    const search_label = 'Adresse ou ville de mon établissement REP ou REP+'
     return (
       <Downshift
         initialInputValue={city}
@@ -133,53 +134,50 @@ export default function SearchSchool({
           highlightedIndex,
           selectedItem,
         }) => (
-          <div className="form-group custom-label-container">
+          <div id="header-search" className="custom-label-container fr-search-bar fr-mr-6w" role="search">
             <label
               {...getLabelProps({ className: 'fr-label', htmlFor: `${resourceName}_school_city` })}
             >
               {label}
-              <abbr title="(obligatoire)" aria-hidden="true">
-                *
-              </abbr>
             </label>
-            <div className="input-group-append">
-              <input
-                {...getInputProps({
-                  onChange: inputChange,
-                  value: currentCityString(),
-                  className: `fr-input ${classes || ''} ${
-                    autocompleteNoResult ? '' : 'rounded-0'
-                  }`,
-                  id: `${resourceName}_school_city`,
-                  placeholder: 'Adresse',
-                  name: `${resourceName}[school][city]`,
-                  required: required,
-                })}
-              />
-                {!currentRequest && (
-                  <button
-                    type="button"
-                    className={`fr-btn fr-btn--secondary btn-clear-city ml-1 ${
-                      autocompleteNoResult ? '' : 'rounded-0'
-                    }`}
-                    onClick={onResetSearch}
-                    aria-label="Réinitialiser la recherche"
-                  >
-                    <i className="fas fa-times" />
-                  </button>
-                )}
-                {currentRequest && (
-                  <button
-                    type="button"
-                    className="fr-btn fr-btn--secondary btn-clear-city"
-                    onClick={onResetSearch}
-                    aria-label="Réinitialiser la recherche"
-                  >
-                  <span className="fr-icon-close-line"></span>
-                  </button>
-                )}
+            <input
+              {...getInputProps({
+                onChange: inputChange,
+                value: currentCityString(),
+                className: `fr-input ${classes || ''} ${
+                  autocompleteNoResult ? '' : 'rounded-0'
+                }`,
+                id: `${resourceName}_school_city`,
+                placeholder: search_label,
+                name: `${resourceName}[school][city]`,
+                required: required,
+              })}
+            />
+            {!currentRequest && (
+              <button
+                type="button"
+                title={search_label}
+                className={`fr-btn btn-clear-city ml-1 ${
+                  autocompleteNoResult ? '' : 'rounded-0'
+                }`}
+                onClick={onResetSearch}
+                aria-label="Réinitialiser la recherche"
+              >
+                <span className="fr-icon-arrow-go-back-fill fr-icon--sm" aria-hidden="true"></span>
+              </button>
+            )}
+            {currentRequest && (
+              <button
+                type="button"
+                title={search_label}
+                className="fr-btn btn-clear-city"
+                onClick={onResetSearch}
+                aria-label="Réinitialiser la recherche"
+              >
+              <span className="fr-icon-close-line"></span>
+              </button>
+            )}
 
-            </div>
 
             <div className="search-in-place bg-white shadow">
               <ul

@@ -5,9 +5,6 @@
   }
 }
 
-.header-register {
-  border-bottom: 1px solid grey;
-}
 
 @include media-breakpoint-up(sm) {
   .onboarding-card-sm{
@@ -36,9 +33,6 @@
       }
     }
   }
-  .register-card-sm{
-    width: 640px;
-  }
   .register-card{
     background-color: #fff;
     box-shadow: 0 7px 64px 0 rgba(0, 0, 0, 0.2);
@@ -57,10 +51,10 @@
   }
 }
 
-.header-onboarding-card {
-  padding: 0;
-  // background: #F6F8FC 0% 0% no-repeat padding-box;
-}
+// .header-onboarding-card {
+//   padding: 0;
+//   // background: #F6F8FC 0% 0% no-repeat padding-box;
+// }
 
 @include media-breakpoint-down(xs) {
 }

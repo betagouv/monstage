@@ -24,7 +24,6 @@ module Users
         role: :other,
         email: "jeanne@#{school.email_domain_name}",
         password: 'tototo',
-        password_confirmation: 'tototo',
         first_name: 'Jeanne',
         last_name: 'CPE',
         school: school,
