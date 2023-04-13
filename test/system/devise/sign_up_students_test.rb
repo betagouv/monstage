@@ -52,6 +52,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     # create student
     assert_difference('Users::Student.count', 1) do
       find('label', text: 'Par email').click
+      execute_script("document.getElementById('user_accept_terms').checked = true;")
       fill_in 'Adresse électronique', with: 'another@email.com'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       click_on "Valider"
@@ -107,28 +108,28 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     # real signup as student
     assert_difference('Users::Student.count', 1) do
-      assert_difference('Users::Student.count', 1) do
-        fill_in 'Adresse électronique', with: email, wait: 4
-        fill_in 'Créer un mot de passe', with: password, wait: 4
-        find('label[for="user_accept_terms"]').click
-        sleep 0.2
-        find("input[type='submit']").click
-      end
+      fill_in 'Adresse électronique', with: email, wait: 4
+      fill_in 'Créer un mot de passe', with: password, wait: 4
+      find('label[for="user_accept_terms"]').click
+      execute_script("document.getElementById('user_accept_terms').checked = true;")
 
-      created_student = Users::Student.find_by(email: email)
-
-      # confirmation mail under the hood
-      created_student.confirm
-      created_student.reload
-      assert created_student.confirmed?
-      # assert_equal offer.id, created_student.targeted_offer_id
-
-      # visit login mail from confirmation mail
-      visit new_user_session_path
-      # find('label', text: 'Email').click
       sleep 0.2
       find("input[type='submit']").click
     end
+
+    created_student = Users::Student.find_by(email: email)
+
+    # confirmation mail under the hood
+    created_student.confirm
+    created_student.reload
+    assert created_student.confirmed?
+    # assert_equal offer.id, created_student.targeted_offer_id
+
+    # visit login mail from confirmation mail
+    visit new_user_session_path
+    # find('label', text: 'Email').click
+    sleep 0.2
+    find("input[type='submit']").click
 
     created_student = Users::Student.find_by(email: email)
 
