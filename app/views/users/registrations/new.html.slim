@@ -51,15 +51,16 @@
                                                   existingSchool: resource&.school&.as_json,
                                                   existingClassRoom: resource.try(:class_room).try(:as_json),
                                       })
-                = render partial: "users/registrations/input_field",
-                         locals: { f: f,
-                                   field_label: "Prénom",
-                                   field: :first_name,
-                                   resource: resource,
-                                   resource_name: resource_name,
-                                   value: resource&.first_name || params[:first_name],
-                                   option: { required: true },
-                                   errors: errors }
+                .fr-mt-1w
+                  = render partial: "users/registrations/input_field",
+                          locals: { f: f,
+                                    field_label: "Prénom",
+                                    field: :first_name,
+                                    resource: resource,
+                                    resource_name: resource_name,
+                                    value: resource&.first_name || params[:first_name],
+                                    option: { required: true },
+                                    errors: errors }
                 = render partial: "users/registrations/input_field",
                          locals: { f: f,
                                    field_label: "Nom",

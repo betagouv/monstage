@@ -77,7 +77,7 @@ module Presenters
         "vos offres de stages à l'aide de votre compte personnalisé. " \
         "Il vous permettra à tout moment de modifier vos offres et de " \
         "suivre leur avancement."
-      when "Statistician"
+      when "PrefectureStatistician"
         title = "Se créer un compte en tant que référent départemental"
         subtitle = "Vous êtes " \
         "référent départemental et souhaitez accéder aux " \
@@ -85,9 +85,9 @@ module Presenters
       when "MinistryStatistician"
         title = "Se créer un compte en tant que référent d'administration centrale"
         subtitle = "Vous êtes référent d'administration centrale et " \
-        "souhaitez accéder aux statistiques relatives aux offres de stage" \
+        "souhaitez accéder aux statistiques relatives aux offres de stage " \
         "de votre administration."
-      when "PrefectureStatistician"
+      when "EducationStatistician"
         title = "Se créer un compte en tant que référent DSDEN"
         subtitle = "Vous êtes référent départemental du ministère " \
         "de l'éducation nationale et souhaitez accéder aux statistiques " \

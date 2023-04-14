@@ -41,6 +41,8 @@ main#content[role="main"
                 span data-signup-target="emailRadioButton"
                 span data-signup-target="phoneBloc"
                 .fr-mx-1w
+                  label.fr-label for="user_school_city"
+                        | Ville ou collège
                   = react_component("SearchSchool", props: { classes: 'col-12 fr-input',
                                                     required: true,
                                                     label: 'Nom (ou ville) de mon établissement REP ou REP+',
@@ -48,14 +50,15 @@ main#content[role="main"
                                                     selectClassRoom: true,
                                                     existingSchool: @identity.school.as_json,
                                                     existingClassRoom: @identity.try(:class_room).try(:as_json)})
-                = render partial: "users/registrations/input_field",
-                          locals: { f: f,
-                                    field_label: "Prénom",
-                                    field: :first_name,
-                                    resource: resource,
-                                    resource_name: :identity,
-                                    option: { required: true },
-                                    errors: errors }
+                .fr-mt-2w
+                  = render partial: "users/registrations/input_field",
+                            locals: { f: f,
+                                      field_label: "Prénom",
+                                      field: :first_name,
+                                      resource: resource,
+                                      resource_name: :identity,
+                                      option: { required: true },
+                                      errors: errors }
                 = render partial: "users/registrations/input_field",
                           locals: { f: f,
                                     field_label: "Nom",
