@@ -60,6 +60,7 @@ module Presenters
     def sanitize_and_translate(resource_name: , resource:, given_messages:)
       filtered_messages = reject_none_messages(messages: given_messages)
       filtered_messages = reject_empty_messages(messages: filtered_messages)
+      filtered_messages = reject_only_true_messages(messages: filtered_messages)
       filtered_messages.map do |key, notice_messages|
         translate_path = "activerecord.attributes.#{defined?(resource_name) ? resource_name : resource.class.name.downcase }.#{key}"
         notice_messages.map do |notice_message|
@@ -95,5 +96,8 @@ module Presenters
       messages.reject{ |key, error_texts| error_texts.join(', ').blank? }
     end
 
+    def reject_only_true_messages(messages:)
+      messages.reject{ |key, error_texts| error_texts.join(', ') == 'true' }
+    end
   end
 end
