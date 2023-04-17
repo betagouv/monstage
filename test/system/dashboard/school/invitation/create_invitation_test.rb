@@ -20,7 +20,6 @@ module Dashboard
       sign_in(school_manager)
       visit dashboard_school_users_path(school_id: school.id)
       assert_difference 'Invitation.count' do
-        find('button[aria-label="Renvoyer l\'invitation"]').click
         click_link("Inviter un membre de l'équipe")
         fill_in('Nom', with: 'Picasso')
         fill_in('Prénom', with: 'Pablo')
@@ -45,7 +44,6 @@ module Dashboard
       sign_in(school_manager)
       visit dashboard_school_users_path(school_id: school.id)
       assert_no_difference 'Invitation.count' do
-        find('button[aria-label="Renvoyer l\'invitation"]').click
         click_link("Inviter un membre de l'équipe")
         fill_in('Nom', with: 'Picasso')
         fill_in('Prénom', with: 'Pablo')
@@ -66,7 +64,6 @@ module Dashboard
       sign_in(school_manager)
       visit dashboard_school_users_path(school_id: school.id)
       assert_no_difference 'Invitation.count' do
-        find('button[aria-label="Renvoyer l\'invitation"]').click
         click_link("Inviter un membre de l'équipe")
         fill_in('Nom', with: 'Picasso')
         fill_in('Prénom', with: 'Pablo')
