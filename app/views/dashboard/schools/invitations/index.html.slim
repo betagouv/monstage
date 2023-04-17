@@ -1,0 +1,26 @@
+- invitations = @invitations || Invitation.not_registered_in(school_id: current_user.school.id).order(created_at: :desc)
+.border
+  .fr-my-3w
+    h2.h3.fr-ml-3w Liste des membres invités
+    - if invitations.present?
+      .fr-table.fr-table--no-caption.fr-table--layout-fixed
+        table
+          thead
+            tr
+              th
+                |Prénom
+              th
+                |Nom
+              th
+                |Email
+              th
+                |Fonction
+          tbody
+            - if invitations.count.positive?
+              - invitations.each do |invitation|
+                = render partial: "dashboard/schools/users/invited_school_employee_simple",
+                        locals: { invitation: invitation }
+            - else
+              tr
+                td#no-invitation colspan="4"
+                  | Vous n'avez encore invité personne

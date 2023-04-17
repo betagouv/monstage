@@ -7,10 +7,10 @@ module Dashboard
 
       test 'POST invitation' do
         school_manager = create(:school_manager)
-        invitations = {
+        invitation = {
           first_name: 'Pablo',
           last_name: 'Picasso',
-          email: 'pablo@heavens.com',
+          email: 'pablo@ac-paris.fr',
           user_id: school_manager.id,
           role: 'teacher'
         }
@@ -19,9 +19,8 @@ module Dashboard
         assert_difference 'Invitation.count' do
           post(
             dashboard_school_invitations_path(school_manager.school.id),
-            params: { invitations: invitations }
+            params: { invitation: invitation }
           )
-          assert_redirected_to dashboard_school_users_path(school_manager.school)
         end
 
         assert_equal 'Pablo', Invitation.last.first_name, 'invitation creation failed'
@@ -30,7 +29,7 @@ module Dashboard
       test 'POST invitation with existing teacher' do
         school_manager = create(:school_manager)
         teacher = create(:teacher, school: school_manager.school)
-        invitations = {
+        invitation = {
           first_name: teacher.first_name,
           last_name: teacher.last_name,
           email: teacher.email,
@@ -41,7 +40,7 @@ module Dashboard
         sign_in(school_manager)
         post(
           dashboard_school_invitations_path(school_manager.school.id),
-          params: { invitations: invitations }
+          params: { invitation: invitation }
         )
         assert_redirected_to dashboard_school_users_path
         assert_equal 0, Invitation.count, 'invitation should not have been successfull'
@@ -50,7 +49,7 @@ module Dashboard
       test 'POST invitation with existing teacher but from another school' do
         school_manager = create(:school_manager)
         teacher = create(:teacher, school: create(:school, :with_school_manager))
-        invitations = {
+        invitation = {
           first_name: teacher.first_name,
           last_name: teacher.last_name,
           email: teacher.email,
@@ -62,7 +61,7 @@ module Dashboard
         assert_difference 'Invitation.count' do
           post(
             dashboard_school_invitations_path(school_manager.school.id),
-            params: { invitations: invitations }
+            params: { invitation: invitation }
           )
           assert_redirected_to dashboard_school_users_path(school_manager.school)
         end

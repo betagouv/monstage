@@ -2,6 +2,7 @@ class Invitation < ApplicationRecord
   belongs_to :school_manager, -> { where(role: :school_manager) },
              class_name: 'Users::SchoolManagement',
              foreign_key: 'user_id'
+  delegate :school, to: :school_manager
 
   enum role: {
     teacher: 'Professeur',
@@ -9,9 +10,11 @@ class Invitation < ApplicationRecord
     other: 'Autre'
   }
 
-  validates :first_name, presence: true
-  validates :last_name, presence: true
-  validates :role, presence: true
+  validates :first_name,
+            :last_name,
+            :email,
+            :role, presence: true
+  validates_associated :school_manager
   validate  :official_email_address
 
   scope :not_registered_in, ->(school_id:) {
@@ -27,9 +30,10 @@ class Invitation < ApplicationRecord
 
   # validators
   def official_email_address
-    return if school_manager.school.blank? || school_manager.email.nil?
+    return unless school_manager.present?
+    return unless email.present?
 
-    unless self.email.split('@').second == school_manager.school.email_domain_name
+    if email.split('@').second != school.email_domain_name
       errors.add(
         :email,
         "L'adresse email utilisée doit être officielle.<br>ex: XXXX@ac-academie.fr".html_safe

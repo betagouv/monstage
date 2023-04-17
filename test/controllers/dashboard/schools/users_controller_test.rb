@@ -72,10 +72,9 @@ module Dashboard
         school = create(:school, :with_school_manager)
         sign_in(school.school_manager)
         get dashboard_school_users_path(school)
-
         assert_response :success
-        assert_select ".test-modal-link",
-                      text: "+ Inviter un membre du personnel"
+        assert_select ".fr-btn.fr-icon-add-line",
+                      text: "Inviter un membre de l'équipe"
       end
 
       test 'GET users#index as SchoolManagement contains list school members' do

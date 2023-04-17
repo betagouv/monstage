@@ -16,20 +16,19 @@
                   new_dashboard_school_invitation_path(@school.id),
                   class: 'fr-btn fr-icon fr-btn--icon-left fr-btn--sm fr-icon-add-line'
 
-    - if @school.has_staff?
-      .fr-table.fr-table--layout-fixed.fr-table--no-caption
-        table
-          thead
-            tr
-              th Nom
-              th Email
-              th Fonction
-              th Statut
-              th Action
-          tbody
-            - @invitations.each do |invitation|
-              = render partial: "dashboard/schools/users/invited_school_employee",
-                      locals: { invitation: invitation }
-            = render partial: "dashboard/schools/users/school_employee",
-                    collection: @collection
+    .fr-table.fr-table--layout-fixed.fr-table--no-caption
+      table
+        thead
+          tr
+            th Nom
+            th Email
+            th Fonction
+            th Statut
+            th Action
+        tbody
+          - @invitations.each do |invitation|
+            = render partial: "dashboard/schools/users/invited_school_employee",
+                    locals: { invitation: invitation }
+          = render partial: "dashboard/schools/users/school_employee",
+                  collection: @collection
 

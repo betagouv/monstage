@@ -7,8 +7,14 @@ module Dashboard
 
       def index
         authorize! :manage_school_users, @school
-        @collection = @school.main_teachers.kept + @school.teachers.kept + @school.others.kept
-        @invitations = Invitation.where(user_id: current_user.id)
+        roles = Invitation.roles
+                          .keys
+                          .map(&:pluralize)
+                          .map(&:to_sym)
+        @collection = roles.inject([]) {|whole, role| whole += @school.send(role).kept }
+
+        @invitations = Invitation.not_registered_in(school_id: @school.id)
+                                 .order(created_at: :desc)
       end
 
       def destroy

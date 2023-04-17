@@ -9,12 +9,9 @@ module Presenters
     end
 
     def status
-      puts " ******************  ta  ***************" 
       user = ::Users::SchoolManagement.find_by(email: email)
       return { type: 'success', label: 'inscrit', status: :subscribed} if user.present?
-      puts " ******************  ta  ***************" if sent_at.present?
-      puts " ******************  ta  ***************" if sent_at.present?
-      return { type: 'new', label: 'Invitation envoyée', status: :email_sent}  if sent_at.present?
+      return { type: 'new', label: 'Invitation envoyée', status: :email_sent} if sent_at.present?
 
       nil
     end

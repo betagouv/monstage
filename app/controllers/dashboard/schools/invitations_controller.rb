@@ -4,54 +4,50 @@ module Dashboard
       before_action :invitation_params, only: :create
       before_action :set_invitation, only: %i[destroy resend_invitation]
 
+      def index
+        authorize! :list_invitations, Invitation
+        @invitations = Invitation.not_registered_in(school_id: fetch_school_id)
+                                 .order(created_at: :desc)
+      end
+
       def new
         authorize! :create_invitation, Invitation
         @school      = current_user.school
-        @invitation  = Invitation.new(user_id: current_user.id)
-        @invitations = Invitation.not_registered_in(school_id: @school.id)
+        @invitation  = current_user.invitations.build
       end
 
       def create
         authorize! :create_invitation, Invitation
-        redirect_to(
-            dashboard_school_users_path,
-            flash: { alert: "La personne que vous voulez inviter est déjà " \
-                            "inscrite ou en cours d'inscription"}
-        ) and return if already_in_staff?(params, current_user)
+        if already_in_staff?(params, current_user)
+          redirect_to(
+              dashboard_school_users_path(school_id: fetch_school_id),
+              alert: "La personne que vous voulez inviter est déjà " \
+                     "inscrite ou en cours d'inscription"
+          ) and return
+        end
 
         @invitation = current_user.invitations.build(invitation_params)
         @invitation.sent_at = Time.now
-        if @invitation.save! && invite_staff(invitation: @invitation, from: current_user)
+        if @invitation.save && invite_staff(invitation: @invitation, from: current_user)
           success_message = "un message d'invitation à " \
                             "#{@invitation.first_name} #{@invitation.last_name} " \
                             "vient d'être envoyé"
-          redirect_to(
-            dashboard_school_users_path,
-            flash: { success: success_message }
-          )
+          redirect_to dashboard_school_users_path(school_id: fetch_school_id),
+                      notice: success_message
         else
-          redirect_to(
-            dashboard_school_users_path,
-            flash: { alert: "votre invitation n'a pas pu être envoyée"}
-          )
+          render :new, status: :bad_request
         end
-      end
-
-      def index
-        authorize! :list_invitations, Invitation
-        @invitations = Invitations.not_by_id(school_id: current_user.school.id)
       end
 
       def destroy
         authorize! :destroy_invitation, Invitation
         if @invitation.destroy
-          success_message = 'L\'invitation a bien été supprimée'
-          redirect_to dashboard_school_users_path,
-                      flash: { success: success_message }
+          redirect_to dashboard_school_users_path(school_id: fetch_school_id),
+                      notice: 'L\'invitation a bien été supprimée'
         else
-          alert_message = "Votre invitation n'a pas pu être supprimée..."
-          redirect_to dashboard_school_users_path,
-                      flash: { alert: alert_message }
+          alert_message = "Votre invitation n'a pas pu être supprimée ..."
+          redirect_to dashboard_school_users_path(school_id: fetch_school_id),
+                      alert: alert_message
         end
       end
 
@@ -59,23 +55,26 @@ module Dashboard
         authorize! :create_invitation, Invitation
         invite_staff(invitation: @invitation, from: @invitation.school_manager )
         redirect_to dashboard_school_users_path,
-                    flash: { success: 'Votre invitation a été renvoyée' }
+                    notice: 'Votre invitation a été renvoyée'
       end
 
       def invite_staff(invitation:, from:)
         params = { from: from, invitation: invitation }
         InvitationMailer.staff_invitation(params).deliver_later
-        true
       end
 
       private
 
       def invitation_params
-        params.require(:invitations)
+        params.require(:invitation)
               .permit(:first_name,
                       :last_name,
                       :email,
                       :role)
+      end
+
+      def fetch_school_id
+        current_user.school&.id
       end
 
       def set_invitation
@@ -83,7 +82,7 @@ module Dashboard
       end
 
       def already_in_staff?(params, manager)
-        staff = Users::SchoolManagement.find_by_email(invitation_params[:email])
+        staff = ::Users::SchoolManagement.find_by_email(invitation_params[:email])
         return false if staff.nil?
 
         staff&.school == manager.school

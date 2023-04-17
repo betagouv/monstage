@@ -82,7 +82,6 @@ class InvitationTest < ActiveSupport::TestCase
   end
 
   test '#save when missing parameter user_id' do
-    school_manager = create(:school_manager)
     params = {
       first_name: 'Pablo',
       last_name: 'Picasso',
@@ -91,5 +90,22 @@ class InvitationTest < ActiveSupport::TestCase
     }
     invitation = Invitation.new(params)
     refute invitation.valid?
+  end
+
+  test 'private official_email_address method' do
+    school_manager = create(:school_manager)
+    refute school_manager.school.blank?
+    refute school_manager.email.nil?
+
+    params = {
+      first_name: 'Pablo',
+      last_name: 'Picasso',
+      email: 'pablo@acaris.fr',
+      role: 'teacher',
+    }
+    invitation = school_manager.invitations.build(params)
+    refute invitation.valid?
+    assert_equal ["Email L'adresse email utilisée doit être officielle.<br>ex: XXXX@ac-academie.fr"],
+                 invitation.errors.full_messages
   end
 end
