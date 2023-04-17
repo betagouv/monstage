@@ -15,8 +15,8 @@ class SchoolManagerMailer < ApplicationMailer
     @internship_offer      = internship_application.internship_offer
     student                = internship_application.student
     is_public              = @internship_offer.is_public
-    entreprise             = is_public ? "L'entreprise" : "L'administration publique"
-    @entreprise            = "#{entreprise} #{@internship_offer.employer.name}"
+    entreprise             = is_public ? "L'administration publique" : "L'entreprise"
+    @entreprise            = "#{entreprise} #{@internship_offer.employer_name}"
     @prez_stud             = student.presenter
     @school_manager        = student.school&.school_manager
     @week                  = internship_application.week
