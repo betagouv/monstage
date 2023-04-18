@@ -64,23 +64,15 @@ import './icons/full_heart.svg';
 import './icons/empty_heart.svg';
 import './icons/disabled_heart.svg';
 
-// import './pages/logo_onisep.jpg';
-// import './pages/logo_cget_texte.png';
-// import './pages/remote_internships/webinar_2x.png';
-// import './pages/remote_internships/face_to_face_2x.png';
-// import './pages/remote_internships/digital_week_2x.png';
-
 import './pages/statistics/hand_left.svg';
 import './pages/statistics/hand_right.svg';
 import './pages/statistics/handshake.svg';
 import './pages/statistics/ok.svg';
 import './pages/statistics/school.svg';
 
-import './pages/invitations/briefcase_icon.svg';
 import './pages/invitations/email_icon.svg';
 import './pages/invitations/person_icon.svg';
 
-// import './homepage/covid-alert.svg';
 import './homepage/explications.svg';
 import './homepage/back-to-top.svg';
 import './homepage/01.svg';

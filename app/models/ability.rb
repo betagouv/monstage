@@ -55,10 +55,11 @@ class Ability
   end
 
   def school_manager_abilities(user:)
-    can :list_invitations, Invitation
-    can :create_invitation, Invitation
-    can :destroy_invitation, Invitation
-    can :create_remote_internship_request, SupportTicket # TO DO REMOVE
+    can %i[list_invitations
+           create_invitation
+           destroy_invitation], Invitation do |invitation|
+      invitation.school.id == user.school_id
+    end
 
     can_manage_school(user: user) do
       can [:delete], User do |managed_user_from_school|

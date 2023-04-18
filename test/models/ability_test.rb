@@ -282,16 +282,20 @@ class AbilityTest < ActiveSupport::TestCase
   test 'SchoolManager' do
     student = create(:student)
     school = student.school
-    another_school = create(:school)
-    school_manager = create(:school_manager, school: school)
-    internship_application = create(:weekly_internship_application, student: student)
-    invitation = create(:invitation, user_id: school_manager.id)
-    internship_agreement = create(:internship_agreement, :created_by_system,
-                                  internship_application: internship_application)
+    another_school          = create(:school)
+    school_manager          = create(:school_manager, school: school)
+    another_school_manager  = create(:school_manager, school: another_school)
+    internship_application  = create(:weekly_internship_application, student: student)
+    invitation              = create(:invitation, user_id: school_manager.id)
+    invitation_other_school = create(:invitation, user_id: another_school_manager.id)
+    internship_agreement    = create(:internship_agreement, :created_by_system,
+                                     internship_application: internship_application)
     ability = Ability.new(school_manager)
 
-    assert(ability.can?(:create_invitation, Invitation))
-    assert(ability.can?(:list_invitations, Invitation))
+    assert(ability.can?(:create_invitation, invitation))
+    refute(ability.can?(:create_invitation, invitation_other_school))
+    assert(ability.can?(:list_invitations, invitation))
+    refute(ability.can?(:list_invitations, invitation_other_school))
 
     assert(ability.can?(:welcome_students, school_manager), 'school_manager are to be able to supply offers')
     assert(ability.can?(:choose_class_room, User))
@@ -317,7 +321,6 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:manage_school_users, school))
     assert(ability.can?(:manage_school_students, school))
     assert(ability.can?(:manage_school_internship_agreements, school))
-    assert(ability.can?(:create_remote_internship_request, SupportTicket))
 
     assert(ability.cannot?(%i[show edit update], School),
            'school_manager should be able manage school')
