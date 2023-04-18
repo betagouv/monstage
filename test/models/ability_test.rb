@@ -451,15 +451,17 @@ class AbilityTest < ActiveSupport::TestCase
 
   test 'CPE' do
     school = create(:school, :with_school_manager)
+    class_room = create(:class_room, school: school)
     another_school = create(:school)
+    class_room_2 = create(:class_room, school: another_school) 
     
-    admin_officer = create(:cpe, school: school)
-    ability = Ability.new(admin_officer)
+    cpe = create(:cpe, school: school)
+    ability = Ability.new(cpe)
 
-    assert(ability.can?(:manage_school_students, admin_officer.school))
+    assert(ability.can?(:manage_school_students, cpe.school))
     assert(ability.cannot?(:manage_school_students, another_school))
-    assert(ability.can?(:manage, ClassRoom))
-    assert(ability.can?(:change, :class_room))
+    assert(ability.can?(:change, class_room))
+    assert(ability.cannot?(:change, class_room_2))
     assert(ability.can?(:read, InternshipAgreement))
   end
 

@@ -1,7 +1,6 @@
 module InternshipAgreements
   class ButtonComponent < BaseComponent
     attr_reader :internship_agreement, :current_user, :label, :second_label
-    include CanCan::Ability
 
     def initialize(internship_agreement:,
                    current_user:,

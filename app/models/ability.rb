@@ -348,7 +348,9 @@ class Ability
     end
     can_read_dashboard_students_internship_applications(user: user)
 
-    can :change, :class_room unless user.school_manager?
+    can :change, ClassRoom do |class_room|
+      class_room.school_id == user.school_id && !user.school_manager?
+    end
 
     can_manage_school(user: user) do
       can %i[edit update], School
@@ -438,7 +440,9 @@ class Ability
   end
 
   def can_manage_school(user:)
-    can :manage, ClassRoom
+    can :manage, ClassRoom do |class_room|
+      class_room.school_id == user.school_id
+    end
     can [:show_user_in_school], User do |user|
       user.school
           .users

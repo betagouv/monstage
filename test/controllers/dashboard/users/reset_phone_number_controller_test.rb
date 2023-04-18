@@ -15,7 +15,7 @@ module Dashboard::Users
 
       assert_redirected_to dashboard_internship_agreements_path(opened_modal: true)
       follow_redirect!
-      # assert_select '#alert-text', text: "Votre numéro de téléphone a été supprimé"
+      assert_select '#alert-text', text: "Votre numéro de téléphone a été supprimé"
       assert employer.reload.phone.blank?
     end
 
