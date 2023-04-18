@@ -1,4 +1,4 @@
-- invitations = @invitations || Invitation.not_registered_in(school_id: current_user.school.id).order(created_at: :desc)
+- invitations = @invitations || Invitation.for_people_with_no_account_in(school_id: current_user.school.id).order(created_at: :desc)
 .border
   .fr-my-3w
     h2.h3.fr-ml-3w Liste des membres invités

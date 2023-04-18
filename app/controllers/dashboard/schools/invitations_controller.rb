@@ -6,7 +6,7 @@ module Dashboard
 
       def index
         authorize! :list_invitations, Invitation
-        @invitations = Invitation.not_registered_in(school_id: fetch_school_id)
+        @invitations = Invitation.for_people_with_no_account_in(school_id: fetch_school_id)
                                  .order(created_at: :desc)
       end
 

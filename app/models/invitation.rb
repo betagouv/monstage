@@ -17,7 +17,7 @@ class Invitation < ApplicationRecord
   validates_associated :school_manager
   validate  :official_email_address
 
-  scope :not_registered_in, ->(school_id:) {
+  scope :for_people_with_no_account_in, ->(school_id:) {
     where.not( email: Users::SchoolManagement.kept
                                              .where(school_id: school_id)
                                              .pluck(:email))
