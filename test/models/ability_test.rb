@@ -434,15 +434,19 @@ class AbilityTest < ActiveSupport::TestCase
   test 'Admin Offcer' do
     school = create(:school, :with_school_manager)
     another_school = create(:school)
-    
+    student = create(:student, school: school)
+    internship_application = create(:weekly_internship_application, student: student)
+    internship_agreement = create(:internship_agreement, internship_application: internship_application)
+       
     admin_officer = create(:admin_officer, school: school)
     ability = Ability.new(admin_officer)
-
+   
     assert(ability.can?(:manage_school_students, admin_officer.school))
     assert(ability.cannot?(:manage_school_students, another_school))
     assert(ability.can?(:manage, ClassRoom))
     assert(ability.can?(:change, :class_room))
-    assert(ability.can?(:sign, InternshipAgreement))
+    assert(ability.can?(:sign, internship_agreement))
+    assert(ability.can?(:sign, internship_agreement))
   end
 
   test 'CPE' do

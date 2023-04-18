@@ -246,6 +246,10 @@ class InternshipAgreement < ApplicationRecord
     signatures.pluck(:user_id).include?(user.id)
   end
 
+  def signed_by_school?
+    signatures.pluck(:signatory_role).include?('school_manager')
+  end
+
   def presenter(user:)
     Presenters::InternshipAgreement.new(self, user)
   end

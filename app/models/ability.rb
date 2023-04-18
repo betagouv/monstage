@@ -89,14 +89,14 @@ class Ability
       see_intro
       update
     ], InternshipAgreement do |agreement|
-      byebug
+      # byebug
       agreement.internship_application.student.school_id == user.school_id
     end
     can %i[edit update], InternshipAgreementPreset do |internship_agreement_preset|
       internship_agreement_preset.school_id == user.school_id
     end
     can :create, Signature  do |signature|
-      byebug
+      # byebug
       signature.internship_agreement.student.school == user.school
     end
   end
@@ -381,6 +381,7 @@ class Ability
     ], InternshipAgreement
 
     can %i[
+      read
       edit
       update
       edit_organisation_representative_role
@@ -395,6 +396,7 @@ class Ability
       edit_siret
       edit_tutor_full_name
       edit_weekly_hours
+      sign
       sign_internship_agreements
     ], InternshipAgreement do |agreement|
       agreement.employer == user && user.employer_like?

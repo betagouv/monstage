@@ -33,7 +33,7 @@ class User < ApplicationRecord
     school_manager: 'school_manager',
     teacher: 'teacher',
     main_teacher: 'main_teacher',
-    cpe: 'CPE',
+    cpe: 'cpe',
     admin_officer: 'admin_officer',
     other: 'other'
   }
@@ -256,6 +256,7 @@ class User < ApplicationRecord
   def send_signature_sms_token ; nil end
   def signatory_role ; nil end
   def obfuscated_phone_number ; nil end
+  def can_sign?(internship_agreement); false end
 
   def presenter
     Presenters::User.new(self)

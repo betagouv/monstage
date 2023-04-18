@@ -88,7 +88,6 @@ module Dashboard
                                                 ]
                                               )
                                            .reject { |a| a.student.school.school_manager.nil? }
-      # @internship_agreements = InternshipAgreement.all
       @school = current_user.school if current_user.school_management?
     end
 

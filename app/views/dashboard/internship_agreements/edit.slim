@@ -2,5 +2,5 @@
 = render 'layouts/breadcrumb',
           links: [ [current_user.presenter.dashboard_name_link, current_user.dashboard_name],
                    ['', "Edition de la convention : #{@internship_agreement.internship_offer.title}"] ]
-= render current_user.school_management? ? 'school_management_form' : 'employer_form'
+= render current_user.school_management? || current_user.admin_officer? ? 'school_management_form' : 'employer_form'
 
