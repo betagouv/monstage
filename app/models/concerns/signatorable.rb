@@ -76,5 +76,7 @@ module Signatorable
                          .where(signatures: {user_id: id})
                          .exists?
     end
+
+    def can_sign?(internship_agreement); true end
   end
 end

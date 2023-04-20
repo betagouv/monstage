@@ -378,7 +378,7 @@ class AbilityTest < ActiveSupport::TestCase
            'students should be able to access their account')
 
     assert(ability.can?(:manage, ClassRoom))
-    assert(ability.can?(:change, :class_room))
+    assert(ability.can?(:change, class_room))
 
     assert(ability.can?(:destroy, internship_application))
     assert(ability.can?(:update, internship_application))
@@ -408,6 +408,7 @@ class AbilityTest < ActiveSupport::TestCase
   test 'Teacher' do
     school = create(:school, :with_school_manager)
     teacher = create(:teacher, school: school)
+    class_room = create(:class_room, school: school)
     ability = Ability.new(teacher)
 
     assert(ability.can?(:subscribe_to_webinar, teacher))
@@ -417,22 +418,24 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:see_tutor, InternshipOffer))
     assert(ability.can?(:manage_school_students, teacher.school))
     assert(ability.cannot?(:manage_school_students, build(:school)))
-    assert(ability.can?(:change, :class_room))
+    assert(ability.can?(:change, class_room))
   end
 
   test 'Other' do
     school = create(:school, :with_school_manager)
+    class_room = create(:class_room, school: school)
     another_school = create(:school)
     other = create(:other, school: school)
     ability = Ability.new(other)
     assert(ability.can?(:manage_school_students, other.school))
     assert(ability.cannot?(:manage_school_students, another_school))
     assert(ability.can?(:manage, ClassRoom))
-    assert(ability.can?(:change, :class_room))
+    assert(ability.can?(:change, class_room))
   end
 
   test 'Admin Offcer' do
     school = create(:school, :with_school_manager)
+    class_room = create(:class_room, school: school)
     another_school = create(:school)
     student = create(:student, school: school)
     internship_application = create(:weekly_internship_application, student: student)
@@ -444,7 +447,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:manage_school_students, admin_officer.school))
     assert(ability.cannot?(:manage_school_students, another_school))
     assert(ability.can?(:manage, ClassRoom))
-    assert(ability.can?(:change, :class_room))
+    assert(ability.can?(:change, class_room))
     assert(ability.can?(:sign, internship_agreement))
     assert(ability.can?(:sign, internship_agreement))
   end

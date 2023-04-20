@@ -22,12 +22,10 @@
 
   .col-md-6.col-sm-12.mb-1
     - primary_button_classes = "fr-btn button-component-cta-button ml-2 text-center fr-high-buttons btn-sm"
-    - if second_label[:status] != 'hidden'
-      - if second_label[:status] == 'disabled'
-          = link_to second_label[:text],
-                    '',
-                    class: "#{primary_button_classes} disabled"
-      - elsif internship_agreement.validated? || internship_agreement.signatures_started?
-        button class="#{primary_button_classes}"  data-group-signing-target="signingButton" data-group-signing-id-param="#{internship_agreement.id}" data-action="group-signing#toggleFromButton"
-          = second_label[:text]
+    
+    - if second_label[:status] == 'disabled'
+      = link_to second_label[:text], '', class: "#{primary_button_classes} disabled"
+    - elsif second_label[:status] != 'hidden' && (internship_agreement.validated? || internship_agreement.signatures_started?)
+      button class="#{primary_button_classes}" data-group-signing-target="signingButton" data-group-signing-id-param="#{internship_agreement.id}" data-action="group-signing#toggleFromButton"
+        = second_label[:text]
 

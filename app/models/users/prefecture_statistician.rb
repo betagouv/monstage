@@ -19,10 +19,6 @@ module Users
       Presenters::PrefectureStatistician.new(self)
     end
 
-    def can_sign?(internship_agreement)
-      true
-    end
-
     private
 
     # on create, make sure to assign existing email whitelist

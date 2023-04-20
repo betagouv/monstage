@@ -44,7 +44,6 @@ module Users
     end
 
     def employer? ; true end
-    def can_sign?(internship_agreement); true end
 
     def anonymize(send_email: true)
       super

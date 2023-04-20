@@ -90,9 +90,6 @@ module Users
       try(:school).try(:school_manager)
     end
 
-    def can_sign?(internship_agreement)
-      (school_manager? || admin_officer?) && internship_agreement.school == school
-    end
     private
 
     # validators
