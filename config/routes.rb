@@ -128,7 +128,7 @@ Rails.application.routes.draw do
   get '/accessibilite', to: 'pages#accessibilite'
   get '/conditions-d-utilisation', to: 'pages#conditions_d_utilisation'
   get '/conditions-d-utilisation-service-signature', to: 'pages#conditions_utilisation_service_signature'
-  get '/contact', to: 'pages#contact'
+  get '/contact', to: 'pages#contact', as: 'contact'
   get '/documents-utiles', to: 'pages#documents_utiles'
   get '/javascript-required', to: 'pages#javascript_required'
   get '/mentions-legales', to: 'pages#mentions_legales'
