@@ -19,7 +19,7 @@ module Presenters
       when "read_by_employer"
         badge = {label: "lu", badge_type:'warning'}
       when "rejected", "canceled_by_student", "canceled_by_employer"
-        badge = {label: "rejeté", badge_type: 'error'}
+        badge = {label: "refusé", badge_type: 'error'}
       when "expired"
         badge = {label: "expiré", badge_type:'error'}
       else

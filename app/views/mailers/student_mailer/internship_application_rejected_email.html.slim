@@ -1,18 +1,23 @@
 p style=(p_styles)
   |Bonjour,
 p style=(p_styles)
-  = "Votre candidature au stage \"#{@internship_application.internship_offer.title}\" a été refusée par l'employeur."
+  = "Votre candidature au stage \"#{@internship_application.internship_offer.title}\" a été refusée par l'employeur pour les raisons suivantes :"
 
 p style=(p_styles)
-  | Voici le motif du refus :
-
-  br
-  = @internship_application.rejected_message.to_s
+  i 
+    div style='padding-left:25px;'
+      = @internship_application.rejected_message.to_plain_text
 
 p style=(p_styles)
-  |Vous souhaitant une bonne continuation dans vos recherches de stage sur la plateforme&nbsp;
-  = link_to('www.monstagedetroisieme.fr', @host.html_safe)
-  | .
+  strong
+    | Dans une recherche de stage ou d'emploi, tout le monde reçoit une ou plusieurs réponses négatives
+p style=(p_styles)
+  strong
+    | Ne vous découragez pas ! Continuez vos recherche.
+
+p style=p_styles
+= render partial: "mailers/call_to_action",
+          locals: { href: @url, label: "Faire une nouvelle recherche" }
 
 p style=(p_styles)
   | A bientôt

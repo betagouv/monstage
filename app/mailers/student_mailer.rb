@@ -11,6 +11,7 @@ class StudentMailer < ApplicationMailer
   def internship_application_rejected_email(internship_application:)
     @internship_application = internship_application
     @host = EmailUtils.env_host
+    @url = internship_offers_url
 
     mail(to: @internship_application.student.email,
          subject: "Une de vos candidatures a été refusée")
@@ -21,6 +22,17 @@ class StudentMailer < ApplicationMailer
 
     mail(to: @internship_application.student.email,
          subject: "Une de vos candidatures a été annulée")
+  end
+
+  def internship_application_examined_email(internship_application:)
+    @internship_application = internship_application
+    @student = internship_application.student
+    @internship_offer = internship_application.internship_offer
+    @prez_offer = @internship_offer.presenter
+    @prez_student = @student.presenter
+    
+    send_email(to: @student.email,
+               subject: "Votre candidature est en cours d'examen")
   end
 
   def account_created_by_teacher(student:, teacher:, token:)

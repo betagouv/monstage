@@ -51,25 +51,12 @@ p
     .grey-container-application
       - parameters = {internship_offer_id: @internship_offer.id, id: @internship_application.id}
       .d-flex.flex-row data-controller='employer-decision'
-        = form_with( url: dashboard_internship_offer_internship_application_path(parameters),
-                     data: {turbo: false},
-                     method: :PATCH) do |form|
-          = form.hidden_field :transition, value: :reject!
-          button#submit-refuse [type="submit"
-                                class='fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-close-line fr-mr-2w']
-            = "Refuser"
-        = form_with( url: dashboard_internship_offer_internship_application_path(internship_offer_id: @internship_offer.id, id: @internship_application.id),
-                     data: {turbo: false},
-                     method: :PATCH) do |form|
-          = form.hidden_field :transition, value: :examine!
-          button#submit-examine [type="submit"
-                                class='fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-settings-5-line fr-mr-2w']
-            = "Etudier"
-        = form_with( url: dashboard_internship_offer_internship_application_path(internship_offer_id: @internship_offer.id, id: @internship_application.id),
-                     data: {turbo: false},
-                     method: :PATCH) do |form|
-          = form.hidden_field :transition, value: :approve!
-          button#submit-accept [type="submit"
-                                class='fr-btn fr-btn--icon-left fr-icon-check-line']
-            = "Accepter"
-
+        - unless @internship_application.rejected?
+          = render "dashboard/internship_offers/internship_applications/actions/reject",
+                   internship_application: @internship_application
+        - unless @internship_application.examined?
+          = render "dashboard/internship_offers/internship_applications/actions/examine",
+                   internship_application: @internship_application
+        - unless @internship_application.approved?
+          = render "dashboard/internship_offers/internship_applications/actions/approve",
+                   internship_application: @internship_application

@@ -1,0 +1,19 @@
+p style=head_styles
+    | Votre candidature est en cours de traitement
+
+p style=p_styles
+  = "Bonjour #{@prez_student.civil_name},"
+
+p style=p_styles
+  = "L'#{@prez_offer.entreprise}  a bien pris " \
+    "en compte votre candidature et l'a transmise en interne pour étude. " \
+    "Elle vous transmet le message suivant :"
+
+i style='padding-left:25px;'
+  = @internship_application.examined_message.to_s
+
+p style=(p_styles)
+p style=(p_styles)
+  | A bientôt
+  br
+  | L'équipe Mon Stage de 3e.

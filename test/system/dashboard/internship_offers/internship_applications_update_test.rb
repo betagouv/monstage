@@ -12,7 +12,6 @@ module Dashboard::InternshipOffers
       click_on 'retour'
       assert internship_application.reload.read_by_employer?
       find("h1.h4", text: "Les candidatures")
-      find('caption[data-fr-js-table-caption="true"]', text: "Candidatures reçues")
       find('p.fr-mt-1w.fr-badge.fr-badge--sm.fr-badge--warning', text: "LU")
     end
 
@@ -22,26 +21,28 @@ module Dashboard::InternshipOffers
       sign_in(internship_application.employer)
       visit dashboard_internship_offer_internship_application_path(internship_offer, internship_application)
       click_on 'Etudier'
+      text = find("#internship_application_examined_message").text
+      find("#internship_application_examined_message").click.set("#{text} (test)")
+      click_button 'Confirmer'
       assert internship_application.reload.examined?
       find("h1.h4", text: "Les candidatures")
-      find('caption[data-fr-js-table-caption="true"]', text: "Candidatures reçues")
       find('p.fr-mt-1w.fr-badge.fr-badge--sm.fr-badge--info', text: "à l'étude".upcase)
       find('span#alert-text', text: "Candidature mise à jour.")
     end
-
+    
     test 'employer can reject an internship_application' do
       internship_offer = create(:weekly_internship_offer)
       internship_application = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
       sign_in(internship_application.employer)
       visit dashboard_internship_offer_internship_application_path(internship_offer, internship_application)
       click_on 'Refuser'
+      find("#internship_application_rejected_message").click.set("(test ata test)")
+      click_button 'Confirmer'
       assert internship_application.reload.rejected?
       find("h1.h4", text: "Les candidatures")
-      find('caption[data-fr-js-table-caption="true"]', text: "Candidatures refusées")
-      find('p.fr-mt-1w.fr-badge.fr-badge--sm.fr-badge--error', text: "REJETÉ")
+      find('p.fr-mt-1w.fr-badge.fr-badge--sm.fr-badge--error', text: "REFUSÉ")
       find('span#alert-text', text: "Candidature refusée.")
       find('button#tabpanel-received[aria-controls="tabpanel-received-panel"]',  text: 'Reçues').click
-      find('caption[data-fr-js-table-caption="true"]', text: "Candidatures reçues")
       find('td.text-center[colspan="5"]', text: "Aucune candidature reçue")
     end
 
@@ -51,14 +52,13 @@ module Dashboard::InternshipOffers
       sign_in(internship_application.employer)
       visit dashboard_internship_offer_internship_application_path(internship_offer, internship_application)
       click_on 'Accepter'
+      click_button 'Confirmer'
       assert internship_application.reload.approved?
       find("h1.h4", text: "Les candidatures")
-      find('caption[data-fr-js-table-caption="true"]', text: "Candidatures acceptées")
       find('p.fr-mt-1w.fr-badge.fr-badge--sm.fr-badge--success', text: "ACCEPTÉ")
 
       find('span#alert-text', text: "Candidature mise à jour avec succès. Vous pouvez renseigner la convention dès maintenant.")
       find('button#tabpanel-received[aria-controls="tabpanel-received-panel"]',  text: 'Reçues').click
-      find('caption[data-fr-js-table-caption="true"]', text: "Candidatures reçues")
       find('td.text-center[colspan="5"]', text: "Aucune candidature reçue")
     end
   end

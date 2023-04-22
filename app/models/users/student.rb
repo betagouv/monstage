@@ -94,18 +94,15 @@ module Users
       school_manager&.email
     end
 
-    # def main_teacher_email
-    #   main_teacher&.email
+    # Not used but certainly useful in the next future (today 20202-04-21)
+    # def expire_application_on_week(week:, keep_internship_application_id:)
+    #   internship_applications
+    #     .where(aasm_state: %i[approved submitted drafted])
+    #     .not_by_id(id: id)
+    #     .weekly_framed
+    #     .select { |application| application.week.id == week.id }
+    #     .map(&:expire!)
     # end
-
-    def expire_application_on_week(week:, keep_internship_application_id:)
-      internship_applications
-        .where(aasm_state: %i[approved submitted drafted])
-        .not_by_id(id: id)
-        .weekly_framed
-        .select { |application| application.week.id == week.id }
-        .map(&:expire!)
-    end
 
     def main_teacher
       return nil if try(:class_room).nil?

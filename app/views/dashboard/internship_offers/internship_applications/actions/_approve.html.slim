@@ -1,10 +1,11 @@
 - if internship_application.approvable?
+  - entreprise = internship_application.internship_offer.is_public ? 'administration' : 'entreprise'
   = render "dashboard/internship_offers/internship_applications/action_modal",
             internship_application:internship_application,
             aasm_target: :approve!,
             modal_opener_label: 'Accepter',
             subtitle: '',
-            message: "Une fois la candidature acceptée, un email de notification va être envoyé à l'élève et son professeur principal afin d'établir la convention de stage.",
+            message: "Une fois la candidature acceptée, un email de notification va être envoyé à l'élève qui l'amènera à confirmer ou non le choix de votre #{entreprise}.",
             rich_text: false,
             modal_id: "approve-internship-application-#{internship_application.id}",
             fa_icon: "fr-icon-check-line"
