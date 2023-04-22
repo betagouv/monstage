@@ -1,5 +1,5 @@
 p style=head_styles
-  = "Ceci est une invitation..."
+  = "#{@from_name} vous invite à rejoindre #{link_to('monstagedetroisieme.fr', @url)}".html_safe
 
 p style=p_styles
   = "Bienvenue #{@invitation_first_name} #{@invitation_last_name}, "

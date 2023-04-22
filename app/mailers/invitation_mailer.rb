@@ -10,6 +10,7 @@ class InvitationMailer < ApplicationMailer
     @invitation_first_name = invitation.first_name
     @invitation_last_name  = invitation.last_name
     @school_manager_id = invitation.user_id
+    @url = site_url
     @link = new_user_registration_url(
       as: 'SchoolManagement',
       email: @to,
