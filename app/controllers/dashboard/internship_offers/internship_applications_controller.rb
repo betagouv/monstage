@@ -49,7 +49,7 @@ module Dashboard
         @internship_offers = current_user.internship_offers
         @internship_applications = fetch_user_internship_applications
         @received_internship_applications = @internship_applications.where(aasm_state: received_states)
-        @approved_internship_applications = @internship_applications.approved
+        @approved_internship_applications = @internship_applications.where(aasm_state: approved_states)
         @rejected_internship_applications = @internship_applications.where(aasm_state: rejected_states)
       end
 
@@ -66,8 +66,12 @@ module Dashboard
         %w[rejected canceled_by_employer canceled_by_student]
       end
 
+      def approved_states
+        %w[approved validated_by_employer]
+      end
+
       def valid_states
-         received_states + rejected_states + ['approved']
+         received_states + rejected_states + approved_states
       end
 
       def update_flash_message
@@ -125,6 +129,7 @@ module Dashboard
         %w[
           read!
           examine!
+          employer_validate!
           approve!
           reject!
           cancel_by_employer!

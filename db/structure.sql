@@ -655,7 +655,8 @@ CREATE TABLE public.internship_applications (
     student_phone character varying,
     student_email character varying,
     read_at timestamp(6) without time zone,
-    examined_at timestamp(6) without time zone
+    examined_at timestamp(6) without time zone,
+    validated_by_employer_at timestamp(6) without time zone
 );
 
 
@@ -911,6 +912,42 @@ CREATE SEQUENCE public.internship_offers_id_seq
 --
 
 ALTER SEQUENCE public.internship_offers_id_seq OWNED BY public.internship_offers.id;
+
+
+--
+-- Name: invitations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.invitations (
+    id bigint NOT NULL,
+    sent_at timestamp without time zone,
+    email character varying(70),
+    first_name character varying(60),
+    last_name character varying(60),
+    role character varying(50),
+    user_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: invitations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.invitations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invitations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.invitations_id_seq OWNED BY public.invitations.id;
 
 
 --
@@ -1481,6 +1518,13 @@ ALTER TABLE ONLY public.internship_offers ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: invitations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invitations ALTER COLUMN id SET DEFAULT nextval('public.invitations_id_seq'::regclass);
+
+
+--
 -- Name: ministry_groups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1699,6 +1743,14 @@ ALTER TABLE ONLY public.internship_offer_weeks
 
 ALTER TABLE ONLY public.internship_offers
     ADD CONSTRAINT internship_offers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: invitations invitations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invitations
+    ADD CONSTRAINT invitations_pkey PRIMARY KEY (id);
 
 
 --
@@ -2103,6 +2155,13 @@ CREATE INDEX index_internship_offers_on_tutor_id ON public.internship_offers USI
 --
 
 CREATE INDEX index_internship_offers_on_type ON public.internship_offers USING btree (type);
+
+
+--
+-- Name: index_invitations_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_invitations_on_user_id ON public.invitations USING btree (user_id);
 
 
 --
@@ -2730,6 +2789,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211027130402'),
 ('20211110133150'),
 ('20211207163238'),
+('20211228162749'),
 ('20220329131926'),
 ('20220408084653'),
 ('20220511152203'),
@@ -2771,6 +2831,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230302162952'),
 ('20230307200802'),
 ('20230321104203'),
-('20230404154158');
+('20230404154158'),
+('20230420095232');
 
 

@@ -36,6 +36,8 @@ module InternshipApplicationCountersHooks
       assert_changes -> { @internship_offer.reload.approved_applications_count },
                      from: 0,
                      to: 1 do
+                    
+        @internship_application.employer_validate!
         @internship_application.approve!
       end
     end
@@ -47,6 +49,7 @@ module InternshipApplicationCountersHooks
       assert_changes -> { @internship_offer.reload.total_male_approved_applications_count },
                      from: 0,
                      to: 1 do
+        @internship_application.employer_validate!
         @internship_application.approve!
       end
     end
@@ -57,6 +60,7 @@ module InternshipApplicationCountersHooks
       @internship_application.save!
 
       assert_no_changes -> { @internship_offer.reload.total_male_approved_applications_count } do
+        @internship_application.employer_validate!
         @internship_application.approve!
       end
     end
@@ -67,6 +71,7 @@ module InternshipApplicationCountersHooks
       @internship_application.save!
 
       assert_no_changes -> { @internship_offer.reload.total_male_approved_applications_count } do
+        @internship_application.employer_validate!
         @internship_application.approve!
       end
     end

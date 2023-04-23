@@ -22,10 +22,18 @@ FactoryBot.define do
       expired_at { 3.days.ago }
     end
 
+    trait :validated_by_employer do
+      aasm_state { :validated_by_employer }
+      submitted_at { 15.days.ago }
+      validated_by_employer_at { 2.days.ago }
+      approved_at { 1.days.ago }
+    end
+
     trait :approved do
       aasm_state { :approved }
       submitted_at { 3.days.ago }
-      approved_at { 2.days.ago }
+      validated_by_employer_at { 2.days.ago }
+      approved_at { 1.days.ago }
       after(:create) do |internship_application|
         create(:internship_agreement, internship_application: internship_application)
       end
@@ -43,18 +51,19 @@ FactoryBot.define do
       rejected_at { 2.days.ago }
       canceled_at { 2.days.ago }
     end
+
     trait :canceled_by_student do
       aasm_state { :canceled_by_student }
       submitted_at { 3.days.ago }
       canceled_at { 2.days.ago }
     end
 
-    trait :convention_signed do
-      aasm_state { :convention_signed }
-      submitted_at { 3.days.ago }
-      approved_at { 2.days.ago }
-      convention_signed_at { 1.days.ago }
-    end
+    # trait :convention_signed do
+    #   aasm_state { :convention_signed }
+    #   submitted_at { 3.days.ago }
+    #   approved_at { 2.days.ago }
+    #   convention_signed_at { 1.days.ago }
+    # end
 
     transient do
       weekly_internship_offer_helper {create(:weekly_internship_offer)}

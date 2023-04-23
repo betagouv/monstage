@@ -180,6 +180,7 @@ module Dashboard::InternshipOffers
         internship_application = create(:weekly_internship_application,
                                         :submitted,
                                         internship_offer: internship_offer)
+        internship_application.employer_validate!
         internship_application.approve!
         assert_equal 0, internship_offer.reload.remaining_seats_count
         internship_offer.update(published_at: nil)
@@ -232,6 +233,7 @@ module Dashboard::InternshipOffers
         internship_application = create(:weekly_internship_application,
                                         :submitted,
                                         internship_offer: internship_offer)
+        internship_application.employer_validate!
         internship_application.approve!
         assert_equal 0, internship_offer.reload.remaining_seats_count
         refute internship_offer.published? #self.reload.published_at.nil?

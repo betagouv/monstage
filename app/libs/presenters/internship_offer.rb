@@ -39,6 +39,14 @@ module Presenters
       # html_safe
     end
 
+    def entreprise
+      if internship_offer.is_public?
+        "administration publique '#{internship_offer.employer_name}'"
+      else
+        "entreprise #{internship_offer.employer_name}"
+      end
+    end
+
     def internship_daily_description
       %w(lundi mardi mercredi jeudi vendredi).map do |day|
         hours = internship_offer.new_daily_hours[day]

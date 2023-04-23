@@ -16,6 +16,8 @@ module Presenters
         badge = {label: 'nouveau', badge_type:'new'}
       when "examined"
         badge = {label: "à l'étude", badge_type:'info'}
+      when "validated_by_employer"
+        badge = {label: "en attente de réponse", badge_type:'info'}
       when "read_by_employer"
         badge = {label: "lu", badge_type:'warning'}
       when "rejected", "canceled_by_student", "canceled_by_employer"

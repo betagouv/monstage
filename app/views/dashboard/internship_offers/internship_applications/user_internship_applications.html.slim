@@ -13,7 +13,7 @@
       li
         button#tabpanel-approved.fr-tabs__tab.fr-tabs__tab--icon-left[tabindex="-1"
                                                                  role="tab"
-                                                                 aria-selected="#{ selected_tab == 'approve!'}"
+                                                                 aria-selected="#{ selected_tab.in?(%w[employer_validate! approve!])}"
                                                                  aria-controls="tabpanel-approved-panel"]
           | Acceptées
       li
@@ -32,7 +32,7 @@
     #tabpanel-approved-panel.fr-tabs__panel[role="tabpanel"
                                        aria-labelledby="tabpanel-approved"
                                        tabindex="0"]
-      = render 'dashboard/internship_offers/internship_applications/approved',
+      = render 'dashboard/internship_offers/internship_applications/approved_or_pending',
                internship_applications: @approved_internship_applications
 
     #tabpanel-refused-panel.fr-tabs__panel[role="tabpanel"

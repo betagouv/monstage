@@ -132,6 +132,7 @@ class InternshipApplication < ApplicationRecord
     state :submitted,
           :read_by_employer,
           :examined,
+          :validated_by_employer,
           :approved,
           :rejected,
           :expired,
@@ -167,28 +168,21 @@ class InternshipApplication < ApplicationRecord
       }
     end
 
-    event :approve do
+    event :employer_validate do
       transitions from: %i[read_by_employer submitted examined cancel_by_employer rejected],
+                  to: :validated_by_employer,
+                  after: proc { |*_args|
+                    update!("validated_by_employer_at": Time.now.utc)
+                    employer_validation_notifications
+                  }
+    end
+
+    event :approve do
+      transitions from: %i[validated_by_employer],
                   to: :approved,
                   after: proc { |*_args|
                     update!("approved_at": Time.now.utc)
-                    main_teacher = student.main_teacher
-                    arg_hash = {internship_application: self, main_teacher: main_teacher}
-                    accepted_student_notify
-                    if type == "InternshipApplications::WeeklyFramed" && student&.school&.school_manager&.present?
-                      create_agreement unless internship_offer.employer.operator?
-                      if main_teacher.present?
-                        MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
-                                          .deliver_later
-                      end
-                    else
-                      SchoolManagerMailer.internship_application_approved_with_no_agreement_email(arg_hash)
-                                          .deliver_later
-                      if main_teacher.present?
-                        MainTeacherMailer.internship_application_approved_with_no_agreement_email(arg_hash)
-                                          .deliver_later
-                      end
-                    end
+                    student_approval_notifications
                   }
     end
 
@@ -232,7 +226,33 @@ class InternshipApplication < ApplicationRecord
     end
   end
 
-  def accepted_student_notify
+  def student_approval_notifications
+    main_teacher = student.main_teacher
+    arg_hash = {
+      internship_application: self,
+      main_teacher: main_teacher
+    }
+    school_manager_presence = student&.school&.school_manager&.present?
+    if type == "InternshipApplications::WeeklyFramed" && school_manager_presence
+      create_agreement unless internship_offer.employer.operator?
+      if main_teacher.present?
+        MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
+                         .deliver_later
+      end
+    else
+      SchoolManagerMailer.internship_application_approved_with_no_agreement_email(arg_hash)
+                         .deliver_later if school_manager_presence
+      if main_teacher.present?
+        MainTeacherMailer.internship_application_approved_with_no_agreement_email(arg_hash)
+                         .deliver_later
+      end
+    end
+  end
+
+  def employer_validation_notifications
+    if type == "InternshipApplications::WeeklyFramed" && student.main_teacher.present?
+      MainTeacherMailer.internship_application_validated_by_employer_email(self)
+    end
     if student.email.present?
       deliver_later_with_additional_delay do
         StudentMailer.internship_application_approved_email(internship_application: self)
@@ -267,7 +287,7 @@ class InternshipApplication < ApplicationRecord
     ).deliver_later
     EmployerMailer.internship_application_approved_with_agreement_email(
       internship_agreement: internship_agreement
-    ).deliver_now
+    ).deliver_later
   end
 
   def remaining_seats_count
