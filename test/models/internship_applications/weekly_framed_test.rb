@@ -123,5 +123,27 @@ module InternshipApplications
       assert_equal Favorite.count, 1
       assert_operator Favorite.last.internship_offer.last_date, :>, Time.now
     end
+
+    test 'scope :expirable' do
+      start_date = Date.new(2020,3, 1)
+      internship_application = nil
+      travel_to start_date do
+        weeks = Week.selectable_from_now_until_end_of_school_year.first(2).first(1)
+        internship_offer = create(:weekly_internship_offer, weeks: weeks)
+        internship_application = create(:weekly_internship_application, :submitted,
+                                                                        internship_offer: internship_offer,
+                                                                        submitted_at: start_date,
+                                                                        week: internship_offer.internship_offer_weeks.first.week)
+        assert_equal 0, InternshipApplication.expirable.count
+      end
+      travel_to start_date + InternshipApplication::EXPIRATION_DURATION + 7.days do
+        assert_equal 1, InternshipApplication.expirable.count
+        internship_application.update(examined_at: Time.now)
+        assert_equal 0, InternshipApplication.expirable.count
+      end
+      travel_to start_date + InternshipApplication::EXPIRATION_DURATION + InternshipApplication::EXTENDED_DURATION.days do
+        assert_equal 1, InternshipApplication.expirable.count
+      end
+    end
   end
 end

@@ -145,6 +145,7 @@ module Dashboard
 
       def optional_internship_application_params
         params.permit(internship_application: %i[
+                        examined_message
                         approved_message
                         canceled_by_employer_message
                         canceled_by_student_message

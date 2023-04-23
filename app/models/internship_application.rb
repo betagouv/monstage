@@ -7,6 +7,7 @@ class InternshipApplication < ApplicationRecord
   include AASM
   PAGE_SIZE = 10
   EXPIRATION_DURATION = 45.days
+  EXTENDED_DURATION = 15.days
 
   belongs_to :internship_offer, polymorphic: true
   # has_many :internship_agreements
@@ -24,6 +25,7 @@ class InternshipApplication < ApplicationRecord
 
   has_rich_text :approved_message
   has_rich_text :rejected_message
+  has_rich_text :examined_message
   has_rich_text :canceled_by_employer_message
   has_rich_text :canceled_by_student_message
   has_rich_text :motivation
@@ -43,8 +45,21 @@ class InternshipApplication < ApplicationRecord
     starting.or(current)
   }
 
+  scope :expiration_extended, lambda {
+    where.not(examined_at: nil)
+  }
+
+  scope :expiration_not_extended, lambda {
+    where(examined_at: nil)
+  }
+
   scope :expirable, lambda {
-    submitted.where('submitted_at < :date', date: InternshipApplication::EXPIRATION_DURATION.ago)
+    simple_duration = InternshipApplication::EXPIRATION_DURATION
+    extended_duration = simple_duration + InternshipApplication::EXTENDED_DURATION
+    submitted.expiration_not_extended
+             .where('submitted_at < :date', date: simple_duration.ago)
+             .or(submitted.expiration_extended
+                          .where('submitted_at < :date', date: extended_duration.ago))
   }
 
   #
@@ -59,6 +74,7 @@ class InternshipApplication < ApplicationRecord
         WHEN aasm_state = 'approved' THEN 2
         WHEN aasm_state = 'submitted' THEN 3
         WHEN aasm_state = 'rejected' THEN 4
+        WHEN aasm_state = 'examined' THEN 5
         ELSE 0
       END as orderable_aasm_state
     ))
@@ -136,12 +152,12 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :examine do
-      transitions from: %i[submitted read_by_employer], to: :examined, after: proc { |*_args|
+      transitions from: %i[submitted read_by_employer],
+                  to: :examined,
+                  after: proc { |*_args|
         update!("examined_at": Time.now.utc)
-        # TODO expiration date extension
-        # TODO
-        # StudentMailer.internship_application_examined_email(internship_application: self)
-        #              .deliver_later
+        StudentMailer.internship_application_examined_email(internship_application: self)
+                     .deliver_later
       }
     end
 

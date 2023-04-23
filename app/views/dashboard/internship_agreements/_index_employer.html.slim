@@ -5,8 +5,6 @@
     .col-12
       h1.h4.fr-mb-8w.text-dark Editer, imprimer et signer les conventions dématérialisées
   .fr-tabs data-fr-js-tabs-group="true"
-    = render partial: "dashboard/internship_offers/tabs",
-              locals: { internship_offers: @internship_offers }
     = render partial: 'dashboard/internship_agreements/internship_agreements_list',
               locals: {internship_agreements: @internship_agreements}
   = render partial: 'dashboard/internship_agreements/signature/modal_dialog'

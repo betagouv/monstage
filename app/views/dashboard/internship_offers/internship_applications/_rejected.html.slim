@@ -1,7 +1,5 @@
-.fr-table.fr-table--bordered
+.fr-table.fr-table--bordered.fr-table--no-caption
   table
-    caption
-      | Candidatures refusées
     thead
       tr
         th[scope="col"]
@@ -22,10 +20,10 @@
           tr
             td = prez.student.presenter.full_name
             td
-              - prezo = Presenters::WeekList.new(weeks: prez.internship_offer.internship_offer_weeks.map(&:week))
+              - prez_offer = internship_application.internship_offer.presenter
               = prez.internship_offer.title
               br/
-              = prezo.trunk_list_label.join('<br/>').html_safe
+              = prez_offer.address
             td
-              p class="fr-mt-1w fr-badge fr-badge--sm fr-badge--#{prez.status[:badge_type]}"
+              p class="fr-mt-1w fr-badge fr-badge--sm fr-badge--#{prez.status[:badge_type]} fr-badge--no-icon"
                 = prez.status[:label]
