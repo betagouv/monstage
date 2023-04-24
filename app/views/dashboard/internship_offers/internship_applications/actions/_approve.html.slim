@@ -2,10 +2,11 @@
   - entreprise = internship_application.internship_offer.is_public ? 'administration' : 'entreprise'
   = render "dashboard/internship_offers/internship_applications/action_modal",
             internship_application:internship_application,
-            aasm_target: :validate_by_employer!,
+            aasm_target: :employer_validate!,
             modal_opener_label: 'Accepter',
             subtitle: '',
             message: "Une fois la candidature acceptée, un email de notification va être envoyé à l'élève qui l'amènera à confirmer ou non le choix de votre #{entreprise}.",
             rich_text: false,
             modal_id: "approve-internship-application-#{internship_application.id}",
             fa_icon: "fr-icon-check-line"
+- # TODO change the message !!!

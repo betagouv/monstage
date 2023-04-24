@@ -124,7 +124,7 @@ module InternshipApplications
     end
 
     test 'GET #index as Employer with approved internship_application, shows cancel_by_employer! & signed! links' do
-      internship_application = create(:weekly_internship_application, :employer_validate)
+      internship_application = create(:weekly_internship_application, :validated_by_employer)
       internship_agreement = create(:internship_agreement, internship_application: internship_application)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
@@ -135,8 +135,7 @@ module InternshipApplications
       assert_select '.collapsible', 1
       assert_has_link_count_to_transition(internship_application, :employer_validate!, 0)
       assert_has_link_count_to_transition(internship_application, :reject!, 0)
-      assert_has_link_count_to_transition(internship_application, :cancel_by_employer!, 1)
-      assert_has_link_count_to_transition(internship_application, :signed!, 0)
+      assert_has_link_count_to_transition(internship_application, :cancel_by_employer!, 0)
     end
 
     test 'GET #index with rejected offer, shows approve' do

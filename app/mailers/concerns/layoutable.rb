@@ -25,6 +25,17 @@ module Layoutable
       '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji'
     end
 
+    def head_styles(options = {})
+      hash = {
+        'font-family' => font_family,
+        'font-size' => '24px',
+        'font-weight' => 'bold',
+        'margin' => '0',
+        'margin-bottom' => '15px;'
+      }
+      joiner(hash, options)
+    end
+
     def p_styles(options = {})
       hash = {
         'font-family' => font_family,
@@ -32,6 +43,30 @@ module Layoutable
         'font-weight' => 'normal',
         'margin' => '0',
         'margin-bottom' => '15px;'
+      }
+      joiner(hash, options)
+    end
+
+    def p_styles_italic(options = {})
+      {
+        'font-family' => font_family,
+        'font-size' => '15px',
+        'font-weight' => 'normal',
+        'font-style' => 'italic ',
+        'padding-left' => '25px',
+        'margin' => '0',
+        'margin-bottom' => '15px;'
+
+      }.merge(options)
+        .map { |k, v| "#{k}:#{v}" }
+        .join(';')
+    end
+
+    def span_bold(options = {})
+      hash = {
+        'font-family' => font_family,
+        'font-size' => '15px',
+        'font-weight' => 'bolder'
       }
       joiner(hash, options)
     end
@@ -58,41 +93,6 @@ module Layoutable
         'margin' => '0',
         'color' => '#000091',
         'margin-bottom' => '15px;'
-      }
-      joiner(hash, options)
-    end
-
-    def p_styles_italic(options = {})
-      {
-        'font-family' => font_family,
-        'font-size' => '15px',
-        'font-weight' => 'normal',
-        'font-style' => 'italic ',
-        'padding-left' => '25px',
-        'margin' => '0',
-        'margin-bottom' => '15px;'
-
-      }.merge(options)
-        .map { |k, v| "#{k}:#{v}" }
-        .join(';')
-    end
-
-    def head_styles(options = {})
-      hash = {
-        'font-family' => font_family,
-        'font-size' => '24px',
-        'font-weight' => 'bold',
-        'margin' => '0',
-        'margin-bottom' => '15px;'
-      }
-      joiner(hash, options)
-    end
-
-    def span_bold(options = {})
-      hash = {
-        'font-family' => font_family,
-        'font-size' => '15px',
-        'font-weight' => 'bolder'
       }
       joiner(hash, options)
     end

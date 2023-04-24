@@ -38,13 +38,16 @@ class InternshipApplication < ApplicationRecord
 
   # reminders after 7 days, 14 days and none afterwards
   scope :remindable, lambda {
-    passed_sumitted = submitted.where(submitted_at: 16.days.ago..7.days.ago)
-                               .where(canceled_at: nil)
+    passed_sumitted = examined.where(submitted_at: 16.days.ago..7.days.ago)
+                              .where(canceled_at: nil)
+                              .or(submitted.where(submitted_at: 16.days.ago..7.days.ago)
+                                           .where(canceled_at: nil))
     starting = passed_sumitted.where('pending_reminder_sent_at is null')
     current  = passed_sumitted.where('pending_reminder_sent_at < :date', date: 7.days.ago)
     starting.or(current)
   }
 
+  #expirable 
   scope :expiration_extended, lambda {
     where.not(examined_at: nil)
   }
@@ -162,12 +165,6 @@ class InternshipApplication < ApplicationRecord
       }
     end
 
-    event :expire do
-      transitions from: %i[read_by_employer approved submitted drafted], to: :expired, after: proc { |*_args|
-        update!(expired_at: Time.now.utc)
-      }
-    end
-
     event :employer_validate do
       transitions from: %i[read_by_employer submitted examined cancel_by_employer rejected],
                   to: :validated_by_employer,
@@ -224,6 +221,12 @@ class InternshipApplication < ApplicationRecord
                            end
                          }
     end
+
+    event :expire do
+      transitions from: %i[read_by_employer approved submitted drafted], to: :expired, after: proc { |*_args|
+        update!(expired_at: Time.now.utc)
+      }
+    end
   end
 
   def student_approval_notifications
@@ -236,22 +239,29 @@ class InternshipApplication < ApplicationRecord
     if type == "InternshipApplications::WeeklyFramed" && school_manager_presence
       create_agreement unless internship_offer.employer.operator?
       if main_teacher.present?
-        MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
-                         .deliver_later
+        deliver_later_with_additional_delay do
+          MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
+        end
       end
     else
-      SchoolManagerMailer.internship_application_approved_with_no_agreement_email(arg_hash)
-                         .deliver_later if school_manager_presence
+      if school_manager_presence
+        deliver_later_with_additional_delay do
+          SchoolManagerMailer.internship_application_approved_with_no_agreement_email(arg_hash)
+        end
+      end
       if main_teacher.present?
-        MainTeacherMailer.internship_application_approved_with_no_agreement_email(arg_hash)
-                         .deliver_later
+        deliver_later_with_additional_delay do
+          MainTeacherMailer.internship_application_approved_with_no_agreement_email(arg_hash)
+        end
       end
     end
   end
 
   def employer_validation_notifications
     if type == "InternshipApplications::WeeklyFramed" && student.main_teacher.present?
-      MainTeacherMailer.internship_application_validated_by_employer_email(self)
+      deliver_later_with_additional_delay do
+        MainTeacherMailer.internship_application_validated_by_employer_email(self)
+      end
     end
     if student.email.present?
       deliver_later_with_additional_delay do

@@ -279,6 +279,7 @@ module InternshipsOffers
       assert_equal 10, internship_offer.remaining_seats_count
 
       internship_application = create(:weekly_internship_application, internship_offer: internship_offer, aasm_state: :submitted)
+      internship_application.employer_validate!
       internship_application.approve!
 
       new_internship_offer = internship_offer.split_in_two
