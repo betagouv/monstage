@@ -1,0 +1,13 @@
+p style=head_styles
+  = "Candidature au stage \"#{@internship_application.internship_offer.title}\" acceptée !"
+
+/ = @internship_application.approved_message.to_s
+
+p style=p_styles
+= render partial: "mailers/blue_call_to_action",
+          locals: { href: "mailto:#{@internship_application.employer.email}",
+                    label: "Contacter l'employeur" }
+p style=p_styles
+  |À bientôt,
+  br
+  |L'équipe Mon Stage de 3e.

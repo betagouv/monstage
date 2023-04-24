@@ -40,7 +40,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
           from: nil,
           to: Time.now.utc do
         mock_mail = MiniTest::Mock.new
-        mock_mail.expect(:deliver_later, true)
+        mock_mail.expect(:deliver_later, true, [] , wait: 1.second)
         EmployerMailer.stub :internship_application_submitted_email, mock_mail do
           internship_application.submit!
         end
@@ -76,7 +76,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     mock_mail_to_student.expect(:deliver_later, true, [] , wait: 1.second)
 
     MainTeacherMailer.stub :internship_application_validated_by_employer_email, mock_mail_to_main_teacher do
-      StudentMailer.stub :internship_application_approved_email, mock_mail_to_student do
+      StudentMailer.stub :internship_application_validated_by_employer_email, mock_mail_to_student do
         internship_application.employer_validate!
       end
       mock_mail_to_student.verify
@@ -322,7 +322,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
                      to: Time.now.utc do
         mock_mail = MiniTest::Mock.new
         mock_mail.expect(:deliver_later, true, [], wait: 1.second)
-        StudentMailer.stub :internship_application_approved_email, mock_mail do
+        StudentMailer.stub :internship_application_validated_by_employer_email, mock_mail do
           internship_application.employer_validate!
         end
         mock_mail.verify

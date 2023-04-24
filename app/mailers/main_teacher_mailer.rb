@@ -14,7 +14,6 @@ class MainTeacherMailer < ApplicationMailer
       mtm_campaign: 'application-details-no-agreement',
       mtm_kwd: 'email'
     ).html_safe
-    @message = "Aucune convention n'est prévue sur ce site, bon stage à #{@student_presenter.civil_name} !"
 
     # TO DO Remove when main_teachers are cleaned
     main_teachers = @student.class_room.school_managements&.main_teachers
@@ -36,6 +35,8 @@ class MainTeacherMailer < ApplicationMailer
       mtm_kwd: 'email'
     ).html_safe
 
+    @message = "Aucune convention n'est prévue sur ce site, bon stage à #{@student_presenter.civil_name} !"
+
     # TO DO Remove when main_teachers are cleaned
     main_teachers = @student.class_room.school_managements&.main_teachers
     to = main_teachers.blank? ? nil : main_teachers.map(&:email)
@@ -46,7 +47,7 @@ class MainTeacherMailer < ApplicationMailer
   end
 
   def internship_application_validated_by_employer_email(internship_application)
-    @main_teacher = internship_application.student.main_teacher
+    @main_teacher = internship_application&.student&.main_teacher
     @internship_offer = internship_application.internship_offer
     @offer_presenter = @internship_offer.presenter
     @student = internship_application.student

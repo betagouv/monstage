@@ -130,15 +130,25 @@ def populate_applications
     student_phone: '0606060606',
     student_email: 'paul@gmail.com'
   )
-  # InternshipApplications::WeeklyFramed.create!(
-  #   aasm_state: :approved,
-  #   submitted_at: 29.days.ago,
-  #   approved_at: 23.days.ago,
-  #   student: students[8],
-  #   motivation: 'motivé moyennement pour ce stage, je vous préviens',
-  #   internship_offer: offers[7],
-  #   week: offers[7].internship_offer_weeks.second.week
-  # )
+  InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :examined,
+    submitted_at: 29.days.ago,
+    examined_at: 23.days.ago,
+    student: students[8],
+    motivation: 'motivé moyennement pour ce stage, je vous préviens',
+    internship_offer: offers[0],
+    week: offers[0].internship_offer_weeks.last.week
+  )
+  InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :validated_by_employer,
+    submitted_at: 29.days.ago,
+    examined_at: 23.days.ago,
+    validated_by_employer_at: 20.days.ago,
+    student: students[4],
+    motivation: 'motivé moyennement pour ce stage, je vous préviens',
+    internship_offer: offers[0],
+    week: offers[0].internship_offer_weeks.last(2).first.week
+  )
 end
 
 def populate_agreements

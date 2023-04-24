@@ -19,6 +19,7 @@ class InternshipApplication < ApplicationRecord
   delegate :update_all_counters, to: :internship_application_counter_hook
   delegate :name, to: :student, prefix: true
   delegate :employer, to: :internship_offer
+  delegate :remaining_seats_count, to: :internship_offer
 
   after_save :update_all_counters
   accepts_nested_attributes_for :student, update_only: true
@@ -146,8 +147,9 @@ class InternshipApplication < ApplicationRecord
     event :submit do
       transitions from: :drafted, to: :submitted, after: proc { |*_args|
         update!("submitted_at": Time.now.utc)
-        EmployerMailer.internship_application_submitted_email(internship_application: self)
-                      .deliver_later
+        deliver_later_with_additional_delay do
+          EmployerMailer.internship_application_submitted_email(internship_application: self)
+        end
       }
     end
 
@@ -160,8 +162,9 @@ class InternshipApplication < ApplicationRecord
                   to: :examined,
                   after: proc { |*_args|
         update!("examined_at": Time.now.utc)
-        StudentMailer.internship_application_examined_email(internship_application: self)
-                     .deliver_later
+        deliver_later_with_additional_delay do
+          StudentMailer.internship_application_examined_email(internship_application: self)
+        end
       }
     end
 
@@ -244,7 +247,7 @@ class InternshipApplication < ApplicationRecord
         end
       end
     else
-      if school_manager_presence
+      if school_manager_presence #Meaning that type is NOT "InternshipApplications::WeeklyFramed"
         deliver_later_with_additional_delay do
           SchoolManagerMailer.internship_application_approved_with_no_agreement_email(arg_hash)
         end
@@ -265,7 +268,7 @@ class InternshipApplication < ApplicationRecord
     end
     if student.email.present?
       deliver_later_with_additional_delay do
-        StudentMailer.internship_application_approved_email(internship_application: self)
+        StudentMailer.internship_application_validated_by_employer_email(internship_application: self)
       end
     elsif student.phone.present?
       sms_message = "Monstagedetroisieme.fr : Votre candidature a " \
@@ -283,7 +286,6 @@ class InternshipApplication < ApplicationRecord
     end
   end
 
-
   def create_agreement
     return unless internship_agreement_creation_allowed?
 
@@ -298,10 +300,6 @@ class InternshipApplication < ApplicationRecord
     EmployerMailer.internship_application_approved_with_agreement_email(
       internship_agreement: internship_agreement
     ).deliver_later
-  end
-
-  def remaining_seats_count
-    internship_offer.remaining_seats_count
   end
 
   def internship_application_counter_hook
