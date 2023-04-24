@@ -1,6 +1,6 @@
 .d-flex.align-items-center.fr-px-1w
   - if internship_offer.from_api?
-    = render "internship_applications/call_to_action/api", internship_offer: internship_offer
+    = render "internship_applications/blue_call_to_action/api", internship_offer: internship_offer
   - elsif user_signed_in?
     - if can?(:apply, internship_offer) && internship_offer.has_spots_left?
       - if internship_offer.already_applied_by_student?(current_user)
@@ -12,7 +12,7 @@
       = button_to 'Postuler', '', class: 'fr-btn fr-btn--icon-left fr-icon-edit-fill', disabled: true
 
   - else
-    = render "internship_applications/call_to_action/visitor", internship_offer: internship_offer
+    = render "internship_applications/blue_call_to_action/visitor", internship_offer: internship_offer
 
   .fr-mx-5w
     = react_component("InternshipOfferFavoriteButton", props: { internshipOffer: { id: internship_offer.id, is_favorite: false }, isDisabled: !can?(:create, Favorite) })
