@@ -294,19 +294,18 @@ module Dashboard
         find('div.actions', text: "Votre convention est prête.")
       end
       find('a.button-component-cta-button', text: 'Imprimer')
-      find('button[data-action=\'group-signing#toggleFromButton\']', text: 'Ajouter aux signatures')
     end
     
     test 'admin_officer reads internship agreement table with correct indications - status: signatures_started with employer' do
       internship_agreement = create(:internship_agreement, aasm_state: :signatures_started)
       create(:signature, internship_agreement: internship_agreement, signatory_role: :employer, user_id: internship_agreement.employer.id)
-      sign_in(internship_agreement.school_manager.reload)
+      admin_officer = create(:admin_officer, school: internship_agreement.school)
+      sign_in(admin_officer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
         find('.actions.d-flex', text: "L'employeur a déjà signé. En attente de votre signature.")
       end
       find('a.button-component-cta-button', text: 'Imprimer')
-      find('button[data-action=\'group-signing#toggleFromButton\']', text: 'Ajouter aux signatures')
     end
     
     test 'admin_officer reads internship agreement table with correct indications - status: signatures_started with school_manager' do

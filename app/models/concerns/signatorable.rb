@@ -77,6 +77,11 @@ module Signatorable
                          .exists?
     end
 
-    def can_sign?(internship_agreement); true end
+    def can_sign?(internship_agreement)
+      return false if school_management? && !school_manager?
+      internship_agreement.school.id == school_id || \
+        internship_agreement.employer.id == id || \
+        internship_agreement.employee.id == employer_id
+    end
   end
 end

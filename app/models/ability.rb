@@ -60,8 +60,6 @@ class Ability
       read
       create
       edit
-      sign_internship_agreements
-      sign
       edit_activity_rating_rich_text
       edit_complementary_terms_rich_text
       edit_financial_conditions_rich_text
@@ -89,14 +87,12 @@ class Ability
       see_intro
       update
     ], InternshipAgreement do |agreement|
-      # byebug
       agreement.internship_application.student.school_id == user.school_id
     end
     can %i[edit update], InternshipAgreementPreset do |internship_agreement_preset|
       internship_agreement_preset.school_id == user.school_id
     end
     can :create, Signature  do |signature|
-      # byebug
       signature.internship_agreement.student.school == user.school
     end
   end

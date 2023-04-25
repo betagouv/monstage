@@ -448,8 +448,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.cannot?(:manage_school_students, another_school))
     assert(ability.can?(:manage, ClassRoom))
     assert(ability.can?(:change, class_room))
-    assert(ability.can?(:sign, internship_agreement))
-    assert(ability.can?(:sign, internship_agreement))
+    assert(ability.can?(:read, InternshipAgreement))
   end
 
   test 'CPE' do
