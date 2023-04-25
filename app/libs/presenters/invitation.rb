@@ -16,6 +16,11 @@ module Presenters
       nil
     end
 
+    def role_name
+      translator = I18n.t("activerecord.attributes.invitation.roles")
+      translator[role.to_sym]
+    end
+
     attr_reader :email, :role, :first_name, :last_name, :school_manager, :sent_at
 
     private
