@@ -544,7 +544,7 @@ DEPENDENCIES
   selenium-webdriver
   sentry-rails
   sentry-ruby
-  sidekiq (< 7)
+  sidekiq
   slim-rails
   split
   spring (= 3.0.0)
