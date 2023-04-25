@@ -60,10 +60,6 @@ module Users
       ""
     end
 
-    def new_support_ticket(params: {})
-      SupportTickets::SchoolManager.new(params.merge(school_id: self.school_id, user_id: self.id))
-    end
-
     def custom_agreements_path
       url_helpers.dashboard_internship_agreements_path
     end
