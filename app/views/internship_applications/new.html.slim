@@ -55,14 +55,14 @@
               = f.label :student_email do  
                 | Adresse électronique (email)
             .fr-input-group
-              = f.email_field :student_email, class: 'fr-input', required: true
+              = f.email_field :student_email, value: f.object.student_email || f.object.student.email, class: 'fr-input'
         .row.fr-my-2w.fr-mb-3w
           .col-xs-12.col-sm-6
             .fr-label.required
               = f.label :student_phone do 
                 | Numéro de téléphone élève ou parent
             .fr-input-group
-              = f.phone_field :student_phone, class: 'fr-input', required: true
+              = f.phone_field :student_phone, value: f.object.student_phone || f.object.student.phone&.gsub!('+33', ''),  class: 'fr-input', required: true
 
         .actions.d-flex.justify-content-between.flex-row
           .d-inline-flex= link_to internship_offer_path(@internship_offer), class: 'fr-btn fr-btn--secondary' do

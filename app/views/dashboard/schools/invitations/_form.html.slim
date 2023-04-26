@@ -1,0 +1,51 @@
+
+= form_with model: @invitation,
+            scope: :invitation,
+            url: dashboard_school_invitations_path,
+            method: (@invitation.new_record? ? 'POST' : 'PATCH' ),
+            data: { turbo: false } do |form|
+
+  = render partial: 'inputs/dsfr_input_field',
+            locals: {f: form,
+                      object: @invitation,
+                      label: 'Nom',
+                      field: :last_name,
+                      required: true}
+
+  = render partial: 'inputs/dsfr_input_field',
+            locals: {f: form,
+                      object: @invitation,
+                      label: 'Prénom',
+                      field: :first_name,
+                      required: true}
+
+  = render partial: 'inputs/dsfr_input_field',
+            locals: {f: form,
+                      object: @invitation,
+                      label: 'Adresse électronique',
+                      hint: "Format attendu : nom@ac-academie.fr",
+                      field: :email,
+                      required: true}
+
+  .fr-select-group
+    = form.label :role,
+                  class: 'fr-label'
+      | Fonction
+    = form.select :role,
+                  Invitation.roles.zip.map(&:flatten).map(&:reverse),
+                  {prompt: 'Sélectionnez une option'},
+                  {class: "fr-select #{'fr-select--error' if @invitation.errors[:role].present?}'}"}
+    - if @invitation.errors[:role].present?
+      p.fr-error-text id="select-error-desc-error-role"
+        = "Fonction : "
+        = @invitation.errors[:role].join(', ').html_safe
+  .actions
+    .row
+      .col-12
+        = link_to 'Précédent',
+                  dashboard_school_users_path,
+                  class: 'fr-btn fr-btn--secondary fr-mr-2w'
+        = form.submit "Inviter un membre de l'équipe",
+                      class: 'fr-btn'
+
+

@@ -48,7 +48,7 @@ class ManageTutorsTest < ApplicationSystemTestCase
         click_on "Publier l'offre !"
         # wait_form_submitted
         find(
-          '.alert ul li label',
+          '.fr-alert.fr-alert--error',
           text: 'Veuillez saisir le numéro de téléphone du tuteur de l\'offre de stage'
         )
       end

@@ -19,6 +19,7 @@ module Users
     belongs_to :class_room, optional: true
     has_many :students, through: :school
     has_many :main_teachers, through: :school
+    has_many :invitations, class_name: 'Invitation', foreign_key: 'user_id'
     has_many :internship_applications, through: :students
     has_many :internship_agreements, through: :internship_applications
 
@@ -64,10 +65,6 @@ module Users
       ""
     end
 
-    def new_support_ticket(params: {})
-      SupportTickets::SchoolManager.new(params.merge(school_id: self.school_id, user_id: self.id))
-    end
-
     def custom_agreements_path
       url_helpers.dashboard_internship_agreements_path
     end
@@ -88,12 +85,19 @@ module Users
       try(:school).try(:school_manager)
     end
 
+    def valid_academy_email_address?
+      return false if school.blank?
+
+      email =~ /\A[^@\s]+@#{school.email_domain_name}\z/
+    end
+
     private
 
     # validators
     def official_email_address
       return if school_id.blank?
-      unless email =~ /\A[^@\s]+@#{school.email_domain_name}\z/
+      
+      unless valid_academy_email_address?
         errors.add(
           :email,
           "L'adresse email utilisée doit être officielle.<br>ex: XXXX@ac-academie.fr".html_safe

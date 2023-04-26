@@ -10,28 +10,25 @@
             p.fr-alert__title Information
             p Seul le personnel actuel de l'établissement doit figurer sur cette liste. Vérifiez qu'elle est bien à jour.
 
-      .row.row-fluid
-        .col-12.fr-table.fr-table-blue.fr-table--white
-            table.fr-mt-2w
-              caption.fr-mt-2w Personnels employés
-              thead.white
-                tr
-                  th.fr-col-4 scope="col" Utilisateur
-                  th.fr-col-4 scope="col" Email
-                  th.fr-col-4 scope="col" Fonction
-                  th.fr-col-4 scope="col" Action
-              tbody
-                - collection = @school.presenter.staff
-                = render partial: "dashboard/schools/users/school_employee",
-                        collection: collection
-    - else
-      .row
-        .col-12
-          .alert.alert-info.alert-outlined.mb-2
-            .row.align-items-center.no-gutters
-              .col-1.col-sm-auto.text-center.mr-2
-                i.fa.fa-info-circle.fa-2x
-              .col
-                p.mb-0
-                  span.test-presence-of-ux-guideline-invitation
-                    | Invitez les enseignants à s'inscrire, en leur communiquant simplement l'adresse du site.
+    - if can?(:create_invitation, Invitation)
+      .text-right.fr-my-4w
+        = link_to "Inviter un membre de l'équipe",
+                  new_dashboard_school_invitation_path(@school.id),
+                  class: 'fr-btn fr-icon fr-btn--icon-left fr-btn--md fr-icon-add-line'
+
+    .fr-table.fr-table--layout-fixed.fr-table--no-caption
+      table
+        thead
+          tr
+            th Nom
+            th Email
+            th Fonction
+            th Statut
+            th Action
+        tbody
+          - @invitations.each do |invitation|
+            = render partial: "dashboard/schools/users/invited_school_employee",
+                    locals: { invitation: invitation }
+          = render partial: "dashboard/schools/users/school_employee",
+                  collection: @collection
+

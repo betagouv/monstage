@@ -38,8 +38,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test 'GET account_path(section: :school) as SchoolManagement' do
     school = create(:school, :with_school_manager)
-    [
-      school.school_manager,
+    [ school.school_manager,
       create(:main_teacher, school: school),
       create(:teacher, school: school),
       create(:other, school: school)
@@ -176,14 +175,15 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'PATCH edit as student cannot nullify his email' do
-    error_message = 'Il faut conserver un email valide pour assurer la continuité du service'
+    error_message = "<strong>Courriel</strong> : Il faut conserver un email valide pour assurer la continuité du service</div>"
     student = create(:student, phone: '+330623042585', email: 'test@test.fr')
     sign_in(student)
 
     patch(account_path, params: { user: { email: '' } })
     refute student.reload.unconfirmed_email == ''
     assert_template 'users/edit'
-    assert_select '#error_explanation li:first label', { text: error_message }, 1
+    assert_select '.fr-alert.fr-alert--error strong',  html: 'Courriel'
+    assert_select '.fr-alert.fr-alert--error',  text: 'Courriel : Il faut conserver un email valide pour assurer la continuité du service'
   end
 
   test 'PATCH failures does not crashes' do
@@ -358,7 +358,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select 'input#user_password[required]'
-    assert_select 'input#user_password_confirmation[required]'
   end
 
   test 'PATCH password as Employer can change password' do

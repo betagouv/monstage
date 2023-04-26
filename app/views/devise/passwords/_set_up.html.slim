@@ -41,13 +41,6 @@ hr
           = f.password_field :password, class: 'fr-input',
             required: true, data: { action: 'input->password#checkPassword' }
 
-      .col-md-6.col-xs-12
-        .form-group
-          = f.label :password_confirmation, class: 'fr-label', for: 'user_password_confirmation' do
-            = 'Ressaisir le mot de passe'
-            = f.rg2a_required_content_tag
-          = f.password_field :password_confirmation, class: 'fr-input',
-            required: true, data: { action: 'input->password#checkPassword' }
     .row
       .col-md-12.col-xs-12
         .actions.d-flex.d-sm-block.text-center.fr-mt-2w
