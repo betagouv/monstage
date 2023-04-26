@@ -24,11 +24,5 @@
           = f.password_field :password, autofocus: true, autocomplete: "new-password", class: "fr-input"
               
 
-        .form-group.custom-label-container
-          = f.label :password_confirmation, class: "fr-label" do
-            = t('.confirm_new_password')
-            = f.rg2a_required_content_tag
-          = f.password_field :password_confirmation, autocomplete: "off", class: "fr-input"
-
         .actions.d-flex.d-sm-block.text-center.fr-mt-1w
           = f.submit t(".change_my_password"), class: "fr-btn"

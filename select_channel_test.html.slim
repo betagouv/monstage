@@ -1,0 +1,58 @@
+- error_status = error_status || false
+fieldset.select-channel.fr-fieldset.fr-mt-n4w
+  - if block_given?
+    legend.fr-fieldset__legend.fr-text--regular
+      = yield
+
+  .fr-fieldset__content.fr-fieldset--inline
+    .fr-radio-group
+      = form.radio_button :channel,
+                        "email",
+                        id: "select-channel-email",
+                        "data-action" => "change->signup#checkEmail",
+                        "data-signup-target" => "emailRadioButton",
+                        checked: (cookies[:prefered_channel] == "email")  do
+      label.fr-label for="select-channel-email"
+        | Par email
+    .fr-radio-group.text-right
+      = form.radio_button :channel,
+                          "phone",
+                          id: "select-channel-phone",
+                          "data-action" => "change->signup#checkPhone",
+                          "data-signup-target" => "phoneRadioButton",
+                          checked: (cookies[:prefered_channel] == "phone")
+      label.fr-label for="select-channel-phone"
+        | Par téléphone
+
+  .fr-fieldset__element.d-none.registration[data-signup-target="emailBloc"]
+    div class="fr-input-group"
+      = form.label :email, class: "fr-label #{error_status ? 'text-input-error' : ''}" do
+        span[data-signup-target="label"]
+          = resource.school_manager? ? "Adresse électronique académique" : "Adresse électronique"
+        small.form-text.text-muted
+          | Format attendu : nom@domaine.fr
+        small#email-explanation.form-text.text-muted[data-signup-target="emailExplanation"]
+
+      = form.email_field :email,
+                          class: "fr-input",
+                          value: resource.email.blank? ? params[:email] : resource.email,
+                          placeholder: "ex: nom@exemple.fr",
+                          autofocus: params[:email].blank? ? true : false,
+                          :'aria-describedby' => "user_email",
+                          data: {action: 'change->signup#onBlurEmailInput', :"signup-target" => 'emailInput'}
+      small.d-none[data-signup-target="emailHint"]
+  .fr-input-group.phone.d-none[data-signup-target="phoneBloc"]
+    = form.label :phone,
+                  class: "fr-label",
+                 'data-action' => "click->signup#focusPhone",
+                 for: 'phone-input' do
+      span
+        | Numéro de téléphone
+      small.form-text.text-muted
+        | Ce numéro sera utilisé uniquement pour communiquer avec vous
+    = react_component("CountryPhoneSelect",
+                      props: { name: 'user[phone]',
+                               value: resource.phone || params[:phone],
+                               withTarget: true })
+    small.text-muted
+      | (+33 puis 06 11 22 33 44 par exemple)

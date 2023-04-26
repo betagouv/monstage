@@ -31,7 +31,7 @@
       | Collège
       = form.rg2a_required_content_tag
     = form.select :school, [current_user.school.name, current_user.school_id], {}, { class: "fr-select", disabled: true }
-                   
+
   .col-6
     .form-group
       = form.label :class_room_id, class: 'fr-label' do
@@ -42,4 +42,3 @@
                  { prompt: class_rooms_options_for_default },
                  class: "fr-select"
 
-  

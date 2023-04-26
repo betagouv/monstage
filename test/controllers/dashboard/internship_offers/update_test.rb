@@ -74,11 +74,11 @@ module Dashboard::InternshipOffers
               week_ids: week_ids,
               max_candidates: 1
             } })
-      error_message = "Impossible de réduire le " \
+      error_message = "Nbr. max de candidats accueillis sur l'année : Impossible de réduire le " \
                       "nombre de places de cette offre de stage car vous avez déjà accepté " \
                       "plus de candidats que vous n'allez leur offrir de places."
       assert_response :bad_request
-      assert_select("label.for-errors", text: error_message)
+      assert_select(".fr-alert.fr-alert--error", text: error_message)
     end
 
     test 'PATCH #update as statistician owning internship_offer updates internship_offer' do

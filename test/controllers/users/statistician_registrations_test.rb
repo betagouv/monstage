@@ -14,7 +14,6 @@ class StatisticianRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'label', /Nom/
     assert_select 'label', /Adresse électronique/
     assert_select 'label', /Créer un mot de passe/
-    assert_select 'label', /Ressaisir le mot de passe/
     assert_select 'label', /J'accepte les/
   end
 
@@ -26,9 +25,8 @@ class StatisticianRegistrationsTest < ActionDispatch::IntegrationTest
                                                     first_name: 'dep',
                                                     last_name: 'artement',
                                                     password: 'okokok',
-                                                    password_confirmation: 'okokok',
                                                     type: 'Users::PrefectureStatistician',
-                                                    accept_terms: '1' } })
+                                                    accept_terms: '1' }})
       assert_response 302
     end
     refute Users::PrefectureStatistician.last.agreement_signatorable

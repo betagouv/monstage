@@ -26,7 +26,8 @@ class ConfirmationsControllerTest < ActionDispatch::IntegrationTest
       post user_confirmation_path(user: { channel: :phone, phone: '+330699999999' })
     end
     assert_template :new
-    assert_select 'label', 'Votre numéro de téléphone est inconnu'
+    assert_select '.fr-alert.fr-alert--error',
+                  html: '<strong>Téléphone mobile</strong> : Votre numéro de téléphone est inconnu'
   end
 
   test 'CREATE#user_confirmation by phone' do

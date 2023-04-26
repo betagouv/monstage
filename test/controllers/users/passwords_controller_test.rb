@@ -7,15 +7,14 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
     put user_password_path, params: {
       user: {
         password: '123456',
-        password_confirmation: '123456',
         reset_password_token: 'invalid'
       }
     }
 
-    assert_select '#error_explanation'
-    assert_select 'label[for=user_reset_password_token]',
+    assert_select '.fr-alert.fr-alert--error'
+    assert_select '.fr-alert.fr-alert--error',
                   count: 1,
-                  text: 'Veuillez faire une nouvelle demande de changement de mot de passe, cette demande a expirée'
+                  text: 'Clé de réinitialisation du mot de passe : Veuillez faire une nouvelle demande de changement de mot de passe, cette demande a expirée'
   end
 
   test 'POST create by email' do

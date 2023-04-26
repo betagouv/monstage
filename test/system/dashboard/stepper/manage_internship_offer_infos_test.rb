@@ -76,7 +76,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
       as = 'a' * 151
       fill_in 'internship_offer_info_title', with: as
       click_on "Suivant"
-      find('#error_explanation')
+      find('.fr-alert.fr-alert--error')
     end
   end
 end

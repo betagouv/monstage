@@ -17,7 +17,6 @@ class SchoolManagerRegistrationsTest < ActionDispatch::IntegrationTest
     assert_difference('Users::SchoolManagement.school_manager.count', 1) do
       post user_registration_path(params: { user: { email: "ce.1234567x@#{school.email_domain_name}",
                                                     password: 'okokok',
-                                                    password_confirmation: 'okokok',
                                                     school_id: school.id,
                                                     first_name: 'Chef',
                                                     last_name: 'Etablissement',
@@ -39,7 +38,6 @@ class SchoolManagerRegistrationsTest < ActionDispatch::IntegrationTest
                                                     first_name: 'Chr',
                                                     last_name: 'LEF',
                                                     password: '[Filtered]',
-                                                    password_confirmation: '[Filtered]',
                                                     phone_prefix: '+33',
                                                     phone_suffix: '0602030405',
                                                     role: :school_manager,

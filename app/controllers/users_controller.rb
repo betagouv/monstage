@@ -79,7 +79,6 @@ class UsersController < ApplicationController
                                  :resume_other,
                                  :resume_languages,
                                  :password,
-                                 :password_confirmation,
                                  :role,
                                  banners: {})
   end

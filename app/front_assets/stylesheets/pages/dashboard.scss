@@ -41,6 +41,78 @@ tr:hover a.trash-user{
     display: inline;
 }
 
+// input.teacher-type-radio[type="radio"]:checked+label {
+//   color: $blue
+// }
+
+// li.list-group-item.teachers .teacher-type-radio:checked {
+//   background-color: yellow;
+// }
+
+// .teachers .radio {
+//   margin: 0.5rem;
+
+//   input[type="radio"] {
+//     position: absolute;
+//     opacity: 0;
+
+//     +.form-check-label {
+//       &:before {
+//         content: '';
+//         background: $gray_200;
+//         border-radius: 100%;
+//         border: 2px solid darken(white, 25%);
+//         display: inline-block;
+//         width: 1.2em;
+//         height: 1.2em;
+//         position: relative;
+//         top: -0.2em;
+//         margin-right: 1em;
+//         vertical-align: top;
+//         cursor: pointer;
+//         text-align: center;
+//         transition: all 250ms ease;
+//       }
+//     }
+
+//     &:checked {
+//       +.form-check-label {
+
+//         &:before {
+//           background-color: $blue_light;
+//           box-shadow: inset 0 0 0 4px $blue;
+//         }
+//       }
+//     }
+
+//     &:focus {
+//       +.form-check-label {
+//         &:before {
+//           outline: none;
+//           border-color: white;
+//         }
+//       }
+//     }
+
+//     &:disabled {
+//       +.form-check-label {
+//         &:before {
+//           box-shadow: inset 0 0 0 4px $blue;
+//           border-color: darken($blue, 25%);
+//           background: darken($blue, 25%);
+//         }
+//       }
+//     }
+
+//     +.form-check-label {
+//       &:empty {
+//         &:before {
+//           margin-right: 0;
+//         }
+//       }
+//     }
+//   }
+//   }
 .dark-grey {
   color: $dark-grey !important;
 }
