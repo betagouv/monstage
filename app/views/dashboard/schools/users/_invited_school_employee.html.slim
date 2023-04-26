@@ -1,0 +1,27 @@
+- prez = invitation.presenter
+- unless prez.status[:status] == :subscribed
+  tr
+    td = prez.full_name
+    td = prez.email
+    td = prez.role_name
+    td
+      p class="fr-badge fr-badge--sm fr-mt-2w fr-badge--#{prez.status[:type]}"
+        = prez.status[:label]
+    td
+      = form_with(url: dashboard_school_invitation_path(@school.id, id: invitation.id),
+                  method: :delete,
+                  data:{ turbo: false, confirm: "Êtes-vous sûr de vouloir supprimer l'invitation de #{prez.full_name} ?"},
+                  local: true,
+                  class: 'd-inline-block') do |f|
+        button.fr-btn.fr-btn--secondary.fr-icon-delete-line.fr-mr-2w type="submit" title="Supprimer l'invitation" aria-label="Supprimer l'invitation"
+          | Supprimer l'invitation
+      - unless prez.status[:status] == :subscribed
+        = link_to dashboard_school_resend_invitation_path(@school.id, id: invitation.id),
+                  data:{ turbo: false, confirm: "Êtes-vous sûr de vouloir renvoyer l'invitation à #{prez.full_name} ?"},
+                  class: 'fr-raw-link' do
+          button.fr-btn.fr-btn--secondary.fr-icon-mail-line title="Renvoyer l'invitation" aria-label="Renvoyer l'invitation"
+            | Renvoyer l'invitation
+
+
+
+

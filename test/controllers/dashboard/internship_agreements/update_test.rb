@@ -72,13 +72,14 @@ module Dashboard::InternshipAgreements
     end
 
     test 'PATCH #update as employer owning internship_offer does not update internship_agreement with missing fields' do
-      school = create(:school, :with_school_manager)
+      school     = create(:school, :with_school_manager)
       class_room = create(:class_room, school: school)
-      student = create(:student, school: school, class_room: class_room)
+      student    = create(:student, school: school, class_room: class_room)
       create(:main_teacher, school: school, class_room: class_room)
       internship_application = create(:weekly_internship_application, :submitted, user_id: student.id)
-      internship_agreement = create(:internship_agreement, :created_by_system,
-                                    internship_application: internship_application)
+      internship_agreement   = create(:internship_agreement,
+                                      :created_by_system,
+                                      internship_application: internship_application)
       new_organisation_representative_full_name = 'John Doe'
       params = {
         'internship_agreement' => {
@@ -93,7 +94,7 @@ module Dashboard::InternshipAgreements
 
       patch dashboard_internship_agreement_path(internship_agreement.id, params)
 
-      assert_select('#error_explanation')
+      assert_select('.fr-alert.fr-alert--error')
     end
 
     # As School Manager
@@ -145,7 +146,7 @@ module Dashboard::InternshipAgreements
       sign_in(school_manager)
       patch dashboard_internship_agreement_path(internship_agreement.id, params)
 
-      assert_select('#error_explanation')
+      assert_select('.fr-alert.fr-alert--error')
     end
 
     test 'PATCH #update as school manager owning students updates internship_agreement with soft saving'  do

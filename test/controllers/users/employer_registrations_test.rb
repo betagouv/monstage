@@ -8,7 +8,6 @@ class EmployerRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'input', value: 'Employer', hidden: 'hidden'
     assert_select 'label', /Adresse électronique/
     assert_select 'label', /Créer un mot de passe/
-    assert_select 'label', /Ressaisir le mot de passe/
     assert_select 'label', /J'accepte les/
   end
 
@@ -24,7 +23,6 @@ class EmployerRegistrationsTest < ActionDispatch::IntegrationTest
       post user_registration_path(params: { user: { email: 'madame@accor.fr',
                                                     password: 'okokok',
                                                     employer_role: 'chef de projet',
-                                                    password_confirmation: 'okokok',
                                                     first_name: 'Madame',
                                                     last_name: 'Accor',
                                                     type: 'Users::Employer',
@@ -41,7 +39,6 @@ class EmployerRegistrationsTest < ActionDispatch::IntegrationTest
                                                     confirmation_email: 'madame@accor.fr',
                                                     password: 'okokok',
                                                     employer_role: 'chef de projet',
-                                                    password_confirmation: 'okokok',
                                                     first_name: 'Madame',
                                                     last_name: 'Accor',
                                                     type: 'Users::Employer',

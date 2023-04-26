@@ -68,13 +68,13 @@ module Dashboard
         assert_select 'ul.fr-tabs__list li a[href=?] button[aria-selected="true"]', dashboard_school_users_path(school), count: 1
       end
 
-      test 'GET users#index as SchoolManagement contains UX guidelines when no staff' do
+      test 'GET users#index as SchoolManagement contains invitation modal link' do
         school = create(:school, :with_school_manager)
         sign_in(school.school_manager)
         get dashboard_school_users_path(school)
         assert_response :success
-        assert_select '.test-presence-of-ux-guideline-invitation',
-                      text: "Invitez les enseignants à s'inscrire, en leur communiquant simplement l'adresse du site."
+        assert_select ".fr-btn.fr-icon-add-line",
+                      text: "Inviter un membre de l'équipe"
       end
 
       test 'GET users#index as SchoolManagement contains list school members' do
