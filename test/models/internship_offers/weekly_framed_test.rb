@@ -288,14 +288,14 @@ module InternshipsOffers
       assert_equal 10, internship_offer.max_candidates
       assert_equal 9, internship_offer.remaining_seats_count
       assert_equal within_2_weeks_week, internship_offer.weeks.first
-      assert internship_offer.employer_hidden
+      assert internship_offer.hidden_duplicate
       refute internship_offer.published?
 
       assert_equal 1, new_internship_offer.weeks.count
       assert_equal 10, new_internship_offer.max_candidates
       assert_equal 10, new_internship_offer.remaining_seats_count
       assert_equal first_week_of_next_year, new_internship_offer.weeks.first
-      refute new_internship_offer.employer_hidden
+      refute new_internship_offer.hidden_duplicate
     end
 
     test '#split_in_two with weeks on current year only' do

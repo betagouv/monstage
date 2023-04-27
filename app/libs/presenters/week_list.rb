@@ -56,19 +56,6 @@ module Presenters
       to_range_as_str.split(/(\d*\s?semaines?\s?:?)/)
     end
 
-    def trunk_list_label
-      split_weeks_in_trunks(basic: true).map do |trunk| 
-        short_render_period(trunk)
-      end
-    end
-
-    def short_render_period(week_trunk)
-      first_monday = week_trunk.first.week_date.monday
-      last_sunday = week_trunk.last.week_date.sunday
-      "Du #{I18n.localize(first_monday, format: :human_dd_mm)} " \
-      "au #{I18n.localize(last_sunday, format: :human_dd_mm_yy)}"
-    end
-
     protected
 
     def render_first_week_only

@@ -49,7 +49,7 @@ class InternshipApplication < ApplicationRecord
   }
 
   #expirable 
-  scope :expiration_extended, lambda {
+  scope :was_examined, lambda {
     where.not(examined_at: nil)
   }
 
@@ -62,7 +62,7 @@ class InternshipApplication < ApplicationRecord
     extended_duration = simple_duration + InternshipApplication::EXTENDED_DURATION
     submitted.expiration_not_extended
              .where('submitted_at < :date', date: simple_duration.ago)
-             .or(submitted.expiration_extended
+             .or(submitted.was_examined
                           .where('submitted_at < :date', date: extended_duration.ago))
   }
 
@@ -173,7 +173,7 @@ class InternshipApplication < ApplicationRecord
                   to: :validated_by_employer,
                   after: proc { |*_args|
                     update!("validated_by_employer_at": Time.now.utc)
-                    employer_validation_notifications
+                    after_employer_validation_notifications
                   }
     end
 
@@ -260,7 +260,7 @@ class InternshipApplication < ApplicationRecord
     end
   end
 
-  def employer_validation_notifications
+  def after_employer_validation_notifications
     if type == "InternshipApplications::WeeklyFramed" && student.main_teacher.present?
       deliver_later_with_additional_delay do
         MainTeacherMailer.internship_application_validated_by_employer_email(self)
