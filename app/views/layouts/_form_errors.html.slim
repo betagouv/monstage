@@ -1,13 +1,15 @@
-- errors = Presenters::Error.new(errors: resource.errors)
-- if errors.count.positive?
-  #error_explanation.alert.alert-danger role="alert"
-    p= I18n.t("errors.messages.not_saved", count: errors.count,
-                                           resource: resource.class.model_name.human.downcase)
-    ul.my-0
-      - errors.displayed_messages.each do |key, errors_message|
-        - errors_message.each do |error_message|
-          li
-            label.for-errors.fr-label for="#{defined?(resource_name) ? resource_name : resource.class.name.downcase }_#{key}"
-              = error_message
+- errors = Presenters::Error.new(errors: resource.errors) if resource&.errors&.any?
+- resource_name ||= resource.class.model_name.human.downcase if resource
+- unless errors.nil? || errors&.messages&.empty?
+  p
+    strong
+      = I18n.t("errors.messages.not_saved", count: errors.count, resource: resource.class.model_name.human.downcase)
+  dl.my-0
+    dd
+      - errors.notice_messages(resource_name: resource_name, resource: resource).each do |notice_message|
+        div class="fr-alert fr-alert--success fr-mb-2v"
+          = notice_message
+      div class="fr-alert fr-alert--error fr-mb-2v"
+        = errors.error_messages(resource_name: resource_name, resource: resource, separator: "<br/>")
 
 

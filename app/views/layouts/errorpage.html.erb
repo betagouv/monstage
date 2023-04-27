@@ -11,9 +11,16 @@
     <%= javascript_pack_tag "application.js", 'data-turbo-track': "reload", defer: true %>
   </head>
 
-  <body class='error-page'>
-    <div class="content d-flex justify-content-center align-items-center">
-      <%= yield %>
+  <body class=''>
+    <div class="content pt-0" data-controller='rg2a'>
+      <header role="banner" class="custom-navbar">
+        <div class="col px-0">
+          <%= render "layouts/navbar" %>
+          <%= render 'layouts/webinar_banner' if can?(:subscribe_to_webinar, current_user_or_visitor)%>
+        </div>
+      </header>
+
+        <%= yield %>
     </div>
   </body>
 </html>

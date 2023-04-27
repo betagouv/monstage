@@ -14,7 +14,6 @@ class MinistryStatiticianRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'label', /Nom/
     assert_select 'label', /Adresse électronique/
     assert_select 'label', /Créer un mot de passe/
-    assert_select 'label', /Ressaisir le mot de passe/
     assert_select 'label', /J'accepte les/
   end
 
@@ -26,7 +25,6 @@ class MinistryStatiticianRegistrationsTest < ActionDispatch::IntegrationTest
                                                     first_name: 'ref',
                                                     last_name: 'central',
                                                     password: 'okokok',
-                                                    password_confirmation: 'okokok',
                                                     type: 'Users::MinistryStatistician',
                                                     accept_terms: '1' } })
       assert_response 302

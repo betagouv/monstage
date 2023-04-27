@@ -7,6 +7,7 @@ module Presenters
     delegate :url_helpers, to: :routes
     delegate :internship_offers_path, to: :url_helpers
     delegate :default_search_options, to: :user
+    delegate :email, to: :user
 
     def short_name
       "#{user.first_name[0].capitalize}. #{user.last_name}"
@@ -57,6 +58,63 @@ module Presenters
 
     def dashboard_name_link
       url_helpers.root_path
+    end
+
+    def show_when_subscribe?(as: , field:)
+      field.in?(subscribe_fields(as: as))
+    end
+
+    def subscription_incipit(as:)
+      title = "Inscription"
+      subtitle = ""
+
+      case as
+      when "Student"
+        title = "Se créer un compte en tant qu'élève"
+      when "Employer"
+        title = "Se créer un compte en tant qu'offreur"
+        subtitle = "Déposez " \
+        "vos offres de stages à l'aide de votre compte personnalisé. " \
+        "Il vous permettra à tout moment de modifier vos offres et de " \
+        "suivre leur avancement."
+      when "PrefectureStatistician"
+        title = "Se créer un compte en tant que référent départemental"
+        subtitle = "Vous êtes " \
+        "référent départemental et souhaitez accéder aux " \
+        "statistiques relatives aux offres de stage de votre département."
+      when "MinistryStatistician"
+        title = "Se créer un compte en tant que référent d'administration centrale"
+        subtitle = "Vous êtes référent d'administration centrale et " \
+        "souhaitez accéder aux statistiques relatives aux offres de stage " \
+        "de votre administration."
+      when "EducationStatistician"
+        title = "Se créer un compte en tant que référent DSDEN"
+        subtitle = "Vous êtes référent départemental du ministère " \
+        "de l'éducation nationale et souhaitez accéder aux statistiques " \
+        "relatives aux offres de stage de votre département."
+      when "SchoolManagement"
+        title = "Se créer un compte en tant que gestionnaire d'établissement scolaire"
+        subtitle = "Vous souhaitez que vos élèves trouvent un stage " \
+        "de qualité. Cet outil vous permettra d'accéder à un tableau " \
+        "de suivi de vos élèves tout au long de leurs recherches de leur stage." 
+      end
+      {
+        title: title,
+        subtitle: subtitle
+      }
+    end
+
+    def subscribe_fields(as:)
+      case as
+      when "Employer"
+        %i[employer_role email minister_video]
+      when "SchoolManagement"
+        %i[school email school_id class_room_id role ]
+      when 'MinistryStatistician', 'Statistician', 'EducationStatistician'
+        %i[email minister_video]
+      else
+        []
+      end
     end
 
     protected

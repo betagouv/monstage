@@ -7,7 +7,6 @@ class TeacherRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'input', value: 'SchoolManagement', hidden: 'hidden'
     assert_select 'label', /Adresse électronique/
     assert_select 'label', /Créer un mot de passe/
-    assert_select 'label', /Ressaisir le mot de passe/
     assert_select 'label', /J'accepte les/
   end
 
@@ -23,7 +22,6 @@ class TeacherRegistrationsTest < ActionDispatch::IntegrationTest
     assert_difference('Users::SchoolManagement.teacher.count', 0) do
       post user_registration_path(params: { user: { email: 'teacher@acu.fr',
                                                     password: 'okokok',
-                                                    password_confirmation: 'okokok',
                                                     type: 'Users::SchoolManagement',
                                                     first_name: 'Martin',
                                                     last_name: 'Fourcade',
@@ -41,7 +39,6 @@ class TeacherRegistrationsTest < ActionDispatch::IntegrationTest
     assert_difference('Users::SchoolManagement.teacher.count', 1) do
       post user_registration_path(params: { user: { email: "teacher@#{school.email_domain_name}",
                                                     password: 'okokok',
-                                                    password_confirmation: 'okokok',
                                                     type: 'Users::SchoolManagement',
                                                     first_name: 'Martin',
                                                     last_name: 'Fourcade',

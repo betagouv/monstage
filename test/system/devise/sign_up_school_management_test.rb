@@ -22,9 +22,8 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       fill_in 'Adresse électronique', with: existing_email # error
       fill_in 'Créer un mot de passe', with: password
-      fill_in 'Ressaisir le mot de passe', with: password
-      find('input[type="checkbox"]', visible: false).check
-      click_on "Valider mes informations"
+      all('input[type="checkbox"]', visible: false)[1].check
+      click_on "Valider"
     end
     if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'
       # create school_manager
@@ -32,7 +31,6 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       assert_difference('Users::SchoolManagement.school_manager.count', 1) do
         fill_in 'Adresse électronique', with: "ce.#{school_nr}E@ac-paris.fr"
         fill_in 'Créer un mot de passe', with: password
-        fill_in 'Ressaisir le mot de passe', with: password
         fill_in 'Prénom', with: 'Martin'
         find("input[name='user[last_name]']").fill_in with: 'Fourcade'
         click_on "Valider mes informations"
@@ -63,9 +61,8 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       fill_in 'Adresse électronique', with: existing_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
-      fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      find('input[type="checkbox"]', visible: false).check
-      click_on "Valider mes informations"
+      all('input[type="checkbox"]', visible: false)[1].check
+      click_on "Valider"
     end
 
     # ensure failure reset form as expected
@@ -81,9 +78,8 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       select(class_room_1.name, from: 'user_class_room_id')
       fill_in 'Adresse électronique', with: "another@#{school_1.email_domain_name}"
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
-      fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      find('input[type="checkbox"]', visible: false).check
-      click_on "Valider mes informations"
+      all('input[type="checkbox"]', visible: false)[1].check
+      click_on "Valider"
     end
 
     # check created teacher has valid info

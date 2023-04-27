@@ -45,7 +45,7 @@ module FormatableWeek
     end
 
     def select_text_method
-      ['Semaine', number, '- du', beginning_of_week, 'au', end_of_week]
+      ['Du', beginning_of_week_with_short_month_year_long, 'au', end_of_week_with_short_month_years_long, "[Sem - #{number}]"]
         .map(&:to_s)
         .map(&:strip)
         .join(' ')
@@ -67,6 +67,10 @@ module FormatableWeek
       I18n.localize(week_date.beginning_of_week, format: :human_mm_dd_yyyy)
     end
 
+    def beginning_of_week_with_short_month_year_long
+      I18n.localize(week_date.beginning_of_week, format: :human_dd_short_mm_yyyy)
+    end
+
     def end_of_week
       I18n.localize(week_date.end_of_week, format: :human_mm_dd)
     end
@@ -77,6 +81,10 @@ module FormatableWeek
 
     def end_of_week_with_years_long
       I18n.localize(week_date.end_of_week, format: :human_mm_dd_yyyy)
+    end
+
+    def end_of_week_with_short_month_years_long
+      I18n.localize(week_date.end_of_week, format: :human_dd_short_mm_yyyy)
     end
   end
 end

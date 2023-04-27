@@ -35,7 +35,6 @@ class RaceCondidationRegistrationTest < ActionDispatch::IntegrationTest
           handicap_present: 0,
           last_name: 'pineau',
           password: 'okokok',
-          password_confirmation: 'okokok',
           school: {
             city: 'Élancourt'
           },
