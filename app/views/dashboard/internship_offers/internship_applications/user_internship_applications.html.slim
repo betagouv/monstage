@@ -1,13 +1,13 @@
 = render 'layouts/breadcrumb', links: [ ['', 'Mon tableau de bord'] ]
 = render layout: 'layouts/dashboards_with_menu' do
-  - selected_tab = params[:tab] || 'received'
+  - selected_tab = params[:tab] || 'received!'
   h1.h4.text-dark.fr-my-8w Les candidatures
   .fr-tabs
     ul.fr-tabs__list[role="tablist" aria-label="[Candidatures par type]"]
       li
         button#tabpanel-received.fr-tabs__tab.fr-tabs__tab--icon-left[tabindex="0"
                                                                  role="tab"
-                                                                 aria-selected="#{ selected_tab.in?(%w[submit! read! examine! expire!])}"
+                                                                 aria-selected="#{ selected_tab.in?(%w[submit! read! examine! expire! received!])}"
                                                                  aria-controls="tabpanel-received-panel"]
           | Reçues
       li

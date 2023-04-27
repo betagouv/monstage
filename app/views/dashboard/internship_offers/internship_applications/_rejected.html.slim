@@ -8,6 +8,8 @@
           | Inititulé du stage
         th[scope="col"]
           | Statut
+        th[scope="col"]
+          | Action
     - if internship_applications.empty?
       tbody
         tr
@@ -18,8 +20,9 @@
         - internship_applications.each do |internship_application|
           - prez = internship_application.presenter
           tr
-            td = prez.student.presenter.full_name
-            td
+            td style="min-width: 230px;"
+              = prez.student.presenter.full_name
+            td style="min-width: 570px;"
               - prez_offer = internship_application.internship_offer.presenter
               = prez.internship_offer.title
               br/
@@ -27,3 +30,6 @@
             td
               p class="fr-mt-1w fr-badge fr-badge--sm fr-badge--#{prez.status[:badge_type]} fr-badge--no-icon"
                 = prez.status[:label]
+            td
+              .fr-btn.fr-btn--secondary
+                | Voir
