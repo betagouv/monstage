@@ -99,10 +99,6 @@ GEM
     aws-sigv4 (1.5.2)
       aws-eventstream (~> 1, >= 1.0.2)
     bcrypt (3.1.18)
-    better_errors (2.9.1)
-      coderay (>= 1.0.0)
-      erubi (>= 1.0.0)
-      rack (>= 0.9.0)
     bindex (0.8.1)
     bitly (3.0.0)
       oauth2 (>= 0.5.0, < 2.1)
@@ -134,7 +130,6 @@ GEM
     caxlsx_rails (0.6.3)
       actionpack (>= 3.1)
       caxlsx (>= 3.0)
-    coderay (1.1.3)
     concurrent-ruby (1.2.0)
     connection_pool (2.3.0)
     crack (0.4.5)
@@ -262,10 +257,10 @@ GEM
       net-protocol
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.14.2)
+    nokogiri (1.14.3)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    nokogiri (1.14.2-x86_64-linux)
+    nokogiri (1.14.3-x86_64-linux)
       racc (~> 1.4)
     oauth2 (2.0.9)
       faraday (>= 0.17.3, < 3.0)
@@ -494,7 +489,6 @@ DEPENDENCIES
   activerecord-explain-analyze
   activerecord-postgis-adapter
   aws-sdk-s3
-  better_errors
   bitly
   bootsnap
   bullet

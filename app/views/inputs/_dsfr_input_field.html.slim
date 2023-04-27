@@ -1,0 +1,45 @@
+- hint ||= ''
+- placeholder ||= ''
+- required ||= false
+- id = "#{object.class.name.downcase}_#{field}"
+- if object&.errors.blank?
+  .fr-input-group
+    = f.label field,
+              class: "fr-label",
+              for: id
+      = label
+    - unless hint.blank?
+      .text-muted.fr-mb-4v = hint
+    = f.text_field field, class: "fr-input #{ hint.blank? ? "" : 'fr-mt-n2v'}",
+                          :'aria-describedby' => "text-input-valid-desc-valid",
+                          id: id,
+                          placeholder: placeholder,
+                          required: required
+- elsif object.errors[field].present?
+  .fr-input-group.fr-input-group--error
+    = f.label field,
+              class: 'fr-label',
+              for: id
+      = label
+    - unless hint.blank?
+      .text-muted = hint
+    = f.text_field field,
+                   class: "fr-input fr-input--error",
+                   :'aria-describedby' => "text-input-error-desc-error",
+                   id: id,
+                   required: required
+    p.fr-error-text id="text-input-error-desc-error-#{field}"
+      = "#{field} : #{object.errors[field].join(', ').html_safe}"
+- else
+  .fr-input-group.fr-input-group--valid
+    = f.label field,
+              class:"fr-label",
+              for: id
+      = label
+    - unless hint.blank?
+      .text-muted = hint
+    = f.text_field field,
+                   class: 'fr-input fr-input--valid',
+                   :'aria-describedby' => "text-input-valid-desc-valid",
+                   id: id,
+                   required: required

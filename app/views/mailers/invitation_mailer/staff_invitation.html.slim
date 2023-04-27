@@ -1,0 +1,21 @@
+p style=head_styles
+  = "#{@from_name} vous invite à rejoindre #{link_to('monstagedetroisieme.fr', @url)}".html_safe
+
+p style=p_styles
+  = "Bienvenue #{@invitation_first_name} #{@invitation_last_name}, "
+
+p style=p_styles
+  = "#{@from_name}, chef d'établissement du collège  "
+  span style=("font-weight: bold") = "#{@school_name} "
+  ="vous invite à rejoindre la plateforme monstagedetroisieme.fr"
+
+p style=p_styles
+  | Elle vous permettra d'accompagner et de suivre vos élèves dans leurs recherches de stage.
+
+= render(partial: 'mailers/blue_call_to_action', locals: { label: 'Créer mon compte', href: @link })
+
+p style=hint_styles
+  | Vous pouvez aussi copier/coller le lien suivant pour activer votre compte :
+p style=p_styles
+p style=hint_styles
+  = link_to @link, @link

@@ -4,6 +4,9 @@ module InternshipOffers
   class WeeklyFramed < InternshipOffer
     include WeeklyFramable
 
+    after_initialize :init
+    before_create :reverse_academy_by_zipcode
+    # ActiveAdmin index specifics
     rails_admin do
       weight 11
       navigation_label "Offres"

@@ -238,6 +238,8 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 * **max_candidates** *(integer)*
 * **published_at** *(datetime.iso8601(0))* : voir [reference](https://ruby-doc.org/stdlib-2.6.1/libdoc/date/rdoc/DateTime.html#method-i-iso8601)
 
+Note : La dépublication s'opère en passant null dans le paramètre published_at
+
 ### Exemple curl
 
 ``` bash

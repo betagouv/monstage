@@ -52,7 +52,6 @@ import './internship_offers_new/fast_time.svg';
 import './internship_offers_new/paper.svg';
 
 import './internship_applications/boy.svg';
-import './internship_applications/girl.svg';
 
 import './icons/noun_Handshake_2803586-1.svg';
 import './icons/noun_job_offer_1461730-1.svg';
@@ -70,6 +69,9 @@ import './pages/statistics/hand_right.svg';
 import './pages/statistics/handshake.svg';
 import './pages/statistics/ok.svg';
 import './pages/statistics/school.svg';
+
+import './pages/invitations/email_icon.svg';
+import './pages/invitations/person_icon.svg';
 
 import './homepage/explications.svg';
 import './homepage/back-to-top.svg';

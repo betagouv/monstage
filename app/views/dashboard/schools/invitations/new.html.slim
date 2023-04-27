@@ -1,0 +1,19 @@
+- content_for :page_title, "#{t(".page_title")} | Monstage"
+= render 'layouts/breadcrumb', links: [ [dashboard_school_class_rooms_path, 'Mon établissement'],
+                                        [dashboard_school_users_path, 'Personnels'],
+                                        ['', 'Inviter un membre de l\'équipe']]
+h1.h3.text-dark Inviter un membre de l'équipe
+.fr-callout.fr-mt-4w
+  h3.fr-callout__title
+    | Concernant l'invitation
+  p.fr-callout__text
+    |
+      Vous avez la possibilité d'inviter tous les membres de votre équipe à 
+      collaborer sur la recherche de stage de vos élèves. Les membres invités 
+      recevront un e-mail leur permettant de procéder facilement à 
+      leur inscription.
+.row
+  .col-md-6.col-sm-12
+    = render 'dashboard/schools/invitations/form'
+  .col-md-6.col-sm-12
+    = render template: "dashboard/schools/invitations/index"

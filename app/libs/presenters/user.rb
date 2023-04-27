@@ -7,6 +7,7 @@ module Presenters
     delegate :url_helpers, to: :routes
     delegate :internship_offers_path, to: :url_helpers
     delegate :default_search_options, to: :user
+    delegate :email, to: :user
 
     def short_name
       "#{user.first_name[0].capitalize}. #{user.last_name}"

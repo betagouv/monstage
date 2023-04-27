@@ -12,7 +12,7 @@ class IdentitiesController < ApplicationController
       )
     else
       flash[:error] = 'Erreur lors de la validation des informations'
-      render :new
+      render :new, status: :bad_request
     end
   end
 

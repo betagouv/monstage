@@ -305,6 +305,13 @@ fr:
           canceled_by_student: annulée par l'élève
           convention_signed: convention signée
         week: Semaine
+      
+      invitation:
+        roles:
+          teacher: Professeur
+          school_manager: Chef d'établissement
+          main_teacher: Professeur principal
+          other: Autre
 
       user:
         accept_terms: "Conditions d'utilisation"
