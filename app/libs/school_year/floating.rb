@@ -12,7 +12,7 @@ module SchoolYear
         return september_first if last_week_of_may?
 
         previous_september_first
-      when june_to_august ,september_to_december then september_first
+      when june_to_december then september_first
       end
     end
 
@@ -27,7 +27,7 @@ module SchoolYear
         return shift_day(year: current_year + 1) if last_week_of_may?
 
         shift_day(year: current_year)
-      when june_to_august, september_to_december
+      when june_to_december
         shift_day(year: current_year + 1)
       end
     end

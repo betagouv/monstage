@@ -67,10 +67,10 @@ module SchoolYear
             assert internship_offer.reload.kept?
             assert_equal 1, internship_offer.weeks.count
             assert_equal next_week.id, internship_offer.weeks.first.id
-            assert internship_offer.employer_hidden
+            assert internship_offer.hidden_duplicate
 
             new_internship_offer = InternshipOffer.all.order(created_at: :desc).first
-            refute new_internship_offer.employer_hidden
+            refute new_internship_offer.hidden_duplicate
             assert_equal final_week_id, new_internship_offer.weeks.first.id
           end
         end
@@ -118,10 +118,10 @@ module SchoolYear
             assert internship_offer.reload.kept?
             assert_equal 1, internship_offer.weeks.count
             assert_equal next_week.id, internship_offer.weeks.first.id
-            assert internship_offer.employer_hidden
+            assert internship_offer.hidden_duplicate
 
             new_internship_offer = InternshipOffer.all.order(created_at: :desc).first
-            refute new_internship_offer.employer_hidden
+            refute new_internship_offer.hidden_duplicate
             assert_equal final_week_id, new_internship_offer.weeks.first.id
           end
         end

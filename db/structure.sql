@@ -891,7 +891,7 @@ CREATE TABLE public.internship_offers (
     employer_manual_enter boolean DEFAULT false,
     tutor_role character varying,
     remaining_seats_count integer DEFAULT 0,
-    employer_hidden boolean DEFAULT false
+    hidden_duplicate boolean DEFAULT false
 );
 
 
@@ -2832,6 +2832,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230307200802'),
 ('20230321104203'),
 ('20230404154158'),
-('20230420095232');
+('20230420095232'),
+('20230426161001');
 
 

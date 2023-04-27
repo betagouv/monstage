@@ -36,15 +36,6 @@ module Presenters
         class: 'fr-mb-2w'
        ) +
       content_tag(:div, "Pause déjeuner : #{lunch_break}", class: 'fr-mb-3w') if lunch_break.present?
-      # html_safe
-    end
-
-    def entreprise
-      if internship_offer.is_public?
-        "administration publique '#{internship_offer.employer_name}'"
-      else
-        "entreprise #{internship_offer.employer_name}"
-      end
     end
 
     def internship_daily_description

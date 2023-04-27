@@ -56,7 +56,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
       assert_changes -> { internship_application.reload.validated_by_employer_at },
                      from: nil,
                      to: Time.now.utc do
-        internship_application.stub :employer_validation_notifications, nil do
+        internship_application.stub :after_employer_validation_notifications, nil do
           internship_application.employer_validate!
         end
       end
@@ -167,7 +167,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     mock_mail_to_main_teacher = MiniTest::Mock.new
     mock_mail_to_main_teacher.expect(:deliver_later, true)
 
-    InternshipApplication.stub_any_instance(:employer_validation_notifications, nil) do
+    InternshipApplication.stub_any_instance(:after_employer_validation_notifications, nil) do
       MainTeacherMailer.stub(:internship_application_validated_by_employer_email,
                              mock_mail_to_main_teacher) do
         internship_application.save
@@ -395,19 +395,19 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     assert_not_equal 'amazing', internship_application.motivation
   end
 
-  test "#employer_validation_notifications when student registered by phone" do
+  test "#after_employer_validation_notifications when student registered by phone" do
     student = create(:student,:registered_with_phone)
     internship_application = create(:weekly_internship_application, student: student)
     InternshipApplication.stub_any_instance(:short_target_url, "http://bitly/short") do
-      assert internship_application.employer_validation_notifications.is_a?(SendSmsJob)
+      assert internship_application.after_employer_validation_notifications.is_a?(SendSmsJob)
     end
   end
 
-  test "#employer_validation_notifications when student registered by email" do
+  test "#after_employer_validation_notifications when student registered by email" do
     student = create(:student)
     internship_application = create(:weekly_internship_application, student: student)
     InternshipApplication.stub_any_instance(:deliver_later_with_additional_delay, 'email_sent') do
-      assert_equal "email_sent", internship_application.employer_validation_notifications
+      assert_equal "email_sent", internship_application.after_employer_validation_notifications
     end
   end
 end
