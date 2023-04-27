@@ -1,7 +1,6 @@
 = render 'layouts/breadcrumb', links: [ ['', 'Mon tableau de bord'] ]
 = render layout: 'layouts/dashboards_with_menu' do
   - selected_tab = params[:tab] || 'received!'
-  h1 = selected_tab 
   h1.h4.text-dark.fr-my-8w Les candidatures
   .fr-tabs
     ul.fr-tabs__list[role="tablist" aria-label="[Candidatures par type]"]
