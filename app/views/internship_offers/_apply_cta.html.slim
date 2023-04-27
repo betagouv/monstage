@@ -16,3 +16,7 @@
 
   .fr-mx-5w
     = react_component("InternshipOfferFavoriteButton", props: { internshipOffer: { id: internship_offer.id, is_favorite: false }, isDisabled: !can?(:create, Favorite) })
+
+- if current_user.try(:has_already_approved_an_application?)
+  p.fr-mx-1w.fr-mt-1w.fr-badge.fr-badge--warning
+    = "Vous avez déjà validé un stage"

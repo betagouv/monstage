@@ -418,6 +418,7 @@ class Ability
   end
 
   def student_can_apply?(internship_offer:, student:)
+    return false if student.internship_applications.approved.count.positive?
     offer_is_reserved_to_another_school = internship_offer.reserved_to_school? && (internship_offer.school_id != student.school_id)
     !offer_is_reserved_to_another_school
   end
