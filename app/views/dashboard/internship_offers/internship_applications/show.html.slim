@@ -1,0 +1,62 @@
+p
+= link_to dashboard_candidatures_path,
+          class: 'fr-mt-8w' do
+  span.fr-icon-arrow-left-line.fr-btn--icon-left.fr-raw-link
+    | retour
+
+.container-monstage-application
+  h1.h3 = @internship_offer.title
+  p = "#{@internship_offer.street} #{@internship_offer.city} #{@internship_offer.zipcode}"
+  .grey-container-application.with-grey-background
+    h2.h4.fr-mb-4w = @internship_application.student.presenter.full_name
+    p.fr-icon-calendar-line.fr-btn--icon-left
+      - week = @internship_application.week
+      ="Semaine du <strong>#{week.short_select_text_method}</strong>".html_safe
+    - unless @internship_application.motivation.to_s.blank?
+      h3.h5 Motivations
+      p = @internship_application.motivation.to_s
+
+    row.no-gutters.mt-2
+      .col-10
+        .row
+          .col-12.mb-3
+            h3.h6
+              i.fa-fw.fas.fa-user
+              | Informations sur l'élève
+            = render partial: "/internship_applications/student_details",
+                      locals: { student: @internship_application.student,
+                              internship_application: @internship_application}
+        .row
+          - resume_content = @internship_application.student.resume_educational_background.to_s
+          - resume_languages = @internship_application.student.resume_languages.to_s
+          - resume_other = @internship_application.student.resume_other.to_s
+          .col-md-4.col-sm-8.col-xs-12
+            - if resume_content.present? || resume_languages.present?
+              h3.h6 Parcours Scolaire
+              .reboot-trix-content = resume_content
+              - if resume_languages.present?
+                h3.h6.mt-3 Langues
+                .reboot-trix-content = resume_languages
+
+          .col-md-4.col-sm-8.col-xs-12
+            - if resume_other.present?
+              h3.h6 Activités extra-scolaires
+              .reboot-trix-content = resume_other
+
+        - if @internship_application.student.handicap?
+          h3.h6.mt-3
+            i.fas.fa-wheelchair
+            Besoin d'accompagnement
+          .reboot-trix-content.student-handicap = @internship_application.student.handicap.to_s
+    .grey-container-application
+      - parameters = {internship_offer_id: @internship_offer.id, id: @internship_application.id}
+      .d-flex.flex-row data-controller='employer-decision'
+        - unless @internship_application.rejected?
+          = render "dashboard/internship_offers/internship_applications/actions/reject",
+                   internship_application: @internship_application
+        - unless @internship_application.examined?
+          = render "dashboard/internship_offers/internship_applications/actions/examine",
+                   internship_application: @internship_application
+        - unless @internship_application.approved?
+          = render "dashboard/internship_offers/internship_applications/actions/approve",
+                   internship_application: @internship_application

@@ -35,4 +35,25 @@ class WeekTest < ActiveSupport::TestCase
     assert_equal 52, Week.in_the_future.sort_by(&:number).sort.last.number
     assert_equal 1, Week.in_the_future.sort_by(&:number).sort.last(52).first.number
   end
+
+  test '.ahead_of_school_year_start?' do
+    travel_to(Date.new(2021, 1, 7)) do
+      refute Week.current.ahead_of_school_year_start?
+    end
+    travel_to(Date.new(2021, 5, 1)) do
+      refute Week.current.ahead_of_school_year_start?
+    end
+    travel_to(Date.new(2021, 5, 31)) do
+      assert Week.current.ahead_of_school_year_start?
+    end
+    travel_to(Date.new(2021, 6, 1)) do
+      assert Week.current.ahead_of_school_year_start?
+    end
+    travel_to(Date.new(2021, 9, 1)) do
+      refute Week.current.ahead_of_school_year_start?
+    end
+    travel_to(Date.new(2021, 9, 10)) do
+      refute Week.current.ahead_of_school_year_start?
+    end
+  end
 end

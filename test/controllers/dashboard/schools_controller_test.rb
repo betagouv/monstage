@@ -23,38 +23,40 @@ module Dashboard
     end
 
     test 'GET edit as School Manager works' do
-      available_weeks = Week.selectable_on_school_year
-      school_weeks = Week.selectable_on_school_year[0..2]
-      school = create(:school, weeks: school_weeks)
-      sign_in(create(:school_manager, school: school))
-      internship_offer = create(:weekly_internship_offer, weeks: school_weeks)
+      travel_to Date.new(2019, 1, 1) do
+        available_weeks = Week.selectable_on_school_year
+        school_weeks = Week.selectable_on_school_year[1..3]
+        school = create(:school, weeks: school_weeks)
+        sign_in(create(:school_manager, school: school))
+        internship_offer = create(:weekly_internship_offer, weeks: school_weeks)
+        class_room = create(:class_room, school: school)
+        student = create(:student, school: school, class_room: class_room)
+        internship_offer.reload
+        internship_application = create(:weekly_internship_application,
+                                        student: student,
+                                        internship_offer: internship_offer,
+                                        week: school_weeks.first)
 
-      class_room = create(:class_room, school: school)
-      student = create(:student, school: school, class_room: class_room)
-      internship_offer.reload
-      internship_application = create(:weekly_internship_application,
-                                      student: student,
-                                      internship_offer: internship_offer,
-                                      week: school_weeks.first)
 
+        get edit_dashboard_school_path(school.to_param)
 
-      get edit_dashboard_school_path(school.to_param)
-
-      assert_response :success
-      assert_select 'title', 'Semaines de stage | Monstage'
-      assert_select 'form[action=?]', dashboard_school_path(school)
-      assert_select('label[for="all_year_long"]',
-                    {count: 0},
-                    'rendering select all weeks for school manager does not makes sense for school management')
-      assert_select('div[data-test="select-week-legend"]',
-                    {count: 0},
-                    'rendering legend on select-weeks does not makes sense for school management')
-      available_weeks.each do |week|
-        assert_select("input#school_week_ids_#{week.id}_checkbox",
-                      { count: 1 },
-                      "other week should be selectable")  
+        assert_response :success
+        assert_select 'title', 'Semaines de stage | Monstage'
+        assert_select 'form[action=?]', dashboard_school_path(school)
+        assert_select('label[for="all_year_long"]',
+                      {count: 0},
+                      'rendering select all weeks for school manager does not makes sense for school management')
+        assert_select('div[data-test="select-week-legend"]',
+                      {count: 0},
+                      'rendering legend on select-weeks does not makes sense for school management')
+        available_weeks.each do |week|
+          assert_select("input#school_week_ids_#{week.id}_checkbox",
+                        { count: 1 },
+                        "other week should be selectable")  
+        end
       end
     end
+
     test 'GET class_rooms#index as SchoolManagement shows UX critical alert-info' do
       school = create(:school)
       school_manager = create(:school_manager, school: school)

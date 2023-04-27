@@ -56,6 +56,7 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
                                     user_id: student.id)
     school_manager = school.school_manager
     main_teacher = nil
+    internship_application.employer_validate!
     internship_application.approve!
     email = SchoolManagerMailer.internship_application_approved_with_no_agreement_email(
       internship_application: internship_application,

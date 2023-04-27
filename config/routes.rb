@@ -67,7 +67,7 @@ Rails.application.routes.draw do
     end
 
     namespace :dashboard, path: 'tableau-de-bord' do
-      resources :internship_agreements,  path: 'conventions-de-stage', except: %i[destroy] 
+      resources :internship_agreements,  path: 'conventions-de-stage', except: %i[destroy]
       resources :users, path: 'signatures', only: %i[update], module: 'group_signing' do
         member do
           post 'start_signing'
@@ -92,18 +92,23 @@ Rails.application.routes.draw do
       end
 
       resources :internship_offers, path: 'offres-de-stage', except: %i[show] do
-        resources :internship_applications, only: %i[update index], module: 'internship_offers'
+        patch :republish, to: 'internship_offers#republish', on: :member
+        resources :internship_applications, path: 'candidatures', only: %i[update index show], module: 'internship_offers' do
+          patch :set_to_read, on: :member
+        end
       end
 
       namespace :stepper, path: 'etapes' do
         resources :organisations, only: %i[create new edit update]
         resources :internship_offer_infos, path: 'offre-de-stage-infos', only: %i[create new edit update]
         resources :tutors, path: 'tuteurs', only: %i[create new]
-      end    
+      end
 
       namespace :students, path: '/:student_id/' do
         resources :internship_applications, path: 'candidatures', only: %i[index show]
       end
+
+      get 'candidatures', to: 'internship_offers/internship_applications#user_internship_applications'
     end
   end
 

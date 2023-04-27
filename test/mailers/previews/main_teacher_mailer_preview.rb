@@ -28,6 +28,12 @@ class MainTeacherMailerPreview < ActionMailer::Preview
     )
   end
 
+  def internship_application_validated_by_employer_email
+    internship_application = InternshipApplication&.approved&.first
+
+    MainTeacherMailer.internship_application_validated_by_employer_email( internship_application )
+  end
+
   private
 
   def fetch_main_teacher(internship_application)

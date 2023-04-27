@@ -30,6 +30,10 @@ module Statisticianable
       )
     end
 
+    def custom_candidatures_path(parameters = {})
+      url_helpers.dashboard_candidatures_path(parameters)
+    end
+
     def custom_dashboard_paths
       [
         url_helpers.reporting_internship_offers_path,

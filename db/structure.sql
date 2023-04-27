@@ -655,7 +655,8 @@ CREATE TABLE public.internship_applications (
     student_phone character varying,
     student_email character varying,
     read_at timestamp(6) without time zone,
-    examined_at timestamp(6) without time zone
+    examined_at timestamp(6) without time zone,
+    validated_by_employer_at timestamp(6) without time zone
 );
 
 
@@ -2830,6 +2831,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230302162952'),
 ('20230307200802'),
 ('20230321104203'),
-('20230404154158');
+('20230404154158'),
+('20230420095232');
 
 

@@ -101,18 +101,18 @@ table.employer tbody tr td.title {
 
 .col-label-sorting{
   display: block;
-  height: 25px;
+  height: 35px;
 }
 // sorting headers for dashboard/internship_offers#index
 $sortLinkOffset: 15px;
 .sort-links{
-  $sort-arrow-height: 10px;
+  $sort-arrow-height: 15px;
   display: inline-block;
   position: absolute;
   top: 35%;
-  margin-top: -$sort-arrow-height;
+  margin-top: -11px;
   .currently-sorting{
-    color: yellow !important;
+    color: $blue-france !important;
   }
 
   .sort-link{
@@ -120,10 +120,10 @@ $sortLinkOffset: 15px;
     height: $sort-arrow-height;
     line-height: 8px;
     text-decoration: none;
+    padding-left: 10px;
   }
   .sort-link.active{
     opacity: 1;
-
   }
 }
 
@@ -132,6 +132,18 @@ $sortLinkOffset: 15px;
   .leaflet-container {
     height: 100% !important;
   }
+}
+.container-monstage-application {
+  max-width: 1000px;
+  margin: auto;
+  position: relative;
+  margin-left: 100px;
+}
+.grey-container-application{
+  padding: 2rem;
+}
+.grey-container-application.with-grey-background{
+  background-color: var(--background-default-grey-hover);
 }
 
 // sort links container
@@ -268,4 +280,65 @@ $sortLinkOffset: 15px;
 
 .fr-responsive-img {
   aspect-ratio: auto !important;
+}
+
+.toggle-block{
+  display: flex;
+  .label{
+    display: block;
+    width: 70px;
+    padding-top: 12px;
+  }
+  .toggle-swap{
+    display: block;
+    width: 70px;
+    height: 50px;
+    top: 35px;
+    .fr-toggle label{
+      top: -40px;
+      left: 0px;
+    }
+  }
+}
+.fr-toggle input[type=checkbox] {
+  margin-top: -5px ;
+}
+
+.dashboard-container{
+  display: flex;
+}
+.dashboard-container-child{
+  flex: 1 1 auto;
+}
+.dashboard-container-child:first-child{
+  flex: 1 1 $sidemenu-width;
+  min-width: $sidemenu-width;
+}
+
+.menu-ladder{
+  position: relative;
+  height: 130px;
+}
+.publish-adjust-position{
+  position: absolute;
+  bottom: 0;
+  right:0
+}
+
+.fr-sidemenu__list {
+  .sidemenu-box{
+    display: flex;
+    .sidemenu-box-left {
+      display: block;
+      width: 140px;
+      padding-left: 0;
+      text-align: left;
+    }
+    .sidemenu-box-right {
+      display: block;
+      text-align: right;
+      width: 40px;
+      padding-right: 0;
+    }
+  }
 }

@@ -1,0 +1,29 @@
+.fr-table.fr-table--bordered.fr-table--no-caption
+  table
+    thead
+      tr
+        th[scope="col"]
+          | Nom de l'élève
+        th[scope="col"]
+          | Inititulé du stage
+        th[scope="col"]
+          | Statut
+    - if internship_applications.empty?
+      tbody
+        tr
+          td.text-center[colspan="3"]
+            | Aucune candidature refusée
+    - else
+      tbody
+        - internship_applications.each do |internship_application|
+          - prez = internship_application.presenter
+          tr
+            td = prez.student.presenter.full_name
+            td
+              - prez_offer = internship_application.internship_offer.presenter
+              = prez.internship_offer.title
+              br/
+              = prez_offer.address
+            td
+              p class="fr-mt-1w fr-badge fr-badge--sm fr-badge--#{prez.status[:badge_type]} fr-badge--no-icon"
+                = prez.status[:label]

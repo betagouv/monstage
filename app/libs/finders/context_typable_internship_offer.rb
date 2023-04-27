@@ -70,6 +70,7 @@ module Finders
       end
       query = nearby_query(query) if coordinate_params
       query = school_year_query(query) if school_year_param
+      query = hide_duplicated_offers_query(query) unless user.god?
       query
     end
 
@@ -96,6 +97,10 @@ module Finders
                              .with_distance_from(latitude: coordinate_params.latitude,
                                                  longitude: coordinate_params.longitude)
       query.merge(proximity_query)
+    end
+
+    def hide_duplicated_offers_query(query)
+      query.merge(query.where(employer_hidden: false))
     end
 
     protected

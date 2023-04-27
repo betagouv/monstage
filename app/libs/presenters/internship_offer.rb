@@ -1,11 +1,20 @@
 include ActionView::Helpers::TagHelper
-include ActionView::Context    
+include ActionView::Context
 module Presenters
   class InternshipOffer
 
     def weeks_boundaries
       "Du #{I18n.localize(internship_offer.first_date, format: :human_mm_dd_yyyy)}" \
       " au #{I18n.localize(internship_offer.last_date, format: :human_mm_dd_yyyy)}"
+    end
+
+    def address
+      "#{internship_offer.street}, #{internship_offer.zipcode} #{internship_offer.city}"
+    end
+
+    def entreprise
+      name = internship_offer.employer_name
+      internship_offer.is_public ? "administration publique '#{name}'" : "entreprise '#{name}'"
     end
 
     def remaining_seats
@@ -16,12 +25,12 @@ module Presenters
     def internship_week_description
       internship_offer.weekly_planning? ? internship_weekly_description : internship_daily_description
     end
-    
+
     def internship_weekly_description
       hours = internship_offer.weekly_hours
       lunch_break = internship_offer.weekly_lunch_break
       daily_schedule = [ "#{hours[0]} à #{hours[1]}".gsub!(':', 'h') ]
-      
+
       content_tag(:div,
         content_tag(:div, "#{daily_schedule.join(', ')}", class: 'fr-tag fr-icon-calendar-fill fr-tag--icon-left'),
         class: 'fr-mb-2w'
@@ -30,13 +39,21 @@ module Presenters
       # html_safe
     end
 
+    def entreprise
+      if internship_offer.is_public?
+        "administration publique '#{internship_offer.employer_name}'"
+      else
+        "entreprise #{internship_offer.employer_name}"
+      end
+    end
+
     def internship_daily_description
       %w(lundi mardi mercredi jeudi vendredi).map do |day|
         hours = internship_offer.new_daily_hours[day]
         lunch_break = internship_offer.daily_lunch_break[day]
         next if hours.blank? || hours.size != 2
         daily_schedule = [ "de #{hours[0]} à #{hours[1]}".gsub!(':', 'h') ]
-        
+
         content_tag(:div,
           content_tag(:div, "#{day.capitalize} : #{daily_schedule.join(', ')}", class: 'fr-tag fr-icon-calendar-fill fr-tag--icon-left'),
           class: 'fr-mb-2w'

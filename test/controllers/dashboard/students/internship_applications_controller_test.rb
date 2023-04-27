@@ -73,10 +73,11 @@ module Dashboard
         student = create(:student)
         states = %i[drafted
                     submitted
+                    examined
                     approved
-                    rejected
                     expired
-                    convention_signed
+                    validated_by_employer
+                    rejected
                     canceled_by_employer
                     canceled_by_student]
         internship_applications = states.each_with_object({}) do |state, accu|
@@ -92,17 +93,21 @@ module Dashboard
           assert_select 'a[href=?]', dashboard_students_internship_application_path(student, internship_application)
           assert_template "dashboard/students/internship_applications/states/_#{aasm_state}"
         end
+
         assert_select '.fr-alert__title',
                       text: "Candidature en attente depuis le #{I18n.localize(internship_applications[:drafted].created_at, format: :human_mm_dd)}.",
                       count: 1
+        assert_select '.fr-alert--info .fr-alert__title',
+                      text: "Candidature envoyée le #{I18n.localize(internship_applications[:submitted].submitted_at, format: :human_mm_dd)}.",
+                      count: 1
+        assert_select '.fr-alert--info .fr-alert__title',
+                      text: "Candidature acceptée par l'employeur le #{I18n.localize(internship_applications[:validated_by_employer].validated_by_employer_at, format: :human_mm_dd)}.",
+                      count: 1
         assert_select '.fr-alert--success .fr-alert__title',
-                      text: "Candidature acceptée le #{I18n.localize(internship_applications[:approved].approved_at, format: :human_mm_dd)}.",
+                      text: "Participation au stage confirmée le #{I18n.localize(internship_applications[:approved].approved_at, format: :human_mm_dd)}.",
                       count: 1
         assert_select '.fr-alert--error .fr-alert__title',
                       text: "Candidature refusée le #{I18n.localize(internship_applications[:rejected].rejected_at, format: :human_mm_dd)}.",
-                      count: 1
-        assert_select '.fr-alert--info .fr-alert__title',
-                      text: "Candidature envoyée le #{I18n.localize(internship_applications[:submitted].submitted_at, format: :human_mm_dd)}.",
                       count: 1
         assert_select '.fr-alert--warning .fr-alert__title',
                       text: "Candidature expirée le #{I18n.localize(internship_applications[:expired].expired_at, format: :human_mm_dd)}.",
@@ -112,7 +117,7 @@ module Dashboard
                       count: 2
       end
 
-      test 'GET internship_applications#show not connected responds with redireciton' do
+      test 'GET internship_applications#show not connected responds with redirection' do
         student = create(:student)
         internship_application = create(:weekly_internship_application, student: student)
         get dashboard_students_internship_application_path(student,
@@ -128,6 +133,7 @@ module Dashboard
                                           aasm_state: :approved,
                                           convention_signed_at: 1.days.ago,
                                           approved_at: 1.days.ago,
+                                          validated_by_employer_at: 1.days.ago,
                                           submitted_at: 2.days.ago
                                         })
 
@@ -137,7 +143,7 @@ module Dashboard
 
         assert_template 'dashboard/students/internship_applications/show'
         assert_select '.fr-alert--success .fr-alert__title',
-                      text: "Candidature envoyée le #{I18n.localize(internship_application.submitted_at, format: :human_mm_dd)}",
+                      text: "Participation au stage confirmée le #{I18n.localize(internship_application.validated_by_employer_at, format: :human_mm_dd)}.",
                       count: 1
       end
 
