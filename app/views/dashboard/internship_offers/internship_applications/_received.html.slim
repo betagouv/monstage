@@ -30,7 +30,7 @@
               = prez.internship_offer.title
               br/
               = prez_offer.address
-            td = prez.expires_in
+            td = internship_application.expired? ? '-' : prez.expires_in
             td
               p class="fr-mt-1w fr-badge fr-badge--sm fr-badge--#{prez.status[:badge_type]} fr-badge--no-icon"
                 = prez.status[:label]
@@ -41,8 +41,8 @@
                             method: :PATCH) do |f|
                 = link_to "#",
                           title: "Répondre à la candidature",
-                          data: {:'toggle-publish-target' => 'checkToggle',
-                                action: 'click->toggle-publish#toggle'},
+                          data: { :'toggle-publish-target' => 'checkToggle',
+                                  action: 'click->toggle-publish#toggle' },
                           class: 'fr-raw-link fr-text--sm text-center' do
                   span.fr-icon-mail-line.fr-icon--sm.fr-mr-1v aria-hidden="true"
                   |Répondre
