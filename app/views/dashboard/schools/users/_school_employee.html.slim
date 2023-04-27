@@ -1,14 +1,18 @@
+- prez = school_employee.presenter
 tr
+  td = prez.full_name
+  td = prez.email
+  td = prez.role_name
   td
-    = school_employee.presenter.short_name
+    p.fr-badge.fr-badge--sm.fr-mt-2w.fr-badge--success
+      = "inscrit"
   td
-    = school_employee.email
-  td
-    = school_employee.role_presenter.role
-  td
-    = link_to dashboard_school_user_path(school_employee.school, school_employee),
-               data: { confirm: "Confirmez-vous la suppression de #{school_employee.presenter.formal_name} de l'école?" },
-                       method: :delete,
-                       class: 'pt-2 fr-raw-link fr-text--sm red-delete' do
-      | Supprimer
+    - confirmation_text = "Êtes-vous sûr de vouloir supprimer le compte de #{prez.full_name} ?"
+    - if school_employee != current_user
+      = link_to dashboard_school_user_path(school_employee.school, school_employee),
+                data: { confirm: confirmation_text},
+                method: :delete,
+                class: 'fr-raw-link fr-mr-8w' do
+        button.fr-btn.fr-btn--secondary.fr-icon-delete-line.fr-mr-2w type="submit" title="Supprimer ce compte" aria-label="Supprimer ce compte" id="employe_delete_#{school_employee.id}" name="employe_delete_#{school_employee.id}"
+          | Supprimer ce compte
 

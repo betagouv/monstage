@@ -51,6 +51,9 @@ fr:
             page_title: "Élèves de la classe"
       edit:
         page_title: Semaines de stage
+      invitations:
+        new:
+          page_title: "Inviter un membre de l'équipe"
       manager_school:
         page_title: 'Informations relatives au %{name}'
       students:

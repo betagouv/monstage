@@ -23,7 +23,6 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
       post user_registration_path(params: {
                                     user: { email: 'fatou@snapchat.com',
                                             password: 'okokok',
-                                            password_confirmation: 'okokok',
                                             first_name: 'Fatou',
                                             last_name: 'D',
                                             type: 'Users::Student',
@@ -51,7 +50,6 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
             gender: 'np',
             email: 'fourcade.m@gmail.com',
             password: 'okokok',
-            password_confirmation: 'okokok',
             handicap: 'cotorep',
             accept_terms: '1'
           }
@@ -88,7 +86,6 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
               handicap_present: 0,
               last_name: "Théodore ",
               password: "[Filtered]",
-              password_confirmation: "[Filtered]",
               type: Users::Student.name
             }
           }
@@ -117,7 +114,6 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
             handicap_present: 0,
             last_name: "Théodore ",
             password: "[Filtered]",
-            password_confirmation: "[Filtered]",
             type: Users::Student.name
           }
         }
@@ -137,7 +133,6 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
             identity_token: identity.token,
             email: email,
             password: 'okokok',
-            password_confirmation: 'okokok',
             accept_terms: '1'
           }
         }
@@ -165,7 +160,6 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
             type: 'Users::Student',
             email: email,
             password: 'okokok',
-            password_confirmation: 'okokok',
             accept_terms: '1'
           }
         }

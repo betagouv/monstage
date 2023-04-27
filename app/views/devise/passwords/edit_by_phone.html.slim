@@ -27,10 +27,6 @@
             - if @minimum_password_length
               small.form-text.text-muted= t('devise.shared.minimum_password_length', count: @minimum_password_length)
 
-        .form-group.custom-label-container
-          = password_field_tag :password_confirmation, '', autocomplete: "off", required: true, class: 'fr-input'
-          = label_tag :password_confirmation, class: 'fr-label' do
-            ' Confirmez votre nouveau mot de passe
 
         .actions.d-flex.d-sm-block.text-center
           = submit_tag 'Valider', class: 'fr-btn'

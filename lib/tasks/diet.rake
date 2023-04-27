@@ -93,7 +93,7 @@ namespace :diet do
     class_names = []
 
     search_in_css_files do |line|
-      captures = line.match(/\s*\.([a-z_-]*)|[^.]/).captures
+      captures = line.match(/\s*\.([a-z0-9_-]*)|[^.]/).captures
       captures -= ['.'] if captures.include?('.')
       class_names += captures
     end

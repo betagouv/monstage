@@ -1,63 +1,90 @@
 - content_for(:page_title, "#{t(".page_title")} | Monstage")
-.onboarding-card.register-card-sm.fr-p-3w.fr-my-3w data-controller="signup" data-signup-channel-value="phone"
-  .header-register.fr-mb-2w.fr-pb-2w
-    .row.mx-0
-      .col-12.align-self-end.h-100
-        .row
-          .col-12.text-right
-            p.fr-tag Etape 1 sur 2
-        .row
-          .col-12.fr-pl-0
-            h1.h1.text-dark Inscription
-            = link_to "Vous avez déjà un compte ?", new_user_session_path, class: 'blue-france fr-raw-link'
-  = form_for @identity, id: 'new_user' do |f|
-    = render "layouts/form_errors", resource: @identity, resource_name: :identity
-    = f.hidden_field :targeted_offer_id, value: params[:targeted_offer_id]
-    span data-signup-target="emailBloc"
-    span data-signup-target="emailHint"
-    span data-signup-target="emailInput"
-    span data-signup-target="emailRadioButton"
-    span data-signup-target="phoneBloc"
+- errors = Presenters::Error.new(errors: @identity.errors)
+- incipit = user_presenter.subscription_incipit(as: "Student")
+- resource = @identity
+- resource_name = :identity
 
-    = react_component("SearchSchool", props: { classes: 'col-12 fr-input',
-                                                required: true,
-                                                label: 'Nom (ou ville) de mon établissement REP ou REP+',
-                                                resourceName: :identity,
-                                                selectClassRoom: true,
-                                                existingSchool: @identity.school.as_json,
-                                                existingClassRoom: @identity.try(:class_room).try(:as_json)})
+main#content[role="main"
+             data-controller="signup"
+             data-signup-channel-value="phone"]
 
-    .row
-     .col-md-6.col-xs-12
-       .form-group
-         = f.label 'Nom', class: 'fr-label', for: 'identity_last_name'
-         = f.text_field :last_name, class: 'fr-input', required: true
-     .col-md-6.col-xs-12
-       .form-group
-         = f.label 'Prénom', class: 'fr-label', for: 'identity_first_name'
-         = f.text_field :first_name, class: 'fr-input', required: true
-    .row
-      .col-md-6.col-xs-12
-        .fr-input-group
-          = f.label 'Date de naissance', class: 'fr-label', for: 'identity_birth_date'
-          .fr-input-wrap.fr-icon-calendar-line
-            = f.date_field :birth_date, class: 'fr-input', required: true
-      .col-md-6.col-xs-12
-        .fr-form-group
-          = f.label "Sexe", class: "fr-label", for: "select-gender"
-          .fr-fieldset__content
-            .pl-5
-              .fr-radio-group.fr-radio-group--sm
-                = f.radio_button :gender, "f", id: "select-gender-girl", class: "border", required: true
-                = f.label :gender, "Féminin", class: "fr-label fr-mb-0", for: "select-gender-girl"
-              .fr-radio-group.fr-radio-group--sm
-                = f.radio_button :gender, "m", id: "select-gender-boy"
-                = f.label :gender, "Masculin", class: "fr-label fr-mb-0", for: "select-gender-boy"
-              .fr-radio-group.fr-radio-group--sm
-                = f.radio_button :gender, "np", id: "select-gender-unknown"
-                = f.label :gender, "Non précisé", class: "fr-label fr-mb-0", for: "select-gender-unknown"
-
-    .row
-      .col-12
-        .actions.d-flex.d-sm-block.mt-2
-          = f.submit "Valider mes informations", class: "fr-btn btn-block", id: "test-create-identity"
+  .fr-container.fr-container--fluid
+    .fr-grid-row.fr-grid-row-gutters.fr-grid-row--center
+      .fr-col-12.fr-col-md-10.fr-col-lg-8
+        .fr-container.fr-px-md-0
+          .fr-grid-row.fr-grid-row-gutters.fr-grid-row--left
+            = render 'layouts/breadcrumb', links: [ ['', incipit[:title]]]
+        .fr-container.fr-background-alt--grey.fr-px-md-0.fr-pt-10v.fr-pt-md-14v
+          .fr-mx-1w.fr-mx-md-13w
+            = form_for @identity, id: 'new_user' do |f|
+              .fr-mx-3w
+                .fr-stepper
+                  h2.fr-stepper__title
+                    span.fr-stepper__state Étape 1 sur 2
+                    |Vos informations personnelles
+                  .fr-stepper__steps data-fr-current-step="1" data-fr-steps="2"
+                  p.fr-stepper__details
+                    span.fr-text--bold Étape suivante :&nbsp;
+                    Vos informations de connexion
+                hr
+                p
+                  = render "layouts/form_errors", resource: @identity, resource_name: :user
+                .fr-grid-row.fr-grid-row-gutters
+                  p.fr-stepper__details
+                    | Sauf mention contraire, tous les champs sont obligatoires.
+              fieldset#new-student-form.fr-mx-2w[aria-labelledby="new-student-title"]
+                legend
+                = f.hidden_field :targeted_offer_id, value: params[:targeted_offer_id]
+                span data-signup-target="emailBloc"
+                span data-signup-target="emailHint"
+                span data-signup-target="emailInput"
+                span data-signup-target="emailRadioButton"
+                span data-signup-target="phoneBloc"
+                .fr-mx-1w
+                  label.fr-label for="user_school_city"
+                        | Ville ou collège
+                  = react_component("SearchSchool", props: { classes: 'col-12 fr-input',
+                                                    required: true,
+                                                    label: 'Nom (ou ville) de mon établissement REP ou REP+',
+                                                    resourceName: :identity,
+                                                    selectClassRoom: true,
+                                                    existingSchool: @identity.school.as_json,
+                                                    existingClassRoom: @identity.try(:class_room).try(:as_json)})
+                .fr-mt-2w
+                  = render partial: "users/registrations/input_field",
+                            locals: { f: f,
+                                      field_label: "Prénom",
+                                      field: :first_name,
+                                      resource: resource,
+                                      resource_name: :identity,
+                                      option: { required: true },
+                                      errors: errors }
+                = render partial: "users/registrations/input_field",
+                          locals: { f: f,
+                                    field_label: "Nom",
+                                    field: :last_name,
+                                    resource: resource,
+                                    resource_name: :identity,
+                                    option: { required: true },
+                                    errors: errors }
+                .fr-fieldset__element
+                  .fr-input-group 
+                    = f.label 'Date de naissance', class: 'fr-label', for: 'identity_birth_date'
+                    .fr-input-wrap.fr-icon-calendar-line
+                      = f.date_field :birth_date, class: 'fr-input', required: true
+                .fr-fieldset__element
+                  = f.label "Sexe", class: "fr-label", for: "select-gender"
+                  .fr-fieldset__content
+                    .fr-radio-group
+                      = f.radio_button :gender, "f", id: "select-gender-girl", class: "border", required: true
+                      = f.label :gender, "Féminin", class: "fr-label fr-mb-0", for: "select-gender-girl"
+                    .fr-radio-group
+                      = f.radio_button :gender, "m", id: "select-gender-boy"
+                      = f.label :gender, "Masculin", class: "fr-label fr-mb-0", for: "select-gender-boy"
+                    .fr-radio-group
+                      = f.radio_button :gender, "np", id: "select-gender-unknown"
+                      = f.label :gender, "Non précisé", class: "fr-label fr-mb-0", for: "select-gender-unknown"
+                .fr-fieldset__element
+                  .col-12
+                    .actions.d-flex.d-sm-block.my-2.text-right
+                      = f.submit "Valider", class: "fr-btn", id: "test-create-identity"

@@ -195,8 +195,5 @@ class School < ApplicationRecord
   def email_domain_name
     Academy.get_email_domain(Academy.lookup_by_zipcode(zipcode: zipcode))
   end
-
-  def email_domain_name
-    Academy.get_email_domain(Academy.lookup_by_zipcode(zipcode: zipcode))
-  end
 end
+

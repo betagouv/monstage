@@ -1,26 +1,35 @@
 import $ from 'jquery';
 import { Controller } from 'stimulus';
 import ActionCable from 'actioncable';
-import { toggleElement, showElement, hideElement } from '../utils/dom';
+import {
+  toggleElement,
+  showElement,
+  hideElement
+} from '../utils/dom';
 
 export default class extends Controller {
-  static targets = ['handicapGroup',
+  static targets = [
+    'handicapGroup',
     'emailHint',
     'emailExplanation',
     'emailInput',
     'rolelInput',
-    'label',
+    'emailLabel',
     'emailBloc',
     'phoneBloc',
     'emailRadioButton',
     'phoneRadioButton',
     'passwordHint',
+    'passwordGroup',
     'passwordInput',
-    'passwordConfirmationHint',
-    'passwordConfirmationInput',
     'phoneSuffix',
     'schoolPhoneBloc',
   ];
+  // 'passwordConfirmationHint',
+  // 'passwordConfirmationGroup',
+  // 'passwordConfirmationLabel',
+  // 'passwordConfirmationInput',
+  // data-signup - target="emailExplanation"
 
   static values = {
     channel: String,
@@ -34,23 +43,20 @@ export default class extends Controller {
 
   // on change email address, ensure user is shown academia address requirement when neeeded
   refreshEmailFieldLabel(event) {
-    let labelText = "Adresse électronique (e-mail)"
+    let labelText = "Adresse électronique"
     if (["school_manager", "teacher", "main_teacher", "other"].includes(event.target.value)) {
       labelText = "Adresse électronique académique";
+      this.emailLabelTarget.innerText = labelText;
       // margin adjusting
-      this.specificExplanation(event)
+      const format = (event.target.value == "school_manager") ?
+        'ce.UAI@ac-academie.fr' :
+        'xxx@ac-academie.fr'
+      const explanation = `Merci de saisir une adresse au format : ${format}. Cette adresse sera utilisée pour communiquer avec vous. `
+      this.emailInputTarget.placeholder = format;
+      $(this.emailExplanationTarget).text(explanation);
     }
     $(this.labelTarget).text();
   }
-
-  specificExplanation(event) {
-    const format = (event.target.value == "school_manager") ?
-      'ce.UAI@ac-academie.fr' :
-      'xxx@ac-academie.fr'
-    const explanation = `Merci de saisir une adresse au format : ${format}. Cette adresse sera utilisée pour communiquer avec vous. `
-    $(this.emailExplanationTarget).text(explanation);
-  }
-
 
   // show/hide handicap input if checkbox is checked
   toggleHandicap() {
@@ -101,14 +107,13 @@ export default class extends Controller {
             emailHintElement.innerText = 'Votre email semble correct!';
             break;
           case 'invalid':
-            $hint.attr('class', 'invalid-feedback');
+            $hint.attr('class', 'fr-message fr-message--error');
             $input.attr('class', 'fr-input is-invalid');
-
             emailHintElement.innerText =
               'Cette adresse éléctronique ne nous semble pas valide, veuillez vérifier';
             break;
           case 'hint':
-            $hint.attr('class', 'invalid-feedback');
+            $hint.attr('class', 'fr-message fr-message--error');
             $input.attr('class', 'fr-input is-invalid');
             emailHintElement.innerText = `Peut être avez-vous fait une erreur de frappe ? ${data.replacement}`;
             break;
@@ -132,39 +137,19 @@ export default class extends Controller {
 
   checkPassword() {
     const passwordHintElement = this.passwordHintTarget;
+    const passwordGroupElement = this.passwordGroupTarget;
     const passwordInputTargetElement = this.passwordInputTarget;
     const $hint = $(passwordHintElement);
-    const $input = $(passwordInputTargetElement);
+    const $passwordGroup = $(passwordGroupElement);
     if (passwordInputTargetElement.value.length === 0) {
-      $input.attr('class', 'form-control');
       $hint.attr('class', 'text-muted');
       passwordHintElement.innerText = '(6 caractères au moins)';
     } else if (passwordInputTargetElement.value.length < 6) {
-      $input.attr('class', 'form-control is-invalid');
-      $hint.attr('class', 'invalid-feedback');
+      $hint.attr('class', 'fr-message fr-message--error');
       passwordHintElement.innerText = 'Ce mot de passe est trop court, veuillez corriger.';
     } else {
-      $input.attr('class', 'form-control is-valid');
       $hint.attr('class', 'd-none');
-    }
-  }
-
-  checkPasswordConfirmation() {
-    const passwordConfirmationHintElement = this.passwordConfirmationHintTarget;
-    const passwordConfirmationInputTargetElement = this.passwordConfirmationInputTarget;
-    const $hint = $(passwordConfirmationHintElement);
-    const $input = $(passwordConfirmationInputTargetElement);
-    if (passwordConfirmationInputTargetElement.value.length === 0) {
-      $input.attr('class', 'form-control');
-      $hint.attr('class', 'text-muted');
-      passwordConfirmationHintElement.innerText = '';
-    } else if (passwordConfirmationInputTargetElement.value !== this.passwordInputTarget.value) {
-      $input.attr('class', 'form-control is-invalid');
-      $hint.attr('class', 'invalid-feedback');
-      passwordConfirmationHintElement.innerText = 'Les mot de passe ne correspondent pas, veuillez corriger.';
-    } else {
-      $input.attr('class', 'form-control is-valid');
-      $hint.attr('class', 'd-none');
+      $passwordGroup.attr('class', 'fr-password fr-input-group fr-input-group--valid');
     }
   }
 
