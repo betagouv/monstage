@@ -26,8 +26,10 @@ tr class="test-internship-offer test-internship-offer-#{employer_internship_offe
                 aria: { label: "Voir l'offre" }) do
         button.fr-btn.fr-icon-eye-line.fr-btn--secondary.fr-mr-2w title="Voir l'offre"
           | Voir l'offre
-      = link_to '',
-                new_dashboard_internship_offer_path(duplicate_id: employer_internship_offer.to_param),
+      = link_to new_dashboard_internship_offer_path(duplicate_id: employer_internship_offer.to_param),
                 title: 'Dupliquer l\'offre',
-                class: 'fr-btn fr-icon-clipboard-line fr-btn--icon fr-btn--secondary test-duplicate-button'
+                class: 'fr-btn fr-btn--secondary test-duplicate-button' do
+        = inline_svg_pack_tag('media/images/icons/file_copy_line.svg',
+                            class: 'fr-mx-n1v',
+                            alt: 'Dupliquez cette offre de stage')
 

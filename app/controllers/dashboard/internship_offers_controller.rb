@@ -69,7 +69,7 @@ module Dashboard
         respond_to do |format|
           format.turbo_stream
           format.html do
-            redirect_to(internship_offer_path(updated_internship_offer),
+            redirect_to(internship_offer_path(updated_internship_offer, origine: 'dashboard'),
                         flash: { success: 'Votre annonce a bien été modifiée' })
           end
         end

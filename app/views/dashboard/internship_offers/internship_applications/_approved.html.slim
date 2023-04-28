@@ -23,7 +23,7 @@
           - prez_app = internship_application.presenter
           tr
             td = prez_app.student.presenter.full_name
-            td
+            td style="min-width: 500px;"
               - prez_offer = internship_application.internship_offer.presenter
               = prez_app.internship_offer.title
               br/
