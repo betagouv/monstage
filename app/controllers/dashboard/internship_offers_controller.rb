@@ -10,7 +10,11 @@ module Dashboard
       authorize! :index,
                  Acl::InternshipOfferDashboard.new(user: current_user)
       @internship_offers = finder.all
-      @internship_offers = @internship_offers.order(order_column => order_direction)
+      if order_direction.nil? 
+        @internship_offers = @internship_offers.order(:published_at)
+      else  
+        @internship_offers = @internship_offers.order(order_column => order_direction)
+      end
     end
 
     # duplicate submit
@@ -160,11 +164,9 @@ module Dashboard
     end
 
     def order_direction
-      if params[:direction] && %w[asc desc].include?(params[:direction])
-        return params[:direction]
-      end
+      return nil unless params[:direction]
 
-      :desc
+      return params[:direction] if %w[asc desc].include?(params[:direction])
     end
 
     def internship_offer_builder
