@@ -28,6 +28,17 @@
               br/
               = prez.internship_offer.presenter.address
             td
-              p class="fr-mt-1w fr-badge fr-badge--sm fr-badge--#{prez.status[:badge_type]}"
+              p class="fr-mt-1w fr-badge fr-badge--sm fr-badge--#{prez.status[:badge_type]} fr-badge--no-icon"
                 = prez.status[:label]
-            td.text-center
+            td
+              - if internship_application.approved?
+                = link_to edit_dashboard_internship_agreement_path(internship_application.internship_agreement.id.to_i),
+                          class: 'fr-raw-link' do
+                  span.fr-icon-file-line.fr-icon--sm aria-hidden="true"
+                  .fr-pl-1w  Remplir la convention
+              - else
+                = link_to dashboard_internship_offer_internship_application_path(internship_application.internship_offer.id.to_i, internship_application),
+                          class: 'fr-raw-link' do
+                  .d-flex.flex-row
+                    span.fr-icon-eye-line.fr-icon--sm aria-hidden="true"
+                    .fr-pl-1w Voir
