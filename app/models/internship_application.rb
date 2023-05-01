@@ -154,7 +154,8 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :read do
-      transitions from: :submitted, to: :read_by_employer
+      transitions from: :submitted, to: :read_by_employer,
+                  after: proc { |*_args| update!("read_at": Time.now.utc) }
     end
 
     event :examine do
@@ -270,19 +271,14 @@ class InternshipApplication < ApplicationRecord
       deliver_later_with_additional_delay do
         StudentMailer.internship_application_validated_by_employer_email(internship_application: self)
       end
-    elsif student.phone.present?
+    end
+    if student.phone.present? && !!Rails.env.development?
       sms_message = "Monstagedetroisieme.fr : Votre candidature a " \
                     "été acceptée ! Consultez-la ici : #{short_target_url(self)}"
       SendSmsJob.perform_later(
         user: student,
         message: sms_message
-      ) unless Rails.env.development?
-    else
-      mesg = "while internship ##{id} has been accepted," \
-              " no message has been sent to the " \
-              "student ##{student.id}"
-      Rails.logger.error(mesg)
-      raise StandardError.new "student without email nor phone ##{student.id}"
+      )
     end
   end
 
