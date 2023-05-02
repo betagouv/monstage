@@ -90,4 +90,22 @@ class EmployerMailer < ApplicationMailer
     )
   end
 
+  def internship_application_approved_for_an_other_internship_offer(internship_application:)
+    internship_application = internship_application
+    @internship_offer      = internship_application.internship_offer
+    student                = internship_application.student
+    @prez_stud             = student.presenter
+    @employer              = @internship_offer.employer
+    @url = dashboard_internship_offer_internship_applications_url(
+      internship_offer_id: @internship_offer.id,
+      id: internship_application.id,
+      mtm_campaign: "Offreur - internship application cancelled"
+    ).html_safe
+
+    mail(
+      to: @employer.email,
+      subject: 'Un candidat a préféré un autre stage'
+    )
+  end
+
 end
