@@ -20,6 +20,7 @@ module Users
     has_many :internship_offer_infos
 
     def custom_dashboard_path
+      return custom_candidatures_path if internship_applications.submitted.any?
       url_helpers.dashboard_internship_offers_path
     end
 
