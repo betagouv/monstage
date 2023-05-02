@@ -42,7 +42,7 @@ h1.h2.mb-4
           tabindex="2"]
           | Semaines
 
-    - if current_user.respond_to?(:school) && can?(:update, InternshipAgreement)
+    - if current_user.respond_to?(:school) && can?(:read, InternshipAgreement)
       li
         - path = dashboard_internship_agreements_path
         = link_to path do
