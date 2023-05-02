@@ -19,8 +19,9 @@ module InternshipOffers::InternshipApplications
       assert school.school_manager.present?
       sign_in(internship_application.internship_offer.employer)
 
-      #since no main_teacher and mails to school_manager and employer are delivered later(they are queued)
-      assert_enqueued_emails 2 do
+      #s ince no main_teacher and no mail to school_manager, 
+      # only employer is delivered an email later(it is queued) at agreement's creation time
+      assert_enqueued_emails 1 do
         patch(
           dashboard_internship_offer_internship_application_path(
             internship_application.internship_offer,
@@ -79,7 +80,7 @@ module InternshipOffers::InternshipApplications
 
       sign_in(employer)
 
-      assert_enqueued_emails 2 do
+      assert_enqueued_emails 1 do
         patch(
           dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
           params: { transition: :approve! })
@@ -148,7 +149,7 @@ module InternshipOffers::InternshipApplications
 
       sign_in(internship_offer.employer)
 
-      assert_enqueued_emails 2 do
+      assert_enqueued_emails 1 do
         assert_changes -> { InternshipAgreement.all.count },
                      from: 0,
                      to: 1 do
@@ -196,7 +197,7 @@ module InternshipOffers::InternshipApplications
 
       sign_in(internship_offer.employer)
 
-      assert_enqueued_emails 2 do
+      assert_enqueued_emails 1 do
         update_url = dashboard_internship_offer_internship_application_path(
           internship_offer,
           internship_application

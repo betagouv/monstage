@@ -52,6 +52,7 @@ import './internship_offers_new/fast_time.svg';
 import './internship_offers_new/paper.svg';
 
 import './internship_applications/boy.svg';
+import './internship_applications/girl.svg';
 
 import './icons/noun_Handshake_2803586-1.svg';
 import './icons/noun_job_offer_1461730-1.svg';

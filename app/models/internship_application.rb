@@ -272,7 +272,7 @@ class InternshipApplication < ApplicationRecord
         StudentMailer.internship_application_validated_by_employer_email(internship_application: self)
       end
     end
-    if student.phone.present? && !!Rails.env.development?
+    if student.phone.present? && !Rails.env.development?
       sms_message = "Monstagedetroisieme.fr : Votre candidature a " \
                     "été acceptée ! Consultez-la ici : #{short_target_url(self)}"
       SendSmsJob.perform_later(
@@ -290,9 +290,6 @@ class InternshipApplication < ApplicationRecord
     agreement.skip_validations_for_system = true
     agreement.save!
 
-    SchoolManagerMailer.internship_application_approved_with_agreement_email(
-      internship_agreement: internship_agreement
-    ).deliver_later
     EmployerMailer.internship_application_approved_with_agreement_email(
       internship_agreement: internship_agreement
     ).deliver_later
