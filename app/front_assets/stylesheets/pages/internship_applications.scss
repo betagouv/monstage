@@ -99,6 +99,23 @@ $line-height: 4px;
   }
 }
 
+.internship-application-status {
+  display: block;
+  width: 500px;
+  height: 244px;
+  border: 1px solid $grey-disabled;
+  padding: 40px 32px;
+  margin-right: 15px;
+  margin-left: 15px;
+  margin-bottom: 20px;
+  .internship-application-location{
+    color: $grey-425;
+    margin-top: 12px;
+    margin-bottom: 16px;
+  }
+  .internship-offer-title{}
+  .action { }
+}
 // media phone
 @media (max-width: 767px) {
   .success-banner {
