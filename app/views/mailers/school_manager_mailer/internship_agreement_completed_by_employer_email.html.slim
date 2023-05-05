@@ -1,0 +1,29 @@
+p style=head_styles
+  = "Convention à remplir"
+
+p style=p_styles
+  = "Bonjour #{@school_manager.presenter.full_name},"
+
+p style=p_styles
+   = "#{@entreprise} a accepté l'élève #{@prez_stud.full_name} au stage " \
+     "de #{@internship_offer.title} la semaine du #{@week.beginning_of_week}."
+p style=p_styles
+   = "L'employeur a complété la convention en ligne.<strong> Cette convention est la" \
+     " dernière version homologuée par le Ministère de l'Education Nationale, " \
+     "certains articles restent toutefois ajustables selon vos besoins</strong>." \
+     " Elle permet d'aller plus vite dans les échanges avec l'entreprise.".html_safe
+p style=p_styles
+   = "Un système sécurisé permet à l'employeur et au chef d'établissement de " \
+     "<strong>signer en ligne la convention, une fois remplie par les deux " \
+     "parties.</strong>".html_safe
+p style=p_styles
+   = "Pour finir, la convention doit être imprimée et transmise à l'élève pour " \
+     "signature"
+= render partial: "mailers/call_to_action",
+          locals: { href: @url,
+                    label: "Editer la convention" }
+
+p style=p_styles
+  | À bientôt,
+p style=p_styles
+  | L’équipe Monstagedetroisieme.fr

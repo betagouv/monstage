@@ -131,27 +131,6 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     end
   end
 
-  test 'transition from submited to approved sends an email to school_manager when agreement is possible' do
-    school = create(:school)
-    class_room = create(:class_room, school: school)
-    student = build(:student, class_room: class_room)
-    create(:school_manager, school: school)
-
-    internship_application = create(:weekly_internship_application, :submitted, student: student)
-
-    mock_mail_to_school_manager = MiniTest::Mock.new
-    mock_mail_to_school_manager.expect(:deliver_later, true)
-
-    InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
-      SchoolManagerMailer.stub(:internship_application_approved_with_agreement_email,
-                                mock_mail_to_school_manager) do
-        internship_application.save
-        internship_application.approve!
-      end
-      mock_mail_to_school_manager.verify
-    end
-  end
-
   test 'transition from submited to approved sends an email to employer when agreement is possible' do
     school = create(:school)
     class_room = create(:class_room, school: school)
