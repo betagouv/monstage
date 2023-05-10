@@ -107,7 +107,7 @@ export default function AddressInput({
                     htmlFor: `${resourceName}_autocomplete`,
                   })}
                 >
-                  Adresse du lieu où se déroule le stage
+                  Adresse du siège social
                   <abbr title="(obligatoire)" aria-hidden="true">
                     *
                   </abbr>
@@ -126,10 +126,11 @@ export default function AddressInput({
                     {...getInputProps({
                       onChange: inputChange,
                       value: fullAddress,
-                      className: 'form-control',
+                      className: 'fr-input',
                       name: `${resourceName}_autocomplete`,
                       id: `${resourceName}_autocomplete`,
                       placeholder: 'Adresse',
+                      data: {'target': 'organisation-form.requiredField'}
                     })}
                   />
                 </div>
@@ -208,12 +209,13 @@ export default function AddressInput({
               </abbr>
             </label>
             <input
-              className="form-control"
+              className="fr-input"
               value={street}
               readOnly
               type="text"
               name={`${resourceName}[street]`}
               id={`${resourceName}_street`}
+              data-target="organisation-form.requiredField"
             />
           </div>
         </div>
@@ -225,7 +227,7 @@ export default function AddressInput({
               Complément d'adresse
             </label>
             <input
-              className="form-control"
+              className="fr-input"
               type="text"
               name={`${resourceName}[street_complement]`}
               id={`${resourceName}_street_complement`}
@@ -241,13 +243,14 @@ export default function AddressInput({
               </abbr>
             </label>
             <input
-              className="form-control"
+              className="fr-input"
               required="required"
               value={city}
               type="text"
               readOnly
               name={`${resourceName}[city]`}
               id={`${resourceName}_city`}
+              data-target="organisation-form.requiredField"
             />
           </div>
         </div>
@@ -260,13 +263,14 @@ export default function AddressInput({
               </abbr>
             </label>
             <input
-              className="form-control"
+              className="fr-input"
               required="required"
               value={zipcode}
               type="text"
               name={`${resourceName}[zipcode]`}
               id={`${resourceName}_zipcode`}
               readOnly
+              data-target="organisation-form.requiredField"
             />
           </div>
         </div>
