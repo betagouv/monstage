@@ -69,7 +69,9 @@ CREATE TYPE public.user_role AS ENUM (
     'school_manager',
     'teacher',
     'main_teacher',
-    'other'
+    'other',
+    'cpe',
+    'admin_officer'
 );
 
 
@@ -655,7 +657,8 @@ CREATE TABLE public.internship_applications (
     student_phone character varying,
     student_email character varying,
     read_at timestamp(6) without time zone,
-    examined_at timestamp(6) without time zone
+    examined_at timestamp(6) without time zone,
+    validated_by_employer_at timestamp(6) without time zone
 );
 
 
@@ -792,6 +795,47 @@ ALTER SEQUENCE public.internship_offer_keywords_id_seq OWNED BY public.internshi
 
 
 --
+-- Name: internship_offer_student_infos; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.internship_offer_student_infos (
+    id bigint NOT NULL,
+    max_candidates integer,
+    school_id integer,
+    employer_id integer,
+    last_date date,
+    weeks_count integer DEFAULT 0 NOT NULL,
+    internship_offer_student_info_weeks_count integer DEFAULT 0 NOT NULL,
+    daily_hours jsonb DEFAULT '{}'::jsonb,
+    weekly_hours text[] DEFAULT '{}'::text[],
+    weekly_lunch_break text,
+    max_students_per_group integer DEFAULT 1 NOT NULL,
+    remaining_seats_count integer DEFAULT 0,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: internship_offer_student_infos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.internship_offer_student_infos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: internship_offer_student_infos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.internship_offer_student_infos_id_seq OWNED BY public.internship_offer_student_infos.id;
+
+
+--
 -- Name: internship_offer_weeks; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -890,7 +934,7 @@ CREATE TABLE public.internship_offers (
     employer_manual_enter boolean DEFAULT false,
     tutor_role character varying,
     remaining_seats_count integer DEFAULT 0,
-    employer_hidden boolean DEFAULT false
+    hidden_duplicate boolean DEFAULT false
 );
 
 
@@ -1503,6 +1547,13 @@ ALTER TABLE ONLY public.internship_offer_keywords ALTER COLUMN id SET DEFAULT ne
 
 
 --
+-- Name: internship_offer_student_infos id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_student_infos ALTER COLUMN id SET DEFAULT nextval('public.internship_offer_student_infos_id_seq'::regclass);
+
+
+--
 -- Name: internship_offer_weeks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1726,6 +1777,14 @@ ALTER TABLE ONLY public.internship_offer_infos
 
 ALTER TABLE ONLY public.internship_offer_keywords
     ADD CONSTRAINT internship_offer_keywords_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: internship_offer_student_infos internship_offer_student_infos_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_student_infos
+    ADD CONSTRAINT internship_offer_student_infos_pkey PRIMARY KEY (id);
 
 
 --
@@ -2830,6 +2889,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230302162952'),
 ('20230307200802'),
 ('20230321104203'),
-('20230404154158');
+('20230404154158'),
+('20230412082826'),
+('20230420095232'),
+('20230426161001'),
+('20230510145714');
 
 
