@@ -259,16 +259,9 @@ class InternshipApplication < ApplicationRecord
           MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
         end
       end
-    else
-      if school_manager_presence #Meaning that type is NOT "InternshipApplications::WeeklyFramed"
-        deliver_later_with_additional_delay do
-          SchoolManagerMailer.internship_application_approved_with_no_agreement_email(arg_hash)
-        end
-      end
-      if main_teacher.present?
-        deliver_later_with_additional_delay do
-          MainTeacherMailer.internship_application_approved_with_no_agreement_email(arg_hash)
-        end
+    elsif main_teacher.present?
+      deliver_later_with_additional_delay do
+        MainTeacherMailer.internship_application_approved_with_no_agreement_email(arg_hash)
       end
     end
   end
@@ -307,9 +300,6 @@ class InternshipApplication < ApplicationRecord
     agreement.skip_validations_for_system = true
     agreement.save!
 
-    SchoolManagerMailer.internship_application_approved_with_agreement_email(
-      internship_agreement: internship_agreement
-    ).deliver_later
     EmployerMailer.internship_application_approved_with_agreement_email(
       internship_agreement: internship_agreement
     ).deliver_later
