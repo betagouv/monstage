@@ -155,7 +155,9 @@ class InternshipApplication < ApplicationRecord
 
     event :read do
       transitions from: :submitted, to: :read_by_employer,
-                  after: proc { |*_args| update!("read_at": Time.now.utc) }
+                  after: proc { |*_args| 
+        update!("read_at": Time.now.utc)
+      }
     end
 
     event :examine do
@@ -327,6 +329,10 @@ class InternshipApplication < ApplicationRecord
 
   def application_via_school_manager?
     internship_offer&.school
+  end
+
+  def max_dunning_letter_count_reached?
+    dunning_letter_count >= 1
   end
 
   def anonymize

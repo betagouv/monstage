@@ -71,7 +71,7 @@ class EmployerMailer < ApplicationMailer
       subject: 'Une convention de stage attend votre signature'
     )
   end
-  
+
   def notify_others_signatures_finished_email(internship_agreement:)
     internship_application = internship_agreement.internship_application
     @internship_offer      = internship_application.internship_offer
