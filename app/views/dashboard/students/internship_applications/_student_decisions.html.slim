@@ -1,0 +1,63 @@
+.d-flex
+  - if actions.present?
+    - actions.each do |action|
+      - if action[:form_path].present? && action[:transition].present?
+        = form_with method: :patch,
+                    url: action[:form_path],
+                    data: {turbo: false} do |f|
+          = f.hidden_field :transition, value: action[:transition]
+          = f.submit action[:label],
+                     class: "fr-btn fr-btn--#{action[:color]} fr-btn--#{action[:level]} fr-mr-2w",
+                     disabled: (action[:disabled] || false)
+      - elsif action[:link_path]
+        = link_to action[:label],
+                  action[:link_path],
+                  class: "fr-btn fr-btn--#{action[:color]} fr-btn--#{action[:level]} fr-mr-2w",
+                  disabled: (action[:disabled] || false)
+      - elsif action[:label] == 'Renvoyer la demande'
+        button.fr-btn.fr-mr-1w[data-fr-opened="false" aria-controls="fr-modal-2"]
+          =action[:label]
+        dialog#fr-modal-2.fr-modal[aria-labelledby="fr-modal-2-title" role="dialog"]
+          .fr-container.fr-container--fluid.fr-container-md
+            .fr-grid-row.fr-grid-row--center
+              .fr-col-12.fr-col-md-8.fr-col-lg-6
+                .fr-modal__body
+                  .fr-modal__header
+                    button.fr-link--close.fr-link[aria-controls="fr-modal-2"]
+                      | Fermer
+                  .fr-modal__content
+                    h1#fr-modal-2-title.fr-modal__title
+                      span.fr-fi-arrow-right-line.fr-fi--lg
+                      | Renvoyer votre demande de stage
+                    p
+                      strong
+                        | Attention !
+                      |Votre demande de stage ne pourra pas être renvoyée qu'
+                      strong
+                        |une seule fois.
+                      |Choisissez donc bien le moment de faire votre relance.
+                  .fr-modal__footer
+                    ul.fr-btns-group.fr-btns-group--right.fr-btns-group--inline-reverse.fr-btns-group--inline-lg.fr-btns-group--icon-left
+                      li
+                        = form_with method: :post,
+                                    url: resend_application_dashboard_students_internship_application_path(internship_application.student.id, internship_application),
+                                    data: {turbo: false} do |f|
+                          = f.submit action[:label],
+                                    class: "fr-btn fr-btn--#{action[:color]} fr-btn--#{action[:level]} fr-mr-1w",
+                                    data: {confirm: "Attention ! Vous ne pourrez relancer l'employeur qu'une seule fois ! "},
+                                    disabled: (action[:disabled] || internship_application.max_dunning_letter_count_reached?)
+                      li
+                        button.fr-btn.fr-btn--secondary[aria-controls="fr-modal-2"]
+                          |  Annuler
+
+  - unless internship_application.aasm_state.in?(no_cancelling_possibility_states)
+    = render "dashboard/internship_offers/internship_applications/action_modal",
+              internship_application: internship_application,
+              aasm_target: :cancel_by_student!,
+              modal_opener_label: 'Annuler la candidature',
+              subtitle: "Motif de l'annulation",
+              message: "Une fois la candidature annulée, un email de notification va être envoyé à l'employeur avec le motif de l'annulation",
+              rich_text: true,
+              modal_id: "cancel-by-student-internship-application-#{internship_application.id}",
+              fa_icon: "fa-ban"
+

@@ -15,7 +15,8 @@ module InternshipAgreements
     def started_or_signed?
       %w[validated
          signatures_started
-         signed_by_all signed
+         signed_by_all
+         signed
       ].include?(internship_agreement.aasm_state)
     end
 
@@ -61,7 +62,7 @@ module InternshipAgreements
       when 'draft', 'started_by_employer' ,'completed_by_employer', 'started_by_school_manager' then
         {status: 'hidden', text: ''}
       when 'validated', 'signatures_started' then
-        user_signed_condition = @internship_agreement.signed_by?(user: current_user)
+        user_signed_condition = current_user.already_signed?(internship_agreement_id: @internship_agreement.id)
         user_signed_condition ? {status: 'disabled', text: 'Déjà signée'} :
                                 {status: 'enabled', text: 'Ajouter aux signatures'}
       when 'signed_by_all' then {status: 'disabled', text: 'Signée de tous'}

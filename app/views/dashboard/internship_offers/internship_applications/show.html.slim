@@ -1,5 +1,5 @@
 p
-= link_to dashboard_candidatures_path,
+= link_to dashboard_students_internship_applications_path(current_user.id),
           class: 'fr-mt-8w' do
   span.fr-icon-arrow-left-line.fr-btn--icon-left.fr-raw-link
     | retour
@@ -49,14 +49,12 @@ p
             Besoin d'accompagnement
           .reboot-trix-content.student-handicap = @internship_application.student.handicap.to_s
     .grey-container-application
-      - parameters = {internship_offer_id: @internship_offer.id, id: @internship_application.id}
-      .d-flex.flex-row data-controller='employer-decision'
-        - unless @internship_application.aasm_state.in?(%w[canceled_by_employer canceled_by_student rejected expired])
-          = render "dashboard/internship_offers/internship_applications/actions/reject",
-                   internship_application: @internship_application
-        - unless @internship_application.aasm_state.in?(%w[examined canceled_by_employer canceled_by_student rejected expired])
-          = render "dashboard/internship_offers/internship_applications/actions/examine",
-                   internship_application: @internship_application
-        - unless @internship_application.aasm_state.in?(%w[approved canceled_by_student rejected expired canceled_by_employer])
-          = render "dashboard/internship_offers/internship_applications/actions/approve",
-                   internship_application: @internship_application
+      - if current_user.employer_like?
+        = render "dashboard/internship_offers/internship_applications/actions/employer_decisions",
+                internship_application: @internship_application
+      - elsif current_user.student?
+        - presenter = @internship_application.presenter
+        = render "dashboard/students/internship_applications/student_decisions",
+                 internship_application: @internship_application,
+                 actions: presenter.actions_in_show_page,
+                 no_cancelling_possibility_states: presenter.no_cancelling_possibility_states

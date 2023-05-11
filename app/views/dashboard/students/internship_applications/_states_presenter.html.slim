@@ -5,15 +5,19 @@
     = status_hash[:label]
   .internship-application-location
     .d-flex
-      = inline_svg_pack_tag('media/images/icons/arrow_right.svg', class: 'fr-mr-1w')
+      = inline_svg_pack_tag('media/images/icons/arrow_right.svg', class: 'fr-mr-1w fr-my-auto')
       = @prez.internship_location
-  .h5.internship-offer-title
-    = @prez.internship_offer_title
-  .action.mt-auto 
+  = link_to internship_offer_path(internship_application.internship_offer),
+            class: 'fr-raw-link' do
+    .h5.internship-offer-title
+      = @prez.internship_offer_title
+  .action.mt-auto
     .d-flex
       - if status_hash[:actions].present?
         - status_hash[:actions].each do |action|
           = link_to action[:label],
                     action[:path],
-                    class: "fr-btn fr-btn--sm fr-btn--#{action[:color]} fr-mr-1w #{action[:secondary]? 'fr-btn--secondary': ''}"
+                    id: "show_link_#{internship_application.id}",
+                    class: "fr-btn fr-btn--sm fr-btn--#{action[:color]} fr-btn--#{action[:level]}",
+                    disabled: action[:disabled] || false
 

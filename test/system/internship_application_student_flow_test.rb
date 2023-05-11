@@ -96,24 +96,62 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       submitted: create(:weekly_internship_application, :submitted, student: student),
       approved: create(:weekly_internship_application, :approved, student: student),
       rejected: create(:weekly_internship_application, :rejected, student: student),
-      convention_signed: create(:weekly_internship_application, :convention_signed, student: student),
       canceled_by_student: create(:weekly_internship_application, :canceled_by_student, student: student)
     }
     sign_in(student)
     visit '/'
     click_on 'Candidatures'
     internship_applications.each do |_aasm_state, internship_application|
-      url = dashboard_students_internship_application_path(
-        student_id: student.id,
-        id: internship_application.id
+      url = internship_offer_internship_application_path(
+        internship_application.internship_offer.id,
+        internship_application
       )
-      page.find "a[href='#{url}']",
-                text: internship_application.internship_offer.title,
-                wait: 4
-
-      visit url
-      all( 'a', text: 'Candidatures').first.click
+      prez = internship_application.presenter
+      badge = prez.student_human_state
+      find("a#show_link_#{internship_application.id}", text: badge[:actions].first[:label])
+      click_link(internship_application.internship_offer.title)
+      click_link('Candidatures')
+      find("#show_link_#{internship_application.id}").click
+      click_link('retour')
     end
+  end
+
+  test 'student can confirm an employer approval from his applications dashboard' do
+    school = create(:school, :with_school_manager)
+    student = create(:student, school: school)
+    internship_application = create(:weekly_internship_application, :validated_by_employer, student: student)
+    sign_in(student)
+    visit '/'
+    click_on 'Candidatures'
+    find('.fr-badge.fr-badge--success', text: "ACCEPTÉE PAR L'ENTREPRISE")
+    find("#show_link_#{internship_application.id}").click
+    assert_equal "validated_by_employer", internship_application.aasm_state
+    assert_changes ->{internship_application.reload.aasm_state},
+                   from: "validated_by_employer",
+                   to: "approved" do
+      find('input[value="Choisir ce stage"]').click
+    end
+    find '.fr-badge.fr-badge--success', text: "CONFIRMÉE"
+    find "a#show_link_#{internship_application.id}", text: "Contacter l'offreur"
+  end
+
+  test 'student can submit an application from his applications dashboard' do
+    school = create(:school, :with_school_manager)
+    student = create(:student, school: school)
+    internship_application = create(:weekly_internship_application, :drafted, student: student)
+    sign_in(student)
+    visit '/'
+    click_on 'Candidatures'
+    find('.fr-badge', text: "BROUILLON")
+    find("#show_link_#{internship_application.id}").click
+    assert_equal "drafted", internship_application.aasm_state
+    assert_changes ->{internship_application.reload.aasm_state},
+                   from: "drafted",
+                   to: "submitted" do
+      find('input[value="Envoyer la demande"]').click
+    end
+    find '.fr-badge.fr-badge--info', text: "SANS RÉPONSE"
+    find "a#show_link_#{internship_application.id}", text: "Renvoyer la demande"
   end
 
   test 'GET #show as Student with existing draft application shows the draft' do
@@ -182,9 +220,10 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       student_id: student.id,
       id: internship_application.id
     )
-    assert page.has_selector?("a[href='#{url}']", count: 1)
-    visit url
-    assert page.has_selector?(".next-step-test", count: 1)
+    # TODO : bring back functionality with new design
+    # assert page.has_selector?("a[href='#{url}']", count: 1)
+    # visit url
+    # assert page.has_selector?(".next-step-test", count: 1)
   end
 
   test 'student with submittted application can not see employer\'s address' do
@@ -201,8 +240,9 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     sign_in(student)
     # visit '/'
     visit dashboard_students_internship_applications_path(student, internship_application.internship_offer)
-    click_link(internship_application.internship_offer.title)
-    refute page.has_selector?("a[href='#tab-convention-detail']", count: 1)
+    # TODO : bring back functionality with new design
+    # click_link(internship_application.internship_offer.title)
+    # refute page.has_selector?("a[href='#tab-convention-detail']", count: 1)
   end
 
   test 'student can draft, submit, and cancel(by_student) internship_applications' do

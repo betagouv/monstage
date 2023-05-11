@@ -90,4 +90,10 @@ class EmployerMailer < ApplicationMailer
     )
   end
 
+  def resend_internship_application_submitted_email(internship_application:)
+    @internship_application = internship_application
+
+    mail(to: @internship_application.internship_offer.employer.email,
+         subject: '[Relance] Une candidature vous attend, veuillez y répondre')
+  end
 end

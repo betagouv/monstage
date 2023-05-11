@@ -38,9 +38,9 @@ module Presenters
     def status_label
       translation_path = translation_path(role)
       if internship_agreement.signatures_started? && internship_agreement.signed_by?(user: current_user)
-          I18n.t("#{translation_path}.already_signed")
+        I18n.t("#{translation_path}.already_signed")
       elsif internship_agreement.signatures_started?
-          I18n.t("#{translation_path}.not_signed_yet")
+        I18n.t("#{translation_path}.not_signed_yet")
       else
         I18n.t(translation_path)
       end
