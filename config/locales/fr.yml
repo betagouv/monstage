@@ -90,7 +90,7 @@ fr:
       users/other:
         one: Autre utilisateur
         other: Autres utilisateurs
-      users/statistician:
+      users/prefecture_statistician:
         one: Référent départemental
         other: Référents départementaux
       users/ministry_statistician:
