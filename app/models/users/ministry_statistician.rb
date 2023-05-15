@@ -16,6 +16,10 @@ module Users
       EmailWhitelists::Ministry.find_by(email: email)
     end
 
+    def email_whitelist
+      ministry_email_whitelist
+    end
+
     def ministries
       ministry_email_whitelist&.groups
     end
@@ -33,6 +37,30 @@ module Users
     def assign_email_whitelist_and_confirm
       self.ministry_email_whitelist = EmailWhitelists::Ministry.find_by(email: email)
       self.confirmed_at = Time.now
+    end
+
+    rails_admin do
+      list do
+        field :ministeres do
+          formatted_value{
+              bindings[:object]&.email_whitelist&.groups.map(&:name).join(', ')
+          }
+        end
+      end
+      show do
+        field :ministeres do
+          formatted_value{
+              bindings[:object]&.email_whitelist&.groups.map(&:name).join(', ')
+          }
+        end
+      end
+      export do
+        field :ministeres, :string do
+          formatted_value{
+              bindings[:object]&.email_whitelist&.groups.map(&:name).join(', ')
+          }
+        end
+      end
     end
 
     private

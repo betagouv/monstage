@@ -5,7 +5,7 @@ module Statisticianable
 
   included do
     has_many :internship_offers, as: :employer,
-    dependent: :destroy
+             dependent: :destroy
 
     has_many :kept_internship_offers, -> { merge(InternshipOffer.kept) },
     class_name: 'InternshipOffer', foreign_key: 'employer_id'
@@ -37,7 +37,7 @@ module Statisticianable
         custom_dashboard_path
       ]
     end
-  
+
     def statistician? ; true end
 
     rails_admin do
@@ -50,14 +50,7 @@ module Statisticianable
         scopes(UserAdmin::DEFAULT_SCOPES)
 
         fields(*UserAdmin::DEFAULT_FIELDS)
-        field :department do
-          label 'Département'
-          pretty_value { bindings[:object]&.department}
-        end
-        field :department_zipcode do
-          label 'Code postal'
-          pretty_value { bindings[:object]&.department_zipcode}
-        end
+        
         fields(*UserAdmin::ACCOUNT_FIELDS)
       end
 
@@ -70,6 +63,35 @@ module Statisticianable
         field :agreement_signatorable do
           label 'Signataire des conventions'
           help 'Si le V est coché en vert, le signataire doit signer TOUTES les conventions'
+        end
+      end
+
+      export do
+        field :first_name, :string do
+          export_value do
+            value
+          end
+        end
+        field :last_name, :string do
+          export_value do
+            value
+          end
+        end
+        field :email, :string do
+          export_value do
+            value
+          end
+        end
+
+        field :confirmed_at, :datetime do
+          export_value do
+            value if value
+          end
+        end
+        field :sign_in_count, :integer do
+          export_value do
+            value if value
+          end
         end
       end
     end
