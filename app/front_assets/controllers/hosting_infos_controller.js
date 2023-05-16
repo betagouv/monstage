@@ -41,27 +41,35 @@ export default class extends Controller {
     (maxCandidates === 1) ? this.collectiveOptionInhibit(true) : this.collectiveOptionInhibit(false);
   }
 
+  UpdateMaxCandidateCount() {
+    if (this.individualButtonTarget.checked) {
+      $(this.maxCandidatesInputTarget).prop('max', 1);
+      $(this.maxCandidatesInputTarget).prop('value', 1);
+    } else {
+      $(this.maxCandidatesInputTarget).prop('min', 2);
+      $(this.maxCandidatesInputTarget).prop('value', 2);
+    }
+  }
+
   collectiveOptionInhibit(doInhibit) {
     if (doInhibit) {
       this.individualButtonTarget.checked = true;
-      this.collectiveButtonTarget.setAttribute('disabled', true);
       this.individualButtonTarget.focus()
-    } else {
-      $(this.collectiveButtonTarget).prop('disabled', false);
     }
     return;
   }
 
   handleMaxCandidatesChanges() {
-    // this.checkOnCandidateCount();
-    // const maxCandidates = parseInt(this.maxCandidatesInputTarget.value, 10)
-    // if (maxCandidates === 1) { this.withIndividualToggling() }
+    this.checkOnCandidateCount();
+    const maxCandidates = parseInt(this.maxCandidatesInputTarget.value, 10)
+    if (maxCandidates === 1) { this.withIndividualToggling() }
   }
 
   // show/hide group (maxStudentsPerGroup>1) internship custom controls
   toggleInternshipmaxStudentsPerGroup(event) {
+    this.UpdateMaxCandidateCount();
     const toggleValue = event.target.value;
-    (toggleValue === 'true') ? this.withIndividualToggling() : this.withCollectiveToggling()
+    (toggleValue === 'true') ? this.withIndividualToggling() : this.withCollectiveToggling();
   }
 
   withIndividualToggling() {
@@ -79,9 +87,8 @@ export default class extends Controller {
   }
 
   connect() {
-    console.log('internship_offer_infos_controller');
     this.induceType('');
-    // this.checkOnCandidateCount()
+    this.UpdateMaxCandidateCount();
   }
 
   disconnect() {}

@@ -30,7 +30,7 @@ module Dashboard::InternshipOffers
               week_ids: [weeks(:week_2019_1).id],
               is_public: false,
               group_id: new_group.id,
-              new_daily_hours: {'lundi' => ['10h', '12h']}
+              daily_hours: {'lundi' => ['10h', '12h']}
 
             } })
       assert_redirected_to(internship_offer_path(internship_offer),
@@ -39,7 +39,7 @@ module Dashboard::InternshipOffers
       assert_equal(new_title,
                    internship_offer.reload.title,
                    'can\'t update internship_offer title')
-      assert_equal ['10h', '12h'], internship_offer.reload.new_daily_hours['lundi']
+      assert_equal ['10h', '12h'], internship_offer.reload.daily_hours['lundi']
 
     end
 
@@ -94,7 +94,7 @@ module Dashboard::InternshipOffers
               week_ids: [weeks(:week_2019_1).id],
               is_public: false,
               group_id: new_group.id,
-              new_daily_hours: {'lundi' => ['10h', '12h']}
+              daily_hours: {'lundi' => ['10h', '12h']}
 
             } })
       assert_redirected_to(internship_offer_path(internship_offer),
@@ -103,7 +103,7 @@ module Dashboard::InternshipOffers
       assert_equal(new_title,
                    internship_offer.reload.title,
                    'can\'t update internship_offer title')
-      assert_equal ['10h', '12h'], internship_offer.reload.new_daily_hours['lundi']
+      assert_equal ['10h', '12h'], internship_offer.reload.daily_hours['lundi']
 
     end
 

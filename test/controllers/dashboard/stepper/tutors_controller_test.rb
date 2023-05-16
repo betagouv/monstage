@@ -103,9 +103,9 @@ module Dashboard::Stepper
       assert_equal(internship_offer_info.weekly_hours,
                    created_internship_offer.weekly_hours,
                    'weekly_hours not copied')
-      assert_equal(internship_offer_info.new_daily_hours,
-                   created_internship_offer.new_daily_hours,
-                   'new_daily_hours not copied')
+      assert_equal(internship_offer_info.daily_hours,
+                   created_internship_offer.daily_hours,
+                   'daily_hours not copied')
 
       # recopy organisation
       assert_equal organisation.employer_name, created_internship_offer.employer_name

@@ -9,7 +9,8 @@ module InternshipOffersHelper
       InternshipOfferInfo,
       InternshipOfferInfos::WeeklyFramed,
       InternshipOffer,
-      InternshipOffers::WeeklyFramed
+      InternshipOffers::WeeklyFramed,
+      HostingInfo
     ]
     is_preselectable_entity.any?{ |klass| object.is_a?(klass) }
   end
@@ -88,11 +89,11 @@ module InternshipOffersHelper
   end
 
   def select_daily_start(internship_offer, day)
-    internship_offer.new_daily_hours.fetch(day) { '9:00' }
+    internship_offer.daily_hours.fetch(day) { '9:00' }
   end
 
   def select_daily_end(internship_offer, day)
-    internship_offer.new_daily_hours.fetch(day) { '17:00' }
+    internship_offer.daily_hours.fetch(day) { '17:00' }
   end
 
   def truncate_description(internship_offer)

@@ -9,7 +9,7 @@ FactoryBot.define do
     employer { create(:employer) }
     weeks_count { 0 }
     weekly_hours { ['9:00','17:00'] }
-    new_daily_hours { {} }
+    daily_hours { {} }
 
     trait :weekly_internship_offer_info do
       weeks { [Week.first] }

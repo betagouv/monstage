@@ -1,6 +1,6 @@
-class CreateInternshipOfferStudentInfos < ActiveRecord::Migration[7.0]
+class CreateHostingInfos < ActiveRecord::Migration[7.0]
   def change
-    create_table :internship_offer_student_infos do |t|
+    create_table :hosting_infos do |t|
       
       t.integer :max_candidates
       t.integer :school_id
@@ -10,9 +10,11 @@ class CreateInternshipOfferStudentInfos < ActiveRecord::Migration[7.0]
 
       t.integer :weeks_count, null: false, default: 0
 
-      t.integer :internship_offer_student_info_weeks_count, null: false, default: 0
+      t.integer :hosting_info_weeks_count, null: false, default: 0
 
       t.jsonb :daily_hours, default: {}
+      t.jsonb :daily_lunch_break, default: {}
+      
       t.text :weekly_hours, array: true, default: []
       t.text :weekly_lunch_break
 

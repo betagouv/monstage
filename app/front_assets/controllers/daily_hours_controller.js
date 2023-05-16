@@ -25,19 +25,19 @@ export default class extends Controller {
   }
 
   clean_daily_hours() {
-    $("#internship_agreement_new_daily_hours_lundi_start").val('')
-    $("#internship_agreement_new_daily_hours_mardi_start").val('')
-    $("#internship_agreement_new_daily_hours_mercredi_start").val('')
-    $("#internship_agreement_new_daily_hours_jeudi_start").val('')
-    $("#internship_agreement_new_daily_hours_vendredi_start").val('')
-    $("#internship_agreement_new_daily_hours_samedi_start").val('')
+    $("#internship_agreement_daily_hours_lundi_start").val('')
+    $("#internship_agreement_daily_hours_mardi_start").val('')
+    $("#internship_agreement_daily_hours_mercredi_start").val('')
+    $("#internship_agreement_daily_hours_jeudi_start").val('')
+    $("#internship_agreement_daily_hours_vendredi_start").val('')
+    $("#internship_agreement_daily_hours_samedi_start").val('')
     
-    $("#internship_agreement_new_daily_hours_lundi_end").val('')
-    $("#internship_agreement_new_daily_hours_mardi_end").val('')
-    $("#internship_agreement_new_daily_hours_mercredi_end").val('')
-    $("#internship_agreement_new_daily_hours_jeudi_end").val('')
-    $("#internship_agreement_new_daily_hours_vendredi_end").val('')
-    $("#internship_agreement_new_daily_hours_samedi_end").val('')
+    $("#internship_agreement_daily_hours_lundi_end").val('')
+    $("#internship_agreement_daily_hours_mardi_end").val('')
+    $("#internship_agreement_daily_hours_mercredi_end").val('')
+    $("#internship_agreement_daily_hours_jeudi_end").val('')
+    $("#internship_agreement_daily_hours_vendredi_end").val('')
+    $("#internship_agreement_daily_hours_samedi_end").val('')
   }
   
   clean_daily_lunch() {
@@ -45,19 +45,19 @@ export default class extends Controller {
   }
 
   initialize_daily_hours() {
-    $("#internship_agreement_new_daily_hours_lundi_start").val('9:00')
-    $("#internship_agreement_new_daily_hours_mardi_start").val('9:00')
-    $("#internship_agreement_new_daily_hours_mercredi_start").val('9:00')
-    $("#internship_agreement_new_daily_hours_jeudi_start").val('9:00')
-    $("#internship_agreement_new_daily_hours_vendredi_start").val('9:00')
-    $("#internship_agreement_new_daily_hours_samedi_start").val('9:00')
+    $("#internship_agreement_daily_hours_lundi_start").val('9:00')
+    $("#internship_agreement_daily_hours_mardi_start").val('9:00')
+    $("#internship_agreement_daily_hours_mercredi_start").val('9:00')
+    $("#internship_agreement_daily_hours_jeudi_start").val('9:00')
+    $("#internship_agreement_daily_hours_vendredi_start").val('9:00')
+    $("#internship_agreement_daily_hours_samedi_start").val('9:00')
     
-    $("#internship_agreement_new_daily_hours_lundi_end").val('17:00')
-    $("#internship_agreement_new_daily_hours_mardi_end").val('17:00')
-    $("#internship_agreement_new_daily_hours_mercredi_end").val('17:00')
-    $("#internship_agreement_new_daily_hours_jeudi_end").val('17:00')
-    $("#internship_agreement_new_daily_hours_vendredi_end").val('17:00')
-    $("#internship_agreement_new_daily_hours_samedi_end").val('17:00')
+    $("#internship_agreement_daily_hours_lundi_end").val('17:00')
+    $("#internship_agreement_daily_hours_mardi_end").val('17:00')
+    $("#internship_agreement_daily_hours_mercredi_end").val('17:00')
+    $("#internship_agreement_daily_hours_jeudi_end").val('17:00')
+    $("#internship_agreement_daily_hours_vendredi_end").val('17:00')
+    $("#internship_agreement_daily_hours_samedi_end").val('17:00')
   }
 
   clean_weekly_lunch() {

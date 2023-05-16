@@ -159,7 +159,7 @@ fr:
         max_candidates: Nbr. max de candidats accueillis sur l'année
         max_students_per_group: Effectif max. d'un groupe d'élèves
         sector_id: Secteurs professionnels
-        new_daily_hours: Horaires journaliers
+        daily_hours: Horaires journaliers
         daily_lunch_break: Pause déjeuner par jour
         weekly_lunch_break: Pause déjeuner
 
@@ -184,7 +184,7 @@ fr:
         student_full_name: Nom de l'élève
         tutor_full_name: Nom du tuteur
         main_teacher_full_name: Nom du professeur principal
-        new_daily_hours: Horaires journaliers
+        daily_hours: Horaires journaliers
         weekly_hours: Horaires
         daily_lunch_break: Horaires journaliers pause déjeuner
         weekly_lunch_break: Horaires pause déjeuner

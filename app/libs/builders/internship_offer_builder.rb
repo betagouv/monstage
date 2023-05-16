@@ -105,7 +105,7 @@ module Builders
         max_students_per_group: internship_offer_info.max_students_per_group,
         school_id: internship_offer_info.school_id,
         weekly_hours: internship_offer_info.weekly_hours,
-        new_daily_hours: internship_offer_info.new_daily_hours,
+        daily_hours: internship_offer_info.daily_hours,
         sector_id: internship_offer_info.sector_id,
         daily_lunch_break: internship_offer_info.daily_lunch_break,
         weekly_lunch_break: internship_offer_info.weekly_lunch_break,

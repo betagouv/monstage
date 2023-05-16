@@ -59,7 +59,7 @@ module Dashboard::Stepper
               type: 'InternshipOfferInfos::WeeklyFramed',
               description_rich_text: '<div><b>Activités de découverte</b></div>',
               'week_ids' => weeks.map(&:id),
-              new_daily_hours: {
+              daily_hours: {
                 "lundi" => ['07:00', '12:00'],
                 "mardi" => ['08:00', '13:00'],
                 "mercredi" => ['09:00', '14:00'],
@@ -75,12 +75,12 @@ module Dashboard::Stepper
       assert_equal sector.id, created_internship_offer_info.sector_id
       assert_equal 'InternshipOfferInfos::WeeklyFramed', created_internship_offer_info.type
       assert_equal 'Activités de découverte', created_internship_offer_info.description_rich_text.to_plain_text
-      assert_equal ['07:00', '12:00'], created_internship_offer_info.new_daily_hours["lundi"]
-      assert_equal ['08:00', '13:00'], created_internship_offer_info.new_daily_hours["mardi"]
-      assert_equal ['09:00', '14:00'], created_internship_offer_info.new_daily_hours["mercredi"]
-      assert_equal ['10:00', '15:00'], created_internship_offer_info.new_daily_hours["jeudi"]
-      assert_equal ['11:00', '16:00'], created_internship_offer_info.new_daily_hours["vendredi"]
-      assert_equal ['--', '--'], created_internship_offer_info.new_daily_hours["samedi"]
+      assert_equal ['07:00', '12:00'], created_internship_offer_info.daily_hours["lundi"]
+      assert_equal ['08:00', '13:00'], created_internship_offer_info.daily_hours["mardi"]
+      assert_equal ['09:00', '14:00'], created_internship_offer_info.daily_hours["mercredi"]
+      assert_equal ['10:00', '15:00'], created_internship_offer_info.daily_hours["jeudi"]
+      assert_equal ['11:00', '16:00'], created_internship_offer_info.daily_hours["vendredi"]
+      assert_equal ['--', '--'], created_internship_offer_info.daily_hours["samedi"]
       assert_equal weeks.map(&:id), created_internship_offer_info.week_ids
       assert_redirected_to new_dashboard_stepper_tutor_path(
         organisation_id: organisation.id,
@@ -104,7 +104,7 @@ module Dashboard::Stepper
               type: 'InternshipOfferInfos::WeeklyFramed',
               description_rich_text: '<div><b>Activités de découverte</b></div>',
               'week_ids' => weeks.map(&:id),
-              new_daily_hours: {
+              daily_hours: {
                 "lundi" => ['07:00', '12:00'],
                 "mardi" => ['08:00', '13:00'],
                 "mercredi" => ['09:00', '14:00'],
@@ -120,12 +120,12 @@ module Dashboard::Stepper
       assert_equal sector.id, created_internship_offer_info.sector_id
       assert_equal 'InternshipOfferInfos::WeeklyFramed', created_internship_offer_info.type
       assert_equal 'Activités de découverte', created_internship_offer_info.description_rich_text.to_plain_text
-      assert_equal ['07:00', '12:00'], created_internship_offer_info.new_daily_hours["lundi"]
-      assert_equal ['08:00', '13:00'], created_internship_offer_info.new_daily_hours["mardi"]
-      assert_equal ['09:00', '14:00'], created_internship_offer_info.new_daily_hours["mercredi"]
-      assert_equal ['10:00', '15:00'], created_internship_offer_info.new_daily_hours["jeudi"]
-      assert_equal ['11:00', '16:00'], created_internship_offer_info.new_daily_hours["vendredi"]
-      assert_equal ['--', '--'], created_internship_offer_info.new_daily_hours["samedi"]
+      assert_equal ['07:00', '12:00'], created_internship_offer_info.daily_hours["lundi"]
+      assert_equal ['08:00', '13:00'], created_internship_offer_info.daily_hours["mardi"]
+      assert_equal ['09:00', '14:00'], created_internship_offer_info.daily_hours["mercredi"]
+      assert_equal ['10:00', '15:00'], created_internship_offer_info.daily_hours["jeudi"]
+      assert_equal ['11:00', '16:00'], created_internship_offer_info.daily_hours["vendredi"]
+      assert_equal ['--', '--'], created_internship_offer_info.daily_hours["samedi"]
       assert_equal weeks.map(&:id), created_internship_offer_info.week_ids
       assert_redirected_to new_dashboard_stepper_tutor_path(
         organisation_id: organisation.id,

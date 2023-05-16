@@ -278,7 +278,7 @@ class InternshipApplication < ApplicationRecord
   end
 
   def application_via_school_manager?
-    internship_offer&.school
+    internship_offer&.school_id
   end
 
   def anonymize

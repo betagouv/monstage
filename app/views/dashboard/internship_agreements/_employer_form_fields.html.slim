@@ -75,7 +75,7 @@ tbody.internship-agreement
             = form.label "same_daily_hours" do
               span.mb-2.fr-label = "Horaires journaliers de l’élève"
               = form.rg2a_required_content_tag
-            = render partial: "dashboard/stepper/internship_offer_infos/daily_hours",
+            = render partial: "dashboard/stepper/hosting_infos/daily_hours",
                      locals: { form: form, disabled: disabled }
 
       .row.mt-0

@@ -2,27 +2,27 @@
 
 module Dashboard::Stepper
   # Step 2 of internship offer creation: fill in offer details/info
-  class InternshipOfferInfosController < ApplicationController
+  class HostingInfosController < ApplicationController
     before_action :authenticate_user!
 
-    # render step 2
+    # render step 3
     def new
-      authorize! :create, InternshipOfferInfo
+      authorize! :create, HostingInfo
 
-      @internship_offer_info = InternshipOfferInfo.new
+      @hosting_info = HostingInfo.new
       @organisation = Organisation.find(params[:organisation_id])
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
 
-    # process step 2
+    # process step 3
     def create
-      authorize! :create, InternshipOfferInfo
-      @internship_offer_info = InternshipOfferInfo.new(
-        {}.merge(internship_offer_info_params)
+      authorize! :create, HostingInfo
+      @hosting_info = HostingInfo.new(
+        {}.merge(hosting_info_params)
           .merge(employer_id: current_user.id)
       )
-      @internship_offer_info.save!
-      redirect_to(new_dashboard_stepper_hosting_info_path(
+      @hosting_info.save!
+      redirect_to(new_dashboard_stepper_tutor_path(
                     organisation_id: params[:organisation_id],
                     internship_offer_info_id: @internship_offer_info.id
       ))
@@ -32,23 +32,23 @@ module Dashboard::Stepper
       render :new, status: :bad_request
     end
 
-    # render back to step 2
+    # render back to step 3
     def edit
-      @internship_offer_info = InternshipOfferInfo.find(params[:id])
+      @internship_offer_info = HostingInfo.find(params[:id])
       @organisation = Organisation.find(params[:organisation_id])
       authorize! :edit, @internship_offer_info
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
 
-    # process update following a back to step 2 (info was created, it's updated)
+    # process update following a back to step 3 (info was created, it's updated)
     def update
-      @internship_offer_info = InternshipOfferInfo.find(params[:id])
+      @internship_offer_info = HostingInfo.find(params[:id])
       authorize! :update, @internship_offer_info
 
-      if @internship_offer_info.update(internship_offer_info_params)
+      if @hosting_info.update(hosting_info_params)
         redirect_to new_dashboard_stepper_tutor_path(
           organisation_id: params[:organisation_id],
-          internship_offer_info_id: @internship_offer_info.id
+          internship_offer_info_id: @hosting_info.id
         )
       else
         @organisation = Organisation.find(params[:organisation_id])
@@ -59,8 +59,8 @@ module Dashboard::Stepper
 
     private
 
-    def internship_offer_info_params
-      params.require(:internship_offer_info)
+    def hosting_info_params
+      params.require(:hosting_info)
             .permit(
               :title,
               :employer_type,
@@ -74,7 +74,7 @@ module Dashboard::Stepper
               :siret,
               :weekly_lunch_break,
               weekly_hours: [],
-              new_daily_hours: {},
+              daily_hours: {},
               daily_lunch_break: {},
               week_ids: []
               )
