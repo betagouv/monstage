@@ -148,5 +148,30 @@ module InternshipApplications
         assert_equal 1, InternshipApplication.expirable.count
       end
     end
+
+    test '#days_before_expiration' do
+      freeze_time do
+        internship_application = create(
+          :weekly_internship_application,
+          :submitted,
+          submitted_at: Time.now - 10.days
+        )
+        assert_equal 35, internship_application.days_before_expiration
+        internship_application = create(
+          :weekly_internship_application,
+          :examined,
+          submitted_at: Time.now - 10.days
+        )
+        assert_equal 50, internship_application.days_before_expiration
+        internship_application = create(
+          :weekly_internship_application,
+          :approved,
+          submitted_at: Time.now - 10.days
+        )
+        assert_nil internship_application.days_before_expiration
+      end
+    end
+
   end
+
 end

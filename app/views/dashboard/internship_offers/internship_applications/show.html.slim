@@ -1,9 +1,23 @@
-p
-= link_to dashboard_students_internship_applications_path(current_user.id),
-          class: 'fr-mt-8w' do
-  span.fr-icon-arrow-left-line.fr-btn--icon-left.fr-raw-link
-    | retour
+- presenter = @internship_application.presenter
+= render 'layouts/breadcrumb',
+          links: [ [current_user.presenter.dashboard_name_link, current_user.dashboard_name],
+                   ['', @internship_application.internship_offer.title]]
+- if current_user.student?
+  .sticky-top.white-header
+    .fr-mb-5w
+      = link_to dashboard_students_internship_applications_path(current_user.id),
+                class: 'fr-mt-8w ' do
+        span.fr-icon-arrow-left-line.fr-btn--icon-left.fr-raw-link
+          | toutes mes candidatures
+  
 
+    = render "dashboard/internship_offers/internship_applications/internship_application_header",
+              internship_application: @internship_application,
+              presenter: presenter
+.row
+  .col-sm-8.col-12
+    .fr-px-1w
+      = render "internship_offers/show_details", internship_offer: @internship_offer
 .container-monstage-application
   h1.h3 = @internship_offer.title
   p = "#{@internship_offer.street} #{@internship_offer.city} #{@internship_offer.zipcode}"
@@ -53,7 +67,6 @@ p
         = render "dashboard/internship_offers/internship_applications/actions/employer_decisions",
                 internship_application: @internship_application
       - elsif current_user.student?
-        - presenter = @internship_application.presenter
         = render "dashboard/students/internship_applications/student_decisions",
                  internship_application: @internship_application,
                  actions: presenter.actions_in_show_page,

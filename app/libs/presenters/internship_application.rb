@@ -5,6 +5,7 @@ module Presenters
     def expires_in
       start = internship_application.updated_at
       finish = start + ::InternshipApplication::EXPIRATION_DURATION
+      finish += internship_application.examined_at.nil? ? 0 : ::InternshipApplication::EXTENDED_DURATION
       distance_of_time_in_words_to_now(finish, include_days: true)
     end
 

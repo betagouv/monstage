@@ -48,22 +48,15 @@ class InternshipApplication < ApplicationRecord
     starting.or(current)
   }
 
-  #expirable 
-  scope :was_examined, lambda {
-    where.not(examined_at: nil)
-  }
-
-  scope :expiration_not_extended, lambda {
-    where(examined_at: nil)
+  scope :expiration_not_extended_states, lambda {
+    where(aasm_state: %w[submitted read_by_employer])
   }
 
   scope :expirable, lambda {
     simple_duration = InternshipApplication::EXPIRATION_DURATION
     extended_duration = simple_duration + InternshipApplication::EXTENDED_DURATION
-    submitted.expiration_not_extended
-             .where('submitted_at < :date', date: simple_duration.ago)
-             .or(submitted.was_examined
-                          .where('submitted_at < :date', date: extended_duration.ago))
+    expiration_not_extended_states.where('submitted_at < :date', date: simple_duration.ago)
+      .or(examined.where('submitted_at < :date', date: extended_duration.ago))
   }
 
   #
@@ -155,7 +148,7 @@ class InternshipApplication < ApplicationRecord
 
     event :read do
       transitions from: :submitted, to: :read_by_employer,
-                  after: proc { |*_args| 
+                  after: proc { |*_args|
         update!("read_at": Time.now.utc)
       }
     end
@@ -233,6 +226,14 @@ class InternshipApplication < ApplicationRecord
         update!(expired_at: Time.now.utc)
       }
     end
+  end
+
+  def days_before_expiration
+    return nil unless aasm_state.in?(%w[submitted read_by_employer examined])
+
+    delay = submitted_at + EXPIRATION_DURATION - DateTime.now
+    delay += self.examined_at.nil? ? 0 : EXTENDED_DURATION
+    [0, delay.to_f / 3_600 / 24].max
   end
 
   def student_approval_notifications

@@ -101,7 +101,7 @@ $line-height: 4px;
 
 .internship-application-status {
   display: block;
-  width: 500px;
+  width: 583px;
   height: 244px;
   border: 1px solid $grey-disabled;
   padding: 40px 32px;
@@ -114,6 +114,9 @@ $line-height: 4px;
   }
   .internship-offer-title{}
   .action { }
+}
+.white-header{
+  background: white;
 }
 // media phone
 @media (max-width: 767px) {

@@ -58,6 +58,10 @@ module Presenters
       word
     end
 
+    def dashboard_name_link
+      url_helpers.dashboard_students_internship_applications_path(student_id: user.id)
+    end
+
     private
 
     def anonymized_message
