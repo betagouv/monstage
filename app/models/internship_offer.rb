@@ -16,7 +16,8 @@ class InternshipOffer < ApplicationRecord
 
   include StepperProxy::InternshipOfferInfo
   include StepperProxy::Organisation
-  include StepperProxy::Tutor
+  include StepperProxy::HostingInfo
+  include StepperProxy::PracticalInfo
 
   # utils
   include Discard::Model
@@ -98,8 +99,9 @@ class InternshipOffer < ApplicationRecord
 
   belongs_to :employer, polymorphic: true
   belongs_to :organisation, optional: true
-  belongs_to :tutor, optional: true
   belongs_to :internship_offer_info, optional: true
+  belongs_to :hosting_info, optional: true
+  belongs_to :practical_info, optional: true
   has_many :favorites
   has_many :users, through: :favorites
 

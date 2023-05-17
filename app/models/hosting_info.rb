@@ -20,8 +20,4 @@ class HostingInfo < ApplicationRecord
 
   def from_api?; false end
   def is_fully_editable?; true end
-
-  def weekly_planning?
-    weekly_hours.any?(&:present?)
-  end
 end

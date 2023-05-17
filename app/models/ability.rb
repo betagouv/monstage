@@ -125,8 +125,10 @@ class Ability
     # internship_offer stepper
     can %i[create], InternshipOfferInfo
     can %i[create], HostingInfo
+    can %i[create], PracticalInfo
     can %i[update edit renew], InternshipOfferInfo, employer_id: user.id
     can %i[update edit renew], HostingInfo, employer_id: user.id
+    can %i[update edit renew], PracticalInfo, employer_id: user.id
     can %i[create], Organisation
     can %i[update edit], Organisation, employer_id: user.id
     can %i[create], Tutor
@@ -156,8 +158,10 @@ class Ability
     # internship_offer stepper
     can %i[create], InternshipOfferInfo
     can %i[create], HostingInfo
+    can %i[create], PracticalInfo
     can %i[update edit], InternshipOfferInfo, employer_id: user.id
     can %i[update edit], HostingInfo, employer_id: user.id
+    can %i[update edit], PracticalInfo, employer_id: user.id
     can %i[create], Organisation
     can %i[update edit], Organisation, employer_id: user.id
     can %i[create], Tutor
@@ -283,8 +287,10 @@ class Ability
 
     can %i[create], InternshipOfferInfo
     can %i[create], HostingInfo
+    can %i[create], PracticalInfo
     can %i[update edit], InternshipOfferInfo, employer_id: user.id
     can %i[update edit], HostingInfo, employer_id: user.id
+    can %i[update edit], PracticalInfo, employer_id: user.id
 
     can %i[create], Organisation
     can %i[update edit], Organisation, employer_id: user.id

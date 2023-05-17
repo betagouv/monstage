@@ -99,6 +99,7 @@ Rails.application.routes.draw do
         resources :organisations, only: %i[create new edit update]
         resources :internship_offer_infos, path: 'offre-de-stage-infos', only: %i[create new edit update]
         resources :hosting_infos, path: 'accueil-infos', only: %i[create new edit update]
+        resources :practical_infos, path: 'infos-pratiques', only: %i[create new edit update]
         resources :tutors, path: 'tuteurs', only: %i[create new]
       end    
 

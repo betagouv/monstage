@@ -92,20 +92,10 @@ div [data-controller='hosting-infos' data-hosting-infos-base-type-value="#{klass
         
 
         - if submit_button
-          .fr-mt-2w
+          .fr-mt-2w 
             = link_to edit_dashboard_stepper_internship_offer_info_path(params[:internship_offer_info_id],
-                                                                organisation_id: params[:organisation_id],
-                                                                hosting_id: params[:hosting_info_id]),
+                                                                organisation_id: params[:organisation_id]),
                         class: 'fr-btn fr-mr-2w fr-btn--secondary' do
-                = 'Annuler'
+              = 'Annuler'
             = button_tag :submit, class: 'fr-btn' do
               = 'Suivant'
-    
-    / - warning_block = true if warning_block.nil?
-    / - if warning_block
-    /   .col-md-6.order-md-2.order-1
-    /     = render partial: 'dashboard/stepper/warning_block'
-    /     .fr-alert.fr-alert--info
-    /       h3.fr-alert__title Conseil
-    /       p Ce paragraphe est très important car il va permettre à l'élève de se projeter dans son futur stage. Il est important d'utiliser des mots simples. N'hésitez pas à ajouter des détails.
-

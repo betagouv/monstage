@@ -9,6 +9,7 @@ import { broadcast, newCoordinatesChanged } from '../../utils/events';
 // see: https://geo.api.gouv.fr/adresse
 export default function AddressInput({
   resourceName,
+  labelName,
   currentStreet,
   currentCity,
   currentZipcode,
@@ -107,7 +108,7 @@ export default function AddressInput({
                     htmlFor: `${resourceName}_autocomplete`,
                   })}
                 >
-                  Adresse du siège social
+                  {labelName || 'Adresse'}
                   <abbr title="(obligatoire)" aria-hidden="true">
                     *
                   </abbr>

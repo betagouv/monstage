@@ -86,9 +86,6 @@ module InternshipOffers
 
     validates :street,
               :city,
-              :tutor_name,
-              :tutor_phone,
-              :tutor_email,
               presence: true
 
 
