@@ -24,7 +24,6 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
     )
     assert_includes email.to, school_manager.email
     assert_equal 'Vous avez une convention de stage à renseigner.', email.subject
-    
     refute_email_spammyness(email)
   end
 

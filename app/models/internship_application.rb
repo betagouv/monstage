@@ -135,6 +135,7 @@ class InternshipApplication < ApplicationRecord
           :expired,
           :canceled_by_employer,
           :canceled_by_student,
+          :canceled_by_student_confirmation,
           :convention_signed
 
     event :submit do
@@ -179,6 +180,18 @@ class InternshipApplication < ApplicationRecord
                   after: proc { |*_args|
                     update!("approved_at": Time.now.utc)
                     student_approval_notifications
+                    cancel_all_pending_applications
+                  }
+    end
+
+    event :cancel_by_student_confirmation do
+      transitions from: %i[submitted read_by_employer examined validated_by_employer],
+                  to: :canceled_by_student_confirmation,
+                  after: proc { |*_args|
+                    # Other employers notifications
+                    student.internship_applications.where(aasm_state: employer_aware_states).each do |application|
+                      EmployerMailer.internship_application_approved_for_an_other_internship_offer(internship_application: application).deliver_later
+                    end
                   }
     end
 
@@ -250,16 +263,9 @@ class InternshipApplication < ApplicationRecord
           MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
         end
       end
-    else
-      if school_manager_presence #Meaning that type is NOT "InternshipApplications::WeeklyFramed"
-        deliver_later_with_additional_delay do
-          SchoolManagerMailer.internship_application_approved_with_no_agreement_email(arg_hash)
-        end
-      end
-      if main_teacher.present?
-        deliver_later_with_additional_delay do
-          MainTeacherMailer.internship_application_approved_with_no_agreement_email(arg_hash)
-        end
+    elsif main_teacher.present?
+      deliver_later_with_additional_delay do
+        MainTeacherMailer.internship_application_approved_with_no_agreement_email(arg_hash)
       end
     end
   end
@@ -357,6 +363,12 @@ class InternshipApplication < ApplicationRecord
     "Candidature de " + student_name
   end
 
+  def cancel_all_pending_applications
+    student.internship_applications.where(aasm_state: pending_states).each do |application|
+      application.cancel_by_student_confirmation!
+    end
+  end
+
   rails_admin do
     weight 14
     navigation_label 'Offres'
@@ -385,5 +397,13 @@ class InternshipApplication < ApplicationRecord
     return false unless internship_offer.employer.employer_like?
 
     true
+  end
+
+  def pending_states
+    %w[submitted read_by_employer examined validated_by_employer]
+  end
+
+  def employer_aware_states
+    %w[read_by_employer examined validated_by_employer]
   end
 end
