@@ -27,13 +27,11 @@ function RenderClassRoomsInput({
 
   return (
     <div
-      className={`form-group custom-label-container ${
-        isWaitingSchoolSelection ? 'opacity-05' : ''
-      }`}
+      className={`${ isWaitingSchoolSelection ? 'opacity-05' : '' }`}
     >
       {isWaitingSchoolSelection && (
         <>
-          <label htmlFor={`${resourceName}_class_room_id`}>Classe</label>
+          <label className='fr-mt-2w' htmlFor={`${resourceName}_class_room_id` }>Classe</label>
           <input
             value=""
             disabled
@@ -64,7 +62,7 @@ function RenderClassRoomsInput({
       )}
       {hasPendingSuggestion && (
         <>
-          <label className='fr-label' htmlFor={`${resourceName}_class_room_id`}>Classe</label>
+          <label className='fr-label  fr-mt-2w' htmlFor={`${resourceName}_class_room_id`}>Classe</label>
           <select
             className="fr-input"
             name={`${resourceName}[class_room_id]`}
@@ -84,7 +82,7 @@ function RenderClassRoomsInput({
       )}
       {classRoomsSuggestions && classRoomsSuggestions.length === 0 && (
         <>
-          <label className='fr-label' htmlFor={`${resourceName}_class_room_id`}>Classe (optionnel)</label>
+          <label className='fr-label fr-mt-2w' htmlFor={`${resourceName}_class_room_id`}>Classe (optionnel)</label>
           <input
             placeholder="Aucune classe disponible"
             readOnly

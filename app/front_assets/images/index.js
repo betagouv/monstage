@@ -71,6 +71,9 @@ import './pages/statistics/handshake.svg';
 import './pages/statistics/ok.svg';
 import './pages/statistics/school.svg';
 
+import './pages/invitations/email_icon.svg';
+import './pages/invitations/person_icon.svg';
+
 import './homepage/explications.svg';
 import './homepage/back-to-top.svg';
 import './homepage/01.svg';

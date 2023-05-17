@@ -7,9 +7,9 @@ module Users
     include StatisticianDepartmentable
 
     has_one :email_whitelist,
-    class_name: 'EmailWhitelists::EducationStatistician',
-    foreign_key: :user_id,
-    dependent: :destroy
+            class_name: 'EmailWhitelists::EducationStatistician',
+            foreign_key: :user_id,
+            dependent: :destroy
 
     METABASE_DASHBOARD_ID = 8
 
@@ -17,6 +17,32 @@ module Users
 
     def presenter
       Presenters::PrefectureStatistician.new(self)
+    end
+
+    rails_admin do
+      list do
+        field :department do
+          label 'Département'
+          pretty_value { bindings[:object]&.department}
+        end
+        field :department_zipcode do
+          label 'Code postal'
+          pretty_value { bindings[:object]&.department_zipcode}
+        end
+      end
+      
+      export do
+        field :department, :string do
+          export_value do
+            bindings[:object]&.department
+          end
+        end
+        field :zipcode, :string do
+          export_value do
+            bindings[:object]&.department_zipcode
+          end
+        end
+      end
     end
 
     private

@@ -55,7 +55,11 @@ class Ability
   end
 
   def school_manager_abilities(user:)
-    can :create_remote_internship_request, SupportTicket # TO DO REMOVE
+    can %i[list_invitations
+           create_invitation
+           destroy_invitation], Invitation do |invitation|
+      invitation.school.id == user.school_id
+    end
 
     can_manage_school(user: user) do
       can [:delete], User do |managed_user_from_school|
@@ -112,12 +116,12 @@ class Ability
 
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
-    can :renew, InternshipOffer do |internship_offer|
-      renewable?(internship_offer: internship_offer, user: user)
-    end
-    can :duplicate, InternshipOffer do |internship_offer|
-      duplicable?(internship_offer: internship_offer, user: user)
-    end
+    # can :renew, InternshipOffer do |internship_offer|
+    #   renewable?(internship_offer: internship_offer, user: user)
+    # end
+    # can :duplicate, InternshipOffer do |internship_offer|
+    #   duplicable?(internship_offer: internship_offer, user: user)
+    # end
     # internship_offer stepper
     can %i[create], InternshipOfferInfo
     can %i[update edit renew], InternshipOfferInfo, employer_id: user.id
@@ -172,7 +176,7 @@ class Ability
     can :manage, School
     can :manage, Sector
     can %i[destroy see_tutor], InternshipOffer
-    can %i[read update export], InternshipOffer
+    can %i[read update export unpublish], InternshipOffer
     can %i[read update destroy export], InternshipApplication
     can :manage, EmailWhitelists::EducationStatistician
     can :manage, EmailWhitelists::PrefectureStatistician

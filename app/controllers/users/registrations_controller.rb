@@ -41,7 +41,7 @@ module Users
 
       if UserManager.new.valid?(params: params)
         super do |resource|
-          resource.targeted_offer_id ||= params.dig(:user, :targeted_offer_id)
+          resource = set_default_resource(resource, params)
           @current_ability = Ability.new(resource)
         end
       else
@@ -69,6 +69,7 @@ module Users
       # students only
       clean_phone_param
       super do |resource|
+        clean_invitation(resource)
         resource.targeted_offer_id ||= params && params.dig(:user, :targeted_offer_id)
         @current_ability = Ability.new(resource)
       end
@@ -165,6 +166,28 @@ module Users
       else
         users_registrations_standby_path(id: resource.id)
       end
+    end
+
+    def clean_invitation(resource)
+      return if resource.email.nil?
+
+      invitation = Invitation.find_by(email: resource.email)
+      invitation.destroy if invitation.present?
+    end
+
+    def set_default_resource(resource, params)
+      # following params may come from invitations
+      if params.has_key? :school_manager_id
+        resource.first_name ||= params[:first_name]
+        resource.last_name ||= params[:last_name]
+        resource.role ||= params[:role]
+        resource.email ||= params[:email]
+        resource.school ||= User.find_by(id: params[:school_manager_id])&.school
+      end
+
+      # following param allows to head to the offer directly after registration
+      resource.targeted_offer_id ||= params.dig(:user, :targeted_offer_id)
+      resource
     end
 
     def merge_identity(params)

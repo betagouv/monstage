@@ -90,7 +90,7 @@ fr:
       users/other:
         one: Autre utilisateur
         other: Autres utilisateurs
-      users/statistician:
+      users/prefecture_statistician:
         one: Référent départemental
         other: Référents départementaux
       users/ministry_statistician:
@@ -305,6 +305,13 @@ fr:
           canceled_by_student: annulée par l'élève
           convention_signed: convention signée
         week: Semaine
+      
+      invitation:
+        roles:
+          teacher: Professeur
+          school_manager: Chef d'établissement
+          main_teacher: Professeur principal
+          other: Autre
 
       user:
         accept_terms: "Conditions d'utilisation"

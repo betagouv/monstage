@@ -18,17 +18,18 @@
             - if user_presenter.show_when_subscribe?(as: as, field: :minister_video)
               = render 'pages/home/minister_video'
           .fr-container.fr-background-alt--grey.fr-px-md-0.fr-py-10v.fr-py-md-14v
-            .fr-grid-row.fr-grid-row-gutters.fr-grid-row--left.fr-mx-3w
+            .fr-grid-row.fr-grid-row-gutters.fr-grid-row--left.fr-mx-3w.fr-px-xs-2v.fr-px-sm-10v.fr-px-md-27v
               .text-left
                 h1#subcription-title.fr-h4
                   = incipit[:title]
-                p
+                p.fr-mt-6v
                   = incipit[:subtitle]
-                p.fr-my-w
-                  | Sauf mention contraire, tous les champs sont obligatoires.
+                p.fr-my-w.text-muted.fr-mt-6v
+                  small
+                    | Sauf mention contraire, tous les champs sont obligatoires.
                 p
                   = render "layouts/form_errors", resource: resource, resource_name: :user
-            fieldset#subscription-form.fr-mx-2w[aria-labelledby="subscription-title"]
+            fieldset#subscription-form.fr-mx-2w.fr-px-xs-2v.fr-px-sm-10v.fr-px-md-27v[aria-labelledby="subscription-title"]
               legend
               = form_with(model: resource,
                           scope: resource_name,
@@ -39,6 +40,8 @@
                 - if user_presenter.show_when_subscribe?(as: as, field: :school)
                   .fr-fieldset__element
                     .fr-input-group.fr-mb-2v
+                      label.fr-label for="user_school_city"
+                        | Ville ou collège
                       = react_component("SearchSchool",
                                         props: { classes: "col-12",
                                                   label: 'Nom (ou ville) de mon établissement REP ou REP+',
@@ -48,15 +51,16 @@
                                                   existingSchool: resource&.school&.as_json,
                                                   existingClassRoom: resource.try(:class_room).try(:as_json),
                                       })
-                = render partial: "users/registrations/input_field",
-                         locals: { f: f,
-                                   field_label: "Prénom",
-                                   field: :first_name,
-                                   resource: resource,
-                                   resource_name: resource_name,
-                                   value: resource&.first_name || params[:first_name],
-                                   option: { required: true },
-                                   errors: errors }
+                .fr-mt-1w
+                  = render partial: "users/registrations/input_field",
+                          locals: { f: f,
+                                    field_label: "Prénom",
+                                    field: :first_name,
+                                    resource: resource,
+                                    resource_name: resource_name,
+                                    value: resource&.first_name || params[:first_name],
+                                    option: { required: true },
+                                    errors: errors }
                 = render partial: "users/registrations/input_field",
                          locals: { f: f,
                                    field_label: "Nom",
@@ -94,7 +98,7 @@
                   div class="fr-input-group #{error_tag.present? ? 'fr-input-group--error' : ''}"
                     label.fr-label [for="user_email" data-signup-target="emailLabel"]
                       |Adresse électronique
-                    p.fr-message[data-signup-target="emailExplanation"]
+                    p.fr-message.fr-mt-n2v[data-signup-target="emailExplanation"]
                       |Format attendu : nom@domaine.fr
                     = f.email_field :email,
                           class: "fr-input",
@@ -114,7 +118,7 @@
 
                 .fr-fieldset__element
                   - error_tag = errors.field_error_tag(resource_name: resource_name, resource: resource, field: :password) if errors.present?
-                  div id="password_group" class="fr-password fr-mb-2v #{error_tag.present? ? 'fr-input-group--error' :''}" data-signup-target="passwordGroup"
+                  div id="password_group" class="fr-password fr-my-2v #{error_tag.present? ? 'fr-input-group--error' :''}" data-signup-target="passwordGroup"
                     label id="password-group" class="fr-label #{error_tag.present? ? 'fr-label--error' : ''}" for="user_password"
                       |Créer un mot de passe
                     .fr-input-wrap
@@ -124,6 +128,9 @@
                                          class: "fr-password__input fr-input fr-password__input fr-input #{error_tag.present? ? 'fr-input--error' : ''}",
                                          required: true,
                                          data: { action: "change->signup#checkPassword", :"signup-target" => "passwordInput" }
+                      #password-input-messages.fr-messages-group aria-live="assertive"
+                        p#password-input-message-info.fr-message.fr-message--info
+                          |6 caractères minimum
                       = errors.field_error_tag(resource_name: resource_name, resource: resource, field: :password) if errors.present?
                     #user_password-messages.fr-messages-group[aria-live="assertive"]
 
@@ -141,7 +148,7 @@
                 - if can?(:choose_operator, :sign_up)
                   .fr-fieldset__element
                     - error_tag  = errors.field_error_tag(resource_name: resource_name, resource: resource, field: :operator_id) if errors.present?
-                    div class="fr-input-group fr-mb-2v #{error_tag.present? ? 'fr-input-group--error' : ''}"
+                    div class="fr-input-group fr-my-2v #{error_tag.present? ? 'fr-input-group--error' : ''}"
                       label#operator-select-label.fr-label for="user_operator" class="#{error_tag.present? ? 'fr-label--error' : ''}"
                         |Opérateur
                       = f.select :operator_id,
@@ -150,9 +157,9 @@
                           class: "fr-select",
                           :'aria-labelledby' => 'operator-select-label'
                       = error_tag
-                .fr-fieldset__element
+                .fr-fieldset__element.fr-mt-3w
                   - error_tag  = errors.field_error_tag(resource_name: resource_name, resource: resource, field: :accept_terms) if errors.present?
-                  div class="fr-checkbox-group fr-mb-2v #{error_tag.present? ? 'fr-input-group--error' : ''}"
+                  div class="fr-checkbox-group fr-my-2v #{error_tag.present? ? 'fr-input-group--error' : ''}"
                     = f.check_box :accept_terms
                     label.fr-label for="user_accept_terms"
                       -link = link_to "conditions d'utilisation",

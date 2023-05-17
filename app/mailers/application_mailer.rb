@@ -10,8 +10,12 @@ class ApplicationMailer < ActionMailer::Base
 
   append_view_path 'app/views/mailers'
 
+  def site_url
+    @site_url ||= root_url.html_safe
+  end
+
   def send_email(to:, subject:, cc: nil)
-    @site_url = root_url.html_safe
+    @site_url = site_url
     if to.blank?
       Rails.logger.error("mail without recipient sending attempt. Subject: #{subject}")
     else

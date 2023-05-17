@@ -15,9 +15,9 @@ main#content[role="main"
           .fr-grid-row.fr-grid-row-gutters.fr-grid-row--left
             = render 'layouts/breadcrumb', links: [ ['', incipit[:title]]]
         .fr-container.fr-background-alt--grey.fr-px-md-0.fr-pt-10v.fr-pt-md-14v
-          .fr-mx-2w
+          .fr-mx-1w.fr-mx-md-13w
             = form_for @identity, id: 'new_user' do |f|
-              .fr-mx-2w
+              .fr-mx-3w
                 .fr-stepper
                   h2.fr-stepper__title
                     span.fr-stepper__state Étape 1 sur 2
@@ -40,21 +40,25 @@ main#content[role="main"
                 span data-signup-target="emailInput"
                 span data-signup-target="emailRadioButton"
                 span data-signup-target="phoneBloc"
-                = react_component("SearchSchool", props: { classes: 'col-12 fr-input',
-                                                  required: true,
-                                                  label: 'Nom (ou ville) de mon établissement REP ou REP+',
-                                                  resourceName: :identity,
-                                                  selectClassRoom: true,
-                                                  existingSchool: @identity.school.as_json,
-                                                  existingClassRoom: @identity.try(:class_room).try(:as_json)})
-                = render partial: "users/registrations/input_field",
-                          locals: { f: f,
-                                    field_label: "Prénom",
-                                    field: :first_name,
-                                    resource: resource,
-                                    resource_name: :identity,
-                                    option: { required: true },
-                                    errors: errors }
+                .fr-mx-1w
+                  label.fr-label for="user_school_city"
+                        | Ville ou collège
+                  = react_component("SearchSchool", props: { classes: 'col-12 fr-input',
+                                                    required: true,
+                                                    label: 'Nom (ou ville) de mon établissement REP ou REP+',
+                                                    resourceName: :identity,
+                                                    selectClassRoom: true,
+                                                    existingSchool: @identity.school.as_json,
+                                                    existingClassRoom: @identity.try(:class_room).try(:as_json)})
+                .fr-mt-2w
+                  = render partial: "users/registrations/input_field",
+                            locals: { f: f,
+                                      field_label: "Prénom",
+                                      field: :first_name,
+                                      resource: resource,
+                                      resource_name: :identity,
+                                      option: { required: true },
+                                      errors: errors }
                 = render partial: "users/registrations/input_field",
                           locals: { f: f,
                                     field_label: "Nom",

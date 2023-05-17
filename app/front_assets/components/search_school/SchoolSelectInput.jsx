@@ -32,9 +32,9 @@ function RenderSchoolSelectInput({
   };
 
   return (
-    <div className={`form-group ${isWaitingCitySelection ? 'opacity-05' : ''}`}>
+    <div className={`${isWaitingCitySelection ? 'opacity-05' : ''}`}>
       {isWaitingCitySelection && (
-        <div className="custom-label-container">
+        <div className="fr-mt-2w">
           <label className='fr-label' htmlFor={`${resourceName}_school_name`}>
             Collège
           </label>
@@ -42,14 +42,14 @@ function RenderSchoolSelectInput({
             value=""
             disabled
             placeholder="Sélectionnez une option"
-            className={`form-control ${classes || ''}`}
+            className={`fr-input ${classes || ''}`}
             type="text"
             id={`${resourceName}_school_name`}
           />
         </div>
       )}
       {isAlreadySelected && (
-        <div className="custom-label-container">
+        <div className="">
           <label className='fr-label' htmlFor={`${resourceName}_school_name`}>
             Collège
           </label>
@@ -68,7 +68,7 @@ function RenderSchoolSelectInput({
       )}
       {hasPendingSuggestion && (
         <div>
-          <label htmlFor={`${resourceName}_school_id`} className="fr-label">Collège</label>
+          <label htmlFor={`${resourceName}_school_id`} className="fr-label fr-mt-2w">Collège</label>
           
            
               <select

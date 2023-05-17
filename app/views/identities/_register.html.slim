@@ -9,11 +9,11 @@ main#content[role="main"
   .fr-container.fr-container--fluid
     .fr-grid-row.fr-grid-row-gutters.fr-grid-row--center
       .fr-col-12.fr-col-md-10.fr-col-lg-8
-        .fr-container.fr-px-md-0
+        .fr-container.fr-px-md-0.fr-py-10v.fr-py-md-14v
           .fr-grid-row.fr-grid-row-gutters.fr-grid-row--left
             = render 'layouts/breadcrumb', links: [['', incipit[:title]]]
         .fr-container.fr-background-alt--grey.fr-px-md-0.fr-pt-10v.fr-pt-md-14v
-          .fr-mx-2w
+          .fr-mx-2w.fr-mx-md-14w
             = form_with(model: resource,
                     scope: resource_name,
                     data: { turbo: false },
