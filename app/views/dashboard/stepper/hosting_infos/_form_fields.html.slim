@@ -71,11 +71,6 @@ div [data-controller='hosting-infos' data-hosting-infos-base-type-value="#{klass
                             min: resource.is_a?(InternshipOffer) ? (resource.internship_applications.try(:approved).try(:count) || 0) : 0,
                             data: { :"hosting-infos-target" => 'maxCandidatesInput',
                                     action: "change->hosting-infos#handleMaxCandidatesChanges"}
-
-      / .form-group
-      /   = render partial: "dashboard/stepper/hosting_infos/daily_hours",
-      /           locals: { form: form, disabled: false }
-      /   = form.rg2a_explain_required_asterisk
       
       = form.hidden_field :type, data: { :"hosting-infos-target" => "type" }
 

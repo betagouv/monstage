@@ -36,7 +36,6 @@
             fieldset.fr-fieldset.fr-my-2w#radio-hint aria-labelledby="radio-hint-legend radio-hint-messages"
               label
                 | Secteur
-                = form.rg2a_required_content_tag
               div.fr-fieldset__element
                 div.fr-radio-group
                   = form.radio_button :is_public, true, class: '', required: true, data: { action: 'change->organisation-form#handleClickIsPublic', 'target': 'organisation-form.requiredField' }
@@ -81,11 +80,11 @@
             - if params[:internship_offer_info_id].present?
               = link_to edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]),
                         class: 'fr-btn',
-                        disabled: true,
+                        disabled: false,
                         'data-target': "organisation-form.submitButton" do
                 = 'Suivant '
             - else
-              = button_tag :submit, class: 'fr-btn', disabled: true, 'data-target': "organisation-form.submitButton" do
+              = button_tag :submit, class: 'fr-btn', disabled: false, 'data-target': "organisation-form.submitButton" do
                 = "Suivant "
       .col-md-6
         .fr-alert.fr-alert--info
