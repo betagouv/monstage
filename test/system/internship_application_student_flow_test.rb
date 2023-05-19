@@ -96,23 +96,18 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       submitted: create(:weekly_internship_application, :submitted, student: student),
       approved: create(:weekly_internship_application, :approved, student: student),
       rejected: create(:weekly_internship_application, :rejected, student: student),
+      canceled_by_student_confirmation: create(:weekly_internship_application, :canceled_by_student_confirmation, student: student),
+      validated_by_employer: create(:weekly_internship_application, :validated_by_employer, student: student),
       canceled_by_student: create(:weekly_internship_application, :canceled_by_student, student: student)
     }
     sign_in(student)
     visit '/'
     click_on 'Candidatures'
     internship_applications.each do |_aasm_state, internship_application|
-      url = internship_offer_internship_application_path(
-        internship_application.internship_offer.id,
-        internship_application
-      )
-      prez = internship_application.presenter
-      badge = prez.student_human_state
-      find("a#show_link_#{internship_application.id}", text: badge[:actions].first[:label])
-      click_link(internship_application.internship_offer.title)
-      click_link('Candidatures')
-      find("#show_link_#{internship_application.id}").click
-      click_link('retour')
+      badge = internship_application.presenter.student_human_state
+      find('.h5.internship-offer-title', text: internship_application.internship_offer.title)
+      find("a#show_link_#{internship_application.id}", text: badge[:actions].first[:label]).click
+      click_link('toutes mes candidatures')
     end
   end
 
@@ -129,7 +124,8 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     assert_changes ->{internship_application.reload.aasm_state},
                    from: "validated_by_employer",
                    to: "approved" do
-      find('input[value="Choisir ce stage"]').click
+      click_button('Choisir ce stage')
+      click_button('Confirmer')
     end
     find '.fr-badge.fr-badge--success', text: "CONFIRMÉE"
     find "a#show_link_#{internship_application.id}", text: "Contacter l'offreur"

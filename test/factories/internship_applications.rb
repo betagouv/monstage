@@ -63,6 +63,13 @@ FactoryBot.define do
       canceled_at { 2.days.ago }
     end
 
+    trait :canceled_by_student_confirmation do
+      aasm_state { :canceled_by_student_confirmation }
+      submitted_at { 3.days.ago }
+      validated_by_employer_at { 2.days.ago }
+      approved_at { 1.days.ago }
+    end
+
     # TODO following should be removed
     trait :convention_signed do
       aasm_state { :convention_signed }

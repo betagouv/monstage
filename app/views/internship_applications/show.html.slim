@@ -18,9 +18,11 @@
             .small.font-weight-bold.--text-title-blue-france.text-label-blue-france.blue-france.fr-mt-2w= "Du #{I18n.localize(@internship_offer.first_date, format: :human_mm_dd_yyyy)} au #{I18n.localize(@internship_offer.last_date, format: :human_mm_dd_yyyy)}"
           p.fr-card__detail
             = @internship_offer.employer_name
-        
+
     .col-12.col-sm-8
-      = render "internship_applications/show_details", internship_application: @internship_application
+      = render "internship_applications/show_details",
+               internship_application: @internship_application,
+               hidden_parts: false
 
       .actions.d-flex.d-xs-stick.justify-content-between.flex-row.fr-py-2w.fr-px-2w
         .d-inline-flex

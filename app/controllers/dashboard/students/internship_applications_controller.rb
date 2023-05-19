@@ -3,6 +3,7 @@
 module Dashboard
   module Students
     class InternshipApplicationsController < ApplicationController
+      include ApplicationTransitable
       before_action :authenticate_user!, except: %i[direct_to_internship_application]
       before_action :set_current_student
       before_action :set_internship_application, except: %i[index]
@@ -16,6 +17,7 @@ module Dashboard
 
       def show
         authorize! :dashboard_show, @internship_application
+        @internship_offer = @internship_application.internship_offer
       end
 
       def resend_application

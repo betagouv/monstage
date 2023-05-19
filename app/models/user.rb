@@ -248,6 +248,7 @@ class User < ApplicationRecord
   def school_management? ; false end
   def god? ; false end
   def employer_like? ; false end
+  def has_already_approved_an_application? ; false end
 
   def already_signed?(internship_agreement_id:); true end
   def create_signature_phone_token ; nil end

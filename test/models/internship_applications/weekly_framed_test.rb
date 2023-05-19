@@ -141,7 +141,7 @@ module InternshipApplications
       end
       travel_to start_date + InternshipApplication::EXPIRATION_DURATION + 7.days do
         assert_equal 1, InternshipApplication.expirable.count
-        internship_application.update(examined_at: Time.now)
+        internship_application.update_columns(examined_at: Time.now, aasm_state: :examined)
         assert_equal 0, InternshipApplication.expirable.count
       end
       travel_to start_date + InternshipApplication::EXPIRATION_DURATION + InternshipApplication::EXTENDED_DURATION.days do

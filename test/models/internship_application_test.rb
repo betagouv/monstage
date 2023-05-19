@@ -406,8 +406,13 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   test "#after_employer_validation_notifications when student registered by email" do
     student = create(:student)
     internship_application = create(:weekly_internship_application, student: student)
-    InternshipApplication.stub_any_instance(:deliver_later_with_additional_delay, 'email_sent') do
-      assert_equal "email_sent", internship_application.after_employer_validation_notifications
+
+    mock_mail = MiniTest::Mock.new
+    mock_mail.expect(:deliver_later, true, [], wait: 1.second)
+
+    StudentMailer.stub :internship_application_validated_by_employer_email, mock_mail do
+      internship_application.after_employer_validation_notifications
     end
+    mock_mail.verify
   end
 end

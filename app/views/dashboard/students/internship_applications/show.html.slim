@@ -1,62 +1,122 @@
-- content_for :page_title, "#{t(".page_title", name: @internship_application.internship_offer.title)} | Monstage"
+- presenter = @internship_application.presenter
 = render 'layouts/breadcrumb',
           links: [ [current_user.presenter.dashboard_name_link, current_user.dashboard_name],
                    ['', @internship_application.internship_offer.title]]
-h1.h2.mb-3 = @internship_application.internship_offer.title
+- if current_user.student?
+  .sticky-top.white-header
+    .fr-mb-5w
+      = link_to dashboard_students_internship_applications_path(current_user.id),
+                class: 'fr-mt-8w ' do
+        span.fr-icon-arrow-left-line.fr-btn--icon-left.fr-raw-link
+          | toutes mes candidatures
 
+
+    = render "dashboard/internship_offers/internship_applications/internship_application_header",
+              internship_application: @internship_application,
+              presenter: presenter
+
+  / following avoids modal dialog to be opened within a sticky HTML node that hides modal content
+  - aasm_notifier = @internship_application.internship_application_aasm_message_builder(aasm_target: :cancel_by_student!)
+  = render 'dashboard/internship_offers/internship_applications/action_modal_dialog',
+           internship_application: @internship_application,
+           aasm_target: :cancel_by_student!,
+           aasm_notifier: aasm_notifier,
+           modal_id: "cancel-by-student-internship-application-#{@internship_application.id}",
+           modal_opener_label: "Annuler",
+           message: "Une fois la candidature annulée, un email de notification va être envoyé à l'employeur avec le motif de l'annulation",
+           rich_text: true,
+           subtitle: "Motif de l'annulation"
+  = render 'dashboard/internship_offers/internship_applications/action_modal_dialog',
+           internship_application: @internship_application,
+           aasm_target: :approve!,
+           aasm_notifier: aasm_notifier,
+           modal_id: "approve-internship-application-#{@internship_application.id}",
+           modal_opener_label: "Confirmer",
+           message: "En choisissant ce stage, <strong>toutes vos autres candidatures seront annulées et vous ne pourrez pas revenir en arrière.</strong>".html_safe,
+           rich_text: false,
+           subtitle: ""
+- elsif current_user.employer_like?
+  .fr-mb-5w
+      = link_to dashboard_candidatures_path(current_user.id),
+                class: 'fr-mt-8w ' do
+        span.fr-icon-arrow-left-line.fr-btn--icon-left.fr-raw-link
+          | retour
+- if current_user.student?
+  .row
+    .col-12
+      h1.h3.fr-mb-7v L'offre de stage
+  .container-monstage-application
+    .grey-container-application.with-grey-background
+      .row
+        .col-sm-8.col-lg-12
+          .fr-px-1w
+            = render "internship_offers/show_details",
+                     internship_offer: @internship_offer,
+                     hidden_parts: true
+      - if @internship_application.approved?
+        .row
+          .col-sm-8.col-lg-12
+            .fr-callout
+              h3.h5.fr-callout__title Contact en entreprise
+              p.fr-callout__text
+                ul
+                  li
+                    = "votre responsable dans l'entreprise : "
+                    strong = @internship_offer.employer.presenter.formal_name
+                  li
+                    = "son adresse email : "
+                    strong = @internship_offer.employer.email
+              = mail_to(@internship_offer.employer.email, 
+                      'Lui écrire',
+                      subject: "[Stagiaire #{@internship_application.student.presenter.short_civil_full_name}] - prise de contact",
+                      class: 'fr-btn fr-btn--sm fr-mt-2w')
 .row
-  .col-12.py-2
-    = render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}",
-               locals: {internship_application: @internship_application }
+  .col-12
+    h2.h3.fr-mt-4w.fr-mb-2w
+      = "#{current_user.employer_like? ? "S" : "M"}a candidature"
+.container-monstage-application
+  .grey-container-application.with-grey-background
+    h2.h4.fr-mb-4w = @internship_application.student.presenter.full_name
+    p.fr-icon-calendar-line.fr-btn--icon-left
+      - week = @internship_application.week
+      ="Semaine du <strong>#{week.short_select_text_method}</strong>".html_safe
+    - unless @internship_application.motivation.to_s.blank?
+      h3.h5 Motivations
+      p = @internship_application.motivation.to_s
 
-    
-= render "internship_applications/show_details", internship_application: @internship_application
+    row.no-gutters.mt-2
+      .col-10
+        .row
+          .col-12.mb-3
+            h3.h6
+              i.fa-fw.fas.fa-user
+              | Informations sur l'élève
+            = render partial: "/internship_applications/student_details",
+                      locals: { student: @internship_application.student,
+                              internship_application: @internship_application}
+        .row
+          - resume_content = @internship_application.student.resume_educational_background.to_s
+          - resume_languages = @internship_application.student.resume_languages.to_s
+          - resume_other = @internship_application.student.resume_other.to_s
+          .col-md-4.col-sm-8.col-xs-12
+            - if resume_content.present? || resume_languages.present?
+              h3.h6 Parcours Scolaire
+              .reboot-trix-content = resume_content
+              - if resume_languages.present?
+                h3.h6.mt-3 Langues
+                .reboot-trix-content = resume_languages
 
-- if @internship_application.drafted?
-  .actions.d-flex.d-sm-block.d-xs-stick
-    = link_to "Modifier",
-              internship_offer_path(@internship_application.internship_offer),
-              class: 'fr-btn fr-icon-arrow-left-s-line fr-btn--icon-left fr-mr-4w'
-    = link_to "Envoyer",
-              internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application, transition: "submit!"),
-              method: :patch,
-              data: {turbo: false},
-              class: 'fr-btn'
-- if @internship_application.submitted? || @internship_application.approved?
-  = render "dashboard/internship_offers/internship_applications/action_modal",
-            internship_application: @internship_application,
-            aasm_target: :cancel_by_student!,
-            modal_opener_label: 'Annuler',
-            subtitle: "Motif de l'annulation",
-            message: "Une fois la candidature annulée, un email de notification va être envoyé à l'employeur avec le motif de l'annulation",
-            rich_text: true,
-            modal_id: "cancel-by-student-internship-application-#{@internship_application.id}",
-            fa_icon: "fa-ban"
+          .col-md-4.col-sm-8.col-xs-12
+            - if resume_other.present?
+              h3.h6 Activités extra-scolaires
+              .reboot-trix-content = resume_other
 
-- if @internship_application.submitted? || @internship_application.approved?
-  .row.next-step-test
-    .col-12.py-2
-      h3.h4 Prochaine étape, la convention de stage
-      p La convention de stage est en signature dans la structure d'accueil du stage et chez le chef d'établissement. 
-      - if current_user.student?
-        p Vous serez averti dès que vous pourrez la signer à votre tour.
-      p.font-weight-bold Sans une convention convenablement remplie et signée, le stage ne peut pas avoir lieu.
-      - internship_offer = @internship_application.internship_offer
-      p
-        .font-weight-bold Contact de l'employeur
-        ul.list-unstyled
-          li = internship_offer.employer_name
-          li = "Email : #{internship_offer.employer_email}"
-
-      p
-        .font-weight-bold Contact du tuteur
-        ul.list-unstyled
-          li = internship_offer.tutor_name
-          - phone_number = internship_offer&.tutor_phone.gsub('+33', '0')&.scan(/.{2}/)&.join(" ")
-          li = "Téléphone : #{phone_number}"
-          li = "Email : #{internship_offer.tutor_email}"
-
-      h3.h4.mt-4 À quoi sert la convention ?
-      p La convention rappelle les engagements et responsabilités de chacun : entreprise ou administration, stagiaire et établissement scolaire. Elle précise que le stagiaire est couvert par l’assurance responsabilité civile de l’établissement scolaire.
-
-      p La convention comprend des données relatives aux élèves : nom, coordonnées, contact à prévenir en cas d’urgence, nom de l'établissement, dates et horaires du stage. Elle comporte aussi le nom de l’entreprise ou de l’administration, son secteur d’activité, son adresse, un cachet, le nom du tuteur du stage et ses coordonnées.
+        - if @internship_application.student.handicap?
+          h3.h6.mt-3
+            i.fas.fa-wheelchair
+            Besoin d'accompagnement
+          .reboot-trix-content.student-handicap = @internship_application.student.handicap.to_s
+    .grey-container-application
+      - if current_user.employer_like?
+        = render "dashboard/internship_offers/internship_applications/actions/employer_decisions",
+                internship_application: @internship_application

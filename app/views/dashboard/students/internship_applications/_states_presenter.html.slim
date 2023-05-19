@@ -7,10 +7,8 @@
     .d-flex
       = inline_svg_pack_tag('media/images/icons/arrow_right.svg', class: 'fr-mr-1w fr-my-auto')
       = @prez.internship_location
-  = link_to internship_offer_path(internship_application.internship_offer),
-            class: 'fr-raw-link' do
-    .h5.internship-offer-title
-      = @prez.internship_offer_title
+  .h5.internship-offer-title
+    = @prez.internship_offer_title
   .action.mt-auto
     .d-flex
       - if status_hash[:actions].present?

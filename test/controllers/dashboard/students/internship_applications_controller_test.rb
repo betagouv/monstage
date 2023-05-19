@@ -31,7 +31,7 @@ module Dashboard
         assert_select 'title', 'Mes candidatures | Monstage'
         assert_select 'h1.h2.mb-3', text: student.name
         assert_select 'a[href=?]', dashboard_school_class_room_students_path(school, class_room)
-        assert_select 'h2.h4', text: 'Aucun stage sélectionné'
+        assert_select 'h2.h4', text: 'Aucun stage'
       end
 
       test 'GET internship_applications#index as student.school.school_manager works and show convention button' do
@@ -41,7 +41,7 @@ module Dashboard
         school_manager = create(:school_manager, school: school)
         internship_application = create(:weekly_internship_application, :approved, student: student)
         sign_in(school_manager)
-        get dashboard_students_internship_applications_path(student)
+        get dashboard_students_internship_applications_path(student_id: student.id)
         assert_response :success
         assert_select 'a[href=?]', dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application, transition: :signed!)
       end
@@ -65,7 +65,7 @@ module Dashboard
         assert_response :success
         assert_template 'dashboard/students/internship_applications/index'
         assert_select 'h1.h2', text: 'Mes candidatures'
-        assert_select 'h2.h4', text: 'Aucun stage sélectionné'
+        assert_select 'h2.h4', text: 'Aucun stage'
         assert_select 'a.fr-btn[href=?]', student.presenter.default_internship_offers_path
       end
 
@@ -87,34 +87,14 @@ module Dashboard
         sign_in(student)
         get dashboard_students_internship_applications_path(student)
         assert_response :success
-        assert_select 'a.fr-btn[href=?]',
-                      student.presenter.default_internship_offers_path
-        internship_applications.each do |aasm_state, internship_application|
-          assert_select 'a[href=?]', dashboard_students_internship_application_path(student, internship_application)
-          assert_template "dashboard/students/internship_applications/states/_#{aasm_state}"
-        end
-
-        assert_select '.fr-alert__title',
-                      text: "Candidature en attente depuis le #{I18n.localize(internship_applications[:drafted].created_at, format: :human_mm_dd)}.",
-                      count: 1
-        assert_select '.fr-alert--info .fr-alert__title',
-                      text: "Candidature envoyée le #{I18n.localize(internship_applications[:submitted].submitted_at, format: :human_mm_dd)}.",
-                      count: 1
-        assert_select '.fr-alert--info .fr-alert__title',
-                      text: "Candidature acceptée par l'employeur le #{I18n.localize(internship_applications[:validated_by_employer].validated_by_employer_at, format: :human_mm_dd)}.",
-                      count: 1
-        assert_select '.fr-alert--success .fr-alert__title',
-                      text: "Participation au stage confirmée le #{I18n.localize(internship_applications[:approved].approved_at, format: :human_mm_dd)}.",
-                      count: 1
-        assert_select '.fr-alert--error .fr-alert__title',
-                      text: "Candidature refusée le #{I18n.localize(internship_applications[:rejected].rejected_at, format: :human_mm_dd)}.",
-                      count: 1
-        assert_select '.fr-alert--warning .fr-alert__title',
-                      text: "Candidature expirée le #{I18n.localize(internship_applications[:expired].expired_at, format: :human_mm_dd)}.",
-                      count: 1
-        assert_select '.fr-alert--error .fr-alert__title',
-                      text: "Candidature annulée le #{I18n.localize(internship_applications[:canceled_by_student].canceled_at, format: :human_mm_dd)}.",
-                      count: 2
+        assert_select '.fr-badge.fr-badge--purple-glycine.fr-badge--no-icon', text: 'annulée par l\'élève', count: 1
+        assert_select '.fr-badge.fr-badge--error.fr-badge--no-icon', text: 'expirée', count: 1
+        assert_select '.fr-badge.fr-badge--success.fr-badge--no-icon', text: "acceptée par l'entreprise", count: 1
+        assert_select '.fr-badge.fr-badge--success.fr-badge--no-icon', text: "confirmée", count: 1
+        assert_select '.fr-badge.fr-badge--error.fr-badge--no-icon', text: "refusée par l'entreprise", count: 2
+        assert_select '.fr-badge.fr-badge--info.fr-badge--no-icon', text: "sans réponse", count: 1
+        assert_select '.fr-badge.fr-badge--info.fr-badge--no-icon', text: "à l'étude", count: 1
+        assert_select '.fr-badge.fr-badge--no-icon', text: "brouillon", count: 1
       end
 
       test 'GET internship_applications#show not connected responds with redirection' do
@@ -137,14 +117,12 @@ module Dashboard
                                           submitted_at: 2.days.ago
                                         })
 
-        get dashboard_students_internship_application_path(student,
-                                                           internship_application)
+        get dashboard_students_internship_application_path(student_id: student.id,
+                                                           id: internship_application.id)
         assert_response :success
 
         assert_template 'dashboard/students/internship_applications/show'
-        assert_select '.fr-alert--success .fr-alert__title',
-                      text: "Participation au stage confirmée le #{I18n.localize(internship_application.validated_by_employer_at, format: :human_mm_dd)}.",
-                      count: 1
+        assert_select ".fr-badge.fr-badge--no-icon.fr-badge--success", text:"confirmée"
       end
 
       test 'GET internship_applications#show with drafted can be submitted' do
@@ -152,11 +130,11 @@ module Dashboard
         sign_in(student)
         internship_application = create(:weekly_internship_application, student: student)
 
-        get dashboard_students_internship_application_path(student,
-                                                           internship_application)
+        get dashboard_students_internship_application_path(student_id: student.id,
+                                                           id: internship_application.id)
         assert_response :success
-        assert_select "a[href=\"#{internship_offer_internship_application_path(internship_application.internship_offer, internship_application, transition: :submit!)}\"]"
-        assert_select 'a[data-method=patch]'
+        assert_select ".fr-badge.fr-badge--no-icon", text:"brouillon"
+        assert_select "input.fr-btn[type='submit'][value='Envoyer la demande']"
       end
     end
   end

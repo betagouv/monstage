@@ -1,12 +1,9 @@
 - badge = presenter.student_human_state
-
 .row.fr-my-1w
   .col-4
     = content_tag(:div, class: "fr-badge fr-badge--no-icon fr-badge--#{badge[:badge]}") do
       = badge[:label]
   .col-8
     = render "dashboard/students/internship_applications/student_decisions",
-             internship_application: @internship_application,
-             actions: presenter.actions_in_show_page,
-             no_cancelling_possibility_states: presenter.no_cancelling_possibility_states
+             internship_application: @internship_application
 hr.fr-my-2w

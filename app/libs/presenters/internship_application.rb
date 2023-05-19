@@ -43,100 +43,108 @@ module Presenters
 
 
     def student_human_state
-      return "" if internship_application.aasm_state.nil?
-
-      badge = {}
       case internship_application.aasm_state
       when "drafted"
-        badge = {label: 'brouillon',
-                 badge:'grey',
-                 actions: [ { label: 'Envoyer',
-                             path: internship_application_path,
-                             color: 'nil',
-                             level: 'tertiary'
-                            }]
-                }
-
+        {label: 'brouillon',
+          badge:'grey',
+          actions: [ { label: 'Envoyer',
+                      path: internship_application_path,
+                      color: 'nil',
+                      level: 'tertiary'
+                    }]
+        }
       when "submitted", "read_by_employer"
-        badge = { label: 'sans réponse',
-                  badge: 'info',
-                  actions: [ { label: 'Renvoyer la demande',
-                             path: internship_application_path,
-                             color: 'nil',
-                             level: 'tertiary'
-                            }]
-                }
-
+        { label: 'sans réponse',
+          badge: 'info',
+          actions: [ { label: 'Renvoyer la demande',
+                      path: internship_application_path,
+                      color: 'nil',
+                      level: 'tertiary'
+                    }]
+        }
       when "examined"
-        badge = { label: 'à l\'étude',
-                  badge:'info',
-                  actions: [ { label: 'Renvoyer la demande',
-                             path: internship_application_path,
-                             color: 'nil',
-                             level: 'tertiary'
-                            }]}
-
+        { label: 'à l\'étude',
+          badge:'info',
+          actions: [ { label: 'Renvoyer la demande',
+                      path: internship_application_path,
+                      color: 'nil',
+                      level: 'tertiary'
+                    }]
+        }
       when "validated_by_employer"
-        badge = { label: 'acceptée par l\'entreprise',
-                  badge:'success',
-                  actions: [ { label: 'Répondre',
-                             path: internship_application_path,
-                             color: 'nil',
-                             level: 'tertiary'
-                             }]
-                }
-
+        { label: 'acceptée par l\'entreprise',
+          badge:'success',
+          actions: [ { label: 'Répondre',
+                      path: internship_application_path,
+                      color: 'nil',
+                      level: 'tertiary'
+                      }]
+        }
       when "canceled_by_employer", "rejected"
-        badge = { label: 'refusée par l\'entreprise',
-                  badge:'error',
-                  actions: [ { label: 'Renvoyer la demande',
-                             path: internship_application_path,
-                             color: 'nil',
-                             level: 'tertiary',
-                             disabled: true
-                             }]
-                }
-
+        { label: 'refusée par l\'entreprise',
+          badge:'error',
+          actions: [ { label: 'Renvoyer la demande',
+                      path: internship_application_path,
+                      color: 'nil',
+                      level: 'tertiary',
+                      disabled: true
+                      }]
+        }
       when "canceled_by_student"
-        badge = {label: 'annulée par l\'élève',
-                 badge:'purple-glycine',
-                 actions: [ { label: 'Renvoyer la demande',
-                             path: internship_application_path,
-                             color: 'nil',
-                             level: 'tertiary',
-                             disabled: true
-                             }]
-                }
-
+        { label: 'annulée par l\'élève',
+          badge:'purple-glycine',
+          actions: [ { label: 'Renvoyer la demande',
+                      path: internship_application_path,
+                      color: 'nil',
+                      level: 'tertiary',
+                      disabled: true
+                      }]
+        }
       when "expired"
-        badge = {label: 'expirée',
-                 badge:'error',
-                 actions: [ { label: 'Renvoyer la demande',
-                             path: internship_application_path,
-                             color: 'nil',
-                             level: 'tertiary',
-                             disabled: true
-                             }]
-                }
-
+        { label: 'expirée',
+          badge:'error',
+          actions: [ { label: 'Renvoyer la demande',
+                      path: internship_application_path,
+                      color: 'nil',
+                      level: 'tertiary',
+                      disabled: true
+                      }]
+        }
+      when "canceled_by_student_confirmation"
+        {label: 'finalement refusée',
+          badge:'purple-glycine',
+          actions: [ { label: 'Voir',
+                      path: internship_application_path,
+                      color: 'nil',
+                      level: 'tertiary'
+                      }]
+        }
       when "approved"
-        badge = {label: 'confirmée',
-                 badge: 'success',
-                 actions: [ { label: 'Contacter l\'offreur',
-                              path: internship_application_path, # peut-être mettre un mailto vers l'offreur ?
-                              color: 'nil',
-                              level: 'tertiary'
-                             }]
-                }
+        {label: 'confirmée',
+          badge: 'success',
+          actions: [ { label: 'Contacter l\'offreur',
+                      path: internship_application_path, # peut-être mettre un mailto vers l'offreur ?
+                      color: 'nil',
+                      level: 'tertiary'
+                      }]
+        }
       else
-        badge = {}
+        {}
       end
     end
 
     def no_cancelling_possibility_states
-      %w[rejected canceled_by_employer canceled_by_student expired drafted]
+      %w[rejected
+        canceled_by_employer
+        canceled_by_student
+        expired
+        drafted
+        canceled_by_student_confirmation]
     end
 
+    def with_no_cancelling_possibility?
+      no_cancelling_possibility_states.include?(internship_application.aasm_state)
+    end
 
     def actions_in_show_page
       return "" if internship_application.aasm_state.nil?
@@ -171,7 +179,7 @@ module Presenters
                       level: 'primary'
                     } ]
 
-      when "canceled_by_employer", "rejected", "cancelled_by_student", "expired"
+      when "canceled_by_employer", "rejected", "cancelled_by_student", "expired", "canceled_by_student_confirmation"
         actions = []
 
 
@@ -202,16 +210,9 @@ module Presenters
     end
 
     def internship_application_path
-      rails_routes.dashboard_internship_offer_internship_application_path(
-        internship_application.internship_offer.id,
-        internship_application
-      )
-    end
-
-    def edit_internship_application_path
-      rails_routes.dashboard_internship_offer_internship_application_path(
-        internship_application.internship_offer.id,
-        internship_application
+      rails_routes.dashboard_students_internship_application_path(
+        student_id: internship_application.user_id,
+        id: internship_application.id
       )
     end
   end
