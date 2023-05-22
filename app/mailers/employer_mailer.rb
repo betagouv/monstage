@@ -94,7 +94,7 @@ class EmployerMailer < ApplicationMailer
     @internship_application = internship_application
 
     mail(to: @internship_application.internship_offer.employer.email,
-         subject: '[Relance] Une candidature vous attend, veuillez y répondre')
+         subject: '[Relance] Vous avez une candidature en attente')
   end
   
   def internship_application_approved_for_an_other_internship_offer(internship_application:)

@@ -13,7 +13,7 @@ FactoryBot.define do
     trait :weekly_internship_offer_info do
       weeks_count { 1 }
       type { 'InternshipOfferInfos::WeeklyFramed' }
-      weeks { [Week.selectable_from_now_until_end_of_school_year.second]}
+      weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
     end
 
     factory :weekly_internship_offer_info, traits: [:weekly_internship_offer_info],
