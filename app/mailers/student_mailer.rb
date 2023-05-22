@@ -32,12 +32,12 @@ class StudentMailer < ApplicationMailer
     @internship_offer = internship_application.internship_offer
     @prez_offer = @internship_offer.presenter
     @prez_student = @student.presenter
-    
+
     send_email(to: @student.email,
                subject: "Votre candidature est en cours d'examen")
   end
 
-  def internship_application_requested_confirmation_email(internship_application:) 
+  def internship_application_requested_confirmation_email(internship_application:)
     @internship_application = internship_application
 
     mail(to: @internship_application.student.email,
@@ -60,7 +60,11 @@ class StudentMailer < ApplicationMailer
     @prez_offer = @internship_offer.presenter
     @prez_student = @student.presenter
     sgid = @student.to_sgid(expires_in: MAGIC_LINK_EXPIRATION_DELAY.days).to_s
-    @url = direct_to_internship_application_dashboard_students_internship_application_url(sgid: sgid, student_id: @student.id, id: @internship_application.id)
+    @url = direct_to_internship_application_dashboard_students_internship_application_url(
+      sgid: sgid,
+      student_id: @student.id,
+      id: @internship_application.id
+    )
 
     send_email(to: @student.email,
                subject: "Votre candidature a été validée par l'employeur")
@@ -74,7 +78,11 @@ class StudentMailer < ApplicationMailer
     @titles = @internship_offers.map(&:title)
     @prez_student = @student.presenter
     sgid = @student.to_sgid(expires_in: MAGIC_LINK_EXPIRATION_DELAY.days).to_s
-    @url = direct_to_internship_application_dashboard_students_internship_application_url(sgid: sgid, student_id: @student.id, id: @internship_applications.last.id)
+    @url = direct_to_internship_application_dashboard_students_internship_application_url(
+      sgid: sgid,
+      student_id: @student.id,
+      id: @internship_applications.last.id
+    )
 
     send_email(to: @student.email,
                subject: "[Relance] - Candidature validée par l'employeur")

@@ -136,6 +136,60 @@ module Dashboard
         assert_select ".fr-badge.fr-badge--no-icon", text:"brouillon"
         assert_select "input.fr-btn[type='submit'][value='Envoyer la demande']"
       end
+
+      test "#resend_application" do
+        student = create(:student)
+        sign_in(student)
+        internship_application = create(
+          :weekly_internship_application,
+          :submitted,
+          student: student
+        )
+        assert_changes -> { internship_application.reload.dunning_letter_count } do
+          post resend_application_dashboard_students_internship_application_path(
+            student_id: internship_application.student.id,
+            id: internship_application.id
+            ), params: {}
+        end
+        assert_equal 1, internship_application.reload.dunning_letter_count
+        assert_no_changes -> { internship_application.reload.dunning_letter_count } do
+          post resend_application_dashboard_students_internship_application_path(
+            student_id: internship_application.student.id,
+            id: internship_application.id
+            ), params: {}
+        end
+        assert_redirected_to dashboard_students_internship_applications_path(student)
+      end
+
+      test '#direct_to_internship_application' do
+        student = create(:student)
+        sgid = ""
+        internship_application = create(:weekly_internship_application, student: student)
+        travel_to Time.now - 3.month do
+          sgid = student.to_sgid(expires_in: StudentMailer::MAGIC_LINK_EXPIRATION_DELAY.days).to_s
+          get direct_to_internship_application_dashboard_students_internship_application_path(
+            sgid: sgid,
+            student_id: student.id,
+            id: internship_application.id)
+          assert_redirected_to dashboard_students_internship_application_path(
+            student_id: student.id,
+            id: internship_application.id )
+          assert_equal student.id, session.dig('warden.user.user.key', 0, 0)
+          assert_equal 1, internship_application.reload.magic_link_tracker
+          sign_out(student)
+        end
+        travel_to Time.now do
+          get direct_to_internship_application_dashboard_students_internship_application_path(
+            sgid: sgid,
+            student_id: student.id,
+            id: internship_application.id)
+          assert_redirected_to dashboard_students_internship_application_path(
+            student_id: student.id,
+            id: internship_application.id )
+          assert_nil session.dig('warden.user.user.key', 0, 0)
+          assert_equal 2, internship_application.reload.magic_link_tracker
+        end
+      end
     end
   end
 end

@@ -30,25 +30,32 @@ module Dashboard
         end
       end
 
+      # 0 no magic link - status quo
+      # 1 magic link successfully clicked
+      # 2 magic link clicked but expired
       def direct_to_internship_application
-        internship_application_path = dashboard_internship_offer_internship_application_path(
-          internship_offer_id: @internship_application.internship_offer.id,
-          id: @internship_application.id
-        )
-        redirect_to internship_application_path unless params[:sgid]
-
-        student = GlobalID::Locator.locate_signed(params[:sgid])
+        redirect_path = dashboard_students_internship_application_path(
+            student_id: @current_student.id,
+            id: @internship_application.id
+          )
+        redirect_to redirect_path unless params[:sgid]
+        
         magic_link_tracker = 1
-        if student&.student? && student.id == @current_student.id
-          sign_in(student)
+        if magic_fetch_student&.student? && magic_fetch_student.id == @current_student.id
+          sign_in(@current_student)
         else
           magic_link_tracker = 2
         end
+
         @internship_application.update(magic_link_tracker: magic_link_tracker)
-        redirect_to internship_application_path
+        redirect_to redirect_path
       end
 
       private
+
+      def magic_fetch_student
+        GlobalID::Locator.locate_signed(params[:sgid])
+      end
 
       def set_current_student
         @current_student = ::Users::Student.find(params[:student_id])
