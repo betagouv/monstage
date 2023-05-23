@@ -20,6 +20,11 @@ module Dashboard
         @internship_offer = @internship_application.internship_offer
       end
 
+      def edit
+        authorize! :internship_application_edit, @internship_application
+        @internship_offer = @internship_application.internship_offer
+      end
+
       def resend_application
         if @internship_application.max_dunning_letter_count_reached?
           redirect_to dashboard_students_internship_applications_path(@current_student),

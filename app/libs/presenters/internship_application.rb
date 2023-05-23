@@ -47,7 +47,7 @@ module Presenters
       when "drafted"
         {label: 'brouillon',
           badge:'grey',
-          actions: [ { label: 'Envoyer',
+          actions: [ { label: 'Voir',
                       path: internship_application_path,
                       color: 'nil',
                       level: 'tertiary'
@@ -152,12 +152,16 @@ module Presenters
       actions = []
       case internship_application.aasm_state
       when "drafted"
-        actions = [{  label: 'Envoyer la demande',
-                      form_path: internship_application_path,
-                      transition: "submit!",
-                      color: 'primary',
-                      level: 'primary',
-                    }]
+        actions = [{ label: 'Modifier',
+                     link_path: edit_internship_application_path,
+                     color: 'primary',
+                     level: 'secondary'
+                    }, {
+                     label: 'Envoyer la demande',
+                     form_path: internship_application_path,
+                     transition: "submit!",
+                     color: 'primary',
+                     level: 'primary'}]
 
       when "submitted", "examined"
         actions =  [{ label: 'Renvoyer la demande',
@@ -211,6 +215,13 @@ module Presenters
 
     def internship_application_path
       rails_routes.dashboard_students_internship_application_path(
+        student_id: internship_application.user_id,
+        id: internship_application.id
+      )
+    end
+
+    def edit_internship_application_path
+      rails_routes.edit_dashboard_students_internship_application_path(
         student_id: internship_application.user_id,
         id: internship_application.id
       )
