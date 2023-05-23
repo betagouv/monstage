@@ -13,7 +13,11 @@ module Builders
           .merge(preprocess_hosting_info_to_params(hosting_info))
           .merge(preprocess_practical_info_to_params(practical_info))
           .merge(employer_id: user.id, employer_type: 'User')
-          .merge(organisation_id: organisation.id, internship_offer_info_id: internship_offer_info.id, hosting_info_id: hosting_info.id, practical_info_id: practical_info.id)
+          .merge(
+            organisation_id: organisation.id, 
+            internship_offer_info_id: internship_offer_info.id, 
+            hosting_info_id: hosting_info.id, 
+            practical_info_id: practical_info.id)
         )
         internship_offer.save!
         callback.on_success.try(:call, internship_offer)
@@ -112,6 +116,7 @@ module Builders
         max_candidates: hosting_info.max_candidates,
         max_students_per_group: hosting_info.max_students_per_group,
         school_id: hosting_info.school_id,
+        type: 'InternshipOffers::WeeklyFramed'
       }
       params[:week_ids] = hosting_info.week_ids
       params
@@ -160,7 +165,7 @@ module Builders
     def model
       return ::InternshipOffers::Api if from_api?
 
-      InternshipOffer
+      InternshipOffers::WeeklyFramed
     end
 
     def duplicate?(internship_offer)

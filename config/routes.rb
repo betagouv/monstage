@@ -93,6 +93,7 @@ Rails.application.routes.draw do
 
       resources :internship_offers, path: 'offres-de-stage', except: %i[show] do
         resources :internship_applications, only: %i[update index], module: 'internship_offers'
+        post :publish, on: :member
       end
 
       namespace :stepper, path: 'etapes' do

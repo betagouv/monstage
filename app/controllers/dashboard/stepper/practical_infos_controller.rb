@@ -27,10 +27,6 @@ module Dashboard::Stepper
 
     # process step 4
     def create
-      byebug
-      puts "practical_infos_controller.rb"
-      puts "practical_infos_controller.rb"
-      puts "practical_infos_controller.rb"
       authorize! :create, PracticalInfo
       @practical_info = PracticalInfo.new(
         {}.merge(practical_info_params)
@@ -40,15 +36,13 @@ module Dashboard::Stepper
       internship_offer_builder.create_from_stepper(builder_params) do |on|
         on.success do |created_internship_offer|
           redirect_to(internship_offer_path(created_internship_offer, origine: 'dashboard'),
-                      flash: { success: 'Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.' })
+                      flash: { success: 'Votre offre de stage est prête à être publiée.' })
         end
         on.failure do |failed_internship_offer|
-          byebug
           render :new, status: :bad_request
         end
       end
     rescue ActiveRecord::RecordInvalid
-      byebug
       @organisation = Organisation.find(params[:organisation_id])
       @practical_info = PracticalInfo.new(
         street: @organisation.street,

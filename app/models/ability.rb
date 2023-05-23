@@ -115,7 +115,7 @@ class Ability
     can :create_remote_internship_request, SupportTicket # TO DO REMOVE
 
     can %i[create see_tutor], InternshipOffer
-    can %i[read update discard], InternshipOffer, employer_id: user.id
+    can %i[read update discard publish], InternshipOffer, employer_id: user.id
     # can :renew, InternshipOffer do |internship_offer|
     #   renewable?(internship_offer: internship_offer, user: user)
     # end
@@ -184,7 +184,7 @@ class Ability
     can :manage, School
     can :manage, Sector
     can %i[destroy see_tutor], InternshipOffer
-    can %i[read update export unpublish], InternshipOffer
+    can %i[read update export unpublish publish], InternshipOffer
     can %i[read update destroy export], InternshipApplication
     can :manage, EmailWhitelists::EducationStatistician
     can :manage, EmailWhitelists::PrefectureStatistician
@@ -277,7 +277,7 @@ class Ability
     
     can %i[index update], InternshipApplication
     can %i[read create see_tutor], InternshipOffer
-    can %i[read update discard], InternshipOffer, employer_id: user.id
+    can %i[read update discard publish], InternshipOffer, employer_id: user.id
     can :renew, InternshipOffer do |internship_offer|
       renewable?(internship_offer: internship_offer, user: user)
     end

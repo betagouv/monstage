@@ -3,6 +3,7 @@
 require "sti_preload"
 class InternshipOffer < ApplicationRecord
   include StiPreload
+  include AASM
   PAGE_SIZE = 30
   EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
   MAX_CANDIDATES_HIGHEST = 200
@@ -125,6 +126,24 @@ class InternshipOffer < ApplicationRecord
 
   # Callbacks
   before_save :update_remaining_seats
+
+  aasm do
+    state :drafted, initial: true
+    state :published,
+          :removed
+
+    event :publish do
+      transitions from: :drafted, to: :published, after: proc { |*_args|
+        update!("published_at": Time.now.utc)
+      }
+    end
+
+    event :remove do
+      transitions from: %i[published drafted], to: :removed, after: proc { |*_args|
+        update!(published_at: nil)
+      }
+    end
+  end
 
   def departement
     Department.lookup_by_zipcode(zipcode: zipcode)

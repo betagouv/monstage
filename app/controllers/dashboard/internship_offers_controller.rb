@@ -47,7 +47,7 @@ module Dashboard
     def update
       internship_offer_builder.update(instance: InternshipOffer.find(params[:id]),
                                       params: internship_offer_params) do |on|
-
+              
       on.success do |updated_internship_offer|
         @internship_offer = updated_internship_offer
         respond_to do |format|
@@ -89,6 +89,14 @@ module Dashboard
                       flash: { warning: "Votre annonce n'a pas été supprimée" })
         end
       end
+    end
+
+    def publish
+      @internship_offer = InternshipOffer.find(params[:id])
+      authorize! :publish, @internship_offer
+      @internship_offer.publish!
+      redirect_to(internship_offer_path(@internship_offer),
+                      flash: { success: 'Votre offre de stage est publiée.' })
     end
 
     # duplicate form
