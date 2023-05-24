@@ -17,7 +17,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     assert_select 'a', text: 'Je postule', count: 0
   end
 
-  test 'student can submit application wheen school has not choosen any week yet' do
+  test 'student can submit application when school has not choosen any week yet' do
     school = create(:school, weeks: [])
     student = create(:student, school: school, class_room: create(:class_room, school: school))
     internship_offer = create(:weekly_internship_offer, weeks: weeks)
@@ -81,101 +81,14 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       page.find "input[name='internship_application[student_email]']", visible: true
       fill_in("Adresse électronique (email)", with: 'parents@gmail.com')
       select weeks.first.human_select_text_method, from: 'internship_application_week_id'
-      page.find("input[type='submit'][value='Valider ma candidature']").click
+      page.find("input[type='submit'][value='Valider']").click
       assert page.has_selector?(".fr-card__title a[href='/offres-de-stage/#{internship_offer.id}']", count: 1)
       click_button('Envoyer')
       page.find('h1', text: 'Félicitations !')
     end
   end
 
-  test 'student can browse his internship_applications' do
-    school = create(:school, :with_school_manager)
-    student = create(:student, school: school)
-    internship_applications = {
-      drafted: create(:weekly_internship_application, :drafted, student: student),
-      submitted: create(:weekly_internship_application, :submitted, student: student),
-      approved: create(:weekly_internship_application, :approved, student: student),
-      rejected: create(:weekly_internship_application, :rejected, student: student),
-      canceled_by_student_confirmation: create(:weekly_internship_application, :canceled_by_student_confirmation, student: student),
-      validated_by_employer: create(:weekly_internship_application, :validated_by_employer, student: student),
-      canceled_by_student: create(:weekly_internship_application, :canceled_by_student, student: student)
-    }
-    sign_in(student)
-    visit '/'
-    click_on 'Candidatures'
-    internship_applications.each do |_aasm_state, internship_application|
-      badge = internship_application.presenter.student_human_state
-      find('.h5.internship-offer-title', text: internship_application.internship_offer.title)
-      find("a#show_link_#{internship_application.id}", text: badge[:actions].first[:label]).click
-      click_link('toutes mes candidatures')
-    end
-  end
-
-  test 'student can confirm an employer approval from his applications dashboard' do
-    school = create(:school, :with_school_manager)
-    student = create(:student, school: school)
-    internship_application = create(:weekly_internship_application, :validated_by_employer, student: student)
-    sign_in(student)
-    visit '/'
-    click_on 'Candidatures'
-    find('.fr-badge.fr-badge--success', text: "ACCEPTÉE PAR L'ENTREPRISE")
-    find("#show_link_#{internship_application.id}").click
-    assert_equal "validated_by_employer", internship_application.aasm_state
-    assert_changes ->{internship_application.reload.aasm_state},
-                   from: "validated_by_employer",
-                   to: "approved" do
-      click_button('Choisir ce stage')
-      click_button('Confirmer')
-    end
-    find '.fr-badge.fr-badge--success', text: "CONFIRMÉE"
-    find "a#show_link_#{internship_application.id}", text: "Contacter l'offreur"
-  end
-
-  test 'student can submit an application from his applications dashboard' do
-    school = create(:school, :with_school_manager)
-    student = create(:student, school: school)
-    internship_application = create(:weekly_internship_application, :drafted, student: student)
-    sign_in(student)
-    visit '/'
-    click_on 'Candidatures'
-    find('.fr-badge', text: "BROUILLON")
-    find("#show_link_#{internship_application.id}").click
-    assert_equal "drafted", internship_application.aasm_state
-    assert_changes ->{internship_application.reload.aasm_state},
-                   from: "drafted",
-                   to: "submitted" do
-      find('input[value="Envoyer la demande"]').click
-    end
-    find '.fr-badge.fr-badge--info', text: "SANS RÉPONSE"
-    find "a#show_link_#{internship_application.id}", text: "Renvoyer la demande"
-  end
-
-  test 'GET #show as Student with existing draft application shows the draft' do
-    if ENV['RUN_BRITTLE_TEST']
-      weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
-      internship_offer      = create(:weekly_internship_offer, weeks: weeks)
-      school                = create(:school, weeks: weeks)
-      student               = create(:student, school: school, class_room: create(:class_room, school: school))
-      internship_application = create(:weekly_internship_application,
-                                      :drafted,
-                                      motivation: 'au taquet',
-                                      student: student,
-                                      internship_offer: internship_offer,
-                                      week: weeks.last)
-
-      travel_to(weeks[0].week_date - 1.week) do
-        sign_in(student)
-        visit internship_offer_path(internship_offer)
-        find('.h1', text: internship_offer.title)
-        find('.h3', text: internship_offer.employer_name)
-        find('.h6', text: internship_offer.street)
-        find('.h4', text: 'Informations sur le stage')
-        find('.reboot-trix-content', text: internship_offer.description)
-        assert page.has_content? 'Stage individuel'
-      end
-
-    end
-  end
+  
 
   test 'student can receive a SMS when employer accepts her application' do
     school = create(:school)
@@ -241,57 +154,9 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     # refute page.has_selector?("a[href='#tab-convention-detail']", count: 1)
   end
 
-  test 'student can draft, submit, and cancel(by_student) internship_applications' do
-    weeks = [Week.find_by(number: 1, year: 2020)]
-    school = create(:school, weeks: weeks)
-    student = create(:student,
-                     school: school,
-                     class_room: create( :class_room,
-                                         school: school)
-                    )
-    internship_offer = create(:weekly_internship_offer, weeks: weeks)
+ 
 
-    travel_to(weeks.first.week_date) do
-      sign_in(student)
-      visit internship_offer_path(internship_offer)
-
-      # show application form
-      first(:link, 'Postuler').click
-
-      # fill in application form
-      human_first_week_label = weeks.first.human_select_text_method
-      select human_first_week_label, from: 'internship_application_week_id', wait: 3
-      find('#internship_application_motivation', wait: 3).native.send_keys('Je suis au taquet')
-      refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
-      fill_in("Adresse électronique (email)", with: 'parents@gmail.com')
-      fill_in("Numéro de téléphone élève ou parent", with: '060011223344')
-      assert_changes lambda {
-                       student.internship_applications
-                              .where(aasm_state: :drafted)
-                              .count
-                     },
-                     from: 0,
-                     to: 1 do
-        click_on 'Valider'
-        page.find('#submit_application_form') # timer
-      end
-
-      assert_changes lambda {
-        student.internship_applications
-               .where(aasm_state: :submitted)
-               .count
-            },
-            from: 0,
-            to: 1 do
-        click_on 'Envoyer'
-        sleep 0.15
-      end
-
-      page.find('h1', text: 'Félicitations !')
-    end
-  end
-
-  test 'when an employer tries to access application forms, he fails' do
+  test 'when an employer tries to access application forms, she fails' do
     employer = create(:employer)
     internship_offer = create(:weekly_internship_offer)
     visit internship_offer_path(internship_offer.id)

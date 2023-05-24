@@ -32,6 +32,8 @@ module Dashboard
         else
           increase_dunning_letter_count
           EmployerMailer.resend_internship_application_submitted_email(internship_application: @internship_application).deliver_now
+          redirect_to dashboard_students_internship_application_path(student_id: @current_student.id, id: @internship_application.id),
+                      notice: "Votre candidature a bien été renvoyée"
         end
       end
 

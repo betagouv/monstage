@@ -120,9 +120,9 @@ module Presenters
                       }]
         }
       when "approved"
-        {label: 'confirmée',
+        { label: 'confirmée',
           badge: 'success',
-          actions: [ { label: 'Contacter l\'offreur',
+          actions: [ { label: 'Contacter l\'employeur',
                       path: internship_application_path, # peut-être mettre un mailto vers l'offreur ?
                       color: 'nil',
                       level: 'tertiary'

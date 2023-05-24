@@ -42,6 +42,57 @@
         span.fr-icon-arrow-left-line.fr-btn--icon-left.fr-raw-link
           | retour
 - if current_user.student?
+  - if @internship_application.approved?
+    .row
+      .col-12.py-2
+          h3.h4 Prochaine étape, la convention de stage
+          p La convention de stage est en signature dans la structure d'accueil du stage et chez le chef d'établissement.
+          - if current_user.student?
+            p Vous serez averti dès que vous pourrez la signer à votre tour.
+          p.font-weight-bold Sans une convention convenablement remplie et signée, le stage ne peut pas avoir lieu.
+          / - internship_offer = @internship_application.internship_offer
+          / p
+          /   .font-weight-bold Contact de l'employeur
+          /   ul.list-unstyled
+          /     li = internship_offer.employer_name
+          /     li = "Email : #{internship_offer.employer_email}"
+
+          / p
+          /   .font-weight-bold Contact du tuteur
+          /   ul.list-unstyled
+          /     li = internship_offer.tutor_name
+          /     - phone_number = internship_offer&.tutor_phone.gsub('+33', '0')&.scan(/.{2}/)&.join(" ")
+          /     li = "Téléphone : #{phone_number}"
+          /     li = "Email : #{internship_offer.tutor_email}"
+
+
+          h3.h4.mt-4 À quoi sert la convention ?
+          p La convention rappelle les engagements et responsabilités de chacun : entreprise ou administration, stagiaire et établissement scolaire. Elle précise que le stagiaire est couvert par l’assurance responsabilité civile de l’établissement scolaire.
+
+          p La convention comprend des données relatives aux élèves : nom, coordonnées, contact à prévenir en cas d’urgence, nom de l'établissement, dates et horaires du stage. Elle comporte aussi le nom de l’entreprise ou de l’administration, son secteur d’activité, son adresse, un cachet, le nom du tuteur du stage et ses coordonnées.
+          .container-monstage-application
+            .grey-container-application
+              .row
+                .col-sm-8.col-lg-12
+                  .fr-callout
+                    h3.h5.fr-callout__title Contact de l'employeur
+                    p.fr-callout__text
+                      ul
+                        li.test-employer-name
+                          = "votre responsable dans l'entreprise : "
+                          strong = @internship_offer.employer.presenter.formal_name
+                        li.test-employer-email
+                          = "son adresse email : "
+                          strong = @internship_offer.employer.email
+                        - if @internship_offer.employer.phone
+                          li.test-employer-phone
+                            = "son numéro de téléphone : "
+                            strong = @internship_offer.employer.phone
+                    = mail_to(@internship_offer.employer.email, 
+                            'Lui écrire',
+                            subject: "[Stagiaire #{@internship_application.student.presenter.short_civil_full_name}] - prise de contact",
+                            class: 'fr-btn fr-btn--sm fr-mt-2w')
+
   .row
     .col-12
       h1.h3.fr-mb-7v L'offre de stage
@@ -53,23 +104,6 @@
             = render "internship_offers/show_details",
                      internship_offer: @internship_offer,
                      hidden_parts: true
-      - if @internship_application.approved?
-        .row
-          .col-sm-8.col-lg-12
-            .fr-callout
-              h3.h5.fr-callout__title Contact en entreprise
-              p.fr-callout__text
-                ul
-                  li
-                    = "votre responsable dans l'entreprise : "
-                    strong = @internship_offer.employer.presenter.formal_name
-                  li
-                    = "son adresse email : "
-                    strong = @internship_offer.employer.email
-              = mail_to(@internship_offer.employer.email, 
-                      'Lui écrire',
-                      subject: "[Stagiaire #{@internship_application.student.presenter.short_civil_full_name}] - prise de contact",
-                      class: 'fr-btn fr-btn--sm fr-mt-2w')
 .row
   .col-12
     h2.h3.fr-mt-4w.fr-mb-2w
