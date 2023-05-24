@@ -1,10 +1,11 @@
 .d-flex.flex-row
-  - unless internship_application.aasm_state.in?(%w[canceled_by_employer canceled_by_student rejected expired])
+  - prez = @internship_application.presenter
+  - if prez.ok_for_reject?
     = render "dashboard/internship_offers/internship_applications/actions/reject",
-              internship_application: internship_application
-  - unless internship_application.aasm_state.in?(%w[examined canceled_by_employer canceled_by_student rejected expired])
+              internship_application: @internship_application
+  - if prez.ok_for_examine?
     = render "dashboard/internship_offers/internship_applications/actions/examine",
-              internship_application: internship_application
-  - unless internship_application.aasm_state.in?(%w[approved canceled_by_student rejected expired canceled_by_employer])
+              internship_application: @internship_application
+  - if prez.ok_for_employer_validation?
     = render "dashboard/internship_offers/internship_applications/actions/approve",
-              internship_application: internship_application
+              internship_application: @internship_application

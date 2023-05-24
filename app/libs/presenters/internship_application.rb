@@ -40,8 +40,6 @@ module Presenters
       end
     end
 
-
-
     def student_human_state
       case internship_application.aasm_state
       when "drafted"
@@ -149,60 +147,85 @@ module Presenters
     def actions_in_show_page
       return "" if internship_application.aasm_state.nil?
 
-      actions = []
       case internship_application.aasm_state
       when "drafted"
-        actions = [{ label: 'Modifier',
-                     link_path: edit_internship_application_path,
-                     color: 'primary',
-                     level: 'secondary'
-                    }, {
-                     label: 'Envoyer la demande',
-                     form_path: internship_application_path,
-                     transition: "submit!",
-                     color: 'primary',
-                     level: 'primary'}]
+        [{ label: 'Modifier',
+            link_path: edit_internship_application_path,
+            color: 'primary',
+            level: 'secondary'
+          }, {
+            label: 'Envoyer la demande',
+            form_path: internship_application_path,
+            transition: "submit!",
+            color: 'primary',
+            level: 'primary'}]
 
       when "submitted", "examined"
-        actions =  [{ label: 'Renvoyer la demande',
-                      color: 'primary',
-                      level: 'primary',
-                    } ]
+         [{ label: 'Renvoyer la demande',
+            color: 'primary',
+            level: 'primary',
+          } ]
 
       when "read_by_employer"
-        actions = [ { label: 'Renvoyer la demande',
-                      color: 'primary',
-                      level: 'tertiary',
-                    } ]
+        [ { label: 'Renvoyer la demande',
+            color: 'primary',
+            level: 'tertiary',
+          } ]
 
       when "validated_by_employer"
-        actions = [ { label: 'Choisir ce stage',
-                      form_path: internship_application_path,
-                      transition: "approve!",
-                      color: 'primary',
-                      level: 'primary'
-                    } ]
+        [ { label: 'Choisir ce stage',
+            form_path: internship_application_path,
+            transition: "approve!",
+            color: 'primary',
+            level: 'primary'
+          } ]
+      when "approved"
+         [{ label: 'Contacter l\'offreur',
+            color: 'primary',
+            level: 'tertiary'
+        }]
 
       when "canceled_by_employer", "rejected", "cancelled_by_student", "expired", "canceled_by_student_confirmation"
-        actions = []
+        []
 
-
-      when "approved"
-        actions =  [{ label: 'Contacter l\'offreur',
-                      color: 'primary',
-                      level: 'tertiary'
-                    }]
+      else
+        []
       end
-      actions
+    end
+    
+    def ok_for_examine_states
+      %w[submitted read_by_employer]
     end
 
+    def ok_for_reject_states
+      %w[submitted
+        read_by_employer
+        examined
+        validated_by_employer
+        approved]
+    end
+
+    def ok_for_employer_validation_states
+      %w[submitted examined read_by_employer] 
+    end
+    
+    def ok_for_examine?
+      current_state_in_list?(ok_for_examine_states)
+    end
+
+    def ok_for_reject?
+      current_state_in_list?(ok_for_reject_states)
+    end
+
+    def ok_for_employer_validation?
+      current_state_in_list?(ok_for_employer_validation_states)
+    end
 
     attr_reader :internship_application,
                 :student,
                 :internship_offer
+
     protected
-
-
     def initialize(internship_application)
       @internship_application = internship_application
       @student                = internship_application.student
@@ -226,5 +249,10 @@ module Presenters
         id: internship_application.id
       )
     end
+
+    def current_state_in_list?(state_array)
+      state_array.include?(internship_application.aasm_state)
+    end
+
   end
 end
