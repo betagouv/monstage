@@ -1,5 +1,5 @@
-- @prez = internship_application.presenter
-- status_hash = @prez.student_human_state
+- @prez = internship_application.presenter(current_user)
+- status_hash = @prez.human_state
 .internship-application-status.d-flex.flex-column.align-items-start
   div class="fr-badge fr-badge--#{status_hash[:badge]} fr-badge--no-icon"
     = status_hash[:label]
@@ -16,6 +16,6 @@
           = link_to action[:label],
                     action[:path],
                     id: "show_link_#{internship_application.id}",
-                    class: "fr-btn fr-btn--sm fr-btn--#{action[:color]} fr-btn--#{action[:level]}",
+                    class: "fr-btn fr-btn--sm fr-btn--#{action[:level]}",
                     disabled: action[:disabled] || false
 

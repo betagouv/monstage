@@ -1,4 +1,4 @@
-- presenter = @internship_application.presenter
+- presenter = @internship_application.presenter(current_user)
 = render 'layouts/breadcrumb',
           links: [ [current_user.presenter.dashboard_name_link, current_user.dashboard_name],
                    ['', @internship_application.internship_offer.title]]

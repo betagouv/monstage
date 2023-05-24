@@ -22,7 +22,7 @@
     - else
       tbody
         - internship_applications.each do |internship_application|
-          - prez = internship_application.presenter
+          - prez = internship_application.presenter(current_user)
           tr
             td style="min-width: 180px;"
               = prez.student.presenter.full_name
@@ -33,8 +33,8 @@
               = prez_offer.address
             td = internship_application.expired? ? '-' : prez.expires_in
             td
-              p class="fr-mt-1w fr-badge fr-badge--sm fr-badge--#{prez.status[:badge_type]} fr-badge--no-icon"
-                = prez.status[:label]
+              p class="fr-mt-1w fr-badge fr-badge--sm fr-badge--#{prez.human_state[:badge]} fr-badge--no-icon"
+                = prez.human_state[:label]
             td.text-center data-controller="toggle-publish"
               = form_with( model: internship_application,
                             url: set_to_read_dashboard_internship_offer_internship_application_path(prez.internship_offer, internship_application),

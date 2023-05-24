@@ -386,8 +386,8 @@ class InternshipApplication < ApplicationRecord
     end
   end
 
-  def presenter
-    @presenter ||= Presenters::InternshipApplication.new(self)
+  def presenter(user)
+    @presenter ||= Presenters::InternshipApplication.new(self, user)
   end
 
   private

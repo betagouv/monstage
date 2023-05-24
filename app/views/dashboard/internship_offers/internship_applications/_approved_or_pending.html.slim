@@ -18,7 +18,7 @@
     - else
       tbody
         - internship_applications.each do |internship_application|
-          - prez = internship_application.presenter
+          - prez = internship_application.presenter(current_user)
           tr
             td style="min-width: 170px;"
               = prez.student.presenter.full_name
@@ -27,8 +27,8 @@
               br/
               = prez.internship_offer.presenter.address
             td
-              p class="fr-mt-1w fr-badge fr-badge--sm fr-badge--#{prez.status[:badge_type]} fr-badge--no-icon"
-                = prez.status[:label]
+              p class="fr-mt-1w fr-badge fr-badge--sm fr-badge--#{prez.human_state[:badge]} fr-badge--no-icon"
+                = prez.human_state[:label]
             td style="min-width: 210px;"
               - if internship_application.approved?
                 = link_to edit_dashboard_internship_agreement_path(internship_application.internship_agreement.id.to_i),
