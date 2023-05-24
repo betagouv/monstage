@@ -98,9 +98,6 @@ module Dashboard::InternshipOffers
       sign_in(employer)
       internship_offer = create(:weekly_internship_offer, is_public: true,
                                                           max_candidates: 1,
-                                                          tutor_name: 'fourtin mourcade',
-                                                          tutor_email: 'fourtin@mour.cade',
-                                                          tutor_role: 'tutor',
                                                           employer: employer)
 
       get edit_dashboard_internship_offer_path(internship_offer.to_param)
@@ -114,8 +111,6 @@ module Dashboard::InternshipOffers
       assert_select '#internship_type_true[checked]', count: 1
       assert_select '#internship_type_false[checked]', count: 0
 
-      assert_select '#internship_offer_tutor_name[value="fourtin mourcade"]'
-      assert_select '#internship_offer_tutor_email[value="fourtin@mour.cade"]'
       assert_select 'a.btn-back[href=?]', dashboard_internship_offers_path
     end
   end

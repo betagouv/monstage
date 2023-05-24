@@ -22,13 +22,7 @@ module Dashboard::Stepper
         get new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
 
         assert_response :success
-        available_weeks = Week.selectable_from_now_until_end_of_school_year
         asserted_input_count = 0
-        available_weeks.each do |week|
-          assert_select "input#internship_offer_info_week_ids_#{week.id}_checkbox"
-          asserted_input_count += 1
-        end
-        assert asserted_input_count.positive?
       end
     end
 
@@ -43,7 +37,7 @@ module Dashboard::Stepper
     #
     # Create InternshipOfferInfo
     #
-    test 'POST create redirects to new tutor' do
+    test 'POST create redirects to new hosting info' do
       employer = create(:employer)
       sign_in(employer)
       sector = create(:sector)
@@ -56,39 +50,21 @@ module Dashboard::Stepper
             internship_offer_info: {
               sector_id: sector.id,
               title: 'PDG stagiaire',
-              type: 'InternshipOfferInfos::WeeklyFramed',
-              description_rich_text: '<div><b>Activités de découverte</b></div>',
-              'week_ids' => weeks.map(&:id),
-              daily_hours: {
-                "lundi" => ['07:00', '12:00'],
-                "mardi" => ['08:00', '13:00'],
-                "mercredi" => ['09:00', '14:00'],
-                "jeudi" => ['10:00', '15:00'],
-                "vendredi" => ['11:00', '16:00'],
-                "samedi" => ['--', '--']
-              }
+              description_rich_text: '<div><b>Activités de découverte</b></div>'
             },
           })
       end
       created_internship_offer_info = InternshipOfferInfo.last
       assert_equal 'PDG stagiaire', created_internship_offer_info.title
       assert_equal sector.id, created_internship_offer_info.sector_id
-      assert_equal 'InternshipOfferInfos::WeeklyFramed', created_internship_offer_info.type
       assert_equal 'Activités de découverte', created_internship_offer_info.description_rich_text.to_plain_text
-      assert_equal ['07:00', '12:00'], created_internship_offer_info.daily_hours["lundi"]
-      assert_equal ['08:00', '13:00'], created_internship_offer_info.daily_hours["mardi"]
-      assert_equal ['09:00', '14:00'], created_internship_offer_info.daily_hours["mercredi"]
-      assert_equal ['10:00', '15:00'], created_internship_offer_info.daily_hours["jeudi"]
-      assert_equal ['11:00', '16:00'], created_internship_offer_info.daily_hours["vendredi"]
-      assert_equal ['--', '--'], created_internship_offer_info.daily_hours["samedi"]
-      assert_equal weeks.map(&:id), created_internship_offer_info.week_ids
-      assert_redirected_to new_dashboard_stepper_tutor_path(
+      assert_redirected_to new_dashboard_stepper_hosting_info_path(
         organisation_id: organisation.id,
         internship_offer_info_id: created_internship_offer_info.id,
       )
     end
 
-    test 'when statistician POST create redirects to new tutor' do
+    test 'when statistician POST create redirects to new hosting info' do
       statistician = create(:statistician)
       sign_in(statistician)
       sector = create(:sector)
@@ -101,33 +77,15 @@ module Dashboard::Stepper
             internship_offer_info: {
               sector_id: sector.id,
               title: 'PDG stagiaire',
-              type: 'InternshipOfferInfos::WeeklyFramed',
               description_rich_text: '<div><b>Activités de découverte</b></div>',
-              'week_ids' => weeks.map(&:id),
-              daily_hours: {
-                "lundi" => ['07:00', '12:00'],
-                "mardi" => ['08:00', '13:00'],
-                "mercredi" => ['09:00', '14:00'],
-                "jeudi" => ['10:00', '15:00'],
-                "vendredi" => ['11:00', '16:00'],
-                "samedi" => ['--', '--']
-              }
             },
           })
       end
       created_internship_offer_info = InternshipOfferInfo.last
       assert_equal 'PDG stagiaire', created_internship_offer_info.title
       assert_equal sector.id, created_internship_offer_info.sector_id
-      assert_equal 'InternshipOfferInfos::WeeklyFramed', created_internship_offer_info.type
       assert_equal 'Activités de découverte', created_internship_offer_info.description_rich_text.to_plain_text
-      assert_equal ['07:00', '12:00'], created_internship_offer_info.daily_hours["lundi"]
-      assert_equal ['08:00', '13:00'], created_internship_offer_info.daily_hours["mardi"]
-      assert_equal ['09:00', '14:00'], created_internship_offer_info.daily_hours["mercredi"]
-      assert_equal ['10:00', '15:00'], created_internship_offer_info.daily_hours["jeudi"]
-      assert_equal ['11:00', '16:00'], created_internship_offer_info.daily_hours["vendredi"]
-      assert_equal ['--', '--'], created_internship_offer_info.daily_hours["samedi"]
-      assert_equal weeks.map(&:id), created_internship_offer_info.week_ids
-      assert_redirected_to new_dashboard_stepper_tutor_path(
+      assert_redirected_to new_dashboard_stepper_hosting_info_path(
         organisation_id: organisation.id,
         internship_offer_info_id: created_internship_offer_info.id,
       )
@@ -145,19 +103,10 @@ module Dashboard::Stepper
         params: {
           internship_offer_info: {
             sector_id: sector.id,
-            type: 'InternshipOfferInfos::WeeklyFramed',
-            description_rich_text: '<div><b>Activités de découverte</b></div>',
-            'week_ids' => weeks.map(&:id),
-            organisation_id: 1,
-            max_candidates: 3,
-            max_students_per_group: 3,
-            weekly_hours: ['10h', '12h']
+            description_rich_text: '<div><b>Activités de découverte</b></div>'
           }
         })
         assert_response :bad_request
-        assert_select '#internship_offer_info_max_candidates[value="3"]'
-        assert_select '#internship_type_true[checked]', count: 0
-        assert_select '#internship_type_false[checked]', count: 1
     end
 
 

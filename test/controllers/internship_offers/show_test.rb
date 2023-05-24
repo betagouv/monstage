@@ -450,7 +450,6 @@ module InternshipOffers
 
     test 'GET #show as employer does show duplicate  button when internship_offer has been created durent current_year' do
       internship_offer = create(:weekly_internship_offer, created_at: SchoolYear::Current.new.beginning_of_period + 1.day)
-
       sign_in(internship_offer.employer)
 
       get internship_offer_path(internship_offer)

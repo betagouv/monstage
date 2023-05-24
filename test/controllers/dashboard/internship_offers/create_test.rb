@@ -96,18 +96,12 @@ module Dashboard::InternshipOffers
       assert_select('.fr-alert.fr-alert--error strong', html: /Secteur/)
       assert_select('.fr-alert.fr-alert--error strong', html: /Coordonnées GPS/)
       assert_select('.fr-alert.fr-alert--error strong', html: /Adresse du lieu de stage/)
-      assert_select('.fr-alert.fr-alert--error strong', html: /Nom du tuteur/)
-      assert_select('.fr-alert.fr-alert--error strong', html: /Téléphone du tuteur/)
-      assert_select('.fr-alert.fr-alert--error strong', html: /Email du tuteur/)
 
       assert_select('.fr-alert.fr-alert--error', html: /Veuillez renseigner le code postal de l'employeur/)
       assert_select('.fr-alert.fr-alert--error', html: /Veuillez saisir une description pour l'offre de stage/)
       assert_select('.fr-alert.fr-alert--error', html: /Veuillez saisir le nom de l'employeur/)
       assert_select('.fr-alert.fr-alert--error', html: /Veuillez renseigner la rue ou compléments d'adresse de l'offre de stage/)
       assert_select('.fr-alert.fr-alert--error', html: /Veuillez renseigner la ville l'employeur/)
-      assert_select('.fr-alert.fr-alert--error', html: /Veuillez saisir un tuteur pour l'offre de stage/)
-      assert_select('.fr-alert.fr-alert--error', html: /Veuillez saisir le numéro de téléphone du tuteur de l'offre de stage/)
-      assert_select('.fr-alert.fr-alert--error', html: /Veuillez saisir l'adresse électronique du tuteur de l'offre de stage/)
       assert_select('.fr-alert.fr-alert--error', html: /Veuillez choisir un compte responsable de l'offre/)
 
       assert_select '#internship_offer_is_public_true[checked]',

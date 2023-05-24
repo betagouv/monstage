@@ -13,7 +13,7 @@ div.fr-my-2w data-controller="daily-hours"
     - else
       = check_box_tag 'same_daily_planning',
                     true,
-                    form.object.daily_hours.empty?,
+                    form.object.daily_hours&.empty?,
                     data: {action: "change->daily-hours#handleToggleWeeklyPlanning"}
       = label_tag 'same_daily_planning',
                   'Les horaires sont les mêmes toute la semaine',

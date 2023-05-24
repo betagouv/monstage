@@ -22,6 +22,7 @@ FactoryBot.define do
     employer_name { 'Octo' }
     coordinates { Coordinates.paris }
     siret { '11122233300000' }
+    aasm_state { 'published' }
 
     trait :api_internship_offer do
       weeks { [Week.selectable_from_now_until_end_of_school_year.first] }

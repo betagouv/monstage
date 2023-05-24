@@ -31,8 +31,9 @@ module Presenters
     end
 
     def internship_daily_description
+      hours = internship_offer.weekly_hours
       %w(lundi mardi mercredi jeudi vendredi).map do |day|
-        hours = internship_offer.daily_hours[day]
+        internship_offer.daily_hours&.[](day) || []
         lunch_break = internship_offer.daily_lunch_break[day]
         next if hours.blank? || hours.size != 2
         daily_schedule = [ "de #{hours[0]} à #{hours[1]}".gsub!(':', 'h') ]
