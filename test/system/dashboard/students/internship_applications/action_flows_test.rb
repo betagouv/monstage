@@ -21,7 +21,7 @@ module Dashboard
         visit '/'
         click_on 'Candidatures'
         internship_applications.each do |_aasm_state, internship_application|
-          badge = internship_application.presenter.student_human_state
+          badge = internship_application.presenter(student).human_state
           find('.h5.internship-offer-title', text: internship_application.internship_offer.title)
           find("a#show_link_#{internship_application.id}", text: badge[:actions].first[:label]).click
           click_link('toutes mes candidatures')
@@ -44,7 +44,7 @@ module Dashboard
           click_button('Choisir ce stage')
           click_button('Confirmer')
         end
-        find '.fr-badge.fr-badge--success', text: "CONFIRMÉE"
+        find '.fr-badge.fr-badge--success', text: "STAGE VALIDÉ"
         find "a#show_link_#{internship_application.id}", text: "Contacter l'employeur"
       end
 
@@ -63,8 +63,8 @@ module Dashboard
                       to: "submitted" do
           find('input[value="Envoyer la demande"]').click
         end
-        find '.fr-badge.fr-badge--info', text: "SANS RÉPONSE"
-        find "a#show_link_#{internship_application.id}", text: "Renvoyer la demande"
+        find '.fr-badge.fr-badge--info', text: "ENVOYÉE"
+        find "a#show_link_#{internship_application.id}", text: "Voir"
       end
 
       test 'GET #show as Student with existing draft application shows the draft' do
@@ -160,7 +160,7 @@ module Dashboard
           sign_in(student)
           visit dashboard_students_internship_applications_path(student_id: student.id)
 
-          click_link 'Voir'
+          click_link 'Finaliser ma candidature'
 
           click_link 'Modifier'
           refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
@@ -214,7 +214,7 @@ module Dashboard
         sign_in(student)
         visit dashboard_students_internship_applications_path(student_id: student.id)
 
-        click_link 'Renvoyer la demande'
+        click_link 'Voir'
 
         click_button 'Annuler la candidature'
 
@@ -247,7 +247,7 @@ module Dashboard
         sign_in(student)
         visit dashboard_students_internship_applications_path(student_id: student.id)
 
-        click_link 'Renvoyer la demande'
+        click_link 'Voir'
 
         assert_changes lambda { student.internship_applications.first.reload.dunning_letter_count },
                        from: 0,
