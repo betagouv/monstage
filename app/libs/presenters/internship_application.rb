@@ -30,7 +30,7 @@ module Presenters
                     }]
         }
       when "submitted"
-        label = reader.student? ? 'envoyée' : 'reçue'
+        label = reader.student? ? 'envoyée' : 'nouveau'
         action_label = reader.student? ? 'Voir' : 'Répondre'
         action_level = reader.student? ? 'tertiary' : 'primary'
         { label: label,
@@ -62,7 +62,6 @@ module Presenters
         }
       when "validated_by_employer"
         label = reader.student? ? 'acceptée par l\'entreprise' : 'en attente de réponse'
-        label = reader.student? ? 'acceptée par l\'entreprise' : 'en attente de confirmation élève'
         action_label = reader.student? ? 'Répondre' : 'Voir'
         action_level = reader.student? ? 'primary' : 'tertiary'
         badge = reader.student? ? 'success' : 'info'
@@ -73,7 +72,16 @@ module Presenters
                       level: action_level
                       }]
         }
-      when "canceled_by_employer", "rejected"
+      when "canceled_by_employer"
+        label = reader.student? ? 'annulée par l\'entreprise' : 'refusée'
+        { label: 'refusée par l\'entreprise',
+          badge: 'error',
+          actions: [ { label: 'Voir',
+                       path: internship_application_path,
+                       level: 'tertiary'
+                      }]
+        }
+      when  "rejected"
         label = reader.student? ? 'refusée par l\'entreprise' : 'refusée'
         { label: 'refusée par l\'entreprise',
           badge: 'error',
@@ -100,7 +108,7 @@ module Presenters
                       }]
         }
       when "canceled_by_student_confirmation"
-        { label: 'refusée',
+        { label: 'annulée',
           badge:'purple-glycine',
           actions: [ { label: 'Voir',
                       path: internship_application_path,

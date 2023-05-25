@@ -90,9 +90,8 @@ module Dashboard
         assert_select '.fr-badge.fr-badge--no-icon.fr-badge--purple-glycine', text: 'annulée', count: 1
         assert_select '.fr-badge.fr-badge--no-icon.fr-badge--error', text: 'expirée', count: 1
         assert_select '.fr-badge.fr-badge--no-icon.fr-badge--success', text: "acceptée par l'entreprise", count: 1
-        assert_select '.fr-badge.fr-badge--no-icon.fr-badge--success', text: "confirmée", count: 1
         assert_select '.fr-badge.fr-badge--no-icon.fr-badge--error', text: "refusée par l'entreprise", count: 2
-        assert_select '.fr-badge.fr-badge--no-icon.fr-badge--info', text: "sans réponse", count: 1
+        assert_select '.fr-badge.fr-badge--no-icon.fr-badge--info', text: "envoyée", count: 1
         assert_select '.fr-badge.fr-badge--no-icon.fr-badge--info', text: "à l'étude", count: 1
         assert_select '.fr-badge.fr-badge--no-icon', text: "brouillon", count: 1
       end
