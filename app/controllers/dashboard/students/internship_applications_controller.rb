@@ -4,7 +4,7 @@ module Dashboard
   module Students
     class InternshipApplicationsController < ApplicationController
       include ApplicationTransitable
-      before_action :authenticate_user!, except: %i[direct_to_internship_application]
+      before_action :authenticate_user!, except: %i[show]
       before_action :set_current_student
       before_action :set_internship_application, except: %i[index]
 
@@ -15,7 +15,22 @@ module Dashboard
                                                    .order_by_aasm_state
       end
 
+      # 0 no magic link - status quo
+      # 1 magic link successfully clicked
+      # 2 magic link clicked but expired
       def show
+        if params[:sgid].present? && magic_fetch_student&.student? && magic_fetch_student.id == @current_student.id
+          @internship_application.update(magic_link_tracker: 1)
+          sign_in(@current_student)
+        elsif params[:sgid].present?
+          @internship_application.update(magic_link_tracker: 2)
+          redirect_to(dashboard_students_internship_application_path(
+                        student_id: @current_student.id,
+                        id: @internship_application.id
+          )) and return
+        else
+           authenticate_user!
+        end
         authorize! :dashboard_show, @internship_application
         @internship_offer = @internship_application.internship_offer
       end
@@ -37,28 +52,9 @@ module Dashboard
         end
       end
 
-      # 0 no magic link - status quo
-      # 1 magic link successfully clicked
-      # 2 magic link clicked but expired
-      def direct_to_internship_application
-        redirect_path = dashboard_students_internship_application_path(
-            student_id: @current_student.id,
-            id: @internship_application.id
-          )
-        redirect_to redirect_path unless params[:sgid]
-        
-        magic_link_tracker = 1
-        if magic_fetch_student&.student? && magic_fetch_student.id == @current_student.id
-          sign_in(@current_student)
-        else
-          magic_link_tracker = 2
-        end
-
-        @internship_application.update(magic_link_tracker: magic_link_tracker)
-        redirect_to redirect_path
-      end
-
       private
+      
+      
 
       def magic_fetch_student
         GlobalID::Locator.locate_signed(params[:sgid])

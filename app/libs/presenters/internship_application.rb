@@ -9,7 +9,7 @@ module Presenters
       distance_of_time_in_words_to_now(finish, include_days: true)
     end
 
-    def internship_location
+    def internship_offer_address
       internship_application.internship_offer
                             .presenter
                             .address
@@ -129,19 +129,6 @@ module Presenters
       else
         {}
       end
-    end
-
-    def no_cancelling_possibility_states
-      %w[rejected
-        canceled_by_employer
-        canceled_by_student
-        expired
-        drafted
-        canceled_by_student_confirmation]
-    end
-
-    def with_no_cancelling_possibility?
-      no_cancelling_possibility_states.include?(internship_application.aasm_state)
     end
 
     def actions_in_show_page

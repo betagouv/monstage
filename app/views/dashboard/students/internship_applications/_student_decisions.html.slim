@@ -68,7 +68,7 @@
                         button.fr-btn.fr-btn--secondary[aria-controls="fr-modal-resend"]
                           |  Annuler
 
-  - unless presenter.with_no_cancelling_possibility?
+  - if can?(:cancel, internship_application)
     - aasm_notifier = internship_application.internship_application_aasm_message_builder(aasm_target: :cancel_by_student!)
     = button_tag type: "button",
                  data: { toggle: 'modal', target: "##{"cancel-by-student-internship-application-#{internship_application.id}"}", 'fr-opened': "false" },
