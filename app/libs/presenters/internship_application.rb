@@ -132,7 +132,7 @@ module Presenters
     end
 
     def with_no_cancelling_possibility?
-      no_cancelling_possibility_states.include?(internship_application.aasm_state)
+      current_state_in_list?(no_cancelling_possibility_states)
     end
 
     def actions_in_show_page
