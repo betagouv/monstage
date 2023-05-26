@@ -3,7 +3,7 @@ import $ from 'jquery';
 
 export default class extends Controller {
 
-  handleToggleWeeklyPlanning(event){
+  handleToggleWeeklyPlanning(){
     if($('#same_daily_planning').is(":checked")){
       this.clean_daily_hours()
       this.clean_daily_lunch()
@@ -69,4 +69,7 @@ export default class extends Controller {
     $("#internship_agreement_weekly_hours_end").val('')
   }
 
+  connect() {
+    this.handleToggleWeeklyPlanning();
+  }
 }

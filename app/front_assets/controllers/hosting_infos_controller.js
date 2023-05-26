@@ -38,16 +38,24 @@ export default class extends Controller {
 
   checkOnCandidateCount() {
     const maxCandidates = parseInt(this.maxCandidatesInputTarget.value, 10);
-    (maxCandidates === 1) ? this.collectiveOptionInhibit(true) : this.collectiveOptionInhibit(false);
+    this.studentsMaxGroupInputTarget.setAttribute('max', maxCandidates);
+    // (maxCandidates === 1) ? this.collectiveOptionInhibit(true) : this.collectiveOptionInhibit(false);
   }
 
   UpdateMaxCandidateCount() {
     if (this.individualButtonTarget.checked) {
+      $(this.maxCandidatesInputTarget).prop('min', 1);
       $(this.maxCandidatesInputTarget).prop('max', 1);
       $(this.maxCandidatesInputTarget).prop('value', 1);
+
+      $(this.studentsMaxGroupInputTarget).prop('max', 1);
+      $(this.studentsMaxGroupInputTarget).prop('min', 1);
+      $(this.studentsMaxGroupInputTarget).prop('value', 1);
     } else {
       $(this.maxCandidatesInputTarget).prop('min', 2);
+      $(this.maxCandidatesInputTarget).prop('max', 100);
       $(this.maxCandidatesInputTarget).prop('value', 2);
+      $(this.studentsMaxGroupInputTarget).prop('max', 2);
     }
   }
 
@@ -55,11 +63,27 @@ export default class extends Controller {
     if (doInhibit) {
       this.individualButtonTarget.checked = true;
       this.individualButtonTarget.focus()
+    } else {
+      this.collectiveButtonTarget.checked = true;
+      this.withCollectiveToggling();
     }
     return;
   }
 
   handleMaxCandidatesChanges() {
+    // this.checkOnCandidateCount();
+    const maxCandidates = parseInt(this.maxCandidatesInputTarget.value, 10);
+    const maxStudentsPerGroup = parseInt(this.studentsMaxGroupInputTarget.value, 10);
+    if (maxStudentsPerGroup > maxCandidates) {
+      $(this.studentsMaxGroupInputTarget).prop('value', maxCandidates);
+    }
+    $(this.studentsMaxGroupInputTarget).prop('max', maxCandidates);
+    
+    if (maxCandidates === 1) { this.withIndividualToggling() }
+  }
+
+  handleMaxCandidatesPerGroupChanges() {
+    console.log('handleMaxCandidatesPerGroupChanges');
     this.checkOnCandidateCount();
     const maxCandidates = parseInt(this.maxCandidatesInputTarget.value, 10)
     if (maxCandidates === 1) { this.withIndividualToggling() }
@@ -75,15 +99,19 @@ export default class extends Controller {
   withIndividualToggling() {
     const groupSizeElt = $(this.studentsMaxGroupGroupTarget);
     hideElement(groupSizeElt);
-    this.studentsMaxGroupInputTarget.setAttribute('min', 1);
-    this.studentsMaxGroupInputTarget.value = 1;
+    this.individualButtonTarget.checked = true;
+    this.UpdateMaxCandidateCount();
+    // this.studentsMaxGroupInputTarget.setAttribute('min', 1);
+    // this.studentsMaxGroupInputTarget.value = 1;
   }
 
   withCollectiveToggling() {
     const groupSizeElt = $(this.studentsMaxGroupGroupTarget);
     showElement(groupSizeElt);
-    this.studentsMaxGroupInputTarget.setAttribute('min', 2);
-    this.studentsMaxGroupInputTarget.value = 2;
+    this.collectiveButtonTarget.checked = true;
+    this.UpdateMaxCandidateCount();
+    // this.studentsMaxGroupInputTarget.setAttribute('min', 2);
+    // this.studentsMaxGroupInputTarget.value = 2;
   }
 
   connect() {

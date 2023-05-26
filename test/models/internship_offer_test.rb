@@ -81,8 +81,8 @@ class InternshipOfferTest < ActiveSupport::TestCase
       may_thirty_first = Date.new(2021, 5, 31)
       expected_weeks = Week.where('number >= ? and year = ?', september_first.cweek, 2020)
                            .or(Week.where('number <= ? and year = ?', may_thirty_first.cweek, 2021))
-      internship_offer_info = create(:weekly_internship_offer_info, weeks: weeks)
-      assert_equal expected_weeks.ids, internship_offer_info.available_weeks.ids
+      internship_offer = create(:weekly_internship_offer, weeks: weeks)
+      assert_equal expected_weeks.ids, internship_offer.available_weeks.ids
     end
   end
   test 'scope available_weeks when may' do
@@ -93,8 +93,8 @@ class InternshipOfferTest < ActiveSupport::TestCase
       may_thirty_first = Date.new(2021, 5, 31)
       expected_weeks = Week.where('number >= ? and year = ?', september_first.cweek, 2020)
                            .or(Week.where('number <= ? and year = ?', may_thirty_first.cweek, 2021))
-      internship_offer_info = create(:weekly_internship_offer_info, weeks: weeks)
-      assert_equal expected_weeks.ids, internship_offer_info.available_weeks.ids
+      internship_offer = create(:weekly_internship_offer, weeks: weeks)
+      assert_equal expected_weeks.ids, internship_offer.available_weeks.ids
     end
   end
   test 'scope available_weeks when june' do
@@ -105,8 +105,8 @@ class InternshipOfferTest < ActiveSupport::TestCase
       may_thirty_first = Date.new(2022, 5, 31)
       expected_weeks = Week.where('number >= ? and year = ?', september_first.cweek, 2021)
                            .or(Week.where('number <= ? and year = ?', may_thirty_first.cweek, 2022))
-      internship_offer_info = create(:weekly_internship_offer_info, weeks: weeks)
-      assert_equal expected_weeks.ids, internship_offer_info.available_weeks.ids
+      internship_offer = create(:weekly_internship_offer, weeks: weeks)
+      assert_equal expected_weeks.ids, internship_offer.available_weeks.ids
     end
   end
   test 'scope available_weeks when october' do
@@ -117,8 +117,8 @@ class InternshipOfferTest < ActiveSupport::TestCase
       may_thirty_first = Date.new(2022, 5, 31)
       expected_weeks = Week.where('number >= ? and year = ?', september_first.cweek, 2021)
                            .or(Week.where('number <= ? and year = ?', may_thirty_first.cweek, 2022))
-      internship_offer_info = create(:weekly_internship_offer_info, weeks: weeks)
-      assert_equal expected_weeks.ids, internship_offer_info.available_weeks.ids
+      internship_offer = create(:weekly_internship_offer, weeks: weeks)
+      assert_equal expected_weeks.ids, internship_offer.available_weeks.ids
     end
   end
 end

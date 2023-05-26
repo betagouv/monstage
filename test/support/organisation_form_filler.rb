@@ -33,7 +33,7 @@ module OrganisationFormFiller
         }).
       to_return(status: 200, body: body, headers: {})
 
-    fill_in "Rechercher votre société dans l’Annuaire des Entreprises", with: '90943224700015'
+    fill_in "Rechercher votre société dans l’annuaire des entreprises", with: '90943224700015'
     find("div.search-in-sirene ul[role='listbox'] li[role='option']").click
     find('label', text: 'Public').click if is_public  # Default is private
     select group.name, from: 'organisation_group_id' if group

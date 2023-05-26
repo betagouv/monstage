@@ -86,7 +86,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       find(".test-edit-button").click
       find('label[for="internship_type_true"]').click # max_candidates is now set to 1
       click_button('Modifier l\'offre')
-      assert_equal 4, internship_offer.reload.max_candidates
+      assert_equal 1, internship_offer.reload.max_candidates
       assert_equal 1, internship_offer.reload.max_students_per_group
     end
   end
