@@ -6,8 +6,6 @@ div [data-controller='internship-offer-infos' data-action="input->internship-off
       fieldset 
         legend Description du stage
 
-        = form.hidden_field :type, data: { :"internship-offer-infos-target" => "type" }
-
         .form-group.fr-my-2w
           = form.label :sector_id , class: 'fr-label'do
             = "Secteur d'activité"

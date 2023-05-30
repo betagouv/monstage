@@ -3,7 +3,8 @@
     .row
       .col-md-6.order-md-1.order-2
         fieldset 
-          .fr-text--lg.font-weight-bold.fr-my-2w L'entreprise
+          legend.fr-text--lg.font-weight-bold.fr-my-2w L'entreprise
+          /  L'entreprise
           = form.hidden_field :manual_enter, value: false
 
           - if current_user.ministry_statistician?
