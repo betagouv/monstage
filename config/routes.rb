@@ -89,6 +89,7 @@ Rails.application.routes.draw do
         end
         put '/update_students_by_group', to: 'schools/students#update_by_group', module: 'schools'
         get '/information', to: 'schools#information', module: 'schools'
+        get '/details', to: 'schools#details', module: 'schools'
       end
 
       resources :internship_offers, path: 'offres-de-stage', except: %i[show] do
