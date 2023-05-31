@@ -34,6 +34,22 @@ module Nearbyable
         .select("#{table_name}.*")
     }
 
+   
+
+    def distance_from(latitude, longitude)
+      query = format(%{
+        SELECT ST_Distance(
+          ST_GeographyFromText('SRID=4326;POINT(%f %f)'),
+          coordinates
+        ) AS distance
+        FROM %s
+        WHERE id = %d
+      }, longitude, latitude, self.class.table_name, id)
+  
+      result = ActiveRecord::Base.connection.execute(query).first
+      result['distance'].to_f if result.present?
+    end
+
     def coordinates=(coordinates)
       case coordinates
       when Hash

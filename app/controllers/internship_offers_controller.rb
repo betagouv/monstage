@@ -125,17 +125,32 @@ class InternshipOffersController < ApplicationController
     alternative_internship_offers = []
     priorities.each do |priority|
       next unless priority.any? { |p| params[p].present? && params[p] != Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER.to_s }
+      
 
-      alternative_internship_offers << Finders::InternshipOfferConsumer.new(
+       priority_offers = Finders::InternshipOfferConsumer.new(
         params: params.permit(*priority),
         user: current_user_or_visitor
       ).all.to_a
+
+      if priority_offers.count < 5 && priority == [:latitude, :longitude, :radius]
+        priority_offers = Finders::InternshipOfferConsumer.new(
+          params: params.permit(*priority).merge(radius: Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER + 40_000),
+          user: current_user_or_visitor
+        ).all.to_a
+      end
+
+      alternative_internship_offers << priority_offers
 
       alternative_internship_offers = alternative_internship_offers.flatten
       break if alternative_internship_offers.count > 5
       alternative_internship_offers
     end
-    alternative_internship_offers.first(5)
+
+    if params[:latitude].present?
+      alternative_internship_offers.sort_by { |offer| offer.distance_from(params[:latitude], params[:longitude]) }.first(5)
+    else
+      alternative_internship_offers.first(5)
+    end
   end
 
   def increment_internship_offer_view_count
