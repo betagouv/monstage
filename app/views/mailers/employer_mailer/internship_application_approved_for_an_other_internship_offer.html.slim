@@ -1,0 +1,20 @@
+p style=head_styles
+  ="Un élève vient de préférer une autre offre de stage"
+
+p style=p_styles
+  | Bonjour,
+
+p style=p_styles
+  = "#{@prez_stud.full_name} vient de confirmer sa présence pour un autre stage que celui que vous lui aviez proposé." 
+
+p style=p_styles
+  |
+    Vous avez la possibilité de gérez vos candidatures en cliquant sur le bouton ci-dessous.
+
+= render(partial: "mailers/blue_call_to_action", locals: {href: dashboard_internship_offers_url, label:"Gérer mes candidatures"})
+
+p style=p_styles
+  | Excellente journée,
+
+p style=p_styles
+  | L’équipe Monstagedetroisieme.fr

@@ -7,13 +7,13 @@ FactoryBot.define do
     remaining_seats_count { 1 }
     sector { create(:sector) }
     employer { create(:employer) }
-    weeks_count { 0 }
     weekly_hours { ['9:00','17:00'] }
     new_daily_hours { {} }
 
     trait :weekly_internship_offer_info do
-      weeks { [Week.first] }
+      weeks_count { 1 }
       type { 'InternshipOfferInfos::WeeklyFramed' }
+      weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
     end
 
     factory :weekly_internship_offer_info, traits: [:weekly_internship_offer_info],

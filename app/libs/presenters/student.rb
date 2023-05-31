@@ -58,6 +58,23 @@ module Presenters
       word
     end
 
+    def dashboard_name_link
+      url_helpers.dashboard_students_internship_applications_path(student_id: user.id)
+    end
+
+    def applicable_weeks(internship_offer)
+      if user.school.has_weeks_on_current_year?
+        InternshipOfferWeek.applicable(
+          user: user,
+          internship_offer: internship_offer
+        ).map(&:week)
+         .uniq
+         .sort_by(&:id) & internship_offer.weeks
+      else
+        internship_offer.weeks.in_the_future
+      end
+    end
+
     private
 
     def anonymized_message

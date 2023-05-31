@@ -23,10 +23,9 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
       internship_agreement: internship_agreement
     )
     assert_includes email.to, school_manager.email
-    assert_nil email.cc
+    assert_equal 'Vous avez une convention de stage à renseigner.', email.subject
     refute_email_spammyness(email)
   end
-  
 
   test 'signatures : notify_others_signatures_started_email' do
     internship_agreement = create(:internship_agreement, :validated)

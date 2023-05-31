@@ -52,7 +52,7 @@ module Dashboard
       end
     rescue ActionController::ParameterMissing => e
       @internship_agreement = InternshipAgreement.find(params[:id])
-      @available_weeks = Week.selectable_on_school_year
+      @available_weeks = Week.selectable_on_school_year_when_editing
       render :edit
     end
 
@@ -78,10 +78,11 @@ module Dashboard
 
     def index
       authorize! :create, InternshipAgreement
+      @internship_offers = current_user.internship_offers if current_user.employer_like?
       @internship_agreements = current_user.internship_agreements
                                            .includes(
                                               internship_application: [
-                                                { student: :school }, 
+                                                { student: :school },
                                                 { internship_offer: [:employer, :rich_text_employer_description_rich_text, :rich_text_description_rich_text]}
                                                 ]
                                               )

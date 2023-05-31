@@ -655,7 +655,10 @@ CREATE TABLE public.internship_applications (
     student_phone character varying,
     student_email character varying,
     read_at timestamp(6) without time zone,
-    examined_at timestamp(6) without time zone
+    examined_at timestamp(6) without time zone,
+    validated_by_employer_at timestamp(6) without time zone,
+    dunning_letter_count integer DEFAULT 0,
+    magic_link_tracker integer DEFAULT 0
 );
 
 
@@ -890,7 +893,7 @@ CREATE TABLE public.internship_offers (
     employer_manual_enter boolean DEFAULT false,
     tutor_role character varying,
     remaining_seats_count integer DEFAULT 0,
-    employer_hidden boolean DEFAULT false
+    hidden_duplicate boolean DEFAULT false
 );
 
 
@@ -2830,6 +2833,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230302162952'),
 ('20230307200802'),
 ('20230321104203'),
-('20230404154158');
+('20230404154158'),
+('20230420095232'),
+('20230426161001'),
+('20230502164246'),
+('20230516162131');
 
 

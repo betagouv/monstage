@@ -11,6 +11,7 @@ module Services
                                       internship_offer: internship_offer,
                                       student: student)
       internship_application.submit!
+      internship_application.employer_validate!
       internship_application.approve!
 
       Services::AgreementsAPosteriori.new(employer_id: ministry_statistician.id).perform
@@ -29,6 +30,7 @@ module Services
                                       internship_offer: internship_offer,
                                       student: student)
       internship_application.submit!
+      internship_application.employer_validate!
       internship_application.approve!
 
       Services::AgreementsAPosteriori.new(employer_id: ministry_statistician.id).perform

@@ -47,6 +47,8 @@ fr:
       human_mm_dd_yyyy: "%e %B %Y"
       human_dd_short_mm_yyyy: "%e %b %Y"
       month_with_year: "%B %Y"
+      human_dd_mm: "%e %b"
+      human_dd_mm_yy: "%e %b %Y"
     month_names:
     -
     - janvier

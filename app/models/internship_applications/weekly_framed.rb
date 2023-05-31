@@ -48,6 +48,11 @@ module InternshipApplications
     end
 
     def remaining_seats_count
+      # Reminder : 
+      #---------------------------------------
+      # blocked_applications_count is a column of InternshipOfferWeek
+      # it counts the applications approved for each internship offer week.
+      #---------------------------------------
       max_places      = internship_offer.max_candidates
       reserved_places = internship_offer.internship_offer_weeks&.sum(:blocked_applications_count)
       max_places - reserved_places
