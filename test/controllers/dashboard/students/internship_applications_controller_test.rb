@@ -160,31 +160,29 @@ module Dashboard
         assert_redirected_to dashboard_students_internship_applications_path(student)
       end
 
-      test '#direct_to_internship_application' do
+      test '#show with a magic link' do
         student = create(:student)
         sgid = ""
         internship_application = create(:weekly_internship_application, student: student)
         travel_to Time.now - 3.month do
-          sgid = student.to_sgid(expires_in: StudentMailer::MAGIC_LINK_EXPIRATION_DELAY.days).to_s
-          get direct_to_internship_application_dashboard_students_internship_application_path(
+          sgid = student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY.days).to_s
+          get dashboard_students_internship_application_path(
             sgid: sgid,
             student_id: student.id,
             id: internship_application.id)
-          assert_redirected_to dashboard_students_internship_application_path(
-            student_id: student.id,
-            id: internship_application.id )
+          assert_template 'dashboard/students/internship_applications/show'
           assert_equal student.id, session.dig('warden.user.user.key', 0, 0)
           assert_equal 1, internship_application.reload.magic_link_tracker
           sign_out(student)
         end
         travel_to Time.now do
-          get direct_to_internship_application_dashboard_students_internship_application_path(
+          get dashboard_students_internship_application_path(
             sgid: sgid,
             student_id: student.id,
             id: internship_application.id)
           assert_redirected_to dashboard_students_internship_application_path(
             student_id: student.id,
-            id: internship_application.id )
+            id: internship_application.id)
           assert_nil session.dig('warden.user.user.key', 0, 0)
           assert_equal 2, internship_application.reload.magic_link_tracker
         end

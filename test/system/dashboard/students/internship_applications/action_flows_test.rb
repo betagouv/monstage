@@ -220,11 +220,9 @@ module Dashboard
 
         assert_changes lambda {
           student.internship_applications
-                .where(aasm_state: :canceled_by_student)
-                .count
-              },
-              from: 0,
-              to: 1 do
+                 .where(aasm_state: :canceled_by_student)
+                 .count
+          }, from: 0, to: 1 do
           selector = "#internship_application_canceled_by_student_message"
           find(selector).native.send_keys('Je ne suis plus disponible')
           click_button 'Confirmer'

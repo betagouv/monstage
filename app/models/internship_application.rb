@@ -8,6 +8,7 @@ class InternshipApplication < ApplicationRecord
   PAGE_SIZE = 10
   EXPIRATION_DURATION = 45.days
   EXTENDED_DURATION = 15.days
+  MAGIC_LINK_EXPIRATION_DELAY = 5 # days
 
   belongs_to :internship_offer, polymorphic: true
   # has_many :internship_agreements
