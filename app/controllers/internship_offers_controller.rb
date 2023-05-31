@@ -117,8 +117,8 @@ class InternshipOffersController < ApplicationController
 
   def alternative_internship_offers
     priorities = [
-      [:week_ids], #1
-      [:latitude, :longitude, :radius], #2
+      [:latitude, :longitude, :radius], #1
+      [:week_ids], #2
       [:keyword] #3
     ]
 
