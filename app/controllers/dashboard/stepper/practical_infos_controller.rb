@@ -71,11 +71,16 @@ module Dashboard::Stepper
       @practical_info = PracticalInfo.find(params[:id])
       authorize! :update, @practical_info
 
-      if @practical_info.update(Practical_info_params)
-        redirect_to new_dashboard_stepper_tutor_path(
-          organisation_id: params[:organisation_id],
-          internship_offer_info_id: @practical_info.id
-        )
+      if @practical_info.update(practical_info_params)
+        internship_offer_builder.create_from_stepper(builder_params) do |on|
+          on.success do |created_internship_offer|
+            redirect_to(internship_offer_path(created_internship_offer, origine: 'dashboard'),
+                        flash: { success: 'Votre offre de stage est prête à être publiée.' })
+          end
+          on.failure do |failed_internship_offer|
+            render :new, status: :bad_request
+          end
+        end
       else
         @organisation = Organisation.find(params[:organisation_id])
         @available_weeks = Week.selectable_from_now_until_end_of_school_year

@@ -9,7 +9,7 @@
   .col-4.d-print-none
     .d-flex.justify-content-start
       - if internship_offer.drafted? && can?(:publish, @internship_offer)
-        = link_to 'Modifier', edit_dashboard_internship_offer_path(@internship_offer.to_param), class: 'fr-btn fr-btn--secondary fr-mr-2w'
+        = button_to 'Modifier', remove_dashboard_internship_offer_path(@internship_offer), class: 'fr-btn fr-btn--secondary fr-mr-2w'
         = button_to 'Publier', publish_dashboard_internship_offer_path(@internship_offer), class: 'fr-btn'
       - else
         - if can?(:update, @internship_offer)

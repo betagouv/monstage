@@ -99,6 +99,17 @@ module Dashboard
                       flash: { success: 'Votre offre de stage est publiée.' })
     end
 
+    def remove # Back to step 4
+      @internship_offer = InternshipOffer.find(params[:id])
+      redirect_to(edit_dashboard_stepper_practical_info_path(
+          id: @internship_offer.practical_info_id,
+          organisation_id: @internship_offer.organisation_id, 
+          internship_offer_info_id: @internship_offer.internship_offer_info_id,
+          hosting_info_id: @internship_offer.hosting_info_id)
+      )
+      @internship_offer.destroy
+    end
+
     # duplicate form
     def new
       authorize! :create, InternshipOffer
