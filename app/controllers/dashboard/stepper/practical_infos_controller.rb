@@ -122,7 +122,7 @@ module Dashboard::Stepper
     end
 
     def clean_params
-      params[:practical_info][:street] = [params[:practical_info][:street], params[:practical_info][:street_complement]].compact_blank.join(' - ')
+      params[:practical_info][:street] = [params[:practical_info][:street], params[:practical_info][:street_complement]].compact_blank.join(' - ') if params[:practical_info]
     end
   end
 end

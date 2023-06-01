@@ -20,14 +20,21 @@ module Dashboard::Stepper
       authorize! :create, HostingInfo
       @hosting_info = HostingInfo.new(
         {}.merge(hosting_info_params)
-          .merge(employer_id: current_user.id)
+        .merge(employer_id: current_user.id)
       )
-      @hosting_info.save!
-      redirect_to(new_dashboard_stepper_practical_info_path(
-                    organisation_id: params[:organisation_id],
-                    internship_offer_info_id: params[:internship_offer_info_id],
-                    hosting_info_id: @hosting_info.id
-      ))
+      if @hosting_info.save!
+        redirect_to(new_dashboard_stepper_practical_info_path(
+                      organisation_id: params[:organisation_id],
+                      internship_offer_info_id: params[:internship_offer_info_id],
+                      hosting_info_id: @hosting_info.id
+        ))
+      else
+        @organisation = Organisation.find(params[:organisation_id])
+        @available_weeks = Week.selectable_from_now_until_end_of_school_year
+        
+        render :new, status: :bad_request
+      end
+
     rescue ActiveRecord::RecordInvalid
       @organisation = Organisation.find(params[:organisation_id])
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
@@ -48,9 +55,10 @@ module Dashboard::Stepper
       authorize! :update, @hosting_info
 
       if @hosting_info.update(hosting_info_params)
-        redirect_to new_dashboard_stepper_tutor_path(
+        redirect_to new_dashboard_stepper_practical_info_path(
           organisation_id: params[:organisation_id],
-          internship_offer_info_id: @hosting_info.id
+          internship_offer_info_id: params[:internship_offer_info_id],
+          hosting_info_id: @hosting_info.id
         )
       else
         @organisation = Organisation.find(params[:organisation_id])
@@ -64,7 +72,6 @@ module Dashboard::Stepper
     def hosting_info_params
       params.require(:hosting_info)
             .permit(
-              :title,
               :school_id,
               :employer_id,
               :max_candidates,

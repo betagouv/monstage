@@ -59,7 +59,7 @@
                             { prompt: '-- Indépendant --' },
                             class: "fr-select",
                             data: {:"organisation-form-target" => 'selectGroupName'}
-    .row.bloc-tooggle.d-none class="#{'d-none' if params[:internship_offer_info_id].present?}"
+    .row.bloc-tooggle class="#{'d-none' if params[:internship_offer_info_id].present?}"
       .col-md-6
         fieldset 
         legend Présentation de l'entreprise
@@ -74,7 +74,6 @@
             = 'Site web (optionnel)'
             small.form-text.text-muted Afin que l’élève puisse en apprendre plus sur son futur stage
           = form.url_field :employer_website, class: 'fr-input', placeholder: "https://"
-
         - if submit_button
           .fr-mt-3w
             = link_to 'Annuler', dashboard_internship_offers_path, class: 'fr-btn fr-btn--secondary fr-mr-3w'
