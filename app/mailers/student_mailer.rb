@@ -71,6 +71,7 @@ class StudentMailer < ApplicationMailer
 
   def internship_application_validated_by_employer_reminder_email(applications_to_notify:)
     @internship_applications = applications_to_notify
+    @internship_application = @internship_applications.last
     @plural = @internship_applications.size >= 2
     @student = applications_to_notify.first.student
     @internship_offers = applications_to_notify.map(&:internship_offer)
@@ -80,7 +81,7 @@ class StudentMailer < ApplicationMailer
     @url = dashboard_students_internship_application_url(
       sgid: sgid,
       student_id: @student.id,
-      id: @internship_applications.last.id
+      id: @internship_application.id
     )
 
     send_email(to: @student.email,
