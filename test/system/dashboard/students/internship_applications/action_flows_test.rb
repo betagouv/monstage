@@ -282,6 +282,38 @@ module Dashboard
           find('ul li.test-employer-email', text: internship_offer.employer.email)
         end
       end
+
+      test "when confirmed an internship_application a student cannot apply a drafted application anymore" do
+        weeks = [Week.find_by(number: 1, year: 2020),Week.find_by(number: 2, year: 2020)]
+        school = create(:school, weeks: weeks)
+        student = create(:student,
+                        school: school,
+                        class_room: create(:class_room, school: school)
+                        )
+        internship_offer_1 = create(:weekly_internship_offer, weeks: weeks)
+        internship_offer_2 = create(:weekly_internship_offer, weeks: weeks)
+        approved_application_1 = create( :weekly_internship_application,
+                                        :drafted,
+                                        week: weeks.first,
+                                        internship_offer: internship_offer_1,
+                                        student: student)
+        approved_application_2 = create( :weekly_internship_application,
+                                        :drafted,
+                                        week: weeks.second,
+                                        internship_offer: internship_offer_2,
+                                        student: student)
+
+        sign_in(student)
+        visit dashboard_students_internship_applications_path(student_id: student.id)
+
+        find("a#show_link_#{approved_application_1.id}").click
+        find "input[type='submit'][value='Envoyer la demande']"
+
+        approved_application_2.update_column(:aasm_state, 'approved')
+        visit dashboard_students_internship_applications_path(student_id: student.id)
+        click_link("Voir")
+        assert_select "input[type='submit'][value='Envoyer la demande']", count: 0
+      end
     end
   end
 end

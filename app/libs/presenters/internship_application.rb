@@ -22,11 +22,15 @@ module Presenters
     def human_state
       case internship_application.aasm_state
       when "drafted"
+        student_has_found = internship_application.student
+                                                  .has_already_approved_an_application?
+        label = student_has_found ? 'Voir' : 'Finaliser ma candidature'
+        level = student_has_found ? 'tertiary' : 'primary'
         {label: 'brouillon',
           badge:'grey',
-          actions: [ { label: 'Finaliser ma candidature',
-                      path: internship_application_path,
-                      level: 'primary'
+          actions: [ { label: label,
+                       path: internship_application_path,
+                       level: level
                     }]
         }
       when "submitted"
@@ -133,6 +137,20 @@ module Presenters
     def actions_in_show_page
       return "" if internship_application.aasm_state.nil?
 
+      student_has_found = internship_application.student
+                                                .has_already_approved_an_application?
+      student_has_found ? actions_when_student_has_found : actions_when_student_has_not_found
+    end
+
+    def actions_when_student_has_found
+      return [] unless internship_application.approved?
+
+      [{ label: 'Contacter l\'offreur',
+         color: 'primary',
+         level: 'tertiary' }]
+    end
+
+    def actions_when_student_has_not_found
       case internship_application.aasm_state
       when "drafted"
         [{ label: 'Modifier',
@@ -178,7 +196,7 @@ module Presenters
         []
       end
     end
-    
+
     def ok_for_examine_states
       %w[submitted read_by_employer]
     end
@@ -192,9 +210,9 @@ module Presenters
     end
 
     def ok_for_employer_validation_states
-      %w[submitted examined read_by_employer] 
+      %w[submitted examined read_by_employer]
     end
-    
+
     def ok_for_examine?
       current_state_in_list?(ok_for_examine_states)
     end
