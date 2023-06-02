@@ -59,7 +59,12 @@
                             { prompt: '-- Indépendant --' },
                             class: "fr-select",
                             data: {:"organisation-form-target" => 'selectGroupName'}
-    .row.bloc-tooggle class="#{'d-none' if params[:internship_offer_info_id].present?}"
+
+            .fr-mt-3w
+              = link_to 'Annuler', dashboard_internship_offers_path, class: 'fr-btn fr-btn--secondary fr-mr-3w'
+              = button_tag :submit, class: 'fr-btn', disabled: false, 'data-target': "organisation-form.submitButton" do
+                = "Suivant "
+    .row.bloc-tooggle class="#{'d-none' unless params[:internship_offer_info_id].present?}"
       .col-md-6
         fieldset 
         legend Présentation de l'entreprise
