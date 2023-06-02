@@ -130,7 +130,7 @@ module Dashboard::Stepper
             })
           }
         )
-        assert_redirected_to new_dashboard_stepper_tutor_path(
+        assert_redirected_to new_dashboard_stepper_hosting_info_path(
           organisation_id: organisation.id,
           internship_offer_info_id: internship_offer_info.id,
         )

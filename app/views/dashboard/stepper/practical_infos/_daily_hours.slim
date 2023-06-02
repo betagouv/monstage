@@ -4,7 +4,7 @@ div.fr-my-2w data-controller="daily-hours"
     - if disabled
       = check_box_tag 'same_daily_planning',
                       true,
-                      form.object.daily_hours.empty?,
+                      !form.object.daily_planning?,
                       data: {action: "change->daily-hours#handleToggleWeeklyPlanning"},
                       disabled: true
       = label_tag 'same_daily_planning',
@@ -13,13 +13,12 @@ div.fr-my-2w data-controller="daily-hours"
     - else
       = check_box_tag 'same_daily_planning',
                     true,
-                    !form.object.daily_hours&.empty?,
+                    !form.object.daily_planning?,
                     data: {action: "change->daily-hours#handleToggleWeeklyPlanning"}
       = label_tag 'same_daily_planning',
                   'Les horaires sont les mêmes toute la semaine',
                    class: 'fr-label'
-
-  #weekly-planning[class="mt-3 fr-my-2w #{'d-none' unless form.object.weekly_planning?}"]
+  #weekly-planning[class="mt-3 fr-my-2w #{'d-none' if form.object.daily_planning?}"]
     .row
       .col-5
         - if disabled
@@ -54,7 +53,7 @@ div.fr-my-2w data-controller="daily-hours"
 
           = form.text_area :weekly_lunch_break, class: "form-control", placeholder: "12h -13h dans les locaux…", disabled: disabled
 
-  #daily-planning[class="mt-3 fr-my-2w #{'d-none' if form.object.weekly_planning?}"]
+  #daily-planning[class="mt-3 fr-my-2w #{'d-none' unless form.object.daily_planning?}"]
     - %w(lundi mardi mercredi jeudi vendredi samedi).each_with_index do |weekday, i|
       .row.mt-3
         .col-12

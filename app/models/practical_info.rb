@@ -24,4 +24,8 @@ class PracticalInfo < ApplicationRecord
   def weekly_planning?
     weekly_hours.any?(&:present?)
   end
+
+  def daily_planning?
+    daily_hours.except('samedi').values.flatten.any? { |v| !v.blank? }
+  end
 end

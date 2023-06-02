@@ -269,6 +269,10 @@ class InternshipOffer < ApplicationRecord
     weekly_hours.any?(&:present?)
   end
 
+  def daily_planning?
+    new_daily_hours.except('samedi').values.flatten.any? { |v| !v.blank? }
+  end
+
   def presenter
     Presenters::InternshipOffer.new(self)
   end
