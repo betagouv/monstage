@@ -65,7 +65,8 @@ Rails.application.routes.draw do
         end
       end
     end
-
+    
+    # ------------------ DASHBOARD START ------------------
     namespace :dashboard, path: 'tableau-de-bord' do
       resources :internship_agreements,  path: 'conventions-de-stage', except: %i[destroy]
       resources :users, path: 'signatures', only: %i[update], module: 'group_signing' do
@@ -112,7 +113,9 @@ Rails.application.routes.draw do
 
       get 'candidatures', to: 'internship_offers/internship_applications#user_internship_applications'
     end
+    # ------------------ DASHBOARD END ------------------
   end
+  # ------------------ SCOPE END ------------------
 
   namespace :reporting, path: 'reporting' do
     get '/dashboards', to: 'dashboards#index'
