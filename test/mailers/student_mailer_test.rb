@@ -63,7 +63,6 @@ class StudentMailerTest < ActionMailer::TestCase
   end
 
   test 'email sent when internship application is validated by employer as a reminder' do
-
     internship_application = create(
       :weekly_internship_application,
       :validated_by_employer,

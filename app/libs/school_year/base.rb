@@ -29,9 +29,17 @@ module SchoolYear
       SchoolYear::Floating.new_by_year(year: end_of_period.year)
     end
 
-    private
+    def january_to_may
+      1..MONTH_OF_YEAR_SHIFT
+    end
+
+    def june_to_december
+      6..12
+    end
 
     attr_reader :date
+
+    protected
 
     def current_year
       date.year
@@ -39,14 +47,6 @@ module SchoolYear
 
     def current_month
       date.month
-    end
-
-    def january_to_may
-      1..MONTH_OF_YEAR_SHIFT
-    end
-
-    def june_to_december
-      6..12
     end
 
     def last_week_of_may?

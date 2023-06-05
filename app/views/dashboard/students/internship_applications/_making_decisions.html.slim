@@ -1,0 +1,7 @@
+- internship_application = GlobalID::Locator.locate_signed(@internship_application_sgid)
+- current_user = internship_application.student
+= render "dashboard/students/internship_applications/show",
+          internship_application: internship_application,
+          internship_offer: internship_application.internship_offer,
+          current_user: current_user,
+          sgid: @internship_application_sgid

@@ -21,7 +21,8 @@ module Dashboard
       def show
         if params[:sgid].present? && magic_fetch_student&.student? && magic_fetch_student.id == @current_student.id
           @internship_application.update(magic_link_tracker: 1)
-          sign_in(@current_student)
+          @internship_application_sgid= @internship_application.to_sgid(expires_in: 20.seconds).to_s
+          render 'dashboard/students/internship_applications/_making_decisions' and return
         elsif params[:sgid].present?
           @internship_application.update(magic_link_tracker: 2)
           redirect_to(dashboard_students_internship_application_path(
@@ -53,8 +54,6 @@ module Dashboard
       end
 
       private
-      
-      
 
       def magic_fetch_student
         GlobalID::Locator.locate_signed(params[:sgid])

@@ -4,13 +4,20 @@ module ApplicationTransitable
   included do
 
     def update
-      authorize! :update, @internship_application, InternshipApplication
+      authenticate_user! unless params[:sgid].present?
+      authorize_through_sgid? || authorize!(:update, @internship_application)
       if valid_transition?
         @internship_application.send(params[:transition].to_sym)
         @internship_application.update!(optional_internship_application_params)
-        extra_parameter = {tab: params[:transition]} if params[:transition].present?
-        redirect_to current_user.custom_candidatures_path(extra_parameter),
-                    flash: { success: update_flash_message }
+        extra_parameter = {tab: params[:transition]}
+        if authorize_through_sgid?
+          reset_session
+          redirect_to root_path,
+                      flash: { success: update_flash_message }
+        else
+          redirect_to current_user.custom_candidatures_path(extra_parameter),
+                      flash: { success: update_flash_message }
+        end
       else
         redirect_back fallback_location: current_user.custom_dashboard_path,
                       flash: { success: 'Impossible de traiter votre requête, veuillez contacter notre support' }
@@ -20,25 +27,23 @@ module ApplicationTransitable
                     flash: { warning: 'Cette candidature a déjà été traitée' }
     end
 
+    def authorize_through_sgid?
+      return false unless params[:sgid].present?
+
+      sgid_internship_application = InternshipApplications::WeeklyFramed.from_sgid(params[:sgid])
+      sgid_internship_application&.id == @internship_application.id
+    end
+
     protected
 
-    def received_states
-      %w[submitted read_by_employer examined expired]
-    end
-
-    def rejected_states
-      %w[rejected canceled_by_employer canceled_by_student]
-    end
-
-    def approved_states
-      %w[approved validated_by_employer]
-    end
-
     def valid_states
-        received_states + rejected_states + approved_states
+        InternshipApplication.received_states +
+          InternshipApplication.rejected_states +
+          InternshipApplication.approved_states
     end
 
     def update_flash_message
+      current_user = authorize_through_sgid? ? @internship_application.student : @current_user
       case
       when @internship_application.reload.read_by_employer? || @internship_application.examined?
         "Candidature mise à jour."
@@ -71,7 +76,8 @@ module ApplicationTransitable
                                                canceled_by_student_message
                                                rejected_message
                                                type
-                                               aasm_state])
+                                               aasm_state
+                                               sgid])
             .fetch(:internship_application) { {} }
     end
   end

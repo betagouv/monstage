@@ -46,6 +46,7 @@ module Dashboard
     def edit
       authorize! :update, @internship_offer
       @republish = params[:republish].present?
+      @republish = true
       @available_weeks = @internship_offer.available_weeks_when_editing
     end
 
@@ -73,8 +74,8 @@ module Dashboard
         respond_to do |format|
           format.turbo_stream
           format.html do
-            redirect_to(internship_offer_path(updated_internship_offer, origine: 'dashboard'),
-                        flash: { success: 'Votre annonce a bien été modifiée' })
+            redirect_to dashboard_internship_offers_path(origine: 'dashboard'),
+                        flash: { success: 'Votre annonce a bien été modifiée' }
           end
         end
       end
