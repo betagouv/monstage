@@ -3,21 +3,20 @@ module ApplicationTransitable
 
   included do
 
-    skip_before_action :verify_authenticity_token, only: %i[update]
-
     def update
       authenticate_user! unless params[:sgid].present?
       authorize_through_sgid? || authorize!(:update, @internship_application)
       if valid_transition?
         @internship_application.send(params[:transition].to_sym)
         @internship_application.update!(optional_internship_application_params)
-        extra_parameter = {tab: params[:transition]} if params[:transition].present?
+        extra_parameter = {tab: params[:transition]}
         if authorize_through_sgid?
           reset_session
-          redirect_to root_path, flash: { success: update_flash_message }
+          redirect_to root_path,
+                      flash: { success: update_flash_message }
         else
           redirect_to current_user.custom_candidatures_path(extra_parameter),
-                    flash: { success: update_flash_message }
+                      flash: { success: update_flash_message }
         end
       else
         redirect_back fallback_location: current_user.custom_dashboard_path,
@@ -39,12 +38,12 @@ module ApplicationTransitable
 
     def valid_states
         InternshipApplication.received_states +
-          InternshipApplication.rejected_states  +
+          InternshipApplication.rejected_states +
           InternshipApplication.approved_states
     end
 
     def update_flash_message
-      current_user = @internship_application.student if authorize_through_sgid?
+      current_user = authorize_through_sgid? ? @internship_application.student : @current_user
       case
       when @internship_application.reload.read_by_employer? || @internship_application.examined?
         "Candidature mise à jour."

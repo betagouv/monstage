@@ -58,7 +58,7 @@ class StudentMailer < ApplicationMailer
     @internship_offer = internship_application.internship_offer
     @prez_offer = @internship_offer.presenter
     @prez_student = @student.presenter
-    sgid = @student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY.days).to_s
+    sgid = @student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY).to_s
     @url = dashboard_students_internship_application_url(
       sgid: sgid,
       student_id: @student.id,
@@ -77,7 +77,7 @@ class StudentMailer < ApplicationMailer
     @internship_offers = applications_to_notify.map(&:internship_offer)
     @titles = @internship_offers.map(&:title)
     @prez_student = @student.presenter
-    sgid = @student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY.days).to_s
+    sgid = @student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY).to_s
     @url = dashboard_students_internship_application_url(
       sgid: sgid,
       student_id: @student.id,

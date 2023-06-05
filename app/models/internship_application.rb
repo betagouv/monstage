@@ -8,7 +8,7 @@ class InternshipApplication < ApplicationRecord
   PAGE_SIZE = 10
   EXPIRATION_DURATION = 45.days
   EXTENDED_DURATION = 15.days
-  MAGIC_LINK_EXPIRATION_DELAY = 50 # days
+  MAGIC_LINK_EXPIRATION_DELAY = 50.days
 
   attr_accessor :sgid
 
