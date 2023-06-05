@@ -314,6 +314,64 @@ module Dashboard
         click_link("Voir")
         assert_select "input[type='submit'][value='Envoyer la demande']", count: 0
       end
+
+      test "quick decision process with canceling" do
+        travel_to Date.new(2019, 10, 1) do
+          weeks = [Week.find_by(number: 1, year: 2020),Week.find_by(number: 2, year: 2020)]
+          school = create(:school, weeks: weeks)
+          student = create(:student,
+                    school: school,
+                    class_room: create(:class_room, school: school)
+                  )
+          internship_offer = create(:weekly_internship_offer, weeks: weeks)
+          internship_application = create( :weekly_internship_application,
+                                          :validated_by_employer,
+                                          internship_offer: internship_offer,
+                                          student: student)
+
+          sgid = student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY).to_s
+          url = dashboard_students_internship_application_url(
+            sgid: sgid,
+            student_id: student.id,
+            id: internship_application.id
+          )
+          visit url
+          click_button "Annuler la candidature"
+          selector = "#internship_application_canceled_by_student_message"
+          find(selector).native.send_keys('Je ne suis plus disponible')
+          click_button "Confirmer"
+          assert_equal "canceled_by_student", internship_application.reload.aasm_state
+          click_link "Connexion" # demonstrates user is not logged in
+        end
+      end
+
+      test "quick decision process with approving" do
+        travel_to Date.new(2019, 10, 1) do
+          weeks = [Week.find_by(number: 1, year: 2020),Week.find_by(number: 2, year: 2020)]
+          school = create(:school, weeks: weeks)
+          student = create(:student,
+                    school: school,
+                    class_room: create(:class_room, school: school)
+                  )
+          internship_offer = create(:weekly_internship_offer, weeks: weeks)
+          internship_application = create( :weekly_internship_application,
+                                          :validated_by_employer,
+                                          internship_offer: internship_offer,
+                                          student: student)
+
+          sgid = student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY).to_s
+          url = dashboard_students_internship_application_url(
+            sgid: sgid,
+            student_id: student.id,
+            id: internship_application.id
+          )
+          visit url
+          click_button "Choisir ce stage"
+          click_button "Confirmer"
+          assert_equal "approved", internship_application.reload.aasm_state
+          click_link "Connexion" # demonstrates user is not logged in
+        end
+      end
     end
   end
 end
