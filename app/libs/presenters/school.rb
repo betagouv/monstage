@@ -26,18 +26,18 @@ module Presenters
     end
 
     def fetched_phone
-      fetch_details if fetched_school_phone.nil?
-      fetched_school_phone
+      fetch_details if school.fetched_school_phone.nil?
+      school.fetched_school_phone
     end
 
     def fetched_address
-      fetch_details if fetched_school_address.nil?
-      fetched_school_address
+      fetch_details if school.fetched_school_address.nil?
+      school.fetched_school_address
     end
 
     def fetched_email
-      fetch_details if fetched_school_email.nil?
-      fetched_school_email
+      fetch_details if school.fetched_school_email.nil?
+      school.fetched_school_email
     end
 
     def staff

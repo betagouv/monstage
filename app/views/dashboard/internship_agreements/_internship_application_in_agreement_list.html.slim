@@ -5,13 +5,13 @@ tr class="d-sm-flex student-application-no-agreement-#{internship_application.id
       .fr-fieldset.fr-fieldset--inline
         .fr-fieldset__content
           .fr-checkbox-group
-            label.fr-label.align-self-center for="#{id}"
-              = prez.student.full_name
-  td.pt-0.pb-3.py-sm-2.rg2a-width-100.col-sm-2.d-sm-flex.align-items-center data-head="#{internship_agreement.internship_application.internship_offer.title}"
+            label.fr-label.align-self-center for="student-#{internship_application.student.id}"
+              = prez.student.presenter.full_name
+  td.pt-0.pb-3.py-sm-2.rg2a-width-100.col-sm-2.d-sm-flex.align-items-center data-head="#{internship_application.internship_offer.title}"
     = link_to '#',
               class: 'fr-raw-link',
               data: { toggle: 'modal',
-                      target: "##{show_application_modal_id(internship_agreement.internship_application)}",
+                      target: "##{show_application_modal_id(internship_application)}",
                       turbo: false } do
       span = prez.internship_offer_title
 
@@ -23,7 +23,7 @@ tr class="d-sm-flex student-application-no-agreement-#{internship_application.id
       .fr-badge.fr-badge--new Action requise
 
   td.rg2a-width-100.col-sm-3.d-sm-flex.align-items-center.text-center.actions
-    = link_to dashboard_school_details_path(prez.school),
+    = link_to school_details_dashboard_internship_offer_internship_application_path(internship_offer_id: internship_application.internship_offer.id, id: internship_application.id),
               class: 'fr-btn fr-btn--secondary fr-btn--icon-left fr-btn-fr-icon-check-line fr-btn--sm fr-mb-2w fr-px-4w' do
       |Contacter l'établissement
 

@@ -41,7 +41,8 @@ WebMock.disable_net_connect!(
     /github.com/,
     /github-production-release-asset*/,
     /chromedriver\.storage\.googleapis\.com/,
-    /api-adresse.data.gouv.fr/
+    /api-adresse.data.gouv.fr/,
+    /education.gouv.fr\/annuaire/
   ]
 )
 class ActiveSupport::TestCase

@@ -13,7 +13,7 @@
         Vous préférez la signature traditionnelle en version papier ? 
         Optez pour l’impression.
 
-  - if @internship_agreements.empty? && current_user.employer_like?
+  - if @internship_agreements.empty? && current_user.employer_like? && @no_agreement_internship_application_list.empty?
     = render partial: 'empty_agreement_list'
 
   - else

@@ -8,7 +8,7 @@ module Dashboard
       ORDER_WITH_INTERNSHIP_DATE = 'internshipDate'
       before_action :authenticate_user!, except: %i[update]
       before_action :find_internship_offer, only: %i[index update show]
-      before_action :fetch_internship_application, only: %i[update show set_to_read]
+      before_action :fetch_internship_application, only: %i[update show set_to_read school_details]
 
       def index
         authorize! :read, @internship_offer
@@ -39,6 +39,12 @@ module Dashboard
       end
 
       def show
+      end
+
+      def school_details
+        authorize! :index, InternshipApplication
+        @school = @internship_application.student.school
+        @school_presenter = @school.presenter
       end
 
       private

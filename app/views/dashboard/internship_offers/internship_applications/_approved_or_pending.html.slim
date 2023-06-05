@@ -30,7 +30,7 @@
               p class="fr-mt-1w fr-badge fr-badge--sm fr-badge--#{prez.human_state[:badge]} fr-badge--no-icon"
                 = prez.human_state[:label]
             td style="min-width: 210px;"
-              - if internship_application.approved?
+              - if internship_application.approved? && internship_application.internship_agreement.present?
                 = link_to edit_dashboard_internship_agreement_path(internship_application.internship_agreement.id.to_i),
                           class: 'fr-raw-link d-flex flex-row' do
                   span.fr-icon-file-line.fr-icon--sm aria-hidden="true"

@@ -34,7 +34,7 @@ Rails.application.routes.draw do
       put '/utilisateurs/mot-de-passe/update_by_phone', to: 'users/passwords#update_by_phone', as: 'phone_update_password'
       get '/utilisateurs/mot-de-passe/initialisation', to: 'users/passwords#set_up', as: 'set_up_password'
     end
-    
+
     resources :identities, path: 'identites', only: %i[new create]
     resources :schools, path: 'ecoles',only: %i[new create ]
 
@@ -65,7 +65,6 @@ Rails.application.routes.draw do
         end
       end
     end
-    
     # ------------------ DASHBOARD START ------------------
     namespace :dashboard, path: 'tableau-de-bord' do
       resources :internship_agreements,  path: 'conventions-de-stage', except: %i[destroy]
@@ -90,13 +89,13 @@ Rails.application.routes.draw do
         end
         put '/update_students_by_group', to: 'schools/students#update_by_group', module: 'schools'
         get '/information', to: 'schools#information', module: 'schools'
-        get '/details', to: 'schools#details', module: 'schools'
       end
 
       resources :internship_offers, path: 'offres-de-stage', except: %i[show] do
         patch :republish, to: 'internship_offers#republish', on: :member
         resources :internship_applications, path: 'candidatures', only: %i[update index show], module: 'internship_offers' do
           patch :set_to_read, on: :member
+          get :school_details, on: :member
         end
       end
 
