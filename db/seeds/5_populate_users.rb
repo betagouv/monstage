@@ -3,7 +3,7 @@ def student_maker (school: ,class_room: )
   first_name = 'Kilian' if first_name.include?(' ')
   last_name = FFaker::NameFR.unique.last_name
   last_name = 'Ploquin' if last_name.include?(' ')
-  email = "#{first_name}.#{last_name}@ms3e.fr"
+  email = "#{first_name.gsub(/[éèê],'e')}.#{last_name.gsub(/[éèê],'e')}@ms3e.fr"
   Users::Student.new(
     first_name: first_name,
     last_name: last_name,
