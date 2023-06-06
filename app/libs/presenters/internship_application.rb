@@ -6,6 +6,9 @@ module Presenters
     delegate :internship_offer, to: :internship_application
     delegate :title, to: :internship_offer, prefix: true
     delegate :employer_name, to: :internship_offer
+    delegate :canceled_by_employer_message, to: :internship_application
+    delegate :rejected_message, to: :internship_application
+    delegate :examined_message, to: :internship_application
 
     def expires_in
       start = internship_application.updated_at
@@ -230,6 +233,18 @@ module Presenters
       current_state_in_list?(ok_for_employer_validation_states)
     end
 
+    def with_employer_explanation?
+      return false unless internship_application.aasm_state.in?(::InternshipApplication.with_employer_explanations_states)
+
+      employer_explanation.present?
+    end
+
+    def employer_explanation
+      "#{internship_application.canceled_by_employer_message.to_s}" \
+      "#{internship_application.rejected_message.to_s}" \
+      "#{internship_application.examined_message.to_s}".html_safe
+    end
+
     attr_reader :internship_application,
                 :student,
                 :internship_offer,
@@ -264,6 +279,5 @@ module Presenters
     def current_state_in_list?(state_array)
       state_array.include?(internship_application.aasm_state)
     end
-
   end
 end

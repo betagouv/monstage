@@ -277,6 +277,8 @@ class InternshipApplication < ApplicationRecord
     GlobalID::Locator.locate_signed( sgid)
   end
 
+  # TODO constantize the following methods
+
   def self.received_states
     %w[submitted read_by_employer examined expired]
   end
@@ -287,6 +289,10 @@ class InternshipApplication < ApplicationRecord
 
   def self.approved_states
     %w[approved validated_by_employer]
+  end
+
+  def self.with_employer_explanations_states
+    %w[rejected canceled_by_employer examined]
   end
 
   def after_employer_validation_notifications
