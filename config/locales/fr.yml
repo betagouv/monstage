@@ -135,6 +135,8 @@ fr:
         current_approved_internship_applications_count: Candidatures acceptées
         full_address: "Adresse de l'établissement"
         full_weeks: Semaines
+      email_whitelist:
+        zipcode: Code postal
 
       organisation: &organisation_fields
         employer_name: Employeur
@@ -334,6 +336,7 @@ fr:
         operator: Association
         phone_password_reset_count: Compteur de remise à zéro de mot de passe par téléphone
         anonymized: Anonymisé
+        zipcode: Code postal
 
       identity:
         first_name: Prénom
