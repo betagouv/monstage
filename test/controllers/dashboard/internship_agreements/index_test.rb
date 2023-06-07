@@ -27,7 +27,11 @@ module Dashboard::InternshipOffers
 
       get dashboard_internship_agreements_path
       assert_response :success
-      assert_select("h4.fr-h4", text: 'Aucune convention de stage ne requiert votre attention pour le moment.')
+      href = school_details_dashboard_internship_offer_internship_application_path(
+        internship_application.internship_offer,
+        internship_application
+      )
+      assert_select("td.actions a.fr-btn--secondary[href='#{href}']", text: "Contacter l'établissement")
     end
   end
 end
