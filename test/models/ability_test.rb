@@ -385,7 +385,7 @@ class AbilityTest < ActiveSupport::TestCase
            'students should be able to access their account')
 
     assert(ability.can?(:manage, ClassRoom))
-    assert(ability.can?(:change, :class_room))
+    assert(ability.can?(:change, class_room))
 
     assert(ability.can?(:destroy, internship_application))
     assert(ability.can?(:update, internship_application))
@@ -415,6 +415,7 @@ class AbilityTest < ActiveSupport::TestCase
   test 'Teacher' do
     school = create(:school, :with_school_manager)
     teacher = create(:teacher, school: school)
+    class_room = create(:class_room, school: school)
     ability = Ability.new(teacher)
 
     assert(ability.can?(:subscribe_to_webinar, teacher))
@@ -424,18 +425,53 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:see_tutor, InternshipOffer))
     assert(ability.can?(:manage_school_students, teacher.school))
     assert(ability.cannot?(:manage_school_students, build(:school)))
-    assert(ability.can?(:change, :class_room))
+    assert(ability.can?(:change, class_room))
   end
 
   test 'Other' do
     school = create(:school, :with_school_manager)
+    class_room = create(:class_room, school: school)
     another_school = create(:school)
     other = create(:other, school: school)
     ability = Ability.new(other)
     assert(ability.can?(:manage_school_students, other.school))
     assert(ability.cannot?(:manage_school_students, another_school))
     assert(ability.can?(:manage, ClassRoom))
-    assert(ability.can?(:change, :class_room))
+    assert(ability.can?(:change, class_room))
+  end
+
+  test 'Admin Offcer' do
+    school = create(:school, :with_school_manager)
+    class_room = create(:class_room, school: school)
+    another_school = create(:school)
+    student = create(:student, school: school)
+    internship_application = create(:weekly_internship_application, student: student)
+    internship_agreement = create(:internship_agreement, internship_application: internship_application)
+       
+    admin_officer = create(:admin_officer, school: school)
+    ability = Ability.new(admin_officer)
+   
+    assert(ability.can?(:manage_school_students, admin_officer.school))
+    assert(ability.cannot?(:manage_school_students, another_school))
+    assert(ability.can?(:manage, ClassRoom))
+    assert(ability.can?(:change, class_room))
+    assert(ability.can?(:read, InternshipAgreement))
+  end
+
+  test 'CPE' do
+    school = create(:school, :with_school_manager)
+    class_room = create(:class_room, school: school)
+    another_school = create(:school)
+    class_room_2 = create(:class_room, school: another_school) 
+    
+    cpe = create(:cpe, school: school)
+    ability = Ability.new(cpe)
+
+    assert(ability.can?(:manage_school_students, cpe.school))
+    assert(ability.cannot?(:manage_school_students, another_school))
+    assert(ability.can?(:change, class_room))
+    assert(ability.cannot?(:change, class_room_2))
+    assert(ability.can?(:read, InternshipAgreement))
   end
 
   test 'Operator' do
