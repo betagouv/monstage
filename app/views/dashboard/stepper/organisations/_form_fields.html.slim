@@ -2,7 +2,7 @@
   div data-controller='organisation-form' data-action="input->organisation-form#checkForm"
     .row
       .col-md-6.order-md-1.order-2
-        fieldset 
+        fieldset  aria-labelledby="organisation-name-legend"
           legend.fr-text--lg.font-weight-bold.fr-my-2w L'entreprise
           /  L'entreprise
           = form.hidden_field :manual_enter, value: false
@@ -35,7 +35,7 @@
 
           .bloc-tooggle class=('d-none' if request.fullpath.include?('organisations/nouveau'))
             fieldset.fr-fieldset.fr-my-2w#radio-hint aria-labelledby="radio-hint-legend radio-hint-messages"
-              label
+              legend.label
                 | Secteur
               div.fr-fieldset__element
                 div.fr-radio-group
@@ -59,14 +59,10 @@
                             { prompt: '-- Indépendant --' },
                             class: "fr-select",
                             data: {:"organisation-form-target" => 'selectGroupName'}
-
-            .fr-mt-3w
-              = link_to 'Annuler', dashboard_internship_offers_path, class: 'fr-btn fr-btn--secondary fr-mr-3w'
-              = button_tag :submit, class: 'fr-btn', disabled: false, 'data-target': "organisation-form.submitButton" do
-                = "Suivant "
-    .row.bloc-tooggle class="#{'d-none' unless params[:internship_offer_info_id].present?}"
+    
+    .row.bloc-tooggle class="#{'d-none' unless request.path_info.include?('modification')}"
       .col-md-6
-        fieldset 
+        fieldset aria-labelledby="presentation"
         legend Présentation de l'entreprise
         .form-group.fr-my-2w data-controller='maxlength-input' data-maxlength-input-limit-value="#{InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT}"
           #label_organisation_description_rich_text.label.fr-label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{form.object_name}_employer_description_rich_text" data-controller="rich-text-label"
@@ -79,19 +75,13 @@
             = 'Site web (optionnel)'
             small.form-text.text-muted Afin que l’élève puisse en apprendre plus sur son futur stage
           = form.url_field :employer_website, class: 'fr-input', placeholder: "https://"
-        - if submit_button
-          .fr-mt-3w
-            = link_to 'Annuler', dashboard_internship_offers_path, class: 'fr-btn fr-btn--secondary fr-mr-3w'
-            - if params[:internship_offer_info_id].present?
-              = link_to edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]),
-                        class: 'fr-btn',
-                        disabled: false,
-                        'data-target': "organisation-form.submitButton" do
-                = 'Suivant '
-            - else
-              = button_tag :submit, class: 'fr-btn', disabled: false, 'data-target': "organisation-form.submitButton" do
-                = "Suivant "
+        
       .col-md-6
         .fr-alert.fr-alert--info
           h3.fr-alert__title Conseil
           p La présentation de l’entreprise est un des éléments déterminant dans le choix du stage. Utilisez un vocabulaire simple, facile à comprendre. N’hésitez pas à ajouter des détails sur les principales activités de l’entreprise.
+    
+    .fr-mt-3w
+      = link_to 'Annuler', dashboard_internship_offers_path, class: 'fr-btn fr-btn--secondary fr-mr-3w'
+      = button_tag :submit, class: 'fr-btn', disabled: false, 'data-target': "organisation-form.submitButton" do
+        = "Suivant "
