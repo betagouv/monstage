@@ -1135,7 +1135,10 @@ CREATE TABLE public.schools (
     city_tsv tsvector,
     kind character varying,
     visible boolean DEFAULT true,
-    internship_agreement_online boolean DEFAULT false
+    internship_agreement_online boolean DEFAULT false,
+    fetched_school_phone character varying(20),
+    fetched_school_address character varying(300),
+    fetched_school_email character varying(100)
 );
 
 
@@ -2837,6 +2840,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230420095232'),
 ('20230426161001'),
 ('20230502164246'),
-('20230516162131');
+('20230516162131'),
+('20230531094449');
 
 

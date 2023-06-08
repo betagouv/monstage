@@ -110,12 +110,15 @@ class Department
   }.freeze
 
   def self.lookup_by_zipcode(zipcode:)
-    key = if departement_identified_by_3_chars?(zipcode: zipcode)
-            zipcode[0..2]
-          else
-            zipcode[0..1]
-          end
-    MAP[key]
+    MAP[key_for_lookup(zipcode: zipcode)]
+  end
+
+  def self.key_for_lookup(zipcode:)
+    if departement_identified_by_3_chars?(zipcode: zipcode)
+      zipcode[0..2]
+    else
+      zipcode[0..1]
+    end
   end
 
   def self.to_select(only: nil)

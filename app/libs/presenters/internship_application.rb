@@ -2,6 +2,11 @@ module Presenters
   class InternshipApplication
     include ::ActionView::Helpers::DateHelper
 
+    delegate :student , to: :internship_application
+    delegate :internship_offer, to: :internship_application
+    delegate :title, to: :internship_offer, prefix: true
+    delegate :employer_name, to: :internship_offer
+
     def expires_in
       start = internship_application.updated_at
       finish = start + ::InternshipApplication::EXPIRATION_DURATION

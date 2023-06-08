@@ -1,0 +1,22 @@
+.dashboard-container
+  .fr-mt-3w
+    = link_to("retour",
+              dashboard_internship_agreements_path,
+              class: "fr-link fr-fi-arrow-left-line fr-link--icon-left fr-my-4w")
+  .dashboard-container-child.fr-mt-6w
+    h1.fr-h3.fr-mt-4w.blue-france Contact établissement scolaire
+    p Pour établir la convention de stage de cet élève, vous devez contacter directement l'établissement scolaire.
+
+    h2.fr-h5.fr-mt-4w.blue-france Coordonnées de l'établissement
+    p
+      strong = @school_presenter.school_name
+      br
+      = @school_presenter.fetched_address
+    p
+      strong Email
+      br
+      = @school_presenter.fetched_email
+    p
+      strong Téléphone
+      br
+      = @school_presenter.fetched_phone

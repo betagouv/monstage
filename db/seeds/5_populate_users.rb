@@ -78,8 +78,8 @@ def populate_students
   with_class_name_for_defaults(Users::Student.new(email: 'leon@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Luanco', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
   
   2.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_3)).save! }
-  with_class_name_for_defaults(Users::Student.new(email: 'raphaelle@ms3e.fr', password: 'review',first_name: 'Raphaëlle', last_name: 'Mesnard',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Chotin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'raphaelle@ms3e.fr', password: 'review',first_name: 'Raphaëlle', last_name: 'Mesnard',  school: missing_school_manager_school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Chotin',  school: missing_school_manager_school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
 end
 
 call_method_with_metrics_tracking([
