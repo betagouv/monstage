@@ -55,7 +55,7 @@ module Dashboard::InternshipOffers
       click_button 'Confirmer'
       assert internship_application.reload.validated_by_employer?
       find("h1.h4", text: "Les candidatures")
-    find('p.fr-mt-1w.fr-badge.fr-badge--sm.fr-badge--info', text: "en attente de réponse".upcase)
+      find('p.fr-mt-1w.fr-badge.fr-badge--sm.fr-badge--info', text: "en attente de réponse".upcase)
 
       find('span#alert-text', text: "Candidature mise à jour avec succès.")
       find('button#tabpanel-received[aria-controls="tabpanel-received-panel"]',  text: 'Reçues').click

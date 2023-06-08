@@ -8,7 +8,9 @@ class InternshipApplication < ApplicationRecord
   PAGE_SIZE = 10
   EXPIRATION_DURATION = 45.days
   EXTENDED_DURATION = 15.days
-  MAGIC_LINK_EXPIRATION_DELAY = 5 # days
+  MAGIC_LINK_EXPIRATION_DELAY = 50.days
+
+  attr_accessor :sgid
 
   belongs_to :internship_offer, polymorphic: true
   # has_many :internship_agreements
@@ -191,7 +193,7 @@ class InternshipApplication < ApplicationRecord
                   after: proc { |*_args|
                     # Other employers notifications
                     student.internship_applications.where(aasm_state: employer_aware_states).each do |application|
-                      EmployerMailer.internship_application_approved_for_an_other_internship_offer(internship_application: application).deliver_later
+                      EmployerMailer.internship_application_approved_for_an_other_internship_offer(internship_application: application).deliver_later unless application == self
                     end
                   }
     end
@@ -269,6 +271,22 @@ class InternshipApplication < ApplicationRecord
         MainTeacherMailer.internship_application_approved_with_no_agreement_email(arg_hash)
       end
     end
+  end
+
+  def self.from_sgid(sgid)
+    GlobalID::Locator.locate_signed( sgid)
+  end
+
+  def self.received_states
+    %w[submitted read_by_employer examined expired]
+  end
+
+  def self.rejected_states
+    %w[rejected canceled_by_employer canceled_by_student]
+  end
+
+  def self.approved_states
+    %w[approved validated_by_employer]
   end
 
   def after_employer_validation_notifications
@@ -387,8 +405,8 @@ class InternshipApplication < ApplicationRecord
     end
   end
 
-  def presenter
-    @presenter ||= Presenters::InternshipApplication.new(self)
+  def presenter(user)
+    @presenter ||= Presenters::InternshipApplication.new(self, user)
   end
 
   private

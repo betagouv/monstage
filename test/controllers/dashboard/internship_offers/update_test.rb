@@ -50,7 +50,7 @@ module Dashboard::InternshipOffers
           }
         }
       )
-      assert_redirected_to(internship_offer_path(internship_offer, origine: 'dashboard'),
+      assert_redirected_to(dashboard_internship_offers_path(origine: 'dashboard'),
                            'redirection should point to updated offer')
 
       assert_equal(new_title,
@@ -133,7 +133,7 @@ module Dashboard::InternshipOffers
               new_daily_hours: {'lundi' => ['10h', '12h']}
 
             } })
-      assert_redirected_to(internship_offer_path(internship_offer, origine: 'dashboard'),
+      assert_redirected_to(dashboard_internship_offers_path(origine: 'dashboard'),
                            'redirection should point to updated offer')
 
       assert_equal(new_title,

@@ -2,6 +2,11 @@ module Presenters
   class InternshipApplication
     include ::ActionView::Helpers::DateHelper
 
+    delegate :student , to: :internship_application
+    delegate :internship_offer, to: :internship_application
+    delegate :title, to: :internship_offer, prefix: true
+    delegate :employer_name, to: :internship_offer
+
     def expires_in
       start = internship_application.updated_at
       finish = start + ::InternshipApplication::EXPIRATION_DURATION
@@ -19,111 +24,114 @@ module Presenters
       internship_application.internship_offer.title
     end
 
-    def status
-      return "" if internship_application.aasm_state.nil?
-      badge = {}
-      case internship_application.aasm_state
-      when "drafted", "submitted"
-        badge = {label: 'nouveau', badge_type:'new'}
-      when "examined"
-        badge = {label: "à l'étude", badge_type:'info'}
-      when "validated_by_employer"
-        badge = {label: "en attente de réponse", badge_type:'info'}
-      when "read_by_employer"
-        badge = {label: "lu", badge_type:'warning'}
-      when "rejected", "canceled_by_student", "canceled_by_employer"
-        badge = {label: "refusé", badge_type: 'error'}
-      when "expired"
-        badge = {label: "expiré", badge_type:'error'}
-      else
-        badge = {label: 'accepté', badge_type:'success'}
-      end
-    end
-
-    def student_human_state
+    def human_state
       case internship_application.aasm_state
       when "drafted"
+        student_has_found = internship_application.student
+                                                  .has_already_approved_an_application?
+        label = student_has_found ? 'Voir' : 'Finaliser ma candidature'
+        level = student_has_found ? 'tertiary' : 'primary'
         {label: 'brouillon',
           badge:'grey',
-          actions: [ { label: 'Voir',
-                      path: internship_application_path,
-                      color: 'nil',
-                      level: 'tertiary'
+          actions: [ { label: label,
+                       path: internship_application_path,
+                       level: level
                     }]
         }
-      when "submitted", "read_by_employer"
-        { label: 'sans réponse',
+      when "submitted"
+        label = reader.student? ? 'envoyée' : 'nouveau'
+        action_label = reader.student? ? 'Voir' : 'Répondre'
+        action_level = reader.student? ? 'tertiary' : 'primary'
+        { label: label,
           badge: 'info',
-          actions: [ { label: 'Renvoyer la demande',
+          actions: [ { label: action_label,
                       path: internship_application_path,
-                      color: 'nil',
-                      level: 'tertiary'
+                      level: action_level
+                    }]
+        }
+      when "read_by_employer"
+        action_label = reader.student? ? 'Voir' : 'Répondre'
+        action_level = reader.student? ? 'tertiary' : 'primary'
+        { label: "lue",
+          badge: 'warning',
+          actions: [ { label: action_label,
+                      path: internship_application_path,
+                      level: action_level
                     }]
         }
       when "examined"
+        action_label = reader.student? ? 'Voir' : 'Répondre'
+        action_level = reader.student? ? 'tertiary' : 'primary'
         { label: 'à l\'étude',
-          badge:'info',
-          actions: [ { label: 'Renvoyer la demande',
+          badge: 'info',
+          actions: [ { label: action_label,
                       path: internship_application_path,
-                      color: 'nil',
-                      level: 'tertiary'
+                      level: action_level
                     }]
         }
       when "validated_by_employer"
-        { label: 'acceptée par l\'entreprise',
-          badge:'success',
-          actions: [ { label: 'Répondre',
+        label = reader.student? ? 'acceptée par l\'entreprise' : 'en attente de réponse'
+        action_label = reader.student? ? 'Répondre' : 'Voir'
+        action_level = reader.student? ? 'primary' : 'tertiary'
+        badge = reader.student? ? 'success' : 'info'
+        { label: label,
+          badge: badge,
+          actions: [ { label: action_label,
                       path: internship_application_path,
-                      color: 'nil',
-                      level: 'tertiary'
+                      level: action_level
                       }]
         }
-      when "canceled_by_employer", "rejected"
+      when "canceled_by_employer"
+        label = reader.student? ? 'annulée par l\'entreprise' : 'refusée'
         { label: 'refusée par l\'entreprise',
-          badge:'error',
-          actions: [ { label: 'Renvoyer la demande',
-                      path: internship_application_path,
-                      color: 'nil',
-                      level: 'tertiary',
-                      disabled: true
+          badge: 'error',
+          actions: [ { label: 'Voir',
+                       path: internship_application_path,
+                       level: 'tertiary'
+                      }]
+        }
+      when  "rejected"
+        label = reader.student? ? 'refusée par l\'entreprise' : 'refusée'
+        { label: 'refusée par l\'entreprise',
+          badge: 'error',
+          actions: [ { label: 'Voir',
+                       path: internship_application_path,
+                       level: 'tertiary'
                       }]
         }
       when "canceled_by_student"
-        { label: 'annulée par l\'élève',
+        label = reader.student? ? 'annulée' : 'annulée par l\'élève'
+        { label: label,
           badge:'purple-glycine',
-          actions: [ { label: 'Renvoyer la demande',
+          actions: [ { label: 'Voir',
                       path: internship_application_path,
-                      color: 'nil',
-                      level: 'tertiary',
-                      disabled: true
+                      level: 'tertiary'
                       }]
         }
       when "expired"
         { label: 'expirée',
           badge:'error',
-          actions: [ { label: 'Renvoyer la demande',
+          actions: [ { label: 'Voir',
                       path: internship_application_path,
-                      color: 'nil',
-                      level: 'tertiary',
-                      disabled: true
+                      level: 'tertiary'
                       }]
         }
       when "canceled_by_student_confirmation"
-        {label: 'finalement refusée',
+        { label: 'annulée',
           badge:'purple-glycine',
           actions: [ { label: 'Voir',
                       path: internship_application_path,
-                      color: 'nil',
                       level: 'tertiary'
                       }]
         }
       when "approved"
-        { label: 'confirmée',
+        action_label = reader.student? ? 'Contacter l\'employeur' : 'Voir'
+        action_level = reader.student? ? 'primary' : 'secondary'
+        { label: "stage validé",
           badge: 'success',
-          actions: [ { label: 'Contacter l\'employeur',
-                      path: internship_application_path, # peut-être mettre un mailto vers l'offreur ?
-                      color: 'nil',
-                      level: 'tertiary'
+          actions: [ { label: action_label,
+                       path: internship_application_path,
+                       level: action_level
                       }]
         }
       else
@@ -134,6 +142,20 @@ module Presenters
     def actions_in_show_page
       return "" if internship_application.aasm_state.nil?
 
+      student_has_found = internship_application.student
+                                                .has_already_approved_an_application?
+      student_has_found ? actions_when_student_has_found : actions_when_student_has_not_found
+    end
+
+    def actions_when_student_has_found
+      return [] unless internship_application.approved?
+
+      [{ label: 'Contacter l\'offreur',
+         color: 'primary',
+         level: 'tertiary' }]
+    end
+
+    def actions_when_student_has_not_found
       case internship_application.aasm_state
       when "drafted"
         [{ label: 'Modifier',
@@ -179,7 +201,7 @@ module Presenters
         []
       end
     end
-    
+
     def ok_for_examine_states
       %w[submitted read_by_employer]
     end
@@ -193,9 +215,9 @@ module Presenters
     end
 
     def ok_for_employer_validation_states
-      %w[submitted examined read_by_employer] 
+      %w[submitted examined read_by_employer]
     end
-    
+
     def ok_for_examine?
       current_state_in_list?(ok_for_examine_states)
     end
@@ -210,10 +232,12 @@ module Presenters
 
     attr_reader :internship_application,
                 :student,
-                :internship_offer
+                :internship_offer,
+                :reader
 
     protected
-    def initialize(internship_application)
+    def initialize(internship_application, user)
+      @reader = user
       @internship_application = internship_application
       @student                = internship_application.student
       @internship_offer       = internship_application.internship_offer

@@ -21,7 +21,7 @@ module Dashboard
         visit '/'
         click_on 'Candidatures'
         internship_applications.each do |_aasm_state, internship_application|
-          badge = internship_application.presenter.student_human_state
+          badge = internship_application.presenter(student).human_state
           find('.h5.internship-offer-title', text: internship_application.internship_offer.title)
           find("a#show_link_#{internship_application.id}", text: badge[:actions].first[:label]).click
           click_link('toutes mes candidatures')
@@ -44,7 +44,7 @@ module Dashboard
           click_button('Choisir ce stage')
           click_button('Confirmer')
         end
-        find '.fr-badge.fr-badge--success', text: "CONFIRMÉE"
+        find '.fr-badge.fr-badge--success', text: "STAGE VALIDÉ"
         find "a#show_link_#{internship_application.id}", text: "Contacter l'employeur"
       end
 
@@ -63,8 +63,8 @@ module Dashboard
                       to: "submitted" do
           find('input[value="Envoyer la demande"]').click
         end
-        find '.fr-badge.fr-badge--info', text: "SANS RÉPONSE"
-        find "a#show_link_#{internship_application.id}", text: "Renvoyer la demande"
+        find '.fr-badge.fr-badge--info', text: "ENVOYÉE"
+        find "a#show_link_#{internship_application.id}", text: "Voir"
       end
 
       test 'GET #show as Student with existing draft application shows the draft' do
@@ -160,7 +160,7 @@ module Dashboard
           sign_in(student)
           visit dashboard_students_internship_applications_path(student_id: student.id)
 
-          click_link 'Voir'
+          click_link 'Finaliser ma candidature'
 
           click_link 'Modifier'
           refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
@@ -214,7 +214,7 @@ module Dashboard
         sign_in(student)
         visit dashboard_students_internship_applications_path(student_id: student.id)
 
-        click_link 'Renvoyer la demande'
+        click_link 'Voir'
 
         click_button 'Annuler la candidature'
 
@@ -245,7 +245,7 @@ module Dashboard
         sign_in(student)
         visit dashboard_students_internship_applications_path(student_id: student.id)
 
-        click_link 'Renvoyer la demande'
+        click_link 'Voir'
 
         assert_changes lambda { student.internship_applications.first.reload.dunning_letter_count },
                        from: 0,
@@ -280,6 +280,96 @@ module Dashboard
           find("h3.fr-callout__title", text: "Contact de l'employeur")
           find('ul li.test-employer-name', text: internship_offer.employer.presenter.formal_name)
           find('ul li.test-employer-email', text: internship_offer.employer.email)
+        end
+      end
+
+      test "when confirmed an internship_application a student cannot apply a drafted application anymore" do
+        weeks = [Week.find_by(number: 1, year: 2020),Week.find_by(number: 2, year: 2020)]
+        school = create(:school, weeks: weeks)
+        student = create(:student,
+                        school: school,
+                        class_room: create(:class_room, school: school)
+                        )
+        internship_offer_1 = create(:weekly_internship_offer, weeks: weeks)
+        internship_offer_2 = create(:weekly_internship_offer, weeks: weeks)
+        approved_application_1 = create( :weekly_internship_application,
+                                        :drafted,
+                                        week: weeks.first,
+                                        internship_offer: internship_offer_1,
+                                        student: student)
+        approved_application_2 = create( :weekly_internship_application,
+                                        :drafted,
+                                        week: weeks.second,
+                                        internship_offer: internship_offer_2,
+                                        student: student)
+
+        sign_in(student)
+        visit dashboard_students_internship_applications_path(student_id: student.id)
+
+        find("a#show_link_#{approved_application_1.id}").click
+        find "input[type='submit'][value='Envoyer la demande']"
+
+        approved_application_2.update_column(:aasm_state, 'approved')
+        visit dashboard_students_internship_applications_path(student_id: student.id)
+        click_link("Voir")
+        assert_select "input[type='submit'][value='Envoyer la demande']", count: 0
+      end
+
+      test "quick decision process with canceling" do
+        travel_to Date.new(2019, 10, 1) do
+          weeks = [Week.find_by(number: 1, year: 2020),Week.find_by(number: 2, year: 2020)]
+          school = create(:school, weeks: weeks)
+          student = create(:student,
+                    school: school,
+                    class_room: create(:class_room, school: school)
+                  )
+          internship_offer = create(:weekly_internship_offer, weeks: weeks)
+          internship_application = create( :weekly_internship_application,
+                                          :validated_by_employer,
+                                          internship_offer: internship_offer,
+                                          student: student)
+
+          sgid = student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY).to_s
+          url = dashboard_students_internship_application_url(
+            sgid: sgid,
+            student_id: student.id,
+            id: internship_application.id
+          )
+          visit url
+          click_button "Annuler la candidature"
+          selector = "#internship_application_canceled_by_student_message"
+          find(selector).native.send_keys('Je ne suis plus disponible')
+          click_button "Confirmer"
+          assert_equal "canceled_by_student", internship_application.reload.aasm_state
+          click_link "Connexion" # demonstrates user is not logged in
+        end
+      end
+
+      test "quick decision process with approving" do
+        travel_to Date.new(2019, 10, 1) do
+          weeks = [Week.find_by(number: 1, year: 2020),Week.find_by(number: 2, year: 2020)]
+          school = create(:school, weeks: weeks)
+          student = create(:student,
+                    school: school,
+                    class_room: create(:class_room, school: school)
+                  )
+          internship_offer = create(:weekly_internship_offer, weeks: weeks)
+          internship_application = create( :weekly_internship_application,
+                                          :validated_by_employer,
+                                          internship_offer: internship_offer,
+                                          student: student)
+
+          sgid = student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY).to_s
+          url = dashboard_students_internship_application_url(
+            sgid: sgid,
+            student_id: student.id,
+            id: internship_application.id
+          )
+          visit url
+          click_button "Choisir ce stage"
+          click_button "Confirmer"
+          assert_equal "approved", internship_application.reload.aasm_state
+          click_link "Connexion" # demonstrates user is not logged in
         end
       end
     end

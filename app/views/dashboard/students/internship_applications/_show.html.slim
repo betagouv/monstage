@@ -1,7 +1,7 @@
-- presenter = @internship_application.presenter(current_user)
+- presenter = internship_application.presenter(current_user)
 = render 'layouts/breadcrumb',
           links: [ [current_user.presenter.dashboard_name_link, current_user.dashboard_name],
-                   ['', @internship_application.internship_offer.title]]
+                   ['', internship_application.internship_offer.title]]
 - if current_user.student?
   .sticky-top.white-header
     .fr-mb-5w
@@ -10,31 +10,33 @@
         span.fr-icon-arrow-left-line.fr-btn--icon-left.fr-raw-link
           | toutes mes candidatures
 
-
     = render "dashboard/internship_offers/internship_applications/internship_application_header",
-              internship_application: @internship_application,
-              presenter: presenter
+              internship_application: internship_application,
+              presenter: presenter,
+              sgid: sgid
 
   / following avoids modal dialog to be opened within a sticky HTML node that hides modal content
-  - aasm_notifier = @internship_application.internship_application_aasm_message_builder(aasm_target: :cancel_by_student!)
+  - aasm_notifier = internship_application.internship_application_aasm_message_builder(aasm_target: :cancel_by_student!)
   = render 'dashboard/internship_offers/internship_applications/action_modal_dialog',
-           internship_application: @internship_application,
+           internship_application: internship_application,
            aasm_target: :cancel_by_student!,
            aasm_notifier: aasm_notifier,
-           modal_id: "cancel-by-student-internship-application-#{@internship_application.id}",
+           modal_id: "cancel-by-student-internship-application-#{internship_application.id}",
            modal_opener_label: "Annuler",
            message: "Une fois la candidature annulée, un email de notification va être envoyé à l'employeur avec le motif de l'annulation",
            rich_text: true,
-           subtitle: "Motif de l'annulation"
+           subtitle: "Motif de l'annulation",
+           sgid: sgid
   = render 'dashboard/internship_offers/internship_applications/action_modal_dialog',
-           internship_application: @internship_application,
+           internship_application: internship_application,
            aasm_target: :approve!,
            aasm_notifier: aasm_notifier,
-           modal_id: "approve-internship-application-#{@internship_application.id}",
+           modal_id: "approve-internship-application-#{internship_application.id}",
            modal_opener_label: "Confirmer",
            message: "En choisissant ce stage, <strong>toutes vos autres candidatures seront annulées et vous ne pourrez pas revenir en arrière.</strong>".html_safe,
            rich_text: false,
-           subtitle: ""
+           subtitle: "",
+           sgid: sgid
 - elsif current_user.employer_like?
   .fr-mb-5w
       = link_to dashboard_candidatures_path(current_user.id),
@@ -42,6 +44,32 @@
         span.fr-icon-arrow-left-line.fr-btn--icon-left.fr-raw-link
           | retour
 - if current_user.student?
+  - if internship_application.approved?
+    .row
+      .col-12.py-2
+        .container-monstage-application
+          .grey-container-application
+            .row
+              .col-sm-8.col-lg-12
+                .fr-callout
+                  h3.h5.fr-callout__title Contact de l'employeur
+                  p.fr-callout__text
+                    ul
+                      li.test-employer-name
+                        = "votre responsable dans l'entreprise : "
+                        strong = internship_offer.employer.presenter.formal_name
+                      li.test-employer-email
+                        = "son adresse email : "
+                        strong = internship_offer.employer.email
+                      - if internship_offer.employer.phone
+                        li.test-employer-phone
+                          = "son numéro de téléphone : "
+                          strong = internship_offer.employer.phone
+                  = mail_to(internship_offer.employer.email, 
+                          'Lui écrire',
+                          subject: "[Stagiaire #{internship_application.student.presenter.short_civil_full_name}] - prise de contact",
+                          class: 'fr-btn fr-btn--sm fr-mt-2w')
+
   .row
     .col-12
       h1.h3.fr-mb-7v L'offre de stage
@@ -51,38 +79,21 @@
         .col-sm-8.col-lg-12
           .fr-px-1w
             = render "internship_offers/show_details",
-                     internship_offer: @internship_offer,
+                     internship_offer: internship_offer,
                      hidden_parts: true
-      - if @internship_application.approved?
-        .row
-          .col-sm-8.col-lg-12
-            .fr-callout
-              h3.h5.fr-callout__title Contact en entreprise
-              p.fr-callout__text
-                ul
-                  li
-                    = "votre responsable dans l'entreprise : "
-                    strong = @internship_offer.employer.presenter.formal_name
-                  li
-                    = "son adresse email : "
-                    strong = @internship_offer.employer.email
-              = mail_to(@internship_offer.employer.email, 
-                      'Lui écrire',
-                      subject: "[Stagiaire #{@internship_application.student.presenter.short_civil_full_name}] - prise de contact",
-                      class: 'fr-btn fr-btn--sm fr-mt-2w')
 .row
   .col-12
     h2.h3.fr-mt-4w.fr-mb-2w
       = "#{current_user.employer_like? ? "S" : "M"}a candidature"
 .container-monstage-application
   .grey-container-application.with-grey-background
-    h2.h4.fr-mb-4w = @internship_application.student.presenter.full_name
+    h2.h4.fr-mb-4w = internship_application.student.presenter.full_name
     p.fr-icon-calendar-line.fr-btn--icon-left
-      - week = @internship_application.week
+      - week = internship_application.week
       ="Semaine du <strong>#{week.short_select_text_method}</strong>".html_safe
-    - unless @internship_application.motivation.to_s.blank?
+    - unless internship_application.motivation.to_s.blank?
       h3.h5 Motivations
-      p = @internship_application.motivation.to_s
+      p = internship_application.motivation.to_s
 
     row.no-gutters.mt-2
       .col-10
@@ -92,12 +103,12 @@
               i.fa-fw.fas.fa-user
               | Informations sur l'élève
             = render partial: "/internship_applications/student_details",
-                      locals: { student: @internship_application.student,
-                              internship_application: @internship_application}
+                      locals: { student: internship_application.student,
+                              internship_application: internship_application}
         .row
-          - resume_content = @internship_application.student.resume_educational_background.to_s
-          - resume_languages = @internship_application.student.resume_languages.to_s
-          - resume_other = @internship_application.student.resume_other.to_s
+          - resume_content = internship_application.student.resume_educational_background.to_s
+          - resume_languages = internship_application.student.resume_languages.to_s
+          - resume_other = internship_application.student.resume_other.to_s
           .col-md-4.col-sm-8.col-xs-12
             - if resume_content.present? || resume_languages.present?
               h3.h6 Parcours Scolaire
@@ -111,12 +122,12 @@
               h3.h6 Activités extra-scolaires
               .reboot-trix-content = resume_other
 
-        - if @internship_application.student.handicap?
+        - if internship_application.student.handicap?
           h3.h6.mt-3
             i.fas.fa-wheelchair
-            Besoin d'accompagnement
-          .reboot-trix-content.student-handicap = @internship_application.student.handicap.to_s
+            |Besoin d'accompagnement
+          .reboot-trix-content.student-handicap = internship_application.student.handicap.to_s
     .grey-container-application
       - if current_user.employer_like?
         = render "dashboard/internship_offers/internship_applications/actions/employer_decisions",
-                 internship_application: @internship_application
+                internship_application: internship_application

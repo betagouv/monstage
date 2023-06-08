@@ -6,9 +6,9 @@ module Dashboard
       include ApplicationTransitable
 
       ORDER_WITH_INTERNSHIP_DATE = 'internshipDate'
-      before_action :authenticate_user!
+      before_action :authenticate_user!, except: %i[update]
       before_action :find_internship_offer, only: %i[index update show]
-      before_action :fetch_internship_application, only: %i[update show set_to_read]
+      before_action :fetch_internship_application, only: %i[update show set_to_read school_details]
 
       def index
         authorize! :read, @internship_offer
@@ -33,12 +33,18 @@ module Dashboard
         authorize! :index, Acl::InternshipOfferDashboard.new(user: current_user)
         @internship_offers = current_user.internship_offers
         @internship_applications = fetch_user_internship_applications
-        @received_internship_applications = @internship_applications.where(aasm_state: received_states)
-        @approved_internship_applications = @internship_applications.where(aasm_state: approved_states)
-        @rejected_internship_applications = @internship_applications.where(aasm_state: rejected_states)
+        @received_internship_applications = @internship_applications.where(aasm_state: InternshipApplication.received_states)
+        @approved_internship_applications = @internship_applications.where(aasm_state: InternshipApplication.approved_states)
+        @rejected_internship_applications = @internship_applications.where(aasm_state: InternshipApplication.rejected_states)
       end
 
       def show
+      end
+
+      def school_details
+        authorize! :index, InternshipApplication
+        @school = @internship_application.student.school
+        @school_presenter = @school.presenter
       end
 
       private

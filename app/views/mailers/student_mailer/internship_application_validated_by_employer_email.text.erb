@@ -1,22 +1,10 @@
-<%= "Candidature au stage \"#{@internship_application.internship_offer.title}\" acceptée !"%>
+Stage accepté !
 
-<%= @prez_student.formal_name%>,
+<%= "L'employeur #{@internship_application.internship_offer.employer.presenter.formal_name} a accepté votre demande de stage"%>
 
-Votre candidature au stage « <%= @internship_application.internship_offer.title%> » a été acceptée par l'employeur.
+<%="« #{@internship_application.internship_offer.title} »."%>
 
-Il est possible que vous ayez reçu d'autres offres de stage, et si c'est
-le cas, nous vous en félicitons. Néanmoins, vous devrez en choisir seulement
-une parmi elles. Attention, votre choix est final et ne pourra pas être
-modifié.
-Après avoir confirmé votre décision, l'employeur sera informé et vous
-pourrez le contacter pour discuter avec lui. Profitez-en pour lui poser
-des questions sur le stage. Votre choix libérera également les places
-dans les autres stages où vous étiez accepté.
-Ne tardez pas à faire votre choix, car l'employeur
-pourrait annuler le stage ou choisir un autre élève.
+Il attend votre réponse, confirmez votre présence.
 
-Copiez cette ligne dans votre navigateur : 
+Accédez à l'offre en copiant cette ligne dans votre navigateur :
 <%= @url %>
-
-À bientôt,
-L'équipe Mon Stage de 3e.

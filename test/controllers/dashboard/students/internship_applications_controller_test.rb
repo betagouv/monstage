@@ -87,13 +87,12 @@ module Dashboard
         sign_in(student)
         get dashboard_students_internship_applications_path(student)
         assert_response :success
-        assert_select '.fr-badge.fr-badge--purple-glycine.fr-badge--no-icon', text: 'annulée par l\'élève', count: 1
-        assert_select '.fr-badge.fr-badge--error.fr-badge--no-icon', text: 'expirée', count: 1
-        assert_select '.fr-badge.fr-badge--success.fr-badge--no-icon', text: "acceptée par l'entreprise", count: 1
-        assert_select '.fr-badge.fr-badge--success.fr-badge--no-icon', text: "confirmée", count: 1
-        assert_select '.fr-badge.fr-badge--error.fr-badge--no-icon', text: "refusée par l'entreprise", count: 2
-        assert_select '.fr-badge.fr-badge--info.fr-badge--no-icon', text: "sans réponse", count: 1
-        assert_select '.fr-badge.fr-badge--info.fr-badge--no-icon', text: "à l'étude", count: 1
+        assert_select '.fr-badge.fr-badge--no-icon.fr-badge--purple-glycine', text: 'annulée', count: 1
+        assert_select '.fr-badge.fr-badge--no-icon.fr-badge--error', text: 'expirée', count: 1
+        assert_select '.fr-badge.fr-badge--no-icon.fr-badge--success', text: "acceptée par l'entreprise", count: 1
+        assert_select '.fr-badge.fr-badge--no-icon.fr-badge--error', text: "refusée par l'entreprise", count: 2
+        assert_select '.fr-badge.fr-badge--no-icon.fr-badge--info', text: "envoyée", count: 1
+        assert_select '.fr-badge.fr-badge--no-icon.fr-badge--info', text: "à l'étude", count: 1
         assert_select '.fr-badge.fr-badge--no-icon', text: "brouillon", count: 1
       end
 
@@ -122,7 +121,7 @@ module Dashboard
         assert_response :success
 
         assert_template 'dashboard/students/internship_applications/show'
-        assert_select ".fr-badge.fr-badge--no-icon.fr-badge--success", text:"confirmée"
+        assert_select ".fr-badge.fr-badge--no-icon.fr-badge--success", text:"stage validé"
       end
 
       test 'GET internship_applications#show with drafted can be submitted' do
@@ -166,15 +165,12 @@ module Dashboard
         sgid = ""
         internship_application = create(:weekly_internship_application, student: student)
         travel_to Time.now - 3.month do
-          sgid = student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY.days).to_s
+          sgid = student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY).to_s
           get dashboard_students_internship_application_path(
             sgid: sgid,
             student_id: student.id,
             id: internship_application.id)
-          assert_template 'dashboard/students/internship_applications/show'
-          assert_equal student.id, session.dig('warden.user.user.key', 0, 0)
           assert_equal 1, internship_application.reload.magic_link_tracker
-          sign_out(student)
         end
         travel_to Time.now do
           get dashboard_students_internship_application_path(
@@ -184,7 +180,6 @@ module Dashboard
           assert_redirected_to dashboard_students_internship_application_path(
             student_id: student.id,
             id: internship_application.id)
-          assert_nil session.dig('warden.user.user.key', 0, 0)
           assert_equal 2, internship_application.reload.magic_link_tracker
         end
       end
