@@ -17,6 +17,18 @@ module SchoolYear
       end
     end
 
+    def january_to_may
+      1..MONTH_OF_YEAR_SHIFT
+    end
+
+    def june_to_august
+      6..8
+    end
+
+    def september_to_december
+      9..12
+    end
+
     # def between_june_to_august?
     #   june_to_august.member?(current_month)
     # end
@@ -41,9 +53,6 @@ module SchoolYear
       date.month
     end
 
-    def january_to_may
-      1..MONTH_OF_YEAR_SHIFT
-    end
 
     def june_to_december
       6..12
