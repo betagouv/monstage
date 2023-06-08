@@ -5,13 +5,15 @@ module StatisticianDepartmentable
 
   included do
     validates :email_whitelist, presence: { message: 'none' }
-    
+
     def dashboard_name
       'Statistiques'
     end
 
     #not commun
     def department
+      return '' if department_zipcode.blank?
+
       Department.lookup_by_zipcode(zipcode: department_zipcode)
     end
 

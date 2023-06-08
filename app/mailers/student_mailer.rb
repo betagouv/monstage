@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class StudentMailer < ApplicationMailer
+
   def internship_application_approved_email(internship_application:)
     @internship_application = internship_application
 
@@ -30,12 +31,12 @@ class StudentMailer < ApplicationMailer
     @internship_offer = internship_application.internship_offer
     @prez_offer = @internship_offer.presenter
     @prez_student = @student.presenter
-    
+
     send_email(to: @student.email,
                subject: "Votre candidature est en cours d'examen")
   end
 
-  def internship_application_requested_confirmation_email(internship_application:) 
+  def internship_application_requested_confirmation_email(internship_application:)
     @internship_application = internship_application
 
     mail(to: @internship_application.student.email,
@@ -57,9 +58,32 @@ class StudentMailer < ApplicationMailer
     @internship_offer = internship_application.internship_offer
     @prez_offer = @internship_offer.presenter
     @prez_student = @student.presenter
-    @url = dashboard_students_internship_applications_url(student_id: @student.id)
+    sgid = @student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY.days).to_s
+    @url = dashboard_students_internship_application_url(
+      sgid: sgid,
+      student_id: @student.id,
+      id: @internship_application.id
+    )
 
     send_email(to: @student.email,
                subject: "Votre candidature a été validée par l'employeur")
+  end
+
+  def internship_application_validated_by_employer_reminder_email(applications_to_notify:)
+    @internship_applications = applications_to_notify
+    @plural = @internship_applications.size >= 2
+    @student = applications_to_notify.first.student
+    @internship_offers = applications_to_notify.map(&:internship_offer)
+    @titles = @internship_offers.map(&:title)
+    @prez_student = @student.presenter
+    sgid = @student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY.days).to_s
+    @url = dashboard_students_internship_application_url(
+      sgid: sgid,
+      student_id: @student.id,
+      id: @internship_applications.last.id
+    )
+
+    send_email(to: @student.email,
+               subject: "[Relance] - Candidature validée par l'employeur")
   end
 end

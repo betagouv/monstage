@@ -71,7 +71,7 @@ class EmployerMailer < ApplicationMailer
       subject: 'Une convention de stage attend votre signature'
     )
   end
-  
+
   def notify_others_signatures_finished_email(internship_agreement:)
     internship_application = internship_agreement.internship_application
     @internship_offer      = internship_application.internship_offer
@@ -90,6 +90,13 @@ class EmployerMailer < ApplicationMailer
     )
   end
 
+  def resend_internship_application_submitted_email(internship_application:)
+    @internship_application = internship_application
+
+    mail(to: @internship_application.internship_offer.employer.email,
+         subject: '[Relance] Vous avez une candidature en attente')
+  end
+  
   def internship_application_approved_for_an_other_internship_offer(internship_application:)
     internship_application = internship_application
     @internship_offer      = internship_application.internship_offer

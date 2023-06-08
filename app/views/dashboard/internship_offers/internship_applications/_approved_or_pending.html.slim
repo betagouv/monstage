@@ -1,7 +1,5 @@
-.fr-table.fr-table--bordered
+.fr-table.fr-table--bordered.fr-table--no-caption
   table
-    caption
-      | Candidatures acceptées
     thead
       tr
         th[scope="col"]
@@ -24,19 +22,19 @@
           tr
             td style="min-width: 170px;"
               = prez.student.presenter.full_name
-            td style="min-width: 480px;"
+            td style="min-width: 450px;"
               = prez.internship_offer.title
               br/
               = prez.internship_offer.presenter.address
             td
               p class="fr-mt-1w fr-badge fr-badge--sm fr-badge--#{prez.status[:badge_type]} fr-badge--no-icon"
                 = prez.status[:label]
-            td style="min-width: 165px;"
+            td style="min-width: 210px;"
               - if internship_application.approved?
                 = link_to edit_dashboard_internship_agreement_path(internship_application.internship_agreement.id.to_i),
                           class: 'fr-raw-link d-flex flex-row' do
                   span.fr-icon-file-line.fr-icon--sm aria-hidden="true"
-                  .fr-pl-1w  Remplir la convention
+                  .fr-pl-1v Remplir la convention
               - else
                 = link_to dashboard_internship_offer_internship_application_path(internship_application.internship_offer.id.to_i, internship_application),
                           class: 'fr-raw-link d-flex flex-row' do

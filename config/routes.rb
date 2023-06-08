@@ -105,7 +105,9 @@ Rails.application.routes.draw do
       end
 
       namespace :students, path: '/:student_id/' do
-        resources :internship_applications, path: 'candidatures', only: %i[index show]
+        resources :internship_applications, path: 'candidatures', only: %i[index show edit update] do
+          post :resend_application, on: :member
+        end
       end
 
       get 'candidatures', to: 'internship_offers/internship_applications#user_internship_applications'

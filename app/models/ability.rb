@@ -38,9 +38,18 @@ class Ability
     can :apply, InternshipOffer do |internship_offer|
       student_can_apply?(student: user, internship_offer: internship_offer)
     end
-    can %i[submit_internship_application update show],
+    can %i[submit_internship_application update show internship_application_edit],
         InternshipApplication do |internship_application|
       internship_application.student.id == user.id
+    end
+    can(:cancel, InternshipApplication) do |internship_application|
+      ok_canceling = %w[ submitted
+                         read_by_employer
+                         examined
+                         validated_by_employer
+                         approved
+                         convention_signed]
+      user.student? && ok_canceling.include?(internship_application.aasm_state)
     end
 
 

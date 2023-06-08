@@ -8,6 +8,7 @@ class InternshipApplication < ApplicationRecord
   PAGE_SIZE = 10
   EXPIRATION_DURATION = 45.days
   EXTENDED_DURATION = 15.days
+  MAGIC_LINK_EXPIRATION_DELAY = 5 # days
 
   belongs_to :internship_offer, polymorphic: true
   # has_many :internship_agreements
@@ -48,22 +49,15 @@ class InternshipApplication < ApplicationRecord
     starting.or(current)
   }
 
-  #expirable 
-  scope :was_examined, lambda {
-    where.not(examined_at: nil)
-  }
-
-  scope :expiration_not_extended, lambda {
-    where(examined_at: nil)
+  scope :expiration_not_extended_states, lambda {
+    where(aasm_state: %w[submitted read_by_employer])
   }
 
   scope :expirable, lambda {
     simple_duration = InternshipApplication::EXPIRATION_DURATION
     extended_duration = simple_duration + InternshipApplication::EXTENDED_DURATION
-    submitted.expiration_not_extended
-             .where('submitted_at < :date', date: simple_duration.ago)
-             .or(submitted.was_examined
-                          .where('submitted_at < :date', date: extended_duration.ago))
+    expiration_not_extended_states.where('submitted_at < :date', date: simple_duration.ago)
+      .or(examined.where('submitted_at < :date', date: extended_duration.ago))
   }
 
   #
@@ -155,7 +149,10 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :read do
-      transitions from: :submitted, to: :read_by_employer
+      transitions from: :submitted, to: :read_by_employer,
+                  after: proc { |*_args|
+        update!("read_at": Time.now.utc)
+      }
     end
 
     event :examine do
@@ -226,7 +223,7 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :cancel_by_student do
-      transitions from: %i[submitted read_by_employer examined approved],
+      transitions from: %i[submitted read_by_employer examined validated_by_employer approved],
                   to: :canceled_by_student,
                   after: proc { |*_args|
                            update!("canceled_at": Time.now.utc)
@@ -243,6 +240,14 @@ class InternshipApplication < ApplicationRecord
         update!(expired_at: Time.now.utc)
       }
     end
+  end
+
+  def days_before_expiration
+    return nil unless aasm_state.in?(%w[submitted read_by_employer examined])
+
+    delay = submitted_at + EXPIRATION_DURATION - DateTime.now
+    delay += self.examined_at.nil? ? 0 : EXTENDED_DURATION
+    [0, delay.to_f / 3_600 / 24].max
   end
 
   def student_approval_notifications
@@ -276,19 +281,14 @@ class InternshipApplication < ApplicationRecord
       deliver_later_with_additional_delay do
         StudentMailer.internship_application_validated_by_employer_email(internship_application: self)
       end
-    elsif student.phone.present?
+    end
+    if student.phone.present? && !Rails.env.development?
       sms_message = "Monstagedetroisieme.fr : Votre candidature a " \
                     "été acceptée ! Consultez-la ici : #{short_target_url(self)}"
       SendSmsJob.perform_later(
         user: student,
         message: sms_message
-      ) unless Rails.env.development?
-    else
-      mesg = "while internship ##{id} has been accepted," \
-              " no message has been sent to the " \
-              "student ##{student.id}"
-      Rails.logger.error(mesg)
-      raise StandardError.new "student without email nor phone ##{student.id}"
+      )
     end
   end
 
@@ -337,6 +337,10 @@ class InternshipApplication < ApplicationRecord
 
   def application_via_school_manager?
     internship_offer&.school
+  end
+
+  def max_dunning_letter_count_reached?
+    dunning_letter_count >= 1
   end
 
   def anonymize
