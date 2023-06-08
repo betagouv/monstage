@@ -1,8 +1,6 @@
 module Dashboard
   # WIP, not yet implemented, will host agreement signing
   class InternshipAgreementsController < ApplicationController
-    before_action :authenticate_user!
-    before_action :set_internship_agreement, only: %i[edit update show]
 
     def new
       @internship_agreement = internship_agreement_builder.new_from_application(

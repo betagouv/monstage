@@ -141,6 +141,8 @@ class Ability
 
     can %i[index update], InternshipApplication
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
+    can %i[manage_teams], TeamMember
+    can %i[manage_teams], TeamMemberInvitation
 
     as_employers_signatory_abilities(user: user)
   end
@@ -170,6 +172,8 @@ class Ability
     can :show, :api_token
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
     can %i[index_and_filter], Reporting::InternshipOffer
+    can %i[manage_teams], TeamMember
+    can %i[manage_teams], TeamMemberInvitation
     can %i[index], Acl::Reporting do |_acl|
       true
     end

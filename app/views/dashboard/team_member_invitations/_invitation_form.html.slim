@@ -1,0 +1,19 @@
+= form_with model: @team_member_invitation,
+            scope: :team_member_invitation,
+            url: dashboard_team_member_invitations_path,
+            class: 'fr-my-3w',
+            data: { turbo: false , controller: 'add-field', :'add-field-field-value' => 'email',:'add-field-scope-value' => 'team_member_invitations'} do |f|
+  = f.hidden_field :user_id, value: current_user.id
+  label.fr-label for="team_member_invitation_email" Adresse email
+  = f.email_field :email,
+                 class:"fr-input",
+                 required: true,
+                 data:{ :'add-field-target' => "insertionPoint"}
+  button.fr-btn.fr-btn--secondary.fr-icon-add-line.fr-icon--left.fr-btn--sm.fr-mt-2w.fr-btn--icon-left data-action="click->add-field#add" Ajouter un membre à l'équipe
+  p.fr-mt-9v
+    = link_to  'Précédent',
+              dashboard_team_member_invitations_path,
+              class: 'fr-btn fr-btn--secondary fr-mr-2w'
+    = f.submit "Inviter un membre de l'équipe",
+              class: 'fr-btn fr-icon-add-line fr-btn--icon-left',
+              data: { turbo: false }

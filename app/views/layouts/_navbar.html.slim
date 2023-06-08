@@ -51,6 +51,13 @@
                         = link_to 'Mes offres',
                                   dashboard_internship_offers_path,
                                   class: "fr-link text-decoration-none mr-4 #{active}"
+                    - if can?(:manage_teams, TeamMember) 
+                      li
+                        - active = current_page?(dashboard_internship_offers_path) || request.url.include?('origine=dashboard') ? 'active' : ''
+                        = link_to 'Equipe',
+                                  dashboard_team_member_invitations_path,
+                                  class: "fr-link text-decoration-none mr-4 #{active}"
+
                     - if can?(:create, Favorite)
                       li
                         - active = current_page?(favorites_path) ? 'active' : ''

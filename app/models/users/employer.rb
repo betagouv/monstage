@@ -18,6 +18,8 @@ module Users
     has_many :organisations
     has_many :tutors
     has_many :internship_offer_infos
+    belongs_to :team_member, optional: true
+    has_many :team_member_invitations, dependent: :destroy
 
     def custom_dashboard_path
       return custom_candidatures_path if internship_applications.submitted.any?

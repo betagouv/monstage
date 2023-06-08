@@ -67,6 +67,8 @@ Rails.application.routes.draw do
     end
     # ------------------ DASHBOARD START ------------------
     namespace :dashboard, path: 'tableau-de-bord' do
+      resources :team_members, path: 'equipes', except: %i[ show edit update]
+      resources :team_member_invitations, path: 'invitations-equipe', only: %i[index new create destroy]
       resources :internship_agreements,  path: 'conventions-de-stage', except: %i[destroy]
       resources :users, path: 'signatures', only: %i[update], module: 'group_signing' do
         member do
