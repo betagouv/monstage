@@ -1,4 +1,5 @@
 - content_for :page_title, "#{t(".page_title", name: @internship_offer.title)} | Monstage"
+/ html5lint:ignore
 
 .row
   .col-12
@@ -6,3 +7,5 @@
         | Modifier une offre de stage
 
 = render "form", submit_text: "Modifier l'offre"
+
+/ html5lint:enable

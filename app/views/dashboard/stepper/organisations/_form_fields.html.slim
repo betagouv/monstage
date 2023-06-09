@@ -63,7 +63,7 @@
     .row.bloc-tooggle class="#{'d-none' unless request.path_info.include?('modification')}"
       .col-md-6
         fieldset aria-labelledby="presentation"
-        legend Présentation de l'entreprise
+          legend Présentation de l'entreprise
         .form-group.fr-my-2w data-controller='maxlength-input' data-maxlength-input-limit-value="#{InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT}"
           #label_organisation_description_rich_text.label.fr-label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{form.object_name}_employer_description_rich_text" data-controller="rich-text-label"
             | Description de l'entreprise (optionnel)

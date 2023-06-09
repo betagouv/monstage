@@ -3,7 +3,7 @@ div data-controller='practical-info-form' data-action="input->practical-info-for
   .row
     .col-md-6
       fieldset 
-        .fr-text--lg.font-weight-bold.fr-my-2w Adresse du stage
+        legend.fr-text--lg.font-weight-bold.fr-my-2w Adresse du stage
         / = form.hidden_field :manual_enter, value: false
 
         = react_component("FullAddressInput", props: { resourceName: form.object_name,
