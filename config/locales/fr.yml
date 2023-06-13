@@ -290,6 +290,8 @@ fr:
         school_year: Année
         internship_applications: Candidatures
         ministries: Ministères
+        organisation:
+          group: Groupe ou institution de tutelle
 
       internship_application:
         student: Élève

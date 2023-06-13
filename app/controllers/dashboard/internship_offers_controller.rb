@@ -198,6 +198,7 @@ module Dashboard
                     :weekly_lunch_break, coordinates: {}, week_ids: [],
                     daily_hours: {}, daily_lunch_break: {}, weekly_hours:[], 
                     organisation_attributes: [
+                      :id,
                       :employer_name,
                       :street,
                       :zipcode,

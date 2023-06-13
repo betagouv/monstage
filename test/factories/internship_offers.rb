@@ -23,6 +23,7 @@ FactoryBot.define do
     coordinates { Coordinates.paris }
     siret { '11122233300000' }
     aasm_state { 'published' }
+    organisation { create(:organisation, employer: employer) }
 
     trait :api_internship_offer do
       weeks { [Week.selectable_from_now_until_end_of_school_year.first] }

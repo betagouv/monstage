@@ -77,7 +77,9 @@ export default function AddressInput({
 
   return (
     <div>
-      <div className="form-group" id="test-input-full-address">
+      <div className="form-group" id={`test-input-full-address-${resourceName}`}>
+
+
         <div className="container-downshift">
           <Downshift
             initialInputValue={fullAddress}
@@ -114,7 +116,7 @@ export default function AddressInput({
                   </abbr>
                   <a
                     className="btn-absolute btn btn-link py-0 fr-raw-link"
-                    href="#help-multi-location"
+                    href={`#help-multi-location-${resourceName}`}
                     aria-label="Afficher l'aide"
                     onClick={toggleHelpVisible}
                   >
@@ -180,7 +182,7 @@ export default function AddressInput({
           </Downshift>
         </div>
         <div
-          id="help-multi-location"
+          id={`help-multi-location-${resourceName}`}
           className={`${helpVisible ? '' : 'd-none'} my-1 p-2 help-sign-content`}
         >
           Si vous proposez le même stage dans un autre établissement, déposez une offre par

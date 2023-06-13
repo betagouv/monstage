@@ -228,6 +228,17 @@ class InternshipOffer < ApplicationRecord
     generate_offer_from_attributes(white_list_without_location)
   end
 
+  def update_from_organisation
+    return unless organisation
+
+    self.employer_name = organisation.employer_name
+    self.employer_website = organisation.employer_website
+    self.employer_description = organisation.employer_description
+    self.siret = organisation.siret
+    self.group_id = organisation.group_id
+    self.is_public = organisation.is_public
+  end
+
   def generate_offer_from_attributes(white_list)
     internship_offer = InternshipOffer.new(attributes.slice(*white_list))
     internship_offer.description_rich_text = (if description_rich_text.present?

@@ -103,11 +103,11 @@ module Dashboard::InternshipOffers
       get edit_dashboard_internship_offer_path(internship_offer.to_param)
       assert_response :success
       assert_select 'title', "Offre de stage '#{internship_offer.title}' | Monstage"
-      assert_select '#internship_offer_is_public_true[checked]', count: 1 # "ensure user select kind of group"
-      assert_select '#internship_offer_is_public_false[checked]', count: 0 # "ensure user select kind of group"
+      assert_select '#internship_offer_organisation_attributes_is_public_true[checked]', count: 1 # "ensure user select kind of group"
+      assert_select '#internship_offer_organisation_attributes_is_public_false[checked]', count: 0 # "ensure user select kind of group"
       assert_select '.form-group-select-group.d-none', count: 0
       assert_select '.form-group-select-group', count: 1
-
+      
       assert_select '#internship_type_true[checked]', count: 1
       assert_select '#internship_type_false[checked]', count: 0
 

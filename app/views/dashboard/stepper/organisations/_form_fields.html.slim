@@ -6,6 +6,8 @@
           legend.fr-text--lg.font-weight-bold.fr-my-2w L'entreprise
           /  L'entreprise
           = form.hidden_field :manual_enter, value: false
+          - if resource.id
+            = form.hidden_field :id, value: resource.id
 
           - if current_user.ministry_statistician?
             = render partial: "dashboard/stepper/organisations/form_ministry_statistician_specifics", locals: { form: form, resource: resource, submit_button: submit_button }
@@ -80,8 +82,8 @@
         .fr-alert.fr-alert--info
           h3.fr-alert__title Conseil
           p La présentation de l’entreprise est un des éléments déterminant dans le choix du stage. Utilisez un vocabulaire simple, facile à comprendre. N’hésitez pas à ajouter des détails sur les principales activités de l’entreprise.
-    
-    .fr-mt-3w
-      = link_to 'Annuler', dashboard_internship_offers_path, class: 'fr-btn fr-btn--secondary fr-mr-3w'
-      = button_tag :submit, class: 'fr-btn', disabled: false, 'data-target': "organisation-form.submitButton" do
-        = "Suivant "
+    - if submit_button
+      .fr-mt-3w
+        = link_to 'Annuler', dashboard_internship_offers_path, class: 'fr-btn fr-btn--secondary fr-mr-3w'
+        = button_tag :submit, class: 'fr-btn', disabled: request.fullpath.include?('organisations/nouveau'), 'data-target': "organisation-form.submitButton" do
+          = "Suivant "

@@ -12,7 +12,6 @@ export default class extends Controller {
   }
 
   checkForm() {
-    console.log('checkForm');
     const requiredFields = this.requiredFieldTargets;
     const submitButton = this.submitButtonTarget;
 
@@ -30,7 +29,6 @@ export default class extends Controller {
   }
 
   connect() {
-    console.log('internship_offer_infos_controller');
     this.checkForm();
   }
 
