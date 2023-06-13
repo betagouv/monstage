@@ -85,11 +85,12 @@ module InternshipApplications
       assert_equal offer.max_candidates, offer.reload.remaining_seats_count
 
       offer.unpublish! # avoids requires_update validation
+      application.employer_validate!
       application.approve!
       assert_equal "approved", application.aasm_state
       assert_equal 1, application.internship_offer.internship_offer_weeks.first.blocked_applications_count
       offer.reload
-      assert_equal 1, offer.max_candidates 
+      assert_equal 1, offer.max_candidates
       assert_equal 0, offer.remaining_seats_count
     end
 
@@ -99,25 +100,27 @@ module InternshipApplications
       assert_equal Favorite.count, 1
       other_favorite = create(:favorite)
       application = create(:weekly_internship_application, internship_offer: offer)
-
+      
       application.submit!
       assert_equal Favorite.count, 2
-
+      
+      application.employer_validate!
       application.approve!
       assert_equal "approved", application.aasm_state
       assert_equal Favorite.count, 1
     end
-
+    
     test 'application updates old offer favorites along with approved applications' do
       old_offer = create(:weekly_internship_offer, last_date: 7.days.ago)
       favorite = create(:favorite, internship_offer: old_offer)
       assert_equal Favorite.count, 1
       other_favorite = create(:favorite)
       application = create(:weekly_internship_application, internship_offer: old_offer)
-
+      
       application.submit!
       assert_equal Favorite.count, 2
-
+      
+      application.employer_validate!
       application.approve!
       assert_equal "approved", application.aasm_state
       assert_equal Favorite.count, 1
@@ -138,12 +141,37 @@ module InternshipApplications
       end
       travel_to start_date + InternshipApplication::EXPIRATION_DURATION + 7.days do
         assert_equal 1, InternshipApplication.expirable.count
-        internship_application.update(examined_at: Time.now)
+        internship_application.update_columns(examined_at: Time.now, aasm_state: :examined)
         assert_equal 0, InternshipApplication.expirable.count
       end
       travel_to start_date + InternshipApplication::EXPIRATION_DURATION + InternshipApplication::EXTENDED_DURATION.days do
         assert_equal 1, InternshipApplication.expirable.count
       end
     end
+
+    test '#days_before_expiration' do
+      freeze_time do
+        internship_application = create(
+          :weekly_internship_application,
+          :submitted,
+          submitted_at: Time.now - 10.days
+        )
+        assert_equal 35, internship_application.days_before_expiration
+        internship_application = create(
+          :weekly_internship_application,
+          :examined,
+          submitted_at: Time.now - 10.days
+        )
+        assert_equal 50, internship_application.days_before_expiration
+        internship_application = create(
+          :weekly_internship_application,
+          :approved,
+          submitted_at: Time.now - 10.days
+        )
+        assert_nil internship_application.days_before_expiration
+      end
+    end
+
   end
+
 end

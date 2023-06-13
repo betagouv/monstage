@@ -20,7 +20,7 @@ tr class="test-internship-offer test-internship-offer-#{employer_internship_offe
              locals: { internship_offer: employer_internship_offer }
   td.text-center.align-middle.applications
     .d-flex.justify-content-start
-      = link_to(dashboard_internship_offer_path(employer_internship_offer),
+      = link_to(internship_offer_path(employer_internship_offer, origin: 'dashboard'),
                 class: 'btn-hoverable d-inline-block fr-raw-link',
                 title: "Voir l'offre",
                 aria: { label: "Voir l'offre" }) do

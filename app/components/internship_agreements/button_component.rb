@@ -15,7 +15,8 @@ module InternshipAgreements
     def started_or_signed?
       %w[validated
          signatures_started
-         signed_by_all signed
+         signed_by_all
+         signed
       ].include?(internship_agreement.aasm_state)
     end
 

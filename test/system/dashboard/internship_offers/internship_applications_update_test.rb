@@ -53,11 +53,11 @@ module Dashboard::InternshipOffers
       visit dashboard_internship_offer_internship_application_path(internship_offer, internship_application)
       click_on 'Accepter'
       click_button 'Confirmer'
-      assert internship_application.reload.approved?
+      assert internship_application.reload.validated_by_employer?
       find("h1.h4", text: "Les candidatures")
-      find('p.fr-mt-1w.fr-badge.fr-badge--sm.fr-badge--success', text: "ACCEPTÉ")
+      find('p.fr-mt-1w.fr-badge.fr-badge--sm.fr-badge--info', text: "en attente de réponse".upcase)
 
-      find('span#alert-text', text: "Candidature mise à jour avec succès. Vous pouvez renseigner la convention dès maintenant.")
+      find('span#alert-text', text: "Candidature mise à jour avec succès.")
       find('button#tabpanel-received[aria-controls="tabpanel-received-panel"]',  text: 'Reçues').click
       find('td.text-center[colspan="5"]', text: "Aucune candidature reçue")
     end

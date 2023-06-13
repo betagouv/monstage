@@ -63,7 +63,7 @@ module InternshipOffers
       }
 
       scope :shown_to_employer, lambda {
-        where(employer_hidden: false)
+        where(hidden_duplicate: false)
       }
 
       scope :with_weeks_next_year, lambda {
@@ -152,7 +152,7 @@ module InternshipOffers
         end
 
         self.week_ids = original_week_ids - next_year_week_ids
-        self.employer_hidden = true
+        self.hidden_duplicate = true
         self.unpublish!
         save!
 

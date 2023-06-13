@@ -44,12 +44,20 @@ module Users
     protected
 
     def store_targeted_offer_id(user:)
+      if params[:user].nil?
+        Rails.logger.error("--------------\n#{params}\n--------------\n")
+        raise 'params[:user] is nil'
+      end
       if user && params[:user][:targeted_offer_id].present?
         user.update(targeted_offer_id: params[:user][:targeted_offer_id])
       end
     end
 
     def fetch_user_by_email
+      if params[:user].nil?
+        Rails.logger.error("--------------\n#{params}\n--------------\n")
+        raise 'params[:user] is nil'
+      end
       param_email = params[:user][:email]
       return User.find_by(email: param_email) if param_email.present?
     end

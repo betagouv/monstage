@@ -16,6 +16,7 @@ class InternshipApplicationAasmMessageBuilder
            to: :internship_application
 
   MAP_TARGET_TO_BUTTON_COLOR = {
+    employer_validate!: '',
     approve!: '',
     examine!: 'fr-btn--secondary',
     cancel_by_employer!: 'fr-btn--secondary',
@@ -34,6 +35,7 @@ class InternshipApplicationAasmMessageBuilder
   # and assign the body [which show on front end the text]
   #
   MAP_TARGET_TO_RICH_TEXT_ATTRIBUTE = {
+    employer_validate!: :validated_by_employer,
     approve!: :approved_message,
     examine!: :examined_message,
     cancel_by_employer!: :canceled_by_employer_message,
@@ -42,6 +44,7 @@ class InternshipApplicationAasmMessageBuilder
   }.freeze
 
   MAP_TARGET_TO_RICH_TEXT_INITIALIZER = {
+    employer_validate!: :on_validated_by_employer_message,
     approve!: :on_approved_message,
     examine!: :on_examined_message,
     cancel_by_employer!: :on_canceled_by_employer_message,

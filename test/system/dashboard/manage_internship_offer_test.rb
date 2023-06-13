@@ -22,10 +22,29 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       visit edit_dashboard_internship_offer_path(internship_offer)
       find('input[name="internship_offer[employer_name]"]').fill_in(with: 'NewCompany')
 
-      click_on "Modifier l'offre"
+      click_on "Publier l'offre"
 
       wait_form_submitted
       assert /NewCompany/.match?(internship_offer.reload.employer_name)
+    end
+  end
+
+  test 'Employer can edit an un published internship offer and have it published' do
+    travel_to(Date.new(2019, 3, 1)) do
+      employer = create(:employer)
+      internship_offer = create(:weekly_internship_offer, employer: employer)
+      internship_offer.update(published_at: nil)
+      refute internship_offer.published?
+
+      sign_in(employer)
+      visit edit_dashboard_internship_offer_path(internship_offer)
+      find('input[name="internship_offer[employer_name]"]').fill_in(with: 'NewCompany')
+
+      click_on "Publier l'offre"
+
+      wait_form_submitted
+      assert /NewCompany/.match?(internship_offer.reload.employer_name)
+      assert internship_offer.published?
     end
   end
 
@@ -73,7 +92,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
         fill_in('Nombre total d\'élèves que vous souhaitez accueillir sur l\'année scolaire', with: 4)
       end
       execute_script("document.getElementById('internship_offer_max_students_per_group').value = '2';")
-      click_button('Modifier l\'offre')
+      click_button('Publier l\'offre')
       assert_equal 4,
                   internship_offer.reload.max_candidates,
                   'faulty max_candidates'
@@ -85,7 +104,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
       find(".test-edit-button").click
       find('label[for="internship_type_true"]').click # max_candidates is now set to 1
-      click_button('Modifier l\'offre')
+      click_button('Publier l\'offre')
       assert_equal 4, internship_offer.reload.max_candidates
       assert_equal 1, internship_offer.reload.max_students_per_group
     end
@@ -130,14 +149,13 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       page.find("a[data-test-id=\"#{current_internship_offer.id}\"]").click
       find(".test-edit-button").click
       find('h1', text: "Modifier une offre")
-      click_button('Modifier l\'offre')
-      find("#error_explanation p", text: "Une erreur à corriger :")
-      find("#error_explanation li label", text: "Vous devez sélectionner au moins une semaine dans le futur")
+      click_button('Publier l\'offre')
+      find(".fr-alert.fr-alert--error", text: "Vous devez sélectionner au moins une semaine dans le futur")
 
       within(".custom-control-checkbox-list") do
         find("label[for='internship_offer_week_ids_142_checkbox']").click
       end
-      click_button('Modifier l\'offre')
+      click_button('Publier l\'offre')
       assert_selector(
         "#alert-text",
         text: "Votre annonce a bien été modifiée"

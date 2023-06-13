@@ -4,7 +4,7 @@ p style=head_styles
 = @internship_application.approved_message.to_s
 
 p style=p_styles
-= render partial: "mailers/call_to_action",
+= render partial: "mailers/blue_call_to_action",
           locals: { href: "mailto:#{@internship_application.employer.email}",
                     label: "Contacter l'employeur" }
 p style=p_styles

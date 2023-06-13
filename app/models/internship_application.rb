@@ -8,6 +8,9 @@ class InternshipApplication < ApplicationRecord
   PAGE_SIZE = 10
   EXPIRATION_DURATION = 45.days
   EXTENDED_DURATION = 15.days
+  MAGIC_LINK_EXPIRATION_DELAY = 50.days
+
+  attr_accessor :sgid
 
   belongs_to :internship_offer, polymorphic: true
   # has_many :internship_agreements
@@ -19,6 +22,7 @@ class InternshipApplication < ApplicationRecord
   delegate :update_all_counters, to: :internship_application_counter_hook
   delegate :name, to: :student, prefix: true
   delegate :employer, to: :internship_offer
+  delegate :remaining_seats_count, to: :internship_offer
 
   after_save :update_all_counters
   accepts_nested_attributes_for :student, update_only: true
@@ -38,28 +42,24 @@ class InternshipApplication < ApplicationRecord
 
   # reminders after 7 days, 14 days and none afterwards
   scope :remindable, lambda {
-    passed_sumitted = submitted.where(submitted_at: 16.days.ago..7.days.ago)
-                               .where(canceled_at: nil)
+    passed_sumitted = examined.where(submitted_at: 16.days.ago..7.days.ago)
+                              .where(canceled_at: nil)
+                              .or(submitted.where(submitted_at: 16.days.ago..7.days.ago)
+                                           .where(canceled_at: nil))
     starting = passed_sumitted.where('pending_reminder_sent_at is null')
     current  = passed_sumitted.where('pending_reminder_sent_at < :date', date: 7.days.ago)
     starting.or(current)
   }
 
-  scope :expiration_extended, lambda {
-    where.not(examined_at: nil)
-  }
-
-  scope :expiration_not_extended, lambda {
-    where(examined_at: nil)
+  scope :expiration_not_extended_states, lambda {
+    where(aasm_state: %w[submitted read_by_employer])
   }
 
   scope :expirable, lambda {
     simple_duration = InternshipApplication::EXPIRATION_DURATION
     extended_duration = simple_duration + InternshipApplication::EXTENDED_DURATION
-    submitted.expiration_not_extended
-             .where('submitted_at < :date', date: simple_duration.ago)
-             .or(submitted.expiration_extended
-                          .where('submitted_at < :date', date: extended_duration.ago))
+    expiration_not_extended_states.where('submitted_at < :date', date: simple_duration.ago)
+      .or(examined.where('submitted_at < :date', date: extended_duration.ago))
   }
 
   #
@@ -132,23 +132,29 @@ class InternshipApplication < ApplicationRecord
     state :submitted,
           :read_by_employer,
           :examined,
+          :validated_by_employer,
           :approved,
           :rejected,
           :expired,
           :canceled_by_employer,
           :canceled_by_student,
+          :canceled_by_student_confirmation,
           :convention_signed
 
     event :submit do
       transitions from: :drafted, to: :submitted, after: proc { |*_args|
         update!("submitted_at": Time.now.utc)
-        EmployerMailer.internship_application_submitted_email(internship_application: self)
-                      .deliver_later
+        deliver_later_with_additional_delay do
+          EmployerMailer.internship_application_submitted_email(internship_application: self)
+        end
       }
     end
 
     event :read do
-      transitions from: :submitted, to: :read_by_employer
+      transitions from: :submitted, to: :read_by_employer,
+                  after: proc { |*_args|
+        update!("read_at": Time.now.utc)
+      }
     end
 
     event :examine do
@@ -156,38 +162,38 @@ class InternshipApplication < ApplicationRecord
                   to: :examined,
                   after: proc { |*_args|
         update!("examined_at": Time.now.utc)
-        StudentMailer.internship_application_examined_email(internship_application: self)
-                     .deliver_later
+        deliver_later_with_additional_delay do
+          StudentMailer.internship_application_examined_email(internship_application: self)
+        end
       }
     end
 
-    event :expire do
-      transitions from: %i[read_by_employer approved submitted drafted], to: :expired, after: proc { |*_args|
-        update!(expired_at: Time.now.utc)
-      }
+    event :employer_validate do
+      transitions from: %i[read_by_employer submitted examined cancel_by_employer rejected],
+                  to: :validated_by_employer,
+                  after: proc { |*_args|
+                    update!("validated_by_employer_at": Time.now.utc)
+                    after_employer_validation_notifications
+                  }
     end
 
     event :approve do
-      transitions from: %i[read_by_employer submitted examined cancel_by_employer rejected],
+      transitions from: %i[validated_by_employer],
                   to: :approved,
                   after: proc { |*_args|
                     update!("approved_at": Time.now.utc)
-                    main_teacher = student.main_teacher
-                    arg_hash = {internship_application: self, main_teacher: main_teacher}
-                    accepted_student_notify
-                    if type == "InternshipApplications::WeeklyFramed" && student&.school&.school_manager&.present?
-                      create_agreement unless internship_offer.employer.operator?
-                      if main_teacher.present?
-                        MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
-                                          .deliver_later
-                      end
-                    else
-                      SchoolManagerMailer.internship_application_approved_with_no_agreement_email(arg_hash)
-                                          .deliver_later
-                      if main_teacher.present?
-                        MainTeacherMailer.internship_application_approved_with_no_agreement_email(arg_hash)
-                                          .deliver_later
-                      end
+                    student_approval_notifications
+                    cancel_all_pending_applications
+                  }
+    end
+
+    event :cancel_by_student_confirmation do
+      transitions from: %i[submitted read_by_employer examined validated_by_employer],
+                  to: :canceled_by_student_confirmation,
+                  after: proc { |*_args|
+                    # Other employers notifications
+                    student.internship_applications.where(aasm_state: employer_aware_states).each do |application|
+                      EmployerMailer.internship_application_approved_for_an_other_internship_offer(internship_application: application).deliver_later unless application == self
                     end
                   }
     end
@@ -219,7 +225,7 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :cancel_by_student do
-      transitions from: %i[submitted read_by_employer examined approved],
+      transitions from: %i[submitted read_by_employer examined validated_by_employer approved],
                   to: :canceled_by_student,
                   after: proc { |*_args|
                            update!("canceled_at": Time.now.utc)
@@ -230,29 +236,79 @@ class InternshipApplication < ApplicationRecord
                            end
                          }
     end
+
+    event :expire do
+      transitions from: %i[read_by_employer approved submitted drafted], to: :expired, after: proc { |*_args|
+        update!(expired_at: Time.now.utc)
+      }
+    end
   end
 
-  def accepted_student_notify
+  def days_before_expiration
+    return nil unless aasm_state.in?(%w[submitted read_by_employer examined])
+
+    delay = submitted_at + EXPIRATION_DURATION - DateTime.now
+    delay += self.examined_at.nil? ? 0 : EXTENDED_DURATION
+    [0, delay.to_f / 3_600 / 24].max
+  end
+
+  def student_approval_notifications
+    main_teacher = student.main_teacher
+    arg_hash = {
+      internship_application: self,
+      main_teacher: main_teacher
+    }
+    school_manager_presence = student&.school&.school_manager&.present?
+    if type == "InternshipApplications::WeeklyFramed" && school_manager_presence
+      create_agreement unless internship_offer.employer.operator?
+      if main_teacher.present?
+        deliver_later_with_additional_delay do
+          MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
+        end
+      end
+    elsif main_teacher.present?
+      deliver_later_with_additional_delay do
+        MainTeacherMailer.internship_application_approved_with_no_agreement_email(arg_hash)
+      end
+    end
+  end
+
+  def self.from_sgid(sgid)
+    GlobalID::Locator.locate_signed( sgid)
+  end
+
+  def self.received_states
+    %w[submitted read_by_employer examined expired]
+  end
+
+  def self.rejected_states
+    %w[rejected canceled_by_employer canceled_by_student]
+  end
+
+  def self.approved_states
+    %w[approved validated_by_employer]
+  end
+
+  def after_employer_validation_notifications
+    if type == "InternshipApplications::WeeklyFramed" && student.main_teacher.present?
+      deliver_later_with_additional_delay do
+        MainTeacherMailer.internship_application_validated_by_employer_email(self)
+      end
+    end
     if student.email.present?
       deliver_later_with_additional_delay do
-        StudentMailer.internship_application_approved_email(internship_application: self)
+        StudentMailer.internship_application_validated_by_employer_email(internship_application: self)
       end
-    elsif student.phone.present?
+    end
+    if student.phone.present? && !Rails.env.development?
       sms_message = "Monstagedetroisieme.fr : Votre candidature a " \
                     "été acceptée ! Consultez-la ici : #{short_target_url(self)}"
       SendSmsJob.perform_later(
         user: student,
         message: sms_message
-      ) unless Rails.env.development?
-    else
-      mesg = "while internship ##{id} has been accepted," \
-              " no message has been sent to the " \
-              "student ##{student.id}"
-      Rails.logger.error(mesg)
-      raise StandardError.new "student without email nor phone ##{student.id}"
+      )
     end
   end
-
 
   def create_agreement
     return unless internship_agreement_creation_allowed?
@@ -262,16 +318,9 @@ class InternshipApplication < ApplicationRecord
     agreement.skip_validations_for_system = true
     agreement.save!
 
-    SchoolManagerMailer.internship_application_approved_with_agreement_email(
-      internship_agreement: internship_agreement
-    ).deliver_later
     EmployerMailer.internship_application_approved_with_agreement_email(
       internship_agreement: internship_agreement
-    ).deliver_now
-  end
-
-  def remaining_seats_count
-    internship_offer.remaining_seats_count
+    ).deliver_later
   end
 
   def internship_application_counter_hook
@@ -308,6 +357,10 @@ class InternshipApplication < ApplicationRecord
     internship_offer&.school
   end
 
+  def max_dunning_letter_count_reached?
+    dunning_letter_count >= 1
+  end
+
   def anonymize
     motivation.try(:delete)
   end
@@ -329,6 +382,12 @@ class InternshipApplication < ApplicationRecord
     "Candidature de " + student_name
   end
 
+  def cancel_all_pending_applications
+    student.internship_applications.where(aasm_state: pending_states).each do |application|
+      application.cancel_by_student_confirmation!
+    end
+  end
+
   rails_admin do
     weight 14
     navigation_label 'Offres'
@@ -346,8 +405,8 @@ class InternshipApplication < ApplicationRecord
     end
   end
 
-  def presenter
-    @presenter ||= Presenters::InternshipApplication.new(self)
+  def presenter(user)
+    @presenter ||= Presenters::InternshipApplication.new(self, user)
   end
 
   private
@@ -357,5 +416,13 @@ class InternshipApplication < ApplicationRecord
     return false unless internship_offer.employer.employer_like?
 
     true
+  end
+
+  def pending_states
+    %w[submitted read_by_employer examined validated_by_employer]
+  end
+
+  def employer_aware_states
+    %w[read_by_employer examined validated_by_employer]
   end
 end

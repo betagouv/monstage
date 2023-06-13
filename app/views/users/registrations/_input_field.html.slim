@@ -1,6 +1,6 @@
 - error_tag = errors.field_error_tag(resource_name: resource_name, resource: resource, field: field) if errors.present?
 .fr-fieldset__element
-  div class="fr-input-group fr-my-2v  #{error_tag.present? ? 'fr-input-group--error' : ''}"
+  div class="fr-input-group fr-mb-2v #{error_tag.present? ? 'fr-input-group--error' : ''}"
     label.fr-label for="#{resource_name}_#{field}" class="#{error_tag.present? ? 'fr-label--error' : ''}"
       = field_label
     - options = { class: "fr-input #{error_tag.present? ? 'fr-input--error' : ''}" , autocomplete: "on"}

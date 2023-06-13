@@ -266,35 +266,38 @@ module InternshipsOffers
     end
 
     test '#split_in_two with weeks on current and next year' do
-      within_2_weeks_week = Week.find_by(year: Week.current.year, number: Week.current.number + 2)
-      first_week_of_next_year = Week.find_by(year: Week.current.year + 1, number: Week.current.number)
-      internship_offer = create(
-        :weekly_internship_offer,
-        weeks: [within_2_weeks_week, first_week_of_next_year],
-        max_candidates: 10,
-        max_students_per_group: 10
-      )
-      assert_equal 2, internship_offer.weeks.count
-      assert_equal 10, internship_offer.max_candidates
-      assert_equal 10, internship_offer.remaining_seats_count
+      travel_to(Date.new(2020, 2, 1)) do
+        within_2_weeks_week = Week.find_by(year: Week.current.year, number: Week.current.number + 2)
+        first_week_of_next_year = Week.find_by(year: Week.current.year + 1, number: Week.current.number)
+        internship_offer = create(
+          :weekly_internship_offer,
+          weeks: [within_2_weeks_week, first_week_of_next_year],
+          max_candidates: 10,
+          max_students_per_group: 10
+        )
+        assert_equal 2, internship_offer.weeks.count
+        assert_equal 10, internship_offer.max_candidates
+        assert_equal 10, internship_offer.remaining_seats_count
 
-      internship_application = create(:weekly_internship_application, internship_offer: internship_offer, aasm_state: :submitted)
-      internship_application.approve!
+        internship_application = create(:weekly_internship_application, internship_offer: internship_offer, aasm_state: :submitted)
+        internship_application.employer_validate!
+        internship_application.approve!
 
-      new_internship_offer = internship_offer.split_in_two
+        new_internship_offer = internship_offer.split_in_two
 
-      assert_equal 1, internship_offer.weeks.count
-      assert_equal 10, internship_offer.max_candidates
-      assert_equal 9, internship_offer.remaining_seats_count
-      assert_equal within_2_weeks_week, internship_offer.weeks.first
-      assert internship_offer.employer_hidden
-      refute internship_offer.published?
+        assert_equal 1, internship_offer.weeks.count
+        assert_equal 10, internship_offer.max_candidates
+        assert_equal 9, internship_offer.remaining_seats_count
+        assert_equal within_2_weeks_week, internship_offer.weeks.first
+        assert internship_offer.hidden_duplicate
+        refute internship_offer.published?
 
-      assert_equal 1, new_internship_offer.weeks.count
-      assert_equal 10, new_internship_offer.max_candidates
-      assert_equal 10, new_internship_offer.remaining_seats_count
-      assert_equal first_week_of_next_year, new_internship_offer.weeks.first
-      refute new_internship_offer.employer_hidden
+        assert_equal 1, new_internship_offer.weeks.count
+        assert_equal 10, new_internship_offer.max_candidates
+        assert_equal 10, new_internship_offer.remaining_seats_count
+        assert_equal first_week_of_next_year, new_internship_offer.weeks.first
+        refute new_internship_offer.hidden_duplicate
+      end
     end
 
     test '#split_in_two with weeks on current year only' do

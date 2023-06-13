@@ -8,7 +8,7 @@ p style=p_styles
   br /
   | Cliquez sur le bouton ci-dessous afin d'activer votre compte.
 
-= render(partial: "mailers/call_to_action", locals: {href: confirmation_url(@resource, confirmation_token: @token), label:"Activer mon compte"})
+= render(partial: "mailers/blue_call_to_action", locals: {href: confirmation_url(@resource, confirmation_token: @token), label:"Activer mon compte"})
 
 p style=p_styles({'font-size': '11px'})
   = "Vous pouvez aussi copier/coller le lien suivant pour activer votre compte"

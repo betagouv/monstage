@@ -122,7 +122,7 @@
                                     resourceName: form.object_name,
                                     selectClassRoom: false,
                                     existingSchool: resource.school.as_json})
-      - if resource.missing_weeks_info? && edit_mode
+      - if edit_mode && resource.missing_weeks_info?
         #weeks_container.fr-mb-2w
           .fr-alert.fr-alert--info
             h3.fr-alert__title Ajoutez des semaines aux précédentes

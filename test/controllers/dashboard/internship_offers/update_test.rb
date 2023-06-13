@@ -50,7 +50,7 @@ module Dashboard::InternshipOffers
           }
         }
       )
-      assert_redirected_to(internship_offer_path(internship_offer),
+      assert_redirected_to(dashboard_internship_offers_path(origine: 'dashboard'),
                            'redirection should point to updated offer')
 
       assert_equal(new_title,
@@ -103,16 +103,17 @@ module Dashboard::InternshipOffers
                week: weeks.second)
         sign_in(internship_offer.employer)
 
-      patch(dashboard_internship_offer_path(internship_offer.to_param),
-            params: { internship_offer: {
-              week_ids: week_ids,
-              max_candidates: 1
-            } })
-      error_message = "Nbr. max de candidats accueillis sur l'année : Impossible de réduire le " \
-                      "nombre de places de cette offre de stage car vous avez déjà accepté " \
-                      "plus de candidats que vous n'allez leur offrir de places."
-      assert_response :bad_request
-      assert_select(".fr-alert.fr-alert--error", text: error_message)
+        patch(dashboard_internship_offer_path(internship_offer.to_param),
+              params: { internship_offer: {
+                week_ids: week_ids,
+                max_candidates: 1
+              } })
+        error_message = "Nbr. max de candidats accueillis sur l'année : Impossible de réduire le " \
+                        "nombre de places de cette offre de stage car vous avez déjà accepté " \
+                        "plus de candidats que vous n'allez leur offrir de places."
+        assert_response :bad_request
+        assert_select(".fr-alert.fr-alert--error", text: error_message)
+      end
     end
 
     test 'PATCH #update as statistician owning internship_offer updates internship_offer' do
@@ -132,7 +133,7 @@ module Dashboard::InternshipOffers
               new_daily_hours: {'lundi' => ['10h', '12h']}
 
             } })
-      assert_redirected_to(internship_offer_path(internship_offer),
+      assert_redirected_to(dashboard_internship_offers_path(origine: 'dashboard'),
                            'redirection should point to updated offer')
 
       assert_equal(new_title,
@@ -179,6 +180,7 @@ module Dashboard::InternshipOffers
         internship_application = create(:weekly_internship_application,
                                         :submitted,
                                         internship_offer: internship_offer)
+        internship_application.employer_validate!
         internship_application.approve!
         assert_equal 0, internship_offer.reload.remaining_seats_count
         internship_offer.update(published_at: nil)
@@ -231,6 +233,7 @@ module Dashboard::InternshipOffers
         internship_application = create(:weekly_internship_application,
                                         :submitted,
                                         internship_offer: internship_offer)
+        internship_application.employer_validate!
         internship_application.approve!
         assert_equal 0, internship_offer.reload.remaining_seats_count
         refute internship_offer.published? #self.reload.published_at.nil?

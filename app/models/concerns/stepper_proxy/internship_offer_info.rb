@@ -21,7 +21,6 @@ module StepperProxy
                                 message: "Le nombre maximal d'élèves par groupe ne peut pas dépasser le nombre maximal d'élèves attendus dans l'année" }
       validates :description, presence: true,
                               length: { maximum: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT }
-      validate :check_missing_seats_or_weeks, unless: :from_api? , on: :create
       validate :check_missing_seats_or_weeks, if: :user_update?, on: :update
 
       validate :enough_weeks
@@ -113,7 +112,6 @@ module StepperProxy
     end
 
     def missing_weeks_in_the_future
-      # return false if is_a?(InternshipOffers::Api)
       return false if published_at.nil? && republish.nil?
 
       if missing_weeks_info?
