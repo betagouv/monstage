@@ -51,7 +51,7 @@ module Builders
     end
 
     def preprocess_terms(soft_saving= false)
-      return { enforce_school_manager_validations: !soft_saving } if user.school_manager?
+      return { enforce_school_manager_validations: !soft_saving } if user.school_manager? || user.admin_officer?
       return { enforce_main_teacher_validations: !soft_saving } if user.main_teacher?
       return { enforce_employer_validations: !soft_saving } if user.employer_like?
       return { skip_validations_for_system: true } if user.is_a?(Users::God)

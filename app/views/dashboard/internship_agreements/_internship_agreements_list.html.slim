@@ -13,7 +13,7 @@
         Vous préférez la signature traditionnelle en version papier ? 
         Optez pour l’impression.
 
-  - if @internship_agreements.empty? && current_user.employer_like?
+  - if @internship_agreements.empty? && current_user.employer_like? && @no_agreement_internship_application_list.empty?
     = render partial: 'empty_agreement_list'
 
   - else
@@ -53,3 +53,6 @@
           - @internship_agreements.each do |internship_agreement|
             = render partial: 'dashboard/internship_agreements/internship_agreement',
                       locals: { internship_agreement: internship_agreement, fg: fg }
+          - @no_agreement_internship_application_list.each do |internship_application|
+            = render partial: 'dashboard/internship_agreements/internship_application_in_agreement_list',
+                      locals: { internship_application: internship_application }

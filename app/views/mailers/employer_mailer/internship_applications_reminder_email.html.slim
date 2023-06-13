@@ -9,4 +9,4 @@ p style=p_styles
     = " en attente de réponse. En l'absence de réponse de votre part, #{'elle'.pluralize(count)} "
     strong= "#{count > 1 ? "expireront" : "expirera"} automatiquement dans 30 jours."
 
-= render(partial: "mailers/call_to_action", locals: {href: dashboard_internship_offers_url, label:"Gérer mes candidatures"})
+= render(partial: "mailers/blue_call_to_action", locals: {href: dashboard_internship_offers_url, label:"Gérer mes candidatures"})

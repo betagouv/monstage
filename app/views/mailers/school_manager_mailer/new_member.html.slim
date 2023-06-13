@@ -4,5 +4,5 @@ p style=head_styles
 p style=p_styles
   = "Bonjour #{@school_manager_presenter.full_name}, Le #{@member_presenter.role_name} #{@member_presenter.full_name} vient de rejoindre la plateforme. Si vous avez un doute sur son identité, vous pouvez à tout moment le supprimer de votre établissement. Bonne journée"
 
-= render(partial: "mailers/call_to_action", locals: {href: dashboard_school_users_url(@school_manager.school), label:'Confirmer les utilisateurs'})
+= render(partial: "mailers/blue_call_to_action", locals: {href: dashboard_school_users_url(@school_manager.school), label:'Confirmer les utilisateurs'})
 

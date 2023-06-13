@@ -1,0 +1,10 @@
+= render "dashboard/internship_offers/internship_applications/action_modal",
+          internship_application: internship_application,
+          aasm_target: :examine!,
+          modal_opener_label: 'Etudier',
+          subtitle: "Motivez la mise à l'étude de cette candidature.",
+          message: "Examiner une candidature ralonge votre délai d'examen de 2 semaines, " \
+                   "et déclenche l'envoi d'un email à l'élève l'en informant.",
+          rich_text: true,
+          modal_id: "examine-internship-application-#{internship_application.id}",
+          fa_icon: "fr-icon-settings-5-line"

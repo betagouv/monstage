@@ -201,13 +201,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     visit internship_offer_path(offer.id)
 
-
     first(:link, 'Postuler').click
-    # below : 'Pas encore de compte ? Inscrivez-vous'
-    # within('.onboarding-card.onboarding-card-sm') do
-    #   click_link 'Me connecter'
-    # end
-    # sign_in as Student
     find('label', text: 'Par téléphone').click
     execute_script("document.getElementById('phone-input').value = '#{student.phone}';")
     find("input[name='user[password]']").fill_in with: password

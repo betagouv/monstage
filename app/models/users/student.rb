@@ -78,6 +78,10 @@ module Users
       url_helpers.dashboard_students_internship_applications_path(self)
     end
 
+    def custom_candidatures_path(parameters={})
+      custom_dashboard_path
+    end
+
     def dashboard_name
       'Candidatures'
     end
@@ -90,18 +94,15 @@ module Users
       school_manager&.email
     end
 
-    # def main_teacher_email
-    #   main_teacher&.email
+    # Not used but certainly useful in the next future (today 20202-04-21)
+    # def expire_application_on_week(week:, keep_internship_application_id:)
+    #   internship_applications
+    #     .where(aasm_state: %i[approved submitted drafted])
+    #     .not_by_id(id: id)
+    #     .weekly_framed
+    #     .select { |application| application.week.id == week.id }
+    #     .map(&:expire!)
     # end
-
-    def expire_application_on_week(week:, keep_internship_application_id:)
-      internship_applications
-        .where(aasm_state: %i[approved submitted drafted])
-        .not_by_id(id: id)
-        .weekly_framed
-        .select { |application| application.week.id == week.id }
-        .map(&:expire!)
-    end
 
     def main_teacher
       return nil if try(:class_room).nil?
@@ -134,6 +135,12 @@ module Users
 
     def satisfaction_survey_id
       ENV['TALLY_STUDENT_SURVEY_ID']
+    end
+
+    def has_already_approved_an_application?
+      internship_applications
+        .approved
+        .any?
     end
   end
 end

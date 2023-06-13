@@ -135,7 +135,8 @@ fr:
         current_approved_internship_applications_count: Candidatures acceptées
         full_address: "Adresse de l'établissement"
         full_weeks: Semaines
-
+      email_whitelist:
+        zipcode: Code postal
       organisation: &organisation_fields
         employer_name: Employeur
         employer_description: Description de l'employeur
@@ -147,11 +148,9 @@ fr:
         city: Ville
         coordinates: Coordonnées GPS
         siren: Code Siren
-
       operator: &operator_fields
         name: Nom
         target_count: Objectif annuel
-
       internship_offer_info: &internship_offer_info_fields
         title: Intitulé
         description: Description
@@ -162,13 +161,11 @@ fr:
         new_daily_hours: Horaires journaliers
         daily_lunch_break: Pause déjeuner par jour
         weekly_lunch_break: Pause déjeuner
-
       tutor: &tutor_fields
         tutor_name: Nom du tuteur
         tutor_phone: Téléphone du tuteur
         tutor_email: Email du tuteur
         tutor_role: Fonction du tuteur
-
       internship_agreement:
         internship_application: Candidature
         school_manager_accept_terms: Validée par CE
@@ -206,6 +203,16 @@ fr:
           validated: Validée
           signed: Signée
         status:
+          admin_officer:
+            draft: En attente de l'offreur.
+            started_by_employer: En attente de l'offreur.
+            completed_by_employer: Votre convention est remplie par l'offreur, mais vous ne l'avez pas renseignée.
+            started_by_school_manager: Votre convention est remplie, mais pas validée.
+            validated: Votre convention est prête.
+            signatures_started:
+              already_signed: Le chef d'établissement a déjà signé. En attente de la signature de l’employeur.
+              not_signed_yet: L'employeur a déjà signé. En attente de votre signature.
+            signed_by_all: Signée par toutes les parties.
           employer:
             draft: À remplir par les deux parties.
             started_by_employer: Votre convention est remplie, mais elle n'est pas envoyée au chef d'établissement.
@@ -235,6 +242,8 @@ fr:
         <<: *tutor_fields
 
         id: Identifiant unique de l'offre
+        internship_offer_weeks: Semaines ouvertes aux stages
+        internship_offer_info_weeks: Semaines ouvertes aux stages
         human_is_public: Public/Privé
         human_max_candidates: Nombre max d'élèves accueillis sur l'année
         human_max_students_per_group: Stage individuel / collectif
@@ -334,6 +343,7 @@ fr:
         operator: Association
         phone_password_reset_count: Compteur de remise à zéro de mot de passe par téléphone
         anonymized: Anonymisé
+        zipcode: Code postal
 
       identity:
         first_name: Prénom
@@ -589,6 +599,8 @@ fr:
 
   enum:
     roles:
+      admin_officer: "Responsable administratif"
+      cpe: "CPE"
       school_manager: "Chef d'établissement"
       teacher: "Professeur"
       main_teacher: "Professeur principal"

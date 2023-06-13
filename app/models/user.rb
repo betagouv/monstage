@@ -33,6 +33,8 @@ class User < ApplicationRecord
     school_manager: 'school_manager',
     teacher: 'teacher',
     main_teacher: 'main_teacher',
+    cpe: 'cpe',
+    admin_officer: 'admin_officer',
     other: 'other'
   }
 
@@ -108,6 +110,10 @@ class User < ApplicationRecord
 
   def default_account_section
     'identity'
+  end
+
+  def custom_candidatures_path(_options = {})
+    after_sign_in_path
   end
 
   def custom_dashboard_paths
@@ -244,12 +250,14 @@ class User < ApplicationRecord
   def school_management? ; false end
   def god? ; false end
   def employer_like? ; false end
+  def has_already_approved_an_application? ; false end
 
   def already_signed?(internship_agreement_id:); true end
   def create_signature_phone_token ; nil end
   def send_signature_sms_token ; nil end
   def signatory_role ; nil end
   def obfuscated_phone_number ; nil end
+  def can_sign?(internship_agreement); false end
 
   def presenter
     Presenters::User.new(self)

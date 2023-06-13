@@ -1,0 +1,42 @@
+- sgid ||= ""
+= form_with({ model: internship_application,
+              url: dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
+              scope: :internship_application,
+              data: {turbo: false},
+              html: {method: 'patch', class:'modal', 'id': modal_id, tabindex: "-1", role: "dialog"} }) do |f|
+  = hidden_field_tag :transition, aasm_target
+  = hidden_field_tag :sgid, sgid
+
+  dialog.fr-modal id="#{modal_id}" aria-labelledby="fr-modal-2-title" role="dialog" data-controller="internship-agreement-field"
+    .fr-container.fr-container--fluid.fr-container-md
+      .fr-grid-row.fr-grid-row--center
+        .fr-col-12.fr-col-md-8.fr-col-lg-6
+          .fr-modal__body
+            .fr-modal__header
+              button.fr-btn--close.fr-btn data-dismiss="modal"  Fermer
+            .fr-modal__content
+              h1#fr-modal-2-title.fr-modal__title
+                span.fr-icon-arrow-right-line.fr-icon--lg aria-hidden="true"
+                = "#{modal_opener_label} la candidature"
+              - unless message.blank?
+                .px-4.py-0
+                  p == message
+              - unless subtitle.blank?
+                .px-4.pb-2.h6.text-dark
+                  = subtitle
+              - if rich_text
+                .modal-body.px-4.py-0
+                  = f.rich_text_area aasm_notifier.assigned_rich_text_attribute,
+                                     required: true,
+                                     class: 'fr-input col-12 motivation-text',
+                                     data: { 'action': 'input->internship-agreement-field#validateRequiredTrixField' }
+            .fr-modal__footer
+              ul.fr-btns-group.fr-btns-group--right.fr-btns-group--inline-reverse.fr-btns-group--inline-lg.fr-btns-group--icon-left
+                li
+                  = f.submit class: 'fr-btn fr-icon-checkbox-line fr-px-1w',
+                             disabled: !!rich_text,
+                             value: "Confirmer",
+                             data: {  "internship-agreement-field-target": modal_opener_label != 'Accepter' ? 'submit' : '' }
+                li
+                  button.fr-btn.fr-icon-checkbox-line.fr-btn--secondary data-dismiss="modal"
+                    |Annuler

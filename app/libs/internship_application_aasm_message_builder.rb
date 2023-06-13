@@ -2,22 +2,26 @@
 
 # wire default rich text message with internship_application rich text attributes
 # * approved_message (on internship_application aasm transition approved)
+# * examined_message (on internship_application aasm transition examined)
 # * rejected_message (on internship_application aasm transition rejected)
 # * canceled_by_employer_message (on internship_application aasm transition canceled_by_employer)
 # * canceled_by_student_message (on internship_application aasm transition canceled_by_student)
 class InternshipApplicationAasmMessageBuilder
   # "exposed" attributes
   delegate :approved_message,
+           :examined_message,
            :rejected_message,
            :canceled_by_employer_message,
            :canceled_by_student_message,
            to: :internship_application
 
   MAP_TARGET_TO_BUTTON_COLOR = {
+    employer_validate!: '',
     approve!: '',
-    cancel_by_employer!: 'fr-red-background-btn',
-    cancel_by_student!: 'fr-red-background-btn',
-    reject!: 'fr-red-background-btn'
+    examine!: 'fr-btn--secondary',
+    cancel_by_employer!: 'fr-btn--secondary',
+    cancel_by_student!: 'fr-btn--secondary',
+    reject!: 'fr-btn--secondary'
   }.freeze
 
   def target_action_color
@@ -31,14 +35,18 @@ class InternshipApplicationAasmMessageBuilder
   # and assign the body [which show on front end the text]
   #
   MAP_TARGET_TO_RICH_TEXT_ATTRIBUTE = {
+    employer_validate!: :validated_by_employer,
     approve!: :approved_message,
+    examine!: :examined_message,
     cancel_by_employer!: :canceled_by_employer_message,
     cancel_by_student!: :canceled_by_student_message,
     reject!: :rejected_message
   }.freeze
 
   MAP_TARGET_TO_RICH_TEXT_INITIALIZER = {
+    employer_validate!: :on_validated_by_employer_message,
     approve!: :on_approved_message,
+    examine!: :on_examined_message,
     cancel_by_employer!: :on_canceled_by_employer_message,
     cancel_by_student!: :on_canceled_by_student_message,
     reject!: :on_rejected_message
