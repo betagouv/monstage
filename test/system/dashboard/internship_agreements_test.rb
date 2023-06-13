@@ -312,10 +312,11 @@ module Dashboard
       internship_agreement = create(:internship_agreement, aasm_state: :signatures_started)
       create(:signature, internship_agreement: internship_agreement, signatory_role: :school_manager, user_id: internship_agreement.school_manager.id)
       admin_officer = create(:admin_officer, school: internship_agreement.school)
+      assert Signature.first.signatory_role == "school_manager"
       sign_in(admin_officer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
-        find('.actions.d-flex', text: "Vous avez déjà signé. En attente de la signature de l’employeur.")
+        find('.actions.d-flex', text: "Le chef d'établissement a déjà signé. En attente de la signature de l’employeur.")
       end
       find('a.button-component-cta-button', text: 'Imprimer')
       find('a.fr-btn.button-component-cta-button', text: 'Déjà signé')

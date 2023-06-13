@@ -66,7 +66,9 @@ module Presenters
     end
 
     def common_status_label(translation_path)
-      if internship_agreement.signatures_started? && internship_agreement.signed_by?(user: current_user)
+      if internship_agreement.signatures_started? &&
+          (internship_agreement.signed_by?(user: current_user) ||
+            internship_agreement.signed_by?(user: current_user.try(:school).try(:school_manager)))
         I18n.t("#{translation_path}.already_signed")
       elsif internship_agreement.signatures_started?
         I18n.t("#{translation_path}.not_signed_yet")

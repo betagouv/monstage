@@ -277,6 +277,8 @@ class InternshipAgreement < ApplicationRecord
   end
 
   def signed_by?(user:)
+    return false if user.nil?
+
     signatures.pluck(:user_id).include?(user.id)
   end
 
