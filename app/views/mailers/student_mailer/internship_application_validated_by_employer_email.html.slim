@@ -1,0 +1,18 @@
+p style=head_cyclop_styles
+  = "Stage accepté !"
+
+p style=p_cyclop_styles
+  = "L'employeur #{@internship_application.internship_offer.employer.presenter.formal_name} "\
+    "a accepté votre demande de stage  « "
+  = @internship_application.internship_offer.title
+  =" »."
+
+p style=p_cyclop_styles
+  strong>
+    | Il attend votre réponse,
+  | confirmez votre présence.
+
+p style=p_cyclop_styles
+= render partial: "mailers/blue_call_to_action",
+          locals: { href: @url,
+                    label: "Accéder à l'offre" }

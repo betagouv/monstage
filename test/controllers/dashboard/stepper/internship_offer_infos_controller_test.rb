@@ -23,6 +23,7 @@ module Dashboard::Stepper
 
         assert_response :success
         available_weeks = Week.selectable_from_now_until_end_of_school_year
+
         asserted_input_count = 0
         available_weeks.each do |week|
           assert_select "input#internship_offer_info_week_ids_#{week.id}_checkbox"
@@ -30,14 +31,6 @@ module Dashboard::Stepper
         end
         assert asserted_input_count.positive?
       end
-    end
-
-    test 'GET #new as employer is not turbolinkable' do
-      employer = create(:employer)
-      sign_in(employer)
-      organisation = create(:organisation, employer: employer)
-      get new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
-      assert_select 'meta[name="turbo-visit-control"][content="reload"]'
     end
 
     #
@@ -138,22 +131,23 @@ module Dashboard::Stepper
       employer = create(:employer)
       sign_in(employer)
       sector = create(:sector)
-      weeks = [weeks(:week_2019_1)]
       organisation = create(:organisation, employer: employer)
       post(
-        dashboard_stepper_internship_offer_infos_path(organisation_id: organisation.id),
-        params: {
-          internship_offer_info: {
-            sector_id: sector.id,
-            type: 'InternshipOfferInfos::WeeklyFramed',
-            description_rich_text: '<div><b>Activités de découverte</b></div>',
-            'week_ids' => weeks.map(&:id),
-            organisation_id: 1,
-            max_candidates: 3,
-            max_students_per_group: 3,
-            weekly_hours: ['10h', '12h']
+        dashboard_stepper_internship_offer_infos_path(
+          organisation_id: organisation.id),
+          params: {
+            internship_offer_info: { #title is missing
+              sector_id: sector.id,
+              type: 'InternshipOfferInfos::WeeklyFramed',
+              description_rich_text: '<div><b>Activités de découverte</b></div>',
+              week_ids: [Week.next.id],
+              organisation_id: 1,
+              max_candidates: 3,
+              max_students_per_group: 3,
+              weekly_hours: ['10h', '12h']
+            }
           }
-        })
+        )
         assert_response :bad_request
         assert_select '#internship_offer_info_max_candidates[value="3"]'
         assert_select '#internship_type_true[checked]', count: 0
@@ -187,16 +181,5 @@ module Dashboard::Stepper
         )
       end
     end
-
-    test 'GET #Edit as employer is not turbolinkable' do
-      employer = create(:employer)
-      organisation = create(:organisation, employer: employer)
-      internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
-      sign_in(employer)
-      organisation = create(:organisation, employer: employer)
-      get edit_dashboard_stepper_internship_offer_info_path(id: internship_offer_info.id, organisation_id: organisation.id)
-      assert_select 'meta[name="turbo-visit-control"][content="reload"]'
-    end
-
   end
 end

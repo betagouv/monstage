@@ -10,9 +10,9 @@ module SchoolYear
 
     def strict_beginning_of_period
       case current_month
-      when january_to_may, june_to_august
+      when january_to_may
         Date.new(current_year - 1, 9, 1)
-      when september_to_december
+      when june_to_december
         Date.new(current_year, 9, 1)
       end
     end
@@ -41,9 +41,17 @@ module SchoolYear
       SchoolYear::Floating.new_by_year(year: end_of_period.year)
     end
 
-    private
+    def january_to_may
+      1..MONTH_OF_YEAR_SHIFT
+    end
+
+    def june_to_december
+      6..12
+    end
 
     attr_reader :date
+
+    protected
 
     def current_year
       date.year
@@ -53,7 +61,9 @@ module SchoolYear
       date.month
     end
 
-
+    def june_to_december
+      6..12
+    end
 
     def last_week_of_may?
       last_day_of_may = Date.new(current_year, MONTH_OF_YEAR_SHIFT, DAY_OF_YEAR_SHIFT)

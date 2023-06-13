@@ -21,6 +21,7 @@ module Services
                                             .internship_offer_weeks
                                             .first
                                             .blocked_applications_count
+      internship_application.employer_validate!
       internship_application.approve!
       assert_equal 1, internship_application.internship_offer
                                             .internship_offer_weeks

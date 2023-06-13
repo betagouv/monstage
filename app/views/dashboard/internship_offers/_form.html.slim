@@ -8,6 +8,8 @@
   // used when
   = form.hidden_field :employer_id, value: current_user.id
   = form.hidden_field :employer_type, value: "User"
+  - if @republish
+    = form.hidden_field :published_at, value: Time.now
 
   // used when posted from stepper
   = form.hidden_field :organisation_id,

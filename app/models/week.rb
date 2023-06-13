@@ -45,13 +45,36 @@ class Week < ApplicationRecord
   }
 
   scope :fetch_from, lambda { |date: |
-    find_by(number: date.cweek, year: date.year)
+    number = date.cweek
+    year = number == 53 ? date.year - 1 : date.year
+    find_by(number: number, year: year)
   }
 
   scope :selectable_from_now_until_end_of_school_year, lambda {
     school_year = SchoolYear::Floating.new(date: Date.today)
 
     from_date_to_date(from: school_year.updated_beginning_of_period,
+                      to: school_year.end_of_period
+    )
+  }
+
+  scope :selectable_from_now_until_next_school_year, lambda {
+    school_year = SchoolYear::Floating.new(date: Date.today)
+    next_year = SchoolYear::Floating.new(date: Date.today + 1.year)
+
+    from_date_to_date(from: school_year.updated_beginning_of_period,
+                      to: school_year.end_of_period
+    ).or(
+      from_date_to_date(from: next_year.beginning_of_period,
+                        to: next_year.end_of_period)
+      )
+  }
+
+  scope :selectable_on_next_school_year, lambda {
+    n = Week.current.ahead_of_school_year_start? ? 0 : 1
+    school_year = SchoolYear::Floating.new(date: Date.today + n.year)
+
+    from_date_to_date(from: school_year.beginning_of_period,
                       to: school_year.end_of_period)
   }
 
@@ -75,6 +98,14 @@ class Week < ApplicationRecord
                       to: school_year.end_of_period)
   }
 
+  scope :selectable_on_school_year_when_editing, lambda {
+    if Week.current.ahead_of_school_year_start?
+      selectable_from_now_until_end_of_school_year
+    else
+      selectable_from_now_until_end_of_school_year.or(selectable_on_next_school_year)
+    end
+  }
+
   scope :weeks_of_school_year, lambda { |school_year:|
     first_week_of_september = Date.new(school_year, 9, 1).cweek
     last_day_of_may_week    = Date.new(school_year + 1, 5, 31).cweek
@@ -85,14 +116,29 @@ class Week < ApplicationRecord
 
   scope :available_for_student, lambda { |user:|
     where(id: user.school.weeks)
-    # .where(id: internship_offer.weeks)
   }
 
   WEEK_DATE_FORMAT = '%d/%m/%Y'
 
   def self.current
-    current_date = Date.today
-    Week.find_by(number: current_date.cweek, year: current_date.year)
+    now = Date.today
+
+    fetch_from(date: Date.today)
+  end
+
+  def self.next
+    fetch_from(date: Date.today + 1.week)
+  end
+
+  def ahead_of_school_year_start?
+    return false  if number > 50 && number < 2 # week 53 justifies this
+
+    week_date.beginning_of_week >= Date.new(year, 5, 31) &&
+      week_date.end_of_week < Date.new(year, 9, 1)
+  end
+
+  def <(other_week)
+    year < other_week.year || (year == other_week.year && number < other_week.number)
   end
 
   rails_admin do

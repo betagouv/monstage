@@ -41,6 +41,10 @@ module Users
       url_helpers.account_path
     end
 
+    def custom_candidatures_path(parameters: {})
+      url_helpers.root_path
+    end
+
     def custom_dashboard_paths
       [
         after_sign_in_path
