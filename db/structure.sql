@@ -69,7 +69,9 @@ CREATE TYPE public.user_role AS ENUM (
     'school_manager',
     'teacher',
     'main_teacher',
-    'other'
+    'other',
+    'cpe',
+    'admin_officer'
 );
 
 
@@ -2837,6 +2839,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230307200802'),
 ('20230321104203'),
 ('20230404154158'),
+('20230412082826'),
 ('20230420095232'),
 ('20230426161001'),
 ('20230502164246'),

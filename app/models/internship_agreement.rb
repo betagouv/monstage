@@ -242,11 +242,17 @@ class InternshipAgreement < ApplicationRecord
   end
 
   def ready_to_sign?(user:)
-    aasm_state.to_s.in?(%w[validated signatures_started]) && !signed_by?(user: user)
+    aasm_state.to_s.in?(%w[validated signatures_started]) && \
+      !signed_by?(user: user) && \
+      user.can_sign?(self)
   end
 
   def signed_by?(user:)
     signatures.pluck(:user_id).include?(user.id)
+  end
+
+  def signed_by_school?
+    signatures.pluck(:signatory_role).include?('school_manager')
   end
 
   def presenter(user:)
@@ -271,6 +277,8 @@ class InternshipAgreement < ApplicationRecord
   end
 
   def signed_by?(user:)
+    return false if user.nil?
+
     signatures.pluck(:user_id).include?(user.id)
   end
 

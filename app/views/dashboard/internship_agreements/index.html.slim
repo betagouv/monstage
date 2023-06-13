@@ -3,7 +3,7 @@
 
 = render layout: 'layouts/dashboards_with_menu' do
   - # School managers and Employers do not have the same tabs  i.e. layout
-  - if current_user.school_manager?
+  - if current_user.school_management?
     = render partial: 'dashboard/internship_agreements/index_school_manager',
             layout: 'dashboard/schools/common_head',
             locals: { school: @school,
