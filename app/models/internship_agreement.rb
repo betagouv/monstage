@@ -87,7 +87,10 @@ class InternshipAgreement < ApplicationRecord
 
     event :complete do
       transitions from: %i[draft started_by_employer],
-                  to: :completed_by_employer
+                  to: :completed_by_employer,
+                  after: proc { |*_args|
+        notify_school_manager_of_employer_completion(self)
+      }
     end
 
     event :start_by_school_manager do
@@ -256,8 +259,26 @@ class InternshipAgreement < ApplicationRecord
     Presenters::InternshipAgreement.new(self, user)
   end
 
+  def roles_not_signed_yet
+    Signature.signatory_roles.keys - roles_already_signed
+  end
 
+  def signature_by_role(signatory_role:)
+    return nil if signatures.blank?
 
+    signatures.find_by(signatory_role: signatory_role)
+  end
+
+  def signature_image_attached?(signatory_role:)
+    signature = signature_by_role(signatory_role:signatory_role)
+    return signature.signature_image.attached? if signature && signature.signature_image
+
+    false
+  end
+
+  def signed_by?(user:)
+    signatures.pluck(:user_id).include?(user.id)
+  end
 
   private
 
@@ -282,6 +303,12 @@ class InternshipAgreement < ApplicationRecord
         internship_agreement: agreement
       ).deliver_later
     end
+  end
+
+  def notify_school_manager_of_employer_completion(agreement)
+    SchoolManagerMailer.internship_agreement_completed_by_employer_email(
+      internship_agreement: agreement
+    ).deliver_later
   end
 
   def every_signature_but_mine

@@ -79,4 +79,33 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
       find('.fr-alert.fr-alert--error')
     end
   end
+
+  test 'employer can create an offer on May 31st for next year' do
+    travel_to Date.new(2023, 5, 29) do
+      sector = create(:sector)
+      employer = create(:employer)
+      school_name = 'Abd El Kader'
+      organisation = create(:organisation, employer: employer)
+      school = create(:school, city: 'Paris', zipcode: 75012, name: school_name)
+      
+      sign_in(employer)
+      available_weeks = Week.selectable_from_now_until_end_of_school_year
+      assert_equal [2023, 2024], available_weeks.map(&:year).uniq
+      assert_difference 'InternshipOfferInfos::WeeklyFramed.count' do
+        visit new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
+        fill_in_internship_offer_info_form(sector: sector,
+                                           weeks: available_weeks)
+        page.assert_no_selector('span.number', text: '1')
+        find('span.number', text: '2')
+        find('span.number', text: '3')
+        find('.test-school-reserved').click
+        fill_in('Ville ou nom de l\'établissement pour lequel le stage est reservé', with: 'Pari')
+        all('.autocomplete-school-results .list-group-item-action').first.click
+        select(school_name, from: 'Collège')
+        click_on "Suivant"
+        find('label', text: 'Nom du tuteur/trice')
+      end
+      assert_equal [2023, 2024], InternshipOfferInfos::WeeklyFramed.last.weeks.map(&:year).uniq
+    end
+  end
 end

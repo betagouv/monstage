@@ -18,10 +18,10 @@
 
   .col-12.fr-pb-2
     = Presenters::InternshipOffer.new(internship_offer).internship_week_description
-
-    .row.d-block.d-sm-none
-      .col-12.fr-py-2w
-        = render "internship_offers/show_side_details", internship_offer: internship_offer
+    - unless hidden_parts
+      .row.d-block.d-sm-none
+        .col-12.fr-py-2w
+          = render "internship_offers/show_side_details", internship_offer: internship_offer
 
 .row.fr-pt-3w
   .col-12
@@ -49,31 +49,32 @@
       .col-12
         = react_component("Map",
                     props: { internshipOffer: { id: internship_offer.id, lat: internship_offer.coordinates.latitude, lon: internship_offer.coordinates.longitude } })
-    
-    .row
-      .col-12 
-        .fr-my-4w.d-none.d-sm-block
-          = render "internship_offers/apply_cta", internship_offer: internship_offer
+- unless hidden_parts
+  .row
+    .col-12
+      .row
+        .col-12
+          .fr-my-4w.d-none.d-sm-block
+            = render "internship_offers/apply_cta", internship_offer: internship_offer
 
+  .row
+    .col-6
+      .d-none.d-flex.align-items-center.fr-px-1w
+        - if @previous_internship_offer && support_listable?(current_user)
+          = link_to listable_internship_offer_path(@previous_internship_offer),
+                    class: 'list-item-previous d-flex align-items-center fr-raw-link' do
+            span.fr-icon-arrow-left-line aria-hidden="true"
+            span
+              | Offre précédente
 
-.row
-  .col-6
-    .d-none.d-flex.align-items-center.fr-px-1w
-      - if @previous_internship_offer && support_listable?(current_user)
-        = link_to listable_internship_offer_path(@previous_internship_offer),
-                  class: 'list-item-previous d-flex align-items-center fr-raw-link' do
-          span.fr-icon-arrow-left-line aria-hidden="true"
-          span
-            | Offre précédente
-
-  .col-6
-    .d-none.d-flex.align-items-center.justify-content-end.fr-px-1w
-      - if @next_internship_offer && support_listable?(current_user)
-        = link_to listable_internship_offer_path(@next_internship_offer),
-                  class: 'list-item-next d-flex align-items-center fr-raw-link' do
-          span
-            | Offre suivante
-          span.fr-icon-arrow-right-line aria-hidden="true"
+    .col-6
+      .d-none.d-flex.align-items-center.justify-content-end.fr-px-1w
+        - if @next_internship_offer && support_listable?(current_user)
+          = link_to listable_internship_offer_path(@next_internship_offer),
+                    class: 'list-item-next d-flex align-items-center fr-raw-link' do
+            span
+              | Offre suivante
+            span.fr-icon-arrow-right-line aria-hidden="true"
   
 
 

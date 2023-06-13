@@ -13,7 +13,7 @@ module SchoolYear
         return september_first if last_week_of_may?
 
         previous_september_first
-      when june_to_august, september_to_december then september_first
+      when june_to_december then september_first
       end
     end
 
@@ -25,7 +25,7 @@ module SchoolYear
         return next_year_end_date if last_week_of_may?
 
         year_end_date
-      when june_to_august, september_to_december then next_year_end_date
+      when june_to_december then next_year_end_date
       end
     end
 

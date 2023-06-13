@@ -37,16 +37,12 @@ module Presenters
 
     def status_label
       translation_path = translation_path(role)
-      if internship_agreement.signatures_started?
-        if internship_agreement.signed_by?(user: current_user) || 
-          ((current_user.school_management? || current_user.admin_officer?) && internship_agreement.signed_by_school?)
-          I18n.t("#{translation_path}.already_signed")
-        elsif internship_agreement.signatures_started?
-          I18n.t("#{translation_path}.not_signed_yet")
-        end
-      else
-        I18n.t(translation_path)
-      end
+      common_status_label(translation_path)
+    end
+
+    def inline_status_label
+      translation_path = translation_path(current_user.role || 'employer')
+      common_status_label(translation_path)
     end
 
     protected
@@ -69,6 +65,14 @@ module Presenters
       @internship_offer = internship_agreement.internship_application.internship_offer
     end
 
-
+    def common_status_label(translation_path)
+      if internship_agreement.signatures_started? && internship_agreement.signed_by?(user: current_user)
+        I18n.t("#{translation_path}.already_signed")
+      elsif internship_agreement.signatures_started?
+        I18n.t("#{translation_path}.not_signed_yet")
+      else
+        I18n.t(translation_path)
+      end
+    end
   end
 end

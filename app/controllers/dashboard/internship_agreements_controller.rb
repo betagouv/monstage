@@ -2,6 +2,7 @@ module Dashboard
   # WIP, not yet implemented, will host agreement signing
   class InternshipAgreementsController < ApplicationController
     before_action :authenticate_user!
+    before_action :set_internship_agreement, only: %i[edit update show]
 
     def new
       @internship_agreement = internship_agreement_builder.new_from_application(
@@ -30,12 +31,11 @@ module Dashboard
     end
 
     def edit
-      @internship_agreement = InternshipAgreement.find(params[:id])
       authorize! :update, @internship_agreement
     end
 
     def update
-      internship_agreement_builder.update(instance: InternshipAgreement.find(params[:id]),
+      internship_agreement_builder.update(instance: @internship_agreement,
                                           params: internship_agreement_params) do |on|
         on.success do |updated_internship_agreement|
           updated_internship_agreement = process_state_update(
@@ -57,7 +57,6 @@ module Dashboard
     end
 
     def show
-      @internship_agreement = InternshipAgreement.find(params[:id])
       respond_to do |format|
         format.html
         format.pdf do
@@ -89,6 +88,10 @@ module Dashboard
                                               )
                                            .reject { |a| a.student.school.school_manager.nil? }
       @school = current_user.school if current_user.school_management?
+      @no_agreement_internship_application_list = current_user.internship_applications
+                                                              .approved
+                                                              .select { |ia| ia.student.school.school_manager.nil? }
+  
     end
 
     private
@@ -175,6 +178,10 @@ module Dashboard
 
       agreement.send(event)
       agreement
+    end
+
+    def set_internship_agreement
+      @internship_agreement = InternshipAgreement.find(params[:id])
     end
   end
 end

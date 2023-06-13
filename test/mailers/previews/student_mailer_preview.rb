@@ -1,4 +1,19 @@
 class StudentMailerPreview < ActionMailer::Preview
+  def internship_application_requested_confirmation_email
+    internship_application = InternshipApplication.validated_by_employer.first
+    StudentMailer.internship_application_requested_confirmation_email(
+      internship_application: internship_application
+    )
+  end
+
+  def internship_application_examined_email
+    internship_application = InternshipApplication.examined.first
+    internship_application.examined_message =  '<strong>Bonjour !</strong><br/>Nous sommes désireux de vous accueillir, et nous cherchons activement le tuteur qui pourra vous encadrer durant cette semaine'
+    StudentMailer.internship_application_examined_email(
+      internship_application: internship_application
+    )
+  end
+
   def internship_application_approved_email
     internship_application = InternshipApplication.approved.first
     internship_application.approved_message =  '<strong>Bravo ! Vraiment ! </strong><br/>Vous étiez nombreux à le vouloir, ce stage'
@@ -17,9 +32,24 @@ class StudentMailerPreview < ActionMailer::Preview
 
   def internship_application_canceled_by_employer_email
     internship_application = InternshipApplication.canceled_by_employer.first
-    internship_application.canceled_by_employer_message = '<strong>Nous ne comprenons pas ce qui s\'est passé ! </strong><br/>L`administration de notre société a décliné votre proposition de stage au prétexte d\'un casier judiciaire "particulièrement" lourd, mais une enquête interne vous tiendra informé des véritables raisons de ce rejet de candidature'
+    internship_application.canceled_by_employer_message = '<strong>Nous ne comprenons pas ce qui s\'est passé ! </strong><br/>L`administration de notre société a décliné votre proposition de stage sans fournir de raison. Une enquête interne est en cours.'
     StudentMailer.internship_application_canceled_by_employer_email(
       internship_application: internship_application
     )
   end
+
+  def internship_application_validated_by_employer_email
+    internship_application = InternshipApplication.validated_by_employer.first
+    StudentMailer.internship_application_validated_by_employer_email(
+      internship_application: internship_application
+    )
+  end
+
+  def internship_application_validated_by_employer_reminder_email
+    internship_application = InternshipApplication.validated_by_employer.first
+    StudentMailer.internship_application_validated_by_employer_reminder_email(
+      applications_to_notify: [internship_application]
+    )
+  end
+  
 end

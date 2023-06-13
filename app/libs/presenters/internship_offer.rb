@@ -36,7 +36,6 @@ module Presenters
         class: 'fr-mb-2w'
        ) +
       content_tag(:div, "Pause déjeuner : #{lunch_break}", class: 'fr-mb-3w') if lunch_break.present?
-      # html_safe
     end
 
     def internship_daily_description

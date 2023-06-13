@@ -28,4 +28,12 @@ module Phonable
     sep = 3 if user.phone.size == 14
     user.phone_prefix, user.phone_suffix = user.phone[0..sep], user.phone[(sep+1)..-1]
   end
+
+  def french_phone_number_format(phone_number_string)
+    phone_number_string.split("")
+                       .each_slice(2)
+                       .to_a
+                       .map(&:join)
+                       .join(' ')
+  end
 end

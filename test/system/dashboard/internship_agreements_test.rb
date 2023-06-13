@@ -21,7 +21,7 @@ module Dashboard
       create(:internship_agreement, aasm_state: :draft, internship_application: internship_application)
       create(:internship_agreement, aasm_state: :draft, internship_application: internship_application_2)
 
-      
+
       sign_in(employer)
       visit dashboard_internship_agreements_path
 
@@ -447,6 +447,42 @@ module Dashboard
       end
       find('a.button-component-cta-button', text: 'Imprimer')
       find('a.fr-btn.button-component-cta-button', text: 'Signée de tous')
+    end
+
+    test 'statistician with approved internship application when school has no school_manager' do
+      school = create(:school) # without_school_manager
+      student = create(:student, school: school)
+      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: true))
+      employer = internship_offer.employer
+      internship_application = create(:weekly_internship_application, :approved, student: student, internship_offer: internship_offer)
+
+      stub_request(:get, "https://www.education.gouv.fr/annuaire?department=75&establishment=2&keywords=Coll%C3%A8ge%20evariste%20Gallois&status=All").
+        with(
+          headers: {
+                'Accept'=>'text/html',
+                'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+                'Host'=>'www.education.gouv.fr',
+                'User-Agent'=>'Ruby'
+          }).to_return(status: 200, body: "", headers: {})
+      expected_result = {
+        phone: '0101010101',
+        email: 'test@data.fr', 
+        address: '1 rue de la paix 75000 Paris'
+      }
+      Services::SchoolDirectory.stub_any_instance(:fetch_data, expected_result) do
+        sign_in(employer)
+        visit dashboard_internship_agreements_path
+
+        click_link("Contacter l'établissement")
+        find('h1.fr-h3.fr-mt-4w.blue-france', text: "Contact établissement scolaire")
+        find 'h2.fr-h5.fr-mt-4w.blue-france', text: "Coordonnées de l'établissement"
+        find 'p strong', text: "Collège evariste Gallois"
+        find 'p', text: "1 rue de la paix 75000 Paris"
+        assert page.has_text?('1 rue de la paix 75000 Paris', count: 1)
+        assert page.has_text?("01 01 01 01 01", count: 1)
+        assert page.has_text?('test@data.fr', count: 1)
+        click_link ("retour")
+      end
     end
   end
 end

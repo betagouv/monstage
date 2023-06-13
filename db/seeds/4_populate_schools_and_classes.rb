@@ -26,6 +26,10 @@ def find_default_school_during_test
   School.find_by_code_uai("0752694W") # school at Paris, school name : Camille Claudel.
 end
 
+def missing_school_manager_school
+  School.find_by_code_uai("0755030K") # school at Pairis (Ardennes), school name : Daniel Mayer.
+end
+
 # used for application
 def populate_school_weeks
   school = find_default_school_during_test
@@ -39,6 +43,7 @@ def populate_school_weeks
   other_schools.each.with_index do |another_school, i|
     another_school.update!(weeks: Week.selectable_on_school_year.limit(i+1))
   end
+  missing_school_manager_school.update!(weeks: Week.selectable_on_school_year.limit(3))
 end
 
 call_method_with_metrics_tracking([

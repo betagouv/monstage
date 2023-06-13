@@ -90,7 +90,7 @@ fr:
       users/other:
         one: Autre utilisateur
         other: Autres utilisateurs
-      users/statistician:
+      users/prefecture_statistician:
         one: Référent départemental
         other: Référents départementaux
       users/ministry_statistician:
@@ -235,6 +235,8 @@ fr:
         <<: *tutor_fields
 
         id: Identifiant unique de l'offre
+        internship_offer_weeks: Semaines ouvertes aux stages
+        internship_offer_info_weeks: Semaines ouvertes aux stages
         human_is_public: Public/Privé
         human_max_candidates: Nombre max d'élèves accueillis sur l'année
         human_max_students_per_group: Stage individuel / collectif

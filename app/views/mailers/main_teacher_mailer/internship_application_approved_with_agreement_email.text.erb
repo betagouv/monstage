@@ -1,8 +1,9 @@
+Bonjour, 
+
 Un de vos élèves a été accepté à un stage
 
-<%= "La candidature de #{@student_presenter.formal_name} pour le stage " %>
-<%= "\"#{@internship_offer.title}\"" %>
-a été acceptée.
+<%= "La candidature de #{@student_presenter.formal_name} pour le stage \"#{@internship_offer.title}\"" %>
+<%="a été acceptée par l'employeur et #{@student_presenter.formal_name} a confirmé sa préférence pour ce stage."%>
 <%= @message %>
 
 Pour afficher le détails de l'offre, vous pouvez cliquer sur le lien ci-dessous.

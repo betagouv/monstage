@@ -48,7 +48,7 @@ module Dashboard::InternshipOffers
           }
         }
       )
-      assert_redirected_to(internship_offer_path(internship_offer),
+      assert_redirected_to(dashboard_internship_offers_path(origine: 'dashboard'),
                            'redirection should point to updated offer')
 
       assert_equal(new_title,
@@ -131,7 +131,7 @@ module Dashboard::InternshipOffers
               new_daily_hours: {'lundi' => ['10h', '12h']}
 
             } })
-      assert_redirected_to(internship_offer_path(internship_offer),
+      assert_redirected_to(dashboard_internship_offers_path(origine: 'dashboard'),
                            'redirection should point to updated offer')
 
       assert_equal(new_title,
@@ -178,6 +178,7 @@ module Dashboard::InternshipOffers
         internship_application = create(:weekly_internship_application,
                                         :submitted,
                                         internship_offer: internship_offer)
+        internship_application.employer_validate!
         internship_application.approve!
         assert_equal 0, internship_offer.reload.remaining_seats_count
         internship_offer.update(published_at: nil)
@@ -230,6 +231,7 @@ module Dashboard::InternshipOffers
         internship_application = create(:weekly_internship_application,
                                         :submitted,
                                         internship_offer: internship_offer)
+        internship_application.employer_validate!
         internship_application.approve!
         assert_equal 0, internship_offer.reload.remaining_seats_count
         refute internship_offer.published? #self.reload.published_at.nil?

@@ -100,7 +100,7 @@ module Finders
     end
 
     def hide_duplicated_offers_query(query)
-      query.merge(query.where(employer_hidden: false))
+      query.merge(query.where(hidden_duplicate: false))
     end
 
     protected
