@@ -1,6 +1,6 @@
-.top-banner-statistics 
-  = render 'layouts/breadcrumb', links: [ ['', "Statistiques"] ]
+.top-banner-statistics
   .container-monstage
+    = render 'layouts/breadcrumb', links: [ ['', "Statistiques"] ]
     h1.fr-h1.blue-france Monstagedetroisieme.fr
     p 
       | Dans la continuité du discours « La France, une chance pour chacun » du Président de
@@ -24,7 +24,7 @@
         (*) Les 7 associations sont : 
         JobIRL, Le réseau, Les entreprises pour la cité, My Future, Tous en stage, 
         Un stage et après, et Viens voir mon taf
-.container-monstage
+.container-monstage.fr-mt-6w
   .d-flex
     .flex-fill
       hr.fr-mr-2v
@@ -56,11 +56,11 @@
         C’est le nombre d’établissements intégrés au dispositif par dérogation, 
         à la demande conjointe des préfectures de département et des 
         directions académiques des services de l’Éducation nationale.
-  hr.fr-mt-10w.fr-mb-6w
+  hr.fr-my-6w.fr-py-0
   h2.fr-h3 Les stages
-  .row
+  .row.fr-mb-6w
     .col-lg-6.col-md-12
-      .fr-table.fr-table--layout-fixed
+      .fr-table.fr-table--layout-fixed.fr-mb-0
         table
           caption.fr-text--lg Offres de stage
           thead
@@ -80,6 +80,9 @@
               td 7 138
               td 25 205
               td 32 343
+      p.fr-mt-2w
+        i.text-muted
+          | Objectif fixé par la circulaire du Premier ministre du 6 octobre 2022*
     .col-lg-6.col-md-12
       .fr-table.fr-table--layout-fixed
         table

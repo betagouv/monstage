@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="MonStageDeTroisieme permet aux éléves de REP et REP+ de trouver des stages de troisième de qualité près de chez eux.">
+    <meta name="author" content="MonStageDeTroisieme">
+    <meta name="turbo-visit-control" content="reload">
+    <link rel='canonical' href='https://www.monstagedetroisieme.fr' />
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= action_cable_meta_tag %>
+    <title><%= page_title %></title>
+    <%= favicon_link_tag asset_pack_path('media/images/favicon.png') %>
+    <%= stylesheet_pack_tag "application.css", 'data-turbo-track': "reload", media: "all" %>
+    <%= javascript_pack_tag "application.js", 'data-turbo-track': "reload", defer: true %>
+    <%= render 'layouts/crisp' %>
+  </head>
+
+  <body class="<%= env_class_name %> <%= body_class_name %>">
+    <a name="top" id="top"></a>
+    <div class="content pt-0" data-controller='rg2a'>
+      <header role="banner" class="custom-navbar">
+        <div class="col px-0">
+          <%= render "layouts/navbar" %>
+          <%= render 'layouts/webinar_banner' if can?(:subscribe_to_webinar, current_user_or_visitor)%>
+        </div>
+      </header>
+    <div class="content" data-controller='rg2a'>
+      <%= render "layouts/flash" %>
+      <div role="main">
+        <%= yield %>
+      </div>
+    </div>
+    <div data-controller='footer'>
+      <%= render 'layouts/footer' %>
+      <%= render partial: "layouts/analytics" %>
+    </div>
+  </body>
+</html>
