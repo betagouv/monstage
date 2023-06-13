@@ -3,7 +3,10 @@
 class PagesController < ApplicationController
   WEBINAR_URL = ENV.fetch('WEBINAR_URL').freeze
   layout 'homepage', only: :home
-  layout 'statistiques', only: :statistiques
+
+  def statistiques
+    render 'pages/statistiques', layout: 'statistiques'
+  end
 
   def register_to_webinar
     authorize! :subscribe_to_webinar, current_user
