@@ -110,6 +110,10 @@ class User < ApplicationRecord
     'identity'
   end
 
+  def custom_candidatures_path(_options = {})
+    after_sign_in_path
+  end
+
   def custom_dashboard_paths
     [
       custom_dashboard_path
@@ -244,6 +248,7 @@ class User < ApplicationRecord
   def school_management? ; false end
   def god? ; false end
   def employer_like? ; false end
+  def has_already_approved_an_application? ; false end
 
   def already_signed?(internship_agreement_id:); true end
   def create_signature_phone_token ; nil end

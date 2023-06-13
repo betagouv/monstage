@@ -1,0 +1,49 @@
+.fr-table.fr-table--bordered.fr-table--no-caption
+  table
+    thead
+      tr
+        th[scope="col"]
+          | Nom de l'élève
+        th[scope="col"]
+          | Inititulé du stage
+        th[scope="col"]
+          | Candidature annulée
+          br/
+          | dans
+        th[scope="col"]
+          | Statut
+        th[scope="col"]
+          | Action
+    - if internship_applications.empty?
+      tbody
+        tr
+          td.text-center[colspan="5"]
+            | Aucune candidature reçue
+    - else
+      tbody
+        - internship_applications.each do |internship_application|
+          - prez = internship_application.presenter(current_user)
+          tr
+            td style="min-width: 180px;"
+              = prez.student.presenter.full_name
+            td style="min-width: 480px;"
+              - prez_offer = internship_application.internship_offer.presenter
+              = prez.internship_offer.title
+              br/
+              = prez_offer.address
+            td = internship_application.expired? ? '-' : prez.expires_in
+            td
+              p class="fr-mt-1w fr-badge fr-badge--sm fr-badge--#{prez.human_state[:badge]} fr-badge--no-icon"
+                = prez.human_state[:label]
+            td.text-center data-controller="toggle-publish"
+              = form_with( model: internship_application,
+                            url: set_to_read_dashboard_internship_offer_internship_application_path(prez.internship_offer, internship_application),
+                            scope: :internship_application,
+                            method: :PATCH) do |f|
+                = link_to "#",
+                          title: "Répondre à la candidature",
+                          data: { :'toggle-publish-target' => 'checkToggle',
+                                  action: 'click->toggle-publish#toggle' },
+                          class: 'fr-raw-link fr-text--sm d-flex' do
+                  span.fr-icon-mail-line.fr-icon--sm.fr-mr-1v aria-hidden="true"
+                  |Répondre

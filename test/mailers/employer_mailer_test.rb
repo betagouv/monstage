@@ -41,6 +41,19 @@ class EmployerMailerTest < ActionMailer::TestCase
     refute_email_spammyness(email)
   end
 
+  test '.resend_internship_application_submitted_email delivers as expected' do
+    internship_application = create(:weekly_internship_application, :validated_by_employer)
+    employer = internship_application.internship_offer.employer
+    email = EmployerMailer.resend_internship_application_submitted_email(
+      internship_application: internship_application
+    )
+    email.deliver_now
+    assert_emails 1
+    assert_includes email.to, employer.email
+    assert_equal '[Relance] Vous avez une candidature en attente', email.subject
+    refute_email_spammyness(email)
+  end
+
   test '.school_manager_finished_notice_email delivers as expected' do
     internship_agreement = create(:internship_agreement)
     employer = internship_agreement.internship_application.internship_offer.employer

@@ -8,4 +8,5 @@ div.modal.show-modal id="modal-#{(rand * 1000).to_i}-#{show_application_modal_id
           span aria-hidden="true" &times;
       .modal-body
         p = render "internship_offers/show_details",
-                   internship_offer: application.internship_offer
+                   internship_offer: application.internship_offer,
+                   hidden_parts: false

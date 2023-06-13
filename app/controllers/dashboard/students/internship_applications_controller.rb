@@ -3,8 +3,10 @@
 module Dashboard
   module Students
     class InternshipApplicationsController < ApplicationController
-      before_action :authenticate_user!
+      include ApplicationTransitable
+      before_action :authenticate_user!, except: %i[show]
       before_action :set_current_student
+      before_action :set_internship_application, except: %i[index]
 
       def index
         authorize! :dashboard_index, @current_student
@@ -13,15 +15,61 @@ module Dashboard
                                                    .order_by_aasm_state
       end
 
+      # 0 no magic link - status quo
+      # 1 magic link successfully clicked
+      # 2 magic link clicked but expired
       def show
-        @internship_application = @current_student.internship_applications.find(params[:id])
+        if params[:sgid].present? && magic_fetch_student&.student? && magic_fetch_student.id == @current_student.id
+          @internship_application.update(magic_link_tracker: 1)
+          @internship_application_sgid= @internship_application.to_sgid(expires_in: 20.seconds).to_s
+          render 'dashboard/students/internship_applications/_making_decisions' and return
+        elsif params[:sgid].present?
+          @internship_application.update(magic_link_tracker: 2)
+          redirect_to(dashboard_students_internship_application_path(
+                        student_id: @current_student.id,
+                        id: @internship_application.id
+          )) and return
+        else
+           authenticate_user!
+        end
         authorize! :dashboard_show, @internship_application
+        @internship_offer = @internship_application.internship_offer
+      end
+
+      def edit
+        authorize! :internship_application_edit, @internship_application
+        @internship_offer = @internship_application.internship_offer
+      end
+
+      def resend_application
+        if @internship_application.max_dunning_letter_count_reached?
+          redirect_to dashboard_students_internship_applications_path(@current_student),
+                      alert: "Vous avez atteint le nombre maximum de relances pour cette candidature"
+        else
+          increase_dunning_letter_count
+          EmployerMailer.resend_internship_application_submitted_email(internship_application: @internship_application).deliver_now
+          redirect_to dashboard_students_internship_application_path(student_id: @current_student.id, id: @internship_application.id),
+                      notice: "Votre candidature a bien été renvoyée"
+        end
       end
 
       private
 
+      def magic_fetch_student
+        GlobalID::Locator.locate_signed(params[:sgid])
+      end
+
       def set_current_student
         @current_student = ::Users::Student.find(params[:student_id])
+      end
+
+      def set_internship_application
+        @internship_application = @current_student.internship_applications.find(params[:id])
+      end
+
+      def increase_dunning_letter_count
+        current_count = @internship_application.dunning_letter_count
+        @internship_application.update(dunning_letter_count: current_count + 1)
       end
     end
   end

@@ -133,9 +133,9 @@ class InternshipOffer < ApplicationRecord
     employer.operator
   end
 
-  def published?
-    published_at.present?
-  end
+  def published? ; published_at.present? end
+  def publish! ; update(published_at: Time.zone.now) end
+  def unpublish! ; update(published_at: nil) end
 
   def from_api?
     permalink.present?
@@ -259,9 +259,8 @@ class InternshipOffer < ApplicationRecord
   end
 
   def update_remaining_seats
-    reserved_places = internship_offer_weeks
-                        .where('internship_offer_weeks.blocked_applications_count > 0')
-                        .count
+    reserved_places = internship_offer_weeks&.sum(:blocked_applications_count)
     self.remaining_seats_count = max_candidates - reserved_places
+    self.published_at = nil if remaining_seats_count.zero?
   end
 end

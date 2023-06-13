@@ -20,13 +20,13 @@ module Dashboard::Users
     end
 
     test 'school_manager resets his phone_number' do
-      internship_agreement = create(:internship_agreement)
+      internship_agreement = create(:internship_agreement, :validated)
       school_manager = internship_agreement.school_manager
       school_manager.update(phone: '+330602030405')
       sign_in(school_manager)
 
-      post reset_phone_number_dashboard_user_path( id: school_manager.id), params: {}
-
+      post reset_phone_number_dashboard_user_path(id: school_manager.id),
+           params: {}
       assert_redirected_to dashboard_internship_agreements_path(opened_modal: true)
       follow_redirect!
       assert_select '#alert-text', text: "Votre numéro de téléphone a été supprimé"

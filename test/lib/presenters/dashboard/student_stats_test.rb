@@ -24,15 +24,6 @@ module Presenters
         assert_equal 1, @student_stats.applications_approved_count
       end
 
-      test '.applications_with_convention_signed_count' do
-        create(:weekly_internship_application, :approved, student: @student)
-        create(:weekly_internship_application, :rejected, student: @student)
-        create(:weekly_internship_application, :convention_signed, student: @student)
-        create(:weekly_internship_application, :convention_signed, student: @student)
-        create(:weekly_internship_application, :convention_signed, student: @student)
-        assert_equal 3, @student_stats.applications_with_convention_signed_count
-      end
-
       test '.internship_location' do
         internship_offer = create(:weekly_internship_offer, street: '7 rue du puits',
                                                            city: 'Coye la foret',

@@ -42,6 +42,7 @@ class AbilityTest < ActiveSupport::TestCase
            'student should be able to choose handicap')
     assert(ability.can?(:dashboard_index, student))
     assert(ability.can?(:dashboard_show, internship_application))
+    assert(ability.can?(:internship_application_edit, internship_application))
     assert(ability.cannot?(:dashboard_show, create(:weekly_internship_application)))
     assert(ability.cannot?(:index, Acl::InternshipOfferDashboard.new(user: student)),
            'employers should be able to index InternshipOfferDashboard')

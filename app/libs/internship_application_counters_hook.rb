@@ -78,6 +78,8 @@ class InternshipApplicationCountersHook
                     .count
   end
 
+  # TODO : wrong ? should count on internship_agreements
+
   def convention_signed_applications_count
     internship_offer.internship_applications
                     .select(&:convention_signed?)

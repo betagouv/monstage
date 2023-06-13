@@ -87,4 +87,30 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_select 'a[href=?]', account_path
   end
+
+  test 'POST session as EMPLOYER with email and check after sign in path when pending applications' do
+    pwd = 'okokok'
+    email = 'employer@corp.com'
+    employer = create(:employer, email: email, phone: nil, password: pwd, confirmed_at: 2.days.ago)
+    internship_offer = create(:weekly_internship_offer, employer: employer)
+    create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
+
+    post user_session_path(params: { user: { channel: 'email',
+                                             email: employer.email,
+                                             password: pwd } })
+    
+    assert_redirected_to dashboard_candidatures_path
+  end
+
+  test 'POST session as EMPLOYER with email and check after sign in path when no pending applications' do
+    pwd = 'okokok'
+    email = 'employer@corp.com'
+    employer = create(:employer, email: email, phone: nil, password: pwd, confirmed_at: 2.days.ago)
+
+    post user_session_path(params: { user: { channel: 'email',
+                                             email: employer.email,
+                                             password: pwd } })
+    
+    assert_redirected_to dashboard_internship_offers_path
+  end
 end
