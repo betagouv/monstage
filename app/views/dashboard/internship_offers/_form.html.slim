@@ -20,11 +20,12 @@
                       value: @internship_offer.practical_info_id
 
   // Organisation
-  = render 'dashboard/stepper/organisations/form_fields',
-            { resource: @internship_offer,
-               form: form,
-               warning_block: true,
-               submit_button: false }
+  = form.fields_for :organisation do |organisation_form|
+    = render 'dashboard/stepper/organisations/form_fields',
+              { resource: @internship_offer.organisation,
+                form: organisation_form,
+                warning_block: true,
+                submit_button: false }
 
   hr
   // OfferInfo

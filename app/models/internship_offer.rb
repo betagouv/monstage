@@ -105,6 +105,8 @@ class InternshipOffer < ApplicationRecord
   belongs_to :practical_info, optional: true
   has_many :favorites
   has_many :users, through: :favorites
+  
+  accepts_nested_attributes_for :organisation, allow_destroy: true
 
   has_rich_text :employer_description_rich_text
 
