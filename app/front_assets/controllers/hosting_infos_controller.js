@@ -27,7 +27,7 @@ export default class extends Controller {
 
   induceType(value){
     const inducedType = `${this.baseTypeValue}s::WeeklyFramed`;
-    $(this.typeTarget).attr('value', inducedType)
+    this.typeTarget.setAttribute('value', inducedType);
     this.chooseType(inducedType);
   }
 
@@ -39,10 +39,9 @@ export default class extends Controller {
   checkOnCandidateCount() {
     const maxCandidates = parseInt(this.maxCandidatesInputTarget.value, 10);
     this.studentsMaxGroupInputTarget.setAttribute('max', maxCandidates);
-    // (maxCandidates === 1) ? this.collectiveOptionInhibit(true) : this.collectiveOptionInhibit(false);
   }
 
-  UpdateMaxCandidateCount() {
+  updateMaxCandidateCount() {
     if (this.individualButtonTarget.checked) {
       $(this.maxCandidatesInputTarget).prop('min', 1);
       $(this.maxCandidatesInputTarget).prop('max', 1);
@@ -71,7 +70,6 @@ export default class extends Controller {
   }
 
   handleMaxCandidatesChanges() {
-    // this.checkOnCandidateCount();
     const maxCandidates = parseInt(this.maxCandidatesInputTarget.value, 10);
     const maxStudentsPerGroup = parseInt(this.studentsMaxGroupInputTarget.value, 10);
     if (maxStudentsPerGroup > maxCandidates) {
@@ -83,7 +81,6 @@ export default class extends Controller {
   }
 
   handleMaxCandidatesPerGroupChanges() {
-    console.log('handleMaxCandidatesPerGroupChanges');
     this.checkOnCandidateCount();
     const maxCandidates = parseInt(this.maxCandidatesInputTarget.value, 10)
     if (maxCandidates === 1) { this.withIndividualToggling() }
@@ -101,17 +98,13 @@ export default class extends Controller {
     hideElement(groupSizeElt);
     this.individualButtonTarget.checked = true;
     this.UpdateMaxCandidateCount();
-    // this.studentsMaxGroupInputTarget.setAttribute('min', 1);
-    // this.studentsMaxGroupInputTarget.value = 1;
   }
 
   withCollectiveToggling() {
     const groupSizeElt = $(this.studentsMaxGroupGroupTarget);
     showElement(groupSizeElt);
     this.collectiveButtonTarget.checked = true;
-    this.UpdateMaxCandidateCount();
-    // this.studentsMaxGroupInputTarget.setAttribute('min', 2);
-    // this.studentsMaxGroupInputTarget.value = 2;
+    this.updateMaxCandidateCount();
   }
 
   connect() {

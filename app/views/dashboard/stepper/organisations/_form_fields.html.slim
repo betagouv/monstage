@@ -85,5 +85,5 @@
     - if submit_button
       .fr-mt-3w
         = link_to 'Annuler', dashboard_internship_offers_path, class: 'fr-btn fr-btn--secondary fr-mr-3w'
-        = button_tag :submit, class: 'fr-btn', disabled: request.fullpath.include?('organisations/nouveau'), 'data-target': "organisation-form.submitButton" do
+        = button_tag :submit, class: 'fr-btn', 'data-target': "organisation-form.submitButton" do
           = "Suivant "
