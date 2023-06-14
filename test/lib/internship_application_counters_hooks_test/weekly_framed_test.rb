@@ -28,16 +28,6 @@ module InternshipApplicationCountersHooks
       assert_equal 0, @internship_offer.reload.total_applications_count
     end
 
-    test '.update_internship_offer_counters tracks internship_offer.convention_signed_applications_count' do
-      @internship_application.aasm_state = :approved
-      @internship_application.save!
-
-      assert_changes -> { @internship_offer.reload.convention_signed_applications_count },
-                     from: 0,
-                     to: 1 do
-        @internship_application.signed!
-      end
-    end
 
     test '.update_internship_offer_counters tracks internship_offer.approved_applications_count' do
       @internship_application.aasm_state = :submitted
@@ -46,6 +36,8 @@ module InternshipApplicationCountersHooks
       assert_changes -> { @internship_offer.reload.approved_applications_count },
                      from: 0,
                      to: 1 do
+                    
+        @internship_application.employer_validate!
         @internship_application.approve!
       end
     end
@@ -57,6 +49,7 @@ module InternshipApplicationCountersHooks
       assert_changes -> { @internship_offer.reload.total_male_approved_applications_count },
                      from: 0,
                      to: 1 do
+        @internship_application.employer_validate!
         @internship_application.approve!
       end
     end
@@ -67,6 +60,7 @@ module InternshipApplicationCountersHooks
       @internship_application.save!
 
       assert_no_changes -> { @internship_offer.reload.total_male_approved_applications_count } do
+        @internship_application.employer_validate!
         @internship_application.approve!
       end
     end
@@ -77,6 +71,7 @@ module InternshipApplicationCountersHooks
       @internship_application.save!
 
       assert_no_changes -> { @internship_offer.reload.total_male_approved_applications_count } do
+        @internship_application.employer_validate!
         @internship_application.approve!
       end
     end

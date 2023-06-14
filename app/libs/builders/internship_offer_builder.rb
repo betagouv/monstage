@@ -45,6 +45,7 @@ module Builders
     def update(instance:, params:)
       yield callback if block_given?
       authorize :update, instance
+      instance.publish! if instance.republish
       instance.attributes = preprocess_api_params(params, fallback_weeks: false)
       instance = deal_with_max_candidates_change(params: params, instance: instance)
       instance.save!

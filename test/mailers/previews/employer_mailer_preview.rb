@@ -7,6 +7,14 @@ class EmployerMailerPreview < ActionMailer::Preview
     )
   end
 
+  def resend_internship_application_submitted_email
+    internship_application = InternshipApplication.submitted.first
+
+    EmployerMailer.resend_internship_application_submitted_email(
+      internship_application: internship_application
+    )
+  end
+
   def internship_applications_reminder_email
     employer = InternshipApplication.first
                                     .internship_offer

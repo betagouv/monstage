@@ -24,6 +24,7 @@ FactoryBot.define do
     siret { '11122233300000' }
     aasm_state { 'published' }
     organisation { create(:organisation, employer: employer) }
+    hidden_duplicate { false }
 
     trait :api_internship_offer do
       weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
@@ -34,7 +35,7 @@ FactoryBot.define do
     end
 
     trait :weekly_internship_offer do
-      weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
+      weeks { [Week.selectable_from_now_until_end_of_school_year.first]}
       employer { create(:employer) }
       description { 'Lorem ipsum dolor weekly_internship_offer' }
       remaining_seats_count { max_candidates }

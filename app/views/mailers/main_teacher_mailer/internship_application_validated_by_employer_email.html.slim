@@ -1,0 +1,20 @@
+p style=head_cyclop_styles
+  |Candidature acceptée
+  br
+  |Confirmer la présence au stage 
+
+p style=p_cyclop_styles
+  = "L’#{@offer_presenter.entreprise} a accepté l’élève #{@student_presenter.full_name} " \
+    " au stage de #{@internship_offer.title} la semaine du #{@week_in_words}."
+    
+p style=p_cyclop_styles
+  = "#{@student_presenter.full_name} a reçu "
+  | 
+    un message lui demandant lui demandant de confirmer sa présence au 
+    stage. Cette confirmation annulera toutes ses autres candidatures et 
+    créera une convention numérique à remplir par l'employeur d'abord, puis 
+    par le chef d'établissement.
+
+= render "mailers/blue_call_to_action",
+         href: @url,
+         label:"Accéder à l'offre"

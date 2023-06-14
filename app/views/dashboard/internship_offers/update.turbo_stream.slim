@@ -5,4 +5,8 @@
 = turbo_stream.replace "pub_status_#{dom_id(@internship_offer)}" do
   = render partial: "dashboard/internship_offers/publish_status",
            locals: { internship_offer: @internship_offer }
+
+= turbo_stream.replace "toggle_status_#{dom_id(@internship_offer)}" do
+  = render partial: "dashboard/internship_offers/toggle_publish_form",
+           locals: { internship_offer: @internship_offer }
   

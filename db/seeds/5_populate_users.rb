@@ -41,6 +41,8 @@ def populate_users
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', email: "main_teacher_no_class_room@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: "other@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: "teacher@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'cpe', email: "cpe@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'admin_officer', email: "admin_officer@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
 
   Operator.all.map do |operator|
     with_class_name_for_defaults(Users::Operator.new(email: "#{operator.name.parameterize}@ms3e.fr", password: 'review', operator: operator)).save!
@@ -78,8 +80,8 @@ def populate_students
   with_class_name_for_defaults(Users::Student.new(email: 'leon@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Luanco', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
   
   2.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_3)).save! }
-  with_class_name_for_defaults(Users::Student.new(email: 'raphaelle@ms3e.fr', password: 'review',first_name: 'Raphaëlle', last_name: 'Mesnard',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Chotin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'raphaelle@ms3e.fr', password: 'review',first_name: 'Raphaëlle', last_name: 'Mesnard',  school: missing_school_manager_school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Chotin',  school: missing_school_manager_school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
 end
 
 call_method_with_metrics_tracking([

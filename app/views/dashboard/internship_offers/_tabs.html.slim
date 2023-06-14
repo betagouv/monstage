@@ -5,7 +5,6 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
                                                  data-fr-js-tabs-list="true"]
   - is_active = controller_name == 'internship_offers' && params[:filter].blank?
   li
-    / div.set-height-100
     = link_to dashboard_internship_offers_path(forwardable_params.except(:filter)),
               class: "#{is_active ? 'active' : ''}" do
       button#current_button.fr-tabs__tab [tabindex="0"
@@ -14,11 +13,14 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
                                           aria-controls="tabpanel-404-panel"]
         .my-auto
           = "Publiées "
-          - if is_active
-            - pending_internship_applications_count = badge_counter.pending_internship_offers_actions(internship_offers)
-            - if pending_internship_applications_count.positive?
-              p.fr-badge.fr-badge--new.fr-badge--no-icon.fr-mb-0
-                = pending_internship_applications_count
+          / - if is_active
+            / - pending_internship_applications_count = badge_counter.pending_internship_offers_actions(internship_offers)
+            / - if pending_internship_applications_count.positive?
+            /   p.fr-badge.fr-badge--new.fr-badge--no-icon.fr-mb-0
+            /     = pending_internship_applications_count
+            / =============
+            / will be usefull in the future
+            / =============
 
   - is_active = controller_name == 'internship_offers' && params[:filter] == 'unpublished'
   li

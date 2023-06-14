@@ -25,6 +25,21 @@ module Presenters
       end
     end
 
+    def fetched_phone
+      fetch_details if school.fetched_school_phone.nil?
+      school.fetched_school_phone
+    end
+
+    def fetched_address
+      fetch_details if school.fetched_school_address.nil?
+      school.fetched_school_address
+    end
+
+    def fetched_email
+      fetch_details if school.fetched_school_email.nil?
+      school.fetched_school_email
+    end
+
     def staff
       %i(main_teachers teachers others).map do |role|
         school.send(role).kept.includes(:school)
@@ -32,6 +47,11 @@ module Presenters
     end
 
     private
+
+    def fetch_details
+      Services::SchoolDirectory.new(school: school).school_data_search
+      school.reload
+    end
 
     attr_accessor :school
 

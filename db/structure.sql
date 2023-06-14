@@ -733,7 +733,9 @@ CREATE TABLE public.internship_applications (
     student_email character varying,
     read_at timestamp(6) without time zone,
     examined_at timestamp(6) without time zone,
-    validated_by_employer_at timestamp(6) without time zone
+    validated_by_employer_at timestamp(6) without time zone,
+    dunning_letter_count integer DEFAULT 0,
+    magic_link_tracker integer DEFAULT 0
 );
 
 
@@ -1293,7 +1295,10 @@ CREATE TABLE public.schools (
     city_tsv tsvector,
     kind character varying,
     visible boolean DEFAULT true,
-    internship_agreement_online boolean DEFAULT false
+    internship_agreement_online boolean DEFAULT false,
+    fetched_school_phone character varying(20),
+    fetched_school_address character varying(300),
+    fetched_school_email character varying(100)
 );
 
 
@@ -3122,10 +3127,13 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230412082826'),
 ('20230420095232'),
 ('20230426161001'),
+('20230502164246'),
 ('20230510145714'),
 ('20230511100934'),
 ('20230512082329'),
+('20230516162131'),
 ('20230516193352'),
-('20230517092159');
+('20230517092159'),
+('20230531094449');
 
 

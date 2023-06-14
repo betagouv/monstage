@@ -3,6 +3,9 @@
 div [data-controller='internship-offer-infos' data-action="input->internship-offer-infos#checkForm" data-internship-offer-infos-base-type-value="#{klass}"]
   .row
     .col-md-6
+      - if @republish
+        = form.hidden_field :republish, value: @republish
+      = form.hidden_field :user_update, value: true
       fieldset 
         legend Description du stage
 

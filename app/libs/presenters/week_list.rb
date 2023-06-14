@@ -26,14 +26,15 @@ module Presenters
       end
     end
 
-    def split_weeks_in_trunks
+    def split_weeks_in_trunks(basic: false)
       week_list, container = [weeks.dup.to_a, []]
+      week_list = week_list.sort_by(&:id)
       while week_list.present?
-        joined_weeks = [week_list.slice!(0)]
+        joined_weeks = [week_list.shift]
         while week_list.present? && week_list.first.consecutive_to?(joined_weeks.last)
-          joined_weeks << week_list.slice!(0)
+          joined_weeks << week_list.shift
         end
-        container << self.class.new(weeks: joined_weeks)
+        container << (basic ? joined_weeks : self.class.new(weeks: joined_weeks))
       end
       container
     end

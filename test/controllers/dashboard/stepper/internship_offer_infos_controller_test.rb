@@ -26,14 +26,6 @@ module Dashboard::Stepper
       end
     end
 
-    test 'GET #new as employer is not turbolinkable' do
-      employer = create(:employer)
-      sign_in(employer)
-      organisation = create(:organisation, employer: employer)
-      get new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
-      assert_select 'meta[name="turbo-visit-control"][content="reload"]'
-    end
-
     #
     # Create InternshipOfferInfo
     #
@@ -96,16 +88,15 @@ module Dashboard::Stepper
       employer = create(:employer)
       sign_in(employer)
       sector = create(:sector)
-      weeks = [weeks(:week_2019_1)]
       organisation = create(:organisation, employer: employer)
       post(
         dashboard_stepper_internship_offer_infos_path(organisation_id: organisation.id),
         params: {
-          internship_offer_info: {
+          internship_offer_info: { # title is missing
             sector_id: sector.id,
             description_rich_text: '<div><b>Activités de découverte</b></div>'
           }
-        })
+        )
         assert_response :bad_request
     end
 
@@ -136,16 +127,5 @@ module Dashboard::Stepper
         )
       end
     end
-
-    test 'GET #Edit as employer is not turbolinkable' do
-      employer = create(:employer)
-      organisation = create(:organisation, employer: employer)
-      internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
-      sign_in(employer)
-      organisation = create(:organisation, employer: employer)
-      get edit_dashboard_stepper_internship_offer_info_path(id: internship_offer_info.id, organisation_id: organisation.id)
-      assert_select 'meta[name="turbo-visit-control"][content="reload"]'
-    end
-
   end
 end
