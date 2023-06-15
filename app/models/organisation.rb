@@ -9,9 +9,9 @@ class Organisation < ApplicationRecord
   has_many :internship_offers
 
   # call back after update
-  after_update :update_internship_offers
+  after_update :update_internship_offer
 
-  def update_internship_offers
+  def update_internship_offer
     internship_offer.update_from_organisation if internship_offer
   end
 
