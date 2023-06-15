@@ -18,4 +18,21 @@ class Organisation < ApplicationRecord
   def from_api?
     false
   end
+
+  def duplicate
+    dup.tap do |new_organisation|
+      new_organisation.employer = employer
+      new_organisation.street = street
+      new_organisation.zipcode = zipcode
+      new_organisation.city = city
+      new_organisation.siret = siret
+      new_organisation.manual_enter = manual_enter
+      new_organisation.coordinates = coordinates
+      new_organisation.employer_description = employer_description
+      new_organisation.employer_website = employer_website
+      new_organisation.employer_name = employer_name
+      new_organisation.group_id = group_id
+      new_organisation.is_public = is_public
+    end
+  end
 end

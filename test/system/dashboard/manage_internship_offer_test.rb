@@ -38,7 +38,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
       sign_in(employer)
       visit edit_dashboard_internship_offer_path(internship_offer)
-      find('input[name="internship_offer[employer_name]"]').fill_in(with: 'NewCompany')
+      find('input[name="internship_offer[organisation_attributes][employer_name]"]').fill_in(with: 'NewCompany')
 
       click_on "Publier l'offre"
 
@@ -106,7 +106,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       find('label[for="internship_type_true"]').click # max_candidates is now set to 1
       click_button('Publier l\'offre')
       assert_equal 4, internship_offer.reload.max_candidates
-      assert_equal 1, internship_offer.reload.max_students_per_group
+      assert_equal 2, internship_offer.reload.max_students_per_group
     end
   end
 

@@ -96,8 +96,8 @@ class InternshipOfferTest < ActiveSupport::TestCase
                            .or(Week.where('number <= ? and year = ?', may_thirty_first.cweek, 2021))
       internship_offer = create(:weekly_internship_offer, weeks: weeks)
       assert_equal expected_weeks.ids, internship_offer.available_weeks.ids
-      internship_offer_info = create(:weekly_internship_offer_info, weeks: weeks)
-      assert_equal expected_weeks.ids, internship_offer_info.available_weeks.map(&:id)
+      hosting_info = create(:hosting_info, weeks: weeks, max_candidates: weeks.count)
+      assert_equal expected_weeks.ids, hosting_info.available_weeks.map(&:id)
     end
   end
 
@@ -111,8 +111,8 @@ class InternshipOfferTest < ActiveSupport::TestCase
                            .or(Week.where('number <= ? and year = ?', may_thirty_first.cweek, 2022))
       internship_offer = create(:weekly_internship_offer, weeks: weeks)
       assert_equal expected_weeks.ids, internship_offer.available_weeks.ids
-      internship_offer_info = create(:weekly_internship_offer_info, weeks: weeks)
-      assert_equal expected_weeks.ids, internship_offer_info.available_weeks.map(&:id)
+      hosting_info = create(:hosting_info, weeks: weeks, max_candidates: weeks.count)
+      assert_equal expected_weeks.ids, hosting_info.available_weeks.map(&:id)
     end
   end
   test 'scope available_weeks when october' do
@@ -125,8 +125,8 @@ class InternshipOfferTest < ActiveSupport::TestCase
                            .or(Week.where('number <= ? and year = ?', may_thirty_first.cweek, 2022))
       internship_offer = create(:weekly_internship_offer, weeks: weeks)
       assert_equal expected_weeks.ids, internship_offer.available_weeks.ids
-      internship_offer_info = create(:weekly_internship_offer_info, weeks: weeks)
-      assert_equal expected_weeks.ids, internship_offer_info.available_weeks.map(&:id)
+      hosting_info = create(:hosting_info, weeks: weeks, max_candidates: weeks.count)
+      assert_equal expected_weeks.ids, hosting_info.available_weeks.map(&:id)
     end
   end
 end

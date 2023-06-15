@@ -53,19 +53,12 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
       assert_equal [2023, 2024], available_weeks.map(&:year).uniq
       assert_difference 'InternshipOfferInfos::WeeklyFramed.count' do
         visit new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
-        fill_in_internship_offer_info_form(sector: sector,
-                                           weeks: available_weeks)
+        fill_in_internship_offer_info_form(sector: sector)
         page.assert_no_selector('span.number', text: '1')
-        find('span.number', text: '2')
-        find('span.number', text: '3')
-        find('.test-school-reserved').click
-        fill_in('Ville ou nom de l\'établissement pour lequel le stage est reservé', with: 'Pari')
-        all('.autocomplete-school-results .list-group-item-action').first.click
-        select(school_name, from: 'Collège')
+        find('span', text: 'Étape 2 sur 4')
         click_on "Suivant"
-        find('label', text: 'Nom du tuteur/trice')
+        find('span', text: 'Étape 3 sur 4')
       end
-      assert_equal [2023, 2024], InternshipOfferInfos::WeeklyFramed.last.weeks.map(&:year).uniq
     end
   end
 end

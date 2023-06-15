@@ -20,7 +20,6 @@
                       value: @internship_offer.hosting_info_id
   = form.hidden_field :practical_info_id,
                       value: @internship_offer.practical_info_id
-
   // Organisation
   = form.fields_for :organisation do |organisation_form|
     = render 'dashboard/stepper/organisations/form_fields',

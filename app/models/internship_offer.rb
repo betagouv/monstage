@@ -112,6 +112,8 @@ class InternshipOffer < ApplicationRecord
 
   after_initialize :init
 
+  before_validation :recopy_organisation
+
   before_save :sync_first_and_last_date,
               :reverse_academy_by_zipcode
 
@@ -214,7 +216,21 @@ class InternshipOffer < ApplicationRecord
                     internship_offer_info_id organisation_id tutor_id
                     weekly_hours daily_hours]
 
-    generate_offer_from_attributes(white_list)
+    internship_offer = generate_offer_from_attributes(white_list)
+    organisation = self.organisation.duplicate
+    internship_offer.organisation = organisation
+    internship_offer
+  end
+
+  def update_from_organisation
+    return unless organisation
+
+    self.employer_name = organisation.employer_name
+    self.employer_website = organisation.employer_website
+    self.employer_description = organisation.employer_description
+    self.siret = organisation.siret
+    self.group_id = organisation.group_id
+    self.is_public = organisation.is_public
   end
 
   def duplicate_without_location
@@ -300,5 +316,16 @@ class InternshipOffer < ApplicationRecord
     reserved_places = internship_offer_weeks&.sum(:blocked_applications_count)
     self.remaining_seats_count = max_candidates - reserved_places
     self.published_at = nil if remaining_seats_count.zero?
+  end
+
+  def recopy_organisation
+    return if organisation.nil?
+
+    self.employer_name = organisation.employer_name
+    self.employer_website = organisation.employer_website
+    self.employer_description = organisation.employer_description
+    self.siret = organisation.siret
+    self.group_id = organisation.group_id
+    self.is_public = organisation.is_public
   end
 end

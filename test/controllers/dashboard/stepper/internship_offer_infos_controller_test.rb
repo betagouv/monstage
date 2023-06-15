@@ -96,7 +96,7 @@ module Dashboard::Stepper
             sector_id: sector.id,
             description_rich_text: '<div><b>Activités de découverte</b></div>'
           }
-        )
+        })
         assert_response :bad_request
     end
 

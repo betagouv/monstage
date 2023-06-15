@@ -45,9 +45,8 @@ module Dashboard::InternshipOffers
               daily_hours: {'lundi' => ['10h', '12h']}
 
             } })
-      assert_redirected_to(internship_offer_path(internship_offer),
-      # TODO Solution ? assert_redirected_to(dashboard_internship_offers_path(origine: 'dashboard')
-                           'redirection should point to updated offer')
+      
+      assert_redirected_to(dashboard_internship_offers_path(origine: 'dashboard'))
 
       assert_equal(new_title,
                    internship_offer.reload.title,

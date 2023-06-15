@@ -4,6 +4,11 @@ div [data-controller='hosting-infos' data-hosting-infos-base-type-value="#{klass
   .row
     .col-md-12.order-md-1.order-2
       
+      / - TODO if edit_mode && resource.missing_weeks_info?
+      /   #weeks_container.fr-mb-2w
+      /     .fr-alert.fr-alert--info
+      /       h3.fr-alert__title Ajoutez des semaines aux précédentes
+      /       p Plus aucune semaine n'est disponible pour cette offre de stage. Ajoutez-en ci-dessous pour pouvoir republier votre offre.
       .form-group
         = render partial: "weeks/checkbox_inputs",
                           locals: {current_weeks: @available_weeks,
