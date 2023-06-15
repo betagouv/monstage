@@ -47,10 +47,10 @@ Ce token devra être présent à chaque requête.
 
 ![](screenshots/login.png)
 
-Depuis la page [Mon profil](https://www.monstagedetroisieme.fr/account), se rendre sur la page API
+Depuis la page [Mon profil](https://www.monstagedetroisieme.fr/mon-compte), se rendre sur la page API
 ![](screenshots/logged.png)
 
-Depuis la page [API](https://www.monstagedetroisieme.fr/account/api), récupérer le token
+Depuis la page [API](https://www.monstagedetroisieme.fr/mon-compte/api), récupérer le token
 ![](screenshots/api.png)
 
 # Structures de données et référentiels
