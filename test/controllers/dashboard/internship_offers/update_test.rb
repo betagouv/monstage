@@ -1,7 +1,5 @@
 # frozen_string_literal: true
-
 require 'test_helper'
-
 module Dashboard::InternshipOffers
   class UpdateTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers

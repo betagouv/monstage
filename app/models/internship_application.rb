@@ -193,7 +193,7 @@ class InternshipApplication < ApplicationRecord
                   after: proc { |*_args|
                     # Other employers notifications
                     student.internship_applications.where(aasm_state: employer_aware_states).each do |application|
-                      EmployerMailer.internship_application_approved_for_an_other_internship_offer(internship_application: application).deliver_later
+                      EmployerMailer.internship_application_approved_for_an_other_internship_offer(internship_application: application).deliver_later unless application == self
                     end
                   }
     end

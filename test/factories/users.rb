@@ -93,6 +93,22 @@ FactoryBot.define do
       sequence(:email) { |n| "lautre.#{n}@#{school.email_domain_name}" }
     end
 
+    factory :admin_officer, class: 'Users::SchoolManagement', parent: :user do
+      school
+      type { 'Users::SchoolManagement' }
+      role { 'admin_officer' }
+
+      sequence(:email) { |n| "resp_admin.#{n}@#{school.email_domain_name}" }
+    end
+
+    factory :cpe, class: 'Users::SchoolManagement', parent: :user do
+      school
+      type { 'Users::SchoolManagement' }
+      role { 'cpe' }
+
+      sequence(:email) { |n| "cpe.#{n}@#{school.email_domain_name}" }
+    end
+
     factory :statistician, class: 'Users::PrefectureStatistician', parent: :user do
       type { 'Users::PrefectureStatistician' }
       agreement_signatorable { false }

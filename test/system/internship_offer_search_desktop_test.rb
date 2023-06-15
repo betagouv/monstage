@@ -41,23 +41,25 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
   end
 
   test 'search by location (zipcodes) works' do
-    internship_offer_at_paris = create(:weekly_internship_offer,
-                                       coordinates: Coordinates.paris)
-    internship_offer_at_bordeaux = create(:weekly_internship_offer,
-                                          coordinates: Coordinates.bordeaux)
+    travel_to (Date.new(2022, 9, 6)) do
+      internship_offer_at_paris = create(:weekly_internship_offer,
+                                        coordinates: Coordinates.paris)
+      internship_offer_at_bordeaux = create(:weekly_internship_offer,
+                                            coordinates: Coordinates.bordeaux)
 
-    visit internship_offers_path
-    fill_in_city_or_zipcode(with: '75012', expect: 'Paris')
+      visit internship_offers_path
+      fill_in_city_or_zipcode(with: '75012', expect: 'Paris')
 
-    submit_form
-    assert_card_presence_of(internship_offer: internship_offer_at_paris)
-    assert_absence_of(internship_offer: internship_offer_at_bordeaux)
+      submit_form
+      assert_card_presence_of(internship_offer: internship_offer_at_paris)
+      assert_absence_of(internship_offer: internship_offer_at_bordeaux)
 
-    # reset search and submit
-    fill_in_city_or_zipcode(with: '', expect: '')
-    submit_form
-    # assert_presence_of(internship_offer: internship_offer_at_paris)
-    # assert_presence_of(internship_offer: internship_offer_at_bordeaux)
+      # reset search and submit
+      fill_in_city_or_zipcode(with: '', expect: '')
+      submit_form
+      # assert_presence_of(internship_offer: internship_offer_at_paris)
+      # assert_presence_of(internship_offer: internship_offer_at_bordeaux)
+    end
   end
 
 
