@@ -33,7 +33,7 @@ L'api est disponible sur ```/api``` sur les environnements de pré production et
 
 *Les APIs sont ouvertes uniquement aux acteurs concernés.*
 
-**Merci d'effectuer une demande par mail** ([support](mailto:martin.fourcade@beta.gouv.fr)) pour créer un compte API.
+**Merci d'effectuer une demande par mail** ([support](mailto:maxime.pierrot@monstagedetroisieme.fr)) pour créer un compte API.
 
 Une fois le compte créé, le token d'API pourra être récupéré via notre interface web. Il est différent selon l'environnement de pré production ou production.
 
@@ -43,15 +43,15 @@ Ce token devra être présent à chaque requête.
 
 ### Comment récuperer mon token d'authentification
 
-[Se connecter](https://monstagedetroisieme.fr/users/sign_in) avec votre compte opérateur
+[Se connecter](https://www.monstagedetroisieme.fr/utilisateurs/connexion) avec votre compte opérateur
 
-![](screenshots/0-se-connecter.jpg)
+![](screenshots/login.png)
 
 Depuis la page [Mon profil](https://www.monstagedetroisieme.fr/account), se rendre sur la page API
-![](screenshots/1-page-mon-profil.jpg)
+![](screenshots/logged.png)
 
 Depuis la page [API](https://www.monstagedetroisieme.fr/account/api), récupérer le token
-![](screenshots/2-page-api-token.jpg)
+![](screenshots/api.png)
 
 # Structures de données et référentiels
 
