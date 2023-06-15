@@ -4,7 +4,7 @@ module Dashboard
 
     def index
       authorize! :index, TeamMember
-      @team_members = TeamMember.all
+      @team_members = current_user.team_members
     end
 
     def new

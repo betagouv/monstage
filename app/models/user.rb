@@ -256,6 +256,8 @@ class User < ApplicationRecord
   def signatory_role ; nil end
   def obfuscated_phone_number ; nil end
 
+  def anonymized? ; self.anonymized end
+
   def presenter
     Presenters::User.new(self)
   end

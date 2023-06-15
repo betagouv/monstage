@@ -69,7 +69,9 @@ CREATE TYPE public.user_role AS ENUM (
     'school_manager',
     'teacher',
     'main_teacher',
-    'other'
+    'other',
+    'cpe',
+    'admin_officer'
 );
 
 
@@ -1301,7 +1303,8 @@ CREATE TABLE public.team_members (
     id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    user_id bigint NOT NULL
+    inviter_id bigint NOT NULL,
+    member_id bigint NOT NULL
 );
 
 
@@ -2340,10 +2343,17 @@ CREATE INDEX index_team_member_invitations_on_user_id ON public.team_member_invi
 
 
 --
--- Name: index_team_members_on_user_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_team_members_on_inviter_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_team_members_on_user_id ON public.team_members USING btree (user_id);
+CREATE INDEX index_team_members_on_inviter_id ON public.team_members USING btree (inviter_id);
+
+
+--
+-- Name: index_team_members_on_member_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_team_members_on_member_id ON public.team_members USING btree (member_id);
 
 
 --
@@ -2468,11 +2478,27 @@ ALTER TABLE ONLY public.school_internship_weeks
 
 
 --
+-- Name: team_members fk_rails_16e04ba94e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.team_members
+    ADD CONSTRAINT fk_rails_16e04ba94e FOREIGN KEY (inviter_id) REFERENCES public.users(id);
+
+
+--
 -- Name: signatures fk_rails_19164d1054; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.signatures
     ADD CONSTRAINT fk_rails_19164d1054 FOREIGN KEY (internship_agreement_id) REFERENCES public.internship_agreements(id);
+
+
+--
+-- Name: team_members fk_rails_21c6860154; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.team_members
+    ADD CONSTRAINT fk_rails_21c6860154 FOREIGN KEY (member_id) REFERENCES public.users(id);
 
 
 --
@@ -2601,14 +2627,6 @@ ALTER TABLE ONLY public.active_storage_variant_records
 
 ALTER TABLE ONLY public.internship_offer_info_weeks
     ADD CONSTRAINT fk_rails_9d43a53fc8 FOREIGN KEY (internship_offer_info_id) REFERENCES public.internship_offer_infos(id);
-
-
---
--- Name: team_members fk_rails_9ec2d5e75e; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.team_members
-    ADD CONSTRAINT fk_rails_9ec2d5e75e FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -2960,6 +2978,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230307200802'),
 ('20230321104203'),
 ('20230404154158'),
+('20230412082826'),
 ('20230420095232'),
 ('20230426161001'),
 ('20230502164246'),

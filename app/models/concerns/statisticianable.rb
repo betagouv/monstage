@@ -15,6 +15,12 @@ module Statisticianable
     has_many :organisations
     has_many :tutors
     has_many :internship_offer_infos
+    has_many :team_members,
+              dependent: :destroy,
+              foreign_key: :user_id
+    has_many :team_member_invitations,
+             dependent: :destroy,
+             foreign_key: :user_id
 
     before_update :trigger_agreements_creation
     before_validation :assign_email_whitelist_and_confirm
@@ -54,7 +60,7 @@ module Statisticianable
         scopes(UserAdmin::DEFAULT_SCOPES)
 
         fields(*UserAdmin::DEFAULT_FIELDS)
-        
+
         fields(*UserAdmin::ACCOUNT_FIELDS)
       end
 

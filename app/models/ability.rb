@@ -141,8 +141,10 @@ class Ability
 
     can %i[index update], InternshipApplication
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
-    can %i[manage_teams], TeamMember
+    byebug
+    can %i[manage_teams], TeamMember, inviter_id: user.id
     can %i[manage_teams], TeamMemberInvitation
+    can %i[destroy], TeamMemberInvitation , inviter_id: user.id
 
     as_employers_signatory_abilities(user: user)
   end
@@ -172,8 +174,6 @@ class Ability
     can :show, :api_token
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
     can %i[index_and_filter], Reporting::InternshipOffer
-    can %i[manage_teams], TeamMember
-    can %i[manage_teams], TeamMemberInvitation
     can %i[index], Acl::Reporting do |_acl|
       true
     end
@@ -182,6 +182,9 @@ class Ability
            see_reporting_schools
            see_reporting_enterprises
            check_his_statistics], User
+    can %i[manage_teams], TeamMember, inviter_id: user.id
+    can %i[manage_teams], TeamMemberInvitation
+    can %i[destroy], TeamMemberInvitation , inviter_id: user.id
   end
 
   def god_abilities
@@ -303,6 +306,9 @@ class Ability
 
     as_employers_signatory_abilities(user: user) if user.employer_like?
     can :see_minister_video, User
+        can %i[manage_teams], TeamMember, inviter_id: user.id
+    can %i[manage_teams], TeamMemberInvitation
+    can %i[destroy], TeamMemberInvitation , inviter_id: user.id
   end
 
   def common_school_management_abilities(user:)

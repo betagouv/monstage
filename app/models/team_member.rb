@@ -1,18 +1,21 @@
 class TeamMember < ApplicationRecord
    # Relations
-  has_many :employers, dependent: :destroy
+  belongs_to :inviter,
+             class_name: 'User',
+             optional: true
+  belongs_to :member,
+             class_name: 'User',
+             optional: true
+
 
   # Validations
+  validates :email,
+            uniqueness: { scope: :member_id,
+                          message: "Vous avez déjà invité ce membre dans votre équipe" },
+            on: :create
 
-  # TODO
-  # before_validation :check_new_member_validity, on: :create
-
-  private
-
-  # def check_new_member_validity
-  #   if employer.team_members.count >= 2
-  #     errors.add(:base, "Vous ne pouvez pas ajouter ce nouveau membre à votre équipe, car il appartient déjà à une équipe")
-  #   end
-  # end
-
+  # instance methods
+  def presenter(current_user)
+    @presenter ||= ::Presenters::TeamMember.new(team_member: self, current_user: current_user)
+  end
 end
