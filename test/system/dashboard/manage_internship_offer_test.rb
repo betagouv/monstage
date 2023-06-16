@@ -113,10 +113,12 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   test 'Employer can duplicate an internship offer' do
     employer = create(:employer)
     older_weeks = [Week.selectable_from_now_until_end_of_school_year.first]
+    organisation = create(:organisation, employer: employer, is_public: true)
     current_internship_offer = create(
       :weekly_internship_offer,
       employer: employer,
-      weeks: older_weeks
+      weeks: older_weeks,
+      organisation: organisation
     )
     sign_in(employer)
     visit dashboard_internship_offers_path(internship_offer: current_internship_offer)

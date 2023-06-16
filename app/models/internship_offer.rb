@@ -217,7 +217,7 @@ class InternshipOffer < ApplicationRecord
                     weekly_hours daily_hours]
 
     internship_offer = generate_offer_from_attributes(white_list)
-    organisation = self.organisation.duplicate
+    organisation = self.organisation.dup
     internship_offer.organisation = organisation
     internship_offer
   end

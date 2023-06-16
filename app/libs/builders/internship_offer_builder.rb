@@ -29,6 +29,7 @@ module Builders
     def create(params:)
       yield callback if block_given?
       authorize :create, model
+      preprocess_organisation(params)
       create_params = preprocess_api_params(params, fallback_weeks: true)
       internship_offer = model.create!(create_params)
       callback.on_success.try(:call, internship_offer)
@@ -130,6 +131,18 @@ module Builders
         daily_lunch_break: practical_info.daily_lunch_break,
         weekly_lunch_break: practical_info.weekly_lunch_break,
       }
+    end
+
+    def preprocess_organisation(params)
+      return params unless params["organisation_attributes"]
+
+      params["employer_name"] = params["organisation_attributes"]["employer_name"] unless params["organisation_attributes"]["employer_name"].blank?
+      params["employer_website"] = params["organisation_attributes"]["employer_website"] unless params["organisation_attributes"]["employer_website"].blank?
+      params["coordinates"] = params["organisation_attributes"]["coordinates"] unless params["organisation_attributes"]["coordinates"].blank?
+      params["street"] = params["organisation_attributes"]["street"] unless params["organisation_attributes"]["street"].blank?
+      params["zipcode"] = params["organisation_attributes"]["zipcode"] unless params["organisation_attributes"]["zipcode"].blank?
+      params["city"] = params["organisation_attributes"]["city"] unless params["organisation_attributes"]["city"].blank?
+      params["is_public"] = params["organisation_attributes"]["is_public"] unless params["organisation_attributes"]["is_public"].blank?
     end
 
     def from_api?
