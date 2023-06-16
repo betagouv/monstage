@@ -23,7 +23,7 @@ module Dashboard::Stepper
           .merge(employer_id: current_user.id)
       )
       @internship_offer_info.save!
-      redirect_to(new_dashboard_stepper_tutor_path(
+      redirect_to(new_dashboard_stepper_hosting_info_path(
                     organisation_id: params[:organisation_id],
                     internship_offer_info_id: @internship_offer_info.id
       ))
@@ -45,7 +45,7 @@ module Dashboard::Stepper
       authorize! :update, @internship_offer_info
 
       if @internship_offer_info.update(internship_offer_info_params)
-        redirect_to new_dashboard_stepper_tutor_path(
+        redirect_to new_dashboard_stepper_hosting_info_path(
           organisation_id: params[:organisation_id],
           internship_offer_info_id: @internship_offer_info.id
         )

@@ -22,6 +22,8 @@ FactoryBot.define do
     employer_name { 'Octo' }
     coordinates { Coordinates.paris }
     siret { '11122233300000' }
+    aasm_state { 'published' }
+    organisation { create(:organisation, employer: employer) }
     hidden_duplicate { false }
 
     trait :api_internship_offer do

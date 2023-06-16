@@ -89,9 +89,10 @@ export default class extends Controller {
   }
 
   // toggle all weeks options
-  handleToggleWeeks(event) {
+  showAllYearLong(event) {
     if ($('#all_year_long').is(':checked')) {
       $('.custom-control-checkbox-list').addClass('d-none');
+      $('#specific_weeks').prop( "checked", false);
     } else {
       $('.custom-control-checkbox-list').removeClass('d-none');
     }
@@ -104,6 +105,27 @@ export default class extends Controller {
     } else {
       showElement($(this.checkboxesContainerTarget));
     }
+  }
+
+  showSpecificWeeks(event) {
+    if ($('#specific_weeks').is(':checked')) {
+      $('.custom-control-checkbox-list').removeClass('d-none');
+      $('#all_year_long').prop( "checked", false);
+    } else {
+      $('.custom-control-checkbox-list').addClass('d-none');
+    }
+
+
+    $(this.weekCheckboxesTargets).each((i, el) => {
+      $(el).prop('checked', $(event.target).prop('checked'));
+    });
+      
+    if (event.target.checked) {
+      showElement($(this.checkboxesContainerTarget));
+    } else {
+      hideElement($(this.checkboxesContainerTarget));
+    };
+    
   }
 
   // on week checked

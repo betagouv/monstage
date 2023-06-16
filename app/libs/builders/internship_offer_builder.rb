@@ -3,16 +3,21 @@
 module Builders
   # wrap internship offer creation logic / failure for API/web usage
   class InternshipOfferBuilder < BuilderBase
-    # called by dashboard/stepper/tutor#create during creating with steps
-    def create_from_stepper(tutor:, organisation:, internship_offer_info:)
+    # called by dashboard/stepper/practical_info#create during creating with steps
+    def create_from_stepper(organisation:, internship_offer_info:, hosting_info:, practical_info:)
       yield callback if block_given?
       authorize :create, model
       internship_offer = model.new(
         {}.merge(preprocess_organisation_to_params(organisation))
           .merge(preprocess_internship_offer_info_to_params(internship_offer_info))
-          .merge(preprocess_tutor_to_params(tutor))
+          .merge(preprocess_hosting_info_to_params(hosting_info))
+          .merge(preprocess_practical_info_to_params(practical_info))
           .merge(employer_id: user.id, employer_type: 'User')
-          .merge(tutor_id: tutor.id, organisation_id: organisation.id, internship_offer_info_id: internship_offer_info.id)
+          .merge(
+            organisation_id: organisation.id, 
+            internship_offer_info_id: internship_offer_info.id, 
+            hosting_info_id: hosting_info.id, 
+            practical_info_id: practical_info.id)
         )
         internship_offer.save!
         callback.on_success.try(:call, internship_offer)
@@ -24,6 +29,7 @@ module Builders
     def create(params:)
       yield callback if block_given?
       authorize :create, model
+      preprocess_organisation(params)
       create_params = preprocess_api_params(params, fallback_weeks: true)
       internship_offer = model.create!(create_params)
       callback.on_success.try(:call, internship_offer)
@@ -99,30 +105,44 @@ module Builders
     end
 
     def preprocess_internship_offer_info_to_params(internship_offer_info)
-      params = {
+      {
+        sector_id: internship_offer_info.sector_id,
         title: internship_offer_info.title,
         description_rich_text: (internship_offer_info.description_rich_text.present? ? internship_offer_info.description_rich_text.to_s : internship_offer_info.description),
-        max_candidates: internship_offer_info.max_candidates,
-        max_students_per_group: internship_offer_info.max_students_per_group,
-        school_id: internship_offer_info.school_id,
-        weekly_hours: internship_offer_info.weekly_hours,
-        new_daily_hours: internship_offer_info.new_daily_hours,
-        sector_id: internship_offer_info.sector_id,
-        daily_lunch_break: internship_offer_info.daily_lunch_break,
-        weekly_lunch_break: internship_offer_info.weekly_lunch_break,
-        type: internship_offer_info.type.gsub('Info', '')
+        type: 'InternshipOfferInfos::WeeklyFramed'
       }
-      params[:week_ids] = internship_offer_info.week_ids
+    end
+
+    def preprocess_hosting_info_to_params(hosting_info)
+      params = {
+        max_candidates: hosting_info.max_candidates,
+        max_students_per_group: hosting_info.max_students_per_group,
+        school_id: hosting_info.school_id,
+        type: 'InternshipOffers::WeeklyFramed'
+      }
+      params[:week_ids] = hosting_info.week_ids
       params
     end
 
-    def preprocess_tutor_to_params(tutor)
+    def preprocess_practical_info_to_params(practical_info)
       {
-        tutor_name: tutor.tutor_name,
-        tutor_email: tutor.tutor_email,
-        tutor_phone: tutor.tutor_phone,
-        tutor_role: tutor.tutor_role
+        weekly_hours: practical_info.weekly_hours,
+        daily_hours: practical_info.daily_hours,
+        daily_lunch_break: practical_info.daily_lunch_break,
+        weekly_lunch_break: practical_info.weekly_lunch_break,
       }
+    end
+
+    def preprocess_organisation(params)
+      return params unless params["organisation_attributes"]
+
+      params["employer_name"] = params["organisation_attributes"]["employer_name"] unless params["organisation_attributes"]["employer_name"].blank?
+      params["employer_website"] = params["organisation_attributes"]["employer_website"] unless params["organisation_attributes"]["employer_website"].blank?
+      params["coordinates"] = params["organisation_attributes"]["coordinates"] unless params["organisation_attributes"]["coordinates"].blank?
+      params["street"] = params["organisation_attributes"]["street"] unless params["organisation_attributes"]["street"].blank?
+      params["zipcode"] = params["organisation_attributes"]["zipcode"] unless params["organisation_attributes"]["zipcode"].blank?
+      params["city"] = params["organisation_attributes"]["city"] unless params["organisation_attributes"]["city"].blank?
+      params["is_public"] = params["organisation_attributes"]["is_public"] unless params["organisation_attributes"]["is_public"].blank?
     end
 
     def from_api?
@@ -159,7 +179,7 @@ module Builders
     def model
       return ::InternshipOffers::Api if from_api?
 
-      InternshipOffer
+      InternshipOffers::WeeklyFramed
     end
 
     def duplicate?(internship_offer)

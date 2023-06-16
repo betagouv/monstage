@@ -68,7 +68,7 @@ module Dashboard
       authorize! :update, @internship_offer
       internship_offer_builder.update(instance: @internship_offer,
                                       params: internship_offer_params) do |on|
-
+              
       on.success do |updated_internship_offer|
         @internship_offer = updated_internship_offer
         respond_to do |format|
@@ -109,6 +109,25 @@ module Dashboard
                       flash: { warning: "Votre annonce n'a pas été supprimée" })
         end
       end
+    end
+
+    def publish
+      @internship_offer = InternshipOffer.find(params[:id])
+      authorize! :publish, @internship_offer
+      @internship_offer.publish!
+      redirect_to(internship_offer_path(@internship_offer),
+                      flash: { success: 'Votre offre de stage est publiée.' })
+    end
+
+    def remove # Back to step 4
+      @internship_offer = InternshipOffer.find(params[:id])
+      redirect_to(edit_dashboard_stepper_practical_info_path(
+          id: @internship_offer.practical_info_id,
+          organisation_id: @internship_offer.organisation_id, 
+          internship_offer_info_id: @internship_offer.internship_offer_info_id,
+          hosting_info_id: @internship_offer.hosting_info_id)
+      )
+      @internship_offer.destroy
     end
 
     # duplicate form
@@ -182,11 +201,25 @@ module Dashboard
                     :tutor_email, :employer_website, :employer_name, :street,
                     :zipcode, :city, :department, :region, :academy, :renewed,
                     :is_public, :group_id, :published_at, :republish, :type,
-                    :employer_id, :employer_type, :school_id, :verb,
-                    :employer_description_rich_text, :siret, :user_update,
-                    :employer_manual_enter, :weekly_lunch_break,
-                    coordinates: {}, week_ids: [],
-                    new_daily_hours: {}, daily_lunch_break: {}, weekly_hours:[])
+                    :employer_id, :employer_type, :school_id, :verb, :user_update,
+                    :employer_description_rich_text, :siret, :employer_manual_enter, 
+                    :weekly_lunch_break, coordinates: {}, week_ids: [],
+                    daily_hours: {}, daily_lunch_break: {}, weekly_hours:[], 
+                    organisation_attributes: [
+                      :id,
+                      :employer_name,
+                      :street,
+                      :zipcode,
+                      :city,
+                      :siret,
+                      :manual_enter,
+                      :employer_description_rich_text,
+                      :employer_website,
+                      :is_public,
+                      :group_id,
+                      :autocomplete,
+                      coordinates: {}
+                    ])
     end
 
     def set_internship_offer

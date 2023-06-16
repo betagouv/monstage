@@ -1,0 +1,9 @@
+= render 'layouts/breadcrumb',
+          links: [ [dashboard_internship_offers_path, 'Mes offres de stage'],
+                   ['', 'Déposer une offre de stage']]
+.row
+  .col
+      h1.h2.mb-3 Déposer une offre de stage
+.row
+  .col-12
+    = render 'dashboard/stepper/practical_infos/form'

@@ -1,27 +1,39 @@
 - preselect_all = preselect_all_weeks?(form.object)
 div [data-controller="select-weeks"
-     data-internship-offer-infos-target='weeksContainer'
+     data-hosting-infos-target='weeksContainer'
      data-select-weeks-skip-validation-value="false"]
-  .form-group
-    div.fr-label
-      = label
-      = form.rg2a_required_content_tag
+  .row
+    .col-md-12
+      .form-group
+        div.fr-label.font-weight-bold
+          = label
+          = form.rg2a_required_content_tag
 
-    - if render_employer_components
-      - allow_select_all = !form.object.is_fully_editable?
-      .fr-checkbox-group.fr-checkbox-group--sm.mb-1
-        = check_box_tag 'all_year_long',
-                        false,
-                        preselect_all,
-                        { disabled: allow_select_all,
-                          data: { "internship-offer-infos-target": "allYearLong",
-                                  action: "change->select-weeks#handleToggleWeeks"}}
-        = label_tag 'all_year_long', class: 'fr-label' do
-          | Toute l'année scolaire
+        - if render_employer_components
+          - allow_select_all = !form.object.is_fully_editable?
+          .fr-checkbox-group.fr-checkbox-group--sm.mb-1
+            = check_box_tag 'all_year_long',
+                            false,
+                            preselect_all,
+                            { disabled: allow_select_all,
+                              data: { "internship-offer-infos-target": "allYearLong",
+                                      action: "change->select-weeks#showAllYearLong"}}
+            = label_tag 'all_year_long', class: 'fr-label' do
+              | Toute l'année scolaire
 
-          = " #{SchoolYear::Current.new.beginning_of_period.year}-#{SchoolYear::Current.new.end_of_period.year}"
+              = " #{SchoolYear::Current.new.beginning_of_period.year}-#{SchoolYear::Current.new.end_of_period.year}"
+            
+            = check_box_tag 'specific_weeks',
+                            false,
+                            !preselect_all,
+                            { disabled: allow_select_all,
+                              data: { "internship-offer-infos-target": "specificWeeks",
+                                      action: "change->select-weeks#showSpecificWeeks"}}
+            = label_tag 'specific_weeks', class: 'fr-label' do
+              | Semaines spécifiques
 
-    div data-select-weeks-target="checkboxesContainer" class="#{preselect_all ? 'd-none' : ''}"
+  .row data-select-weeks-target="checkboxesContainer" class="#{preselect_all ? 'd-none' : ''}"
+    .col-md-6
       .custom-control-checkbox-list
         - current_weeks.map do |week|
           .fr-checkbox-group.fr-checkbox-group--sm.position-relative.pr-3.my-2
@@ -54,4 +66,8 @@ div [data-controller="select-weeks"
                 .col-4.badge-legend.rounded
                 .col-4 Forte
 
-    .form-text.text-danger.d-none data-select-weeks-target="hint" Veuillez saisir au moins une semaine de stage
+        .form-text.text-danger.d-none data-select-weeks-target="hint" Veuillez saisir au moins une semaine de stage
+    .col-md-6
+      .fr-alert.fr-alert--info
+        h3.fr-alert__title Conseil
+        p Décembre et  janvier sont les mois où se déroulent la plupart des stages.
