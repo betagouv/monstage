@@ -88,7 +88,7 @@ export default class extends Controller {
 
   // show/hide group (maxStudentsPerGroup>1) internship custom controls
   toggleInternshipmaxStudentsPerGroup(event) {
-    this.UpdateMaxCandidateCount();
+    this.updateMaxCandidateCount();
     const toggleValue = event.target.value;
     (toggleValue === 'true') ? this.withIndividualToggling() : this.withCollectiveToggling();
   }
@@ -97,7 +97,7 @@ export default class extends Controller {
     const groupSizeElt = $(this.studentsMaxGroupGroupTarget);
     hideElement(groupSizeElt);
     this.individualButtonTarget.checked = true;
-    this.UpdateMaxCandidateCount();
+    this.updateMaxCandidateCount();
   }
 
   withCollectiveToggling() {
@@ -109,7 +109,7 @@ export default class extends Controller {
 
   connect() {
     this.induceType('');
-    this.UpdateMaxCandidateCount();
+    this.updateMaxCandidateCount();
   }
 
   disconnect() {}

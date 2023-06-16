@@ -114,9 +114,10 @@ module Dashboard
     def publish
       @internship_offer = InternshipOffer.find(params[:id])
       authorize! :publish, @internship_offer
+      # TO DO Clean
       @internship_offer.publish!
-      redirect_to(internship_offer_path(@internship_offer),
-                      flash: { success: 'Votre offre de stage est publiée.' })
+      @internship_offer.update(aasm_state: 'published')
+      redirect_to internship_offer_path(@internship_offer), flash: { success: 'Votre annonce a bien été publiée' }
     end
 
     def remove # Back to step 4

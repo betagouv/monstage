@@ -10,7 +10,7 @@
     .d-flex.justify-content-start
       - if internship_offer.drafted? && can?(:publish, @internship_offer)
         = button_to 'Modifier', remove_dashboard_internship_offer_path(@internship_offer), class: 'fr-btn fr-btn--secondary fr-mr-2w'
-        = button_to 'Publier', publish_dashboard_internship_offer_path(@internship_offer), class: 'fr-btn'
+        = button_to 'Publier', publish_dashboard_internship_offer_path(@internship_offer),  data: { turbo: false }, class: 'fr-btn'
       - else
         - if can?(:update, @internship_offer)
           .fr-mx-1w data-turbo="false"

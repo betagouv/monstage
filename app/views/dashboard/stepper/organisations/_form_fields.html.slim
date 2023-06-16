@@ -6,6 +6,7 @@
           legend.fr-text--lg.font-weight-bold.fr-my-2w L'entreprise
           /  L'entreprise
           = form.hidden_field :manual_enter, value: false
+          = form.hidden_field :employer_id, value: current_user.id
           - if resource.id
             = form.hidden_field :id, value: resource.id
 
