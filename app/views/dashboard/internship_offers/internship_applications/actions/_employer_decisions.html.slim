@@ -3,6 +3,9 @@
   - if prez.ok_for_reject?
     = render "dashboard/internship_offers/internship_applications/actions/reject",
               internship_application: @internship_application
+  - if prez.ok_for_transfert?
+    = render "dashboard/internship_offers/internship_applications/actions/transfert",
+              internship_application: @internship_application
   - if prez.ok_for_examine?
     = render "dashboard/internship_offers/internship_applications/actions/examine",
               internship_application: @internship_application

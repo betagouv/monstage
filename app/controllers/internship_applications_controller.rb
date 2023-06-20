@@ -75,6 +75,16 @@ class InternshipApplicationsController < ApplicationController
     ).all.includes([:sector]).order(id: :desc).last(6)
   end
 
+  def edit_transfert
+    @internship_application = InternshipApplication.find(params[:id])
+    authorize! :transfert, @internship_application
+  end
+
+  def transfert
+    @internship_application = InternshipApplication.find(params[:id])
+    authorize! :transfert, @internship_application
+  end
+
   private
 
   def set_intership_applications
