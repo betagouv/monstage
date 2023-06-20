@@ -68,6 +68,7 @@ div [data-controller='hosting-infos' data-hosting-infos-base-type-value="#{klass
             | Vous accueillerez ces élèves individuellement ou par groupes
         = form.number_field :max_candidates,
                             class: "fr-input",
+                            value: resource.max_candidates,
                             placeholder: "Nombre d'élèves prévus pour cette offre",
                             disabled: false,
                             required: true,

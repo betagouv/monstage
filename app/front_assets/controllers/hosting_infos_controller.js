@@ -109,7 +109,7 @@ export default class extends Controller {
 
   connect() {
     this.induceType('');
-    this.updateMaxCandidateCount();
+    // this.updateMaxCandidateCount();
   }
 
   disconnect() {}
