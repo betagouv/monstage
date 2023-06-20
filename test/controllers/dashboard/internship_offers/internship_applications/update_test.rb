@@ -187,7 +187,7 @@ module InternshipOffers::InternshipApplications
 
       sign_in(internship_offer.employer)
 
-      assert_enqueued_emails 1 do
+      assert_enqueued_emails 2 do
         assert_changes -> { InternshipAgreement.all.count },
                      from: 0,
                      to: 1 do
