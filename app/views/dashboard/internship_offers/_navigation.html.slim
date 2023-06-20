@@ -18,9 +18,6 @@
         - if can?(:renew, @internship_offer) || can?(:duplicate, @internship_offer)
           .fr-mx-1w
             = link_to '', new_dashboard_internship_offer_path(duplicate_id: internship_offer.to_param), class: 'fr-btn fr-icon-file-add-line fr-btn--icon fr-btn--secondary test-duplicate-button'
-        - if can?(:update, @internship_offer) && @internship_offer.reload.published_at?
-          .fr-mx-1w
-            = render partial: "dashboard/internship_offers/unpublish_form"
         - if can?(:discard, @internship_offer)
           .fr-mx-1w
             button.fr-btn.fr-icon-delete-line.fr-btn--icon.fr-btn--secondary.test-discard-button data-fr-opened="false" aria-controls="discard-internship-offer-modal"
