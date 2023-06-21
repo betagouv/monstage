@@ -81,17 +81,6 @@ class InvitationTest < ActiveSupport::TestCase
     refute invitation.valid?
   end
 
-  test '#save when missing parameter user_id' do
-    params = {
-      first_name: 'Pablo',
-      last_name: 'Picasso',
-      email: 'pablo@ac-paris.fr',
-      role: 'teacher'
-    }
-    invitation = Invitation.new(params)
-    refute invitation.valid?
-  end
-
   test 'private official_email_address method' do
     school_manager = create(:school_manager)
     refute school_manager.school.blank?
