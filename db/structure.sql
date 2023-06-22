@@ -2693,11 +2693,6 @@ ALTER TABLE ONLY public.hosting_info_weeks
 
 ALTER TABLE ONLY public.team_members
     ADD CONSTRAINT fk_rails_16e04ba94e FOREIGN KEY (inviter_id) REFERENCES public.users(id);
--- Name: hosting_info_weeks fk_rails_0ab0d03d1c; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.hosting_info_weeks
-    ADD CONSTRAINT fk_rails_0ab0d03d1c FOREIGN KEY (week_id) REFERENCES public.weeks(id);
 
 
 --
