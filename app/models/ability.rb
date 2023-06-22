@@ -359,6 +359,12 @@ class Ability
   end
 
   def common_school_management_abilities(user:)
+    can %i[list_invitations
+      create_invitation
+      destroy_invitation], Invitation do |invitation|
+        invitation.school.id == user.school_id
+    end
+
     can %i[
       welcome_students
       subscribe_to_webinar

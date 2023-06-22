@@ -18,5 +18,9 @@ module SchoolUsersAssociations
              class_name: 'Users::SchoolManagement'
     has_many :others, -> { where(role: :other) },
              class_name: 'Users::SchoolManagement'
+    has_many :cpes, -> { where(role: :cpe) },
+             class_name: 'Users::SchoolManagement'
+    has_many :admin_officers, -> { where(role: :admin_officer) },
+             class_name: 'Users::SchoolManagement'
   end
 end
