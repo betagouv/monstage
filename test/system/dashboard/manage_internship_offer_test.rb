@@ -20,7 +20,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
       sign_in(employer)
       visit edit_dashboard_internship_offer_path(internship_offer)
-      find('input[name="internship_offer[employer_name]"]').fill_in(with: 'NewCompany')
+      find('input[name="internship_offer[organisation_attributes][employer_name]"]').fill_in(with: 'NewCompany')
 
       click_on "Publier l'offre"
 
@@ -38,7 +38,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
       sign_in(employer)
       visit edit_dashboard_internship_offer_path(internship_offer)
-      find('input[name="internship_offer[employer_name]"]').fill_in(with: 'NewCompany')
+      find('input[name="internship_offer[organisation_attributes][employer_name]"]').fill_in(with: 'NewCompany')
 
       click_on "Publier l'offre"
 
@@ -105,7 +105,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       find(".test-edit-button").click
       find('label[for="internship_type_true"]').click # max_candidates is now set to 1
       click_button('Publier l\'offre')
-      assert_equal 4, internship_offer.reload.max_candidates
+      assert_equal 1, internship_offer.reload.max_candidates
       assert_equal 1, internship_offer.reload.max_students_per_group
     end
   end
@@ -113,10 +113,12 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   test 'Employer can duplicate an internship offer' do
     employer = create(:employer)
     older_weeks = [Week.selectable_from_now_until_end_of_school_year.first]
+    organisation = create(:organisation, employer: employer, is_public: true)
     current_internship_offer = create(
       :weekly_internship_offer,
       employer: employer,
-      weeks: older_weeks
+      weeks: older_weeks,
+      organisation: organisation
     )
     sign_in(employer)
     visit dashboard_internship_offers_path(internship_offer: current_internship_offer)

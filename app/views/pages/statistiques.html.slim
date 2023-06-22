@@ -1,148 +1,106 @@
-= render 'layouts/breadcrumb', links: [ ['', "Statistiques"] ]
-.container
-  .row.text-dark.bg-light-blue.bg-rounded.py-4
-    .col-md-5.col-sm-12.d-flex.align-items-center.justify-content-center
-      = image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'),
-                  alt: "Mon stage de 3e",
-                  class: 'text-center',
-                  height: 148
-    .col-md-7.col-sm-12.text-dark
-      p.lead.hero
-        |
-          Dans la continuité du discours «&nbsp;La France, une chance pour chacun&nbsp;»
-          du Président de la République le 23 mai 2018, la plateforme
-          www.monstagedetroisieme.fr pilotée par l'Agence nationale de
-          la cohésion des territoires a été mise en ligne dès
-          la rentrée 2018-2019.
-      p.lead.hero
-        |
-          Elle permet aux élèves de troisième des établissements des réseaux
-          éducation prioritaire (REP et REP+) d’accéder à des offres de
-          stage de qualité en entreprises et dans les services publics.
-
-      p.lead.hero
-        | En
-        span.h3 =" 3 ans et 5 mois "
-        | d'existence, appuyée par
-        br
-        span.h3 = " 8 associations* "
-        | partenaires au niveau national,
-        |&nbsp;plus de
-        br
-        span.h3.px-1 33&nbsp;000 élèves
-        | ont bénéficié de ce dispositif !
-  .row.my-1.text-muted.font-weight-light.font-italic
-    |
-      (*) Les 8 associations sont : JobIRL, Institut Télémaque,
-      Le réseau, Les entreprises pour la cité, Moi dans 10 ans,
-      Tous en stage, Un stage et après, et Viens voir mon taf
-  .row.my-5
-    .col-12.text-center
-      = image_tag asset_pack_path('media/images/pages/statistics/school.svg'),
-                  alt: "bilan pour les établissements scolaires",
-                  height: 44
-      br
-      h1.h6.mb-0.pt-2 Année scolaire 2019 / 2020
-      h2.h4.text-dark.font-weight-bold Les établissements scolaires
-  .row
-  .row.mt-3.no-gutters
-    .col-md-5.col-sm-12
-      = render 'pages/statistics/platform_use_header'
-      = render partial: 'pages/statistics/all_rep',
-                locals: { achieved: 434, total: 729, title: 'REP', type: 'rep'}
-      = render partial: 'pages/statistics/all_rep',
-                locals: { achieved: 278, total: 361, title: 'REP+', type: 'rep-plus' }
-    .col-md-6.offset-md-1.col-sm-12
-      = render partial: 'pages/statistics/academical',
-                locals: { achieved: 34, total: 56 }
-  .row.my-5
-    .col-12.text-center
-      = image_tag asset_pack_path('media/images/pages/statistics/handshake.svg'),
-                  alt: "bilan des stages",
-                  height: 44
-      br
-      h1.h6.pt-2.mb-0 Année scolaire 2019 / 2020
-      h2.h4.text-dark Les stages
-  .row
-  .row.mt-3
-    .col-md-6.col-sm-12
-      = render partial: 'pages/statistics/internship_offers',
-                locals: { caption: "Objectif fixé par la *circulaire du Premier ministre du 31 juillet 2019*",
-                          public_goal: "15 000",
-                          private_goal: "15 000",
-                          total_goal: "30 000",
-                          public_achieved: "7 339",
-                          private_achieved: "22 970",
-                          total_achieved: "30 309" }
-
-    .col-md-6.col-sm-12
-      = render partial: 'pages/statistics/internship_applications',
-              locals: { caption: "Objectif fixé par la *circulaire du Premier ministre du 31 juillet 2019*",
-                        presence_goal: "16 000",
-                        remote_goal: "",
-                        total_goal: "16 000",
-                        presence_achieved: "14 724",
-                        remote_achieved: "4 527",
-                        total_achieved: "19 251" }
-
-  .hr.my-5
-
-  .row.my-5
-    .col-12.text-center
-      = image_tag asset_pack_path('media/images/pages/statistics/school.svg'),
-                  alt: "bilan pour les établissements scolaires",
-                  height: 44
-      br
-      h1.h6.mb-0.pt-2 Année scolaire 2020 / 2021, au 1er juin 2021
-      h2.h4.text-dark Les établissements scolaires
-  .row
-  .row.mt-3.no-gutters
-    .col-md-5.col-sm-12
-      = render 'pages/statistics/platform_use_header'
-      = render partial: 'pages/statistics/all_rep',
-                locals: { achieved: 448, total: 730, title: 'REP', type: 'rep'}
-      = render partial: 'pages/statistics/all_rep',
-                locals: { achieved: 287, total: 363, title: 'REP+', type: 'rep-plus' }
-    .col-md-6.offset-md-1.col-sm-12
-      = render partial: 'pages/statistics/academical',
-                locals: { achieved: 80, total: 120 }
-  .row.my-5
-    .col-12.text-center
-      = image_tag asset_pack_path('media/images/pages/statistics/handshake.svg'),
-                  alt: "bilan des stages",
-                  height: 44
-      br
-      h1.h6.pt-2.mb-0 Année scolaire 2020 / 2021, au 1er juin 2021
-      h2.h4.text-dark Les stages
-  .row
-    .col-12.d-flex.justify-content-center
-      .kpi-internship-global.px-3
-        | Dans le contexte de l’épidémie de la COVID-19, l’instruction interministérielle du 20 novembre 2020 prévoyait :
-        ul.mt-3
-          li une ambition renouvelée sans objectif chiffré
-          li une solution alternative aux stages en présentiel : les sessions digitales
-  .row.my-3
-  .row.my-3
-    .col-12.d-flex.justify-content-center
-      .kpi-internship-global.bg-light-blue.bg-rounded
-        .row.p-3
-          .col-5.d-flex.justify-content-center.align-items-center
-            .max-academical.font-weight-bold.d-none.d-md-block 18 752
-            .h1.d-block.d-md-none 18 752
-          .col-7.d-flex.justify-content-center.align-items-center
-             .inline-block
-              | C’est le nombre d’élèves ayant bénéficié
-              span.font-weight-bold &nbsp; d’un stage à distance
-              | , compte tenu du contexte sanitaire
-  .row.my-3
-    .col-12.d-flex.justify-content-center
-      .kpi-internship-global.bg-light-blue.bg-rounded
-        .row.p-3
-          .col-5.d-flex.justify-content-center.align-items-center
-            .max-academical.font-weight-bold.d-none.d-md-block 862
-            .h1.d-block.d-md-none 862
-          .col-7.d-flex.justify-content-center.align-items-center
-            .inline-block
-              | C’est le nombre d’élèves ayant bénéficié d’un 
-              span.font-weight-bold stage en présentiel
-  .row.my-5
+.top-banner-statistics
+  .container-monstage
+    = render 'layouts/breadcrumb', links: [ ['', "Statistiques"] ]
+    h1.fr-h1.blue-france Monstagedetroisieme.fr
+    p 
+      | Dans la continuité du discours « La France, une chance pour chacun » du Président de
+        la République le 23 mai 2018, la plateforme www.monstagedetroisieme.fr pilotée par
+        l'Agence nationale de la cohésion des territoires a été mise en ligne dès la rentrée 2018-2019.
+    p 
+      |
+        Elle permet aux élèves de troisième des établissements des réseaux éducation prioritaire
+        (REP et REP+) d’accéder à des offres de stage de qualité en entreprises et dans les services publics.
+    p 
+      | En 
+      strong 5 ans 
+      | d'existence, appuyée par 
+      strong 7 associations* partenaires 
+      | au niveau national, plus de 
+      strong 60 000 élèves 
+      |
+        ont bénéficié de ce dispositif.
+    p.fr-text--sm.text-muted
+      |
+        (*) Les 7 associations sont : 
+        JobIRL, Le réseau, Les entreprises pour la cité, My Future, Tous en stage, 
+        Un stage et après, et Viens voir mon taf
+.container-monstage.fr-mt-6w
+  .d-flex
+    .flex-fill
+      hr.fr-mr-2v
+    .text-center.flex-shrink
+      .fr-tag
+        |Année scolaire 2022-2023
+    .flex-fill
+      hr.fr-ml-2v
+  h2.fr-h3 Les établissements scolaires
+  .d-flex
+    .statistic-cards
+      .fr-badge.fr-badge--purple-glycine.fr-badge--info.fr-badge--no-icon
+        = "établissements rep".upcase
+      .fr-h5.internship-offer-title.fr-mt-2w.fr-mb-1v
+        | 501 établissements inscrits
+      .fr-text--sm
+        | sur 731 éligibles
+    .statistic-cards
+      .fr-badge.fr-badge--green-emeraude.fr-badge--info.fr-badge--no-icon
+        = "établissements rep+".upcase
+      .fr-h5.internship-offer-title.fr-mt-2w.fr-mb-1v
+        | 296 établissements inscrits
+      .fr-text--sm
+        | sur 362 éligibles
+  .fr-highlight.fr-ml-0.fr-mt-4w
+    h3.fr-callout__title 186
+    p.fr-text--lg
+      | 
+        C’est le nombre d’établissements intégrés au dispositif par dérogation, 
+        à la demande conjointe des préfectures de département et des 
+        directions académiques des services de l’Éducation nationale.
+  hr.fr-my-6w.fr-py-0
+  h2.fr-h3 Les stages
+  .row.fr-mb-6w
+    .col-lg-6.col-md-12
+      .fr-table.fr-table--layout-fixed.fr-mb-0
+        table
+          caption.fr-text--lg Offres de stage
+          thead
+            tr
+              th scope="col"
+              th scope="col" Secteur public
+              th scope="col" Secteur privé
+              th scope="col" Tous secteurs
+          tbody
+            tr
+              td Objectif*
+              td 15 000
+              td 15 000
+              td 30 000
+            tr
+              td Réalisé
+              td 7 138
+              td 25 205
+              td 32 343
+      p.fr-mt-2w
+        i.text-muted
+          | Objectif fixé par la circulaire du Premier ministre du 6 octobre 2022*
+    .col-lg-6.col-md-12
+      .fr-table.fr-table--layout-fixed
+        table
+          caption.fr-text--lg Offres de stage pourvues
+          thead
+            tr
+              th scope="col"
+              th scope="col" En présentiel
+              th scope="col" A distance
+              th scope="col" Total
+          tbody
+            tr
+              td Objectif
+              td 10 000
+              td -
+              td 10 000
+            tr
+              td Réalisé
+              td 10 640
+              td 194
+              td 10 834

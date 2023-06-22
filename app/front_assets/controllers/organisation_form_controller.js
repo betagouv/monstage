@@ -9,6 +9,8 @@ export default class extends Controller {
     'groupNamePublic',
     'groupNamePrivate',
     'selectGroupName',
+    'requiredField',
+    'submitButton'
   ];
 
   validateForm(event) {
@@ -53,10 +55,28 @@ export default class extends Controller {
     }
   }
 
+  checkForm() {
+    const requiredFields = this.requiredFieldTargets;
+    const submitButton = this.submitButtonTarget;
+
+    requiredFields.forEach(field => {
+      field.addEventListener('input', () => {
+        for (const requiredField of requiredFields) {
+          if (requiredField.value === '') {
+            submitButton.disabled = true;
+            return;
+          }
+        }
+        submitButton.disabled = false;
+      });
+    });
+  }
+
   connect() {
-    this.element.addEventListener('submit', this.validateForm, false);
+    // this.element.addEventListener('submit', this.validateForm, false);
     setTimeout( () => {
       this.toggleGroupNames(false);
+      this.checkForm();
     }, 100);
   }
 

@@ -1,29 +1,39 @@
 .row.my-4
   .col-12
-    ul.nav.align-items-center.no-gutters.nav-link-icons-timeline
-      li.col-4.nav-item
-        .nav-link.trailing-nav-link-icon.nav-link-icon-with-label.nav-link-icon-with-label-success
-          span.d-inline-flex.align-items-center.nav-link-icon
-            span.number
-              - if @internship_offer_info&.present? || @tutor&.present?
-                i.fa.fa-check
-              - else
-                | 1
-          br
-          small= "Information sur l'entreprise"
-      li.col-4.nav-item
-        .nav-link.nav-link-icon-with-label class=('nav-link-icon-with-label-success' if (@internship_offer_info.present? || @tutor.present? ))
-          span.d-inline-flex.align-items-center.nav-link-icon
-            span.number
-              - if @internship_offer&.present? || @tutor&.present?
-                i.fa.fa-check
-              - else
-                | 2
-          br
-          small= "L'offre de stage"
-      li.col-4.nav-item
-        .nav-link.nav-link-icon-with-label class=('nav-link-icon-with-label-success' if @tutor.present?)
-          span.d-inline-flex.align-items-center.nav-link-icon
-            span.number 3
-          br
-          small Informations Tuteur
+    .fr-stepper
+      h2.fr-stepper__title
+        span.fr-stepper__state= "Étape #{current_step_number} sur #{total_steps}"
+        = current_step_title
+      div.fr-stepper__steps data-fr-current-step="#{current_step_number}" data-fr-steps="#{total_steps}"
+      - if next_step_title
+        p.fr-stepper__details
+          span.fr-text--bold Étape suivante : 
+          = next_step_title
+
+    / ul.nav.align-items-center.no-gutters.nav-link-icons-timeline
+    /   li.col-4.nav-item
+    /     .nav-link.trailing-nav-link-icon.nav-link-icon-with-label.nav-link-icon-with-label-success
+    /       span.d-inline-flex.align-items-center.nav-link-icon
+    /         span.number
+    /           - if @internship_offer_info&.present? || @tutor&.present?
+    /             i.fa.fa-check
+    /           - else
+    /             | 1
+    /       br
+    /       small= "Information sur l'entreprise"
+    /   li.col-4.nav-item
+    /     .nav-link.nav-link-icon-with-label class=('nav-link-icon-with-label-success' if (@internship_offer_info.present? || @tutor.present? ))
+    /       span.d-inline-flex.align-items-center.nav-link-icon
+    /         span.number
+    /           - if @internship_offer&.present? || @tutor&.present?
+    /             i.fa.fa-check
+    /           - else
+    /             | 2
+    /       br
+    /       small= "L'offre de stage"
+    /   li.col-4.nav-item
+    /     .nav-link.nav-link-icon-with-label class=('nav-link-icon-with-label-success' if @tutor.present?)
+    /       span.d-inline-flex.align-items-center.nav-link-icon
+    /         span.number 3
+    /       br
+    /       small Informations Tuteur

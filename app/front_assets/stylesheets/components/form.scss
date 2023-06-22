@@ -16,6 +16,11 @@
     box-shadow: 0 0 2px rgba(255,0,0,.5);
   }
 }
+
+.text-blue-info {
+  color: $blue-info !important;
+}
+
 .custom-control-checkbox-legend{
   border-left: 1px solid $input-border-color;
   border-right: 1px solid $input-border-color;

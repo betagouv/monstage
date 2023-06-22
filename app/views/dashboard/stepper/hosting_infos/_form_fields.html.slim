@@ -1,0 +1,102 @@
+- klass = resource.class.to_s.split("s::").first
+
+div [data-controller='hosting-infos' data-hosting-infos-base-type-value="#{klass}"]
+  .row
+    .col-md-12.order-md-1.order-2
+      
+      / - TODO if edit_mode && resource.missing_weeks_info?
+      /   #weeks_container.fr-mb-2w
+      /     .fr-alert.fr-alert--info
+      /       h3.fr-alert__title Ajoutez des semaines aux précédentes
+      /       p Plus aucune semaine n'est disponible pour cette offre de stage. Ajoutez-en ci-dessous pour pouvoir republier votre offre.
+      .form-group
+        = render partial: "weeks/checkbox_inputs",
+                          locals: {current_weeks: @available_weeks,
+                                  form: form,
+                                  render_employer_components: true,
+                                  label: "Date du stage" }
+  .row
+    .col-md-6
+      .fr-form-group
+        .fr-label
+          = "Ce stage est"
+        .fr-radio-group
+          = radio_button_tag :internship_type,
+                              true,
+                              resource.new_record? && resource.errors.empty? && params[:duplicate_id].blank? ? true : resource.is_individual?,
+                              class: '',
+                              data: { :'hosting-infos-target' => 'individualButton',
+                                      action: "change->hosting-infos#toggleInternshipmaxStudentsPerGroup" }
+          = label_tag :internship_type_true, 'Individuel, un seul élève par stage'
+              
+        .fr-radio-group        
+          = radio_button_tag :internship_type,
+                              false,
+                              resource.new_record? && resource.errors.empty? && params[:duplicate_id].blank? ? false : !resource.is_individual?,
+                              class: '',
+                              data: { :'hosting-infos-target' => 'collectiveButton',
+                                      action: "change->hosting-infos#toggleInternshipmaxStudentsPerGroup" }
+          = label_tag :internship_type_false, 'Collectif, plusieurs élèves par stage'
+
+      div class="form-group form-group-select-max-students-per-group #{resource.is_individual? ? 'd-none' : ''}" data-hosting-infos-target='studentsMaxGroupGroup'
+        = form.label :max_students_per_group do
+          = 'Nombre maximal d\'élèves par groupe'
+          = form.rg2a_required_content_tag
+          small.form-text.text-muted Renseignez ici l'effectif maximal de votre groupe d'élèves
+        = form.number_field :max_students_per_group,
+                            value: resource.max_students_per_group,
+                            min: 1,
+                            max: InternshipOffer::MAX_CANDIDATES_HIGHEST,
+                            step: 1,
+                            class: 'fr-input col-lg-6',
+                            disabled: false,
+                            data: { :"hosting-infos-target" => "studentsMaxGroupInput",
+                                    action: "change->hosting-infos#handleMaxCandidatesPerGroupChanges"}    
+    .col-md-6
+      .fr-alert.fr-alert--info
+        h3.fr-alert__title Conseil
+        p L'accueil de plusieurs élèves en même temps peut avoir un caractère rassurant pour eux. Et cela ne demande pas plus de préparation.
+
+  .row
+    .col-md-6.order-md-1.order-2
+      .form-group.form-group-select-max-candidates
+        = form.label :max_candidates, class: 'fr-label' do
+          = "Nombre total d'élèves que vous souhaitez accueillir sur l'année scolaire"
+          = form.rg2a_required_content_tag
+
+          small.form-text.text-muted
+            | Vous accueillerez ces élèves individuellement ou par groupes
+        = form.number_field :max_candidates,
+                            class: "fr-input",
+                            value: resource.max_candidates,
+                            placeholder: "Nombre d'élèves prévus pour cette offre",
+                            disabled: false,
+                            required: true,
+                            pattern: "[0-9]*",
+                            inputmode: "numeric",
+                            min: resource.is_a?(InternshipOffer) ? (resource.internship_applications.try(:approved).try(:count) || 0) : 0,
+                            data: { :"hosting-infos-target" => 'maxCandidatesInput',
+                                    action: "change->hosting-infos#handleMaxCandidatesChanges"}
+      
+      = form.hidden_field :type, data: { :"hosting-infos-target" => "type" }
+
+        
+      // TODO A vérifier si utile
+      .form-group 
+        = react_component("ReservedSchoolInput",
+                          props: { label:"Ville ou nom de l'établissement pour lequel le stage est reservé",
+                                    required: false,
+                                    resourceName: form.object_name,
+                                    selectClassRoom: false,
+                                    existingSchool: resource.school.as_json})
+
+        
+
+        - if submit_button
+          .fr-mt-2w 
+            = link_to edit_dashboard_stepper_internship_offer_info_path(params[:internship_offer_info_id],
+                                                                organisation_id: params[:organisation_id]),
+                        class: 'fr-btn fr-mr-2w fr-btn--secondary' do
+              = 'Précédent'
+            = button_tag :submit, class: 'fr-btn' do
+              = 'Suivant'

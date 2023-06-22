@@ -16,9 +16,7 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
         visit employer.custom_dashboard_path
         find('#test-create-offer').click
         fill_in_organisation_form(is_public: true, group: group)
-        find('span.number', text: '1')
-        find('span.number', text: '2')
-        find('span.number', text: '3')
+        find('span', text: 'Étape 1 sur 4')
         click_on "Suivant"
       end
     end

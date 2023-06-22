@@ -36,25 +36,22 @@ module Dashboard::InternshipOffers
       new_title = 'new title'
       new_group = create(:group, is_public: false, name: 'woop')
       sign_in(internship_offer.employer)
-      patch(
-        dashboard_internship_offer_path(internship_offer.to_param),
-        params: {
-          internship_offer: {
-            title: new_title,
-            week_ids: [Week.current.id + 1],
-            is_public: false,
-            group_id: new_group.id,
-            new_daily_hours: {'lundi' => ['10h', '12h']}
-          }
-        }
-      )
-      assert_redirected_to(dashboard_internship_offers_path(origine: 'dashboard'),
-                           'redirection should point to updated offer')
+      patch(dashboard_internship_offer_path(internship_offer.to_param),
+            params: { internship_offer: {
+              title: new_title,
+              week_ids: [weeks(:week_2019_1).id],
+              is_public: false,
+              group_id: new_group.id,
+              daily_hours: {'lundi' => ['10h', '12h']}
+
+            } })
+      
+      assert_redirected_to(dashboard_internship_offers_path(origine: 'dashboard'))
 
       assert_equal(new_title,
                    internship_offer.reload.title,
                    'can\'t update internship_offer title')
-      assert_equal ['10h', '12h'], internship_offer.reload.new_daily_hours['lundi']
+      assert_equal ['10h', '12h'], internship_offer.reload.daily_hours['lundi']
 
     end
 
@@ -128,7 +125,7 @@ module Dashboard::InternshipOffers
               week_ids: [Week.current.id.to_i + 52],
               is_public: false,
               group_id: new_group.id,
-              new_daily_hours: {'lundi' => ['10h', '12h']}
+              daily_hours: {'lundi' => ['10h', '12h']}
 
             } })
       assert_redirected_to(dashboard_internship_offers_path(origine: 'dashboard'),
@@ -137,7 +134,7 @@ module Dashboard::InternshipOffers
       assert_equal(new_title,
                    internship_offer.reload.title,
                    'can\'t update internship_offer title')
-      assert_equal ['10h', '12h'], internship_offer.reload.new_daily_hours['lundi']
+      assert_equal ['10h', '12h'], internship_offer.reload.daily_hours['lundi']
 
     end
 

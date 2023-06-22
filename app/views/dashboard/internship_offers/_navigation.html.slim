@@ -1,19 +1,23 @@
 .row.fr-py-4w.fr-mb-2w.fat-line-below
   .col-8.d-print-none
-    ul.nav.navbar.px-0
-      = render partial: "dashboard/internship_offers/publish_status",
-               locals: { internship_offer: @internship_offer }
+    - if internship_offer.drafted?
+      h1 Récapitulatif de l'offre
+    - else 
+      ul.nav.navbar.px-0
+        = render partial: "dashboard/internship_offers/publish_status",
+                    locals: { internship_offer: @internship_offer }
   .col-4.d-print-none
     .d-flex.justify-content-start
-      - if can?(:update, @internship_offer)
-        .fr-mx-1w data-turbo="false"
-          = link_to '', edit_dashboard_internship_offer_path(@internship_offer.to_param), class: 'fr-btn fr-icon-edit-fill test-edit-button'
-      - if can?(:renew, @internship_offer) || can?(:duplicate, @internship_offer)
-        .fr-mx-1w
-          = link_to '', new_dashboard_internship_offer_path(duplicate_id: internship_offer.to_param), class: 'fr-btn fr-icon-file-add-line fr-btn--icon fr-btn--secondary test-duplicate-button'
-      - if can?(:update, @internship_offer) && @internship_offer.reload.published_at?
-        .fr-mx-1w
-          = render partial: "dashboard/internship_offers/unpublish_form"
-      - if can?(:discard, @internship_offer)
-        .fr-mx-1w
-          button.fr-btn.fr-icon-delete-line.fr-btn--icon.fr-btn--secondary.test-discard-button data-fr-opened="false" aria-controls="discard-internship-offer-modal"
+      - if internship_offer.drafted? && can?(:publish, @internship_offer)
+        = button_to 'Modifier', remove_dashboard_internship_offer_path(@internship_offer), class: 'fr-btn fr-btn--secondary fr-mr-2w'
+        = button_to 'Publier', publish_dashboard_internship_offer_path(@internship_offer),  data: { turbo: false }, class: 'fr-btn'
+      - else
+        - if can?(:update, @internship_offer)
+          .fr-mx-1w data-turbo="false"
+            = link_to '', edit_dashboard_internship_offer_path(@internship_offer.to_param), class: 'fr-btn fr-icon-edit-fill test-edit-button'
+        - if can?(:renew, @internship_offer) || can?(:duplicate, @internship_offer)
+          .fr-mx-1w
+            = link_to '', new_dashboard_internship_offer_path(duplicate_id: internship_offer.to_param), class: 'fr-btn fr-icon-file-add-line fr-btn--icon fr-btn--secondary test-duplicate-button'
+        - if can?(:discard, @internship_offer)
+          .fr-mx-1w
+            button.fr-btn.fr-icon-delete-line.fr-btn--icon.fr-btn--secondary.test-discard-button data-fr-opened="false" aria-controls="discard-internship-offer-modal"
