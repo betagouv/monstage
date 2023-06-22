@@ -5,7 +5,7 @@ module Presenters
     end
 
     def school_name
-      school_manager&.school&.name
+      author&.school&.name
     end
 
     def status
@@ -21,7 +21,7 @@ module Presenters
       translator[role.to_sym]
     end
 
-    attr_reader :email, :role, :first_name, :last_name, :school_manager, :sent_at
+    attr_reader :email, :role, :first_name, :last_name, :author, :sent_at
 
     private
 
@@ -32,7 +32,7 @@ module Presenters
       @first_name     = @invitation.first_name
       @last_name      = @invitation.last_name
       @sent_at        = @invitation.sent_at
-      @school_manager = @invitation&.school_manager
+      @author = @invitation&.author
     end
   end
 end
