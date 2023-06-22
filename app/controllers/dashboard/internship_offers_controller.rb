@@ -10,9 +10,9 @@ module Dashboard
       authorize! :index,
                  Acl::InternshipOfferDashboard.new(user: current_user)
       @internship_offers = finder.all
-      if order_direction.nil? 
+      if order_direction.nil?
         @internship_offers = @internship_offers.order(:published_at)
-      else  
+      else
         @internship_offers = @internship_offers.order(order_column => order_direction)
       end
     end

@@ -115,4 +115,14 @@ class EmployerMailer < ApplicationMailer
     )
   end
 
+  def team_member_invitation_email(team_member: , user: )
+    @email = team_member.invitation_email
+    @inviter_presenter = team_member.inviter.presenter
+    @invitee_presenter = user.presenter unless user.nil?
+    @subscription_url = new_user_registration_url
+    @url = dashboard_team_members_url
+
+    send_email(to: @email, subject: 'Invitation à rejoindre une équipe')
+  end
+
 end

@@ -2,12 +2,13 @@ module Services
   class TeamMemberInvitationValidator
     def check_invitation
       return :invited if user_already_invited?
-      return :already_in_team if db_user_from_email && db_user_from_email.email.in?(current_user.team_members.pluck(:email))
-      return :in_another_team if in_a_team?
+      return :already_in_team if already_in_team?
+      return :in_another_team if already_in_another_team?
+      return :self_invitation if self_invitation?
       return :ok
     end
 
-    attr_reader :email, :user, :current_user
+    attr_reader :email, :current_user
 
     private
 
@@ -16,25 +17,31 @@ module Services
       @current_user = current_user
     end
 
-    def db_user_from_email
-      TeamMemberInvitation.find_by(invitation_email: email)
+    def user_already_invited?
+      current_user.team_members
+                  .with_pending_invitations
+                  .where(invitation_email: email)
+                  .exists?
     end
 
-    def user_already_invited?
-      current_user.team_member_invitations
-                  .where(invitation_email: email)
-                  .count
-                  .positive?
+    def already_in_team?
+      current_user.team.alive?
     end
 
     def fetch_user
       User.find_by(email: email)
     end
 
-    def in_a_team?
+    def already_in_another_team?
       return false unless fetch_user
-      
-      TeamMember.where(user_id: fetch_user.id).count.positive?
+
+      TeamMember.where(member_id: fetch_user.id)
+                .where.not(inviter_id: current_user.team.team_owner_id)
+                .exists?
+    end
+
+    def self_invitation?
+      current_user.email == email
     end
   end
 end

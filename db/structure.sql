@@ -1422,38 +1422,6 @@ ALTER SEQUENCE public.task_registers_id_seq OWNED BY public.task_registers.id;
 
 
 --
--- Name: team_member_invitations; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.team_member_invitations (
-    id bigint NOT NULL,
-    invitation_email character varying NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    user_id bigint NOT NULL
-);
-
-
---
--- Name: team_member_invitations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.team_member_invitations_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: team_member_invitations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.team_member_invitations_id_seq OWNED BY public.team_member_invitations.id;
-
-
---
 -- Name: team_members; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1462,7 +1430,10 @@ CREATE TABLE public.team_members (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     inviter_id bigint NOT NULL,
-    member_id bigint NOT NULL
+    member_id bigint,
+    invitation_email character varying(150) NOT NULL,
+    invitation_refused_at timestamp(6) without time zone,
+    aasm_state character varying DEFAULT 'pending_invitation'::character varying
 );
 
 
@@ -1838,13 +1809,6 @@ ALTER TABLE ONLY public.task_registers ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
--- Name: team_member_invitations id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.team_member_invitations ALTER COLUMN id SET DEFAULT nextval('public.team_member_invitations_id_seq'::regclass);
-
-
---
 -- Name: team_members id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2126,14 +2090,6 @@ ALTER TABLE ONLY public.signatures
 
 ALTER TABLE ONLY public.task_registers
     ADD CONSTRAINT task_registers_pkey PRIMARY KEY (id);
-
-
---
--- Name: team_member_invitations team_member_invitations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.team_member_invitations
-    ADD CONSTRAINT team_member_invitations_pkey PRIMARY KEY (id);
 
 
 --
@@ -2589,13 +2545,6 @@ CREATE INDEX index_signatures_on_user_id ON public.signatures USING btree (user_
 
 
 --
--- Name: index_team_member_invitations_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_team_member_invitations_on_user_id ON public.team_member_invitations USING btree (user_id);
-
-
---
 -- Name: index_team_members_on_inviter_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2731,6 +2680,14 @@ ALTER TABLE ONLY public.school_internship_weeks
 
 
 --
+-- Name: hosting_info_weeks fk_rails_0ab0d03d1c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hosting_info_weeks
+    ADD CONSTRAINT fk_rails_0ab0d03d1c FOREIGN KEY (week_id) REFERENCES public.weeks(id);
+
+
+--
 -- Name: team_members fk_rails_16e04ba94e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2765,14 +2722,6 @@ ALTER TABLE ONLY public.team_members
 
 ALTER TABLE ONLY public.internship_applications
     ADD CONSTRAINT fk_rails_32ed157946 FOREIGN KEY (internship_offer_week_id) REFERENCES public.internship_offer_weeks(id);
-
-
---
--- Name: team_member_invitations fk_rails_33a46cbcb7; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.team_member_invitations
-    ADD CONSTRAINT fk_rails_33a46cbcb7 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -3272,6 +3221,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230517092159'),
 ('20230531094449'),
 ('20230607101323'),
-('20230607115359');
+('20230607115359'),
+('20230616093706'),
+('20230616143729'),
+('20230616143933'),
+('20230616164423'),
+('20230620115539');
 
 

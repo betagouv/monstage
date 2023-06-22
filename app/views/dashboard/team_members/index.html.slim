@@ -1,1 +1,4 @@
-span index
+- if @page == :presentation
+  = render 'dashboard/team_members/index/presentation'
+-else
+  = render 'dashboard/team_members/index/list'

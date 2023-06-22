@@ -190,10 +190,10 @@ class Ability
 
     can %i[index update], InternshipApplication
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
-    byebug
-    can %i[manage_teams], TeamMember, inviter_id: user.id
-    can %i[manage_teams], TeamMemberInvitation
-    can %i[destroy], TeamMemberInvitation , inviter_id: user.id
+    can %i[manage_teams], TeamMember
+    can %i[destroy], TeamMember do |team_member|
+       team_member.member_id != user.id
+    end
 
     as_employers_signatory_abilities(user: user)
   end
@@ -235,9 +235,10 @@ class Ability
            see_reporting_schools
            see_reporting_enterprises
            check_his_statistics], User
-    can %i[manage_teams], TeamMember, inviter_id: user.id
-    can %i[manage_teams], TeamMemberInvitation
-    can %i[destroy], TeamMemberInvitation , inviter_id: user.id
+    can %i[manage_teams], TeamMember
+    can %i[destroy], TeamMember do |team_member|
+       team_member.member_id != user.id
+    end
   end
 
   def god_abilities
@@ -363,9 +364,10 @@ class Ability
 
     as_employers_signatory_abilities(user: user) if user.employer_like?
     can :see_minister_video, User
-        can %i[manage_teams], TeamMember, inviter_id: user.id
-    can %i[manage_teams], TeamMemberInvitation
-    can %i[destroy], TeamMemberInvitation , inviter_id: user.id
+    can %i[manage_teams], TeamMember
+    can %i[destroy], TeamMember do |team_member|
+       team_member.member_id != user.id
+    end
   end
 
   def common_school_management_abilities(user:)

@@ -19,14 +19,28 @@ module Users
     has_many :tutors
     has_many :internship_offer_infos
     has_many :team_members,
-              dependent: :destroy,
-              foreign_key: :member_id
-    has_one :team_member,
-              dependent: :destroy,
-              foreign_key: :inviter_id
-    has_many :team_member_invitations,
-             dependent: :destroy,
-             foreign_key: :user_id
+             foreign_key: :inviter_id
+
+    def internship_offers
+      if team.team_size.positive?
+        InternshipOffer.where(employer: team.team_members.pluck(:member_id))
+      else
+        super
+      end
+    end
+
+    # def valid_invitation_to_a_team?
+    #   return false if discarded?
+    #   return false if TeamMember.find_by(member_id: id).present?
+    #   true
+    # end
+
+    def pending_invitations_to_my_team
+      TeamMember.with_pending_invitations.find_by(inviter_id: id)
+    end
+    def pending_invitations_to_a_team
+      TeamMember.with_pending_invitations.find_by(invitation_email: email)
+    end
 
     def custom_dashboard_path
       return custom_candidatures_path if internship_applications.submitted.any?
@@ -63,6 +77,10 @@ module Users
 
     def presenter
       Presenters::Employer.new(self)
+    end
+
+    def team
+      Team.new(self)
     end
 
     def satisfaction_survey_id
