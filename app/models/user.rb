@@ -260,6 +260,8 @@ class User < ApplicationRecord
 
   def team_members ; User.none end
 
+  def team_members ; User.none end
+
   def anonymized? ; self.anonymized end
 
   def presenter
