@@ -94,16 +94,20 @@ Rails.application.routes.draw do
       end
 
       resources :internship_offers, path: 'offres-de-stage', except: %i[show] do
-        patch :republish, to: 'internship_offers#republish', on: :member
         resources :internship_applications, path: 'candidatures', only: %i[update index show], module: 'internship_offers' do
           patch :set_to_read, on: :member
           get :school_details, on: :member
         end
+        post :publish, on: :member
+        post :remove, on: :member
+        patch :republish, to: 'internship_offers#republish', on: :member
       end
 
       namespace :stepper, path: 'etapes' do
         resources :organisations, only: %i[create new edit update]
         resources :internship_offer_infos, path: 'offre-de-stage-infos', only: %i[create new edit update]
+        resources :hosting_infos, path: 'accueil-infos', only: %i[create new edit update]
+        resources :practical_infos, path: 'infos-pratiques', only: %i[create new edit update]
         resources :tutors, path: 'tuteurs', only: %i[create new]
       end
 

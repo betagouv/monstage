@@ -3,6 +3,7 @@
 require "sti_preload"
 class InternshipOffer < ApplicationRecord
   include StiPreload
+  include AASM
   PAGE_SIZE = 30
   EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
   MAX_CANDIDATES_HIGHEST = 200
@@ -16,7 +17,8 @@ class InternshipOffer < ApplicationRecord
 
   include StepperProxy::InternshipOfferInfo
   include StepperProxy::Organisation
-  include StepperProxy::Tutor
+  include StepperProxy::HostingInfo
+  include StepperProxy::PracticalInfo
 
   # utils
   include Discard::Model
@@ -98,14 +100,19 @@ class InternshipOffer < ApplicationRecord
 
   belongs_to :employer, polymorphic: true
   belongs_to :organisation, optional: true
-  belongs_to :tutor, optional: true
   belongs_to :internship_offer_info, optional: true
+  belongs_to :hosting_info, optional: true
+  belongs_to :practical_info, optional: true
   has_many :favorites
   has_many :users, through: :favorites
+  
+  accepts_nested_attributes_for :organisation, allow_destroy: true
 
   has_rich_text :employer_description_rich_text
 
   after_initialize :init
+
+  before_validation :update_organisation
 
   before_save :sync_first_and_last_date,
               :reverse_academy_by_zipcode
@@ -123,6 +130,24 @@ class InternshipOffer < ApplicationRecord
 
   # Callbacks
   before_save :update_remaining_seats
+
+  aasm do
+    state :drafted, initial: true
+    state :published,
+          :removed
+
+    event :publish do
+      transitions from: :drafted, to: :published, after: proc { |*_args|
+        update!("published_at": Time.now.utc)
+      }
+    end
+
+    event :remove do
+      transitions from: %i[published drafted], to: :removed, after: proc { |*_args|
+        update!(published_at: nil)
+      }
+    end
+  end
 
   def departement
     Department.lookup_by_zipcode(zipcode: zipcode)
@@ -189,9 +214,12 @@ class InternshipOffer < ApplicationRecord
                     is_public group school_id coordinates first_date last_date
                     siret employer_manual_enter
                     internship_offer_info_id organisation_id tutor_id
-                    weekly_hours new_daily_hours]
+                    weekly_hours daily_hours]
 
-    generate_offer_from_attributes(white_list)
+    internship_offer = generate_offer_from_attributes(white_list)
+    organisation = self.organisation.dup
+    internship_offer.organisation = organisation
+    internship_offer
   end
 
   def duplicate_without_location
@@ -200,10 +228,34 @@ class InternshipOffer < ApplicationRecord
                     employer_name is_public group school_id coordinates
                     first_date last_date siret employer_manual_enter
                     internship_offer_info_id organisation_id tutor_id
-                    weekly_hours new_daily_hours]
+                    weekly_hours daily_hours]
 
     generate_offer_from_attributes(white_list_without_location)
   end
+
+  def update_from_organisation
+    return unless organisation
+
+    self.employer_name = organisation.employer_name
+    self.employer_website = organisation.employer_website
+    self.employer_description = organisation.employer_description
+    self.siret = organisation.siret
+    self.group_id = organisation.group_id
+    self.is_public = organisation.is_public
+  end
+  
+  def update_organisation
+    return unless organisation && !organisation.new_record?
+
+    # return si aucun changement qui concerne organisation
+    organisation.update_columns(employer_name: self.employer_name) if attribute_changed?(:employer_name)
+    organisation.update_columns(employer_website: self.employer_website) if attribute_changed?(:employer_website)
+    organisation.update_columns(employer_description: self.employer_description) if attribute_changed?(:employer_description)
+    organisation.update_columns(siret: self.siret) if attribute_changed?(:siret)
+    organisation.update_columns(group_id: self.group_id) if attribute_changed?(:group_id)
+    organisation.update_columns(is_public: self.is_public) if attribute_changed?(:is_public)
+  end
+    
 
   def generate_offer_from_attributes(white_list)
     internship_offer = InternshipOffer.new(attributes.slice(*white_list))
@@ -246,6 +298,10 @@ class InternshipOffer < ApplicationRecord
 
   def weekly_planning?
     weekly_hours.any?(&:present?)
+  end
+
+  def daily_planning?
+    new_daily_hours.except('samedi').values.flatten.any? { |v| !v.blank? }
   end
 
   def presenter

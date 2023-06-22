@@ -493,6 +493,81 @@ ALTER SEQUENCE public.groups_id_seq OWNED BY public.groups.id;
 
 
 --
+-- Name: hosting_info_weeks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.hosting_info_weeks (
+    id bigint NOT NULL,
+    hosting_info_id bigint,
+    week_id bigint,
+    total_applications_count integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: hosting_info_weeks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.hosting_info_weeks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: hosting_info_weeks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.hosting_info_weeks_id_seq OWNED BY public.hosting_info_weeks.id;
+
+
+--
+-- Name: hosting_infos; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.hosting_infos (
+    id bigint NOT NULL,
+    max_candidates integer,
+    school_id integer,
+    employer_id integer,
+    last_date date,
+    weeks_count integer DEFAULT 0 NOT NULL,
+    hosting_info_weeks_count integer DEFAULT 0 NOT NULL,
+    daily_hours jsonb DEFAULT '{}'::jsonb,
+    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
+    weekly_hours text[] DEFAULT '{}'::text[],
+    weekly_lunch_break text,
+    max_students_per_group integer DEFAULT 1 NOT NULL,
+    remaining_seats_count integer DEFAULT 0,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: hosting_infos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.hosting_infos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: hosting_infos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.hosting_infos_id_seq OWNED BY public.hosting_infos.id;
+
+
+--
 -- Name: identities; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -797,6 +872,47 @@ ALTER SEQUENCE public.internship_offer_keywords_id_seq OWNED BY public.internshi
 
 
 --
+-- Name: internship_offer_student_infos; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.internship_offer_student_infos (
+    id bigint NOT NULL,
+    max_candidates integer,
+    school_id integer,
+    employer_id integer,
+    last_date date,
+    weeks_count integer DEFAULT 0 NOT NULL,
+    internship_offer_student_info_weeks_count integer DEFAULT 0 NOT NULL,
+    daily_hours jsonb DEFAULT '{}'::jsonb,
+    weekly_hours text[] DEFAULT '{}'::text[],
+    weekly_lunch_break text,
+    max_students_per_group integer DEFAULT 1 NOT NULL,
+    remaining_seats_count integer DEFAULT 0,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: internship_offer_student_infos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.internship_offer_student_infos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: internship_offer_student_infos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.internship_offer_student_infos_id_seq OWNED BY public.internship_offer_student_infos.id;
+
+
+--
 -- Name: internship_offer_weeks; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -881,7 +997,6 @@ CREATE TABLE public.internship_offers (
     internship_offer_info_id bigint,
     organisation_id bigint,
     weekly_hours text[] DEFAULT '{}'::text[],
-    daily_hours text[] DEFAULT '{}'::text[],
     tutor_id bigint,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
     daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED,
@@ -895,7 +1010,10 @@ CREATE TABLE public.internship_offers (
     employer_manual_enter boolean DEFAULT false,
     tutor_role character varying,
     remaining_seats_count integer DEFAULT 0,
-    hidden_duplicate boolean DEFAULT false
+    hidden_duplicate boolean DEFAULT false,
+    daily_hours jsonb,
+    hosting_info_id bigint,
+    practical_info_id bigint
 );
 
 
@@ -1076,6 +1194,46 @@ CREATE SEQUENCE public.organisations_id_seq
 --
 
 ALTER SEQUENCE public.organisations_id_seq OWNED BY public.organisations.id;
+
+
+--
+-- Name: practical_infos; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.practical_infos (
+    id bigint NOT NULL,
+    employer_id integer,
+    street character varying NOT NULL,
+    zipcode character varying NOT NULL,
+    city character varying NOT NULL,
+    coordinates public.geography(Point,4326),
+    department character varying DEFAULT ''::character varying NOT NULL,
+    daily_hours jsonb DEFAULT '{}'::jsonb,
+    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
+    weekly_hours text[] DEFAULT '{}'::text[],
+    weekly_lunch_break text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: practical_infos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.practical_infos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: practical_infos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.practical_infos_id_seq OWNED BY public.practical_infos.id;
 
 
 --
@@ -1526,6 +1684,20 @@ ALTER TABLE ONLY public.groups ALTER COLUMN id SET DEFAULT nextval('public.group
 
 
 --
+-- Name: hosting_info_weeks id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hosting_info_weeks ALTER COLUMN id SET DEFAULT nextval('public.hosting_info_weeks_id_seq'::regclass);
+
+
+--
+-- Name: hosting_infos id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hosting_infos ALTER COLUMN id SET DEFAULT nextval('public.hosting_infos_id_seq'::regclass);
+
+
+--
 -- Name: identities id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1575,6 +1747,13 @@ ALTER TABLE ONLY public.internship_offer_keywords ALTER COLUMN id SET DEFAULT ne
 
 
 --
+-- Name: internship_offer_student_infos id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_student_infos ALTER COLUMN id SET DEFAULT nextval('public.internship_offer_student_infos_id_seq'::regclass);
+
+
+--
 -- Name: internship_offer_weeks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1614,6 +1793,13 @@ ALTER TABLE ONLY public.operators ALTER COLUMN id SET DEFAULT nextval('public.op
 --
 
 ALTER TABLE ONLY public.organisations ALTER COLUMN id SET DEFAULT nextval('public.organisations_id_seq'::regclass);
+
+
+--
+-- Name: practical_infos id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.practical_infos ALTER COLUMN id SET DEFAULT nextval('public.practical_infos_id_seq'::regclass);
 
 
 --
@@ -1759,6 +1945,22 @@ ALTER TABLE ONLY public.groups
 
 
 --
+-- Name: hosting_info_weeks hosting_info_weeks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hosting_info_weeks
+    ADD CONSTRAINT hosting_info_weeks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: hosting_infos hosting_infos_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hosting_infos
+    ADD CONSTRAINT hosting_infos_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: identities identities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1815,6 +2017,14 @@ ALTER TABLE ONLY public.internship_offer_keywords
 
 
 --
+-- Name: internship_offer_student_infos internship_offer_student_infos_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_student_infos
+    ADD CONSTRAINT internship_offer_student_infos_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: internship_offer_weeks internship_offer_weeks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1860,6 +2070,14 @@ ALTER TABLE ONLY public.operators
 
 ALTER TABLE ONLY public.organisations
     ADD CONSTRAINT organisations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: practical_infos practical_infos_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.practical_infos
+    ADD CONSTRAINT practical_infos_pkey PRIMARY KEY (id);
 
 
 --
@@ -2018,6 +2236,20 @@ CREATE INDEX index_favorites_on_user_id ON public.favorites USING btree (user_id
 --
 
 CREATE UNIQUE INDEX index_favorites_on_user_id_and_internship_offer_id ON public.favorites USING btree (user_id, internship_offer_id);
+
+
+--
+-- Name: index_hosting_info_weeks_on_hosting_info_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_hosting_info_weeks_on_hosting_info_id ON public.hosting_info_weeks USING btree (hosting_info_id);
+
+
+--
+-- Name: index_hosting_info_weeks_on_week_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_hosting_info_weeks_on_week_id ON public.hosting_info_weeks USING btree (week_id);
 
 
 --
@@ -2196,6 +2428,13 @@ CREATE INDEX index_internship_offers_on_group_id ON public.internship_offers USI
 
 
 --
+-- Name: index_internship_offers_on_hosting_info_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offers_on_hosting_info_id ON public.internship_offers USING btree (hosting_info_id);
+
+
+--
 -- Name: index_internship_offers_on_internship_offer_info_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2207,6 +2446,13 @@ CREATE INDEX index_internship_offers_on_internship_offer_info_id ON public.inter
 --
 
 CREATE INDEX index_internship_offers_on_organisation_id ON public.internship_offers USING btree (organisation_id);
+
+
+--
+-- Name: index_internship_offers_on_practical_info_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offers_on_practical_info_id ON public.internship_offers USING btree (practical_info_id);
 
 
 --
@@ -2291,6 +2537,13 @@ CREATE INDEX index_organisations_on_coordinates ON public.organisations USING gi
 --
 
 CREATE INDEX index_organisations_on_group_id ON public.organisations USING btree (group_id);
+
+
+--
+-- Name: index_practical_infos_on_coordinates; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_practical_infos_on_coordinates ON public.practical_infos USING gist (coordinates);
 
 
 --
@@ -2483,6 +2736,11 @@ ALTER TABLE ONLY public.school_internship_weeks
 
 ALTER TABLE ONLY public.team_members
     ADD CONSTRAINT fk_rails_16e04ba94e FOREIGN KEY (inviter_id) REFERENCES public.users(id);
+-- Name: hosting_info_weeks fk_rails_0ab0d03d1c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hosting_info_weeks
+    ADD CONSTRAINT fk_rails_0ab0d03d1c FOREIGN KEY (week_id) REFERENCES public.weeks(id);
 
 
 --
@@ -2531,6 +2789,14 @@ ALTER TABLE ONLY public.internship_offers
 
 ALTER TABLE ONLY public.internship_offers
     ADD CONSTRAINT fk_rails_3cef9bdd89 FOREIGN KEY (group_id) REFERENCES public.groups(id);
+
+
+--
+-- Name: hosting_info_weeks fk_rails_49834d059e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hosting_info_weeks
+    ADD CONSTRAINT fk_rails_49834d059e FOREIGN KEY (hosting_info_id) REFERENCES public.hosting_infos(id);
 
 
 --
@@ -2598,6 +2864,14 @@ ALTER TABLE ONLY public.internship_offers
 
 
 --
+-- Name: internship_offers fk_rails_8ab6b60f07; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offers
+    ADD CONSTRAINT fk_rails_8ab6b60f07 FOREIGN KEY (hosting_info_id) REFERENCES public.hosting_infos(id);
+
+
+--
 -- Name: email_whitelists fk_rails_8fe0f00dcd; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2635,6 +2909,14 @@ ALTER TABLE ONLY public.internship_offer_info_weeks
 
 ALTER TABLE ONLY public.internship_offers
     ADD CONSTRAINT fk_rails_aaa97f3a41 FOREIGN KEY (sector_id) REFERENCES public.sectors(id);
+
+
+--
+-- Name: internship_offers fk_rails_ae76931d64; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offers
+    ADD CONSTRAINT fk_rails_ae76931d64 FOREIGN KEY (practical_info_id) REFERENCES public.practical_infos(id);
 
 
 --
@@ -2982,7 +3264,12 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230420095232'),
 ('20230426161001'),
 ('20230502164246'),
+('20230510145714'),
+('20230511100934'),
+('20230512082329'),
 ('20230516162131'),
+('20230516193352'),
+('20230517092159'),
 ('20230531094449'),
 ('20230607101323'),
 ('20230607115359');

@@ -17,9 +17,9 @@ module Dashboard::Stepper
     def create
       authorize! :create, Organisation
 
-      if organisation_params[:siret].present?
-        @organisation = Organisation.find_by(siret: organisation_params[:siret])
-      end
+      # if organisation_params[:siret].present?
+      #   @organisation = Organisation.find_by(siret: organisation_params[:siret])
+      # end
       @organisation ||= Organisation.new(organisation_params)
 
       if @organisation.save

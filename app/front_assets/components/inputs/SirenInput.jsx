@@ -13,8 +13,10 @@ export default function SirenInput({
 }) {
   const [siret, setSiret] = useState(currentSiret || '');
   const [searchResults, setSearchResults] = useState([]);
+  const [selectedCompany, setSelectedCompany] = useState(null);
 
   const inputChange = (event) => {
+    setSelectedCompany(null);
     setSiret(event.target.value);
   };
 
@@ -55,10 +57,14 @@ export default function SirenInput({
       });
   };
 
-  const openTooggle = (event) => {
+  const openManual = (event) => {
     event.preventDefault();
     const blocs = document.querySelectorAll('.bloc-tooggle');
     blocs.forEach(bloc => {
+      bloc.classList.remove('d-none');
+    });
+    const manualBlocs = document.querySelectorAll('.bloc-manual');
+    manualBlocs.forEach(bloc => {
       bloc.classList.remove('d-none');
     });
     document.querySelector('.fr-callout').classList.add('d-none');
@@ -107,6 +113,13 @@ export default function SirenInput({
             document.getElementById("organisation_zipcode").value = zipcode;
             document.getElementById("organisation_siret").value = selection.siret;
             searchCoordinatesByAddress(fullAddress);
+            setSelectedCompany({
+              name: selection.uniteLegale.denominationUniteLegale,
+              zipcode: zipcode,
+              city: city,
+              street: street,
+              siret: selection.siret,
+            });
             }
           }
           itemToString={item => (item ? item.value : '')}
@@ -127,27 +140,28 @@ export default function SirenInput({
               <div className="form-group">
                 <label
                   {...getLabelProps({
-                    className: 'label',
+                    className: 'fr-label',
                     htmlFor: `${resourceName}_siren`,
                   })}
                 >
-                  Rechercher votre société dans l’Annuaire des Entreprises {railsEnv === 'development' ? '(dev only : 90943224700015)' : ''}
+                  Rechercher votre société dans l’annuaire des entreprises {railsEnv === 'development' ? '(dev only : 90943224700015)' : ''}
                 </label>
                 <div className="input-group input-siren">
                   <input
                     {...getInputProps({
                       onChange: inputChange,
                       value: currentSiret,
-                      className: 'form-control rounded-0',
+                      className: 'fr-input',
                       id: `${resourceName}_siren`,
                       placeholder: 'Rechercher un nom ou un SIRET',
                       name: `${resourceName}[siren]`
                     })}
                   />
                 </div>
-                <div className='mt-2 d-flex'>
-                  <small className="text-muted">Société introuvable ?</small>
-                  <a href='#manual-input' className='pl-2 small' onClick={openTooggle}>Ajouter une société manuellement</a>
+                <div className='mt-2 d-flex align-items-center'>
+                  <small><span class="fr-icon-info-fill text-blue-info" aria-hidden="true"></span></small>
+                  <small className="text-blue-info fr-mx-1w">Société introuvable ?</small>
+                  <a href='#manual-input' className='pl-2 small text-blue-info' onClick={openManual}>Ajouter une société manuellement</a>
                 </div>
                 <div className="alerte alert-danger siren-error p-2 mt-2 d-none" id='siren-error' role="alert">
                   <small>Aucune réponse trouvée, essayez avec le SIRET.</small>
@@ -163,7 +177,7 @@ export default function SirenInput({
                       ? searchResults.map((item, index) => (
                             <li
                               {...getItemProps({
-                                className: `py-2 px-3 listview-item ${
+                                className: `fr-px-2w fr-py-2w listview-item ${
                                   highlightedIndex === index ? 'highlighted-listview-item' : ''
                                 }`,
                                 key: index,
@@ -174,13 +188,34 @@ export default function SirenInput({
                                 },
                               })}
                             >
-                              {item.uniteLegale.denominationUniteLegale} - {item.adresseEtablissement.libelleCommuneEtablissement}
+                              <p className='fr-my-0 text-dark font-weight-bold'>
+                                {item.uniteLegale.denominationUniteLegale}
+                              </p>
+                              <p className='fr-my-0 fr-text--sm text-dark'>
+                                {item.activite}
+                              </p>
+                              <p className='fr-my-0 fr-text--sm text-dark'>
+                                {item.adresseEtablissement.adresseCompleteEtablissement}
+                              </p>
                             </li>
                       ))
                       : null}
                   </ul>
                 </div>
               </div>
+
+              { 
+                selectedCompany && (
+                  <div className='mt-2 d-flex'>
+                    <div class="fr-highlight">
+                      <p className='fr-my-0'>{selectedCompany.name}</p>
+                      <p className='fr-my-0'>{selectedCompany.street}</p>
+                      <p className='fr-my-0'>{selectedCompany.city}, {selectedCompany.zipcode}</p>
+                      <p className='fr-my-0'>SIRET : {selectedCompany.siret}</p>
+                    </div>
+                  </div>
+                )
+              }
             </div>
           )}
         </Downshift>

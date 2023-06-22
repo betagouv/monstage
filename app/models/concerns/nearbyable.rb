@@ -37,8 +37,11 @@ module Nearbyable
     def coordinates=(coordinates)
       case coordinates
       when Hash
-        super(geo_point_factory(latitude: coordinates[:latitude],
-                                longitude: coordinates[:longitude]))
+        if coordinates[:latitude]
+          super(geo_point_factory(latitude: coordinates[:latitude],longitude: coordinates[:longitude]))
+        else
+          super(geo_point_factory(latitude: coordinates['latitude'],longitude: coordinates['longitude']))
+        end
       when RGeo::Geographic::SphericalPointImpl
         super(coordinates)
       else

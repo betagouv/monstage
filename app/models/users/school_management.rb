@@ -80,6 +80,8 @@ module Users
 
     def school_management? ; true end
     def school_manager? ; role == 'school_manager' end
+    def admin_officer?  ; role == 'admin_officer' end
+    def cpe?            ; role == 'cpe' end
 
     def school_manager
       try(:school).try(:school_manager)

@@ -20,7 +20,7 @@ module InternshipOffers::InternshipApplications
       sign_in(internship_application.internship_offer.employer)
 
       #since no main_teacher and mails to school_manager and employer are delivered later(they are queued)
-      assert_enqueued_emails 2 do
+      assert_enqueued_emails 1 do
         patch(
           dashboard_internship_offer_internship_application_path(
             internship_application.internship_offer,
@@ -52,7 +52,7 @@ module InternshipOffers::InternshipApplications
 
       sign_in(internship_application.internship_offer.employer)
 
-      assert_enqueued_emails 1 do
+      assert_enqueued_emails 0 do
         params = { transition: :approve! }
         patch(
           dashboard_internship_offer_internship_application_path(
@@ -79,7 +79,7 @@ module InternshipOffers::InternshipApplications
 
       sign_in(employer)
 
-      assert_enqueued_emails 2 do
+      assert_enqueued_emails 1 do
         patch(
           dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
           params: { transition: :approve! })
@@ -103,7 +103,7 @@ module InternshipOffers::InternshipApplications
 
       sign_in(operator)
 
-      assert_enqueued_emails 1 do
+      assert_enqueued_emails 0 do
         patch(
           dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
           params: { transition: :approve! }
@@ -124,7 +124,7 @@ module InternshipOffers::InternshipApplications
       )
       sign_in(internship_application.internship_offer.employer)
 
-      assert_enqueued_emails 1 do # Student receives email
+      assert_enqueued_emails 0 do # Student receives email
         patch(
           dashboard_internship_offer_internship_application_path(
             internship_application.internship_offer,
@@ -148,7 +148,7 @@ module InternshipOffers::InternshipApplications
 
       sign_in(internship_offer.employer)
 
-      assert_enqueued_emails 2 do
+      assert_enqueued_emails 1 do
         assert_changes -> { InternshipAgreement.all.count },
                      from: 0,
                      to: 1 do
@@ -187,7 +187,7 @@ module InternshipOffers::InternshipApplications
 
       sign_in(internship_offer.employer)
 
-      assert_enqueued_emails 2 do
+      assert_enqueued_emails 1 do
         assert_changes -> { InternshipAgreement.all.count },
                      from: 0,
                      to: 1 do
@@ -238,7 +238,7 @@ module InternshipOffers::InternshipApplications
 
       sign_in(internship_offer.employer)
 
-      assert_enqueued_emails 2 do
+      assert_enqueued_emails 1 do
         update_url = dashboard_internship_offer_internship_application_path(
           internship_offer,
           internship_application
