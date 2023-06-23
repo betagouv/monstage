@@ -467,9 +467,20 @@ class Ability
   end
 
   def can_manage_school(user:)
-    can :manage, ClassRoom do |class_room|
+    can %i[
+      show
+      edit
+      update
+      create
+      destroy
+      manage_school_users
+    ], ClassRoom do |class_room|
       class_room.school_id == user.school_id
     end
+    can :change, ClassRoom do |class_room|
+      class_room.school_id == user.school_id && !user.school_manager?
+    end
+  
     can [:show_user_in_school], User do |user|
       user.school
           .users
