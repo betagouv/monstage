@@ -3,7 +3,7 @@ def student_maker (school: ,class_room: )
   first_name = 'Kilian' if first_name.include?(' ')
   last_name = FFaker::NameFR.unique.last_name
   last_name = 'Ploquin' if last_name.include?(' ')
-  email = "#{first_name.gsub(/[éèê],'e')}.#{last_name.gsub(/[éèê],'e')}@ms3e.fr"
+  email = "#{first_name.gsub(/[éèê]/,'e')}.#{last_name.gsub(/[éèê]/,'e')}@ms3e.fr"
   Users::Student.new(
     first_name: first_name,
     last_name: last_name,
@@ -72,13 +72,13 @@ def populate_students
   with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: find_default_school_during_test, class_room: ClassRoom.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   # sans classe
   with_class_name_for_defaults(Users::Student.new(email: 'enzo@ms3e.fr', password: 'review', first_name: 'Enzo', last_name: 'Clerc', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 3.days.ago)).save!
-  
+
   5.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_1)).save! }
-  
+
   2.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_2)).save! }
   with_class_name_for_defaults(Users::Student.new(email: 'louis@ms3e.fr', password: 'review', first_name: 'Louis', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'np', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'leon@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Luanco', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
-  
+
   2.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_3)).save! }
   with_class_name_for_defaults(Users::Student.new(email: 'raphaelle@ms3e.fr', password: 'review',first_name: 'Raphaëlle', last_name: 'Mesnard',  school: missing_school_manager_school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Chotin',  school: missing_school_manager_school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
