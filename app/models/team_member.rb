@@ -21,12 +21,6 @@ class TeamMember < ApplicationRecord
   # Scopes
   scope :with_pending_invitations, -> { where(invitation_refused_at: nil, member_id: nil) }
   scope :refused_invitations, -> { where.not(invitation_refused_at: nil) }
-  scope :already_in_another_team,
-        lambda {|inviter_id:|  accepted_invitation.where.not(inviter_id: inviter_id) }
-  scope :members_of_team,
-        lambda { |inviter_id:| where(inviter_id: inviter_id).where(invitation_refused_at: nil) }
-  scope :active_members,
-        lambda { |inviter_id:| accepted_invitation.where(inviter_id: inviter_id) }
 
   # AASM
   aasm do
@@ -34,13 +28,11 @@ class TeamMember < ApplicationRecord
     state :accepted_invitation,
           :refused_invitation
 
-    event :accept_invitation do
+    event :accept_invitation, after: :after_accepted_invitation do
       transitions from: %i[pending_invitation],
                   to: :accepted_invitation,
-                  after: proc { |*_args|
-                    Team.new(self).activate_member
-                    send_invitation
-                  }
+                  after: proc { |*_args| send_invitation }
+
     end
     event :refuse_invitation do
       transitions from: :pending_invitation,
@@ -52,12 +44,6 @@ class TeamMember < ApplicationRecord
   end
 
   # instance methods
-
-  # def check_inviter_is_in?
-  #   TeamMember.members_of_team(inviter_id: inviter_id)
-  #             .pluck(:member_id)
-  #             .include?(inviter_id)
-  # end
 
   def not_in_a_team?
     pending_invitation? || refused_invitation?
@@ -81,8 +67,33 @@ class TeamMember < ApplicationRecord
   end
   alias member_is_owner? member_is_inviter?
 
+  def reject_pending_invitations
+    team = Team.new(self)
+    team_member_ids = team.team_members.map(&:member_id)
+    # reject my invitations to my team
+    TeamMember.pending_invitation
+              .where(inviter_id: member_id)
+              .where(member_id: team_member_ids)
+              .each do |pending_member|
+                pending_member.destroy
+              end  
+
+    # refuse invitations to me
+
+    TeamMember.pending_invitation
+              .where.not(inviter_id: team_member_ids)
+              .where(invitation_email: invitation_email)
+              .each do |pending_member|
+                pending_member.refuse_invitation!
+              end
+  end
 
   private
+
+  def after_accepted_invitation
+    Team.new(self).activate_member
+  end
+
 
   def refused?
     invitation_refused_at.present?

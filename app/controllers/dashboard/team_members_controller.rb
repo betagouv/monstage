@@ -92,10 +92,7 @@ module Dashboard
 
     def team_member_params
       params.require(:team_member)
-            .permit(
-              :invitation_email,
-              :accept_invitation # TODO ? Remove this
-            )
+            .permit( :invitation_email )
     end
   end
 end

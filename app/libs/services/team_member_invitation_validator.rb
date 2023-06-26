@@ -18,14 +18,18 @@ module Services
     end
 
     def user_already_invited?
-      current_user.team_members
-                  .with_pending_invitations
-                  .where(invitation_email: email)
-                  .exists?
+      TeamMember.with_pending_invitations
+                .where(invitation_email: email)
+                .where(inviter_id: current_user_team_owner_id)
+                .exists?
     end
 
     def already_in_team?
       current_user.team.alive?
+    end
+
+    def current_user_team_owner_id
+      current_user.team&.team_owner_id
     end
 
     def fetch_user
@@ -36,7 +40,7 @@ module Services
       return false unless fetch_user
 
       TeamMember.where(member_id: fetch_user.id)
-                .where.not(inviter_id: current_user.team.team_owner_id)
+                .where.not(inviter_id: current_user_team_owner_id)
                 .exists?
     end
 

@@ -245,7 +245,7 @@ module Dashboard
       end
       find('a.button-component-cta-button', text: 'En attente')
     end
-    
+
     test 'admin_officer reads internship agreement table with correct indications - status: started_by_employer' do
       internship_agreement = create(:internship_agreement, aasm_state: :started_by_employer)
       admin_officer = create(:admin_officer, school: internship_agreement.school)
@@ -256,8 +256,8 @@ module Dashboard
       end
       find('a.button-component-cta-button', text: 'En attente')
     end
-    
-    test 'admin_officer reads internship agreement table with correct indications - status: completed_by_employer /' do
+
+    test 'admin_officer reads internship agreement table with correct indications - status: completed_by_employer' do
       internship_agreement = create(:internship_agreement, aasm_state: :completed_by_employer)
       admin_officer = create(:admin_officer, school: internship_agreement.school)
       sign_in(admin_officer)
@@ -273,7 +273,7 @@ module Dashboard
       click_button('Je valide la convention')
       find("span#alert-text", text: "La convention est validée, le fichier pdf de la convention est maintenant disponible.")
     end
-    
+
     test 'admin_officer reads internship agreement table with correct indications - status: started_by_school_manager' do
       internship_agreement = create(:internship_agreement, aasm_state: :started_by_school_manager)
       admin_officer = create(:admin_officer, school: internship_agreement.school)
@@ -284,7 +284,7 @@ module Dashboard
       end
       find('a.button-component-cta-button', text: 'Valider ma convention')
     end
-    
+
     test 'admin_officer reads internship agreement table with correct indications - status: validated' do
       internship_agreement = create(:internship_agreement, aasm_state: :validated)
       admin_officer = create(:admin_officer, school: internship_agreement.school)
@@ -295,7 +295,7 @@ module Dashboard
       end
       find('a.button-component-cta-button', text: 'Imprimer')
     end
-    
+
     test 'admin_officer reads internship agreement table with correct indications - status: signatures_started with employer' do
       internship_agreement = create(:internship_agreement, aasm_state: :signatures_started)
       create(:signature, internship_agreement: internship_agreement, signatory_role: :employer, user_id: internship_agreement.employer.id)
@@ -307,7 +307,7 @@ module Dashboard
       end
       find('a.button-component-cta-button', text: 'Imprimer')
     end
-    
+
     test 'admin_officer reads internship agreement table with correct indications - status: signatures_started with school_manager' do
       internship_agreement = create(:internship_agreement, aasm_state: :signatures_started)
       create(:signature, internship_agreement: internship_agreement, signatory_role: :school_manager, user_id: internship_agreement.school_manager.id)
@@ -321,7 +321,7 @@ module Dashboard
       find('a.button-component-cta-button', text: 'Imprimer')
       find('a.fr-btn.button-component-cta-button', text: 'Déjà signé')
     end
-    
+
     test 'admin_officer reads internship agreement table with correct indications - status: signed_by_all' do
       internship_agreement = create(:internship_agreement, aasm_state: :signed_by_all)
       sign_in(internship_agreement.school_manager)
@@ -467,7 +467,7 @@ module Dashboard
           }).to_return(status: 200, body: "", headers: {})
       expected_result = {
         phone: '0101010101',
-        email: 'test@data.fr', 
+        email: 'test@data.fr',
         address: '1 rue de la paix 75000 Paris'
       }
       Services::SchoolDirectory.stub_any_instance(:fetch_data, expected_result) do

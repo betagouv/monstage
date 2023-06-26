@@ -1,0 +1,18 @@
+p style=head_styles
+  | Invitation
+
+p style=p_styles
+  | Bonjour,
+p style=p_styles
+  = "#{@inviter_presenter.full_name} vous invite à rejoindre son équipe sur la plateforme monstagedetroisieme.fr"
+- if @invitee_presenter.nil?
+  p style=p_styles
+    = "Nous n'avons pas de compte associé à votre adresse email. Vous pouvez en créer un en vous rendant sur :"
+
+  = render partial: "mailers/blue_call_to_action",
+           locals: { href: @subscription_url,
+                     label: "Créer son compte et répondre à l'invitation" }
+- else
+  = render partial: "mailers/blue_call_to_action",
+           locals: { href: @url,
+                     label: "Répondre à l'invitation" }

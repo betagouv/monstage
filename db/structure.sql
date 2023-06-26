@@ -872,47 +872,6 @@ ALTER SEQUENCE public.internship_offer_keywords_id_seq OWNED BY public.internshi
 
 
 --
--- Name: internship_offer_student_infos; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.internship_offer_student_infos (
-    id bigint NOT NULL,
-    max_candidates integer,
-    school_id integer,
-    employer_id integer,
-    last_date date,
-    weeks_count integer DEFAULT 0 NOT NULL,
-    internship_offer_student_info_weeks_count integer DEFAULT 0 NOT NULL,
-    daily_hours jsonb DEFAULT '{}'::jsonb,
-    weekly_hours text[] DEFAULT '{}'::text[],
-    weekly_lunch_break text,
-    max_students_per_group integer DEFAULT 1 NOT NULL,
-    remaining_seats_count integer DEFAULT 0,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: internship_offer_student_infos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.internship_offer_student_infos_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: internship_offer_student_infos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.internship_offer_student_infos_id_seq OWNED BY public.internship_offer_student_infos.id;
-
-
---
 -- Name: internship_offer_weeks; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1718,13 +1677,6 @@ ALTER TABLE ONLY public.internship_offer_keywords ALTER COLUMN id SET DEFAULT ne
 
 
 --
--- Name: internship_offer_student_infos id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.internship_offer_student_infos ALTER COLUMN id SET DEFAULT nextval('public.internship_offer_student_infos_id_seq'::regclass);
-
-
---
 -- Name: internship_offer_weeks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1978,14 +1930,6 @@ ALTER TABLE ONLY public.internship_offer_infos
 
 ALTER TABLE ONLY public.internship_offer_keywords
     ADD CONSTRAINT internship_offer_keywords_pkey PRIMARY KEY (id);
-
-
---
--- Name: internship_offer_student_infos internship_offer_student_infos_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.internship_offer_student_infos
-    ADD CONSTRAINT internship_offer_student_infos_pkey PRIMARY KEY (id);
 
 
 --
@@ -3217,7 +3161,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230531094449'),
 ('20230607101323'),
 ('20230607115359'),
-('20230616093706'),
 ('20230616143729'),
 ('20230616143933'),
 ('20230616164423'),

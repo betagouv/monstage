@@ -1,0 +1,17 @@
+= form_with model: @team_member,
+            scope: :team_member,
+            url: dashboard_team_members_path(),
+            class: 'fr-my-3w',
+            data: { turbo: false } do |f|
+  = render partial: 'inputs/dsfr_input_field',
+           locals: {f: f,
+                    object: @team_member,
+                    label: 'Adresse email',
+                    field: :invitation_email,
+                    required: true}
+  p.fr-mt-9v
+    = link_to 'Précédent',
+              dashboard_team_members_path,
+              class: 'fr-btn fr-btn--secondary fr-mr-2w'
+    = f.submit "Inviter un membre de l'équipe",
+              class: 'fr-btn fr-icon-add-line fr-btn--icon-left'

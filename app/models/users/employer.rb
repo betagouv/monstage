@@ -38,9 +38,7 @@ module Users
     def pending_invitations_to_my_team
       TeamMember.with_pending_invitations.find_by(inviter_id: id)
     end
-    def pending_invitations_to_a_team
-      TeamMember.with_pending_invitations.find_by(invitation_email: email)
-    end
+
 
     def custom_dashboard_path
       return custom_candidatures_path if internship_applications.submitted.any?
