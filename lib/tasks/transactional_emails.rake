@@ -22,10 +22,8 @@ desc 'Evaluate employers count with approved application under conditions'
 task employers_with_potential_agreeements: :environment do
   class_rooms          = ClassRoom.arel_table
   offers               = InternshipOffer.arel_table
-  department_str_array = School.experimented_school_departments
   offer_ids = InternshipApplications::WeeklyFramed.joins( :week , student: {class_room: :school})
                                                   .approved
-                                                  .merge(School.from_departments(department_str_array: department_str_array))
                                                   .merge(Week.in_the_future)
                                                   .includes(:internship_offer)
                                                   .to_a

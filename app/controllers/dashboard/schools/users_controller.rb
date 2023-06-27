@@ -7,6 +7,15 @@ module Dashboard
 
       def index
         authorize! :manage_school_users, @school
+        roles = Invitation.roles
+                          .keys
+                          .map(&:pluralize)
+                          .map(&:to_sym)
+        @collection = roles.inject([]) {|whole, role| whole += @school.send(role).kept }
+        @collection += [@school.school_manager]
+
+        @invitations = Invitation.for_people_with_no_account_in(school_id: @school.id)
+                                 .order(created_at: :desc)
       end
 
       def destroy
@@ -34,7 +43,7 @@ module Dashboard
       private
 
       def user_params
-        params.require(:user).permit(:custom_track)
+        params.require(:user)
       end
     end
   end

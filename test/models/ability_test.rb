@@ -77,32 +77,6 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:update, InternshipOffer.new(employer: employer)),
           'employers should be able to update internships offer that belongs to him')
 
-    #renewing
-    # -------------------
-    assert(ability.cannot?(:renew, InternshipOffer.new),
-          'employers should not be able to renew internship that are not persisted')
-    travel_to(internship_offer.internship_offer_weeks.last.week.week_date.to_date + 1.year) do
-       assert(ability.can?(:renew, internship_offer),
-           'employers should be able to renew internships offer that belongs to him')
-       assert(ability.can?(:renew, internship_offer_api), 'api internship_offers can be renewed')
-    end
-    travel_to(Date.new(Date.today.year - 1 ,9,1)) do
-       assert(ability.cannot?(:renew, internship_offer),
-           'employers should be able to renew offer on 1st sept. date comparission less or equal')
-    end
-
-    #duplicating
-    # -------------------
-    assert(ability.cannot?(:duplicate, alt_internship_offer),
-           'employers should not be able to duplicate offers that do not belong to them')
-    assert(ability.can?(:duplicate, internship_offer),
-           'employers should be able to duplicate offers that do belong to them')
-    travel_to(internship_offer.internship_offer_weeks.last.week.week_date.to_date + 1.year) do
-      assert(ability.cannot?(:duplicate, internship_offer),
-            'employers should not be able to duplicate offer of the passed')
-    end
-    # -------------------
-
     assert(ability.cannot?(:discard, InternshipOffer.new),
            'employers should be able to discard internships offer not belonging to him')
     assert(ability.can?(:discard, InternshipOffer.new(employer: employer)),
@@ -308,12 +282,20 @@ class AbilityTest < ActiveSupport::TestCase
   test 'SchoolManager' do
     student = create(:student)
     school = student.school
-    another_school = create(:school)
-    school_manager = create(:school_manager, school: school)
-    internship_application = create(:weekly_internship_application, student: student)
-    internship_agreement = create(:internship_agreement, :created_by_system,
-                                  internship_application: internship_application)
+    another_school          = create(:school)
+    school_manager          = create(:school_manager, school: school)
+    another_school_manager  = create(:school_manager, school: another_school)
+    internship_application  = create(:weekly_internship_application, student: student)
+    invitation              = create(:invitation, user_id: school_manager.id)
+    invitation_other_school = create(:invitation, user_id: another_school_manager.id)
+    internship_agreement    = create(:internship_agreement, :created_by_system,
+                                     internship_application: internship_application)
     ability = Ability.new(school_manager)
+
+    assert(ability.can?(:create_invitation, invitation))
+    refute(ability.can?(:create_invitation, invitation_other_school))
+    assert(ability.can?(:list_invitations, invitation))
+    refute(ability.can?(:list_invitations, invitation_other_school))
 
     assert(ability.can?(:welcome_students, school_manager), 'school_manager are to be able to supply offers')
     assert(ability.can?(:choose_class_room, User))
@@ -339,7 +321,6 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:manage_school_users, school))
     assert(ability.can?(:manage_school_students, school))
     assert(ability.can?(:manage_school_internship_agreements, school))
-    assert(ability.can?(:create_remote_internship_request, SupportTicket))
 
     assert(ability.cannot?(%i[show edit update], School),
            'school_manager should be able manage school')

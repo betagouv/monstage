@@ -81,7 +81,7 @@ RailsAdmin.config do |config|
 
   config.default_items_per_page = 50
 
-  config.included_models = %w[EmailWhitelists::Statistician
+  config.included_models = %w[EmailWhitelists::PrefectureStatistician
                               EmailWhitelists::Ministry
                               EmailWhitelists::EducationStatistician
                               School
@@ -99,7 +99,7 @@ RailsAdmin.config do |config|
                               Tutor
                               Users::Student
                               Users::SchoolManagement
-                              Users::Statistician
+                              Users::PrefectureStatistician
                               Users::MinistryStatistician
                               Users::EducationStatistician
                               Users::Operator
@@ -107,7 +107,7 @@ RailsAdmin.config do |config|
                               Users::God]
 
   config.navigation_static_links = {
-    "Ajouter un établissement" => "/schools/new",
+    "Ajouter un établissement" => "/ecoles/nouveau",
     "Stats" => stats_path,
     "Sidekiq" => "/sidekiq",
     "Zammad (Support)" => "https://monstage.zammad.com",

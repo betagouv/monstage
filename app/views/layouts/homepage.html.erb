@@ -14,6 +14,7 @@
     <%= favicon_link_tag asset_pack_path('media/images/favicon.png') %>
     <%= stylesheet_pack_tag "application.css", 'data-turbo-track': "reload", media: "all" %>
     <%= javascript_pack_tag "application.js", 'data-turbo-track': "reload", defer: true %>
+    <%= render 'layouts/crisp' %>
   </head>
 
   <body class="<%= env_class_name %> <%= body_class_name %>">

@@ -1,0 +1,104 @@
+
+- channel_value = "#{(resource.channel == :phone || params[:phone].present?) ? "phone" : "email" }"
+- error_status = flash.keys.any? { |key| key == "alert" }
+main#content[role="main"
+             data-controller="signup"
+             data-signup-channel-value="#{channel_value}"]
+
+  .fr-container.fr-container--fluid
+    .fr-grid-row.fr-grid-row-gutters.fr-grid-row--center
+      .fr-col-12.fr-col-md-8.fr-col-lg-6
+        .fr-container.fr-px-md-0
+          .fr-grid-row.fr-grid-row-gutters.fr-grid-row--left
+            = render 'layouts/breadcrumb', links: [ ['', "Connexion"] ]
+        .fr-container.fr-background-alt--grey.fr-px-md-0.fr-py-10v.fr-py-md-14v
+          .fr-grid-row.fr-grid-row-gutters.fr-grid-row--center
+            .fr-col-12.fr-col-md-9.fr-col-lg-8
+              = form_with(model: resource,
+                          scope: resource_name,
+                          data: { turbo: false },
+                          local: true,
+                          html: { id: "sign_in_form" },
+                          id: "login-1760",
+                          url: session_path(resource_name)) do |f|
+                h1.fr-h4.fr-mb-n1w
+                  | Connexion à monstagedetroisième.fr
+                - flash.keys.map do |key|
+                  div class="fr-alert fr-alert--#{key == "notice" ? "success" : "error"} fr-my-2v"
+                    = flash[key]
+                = f.hidden_field :targeted_offer_id,
+                                  value: params.dig(:user, :targeted_offer_id)
+                = render "layouts/form_errors",
+                          resource: resource,
+                          resource_name: :user
+                fieldset#login-1760-fieldset.fr-fieldset.fr-mb-0[aria-labelledby="login-1760-fieldset-legend login-1760-fieldset-messages"]
+                  legend#login-1760-fieldset-legend.fr-fieldset__legend
+                  .fr-fieldset__element
+                    fieldset#credentials.fr-fieldset[aria-labelledby="credentials-messages"]
+                      legend#credentials-legend.fr-fieldset__legend
+                      .fr-fieldset__element
+                        = render "users/select_channel",
+                                  label: "Choisissez votre méthode de connexion",
+                                  form: f,
+                                  error_status: error_status,
+                                  resource: resource,
+                                  phone: "Par téléphone"
+
+                      .fr-fieldset__element.fr-mt-n3w.fr-mb-n1w
+                        #password-1758.fr-password
+                          label [class="fr-label  #{error_status ? 'text-input-error' : ''}"
+                                  for="user_password"]
+                            |  Mot de passe
+                          .fr-input-wrap
+                            = f.password_field :password,
+                                                autocomplete: "current-password",
+                                                class: "fr-password__input fr-input #{error_status ? 'fr-input--error' : ''}",
+                                                :'aria-required' => true,
+                                                required: true,
+                                                autofocus: !params[:email].blank?
+                          - if devise_mapping.recoverable? && controller_name != "passwords" && controller_name != "registrations"
+                            .fr-fieldset__element
+                              = link_to t("devise.passwords.new.forgot_your_password"),
+                                        new_password_path(resource_name),
+                                        class: 'fr-link'
+                          .fr-password__checkbox.fr-checkbox-group.fr-checkbox-group--sm
+                            input aria-label="Afficher le mot de passe" id="password-1138-show" type="checkbox" aria-describedby="password-1138-show-messages"
+                            label class="fr-password__checkbox fr-label" for="password-1138-show"
+                              | Afficher 
+                            .fr-messages-group id="password-1138-show-messages" aria-live="assertive"
+                      #credentials-messages.fr-messages-group[aria-live="assertive"]
+
+                  .fr-fieldset__element.fr-mt-n4w[aria-labelledby="remember-check-messages"]
+                    legend#login-extra-fields-fieldset-legend.fr-fieldset__legend
+                    .fr-checkbox-group.fr-checkbox-group--sm
+                      = f.check_box :remember_me,
+                                    id: 'remember-check',
+                                    :'aria-describedby' => "remember-check-messages",
+                                    :'aria-labelledby' => "remember-label"
+                      label#remember-label.fr-label[for="remember-check"]
+                        |  Se souvenir de moi
+                      #remember-check-messages.fr-messages-group[aria-live="assertive"]
+
+                  .fr-fieldset__element
+                    ul.fr-btns-group
+                      li
+                        = f.submit "Se connecter", class: 'fr-mt-2v fr-btn'
+                  #login-1760-fieldset-messages.fr-messages-group[aria-live="assertive"]
+
+              hr.fr-mb-0
+              h2.fr-h4
+                | Vous n’avez pas de compte ?
+              ul.fr-btns-group
+                li
+                  = link_to "Créer un compte",
+                            (params[:as].present? ? new_identity_path(as: params[:as]) : users_choose_profile_path),
+                            class: "fr-btn fr-btn--secondary"
+
+              hr.fr-mb-0
+              h2.fr-h4
+                | Vous n’avez pas reçu le message d'activation ?
+              ul.fr-btns-group.fr-mt-2w
+                li
+                  = link_to "Renvoyer le message d'activation",
+                             new_user_confirmation_path(resource_name),
+                             class: 'fr-btn fr-btn--tertiary'

@@ -90,7 +90,7 @@ fr:
       users/other:
         one: Autre utilisateur
         other: Autres utilisateurs
-      users/statistician:
+      users/prefecture_statistician:
         one: Référent départemental
         other: Référents départementaux
       users/ministry_statistician:
@@ -176,6 +176,7 @@ fr:
         main_teacher_accept_terms: Validée par le professeur principal
         date_range: Dates du stage
         organisation_representative_full_name: Nom de l'employeur
+        organisation_representative_role: Fonction de l'employeur
         school_representative_full_name: Nom du chef d'établissement ou de son représentant
         school_representative_email: Courriel du chef d'établissement ou de son représentant
         school_representative_phone: Numéro de téléphone du chef d'établissement ou de son représentant
@@ -265,14 +266,12 @@ fr:
         total_convention_signed_applications_count: Nbr. de stages conclus
         total_male_convention_signed_applications_count: Garçon
         total_female_convention_signed_applications_count: Fille
-        total_custom_track_convention_signed_applications_count: 'CR/PE'
         approved_applications_count: "Nbr. de candidatures acceptées"
         submitted_applications_count: "Nbr. de candidatures en attente"
         rejected_applications_count: "Nbr. de candidatures rejetées"
         total_male_approved_applications_count: Garçon
         total_female_approved_applications_count: Fille
         total_no_gender_approved_applications_count: Non précisé
-        total_custom_track_approved_applications_count: 'CR/PE'
         total: Total
         convention_signed_applications_count: Nbr. de stages conclus
         siren: Code Siren
@@ -306,12 +305,20 @@ fr:
           canceled_by_student: annulée par l'élève
           convention_signed: convention signée
         week: Semaine
+      
+      invitation:
+        roles:
+          teacher: Professeur
+          school_manager: Chef d'établissement
+          main_teacher: Professeur principal
+          other: Autre
 
       user:
         accept_terms: "Conditions d'utilisation"
         class_room: "Classe"
         class_room_id: ID de la classe
         confirmed_at: Confirmé le
+        email_whitelist: Liste blanche
         first_name: Prénom
         gender: Sexe
         birth_date: Date de naissance
@@ -460,8 +467,6 @@ fr:
               invalid: "Le format de votre email semble incorrect"
             password:
               too_short: "Veuillez saisir un mot de passe d'au moins 6 caractères"
-            password_confirmation:
-              confirmation: "Les mots de passe saisis ne sont pas identiques."
             first_name:
               blank: Veuillez saisir un prénom
             last_name:
@@ -488,8 +493,6 @@ fr:
 
         users/user_management:
           attributes:
-            school_manager:
-              blank: "Le chef d'établissement ne s'est pas encore inscrit, il doit s'inscrire pour confirmer les professeurs principaux."
             email:
               invalid: "Veuillez saisir une adresse électronique (e-mail) académique"
 

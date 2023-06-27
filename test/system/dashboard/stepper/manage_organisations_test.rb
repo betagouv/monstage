@@ -47,7 +47,7 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
       as = 'a' * (InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT + 2)
       find('#organisation_employer_description_rich_text', visible: false).set(as)
       click_on "Suivant"
-      find('#error_explanation')
+      find('.fr-alert.fr-alert--error')
     end
   end
 end

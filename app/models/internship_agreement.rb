@@ -87,7 +87,10 @@ class InternshipAgreement < ApplicationRecord
 
     event :complete do
       transitions from: %i[draft started_by_employer],
-                  to: :completed_by_employer
+                  to: :completed_by_employer,
+                  after: proc { |*_args|
+        notify_school_manager_of_employer_completion(self)
+      }
     end
 
     event :start_by_school_manager do
@@ -251,8 +254,6 @@ class InternshipAgreement < ApplicationRecord
   end
 
 
-
-
   private
 
   def notify_employer_school_manager_completed(agreement)
@@ -276,6 +277,12 @@ class InternshipAgreement < ApplicationRecord
         internship_agreement: agreement
       ).deliver_later
     end
+  end
+
+  def notify_school_manager_of_employer_completion(agreement)
+    SchoolManagerMailer.internship_agreement_completed_by_employer_email(
+      internship_agreement: agreement
+    ).deliver_later
   end
 
   def every_signature_but_mine

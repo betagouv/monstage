@@ -74,13 +74,15 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       visit internship_offer_path(internship_offer)
 
       all('a', text: 'Postuler').first.click
-      # check for phone fields disabled
-      page.find "input[name='internship_application[student_attributes][phone]'][disabled]", visible: true
+      # check for phone fields
+      page.find "input[name='internship_application[student_phone]']", visible: true
+      fill_in("Numéro de téléphone élève ou parent", with: '060011223344')
       # check for email fields
-      page.find "input[name='internship_application[student_attributes][email]']", visible: true
+      page.find "input[name='internship_application[student_email]']", visible: true
+      fill_in("Adresse électronique (email)", with: 'parents@gmail.com')
       select weeks.first.human_select_text_method, from: 'internship_application_week_id'
-      page.find("input[type='submit'][value='Valider']").click
-      assert page.has_selector?(".fr-card__title a[href='/internship_offers/#{internship_offer.id}']", count: 1)
+      page.find("input[type='submit'][value='Valider ma candidature']").click
+      assert page.has_selector?(".fr-card__title a[href='/offres-de-stage/#{internship_offer.id}']", count: 1)
       click_button('Envoyer')
       page.find('h1', text: 'Félicitations !')
     end
@@ -182,7 +184,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     )
     assert page.has_selector?("a[href='#{url}']", count: 1)
     visit url
-    assert page.has_selector?("a[href='#tab-convention-detail']", count: 1)
+    assert page.has_selector?(".next-step-test", count: 1)
   end
 
   test 'student with submittted application can not see employer\'s address' do
@@ -225,6 +227,8 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       select human_first_week_label, from: 'internship_application_week_id', wait: 3
       find('#internship_application_motivation', wait: 3).native.send_keys('Je suis au taquet')
       refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
+      fill_in("Adresse électronique (email)", with: 'parents@gmail.com')
+      fill_in("Numéro de téléphone élève ou parent", with: '060011223344')
       assert_changes lambda {
                        student.internship_applications
                               .where(aasm_state: :drafted)
@@ -256,9 +260,9 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     internship_offer = create(:weekly_internship_offer)
     visit internship_offer_path(internship_offer.id)
     first(:link, 'Postuler').click
-    fill_in("Adresse électronique (e-mail)", with: employer.email)
+    fill_in("Adresse électronique", with: employer.email)
     fill_in("Mot de passe", with: employer.password)
-    click_button('Connexion')
+    click_button('Se connecter')
 
     assert page.has_selector?("span#alert-text", text: "Vous n'êtes pas autorisé à effectuer cette action.")
   end

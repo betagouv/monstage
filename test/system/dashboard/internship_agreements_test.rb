@@ -63,7 +63,14 @@ module Dashboard
       within('td[data-head="Statut"]') do
         find('div.actions', text: "Votre convention est remplie, mais elle n'est pas envoyée au chef d'établissement.")
       end
-      find('a.button-component-cta-button', text: 'Valider ma convention')
+      find('a.button-component-cta-button', text: 'Valider ma convention').click
+      fill_in "Fonction du représentant de l'entreprise", with: 'CEO'
+      fill_in "Email du tuteur", with: 'tuteur@free.fr'
+      select('08:00', from:'internship_agreement_weekly_hours_start')
+      select('16:00', from:'internship_agreement_weekly_hours_end')
+      fill_in('Pause déjeuner', with: "un repas à la cantine d'entreprise")
+      click_button('Envoyer la convention')
+      find('h1 span.fr-fi-arrow-right-line.fr-fi--lg', text: "Envoyer la convention")
     end
 
     test 'employer reads internship agreement table with correct indications - status: completed_by_employer /' do
@@ -158,10 +165,16 @@ module Dashboard
       internship_agreement = create(:internship_agreement, aasm_state: :completed_by_employer)
       sign_in(internship_agreement.school_manager)
       visit dashboard_internship_agreements_path
+      find('a.button-component-cta-button', text: 'Remplir ma convention').click
       within('td[data-head="Statut"]') do
         find('div.actions', text: "Votre convention est remplie par l'offreur, mais vous ne l'avez pas renseignée.")
       end
-      find('a.button-component-cta-button', text: 'Remplir ma convention')
+      text = "Le chef d'établissement a été nommé apte à signer les conventions par le conseil d'administration de l'établissement en date du"
+      fill_in text, with: "12/02/2015"
+      click_button('Valider la convention')
+      find('h1 span.fr-fi-arrow-right-line.fr-fi--lg', text: "Valider la convention")
+      click_button('Je valide la convention')
+      find("span#alert-text", text: "La convention est validée, le fichier pdf de la convention est maintenant disponible.")
     end
 
     test 'school_manager reads internship agreement table with correct indications - status: started_by_school_manager' do

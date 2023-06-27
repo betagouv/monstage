@@ -15,56 +15,18 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
     refute_email_spammyness(email)
   end
 
-  test 'internship_application_approved_with_agreement_email' do
-    internship_agreement = create(:internship_agreement)
-    school_manager = internship_agreement.internship_application.student.school.school_manager
-    email = SchoolManagerMailer.internship_application_approved_with_agreement_email(
+
+  test 'internship_agreement_completed_by_employer_email within troisieme generale context but no class_room' do
+    internship_agreement = create(:internship_agreement, :started_by_employer)
+    school_manager = internship_agreement.school_manager
+    email = SchoolManagerMailer.internship_agreement_completed_by_employer_email(
       internship_agreement: internship_agreement
     )
     assert_includes email.to, school_manager.email
-    assert_equal 'Une convention de stage sera bientôt disponible.', email.subject
-    refute_email_spammyness(email)
-  end
-
-  test 'internship_application_with_no_agreement_email within troisieme generale context' do
-    school = create(:school, :with_school_manager, :with_weeks)
-    student = create(:student_with_class_room_3e, school: school)
-    internship_offer = create(:weekly_internship_offer, weeks: school.weeks)
-    internship_application = create(:weekly_internship_application,
-                                    :approved,
-                                    internship_offer: internship_offer,
-                                    user_id: student.id)
-    main_teacher = create(:main_teacher, class_room: school.class_rooms.first, school: school)
-    school_manager = school.school_manager
-    # internship_application.approve!
-    email = SchoolManagerMailer.internship_application_approved_with_no_agreement_email(
-      internship_application: internship_application,
-      main_teacher: main_teacher
-    )
-    assert_includes email.to, school_manager.email
     assert_nil email.cc
     refute_email_spammyness(email)
   end
-
-  test 'internship_application_with_no_agreement_email within troisieme generale context but no class_room' do
-    school = create(:school, :with_school_manager, :with_weeks)
-    student = create(:student_with_class_room_3e, school: school)
-    internship_offer = create(:weekly_internship_offer, weeks: school.weeks)
-    internship_application = create(:weekly_internship_application,
-                                    :submitted,
-                                    internship_offer: internship_offer,
-                                    user_id: student.id)
-    school_manager = school.school_manager
-    main_teacher = nil
-    internship_application.approve!
-    email = SchoolManagerMailer.internship_application_approved_with_no_agreement_email(
-      internship_application: internship_application,
-      main_teacher: main_teacher
-    )
-    assert_includes email.to, school_manager.email
-    assert_nil email.cc
-    refute_email_spammyness(email)
-  end
+  
 
   test 'signatures : notify_others_signatures_started_email' do
     internship_agreement = create(:internship_agreement, :validated)

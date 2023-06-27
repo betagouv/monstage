@@ -50,28 +50,10 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
     sign_in(employer)
 
-    visit dashboard_internship_offer_path(internship_offer)
+    visit internship_offer_path(internship_offer)
     assert_changes -> { internship_offer.reload.discarded_at } do
       page.find('.test-discard-button').click
       page.find("button[data-test-delete-id='delete-#{dom_id(internship_offer)}']").click
-    end
-  end
-
-  test 'Employer can publish/unpublish internship_offer' do
-    internship_offer = create(:weekly_internship_offer)
-    sign_in(internship_offer.employer)
-
-    visit dashboard_internship_offer_path(internship_offer)
-    assert_changes -> { internship_offer.reload.published_at } do
-      page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
-      sleep 0.2
-      assert_nil internship_offer.reload.published_at, 'fail to unpublish'
-
-      page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
-      sleep 0.2
-      assert_in_delta Time.now.utc.to_i,
-                      internship_offer.reload.published_at.utc.to_i,
-                      delta = 10
     end
   end
 
@@ -107,27 +89,6 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       assert_equal 4, internship_offer.reload.max_candidates
       assert_equal 1, internship_offer.reload.max_students_per_group
     end
-  end
-
-  test 'Employer can duplicate an internship offer' do
-    employer = create(:employer)
-    older_weeks = [Week.selectable_from_now_until_end_of_school_year.first]
-    current_internship_offer = create(
-      :weekly_internship_offer,
-      employer: employer,
-      weeks: older_weeks
-    )
-    sign_in(employer)
-    visit dashboard_internship_offers_path(internship_offer: current_internship_offer)
-    page.find("a[data-test-id=\"#{current_internship_offer.id}\"]").click
-    find(".test-duplicate-button").click
-    find('h1', text: "Dupliquer une offre")
-    click_button('Dupliquer l\'offre')
-    assert_selector(
-      "#alert-text",
-      text: "L'offre de stage a été dupliquée en tenant " \
-            "compte de vos éventuelles modifications."
-    )
   end
 
   test 'Employer can filter internship_offers from dashboard filters' do

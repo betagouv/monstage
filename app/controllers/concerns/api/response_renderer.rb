@@ -46,8 +46,8 @@ module Api
       end
 
       def render_not_authorized
-        render_error(code: 'UNAUTHORIZED', 
-                     error: 'access denied', 
+        render_error(code: 'UNAUTHORIZED',
+                     error: 'access denied',
                      status: :unauthorized)
       end
 

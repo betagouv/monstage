@@ -226,12 +226,6 @@ $sortLinkOffset: 15px;
 }
 
 .popup-custom {
-  .leaflet-popup-content-wrapper {
-    padding: 0px !important;
-    border-radius: 0 !important;
-  }
-  
-  .leaflet-popup-tip-container,
   a.leaflet-popup-close-button {
     display: none !important;
   }
@@ -263,9 +257,9 @@ $sortLinkOffset: 15px;
   .fr-checkbox-group:first-child {
     margin-top: 0;
   }
-  .hidden-checkbox {
-    display: none;
-  }
+  // .hidden-checkbox {
+  //   display: none;
+  // }
 }
 
 .modal-section {

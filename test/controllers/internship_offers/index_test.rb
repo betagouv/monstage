@@ -164,11 +164,11 @@ class IndexTest < ActionDispatch::IntegrationTest
   test 'GET #index canonical links works' do
     get internship_offers_path(latitude: 44.8378, longitude: -0.579512)
     assert_match(
-      %r{<link href="http://www.example.com/internship_offers" rel="canonical" />}, response.body
+      %r{<link href="http://www.example.com/offres-de-stage" rel="canonical" />}, response.body
     )
     get internship_offers_path(latitude: 44.8378, longitude: -0.579512, page: 2)
     assert_match(
-      %r{<link href="http://www.example.com/internship_offers\?page=2" rel="canonical" />}, response.body
+      %r{<link href="http://www.example.com/offres-de-stage\?page=2" rel="canonical" />}, response.body
     )
   end
 

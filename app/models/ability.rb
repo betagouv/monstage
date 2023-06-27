@@ -11,7 +11,7 @@ class Ability
       when 'Users::Employer' then employer_abilities(user: user)
       when 'Users::God' then god_abilities
       when 'Users::Operator' then operator_abilities(user: user)
-      when 'Users::Statistician' then statistician_abilities(user: user)
+      when 'Users::PrefectureStatistician' then statistician_abilities(user: user)
       when 'Users::EducationStatistician' then education_statistician_abilities(user: user)
       when 'Users::MinistryStatistician' then ministry_statistician_abilities(user: user)
       when 'Users::SchoolManagement'
@@ -55,7 +55,11 @@ class Ability
   end
 
   def school_manager_abilities(user:)
-    can :create_remote_internship_request, SupportTicket # TO DO REMOVE
+    can %i[list_invitations
+           create_invitation
+           destroy_invitation], Invitation do |invitation|
+      invitation.school.id == user.school_id
+    end
 
     can_manage_school(user: user) do
       can [:delete], User do |managed_user_from_school|
@@ -112,12 +116,12 @@ class Ability
 
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
-    can :renew, InternshipOffer do |internship_offer|
-      renewable?(internship_offer: internship_offer, user: user)
-    end
-    can :duplicate, InternshipOffer do |internship_offer|
-      duplicable?(internship_offer: internship_offer, user: user)
-    end
+    # can :renew, InternshipOffer do |internship_offer|
+    #   renewable?(internship_offer: internship_offer, user: user)
+    # end
+    # can :duplicate, InternshipOffer do |internship_offer|
+    #   duplicable?(internship_offer: internship_offer, user: user)
+    # end
     # internship_offer stepper
     can %i[create], InternshipOfferInfo
     can %i[update edit renew], InternshipOfferInfo, employer_id: user.id
@@ -157,7 +161,7 @@ class Ability
     can :show, :api_token
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
     can %i[index_and_filter], Reporting::InternshipOffer
-    can %i[index import_data], Acl::Reporting do |_acl|
+    can %i[index], Acl::Reporting do |_acl|
       true
     end
     can %i[see_reporting_internship_offers
@@ -172,10 +176,10 @@ class Ability
     can :manage, School
     can :manage, Sector
     can %i[destroy see_tutor], InternshipOffer
-    can %i[read update export], InternshipOffer
+    can %i[read update export unpublish], InternshipOffer
     can %i[read update destroy export], InternshipApplication
     can :manage, EmailWhitelists::EducationStatistician
-    can :manage, EmailWhitelists::Statistician
+    can :manage, EmailWhitelists::PrefectureStatistician
     can :manage, EmailWhitelists::Ministry
     can :manage, InternshipOfferKeyword
     can :manage, Group
@@ -188,7 +192,6 @@ class Ability
     end
     can %i[index_and_filter], Reporting::InternshipOffer
     can :manage, InternshipAgreement
-    can :reset_cache, User
     can %i[ switch_user
             read
             update
@@ -202,8 +205,7 @@ class Ability
             see_reporting_enterprises
             see_dashboard_enterprises_summary
             see_dashboard_administrations_summary
-            see_dashboard_associations_summary
-            reset_cache ], User
+            see_dashboard_associations_summary], User
     can :manage, Operator
     can :see_minister_video, User
   end
@@ -225,6 +227,7 @@ class Ability
             export_reporting_dashboard_data
             see_dashboard_associations_summary
             export_reporting_school], User
+    can :view, :department
   end
 
   def education_statistician_abilities(user:)
@@ -239,6 +242,7 @@ class Ability
             see_dashboard_department_summary
             export_reporting_dashboard_data
             see_dashboard_associations_summary], User
+    can :view, :department
   end
 
   def ministry_statistician_abilities(user: )
@@ -262,7 +266,7 @@ class Ability
       subscribe_to_webinar
       choose_to_sign_agreements
       ], User
-    can :view, :department
+    
     can %i[index update], InternshipApplication
     can %i[read create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id

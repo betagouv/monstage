@@ -349,52 +349,6 @@ ALTER SEQUENCE public.active_storage_variant_records_id_seq OWNED BY public.acti
 
 
 --
--- Name: air_table_records; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.air_table_records (
-    id bigint NOT NULL,
-    remote_id text,
-    is_public boolean,
-    nb_spot_available integer DEFAULT 0,
-    nb_spot_used integer DEFAULT 0,
-    nb_spot_male integer DEFAULT 0,
-    nb_spot_female integer DEFAULT 0,
-    department_name text,
-    school_track text,
-    internship_offer_type text,
-    comment text,
-    school_id bigint,
-    group_id bigint,
-    sector_id bigint,
-    week_id bigint,
-    operator_id bigint,
-    created_by text,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: air_table_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.air_table_records_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: air_table_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.air_table_records_id_seq OWNED BY public.air_table_records.id;
-
-
---
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -449,7 +403,7 @@ CREATE TABLE public.email_whitelists (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     user_id bigint,
-    type character varying DEFAULT 'EmailWhitelists::Statistician'::character varying NOT NULL,
+    type character varying DEFAULT 'EmailWhitelists::PrefectureStatistician'::character varying NOT NULL,
     group_id integer
 );
 
@@ -697,7 +651,11 @@ CREATE TABLE public.internship_applications (
     internship_offer_id bigint NOT NULL,
     applicable_type character varying,
     internship_offer_type character varying NOT NULL,
-    week_id bigint
+    week_id bigint,
+    student_phone character varying,
+    student_email character varying,
+    read_at timestamp(6) without time zone,
+    examined_at timestamp(6) without time zone
 );
 
 
@@ -904,13 +862,11 @@ CREATE TABLE public.internship_offers (
     total_male_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
     remote_id character varying,
     permalink character varying,
-    total_custom_track_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
     view_count integer DEFAULT 0 NOT NULL,
     submitted_applications_count integer DEFAULT 0 NOT NULL,
     rejected_applications_count integer DEFAULT 0 NOT NULL,
     published_at timestamp without time zone,
     total_male_approved_applications_count integer DEFAULT 0,
-    total_custom_track_approved_applications_count integer DEFAULT 0,
     group_id bigint,
     first_date date NOT NULL,
     last_date date NOT NULL,
@@ -933,7 +889,8 @@ CREATE TABLE public.internship_offers (
     max_students_per_group integer DEFAULT 1 NOT NULL,
     employer_manual_enter boolean DEFAULT false,
     tutor_role character varying,
-    remaining_seats_count integer DEFAULT 0
+    remaining_seats_count integer DEFAULT 0,
+    employer_hidden boolean DEFAULT false
 );
 
 
@@ -954,6 +911,42 @@ CREATE SEQUENCE public.internship_offers_id_seq
 --
 
 ALTER SEQUENCE public.internship_offers_id_seq OWNED BY public.internship_offers.id;
+
+
+--
+-- Name: invitations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.invitations (
+    id bigint NOT NULL,
+    sent_at timestamp without time zone,
+    email character varying(70),
+    first_name character varying(60),
+    last_name character varying(60),
+    role character varying(50),
+    user_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: invitations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.invitations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invitations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.invitations_id_seq OWNED BY public.invitations.id;
 
 
 --
@@ -1011,12 +1004,8 @@ CREATE TABLE public.operators (
     website character varying,
     created_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.377616'::timestamp without time zone NOT NULL,
     updated_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.384734'::timestamp without time zone NOT NULL,
-    airtable_id character varying,
-    airtable_link character varying,
-    airtable_reporting_enabled boolean DEFAULT false,
-    airtable_table character varying,
-    airtable_app_id character varying,
-    api_full_access boolean DEFAULT false
+    api_full_access boolean DEFAULT false,
+    realized_count json DEFAULT '{}'::json
 );
 
 
@@ -1335,7 +1324,6 @@ CREATE TABLE public.users (
     operator_id bigint,
     api_token character varying,
     handicap text,
-    custom_track boolean DEFAULT false NOT NULL,
     accept_terms boolean DEFAULT false NOT NULL,
     discarded_at timestamp without time zone,
     department character varying,
@@ -1438,13 +1426,6 @@ ALTER TABLE ONLY public.active_storage_variant_records ALTER COLUMN id SET DEFAU
 
 
 --
--- Name: air_table_records id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.air_table_records ALTER COLUMN id SET DEFAULT nextval('public.air_table_records_id_seq'::regclass);
-
-
---
 -- Name: class_rooms id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1533,6 +1514,13 @@ ALTER TABLE ONLY public.internship_offer_weeks ALTER COLUMN id SET DEFAULT nextv
 --
 
 ALTER TABLE ONLY public.internship_offers ALTER COLUMN id SET DEFAULT nextval('public.internship_offers_id_seq'::regclass);
+
+
+--
+-- Name: invitations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invitations ALTER COLUMN id SET DEFAULT nextval('public.invitations_id_seq'::regclass);
 
 
 --
@@ -1645,14 +1633,6 @@ ALTER TABLE ONLY public.active_storage_variant_records
 
 
 --
--- Name: air_table_records air_table_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.air_table_records
-    ADD CONSTRAINT air_table_records_pkey PRIMARY KEY (id);
-
-
---
 -- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1762,6 +1742,14 @@ ALTER TABLE ONLY public.internship_offer_weeks
 
 ALTER TABLE ONLY public.internship_offers
     ADD CONSTRAINT internship_offers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: invitations invitations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invitations
+    ADD CONSTRAINT invitations_pkey PRIMARY KEY (id);
 
 
 --
@@ -1893,20 +1881,6 @@ CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_b
 --
 
 CREATE UNIQUE INDEX index_active_storage_variant_records_uniqueness ON public.active_storage_variant_records USING btree (blob_id, variation_digest);
-
-
---
--- Name: index_air_table_records_on_operator_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_air_table_records_on_operator_id ON public.air_table_records USING btree (operator_id);
-
-
---
--- Name: index_air_table_records_on_week_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_air_table_records_on_week_id ON public.air_table_records USING btree (week_id);
 
 
 --
@@ -2180,6 +2154,13 @@ CREATE INDEX index_internship_offers_on_tutor_id ON public.internship_offers USI
 --
 
 CREATE INDEX index_internship_offers_on_type ON public.internship_offers USING btree (type);
+
+
+--
+-- Name: index_invitations_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_invitations_on_user_id ON public.invitations USING btree (user_id);
 
 
 --
@@ -2807,6 +2788,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211027130402'),
 ('20211110133150'),
 ('20211207163238'),
+('20211228162749'),
 ('20220329131926'),
 ('20220408084653'),
 ('20220511152203'),
@@ -2843,6 +2825,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221123101159'),
 ('20221124170052'),
 ('20221219144134'),
-('20221223100742');
+('20221223100742'),
+('20230223102039'),
+('20230302162952'),
+('20230307200802'),
+('20230321104203'),
+('20230404154158');
 
 

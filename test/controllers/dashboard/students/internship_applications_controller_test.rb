@@ -97,7 +97,7 @@ module Dashboard
                       count: 1
         assert_select '.fr-alert--success .fr-alert__title',
                       text: "Candidature acceptée le #{I18n.localize(internship_applications[:approved].approved_at, format: :human_mm_dd)}.",
-                      count: 2
+                      count: 1
         assert_select '.fr-alert--error .fr-alert__title',
                       text: "Candidature refusée le #{I18n.localize(internship_applications[:rejected].rejected_at, format: :human_mm_dd)}.",
                       count: 1
@@ -120,12 +120,12 @@ module Dashboard
         assert_response :redirect
       end
 
-      test 'GET internship_applications#show render navbar, timeline' do
+      test 'GET internship_applications#show render navbar' do
         student = create(:student)
         sign_in(student)
         internship_application = create(:weekly_internship_application, {
                                           student: student,
-                                          aasm_state: :convention_signed,
+                                          aasm_state: :approved,
                                           convention_signed_at: 1.days.ago,
                                           approved_at: 1.days.ago,
                                           submitted_at: 2.days.ago
@@ -136,9 +136,8 @@ module Dashboard
         assert_response :success
 
         assert_template 'dashboard/students/internship_applications/show'
-        assert_template 'dashboard/students/_timeline'
-        assert_select '#tab-internship-application-detail .fr-alert--info .fr-alert__title',
-                      text: "Candidature envoyée le #{I18n.localize(internship_application.submitted_at, format: :human_mm_dd)}.",
+        assert_select '.fr-alert--success .fr-alert__title',
+                      text: "Candidature envoyée le #{I18n.localize(internship_application.submitted_at, format: :human_mm_dd)}",
                       count: 1
       end
 

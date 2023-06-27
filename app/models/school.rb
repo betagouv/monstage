@@ -166,10 +166,6 @@ class School < ApplicationRecord
     Presenters::School.new(self)
   end
 
-  def self.experimented_school_departments
-    ENV['OPEN_DEPARTEMENTS_CONVENTION'].split(',').map(&:to_str)
-  end
-
   def default_search_options
     {
       city: city,
@@ -199,8 +195,5 @@ class School < ApplicationRecord
   def email_domain_name
     Academy.get_email_domain(Academy.lookup_by_zipcode(zipcode: zipcode))
   end
-
-  def email_domain_name
-    Academy.get_email_domain(Academy.lookup_by_zipcode(zipcode: zipcode))
-  end
 end
+

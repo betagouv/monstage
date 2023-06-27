@@ -45,7 +45,7 @@
             h3.h6
               i.fa-fw.fas.fa-user
               | Informations sur l'élève
-            = render partial: "users/resume_details", locals: {student: internship_application.student}
+            = render partial: "internship_applications/student_details", locals: {internship_application: internship_application}
         .row
           - resume_content = internship_application.student.resume_educational_background.to_s
           - resume_languages = internship_application.student.resume_languages.to_s
