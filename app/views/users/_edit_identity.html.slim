@@ -60,7 +60,7 @@
                       {  },
                       { class: "fr-select" }.merge(can?(:change, :department) ? {} : {disabled: true})
 
-      - if current_user.school && current_user.school.class_rooms.any? && can?(:change, current_user.school.class_rooms.first)
+      - if current_user.try(:school) && current_user.school.class_rooms.any? && can?(:change, current_user.school.class_rooms.first)
         .col-md-6.col-xs-12
           .form-group
             = f.label :class_room_id, class: 'fr-label', for: 'user_class_room_id_1' do

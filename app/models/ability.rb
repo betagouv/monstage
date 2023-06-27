@@ -474,6 +474,7 @@ class Ability
       create
       destroy
       manage_school_users
+      index
     ], ClassRoom do |class_room|
       class_room.school_id == user.school_id
     end
