@@ -307,7 +307,11 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:dashboard_index, student))
     assert(ability.can?(:delete, student))
 
-    assert(ability.can?(:manage, ClassRoom))
+    assert(ability.can?(:index, ClassRoom))
+    assert(ability.can?(:create, ClassRoom))
+    assert(ability.can?(:update, ClassRoom))
+    assert(ability.can?(:destroy, ClassRoom))
+    assert(ability.can?(:edit, ClassRoom))
     assert(ability.cannot?(:change, :class_room))
 
     assert(ability.can?(:destroy, internship_application))
@@ -385,7 +389,11 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:show, :account),
            'students should be able to access their account')
 
-    assert(ability.can?(:manage, ClassRoom))
+    assert(ability.can?(:index, ClassRoom))
+    assert(ability.can?(:create, ClassRoom))
+    assert(ability.can?(:update, ClassRoom))
+    assert(ability.can?(:destroy, ClassRoom))
+    assert(ability.can?(:edit, ClassRoom))
     assert(ability.can?(:change, class_room))
 
     assert(ability.can?(:destroy, internship_application))
@@ -422,7 +430,11 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:subscribe_to_webinar, teacher))
     assert(ability.can?(:welcome_students, teacher),
            'teacher are to be able to welcome students')
-    assert(ability.can?(:manage, ClassRoom))
+    assert(ability.can?(:index, ClassRoom))
+    assert(ability.can?(:create, ClassRoom))
+    assert(ability.can?(:update, ClassRoom))
+    assert(ability.can?(:destroy, ClassRoom))
+    assert(ability.can?(:edit, ClassRoom))
     assert(ability.can?(:see_tutor, InternshipOffer))
     assert(ability.can?(:manage_school_students, teacher.school))
     assert(ability.cannot?(:manage_school_students, build(:school)))
@@ -437,7 +449,11 @@ class AbilityTest < ActiveSupport::TestCase
     ability = Ability.new(other)
     assert(ability.can?(:manage_school_students, other.school))
     assert(ability.cannot?(:manage_school_students, another_school))
-    assert(ability.can?(:manage, ClassRoom))
+    assert(ability.can?(:index, ClassRoom))
+    assert(ability.can?(:create, ClassRoom))
+    assert(ability.can?(:update, ClassRoom))
+    assert(ability.can?(:destroy, ClassRoom))
+    assert(ability.can?(:edit, ClassRoom))
     assert(ability.can?(:change, class_room))
   end
 
@@ -454,7 +470,11 @@ class AbilityTest < ActiveSupport::TestCase
    
     assert(ability.can?(:manage_school_students, admin_officer.school))
     assert(ability.cannot?(:manage_school_students, another_school))
-    assert(ability.can?(:manage, ClassRoom))
+    assert(ability.can?(:index, ClassRoom))
+    assert(ability.can?(:create, ClassRoom))
+    assert(ability.can?(:update, ClassRoom))
+    assert(ability.can?(:destroy, ClassRoom))
+    assert(ability.can?(:edit, ClassRoom))
     assert(ability.can?(:change, class_room))
     assert(ability.can?(:read, InternshipAgreement))
   end
@@ -470,6 +490,11 @@ class AbilityTest < ActiveSupport::TestCase
 
     assert(ability.can?(:manage_school_students, cpe.school))
     assert(ability.cannot?(:manage_school_students, another_school))
+    assert(ability.can?(:index, ClassRoom))
+    assert(ability.can?(:create, ClassRoom))
+    assert(ability.can?(:update, ClassRoom))
+    assert(ability.can?(:destroy, ClassRoom))
+    assert(ability.can?(:edit, ClassRoom))
     assert(ability.can?(:change, class_room))
     assert(ability.cannot?(:change, class_room_2))
     assert(ability.can?(:read, InternshipAgreement))
