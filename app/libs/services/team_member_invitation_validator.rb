@@ -4,7 +4,6 @@ module Services
       return :invited if user_already_invited?
       return :already_in_team if already_in_team?
       return :in_another_team if already_in_another_team?
-      return :self_invitation if self_invitation?
       return :ok
     end
 
@@ -18,18 +17,20 @@ module Services
     end
 
     def user_already_invited?
+      return true if current_user.email == email # self invitation
+
       TeamMember.with_pending_invitations
                 .where(invitation_email: email)
-                .where(inviter_id: current_user_team_owner_id)
+                .where(inviter_id: current_user.team_id)
                 .exists?
     end
 
     def already_in_team?
-      current_user.team.alive?
-    end
+      team = current_user.team
+      return false unless team&.team_size&.positive?
 
-    def current_user_team_owner_id
-      current_user.team&.team_owner_id
+      team_members_email = team.team_members.pluck(:invitation_email)
+      email.in?(team_members_email)
     end
 
     def fetch_user
@@ -40,12 +41,8 @@ module Services
       return false unless fetch_user
 
       TeamMember.where(member_id: fetch_user.id)
-                .where.not(inviter_id: current_user_team_owner_id)
+                .where.not(inviter_id: current_user.team_id)
                 .exists?
-    end
-
-    def self_invitation?
-      current_user.email == email
     end
   end
 end

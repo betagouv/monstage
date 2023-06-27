@@ -53,7 +53,7 @@
                                   class: "fr-link text-decoration-none mr-4 #{active}"
                     - if can?(:manage_teams, TeamMember)
                       li
-                        - active = current_page?(dashboard_internship_offers_path) || request.url.include?('origine=dashboard') ? 'active' : ''
+                        - active = current_page?(dashboard_team_members_path) || request.url.include?('origine=dashboard') ? 'active' : ''
                         = link_to 'équipe'.capitalize,
                                   dashboard_team_members_path,
                                   class: "fr-link text-decoration-none mr-4 #{active}"

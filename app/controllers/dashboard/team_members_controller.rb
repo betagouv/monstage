@@ -6,8 +6,10 @@ module Dashboard
 
     def index
       authorize! :manage_teams, TeamMember
-      @team_members = current_user.team_members
-      @page = existing_team_or_invitations? ? :index : :presentation
+      @team_members = current_user.pending_invitations_to_my_team.to_a +
+                      current_user.refused_invitations.to_a +
+                      current_user.team&.team_members.to_a
+      @page = @team_members.count.positive? ? :index : :presentation
     end
 
     def new
@@ -17,8 +19,10 @@ module Dashboard
     def create
       case check_invitation(team_member_params[:invitation_email])
       when :ok
-        params = team_member_params.merge(inviter_id: team_inviter_id)
-        @team_member = TeamMember.create!(params)
+        params = team_member_params.merge(inviter_id: current_user.team_id)
+        @team_member= TeamMember.new(params)
+        @team_member.save!
+        @team_member.send_invitation
         flash = { success: 'Membre d\'équipe invité avec succès' }
       when :invited
         flash = { warning: 'Ce collaborateur est déjà invité' }
@@ -26,15 +30,13 @@ module Dashboard
         flash = { warning: 'Ce collaborateur fait déjà partie de l\'équipe' }
       when :in_another_team
         flash = { alert: 'Ce collaborateur fait déjà partie d’une équipe sur mon stage de troisième. Il ne pourra pas rejoindre votre équipe' }
-      when :self_invitation
-        flash = { alert: 'Vous ne pouvez pas vous inviter vous-même' }
       else
         render(:new, status: :bad_request) and return
       end
       redirect_to dashboard_team_members_path, flash: flash
     end
 
-    # when accepting an invitation or not 
+    # when accepting an invitation or not
     def join
       authorize! :manage_teams, @team_member
       action =  params[:commit] == "Oui" ? :accept_invitation! : :refuse_invitation!
@@ -57,11 +59,6 @@ module Dashboard
       render :new, status: :bad_request
     end
 
-    def team_inviter_id
-      current_user.team.try(:team_owner_id) || current_user.id
-    end
-
-
     attr_accessor :check_result, :accept_invitation
 
     private
@@ -70,11 +67,6 @@ module Dashboard
       collection.each do |team_member|
         team_member.update!(inviter_id: target_id)
       end
-    end
-
-    def existing_team_or_invitations?
-      current_user.team.alive? ||
-        current_user.pending_invitations_to_my_team.present?
     end
 
     def authorize_member_inviting

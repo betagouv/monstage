@@ -248,6 +248,7 @@ class User < ApplicationRecord
   # def valid_invitation_to_a_team? ; false end
   
   def already_signed?(internship_agreement_id:); true end
+  def team_id; id end
   
   def pending_invitation_to_a_team ; [] end
   def create_signature_phone_token ; nil end

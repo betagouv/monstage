@@ -22,23 +22,26 @@ module Users
              foreign_key: :inviter_id
 
     def internship_offers
-      if team.team_size.positive?
-        InternshipOffer.where(employer: team.team_members.pluck(:member_id))
-      else
-        super
-      end
+      return super unless team.team_size.positive?
+      
+      InternshipOffer.where(employer: team.team_members.pluck(:member_id))
+    end
+    
+    def internship_agreements
+      return super unless team.team_size.positive?
+
+      internship_applications = InternshipApplication.where(internship_offer: internship_offers)
+      InternshipAgreement.where(internship_application: internship_applications)
     end
 
-    # def valid_invitation_to_a_team?
-    #   return false if discarded?
-    #   return false if TeamMember.find_by(member_id: id).present?
-    #   true
-    # end
+
+    def pending_invitation_to_a_team
+      TeamMember.with_pending_invitations.find_by(invitation_email: email)
+    end
 
     def pending_invitations_to_my_team
-      TeamMember.with_pending_invitations.find_by(inviter_id: id)
+      TeamMember.with_pending_invitations.where(inviter_id: team_id)
     end
-
 
     def custom_dashboard_path
       return custom_candidatures_path if internship_applications.submitted.any?
@@ -79,6 +82,14 @@ module Users
 
     def team
       Team.new(self)
+    end
+
+    def team_id
+      team.team_owner_id || id
+    end
+
+    def refused_invitations
+       TeamMember.refused_invitation.where(inviter_id: team_id)
     end
 
     def satisfaction_survey_id

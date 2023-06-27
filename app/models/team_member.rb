@@ -30,8 +30,7 @@ class TeamMember < ApplicationRecord
 
     event :accept_invitation, after: :after_accepted_invitation do
       transitions from: %i[pending_invitation],
-                  to: :accepted_invitation,
-                  after: proc { |*_args| send_invitation }
+                  to: :accepted_invitation
 
     end
     event :refuse_invitation do
@@ -93,7 +92,6 @@ class TeamMember < ApplicationRecord
   def after_accepted_invitation
     Team.new(self).activate_member
   end
-
 
   def refused?
     invitation_refused_at.present?

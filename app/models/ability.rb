@@ -235,7 +235,7 @@ class Ability
            see_reporting_schools
            see_reporting_enterprises
            check_his_statistics], User
-    can %i[manage_teams], TeamMember
+    cannot %i[manage_teams], TeamMember
     can %i[destroy], TeamMember do |team_member|
        team_member.member_id != user.id
     end
@@ -364,7 +364,7 @@ class Ability
 
     as_employers_signatory_abilities(user: user) if user.employer_like?
     can :see_minister_video, User
-    can %i[manage_teams], TeamMember
+    cannot %i[manage_teams], TeamMember
     can %i[destroy], TeamMember do |team_member|
        team_member.member_id != user.id
     end

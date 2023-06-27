@@ -118,7 +118,8 @@ class EmployerMailer < ApplicationMailer
   def team_member_invitation_email(team_member: , user: )
     @email = team_member.invitation_email
     @inviter_presenter = team_member.inviter.presenter
-    @invitee_presenter = user.presenter unless user.nil?
+    # user may be nil
+    @user = user unless user.nil?
     @subscription_url = new_user_registration_url
     @url = dashboard_team_members_url
 

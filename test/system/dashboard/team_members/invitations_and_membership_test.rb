@@ -56,5 +56,40 @@ module Dashboard::TeamMembers
       assert_text "Ce collaborateur est déjà invité"
     end
 
+    test 'a employer can accept an invitation to join a team' do
+      employer_1 = create(:employer)
+      employer_2 = create(:employer)
+      create :team_member,
+             inviter_id: employer_1.id,
+             invitation_email: employer_2.email
+      sign_in(employer_2)
+      visit employer_2.after_sign_in_path
+      click_button 'Oui'
+      assert_equal 2, all('span.fr-badge.fr-badge--no-icon.fr-badge--success', text: "INSCRIT").count
+      assert_equal 2, employer_1.team.team_size
+      assert_equal 2, employer_2.team.team_size
+    end
+
+    test 'an employer can refuse an invitation to join a team' do
+      employer_1 = create(:employer)
+      employer_2 = create(:employer)
+      create :team_member,
+             inviter_id: employer_1.id,
+             invitation_email: employer_2.email
+
+      sign_in(employer_2)
+      visit employer_2.after_sign_in_path
+      click_button 'Non'
+      find('h1.fr-h3', text: "Collaborez facilement avec votre équipe")
+      assert_equal 1, TeamMember.refused_invitations.count
+      assert_equal 0, all('span.fr-badge.fr-badge--no-icon.fr-badge--error', text: "refusée".upcase).count
+      assert_equal 0, employer_1.team.team_size
+      assert_equal 0, employer_2.team.team_size
+      logout(employer_2)
+
+      sign_in(employer_1)
+      visit dashboard_team_members_path
+      assert_equal 1, all('span.fr-badge.fr-badge--no-icon.fr-badge--error', text: "refusée".upcase).count
+    end
   end
 end

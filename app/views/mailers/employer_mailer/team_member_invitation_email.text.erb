@@ -3,7 +3,7 @@ Invitation
 Bonjour,
 
 <%="#{@inviter_presenter.full_name} vous invite à rejoindre son équipe sur la plateforme monstagedetroisieme.fr"%>
-<% if @invitee_presenter.nil? %>
+<% if @user.nil? %>
   <%= "Nous n'avons pas de compte associé à votre adresse email. Vous pouvez en créer un en vous rendant sur :"%>
 
   <%= @subscription_url%>
