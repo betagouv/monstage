@@ -34,7 +34,7 @@ class Ability
     can :look_for_offers, User
     can :show, :account
     can :change, ClassRoom do |class_room|
-      class_room.school_id == user.school_id && !user.school_manager?
+      class_room.school_id == user.school_id
     end
     can %i[read], InternshipOffer
     can %i[create delete], Favorite
