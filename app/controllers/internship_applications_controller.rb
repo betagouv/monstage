@@ -83,6 +83,20 @@ class InternshipApplicationsController < ApplicationController
   def transfert
     @internship_application = InternshipApplication.find(params[:id])
     authorize! :transfert, @internship_application
+    # send email to the invited employer
+    if params[:destinations].present?
+      params[:destinations].split(',').each do |destination|
+        EmployerMailer.transfert_internship_application(
+          internship_application: @internship_application, 
+          employer_id: current_user.id,
+          email: destination,
+          message: params[:comment]).deliver_now unless destination.blank?
+      end
+    end
+
+    # update status
+    @internship_application.update(aasm_state: :examined)
+    redirect_to dashboard_internship_applications_path(current_user), flash: { success: "La candidature a été transmises avec succès, son statut est à l'étude" }
   end
 
   private

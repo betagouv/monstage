@@ -1,17 +1,35 @@
 import { Controller } from 'stimulus';
 import $ from 'jquery';
-import { showElement, hideElement } from '../utils/dom';
 
 export default class extends Controller {
   static targets = [
-    'groupBlock',
-    'groupLabel',
-    'groupNamePublic',
-    'groupNamePrivate',
-    'selectGroupName',
     'requiredField',
-    'submitButton'
+    'submitButton',
+    'container'
   ];
+
+  addDestinataire() {
+    event.preventDefault();
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.name = 'formulaire[destinataires][]';
+    input.className = 'fr-input destinataire-input fr-my-3w';
+
+    // const removeButton = document.createElement('span');
+    // removeButton.textContent = 'Supprimer';
+    // removeButton.dataset.action = 'click->destinataire#supprimerDestinataire';
+
+    const formGroup = document.createElement('div');
+    formGroup.className = 'form-group ';
+    formGroup.appendChild(input);
+    // formGroup.appendChild(removeButton);
+
+    this.containerTarget.appendChild(formGroup);
+
+    this.updateHiddenDestinataires();
+  }
+
 
   updateHiddenDestinataires() {
     const destinataires = this.containerTarget.querySelectorAll('.destinataire-input');
@@ -19,11 +37,26 @@ export default class extends Controller {
     hiddenInput.value = Array.from(destinataires).map(input => input.value).join(',');
   }
 
+  checkForm() {
+    const requiredFields = this.requiredFieldTargets;
+    const submitButton = this.submitButtonTarget;
+
+    requiredFields.forEach(field => {
+      field.addEventListener('input', () => {
+        for (const requiredField of requiredFields) {
+          if (requiredField.value === '') {
+            submitButton.disabled = true;
+            return;
+          }
+        }
+        submitButton.disabled = false;
+      });
+    });
+  }
+
   connect() {
-    // this.element.addEventListener('submit', this.validateForm, false);
+
     setTimeout( () => {
-      console.log('coucou');
-      // this.toggleGroupNames(false);
       // this.checkForm();
     }, 100);
   }

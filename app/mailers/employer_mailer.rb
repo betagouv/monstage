@@ -90,6 +90,26 @@ class EmployerMailer < ApplicationMailer
     )
   end
 
+  def transfert_internship_application(internship_application:, employer_id: , email:, message:)
+    @internship_application = internship_application
+    @internship_offer      = internship_application.internship_offer
+    @employer              = @internship_offer.employer
+    @employer_full_name    = Presenters::User.new(@employer).full_name
+    @student_full_name    = Presenters::User.new(@internship_application.student).full_name
+    @message               = message
+    @url = dashboard_internship_offer_internship_application_url(
+      internship_offer_id: @internship_offer.id,
+      id: @internship_application.id,
+      mtm_campaign: 'Offreur - Candidature transférée',
+      token: 'abc'
+    ).html_safe
+
+    mail(
+      to: email,
+      subject: 'Nouvelle candidature'
+    )
+  end
+
   def resend_internship_application_submitted_email(internship_application:)
     @internship_application = internship_application
 
