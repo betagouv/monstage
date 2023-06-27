@@ -113,6 +113,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test 'GET edit as student also allow him to change class_room' do
     student = create(:student, phone: '+330623042585')
+    create(:class_room, school: student.school, name: '3A')
 
     sign_in(student)
     get account_path(section: 'identity')

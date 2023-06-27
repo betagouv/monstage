@@ -33,7 +33,9 @@ class Ability
   def student_abilities(user:)
     can :look_for_offers, User
     can :show, :account
-    can :change, :class_room
+    can :change, ClassRoom do |class_room|
+      class_room.school_id == user.school_id
+    end
     can %i[read], InternshipOffer
     can %i[create delete], Favorite
     can :apply, InternshipOffer do |internship_offer|
@@ -467,9 +469,21 @@ class Ability
   end
 
   def can_manage_school(user:)
-    can :manage, ClassRoom do |class_room|
+    can %i[
+      show
+      edit
+      update
+      create
+      destroy
+      manage_school_users
+      index
+    ], ClassRoom do |class_room|
       class_room.school_id == user.school_id
     end
+    can :change, ClassRoom do |class_room|
+      class_room.school_id == user.school_id && !user.school_manager?
+    end
+  
     can [:show_user_in_school], User do |user|
       user.school
           .users
