@@ -236,13 +236,36 @@ module Presenters
     def with_employer_explanation?
       return false unless internship_application.aasm_state.in?(::InternshipApplication.with_employer_explanations_states)
 
-      employer_explanation.present?
+      explanation_count.positive?
     end
 
-    def employer_explanation
-      "#{internship_application.canceled_by_employer_message.to_s}" \
-      "#{internship_application.rejected_message.to_s}" \
-      "#{internship_application.examined_message.to_s}".html_safe
+    def explanation_count
+      count = 0
+      count += 1 if internship_application.canceled_by_employer_message?
+      count += 1 if internship_application.rejected_message?
+      count += 1 if internship_application.examined_message?
+      count
+    end
+
+    def employer_explanations
+      motives = []
+      examined_motive = { meth: :examined_message, label: 'Mise à l\'étude par  l\'entreprise' }
+      canceled_motive = { meth: :canceled_by_employer_message, label: 'Annulation par l\'entreprise' }
+      rejected_motive = { meth: :rejected_message, label: 'Refus par l\'entreprise' }
+
+      motives << examined_motive if internship_application.examined_message?
+      motives << examined_motive if internship_application.canceled_by_employer_message?
+      motives << rejected_motive if internship_application.rejected_message?
+
+      motives.map do |motive|
+        text = internship_application.send(motive[:meth].to_s)
+        text.blank? ? nil : "<p><strong>#{motive[:label]}</strong> : </br>#{text}"
+      end.compact
+      # explanations = []
+      # explanations << internship_application.canceled_by_employer_message if internship_application.canceled_by_employer?
+      # "#{internship_application.canceled_by_employer_message.to_s}" \
+      # "#{internship_application.rejected_message.to_s}" \
+      # "#{internship_application.examined_message.to_s}".html_safe
     end
 
     attr_reader :internship_application,

@@ -2,9 +2,12 @@
 - application_prez = internship_application.presenter(current_user)
 .row.fr-mt-3w.fr-mb-4w
   .col-12
-    h1.h3.fr-mb-5v = "Message reçu de l'#{offer_prez.entreprise}"
+    - count = application_prez.explanation_count
+    - title = count > 1 ? "Messages reçus" : "Message reçu"
+    h1.h3.fr-mb-5v = "#{title} de l'#{offer_prez.entreprise}"
     .container-monstage-application
-      .grey-container-application.with-grey-background
-        .row
-          .col-sm-8.col-lg-12
-            = application_prez.employer_explanation
+      - application_prez.employer_explanations.each do |explanation|
+        .grey-container-application.with-grey-background.fr-mb-2w
+          .row
+            .col-sm-8.col-lg-12
+              = explanation.html_safe
