@@ -1,29 +1,29 @@
 {
   "pagination": {
-    "totalInternshipOffers": 31,
+    "totalInternshipOffers": 1,
     "internshipOffersPerPage": 30,
-    "totalPages": 2,
-    "currentPage": 2,
+    "totalPages": 1,
+    "currentPage": 1,
     "nextPage": null,
-    "prevPage": "http://www.example.com/api/internship_offers?page=1",
-    "isFirstPage": false,
+    "prevPage": null,
+    "isFirstPage": true,
     "isLastPage": true,
-    "pageUrlBase": "http://www.example.com/api/internship_offers"
+    "pageUrlBase": "http://www.example.com/api/internship_offers?keyword=cuisine"
   },
   "internshipOffers": [
     {
-      "id": 615,
-      "title": "Stage de 3è - 73",
+      "id": 12,
+      "title": "Cheffe de cuisine",
       "description": "Lorem ipsum dolor weekly_internship_offer",
       "employer_name": "Octo",
-      "url": "http://www.example.com/offres-de-stage/615?page=2&utm_source=operator-24",
+      "url": "http://www.example.com/internship_offers/12?keyword=cuisine",
       "city": "Paris",
-      "date_start": " 4 septembre 2023",
-      "date_end": "10 septembre 2023",
+      "date_start": " 7 novembre 2022",
+      "date_end": "13 novembre 2022",
       "latitude": 48.866667,
       "longitude": 2.333333,
       "image": "http://www.example.com/packs-test/media/images/sectors/default_sector-e1b60d1832d3ebc2a8ccff663f1a8dd8.svg",
-      "sector": "secteur-94"
+      "sector": "secteur-3"
     }
   ]
 }
