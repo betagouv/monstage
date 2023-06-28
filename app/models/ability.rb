@@ -434,10 +434,10 @@ class Ability
       sign
       sign_internship_agreements
     ], InternshipAgreement do |agreement|
-      agreement.employer == user && user.employer_like?
+      agreement.employer.id == user.team_id && user.employer_like?
     end
     can :create, Signature do |signature|
-      signature.internship_agreement.internship_offer.employer_id == user.id
+      signature.internship_agreement.internship_offer.employer_id == user.team_id
     end
   end
 

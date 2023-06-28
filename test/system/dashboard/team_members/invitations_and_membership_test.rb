@@ -48,7 +48,6 @@ module Dashboard::TeamMembers
 
       sign_in(employer_2)
       visit dashboard_team_members_path
-      # TODO : trouver les badges inscrits des deux lascars
       click_link 'équipe'.capitalize
       find('a', text: "Inviter un membre de l'équipe").click
       fill_in 'team_member[invitation_email]', with: employer_3.email
@@ -90,6 +89,54 @@ module Dashboard::TeamMembers
       sign_in(employer_1)
       visit dashboard_team_members_path
       assert_equal 1, all('span.fr-badge.fr-badge--no-icon.fr-badge--error', text: "refusée".upcase).count
+    end
+
+     test 'when two employers are in the same team, ' \
+         'they can manage internship_applications of the team' do
+      employer_1 = create(:employer)
+      employer_2 = create(:employer)
+      internship_offer = create(:weekly_internship_offer, employer: employer_1)
+      internship_application_1 = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
+      create :team_member,
+             :accepted_invitation,
+             inviter_id: employer_1.id,
+             member_id: employer_2.id
+      create :team_member,
+             :accepted_invitation,
+             inviter_id: employer_1.id,
+             member_id: employer_1.id
+      assert employer_2.team.team_size == 2
+
+      sign_in(employer_2)
+      visit dashboard_candidatures_path
+      find('p.fr-badge--info', text: "nouveau".upcase)
+      find('a[title="Répondre à la candidature"]', text: "Répondre").click
+      click_button("Accepter")
+      click_button("Confirmer")
+      find('p.fr-badge--info', text: "en attente de réponse".upcase)
+    end
+
+    test 'when two employers are in the same team, ' \
+         'they can manage internship_agreements of the team' do
+      employer_1 = create(:employer)
+      employer_2 = create(:employer)
+      internship_offer = create(:weekly_internship_offer, employer: employer_1)
+      internship_application_1 = create(:weekly_internship_application, :approved, internship_offer: internship_offer)
+      assert InternshipAgreement.count == 1
+      student = internship_application_1.student
+      create :team_member,
+             :accepted_invitation,
+             inviter_id: employer_1.id,
+             member_id: employer_2.id
+      create :team_member,
+             :accepted_invitation,
+             inviter_id: employer_1.id,
+             member_id: employer_1.id
+
+      sign_in(employer_2)
+      visit dashboard_internship_agreements_path
+      find('a.button-component-cta-button', text: "Remplir ma convention").click
+      find('.h2[aria-level="1"][role="heading"]', text: "Édition de la convention de stage")
     end
   end
 end
