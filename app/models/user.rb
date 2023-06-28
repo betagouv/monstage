@@ -249,6 +249,7 @@ class User < ApplicationRecord
   
   def already_signed?(internship_agreement_id:); true end
   def team_id; id end
+  def team_member_ids: [id] end
   
   def pending_invitation_to_a_team ; [] end
   def create_signature_phone_token ; nil end

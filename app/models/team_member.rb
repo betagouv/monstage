@@ -78,7 +78,6 @@ class TeamMember < ApplicationRecord
               end  
 
     # refuse invitations to me
-
     TeamMember.pending_invitation
               .where.not(inviter_id: team_member_ids)
               .where(invitation_email: invitation_email)

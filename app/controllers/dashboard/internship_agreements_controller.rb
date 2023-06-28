@@ -91,7 +91,6 @@ module Dashboard
       @no_agreement_internship_application_list = current_user.internship_applications
                                                               .approved
                                                               .select { |ia| ia.student.school.school_manager.nil? }
-
     end
 
     private

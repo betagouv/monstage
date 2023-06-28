@@ -46,11 +46,7 @@ module Finders
     end
 
     def proposed_offers
-      InternshipOffer.kept.where(employer_id: people_in_team_ids)
-    end
-
-    def people_in_team_ids
-      user.team&.team_members&.pluck(:member_id) || user.id
+      InternshipOffer.kept.where(employer_id: user.team_member_ids)
     end
   end
 end
