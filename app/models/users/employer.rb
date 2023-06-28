@@ -80,7 +80,7 @@ module Users
     end
 
     def team_members_ids
-      team.team_members.pluck(:member_id) || [id]
+      team&.team_members&.pluck(:member_id) || [id]
     end
 
     def pending_invitation_to_a_team

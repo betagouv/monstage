@@ -45,11 +45,6 @@ class Team
     User.find_by(id: team_member.member_id)
   end
 
-  def db_members
-    team_members.map { |member| User.find_by(id: member.member_id) }
-  end
-
-
   attr_accessor :user, :team_member, :team_owner_id, :team_members
 
   private

@@ -46,7 +46,7 @@ module Finders
     end
 
     def proposed_offers
-      InternshipOffer.kept.where(employer_id: user.team_member_ids)
+      InternshipOffer.kept.where(employer_id: user.team_members_ids)
     end
   end
 end
