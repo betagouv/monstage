@@ -71,18 +71,6 @@ module Users
       Presenters::Employer.new(self)
     end
 
-    def pending_invitation_to_a_team
-      TeamMember.with_pending_invitations.find_by(invitation_email: email)
-    end
-
-    def pending_invitations_to_my_team
-      TeamMember.with_pending_invitations.where(inviter_id: team_id)
-    end
-
-    def refused_invitations
-      TeamMember.refused_invitation.where(inviter_id: team_id)
-    end
-
     def team
       Team.new(self)
     end
@@ -93,6 +81,18 @@ module Users
 
     def team_members_ids
       team.team_members.pluck(:member_id) || [id]
+    end
+
+    def pending_invitation_to_a_team
+      TeamMember.with_pending_invitations.find_by(invitation_email: email)
+    end
+
+    def pending_invitations_to_my_team
+      TeamMember.with_pending_invitations.where(inviter_id: team_id)
+    end
+
+    def refused_invitations
+      TeamMember.refused_invitation.where(inviter_id: team_id)
     end
 
     def satisfaction_survey_id

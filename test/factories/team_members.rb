@@ -10,6 +10,7 @@ FactoryBot.define do
 
     trait :refused_invitation do
       aasm_state { :refused_invitation }
+      refused_invitation_at { Time.now }
     end
   end
 end
