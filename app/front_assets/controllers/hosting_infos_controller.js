@@ -44,7 +44,7 @@ export default class extends Controller {
   updateMaxCandidateCount() {
     if (this.individualButtonTarget.checked) {
       $(this.maxCandidatesInputTarget).prop('min', 1);
-      $(this.maxCandidatesInputTarget).prop('max', 1);
+      $(this.maxCandidatesInputTarget).prop('max', 100);
       $(this.maxCandidatesInputTarget).prop('value', 1);
 
       $(this.studentsMaxGroupInputTarget).prop('max', 1);
