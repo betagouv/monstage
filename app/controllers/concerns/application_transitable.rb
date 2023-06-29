@@ -4,13 +4,14 @@ module ApplicationTransitable
   included do
 
     def update
-      authenticate_user! unless params[:sgid].present?
+      authenticate_user! unless params[:sgid].present? || params[:token].present?
       authorize_through_sgid? || authorize!(:update, @internship_application)
+      authorize_through_token?
       if valid_transition?
         @internship_application.send(params[:transition].to_sym)
         @internship_application.update!(optional_internship_application_params)
         extra_parameter = {tab: params[:transition]}
-        if authorize_through_sgid?
+        if authorize_through_sgid? || authorize_through_token?
           reset_session
           redirect_to root_path,
                       flash: { success: update_flash_message }
@@ -32,6 +33,11 @@ module ApplicationTransitable
 
       sgid_internship_application = InternshipApplications::WeeklyFramed.from_sgid(params[:sgid])
       sgid_internship_application&.id == @internship_application.id
+    end
+
+    def authorize_through_token?
+      return false unless params[:token].present?
+      @internship_application.token == params[:token]
     end
 
     protected

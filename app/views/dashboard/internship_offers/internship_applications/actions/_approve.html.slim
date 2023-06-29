@@ -8,5 +8,6 @@
             message: "Une fois la candidature acceptée, un email de notification va être envoyé à l'élève qui l'amènera à confirmer ou non le choix de votre #{entreprise}.",
             rich_text: false,
             modal_id: "approve-internship-application-#{internship_application.id}",
-            fa_icon: "fr-icon-check-line"
+            fa_icon: "fr-icon-check-line",
+            token: defined?(token) ? token : nil
 - # TODO change the message !!!

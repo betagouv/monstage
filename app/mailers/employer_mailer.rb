@@ -100,8 +100,7 @@ class EmployerMailer < ApplicationMailer
     @url = dashboard_internship_offer_internship_application_url(
       internship_offer_id: @internship_offer.id,
       id: @internship_application.id,
-      mtm_campaign: 'Offreur - Candidature transférée',
-      token: 'abc'
+      token: @internship_application.token
     ).html_safe
 
     mail(

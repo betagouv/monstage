@@ -6,7 +6,7 @@ module Dashboard
       include ApplicationTransitable
 
       ORDER_WITH_INTERNSHIP_DATE = 'internshipDate'
-      before_action :authenticate_user!, except: %i[update]
+      before_action :authenticate_user!, except: %i[update show]
       before_action :find_internship_offer, only: %i[index update show]
       before_action :fetch_internship_application, only: %i[update show set_to_read school_details]
 
@@ -39,6 +39,12 @@ module Dashboard
       end
 
       def show
+        if params[:token].present?
+          redirect_to root_path, flash: { error: 'Vous n’avez pas accès à cette candidature' } unless current_user || (params[:token].present? && @internship_application.token == params[:token])
+        else
+          authenticate_user!
+        end
+
       end
 
       def school_details

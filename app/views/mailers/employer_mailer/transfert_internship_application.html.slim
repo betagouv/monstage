@@ -4,7 +4,7 @@ p style=head_styles
 p style=p_styles
   = "#{@employer_full_name} vous transmets la candidature de #{@student_full_name}." 
 
-p style=p_styles
+p style=p_styles_italic
   = @message
 
 = render(partial: "mailers/blue_call_to_action", locals: {href: @url, label:"Consulter la candidature"})
