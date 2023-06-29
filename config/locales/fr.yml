@@ -60,7 +60,7 @@ fr:
       school:
         one: Établissement
         other: Établissements
-      team_member:
+      team_member_invitation:
         one: Membre de l'équipe
         other: Membres de l'équipe
       user:
@@ -169,7 +169,7 @@ fr:
         tutor_phone: Téléphone du tuteur
         tutor_email: Email du tuteur
         tutor_role: Fonction du tuteur
-      team_member:
+      team_member_invitation:
         member_id: id du membre
         inviter_id: id du membre invitant
         invitation_email: Email de l'invitation
@@ -480,7 +480,7 @@ fr:
               blank: "Missing remote_id"
             permalink:
               blank: "Missing permalink"
-        team_member:
+        team_member_invitation:
           attributes:
             invitation_email:
               blank: "Veuillez saisir un email"

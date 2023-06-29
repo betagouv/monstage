@@ -1,11 +1,11 @@
 module Dashboard
-  class TeamMembersController < ApplicationController
+  class TeamMemberInvitationsController < ApplicationController
     before_action :authenticate_user!
     before_action :fetch_invitation, only: %i[destroy join]
     before_action :authorize_member_inviting
 
     def index
-      authorize! :manage_teams, TeamMember
+      authorize! :manage_teams, TeamMemberInvitation
       @team_members = current_user.pending_invitations_to_my_team.to_a +
                       current_user.refused_invitations.to_a +
                       current_user.team&.team_members.to_a
@@ -13,16 +13,16 @@ module Dashboard
     end
 
     def new
-      @team_member = TeamMember.new
+      @team_member_invitation = TeamMemberInvitation.new
     end
 
     def create
-      case check_invitation(team_member_params[:invitation_email])
+      case check_invitation(team_member_invitation_params[:invitation_email])
       when :ok
-        params = team_member_params.merge(inviter_id: current_user.team_id)
-        @team_member= TeamMember.new(params)
-        @team_member.save!
-        @team_member.send_invitation
+        params = team_member_invitation_params.merge(inviter_id: current_user.team_id)
+        @team_member_invitation= TeamMemberInvitation.new(params)
+        @team_member_invitation.save!
+        @team_member_invitation.send_invitation
         flash = { success: 'Membre d\'équipe invité avec succès' }
       when :invited
         flash = { warning: 'Ce collaborateur est déjà invité' }
@@ -33,28 +33,28 @@ module Dashboard
       else
         render(:new, status: :bad_request) and return
       end
-      redirect_to dashboard_team_members_path, flash: flash
+      redirect_to dashboard_team_member_invitations_path, flash: flash
     end
 
     # when accepting an invitation or not
     def join
-      authorize! :manage_teams, @team_member
+      authorize! :manage_teams, @team_member_invitation
       action =  params[:commit] == "Oui" ? :accept_invitation! : :refuse_invitation!
-      @team_member.send(action)
-      redirect_to dashboard_team_members_path
+      @team_member_invitation.send(action)
+      redirect_to dashboard_team_member_invitations_path
     end
 
     def destroy
-      authorize! :destroy, @team_member
+      authorize! :destroy, @team_member_invitation
       message = 'Membre d\'équipe supprimé avec succès.'
-      if @team_member.not_in_a_team?
-        @team_member.destroy
+      if @team_member_invitation.not_in_a_team?
+        @team_member_invitation.destroy
       else
-        team = Team.new(@team_member)
+        team = Team.new(@team_member_invitation)
         message = "#{message} Votre équipe a été dissoute" if team.team_size <= 2
         team.remove_member
       end
-      redirect_to dashboard_team_members_path, flash: { success: message }
+      redirect_to dashboard_team_member_invitations_path, flash: { success: message }
     rescue ActiveRecord::RecordInvalid
       render :new, status: :bad_request
     end
@@ -64,13 +64,13 @@ module Dashboard
     private
 
     def change_owner(target_id:, collection:)
-      collection.each do |team_member|
-        team_member.update!(inviter_id: target_id)
+      collection.each do |team_member_invitation|
+        team_member_invitation.update!(inviter_id: target_id)
       end
     end
 
     def authorize_member_inviting
-      authorize! :manage_teams, TeamMember
+      authorize! :manage_teams, TeamMemberInvitation
     end
 
     def check_invitation(email)
@@ -79,11 +79,11 @@ module Dashboard
     end
 
     def fetch_invitation
-      @team_member = TeamMember.find(params[:id])
+      @team_member_invitation = TeamMemberInvitation.find(params[:id])
     end
 
-    def team_member_params
-      params.require(:team_member)
+    def team_member_invitation_params
+      params.require(:team_member_invitation)
             .permit( :invitation_email )
     end
   end

@@ -1,9 +1,9 @@
 - invitation = current_user&.pending_invitation_to_a_team 
 span[data-fr-opened="true" aria-controls="fr-modal-team-invitation"]
 dialog#fr-modal-team-invitation.fr-modal[aria-labelledby="fr-modal-team-invitation-title" role="dialog"]
-  = form_with model: @team_member,
-              scope: :team_member,
-              url: join_dashboard_team_member_path(id: invitation.id),
+  = form_with model: @team_member_invitation,
+              scope: :team_member_invitation,
+              url: join_dashboard_team_member_invitation_path(id: invitation.id),
               method: :patch,
               data: { turbo: false } do |f|
     .fr-container.fr-container--fluid.fr-container-md

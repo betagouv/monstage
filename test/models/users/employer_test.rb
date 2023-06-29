@@ -57,8 +57,8 @@ module Users
     test '#internship_offers with a team' do
       employer_1 = create(:employer)
       employer_2 = create(:employer)
-      create(:team_member, :accepted_invitation, inviter_id: employer_1.id, member_id: employer_2.id)
-      create(:team_member, :accepted_invitation, inviter_id: employer_1.id, member_id: employer_1.id)
+      create(:team_member_invitation, :accepted_invitation, inviter_id: employer_1.id, member_id: employer_2.id)
+      create(:team_member_invitation, :accepted_invitation, inviter_id: employer_1.id, member_id: employer_1.id)
       internship_offer_1 = create(:weekly_internship_offer, employer: employer_1)
       internship_offer_2 = create(:weekly_internship_offer, employer: employer_2)
       assert_equal [internship_offer_1.id, internship_offer_2.id].sort, employer_2.internship_offers.to_a.map(&:id).sort

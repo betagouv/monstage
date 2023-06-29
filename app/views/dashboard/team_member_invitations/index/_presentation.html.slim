@@ -6,8 +6,8 @@
     h1.fr-h3.fr-mt-11w Collaborez facilement avec votre équipe
     p Invitez les membres de votre équipe à utiliser le service.
     p Accédez aux offres et aux candidatures, pour un suivi partagé, ou pour prendre le relais.
-    - if can?(:manage_teams, TeamMember)
+    - if can?(:manage_teams, TeamMemberInvitation)
       p
         = link_to "Inviter un membre de l'équipe",
-                  new_dashboard_team_member_path,
+                  new_dashboard_team_member_invitation_path,
                   class: "fr-btn fr-icon-add-line fr-btn--icon-left mt-2"

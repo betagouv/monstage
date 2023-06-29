@@ -169,11 +169,11 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     employer_1 = create(:employer)
     employer_2 = create(:employer)
     employer_3 = create(:employer)
-    create(:team_member,
+    create(:team_member_invitation,
            :accepted_invitation,
            inviter_id: employer_1.id,
            member_id: employer_2.id)
-    create(:team_member,
+    create(:team_member_invitation,
            :accepted_invitation,
            inviter_id: employer_1.id,
            member_id: employer_1.id)

@@ -65,7 +65,7 @@ class Team
     team_owner = User.kept.find(team_owner_id)
     return if team_owner.nil?
 
-    TeamMember.create!(
+    TeamMemberInvitation.create!(
       member_id: team_owner_id,
       inviter_id: team_owner_id,
       aasm_state: :accepted_invitation,
@@ -87,7 +87,7 @@ class Team
   end
 
   def set_team_members
-    return TeamMember.none unless team_owner_id
+    return TeamMemberInvitation.none unless team_owner_id
 
     @team_members = base_query.where(inviter_id: team_owner_id)
   end
@@ -99,13 +99,13 @@ class Team
   end
 
   def base_query
-    TeamMember.accepted_invitation
+    TeamMemberInvitation.accepted_invitation
   end
 
   def initialize(user_or_team_member)
     if user_or_team_member.is_a?(User)
       @user = user_or_team_member
-      @team_member = TeamMember.find_by(member_id: user.id)
+      @team_member = TeamMemberInvitation.find_by(member_id: user.id)
     else
       @team_member = user_or_team_member
       @user = User.find_by(email: user_or_team_member.invitation_email)

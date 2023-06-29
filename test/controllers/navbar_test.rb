@@ -71,7 +71,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     assert_select("li a.fr-link.mr-4", text: 'Mes offres', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Statistiques', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
-    assert_select("li a.fr-link.mr-4", text: 'équipe'.capitalize, count: 0)
+    assert_select("li a.fr-link.mr-4", text: 'équipe'.capitalize, count: 1)
   end
 
   test 'school_manager' do
@@ -136,7 +136,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     assert_select("li a.fr-link.mr-4", text: 'Recherche', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Mes offres', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
-    assert_select("li a.fr-link.mr-4", text: 'équipe'.capitalize, count: 0)
+    assert_select("li a.fr-link.mr-4", text: 'équipe'.capitalize, count: 1)
   end
 
   test 'ministry statistician' do
@@ -149,7 +149,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     assert_select("li a.fr-link.mr-4", text: 'Recherche', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Mes offres', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
-    assert_select("li a.fr-link.mr-4", text: 'équipe'.capitalize, count: 0)
+    assert_select("li a.fr-link.mr-4", text: 'équipe'.capitalize, count: 1)
   end
 
   test 'education statistician' do
@@ -162,6 +162,6 @@ class NavbarTest < ActionDispatch::IntegrationTest
     assert_select("li a.fr-link.mr-4", text: 'Recherche', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Mes offres', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
-    assert_select("li a.fr-link.mr-4", text: 'équipe'.capitalize, count: 0)
+    assert_select("li a.fr-link.mr-4", text: 'équipe'.capitalize, count: 1)
   end
 end

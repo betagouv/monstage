@@ -5,6 +5,7 @@ module Users
     include Signatorable
     include Statisticianable
     include StatisticianDepartmentable
+    include Teamable
 
     has_one :email_whitelist,
             class_name: 'EmailWhitelists::EducationStatistician',

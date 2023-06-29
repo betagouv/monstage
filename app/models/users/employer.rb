@@ -4,6 +4,7 @@ module Users
   class Employer < User
     include EmployerAdmin
     include Signatorable
+    include Teamable
 
 
     has_many :internship_offers, as: :employer,
@@ -18,8 +19,6 @@ module Users
     has_many :organisations
     has_many :tutors
     has_many :internship_offer_infos
-    has_many :team_members,
-             foreign_key: :inviter_id
 
     def internship_offers
       return super unless team.team_size.positive?
@@ -60,6 +59,7 @@ module Users
     def anonymize(send_email: true)
       super
 
+      team.remove_member if team&.team_size&.positive?
       internship_offers.map(&:anonymize)
     end
 
@@ -69,30 +69,6 @@ module Users
 
     def presenter
       Presenters::Employer.new(self)
-    end
-
-    def team
-      Team.new(self)
-    end
-
-    def team_id
-      team.team_owner_id || id
-    end
-
-    def team_members_ids
-      team&.team_members&.pluck(:member_id) || [id]
-    end
-
-    def pending_invitation_to_a_team
-      TeamMember.with_pending_invitations.find_by(invitation_email: email)
-    end
-
-    def pending_invitations_to_my_team
-      TeamMember.with_pending_invitations.where(inviter_id: team_id)
-    end
-
-    def refused_invitations
-      TeamMember.refused_invitation.where(inviter_id: team_id)
     end
 
     def satisfaction_survey_id

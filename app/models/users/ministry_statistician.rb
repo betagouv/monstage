@@ -4,6 +4,7 @@ module Users
   class MinistryStatistician < User
     include Signatorable
     include Statisticianable
+    include Teamable
 
     METABASE_DASHBOARD_ID = 10
 

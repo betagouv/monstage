@@ -1381,10 +1381,10 @@ ALTER SEQUENCE public.task_registers_id_seq OWNED BY public.task_registers.id;
 
 
 --
--- Name: team_members; Type: TABLE; Schema: public; Owner: -
+-- Name: team_member_invitations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.team_members (
+CREATE TABLE public.team_member_invitations (
     id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -1397,10 +1397,10 @@ CREATE TABLE public.team_members (
 
 
 --
--- Name: team_members_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: team_member_invitations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.team_members_id_seq
+CREATE SEQUENCE public.team_member_invitations_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1409,10 +1409,10 @@ CREATE SEQUENCE public.team_members_id_seq
 
 
 --
--- Name: team_members_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: team_member_invitations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.team_members_id_seq OWNED BY public.team_members.id;
+ALTER SEQUENCE public.team_member_invitations_id_seq OWNED BY public.team_member_invitations.id;
 
 
 --
@@ -1761,10 +1761,10 @@ ALTER TABLE ONLY public.task_registers ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
--- Name: team_members id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: team_member_invitations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.team_members ALTER COLUMN id SET DEFAULT nextval('public.team_members_id_seq'::regclass);
+ALTER TABLE ONLY public.team_member_invitations ALTER COLUMN id SET DEFAULT nextval('public.team_member_invitations_id_seq'::regclass);
 
 
 --
@@ -2037,11 +2037,11 @@ ALTER TABLE ONLY public.task_registers
 
 
 --
--- Name: team_members team_members_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: team_member_invitations team_member_invitations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.team_members
-    ADD CONSTRAINT team_members_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.team_member_invitations
+    ADD CONSTRAINT team_member_invitations_pkey PRIMARY KEY (id);
 
 
 --
@@ -2489,17 +2489,17 @@ CREATE INDEX index_signatures_on_user_id ON public.signatures USING btree (user_
 
 
 --
--- Name: index_team_members_on_inviter_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_team_member_invitations_on_inviter_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_team_members_on_inviter_id ON public.team_members USING btree (inviter_id);
+CREATE INDEX index_team_member_invitations_on_inviter_id ON public.team_member_invitations USING btree (inviter_id);
 
 
 --
--- Name: index_team_members_on_member_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_team_member_invitations_on_member_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_team_members_on_member_id ON public.team_members USING btree (member_id);
+CREATE INDEX index_team_member_invitations_on_member_id ON public.team_member_invitations USING btree (member_id);
 
 
 --
@@ -2632,10 +2632,10 @@ ALTER TABLE ONLY public.hosting_info_weeks
 
 
 --
--- Name: team_members fk_rails_16e04ba94e; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: team_member_invitations fk_rails_16e04ba94e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.team_members
+ALTER TABLE ONLY public.team_member_invitations
     ADD CONSTRAINT fk_rails_16e04ba94e FOREIGN KEY (inviter_id) REFERENCES public.users(id);
 
 
@@ -2648,10 +2648,10 @@ ALTER TABLE ONLY public.signatures
 
 
 --
--- Name: team_members fk_rails_21c6860154; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: team_member_invitations fk_rails_21c6860154; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.team_members
+ALTER TABLE ONLY public.team_member_invitations
     ADD CONSTRAINT fk_rails_21c6860154 FOREIGN KEY (member_id) REFERENCES public.users(id);
 
 
@@ -3164,6 +3164,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230616143729'),
 ('20230616143933'),
 ('20230616164423'),
-('20230620115539');
+('20230620115539'),
+('20230629141931');
 
 

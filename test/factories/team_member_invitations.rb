@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :team_member do
+  factory :team_member_invitation do
     inviter{ create(:employer) }
     invitation_email { FFaker::Internet.email }
     aasm_state {:pending_invitation}

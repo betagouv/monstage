@@ -19,7 +19,7 @@ module Services
     def user_already_invited?
       return true if current_user.email == email # self invitation
 
-      TeamMember.with_pending_invitations
+      TeamMemberInvitation.with_pending_invitations
                 .where(invitation_email: email)
                 .where(inviter_id: current_user.team_id)
                 .exists?
@@ -40,7 +40,7 @@ module Services
     def already_in_another_team?
       return false unless fetch_user
 
-      TeamMember.where(member_id: fetch_user.id)
+      TeamMemberInvitation.where(member_id: fetch_user.id)
                 .where.not(inviter_id: current_user.team_id)
                 .exists?
     end

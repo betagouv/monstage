@@ -57,7 +57,7 @@
       </form>
     </dialog>
     <% if current_user && current_user.pending_invitation_to_a_team.present? %>
-      <%= render 'dashboard/team_members/dialog_form' %>
+      <%= render 'dashboard/team_member_invitations/dialog_form' %>
     <% end %>
   </body>
 </html>

@@ -170,13 +170,6 @@ class Ability
 
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard publish], InternshipOffer, employer_id: user.id
-    # can :renew, InternshipOffer do |internship_offer|
-    #   renewable?(internship_offer: internship_offer, user: user)
-    # end
-    # can :duplicate, InternshipOffer do |internship_offer|
-    #   duplicable?(internship_offer: internship_offer, user: user)
-    # end
-    # internship_offer stepper
     can %i[create], InternshipOfferInfo
     can %i[create], HostingInfo
     can %i[create], PracticalInfo
@@ -190,11 +183,7 @@ class Ability
 
     can %i[index update], InternshipApplication
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
-    can %i[manage_teams], TeamMember
-    can %i[destroy], TeamMember do |team_member|
-       team_member.member_id != user.id
-    end
-
+    can_manage_teams(user: user)
     as_employers_signatory_abilities(user: user)
   end
 
@@ -235,10 +224,7 @@ class Ability
            see_reporting_schools
            see_reporting_enterprises
            check_his_statistics], User
-    cannot %i[manage_teams], TeamMember
-    can %i[destroy], TeamMember do |team_member|
-       team_member.member_id != user.id
-    end
+    can_manage_teams(user: user)
   end
 
   def god_abilities
@@ -362,12 +348,9 @@ class Ability
     can %i[see_reporting_dashboard
            see_dashboard_administrations_summary], User
 
-    as_employers_signatory_abilities(user: user) if user.employer_like?
     can :see_minister_video, User
-    cannot %i[manage_teams], TeamMember
-    can %i[destroy], TeamMember do |team_member|
-       team_member.member_id != user.id
-    end
+    as_employers_signatory_abilities(user: user) if user.employer_like?
+    can_manage_teams(user: user)
   end
 
   def common_school_management_abilities(user:)
@@ -410,11 +393,16 @@ class Ability
     end
   end
 
-  def as_employers_signatory_abilities(user:)
-    can %i[
-      create
-    ], InternshipAgreement
+  def can_manage_teams(user: )
+    can %i[manage_teams], TeamMemberInvitation
+    can %i[destroy], TeamMemberInvitation do |team_member_invitation|
+      team_member_invitation.member_id != user.id &&
+      team_member_invitation.team_owner_id == user&.team&.team_owner_id
+    end
+  end
 
+  def as_employers_signatory_abilities(user:)
+    can :create, InternshipAgreement
     can %i[
       read
       edit

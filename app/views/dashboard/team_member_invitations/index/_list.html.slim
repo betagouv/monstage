@@ -1,6 +1,6 @@
 .text-right.fr-mt-9w
   = link_to "Inviter un membre de l'équipe",
-            new_dashboard_team_member_path,
+            new_dashboard_team_member_invitation_path,
             class: 'fr-btn fr-btn--sm fr-icon-add-line fr-btn--icon-left'
 .fr-table.fr-table--layout-fixed.fr-mt-3w
   table
@@ -16,20 +16,20 @@
           td.text-center colspan="4"
             | Vous n'avez pas encore invité de membre dans votre équipe.
       - else
-        - @team_members.each do |team_member|
-          - prez = team_member.presenter(current_user)
+        - @team_members.each do |team_member_invitation|
+          - prez = team_member_invitation.presenter(current_user)
           tr
             td
               = prez.full_name
             td
               = prez.email
             td
-              - status = team_member.presenter(current_user).status
+              - status = team_member_invitation.presenter(current_user).status
               span class="fr-badge fr-badge--no-icon fr-badge--#{status[:type]}"
                 = status[:label]
             td
-              - if can?(:destroy, team_member)
-                = link_to dashboard_team_member_path(team_member),
+              - if can?(:destroy, team_member_invitation)
+                = link_to dashboard_team_member_invitation_path(team_member_invitation),
                           method: :delete,
                           data: { confirm: "Êtes-vous sûr de vouloir supprimer #{prez.full_name} de votre équipe ?" } do
                   span.fr-fi-delete-line

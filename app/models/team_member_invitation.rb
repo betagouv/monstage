@@ -1,4 +1,4 @@
-class TeamMember < ApplicationRecord
+class TeamMemberInvitation < ApplicationRecord
 
   include AASM
    # Relations
@@ -49,12 +49,12 @@ class TeamMember < ApplicationRecord
   end
 
   def send_invitation
-    EmployerMailer.team_member_invitation_email(team_member: self, user: fetch_invitee_in_db)
+    EmployerMailer.team_member_invitation_email(team_member_invitation: self, user: fetch_invitee_in_db)
                   .deliver_later(wait: 1.second)
   end
 
   def presenter(current_user)
-    @presenter ||= ::Presenters::TeamMember.new(team_member: self, current_user: current_user)
+    @presenter ||= ::Presenters::TeamMemberInvitation.new(team_member_invitation: self, current_user: current_user)
   end
 
   def fetch_invitee_in_db
@@ -70,7 +70,7 @@ class TeamMember < ApplicationRecord
     team = Team.new(self)
     team_member_ids = team.team_members.map(&:member_id)
     # reject my invitations to my team
-    TeamMember.pending_invitation
+    TeamMemberInvitation.pending_invitation
               .where(inviter_id: member_id)
               .where(member_id: team_member_ids)
               .each do |pending_member|
@@ -78,7 +78,7 @@ class TeamMember < ApplicationRecord
               end  
 
     # refuse invitations to me
-    TeamMember.pending_invitation
+    TeamMemberInvitation.pending_invitation
               .where.not(inviter_id: team_member_ids)
               .where(invitation_email: invitation_email)
               .each do |pending_member|
@@ -86,10 +86,20 @@ class TeamMember < ApplicationRecord
               end
   end
 
+  def team_owner_id
+    return nil if team.team_size.zero?
+
+    team.team_owner_id
+  end
+
+  def team
+    Team.new(self)
+  end
+
   private
 
   def after_accepted_invitation
-    Team.new(self).activate_member
+    team.activate_member
   end
 
   def refused?
