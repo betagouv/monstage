@@ -4,7 +4,7 @@ module Teamable
   extend ActiveSupport::Concern
 
   included do
-    has_many :team_members,
+    has_many :team_member_invitations,
              foreign_key: :inviter_id
     def team
       Team.new(self)
