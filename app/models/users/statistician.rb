@@ -1,9 +1,5 @@
-# frozen_string_literal: true
-
-module Statisticianable
-  extend ActiveSupport::Concern
-
-  included do
+module Users
+  class Statistician < User
     has_many :internship_offers, as: :employer,
              dependent: :destroy
 
@@ -103,6 +99,5 @@ module Statisticianable
     def signatory_role
       Signature.signatory_roles[:employer]
     end
-
   end
 end

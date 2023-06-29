@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 module Users
-  class MinistryStatistician < User
+  class MinistryStatistician < Statistician
     include Signatorable
-    include Statisticianable
 
     METABASE_DASHBOARD_ID = 10
 

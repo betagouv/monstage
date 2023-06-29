@@ -108,7 +108,6 @@ class Ability
     end
   end
 
-
   def school_manager_abilities(user:)
     can %i[list_invitations
            create_invitation
@@ -326,6 +325,7 @@ class Ability
 
   def common_to_all_statisticians(user: )
     can %i[
+      choose_statistician_type
       supply_offers
       subscribe_to_webinar
       choose_to_sign_agreements

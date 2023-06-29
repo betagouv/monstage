@@ -13,7 +13,7 @@ class User < ApplicationRecord
   # has_many :users_internship_offers
   # has_many :internship_offers, through: :users_internship_offers
 
-  attr_accessor :phone_prefix, :phone_suffix
+  attr_accessor :phone_prefix, :phone_suffix, :statistician_type
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable,

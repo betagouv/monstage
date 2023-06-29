@@ -8,9 +8,7 @@ class UserManager
     'SchoolManagement' => Users::SchoolManagement,
     'Student' => Users::Student,
     'Operator' => Users::Operator,
-    'PrefectureStatistician' => Users::PrefectureStatistician,
-    'EducationStatistician' => Users::EducationStatistician,
-    'MinistryStatistician' => Users::MinistryStatistician
+    'Statistician' => Users::Statistician,
   }.freeze
 
   PRESENTERS = {

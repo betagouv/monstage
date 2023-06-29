@@ -64,7 +64,6 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', '/utilisateurs/inscription?as=Employer'
     assert_select 'a[href=?]', '/utilisateurs/inscription?as=SchoolManagement'
     assert_select 'a[href=?]', '/utilisateurs/inscription?as=Statistician'
-    assert_select 'a[href=?]', '/utilisateurs/inscription?as=MinistryStatistician'
   end
 
   test 'GET #registrations_standby as student using path?id=#id with pending account' do
