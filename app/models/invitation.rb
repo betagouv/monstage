@@ -1,20 +1,23 @@
 class Invitation < ApplicationRecord
-  belongs_to :school_manager, -> { where(role: :school_manager) },
+  belongs_to :author,
              class_name: 'Users::SchoolManagement',
              foreign_key: 'user_id'
-  delegate :school, to: :school_manager
+  delegate :school, to: :author
 
   enum role: {
     teacher: 'Professeur',
     main_teacher: 'Professeur principal',
-    other: 'Autre'
+    other: 'Autre',
+    cpe: 'CPE',
+    admin_officer: 'Responsable administratif'
   }
 
   validates :first_name,
             :last_name,
             :email,
-            :role, presence: true
-  validates_associated :school_manager
+            :role, 
+            :user_id, presence: true
+             
   validate  :official_email_address
 
   scope :for_people_with_no_account_in, ->(school_id:) {
@@ -30,7 +33,6 @@ class Invitation < ApplicationRecord
 
   # validators
   def official_email_address
-    return unless school_manager.present?
     return unless email.present?
 
     if email.split('@').second != school.email_domain_name

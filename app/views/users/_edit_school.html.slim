@@ -15,7 +15,7 @@
                                                  required: true,
                                                  label: 'Nom (ou ville) de mon établissement REP ou REP+',
                                                  resourceName: :user,
-                                                 selectClassRoom: can?(:change, :class_room),
+                                                 selectClassRoom: @current_user.try(:school) && @current_user.school.class_rooms.any? && can?(:change, @current_user.school.class_rooms.first) ? true : false,
                                                  existingSchool: @current_user.try(:school).try(:as_json),
                                                  existingClassRoom: @current_user.try(:class_room)})
 

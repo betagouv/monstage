@@ -15,7 +15,7 @@ module Dashboard
       school_manager = create(:school_manager, school: school)
       invitation = create(:invitation, user_id: school_manager.id)
       assert_equal 1, Invitation.all.count
-      assert_equal school_manager, invitation.school_manager
+      assert_equal school_manager, invitation.author
 
       sign_in(school_manager)
       visit dashboard_school_users_path(school_id: school.id)
@@ -39,7 +39,7 @@ module Dashboard
       school_manager = create(:school_manager, school: school)
       invitation = create(:invitation, user_id: school_manager.id)
       assert_equal 1, Invitation.all.count
-      assert_equal school_manager, invitation.school_manager
+      assert_equal school_manager, invitation.author
 
       sign_in(school_manager)
       visit dashboard_school_users_path(school_id: school.id)
@@ -59,7 +59,7 @@ module Dashboard
       school_manager = create(:school_manager, school: school)
       invitation = create(:invitation, user_id: school_manager.id)
       assert_equal 1, Invitation.all.count
-      assert_equal school_manager, invitation.school_manager
+      assert_equal school_manager, invitation.author
 
       sign_in(school_manager)
       visit dashboard_school_users_path(school_id: school.id)
@@ -78,7 +78,7 @@ module Dashboard
       school_manager = create(:school_manager, school: school)
       invitation = create(:invitation, user_id: school_manager.id)
       assert_equal 1, Invitation.all.count
-      assert_equal school_manager, invitation.school_manager
+      assert_equal school_manager, invitation.author
 
       sign_in(school_manager)
       visit dashboard_school_users_path(school_id: school.id)
