@@ -40,7 +40,7 @@ module Dashboard
 
       def show
         if params[:token].present?
-          redirect_to root_path, flash: { error: 'Vous n’avez pas accès à cette candidature' } unless current_user || (params[:token].present? && @internship_application.token == params[:token])
+          redirect_to root_path, flash: { error: 'Vous n’avez pas accès à cette candidature' } unless current_user || (params[:token].present? && @internship_application.access_token == params[:token])
         else
           authenticate_user!
         end

@@ -311,8 +311,8 @@ class InternshipApplication < ApplicationRecord
   end
 
   def generate_token
-    return if token.present?
-    self.token = SecureRandom.hex(10)
+    return if access_token.present?
+    self.access_token = SecureRandom.hex(10)
     self.save
   end
 

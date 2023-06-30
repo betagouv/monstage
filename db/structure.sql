@@ -736,7 +736,7 @@ CREATE TABLE public.internship_applications (
     validated_by_employer_at timestamp(6) without time zone,
     dunning_letter_count integer DEFAULT 0,
     magic_link_tracker integer DEFAULT 0,
-    token character varying
+    access_token character varying
 );
 
 

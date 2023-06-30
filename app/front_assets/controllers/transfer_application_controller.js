@@ -27,11 +27,11 @@ export default class extends Controller {
 
     this.containerTarget.appendChild(formGroup);
 
-    this.updateHiddenDestinataires();
+    this.updateHiddenRecipients();
   }
 
 
-  updateHiddenDestinataires() {
+  updateHiddenRecipients() {
     const destinataires = this.containerTarget.querySelectorAll('.destinataire-input');
     const hiddenInput = document.querySelector('.hidden-destinataires-input');
     hiddenInput.value = Array.from(destinataires).map(input => input.value).join(',');
@@ -54,12 +54,6 @@ export default class extends Controller {
     });
   }
 
-  connect() {
-
-    setTimeout( () => {
-      // this.checkForm();
-    }, 100);
-  }
-
+  connect() {}
   disconnect() {}
 }

@@ -37,7 +37,7 @@ module ApplicationTransitable
 
     def authorize_through_token?
       return false unless params[:token].present?
-      @internship_application.token == params[:token]
+      @internship_application.access_token == params[:token]
     end
 
     protected

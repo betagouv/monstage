@@ -6,7 +6,7 @@ FactoryBot.define do
     motivation { 'Suis hyper motivé' }
     student_phone { '0606060606' }
     student_email { 'paul@gmail.com' }
-    token { nil }
+    access_token { nil }
 
     trait :drafted do
       aasm_state { :drafted }
@@ -21,7 +21,7 @@ FactoryBot.define do
       aasm_state { :examined }
       submitted_at { 15.days.ago }
       examined_at { 2.days.ago }
-      token { SecureRandom.hex(10) }
+      access_token { SecureRandom.hex(10) }
     end
 
     trait :expired do

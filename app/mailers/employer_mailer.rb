@@ -90,17 +90,17 @@ class EmployerMailer < ApplicationMailer
     )
   end
 
-  def transfert_internship_application(internship_application:, employer_id: , email:, message:)
+  def transfer_internship_application(internship_application:, employer_id: , email:, message:)
     @internship_application = internship_application
     @internship_offer      = internship_application.internship_offer
     @employer              = @internship_offer.employer
-    @employer_full_name    = Presenters::User.new(@employer).full_name
-    @student_full_name    = Presenters::User.new(@internship_application.student).full_name
+    @employer_full_name    = @employer.presenter.full_name
+    @student_full_name    = @internship_application.student.presenter.full_name
     @message               = message
     @url = dashboard_internship_offer_internship_application_url(
       internship_offer_id: @internship_offer.id,
       id: @internship_application.id,
-      token: @internship_application.token
+      token: @internship_application.access_token
     ).html_safe
 
     mail(

@@ -75,21 +75,21 @@ class InternshipApplicationsController < ApplicationController
     ).all.includes([:sector]).order(id: :desc).last(6)
   end
 
-  def edit_transfert
+  def edit_transfer
     @internship_application = InternshipApplication.find(params[:id])
-    authorize! :transfert, @internship_application
+    authorize! :transfer, @internship_application
   end
 
-  def transfert
+  def transfer
     @internship_application = InternshipApplication.find(params[:id])
-    authorize! :transfert, @internship_application
+    authorize! :transfer, @internship_application
     # send email to the invited employer
     if params[:destinations].present?
       @internship_application.update(aasm_state: :examined)
       @internship_application.generate_token
 
       params[:destinations].split(',').each do |destination|
-        EmployerMailer.transfert_internship_application(
+        EmployerMailer.transfer_internship_application(
           internship_application: @internship_application, 
           employer_id: current_user.id,
           email: destination,

@@ -16,7 +16,7 @@ module InternshipApplications
 
     test 'GET #show renders page when not logged in unless token given' do
       internship_application = create(:weekly_internship_application, :examined)
-      get dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application, token: internship_application.token)
+      get dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application, token: internship_application.access_token)
       assert_response :success
     end
 

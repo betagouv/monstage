@@ -206,7 +206,7 @@ module Presenters
       %w[submitted read_by_employer]
     end
 
-    def ok_for_transfert_states
+    def ok_for_transfer_states
       %w[submitted read_by_employer examined]
     end
 
@@ -226,8 +226,8 @@ module Presenters
       current_state_in_list?(ok_for_examine_states)
     end
 
-    def ok_for_transfert?
-      current_state_in_list?(ok_for_transfert_states)
+    def ok_for_transfer?
+      current_state_in_list?(ok_for_transfer_states)
     end
 
     def ok_for_reject?

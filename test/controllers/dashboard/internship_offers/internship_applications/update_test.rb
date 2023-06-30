@@ -340,7 +340,7 @@ module InternshipOffers::InternshipApplications
         patch dashboard_internship_offer_internship_application_path(internship_offer,
                                                           internship_application,
                                                           transition: :approve!,
-                                                          token: internship_application.token)
+                                                          token: internship_application.access_token)
         assert_response :redirect
         assert_redirected_to root_path
         internship_application.reload

@@ -189,7 +189,7 @@ class Ability
     can %i[create], InternshipAgreement
 
     can %i[index update], InternshipApplication
-    can :transfert, InternshipApplication do |internship_application|
+    can :transfer, InternshipApplication do |internship_application|
       internship_application.internship_offer.employer_id == user.id
     end
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
