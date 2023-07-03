@@ -1,5 +1,10 @@
 .container-monstage.light-grey-background.fr-py-4w
   .row.fr-py-5w.fr-my-5w.d-flex
+    .col-md-6.col-sm-12.text-center
+      = image_tag asset_pack_path('media/images/homepage/opportunities-illustration.svg'),
+                    alt: "Illustration métiers disponibles",
+                    width:'100%',
+                    class:'fr-px-5w'
     .col-md-6.col-sm-12.fr-px-2w
       h2.h2.fr-desktop-lg.fr-px-2w.px-sm-2.px-md-0
         | Des stages pour tous, une opportunité pour chacun.
@@ -21,8 +26,4 @@
                   class: 'fr-btn fr-btn--secondary fr-raw-link fr-px-8w',
                   data: { :"test-id" => 'mobile-search-button-first' }
           = "Trouver un stage "
-    .col-md-6.col-sm-12.text-center
-      = image_tag asset_pack_path('media/images/homepage/opportunities-illustration.svg'),
-                    alt: "Illustration métiers disponibles",
-                    width:'100%',
-                    class:'fr-px-5w'
+    

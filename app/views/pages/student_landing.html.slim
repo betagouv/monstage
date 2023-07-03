@@ -1,0 +1,27 @@
+.container-homepage
+  = render 'layouts/navbar'
+.fr-container
+  = render 'pages/home/top_nav'
+.container-homepage
+  .mx-0.light-grey-background
+    = render 'pages/home/hero_student'
+.container-homepage
+  .container-monstage
+    = render 'pages/home/howitworks'
+.container-homepage
+  .mx-0.light-grey-background
+    = render 'pages/home/everyone_reverse'
+.container-monstage
+  .mx-0.fr-my-3w
+    = render 'pages/home/internship_offers'  
+.container-homepage.light-blue-background
+  .container-monstage
+    = render 'pages/home/rep_schools'
+.fr-container
+  = render 'pages/home/video'
+.container-homepage    
+  .container-monstage.homepage
+    = render 'pages/home/sponsors'
+    = render 'pages/home/partners'
+    .d-none.d-md-block
+      = render 'pages/home/elevator'
