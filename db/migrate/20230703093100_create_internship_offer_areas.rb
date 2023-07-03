@@ -14,7 +14,7 @@ class CreateInternshipOfferAreas < ActiveRecord::Migration[7.0]
   end
 
   def down
-    TaskManager.where(task_name: 'data_migrations:create_internship_offer_areas').destroy_all
+    TaskRegister.where(task_name: 'data_migrations:create_internship_offer_areas').destroy_all
     drop_table :internship_offer_areas
   end
 end
