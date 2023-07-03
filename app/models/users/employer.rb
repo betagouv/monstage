@@ -20,19 +20,6 @@ module Users
     has_many :tutors
     has_many :internship_offer_infos
 
-    def internship_offers
-      return super unless team.team_size.positive?
-      
-      InternshipOffer.where(employer: team.team_members.pluck(:member_id))
-    end
-    
-    def internship_agreements
-      return super unless team.team_size.positive?
-
-      internship_applications = InternshipApplication.where(internship_offer: internship_offers)
-      InternshipAgreement.where(internship_application: internship_applications)
-    end
-
     def custom_dashboard_path
       return custom_candidatures_path if internship_applications.submitted.any?
       url_helpers.dashboard_internship_offers_path

@@ -6,6 +6,20 @@ module Teamable
   included do
     has_many :team_member_invitations,
              foreign_key: :inviter_id
+    
+    def internship_offers
+      return super unless team.team_size.positive?
+      
+      InternshipOffer.where(employer: team.team_members.pluck(:member_id))
+    end
+    
+    def internship_agreements
+      return super unless team.team_size.positive?
+
+      internship_applications = InternshipApplication.where(internship_offer: internship_offers)
+      InternshipAgreement.where(internship_application: internship_applications)
+    end
+
     def team
       Team.new(self)
     end
