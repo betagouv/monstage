@@ -4,9 +4,14 @@ module Teamable
   extend ActiveSupport::Concern
 
   included do
+    after_create_commit :create_internship_offer_area
+
     has_many :team_member_invitations,
              foreign_key: :inviter_id
     
+    has_many :internship_offer_areas
+    has_many :internship_offers, through: :internship_offer_areas
+
     def internship_offers
       return super unless team.team_size.positive?
       
@@ -42,6 +47,12 @@ module Teamable
 
     def refused_invitations
       TeamMemberInvitation.refused_invitation.where(inviter_id: team_id)
+    end
+
+    private
+
+    def create_internship_offer_area
+      internship_offer_areas.create(name: "Mon espace")
     end
   end
 end

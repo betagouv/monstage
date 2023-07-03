@@ -759,6 +759,38 @@ ALTER SEQUENCE public.internship_applications_id_seq OWNED BY public.internship_
 
 
 --
+-- Name: internship_offer_areas; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.internship_offer_areas (
+    id bigint NOT NULL,
+    employer_id bigint,
+    name character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: internship_offer_areas_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.internship_offer_areas_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: internship_offer_areas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.internship_offer_areas_id_seq OWNED BY public.internship_offer_areas.id;
+
+
+--
 -- Name: internship_offer_info_weeks; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1656,6 +1688,13 @@ ALTER TABLE ONLY public.internship_applications ALTER COLUMN id SET DEFAULT next
 
 
 --
+-- Name: internship_offer_areas id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_areas ALTER COLUMN id SET DEFAULT nextval('public.internship_offer_areas_id_seq'::regclass);
+
+
+--
 -- Name: internship_offer_info_weeks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1906,6 +1945,14 @@ ALTER TABLE ONLY public.internship_agreements
 
 ALTER TABLE ONLY public.internship_applications
     ADD CONSTRAINT internship_applications_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: internship_offer_areas internship_offer_areas_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_areas
+    ADD CONSTRAINT internship_offer_areas_pkey PRIMARY KEY (id);
 
 
 --
@@ -2220,6 +2267,13 @@ CREATE INDEX index_internship_applications_on_user_id ON public.internship_appli
 --
 
 CREATE INDEX index_internship_applications_on_week_id ON public.internship_applications USING btree (week_id);
+
+
+--
+-- Name: index_internship_offer_areas_on_employer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offer_areas_on_employer_id ON public.internship_offer_areas USING btree (employer_id);
 
 
 --
@@ -3165,6 +3219,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230616143933'),
 ('20230616164423'),
 ('20230620115539'),
-('20230629141931');
+('20230629141931'),
+('20230703093100'),
+('20230703102042');
 
 
