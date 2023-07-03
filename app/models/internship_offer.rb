@@ -24,6 +24,44 @@ class InternshipOffer < ApplicationRecord
   include Discard::Model
   include PgSearch::Model
 
+  has_many :internship_applications, as: :internship_offer,
+                                     foreign_key: 'internship_offer_id'
+
+  belongs_to :internship_offer_area
+  belongs_to :organisation, optional: true
+  belongs_to :internship_offer_info, optional: true
+  belongs_to :hosting_info, optional: true
+  belongs_to :practical_info, optional: true
+  has_one :employer, through: :internship_offer_area
+  has_many :favorites
+  has_many :users, through: :favorites
+
+  accepts_nested_attributes_for :organisation, allow_destroy: true
+
+  has_rich_text :employer_description_rich_text
+
+   # Callbacks
+  before_save :update_remaining_seats
+
+  after_initialize :init
+
+  before_validation :update_organisation
+
+  before_save :sync_first_and_last_date,
+              :reverse_academy_by_zipcode
+
+  before_create :preset_published_at_to_now
+  after_commit :sync_internship_offer_keywords
+
+  paginates_per PAGE_SIZE
+
+  # Délegate
+  delegate :email, to: :employer, prefix: true, allow_nil: true
+  delegate :phone, to: :employer, prefix: true, allow_nil: true
+  delegate :name, to: :sector, prefix: true
+
+  # Scopes
+
   # public.config_search_keyword config is
   # this TEXT SEARCH CONFIGURATION is based on 2 keys concepts
   #   unaccent : which tokenize content without accent [search is also applied without accent]
@@ -44,6 +82,8 @@ class InternshipOffer < ApplicationRecord
                       prefix: true
                     }
                   }
+
+  scope :published, -> { where.not(published_at: nil) }
 
   scope :by_sector, lambda { |sector_id|
     where(sector_id: sector_id)
@@ -95,42 +135,7 @@ class InternshipOffer < ApplicationRecord
     where.not(id: InternshipApplication.where(user_id: user.id).map(&:internship_offer_id))
   }
 
-  has_many :internship_applications, as: :internship_offer,
-                                     foreign_key: 'internship_offer_id'
-
-  belongs_to :employer, polymorphic: true
-  belongs_to :organisation, optional: true
-  belongs_to :internship_offer_info, optional: true
-  belongs_to :hosting_info, optional: true
-  belongs_to :practical_info, optional: true
-  has_many :favorites
-  has_many :users, through: :favorites
-  
-  accepts_nested_attributes_for :organisation, allow_destroy: true
-
-  has_rich_text :employer_description_rich_text
-
-  after_initialize :init
-
-  before_validation :update_organisation
-
-  before_save :sync_first_and_last_date,
-              :reverse_academy_by_zipcode
-
-  before_create :preset_published_at_to_now
-  after_commit :sync_internship_offer_keywords
-
-  scope :published, -> { where.not(published_at: nil) }
-
-  paginates_per PAGE_SIZE
-
-  delegate :email, to: :employer, prefix: true, allow_nil: true
-  delegate :phone, to: :employer, prefix: true, allow_nil: true
-  delegate :name, to: :sector, prefix: true
-
-  # Callbacks
-  before_save :update_remaining_seats
-
+  # AASM
   aasm do
     state :drafted, initial: true
     state :published,
@@ -148,6 +153,8 @@ class InternshipOffer < ApplicationRecord
       }
     end
   end
+
+  # Methods
 
   def departement
     Department.lookup_by_zipcode(zipcode: zipcode)
@@ -243,7 +250,7 @@ class InternshipOffer < ApplicationRecord
     self.group_id = organisation.group_id
     self.is_public = organisation.is_public
   end
-  
+
   def update_organisation
     return unless organisation && !organisation.new_record?
 
@@ -255,7 +262,7 @@ class InternshipOffer < ApplicationRecord
     organisation.update_columns(group_id: self.group_id) if attribute_changed?(:group_id)
     organisation.update_columns(is_public: self.is_public) if attribute_changed?(:is_public)
   end
-    
+
 
   def generate_offer_from_attributes(white_list)
     internship_offer = InternshipOffer.new(attributes.slice(*white_list))
@@ -310,7 +317,7 @@ class InternshipOffer < ApplicationRecord
 
   def update_all_favorites
     if approved_applications_count >= max_candidates || Time.now > last_date
-      Favorite.where(internship_offer_id: id).destroy_all 
+      Favorite.where(internship_offer_id: id).destroy_all
     end
   end
 
