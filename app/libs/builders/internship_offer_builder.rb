@@ -32,6 +32,7 @@ module Builders
       preprocess_organisation(params)
       create_params = preprocess_api_params(params, fallback_weeks: true)
       internship_offer = model.create!(create_params)
+      internship_offer.update(aasm_state: 'published')
       callback.on_success.try(:call, internship_offer)
     rescue ActiveRecord::RecordInvalid => e
       if duplicate?(e.record)
