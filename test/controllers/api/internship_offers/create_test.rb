@@ -171,6 +171,7 @@ module Api
       assert_equal permalink, internship_offer.permalink
       assert_equal 2, internship_offer.max_candidates
       assert_equal 2, internship_offer.remaining_seats_count
+      assert_equal 'published', internship_offer.aasm_state
 
       assert_equal JSON.parse(internship_offer.to_json), json_response
     end
