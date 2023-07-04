@@ -351,8 +351,37 @@ class Ability
            see_dashboard_administrations_summary], User
 
     can :see_minister_video, User
-    as_employers_signatory_abilities(user: user) if user.employer_like?
+    as_employers_signatory_abilities(user: user) if user.agreement_signatorable?
     can_manage_teams(user: user)
+  end
+
+  def as_employers_signatory_abilities(user:)
+    can :create, InternshipAgreement
+    can %i[
+      read
+      index
+      edit
+      update
+      edit_organisation_representative_role
+      edit_tutor_email
+      edit_tutor_role
+      edit_activity_scope_rich_text
+      edit_activity_preparation_rich_text
+      edit_activity_learnings_rich_text
+      edit_complementary_terms_rich_text
+      edit_date_range
+      edit_organisation_representative_full_name
+      edit_siret
+      edit_tutor_full_name
+      edit_weekly_hours
+      sign
+      sign_internship_agreements
+    ], InternshipAgreement do |agreement|
+      agreement.employer.id.in?(user.team_members_ids)
+    end
+    can :create, Signature do |signature|
+      signature.internship_agreement.internship_offer.employer_id.in?(user.team_members_ids)
+    end
   end
 
   def common_school_management_abilities(user:)
@@ -409,34 +438,6 @@ class Ability
     end
   end
 
-  def as_employers_signatory_abilities(user:)
-    can :create, InternshipAgreement
-    can %i[
-      read
-      edit
-      update
-      edit_organisation_representative_role
-      edit_tutor_email
-      edit_tutor_role
-      edit_activity_scope_rich_text
-      edit_activity_preparation_rich_text
-      edit_activity_learnings_rich_text
-      edit_complementary_terms_rich_text
-      edit_date_range
-      edit_organisation_representative_full_name
-      edit_siret
-      edit_tutor_full_name
-      edit_weekly_hours
-      sign
-      sign_internship_agreements
-    ], InternshipAgreement do |agreement|
-      agreement.employer.id == user.team_id && user.employer_like?
-    end
-    can :create, Signature do |signature|
-      signature.internship_agreement.internship_offer.employer_id == user.team_id
-    end
-  end
-
 
   private
 
@@ -483,7 +484,7 @@ class Ability
     can :change, ClassRoom do |class_room|
       class_room.school_id == user.school_id && !user.school_manager?
     end
-  
+
     can [:show_user_in_school], User do |user|
       user.school
           .users

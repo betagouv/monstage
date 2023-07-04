@@ -260,7 +260,7 @@ class InternshipApplication < ApplicationRecord
     }
     school_manager_presence = student&.school&.school_manager&.present?
     if type == "InternshipApplications::WeeklyFramed" && school_manager_presence
-      create_agreement unless internship_offer.employer.operator?
+      create_agreement if employer.agreement_signatorable?
       if main_teacher.present?
         deliver_later_with_additional_delay do
           MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)

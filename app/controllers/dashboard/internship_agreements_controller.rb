@@ -77,7 +77,7 @@ module Dashboard
     end
 
     def index
-      authorize! :read, InternshipAgreement
+      authorize! :index, InternshipAgreement
       @internship_offers = current_user.internship_offers if current_user.employer_like?
       @internship_agreements = current_user.internship_agreements
                                            .includes(

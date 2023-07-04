@@ -15,7 +15,7 @@ module Teamable
     def internship_offers
       return super unless team.team_size.positive?
       
-      InternshipOffer.where(employer: team.team_members.pluck(:member_id))
+      InternshipOffer.where(employer: team_members_ids)
     end
     
     def internship_agreements
@@ -34,7 +34,8 @@ module Teamable
     end
 
     def team_members_ids
-      team&.team_members&.pluck(:member_id) || [id]
+      members = team.team_members.pluck(:member_id)
+      members.empty? ? [id] : members
     end
 
     def pending_invitation_to_a_team

@@ -245,11 +245,12 @@ class User < ApplicationRecord
   def god? ; false end
   def employer_like? ; false end
   def has_already_approved_an_application? ; false end
-  # def valid_invitation_to_a_team? ; false end
+
 
   def already_signed?(internship_agreement_id:); true end
   def team_id; id end
   def team_members_ids; [id] end
+  def agreement_signatorable? ; agreement_signatorable end
 
   def pending_invitation_to_a_team ; [] end
   def create_signature_phone_token ; nil end

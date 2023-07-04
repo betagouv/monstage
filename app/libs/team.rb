@@ -87,9 +87,11 @@ class Team
   end
 
   def set_team_members
-    return TeamMemberInvitation.none unless team_owner_id
-
-    @team_members = base_query.where(inviter_id: team_owner_id)
+    if team_owner_id.nil?
+      @team_members = TeamMemberInvitation.none
+    else
+      @team_members = base_query.where(inviter_id: team_owner_id)
+    end
   end
 
   def build
