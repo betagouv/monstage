@@ -42,6 +42,7 @@ module Users
     end
 
     def employer? ; true end
+    def agreement_signatorable? ; true end
 
     def anonymize(send_email: true)
       super

@@ -49,6 +49,7 @@ module Statisticianable
     end
 
     def statistician? ; true end
+    def employer_like? ; true end
 
     rails_admin do
       weight 5

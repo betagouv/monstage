@@ -256,29 +256,6 @@ module Dashboard::TeamMemberInvitations
       find('p.fr-badge--info', text: "en attente de réponse".upcase)
     end
 
-#     test 'as operator, when two user_operators are in the same team, ' \
-#          'they can manage internship_agreements of the team' do
-#       user_operator_1 = create(:user_operator)
-#       user_operator_2 = create(:user_operator)
-#       internship_offer = create(:weekly_internship_offer, employer: user_operator_1)
-#       internship_application_1 = create(:weekly_internship_application, :approved, internship_offer: internship_offer)
-#       assert InternshipAgreement.count == 1
-#       student = internship_application_1.student
-#       create :team_member_invitation,
-#              :accepted_invitation,
-#              inviter_id: user_operator_1.id,
-#              member_id: user_operator_2.id
-#       create :team_member_invitation,
-#              :accepted_invitation,
-#              inviter_id: user_operator_1.id,
-#              member_id: user_operator_1.id
-
-#       sign_in(user_operator_2)
-#       visit dashboard_internship_agreements_path
-#       find('a.button-component-cta-button', text: "Remplir ma convention").click
-#       find('.h2[aria-level="1"][role="heading"]', text: "Édition de la convention de stage")
-#     end
-
     ## ============= statisticians ===================
     test 'as statistician, team member can invite a new team member' do
       statistician_1 = create(:statistician)
@@ -397,12 +374,11 @@ module Dashboard::TeamMemberInvitations
 
     test 'as statistician, when two statisticians are in the same team, ' \
           'they can manage internship_agreements of the team' do
-      statistician_1 = create(:statistician)
-      statistician_2 = create(:statistician)
+      statistician_1 = create(:statistician, agreement_signatorable: true)
+      statistician_2 = create(:statistician, agreement_signatorable: true)
       internship_offer = create(:weekly_internship_offer, employer: statistician_1)
       internship_application_1 = create(:weekly_internship_application, :approved, internship_offer: internship_offer)
       assert InternshipAgreement.count == 1
-      student = internship_application_1.student
       create :team_member_invitation,
               :accepted_invitation,
               inviter_id: statistician_1.id,
