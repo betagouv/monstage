@@ -409,6 +409,7 @@ class Ability
   def as_employers_signatory_abilities(user:)
     can %i[
       create
+      index
     ], InternshipAgreement
 
     can %i[

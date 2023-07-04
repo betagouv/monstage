@@ -244,4 +244,19 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       end
     end
   end
+
+  test 'Employers users shall not be pushed to home when no agreement in list' do
+    employer = create(:employer)
+    sign_in(employer)
+    visit dashboard_internship_offers_path
+    click_link('Conventions')
+    find("h4.fr-h4", text: 'Aucune convention de stage ne requiert votre attention pour le moment.')
+  end
+
+  test 'Operator users shall not be pushed to home when no agreement in list' do
+    user_operator = create(:user_operator)
+    sign_in(user_operator)
+    visit dashboard_internship_offers_path
+    find('a', text: 'Conventions', count: 0)
+  end
 end
