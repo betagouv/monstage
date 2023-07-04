@@ -18,7 +18,7 @@ class SignUpEmployersTest < ApplicationSystemTestCase
       fill_in 'Adresse électronique', with: existing_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in "Fonction au sein de l'entreprise", with: "chef d'entreprise"
-      all('input[type="checkbox"]', visible: false)[1].check
+      execute_script("document.getElementById('user_accept_terms').checked = true;")
       click_on "Valider"
     end
 

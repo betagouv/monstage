@@ -22,7 +22,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       fill_in 'Adresse électronique', with: existing_email # error
       fill_in 'Créer un mot de passe', with: password
-      all('input[type="checkbox"]', visible: false)[1].check
+      execute_script("document.getElementById('user_accept_terms').checked = true;")
       click_on "Valider"
     end
     if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'
@@ -61,7 +61,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       fill_in 'Adresse électronique', with: existing_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
-      all('input[type="checkbox"]', visible: false)[1].check
+      execute_script("document.getElementById('user_accept_terms').checked = true;")
       click_on "Valider"
     end
 
@@ -78,7 +78,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       select(class_room_1.name, from: 'user_class_room_id')
       fill_in 'Adresse électronique', with: "another@#{school_1.email_domain_name}"
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
-      all('input[type="checkbox"]', visible: false)[1].check
+      execute_script("document.getElementById('user_accept_terms').checked = true;")
       click_on "Valider"
     end
 
