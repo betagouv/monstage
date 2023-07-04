@@ -257,6 +257,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     user_operator = create(:user_operator)
     sign_in(user_operator)
     visit dashboard_internship_offers_path
-    find('a', text: 'Conventions', count: 0)
+    assert page.has_css?('a', text: 'Candidatures', count: 1)
+    assert page.has_css?('a', text: 'Conventions', count: 0)
   end
 end
