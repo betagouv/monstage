@@ -90,8 +90,11 @@ jobs: # a collection of steps
       # beware, system tests on CI with more than 1 PARALLEL_WORKERS leads to OOM errors
       - run:
           name: Run Desktop TestSystem with headless_chrome
-          command: PARALLEL_WORKERS=1 ~/project/infra/test/system_desktop.sh
-          
+          command: |
+            mkdir test-results
+            PARALLEL_WORKERS=1 ~/project/infra/test/system_desktop.sh
+      - store_test_results:
+          path: test-results
       - store_artifacts:
           path: tmp/screenshots
 
