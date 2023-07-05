@@ -91,6 +91,9 @@ jobs: # a collection of steps
       - run:
           name: Run Desktop TestSystem with headless_chrome
           command: PARALLEL_WORKERS=1 ~/project/infra/test/system_desktop.sh
+          
+      - store_artifacts:
+          path: tmp/screenshots
 
       - run:
           name: Run Mobile TestSystem with headless_chrome using chrome's iPhone 6 emulation
