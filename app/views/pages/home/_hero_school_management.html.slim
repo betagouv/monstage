@@ -1,5 +1,5 @@
-header.bg-cover-image-homepage.bg-school-management-hero-image.container-xl.px-0.fr-pb-4w
-  .container-monstage.container-xl.homepage.px-0
+header.bg-cover-image-homepage.container-xl.px-0.fr-pb-4w
+  .container-monstage.container-xl.homepage.px-0.bg-school-management-hero-image
     .row
       .col-lg-12.col-md-12
         p.fr-display--xs.white.fr-my-2w.py-lg-4.py-md-3.py-sm-3.py-xs-2
@@ -11,4 +11,4 @@ header.bg-cover-image-homepage.bg-school-management-hero-image.container-xl.px-0
             br
             | dans leur recherche de stage
         .fr-mt-2w 
-          = link_to "S'inscrire", new_user_registration_path, class: 'fr-btn fr-btn-white'
+          = link_to "S'inscrire", new_user_registration_path(as: 'SchoolManagement'), class: 'fr-btn fr-btn-white'

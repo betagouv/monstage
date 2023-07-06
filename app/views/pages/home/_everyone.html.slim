@@ -17,10 +17,13 @@
           le meilleur intérêt des élèves en leur offrant la meilleure
           expérience du stage possible.
       p.py-4.fr-px-2w.px-sm-2.px-md-0.text-center-left
-        = link_to internship_offers_path(current_user_or_visitor.default_search_options),
-                  class: 'fr-btn fr-btn--secondary fr-raw-link fr-px-8w',
-                  data: { :"test-id" => 'mobile-search-button-first' }
-          = "Trouver un stage "
+        - if current_page?(root_path)
+          = link_to "Trouver un stage ", eleves_path, class: 'fr-btn fr-btn--secondary fr-raw-link fr-px-8w'
+        - else 
+          = link_to internship_offers_path(current_user_or_visitor.default_search_options),
+                    class: 'fr-btn fr-btn--secondary fr-raw-link fr-px-8w',
+                    data: { :"test-id" => 'mobile-search-button-first' }
+            = "Trouver un stage "
     .col-md-6.col-sm-12.text-center
       = image_tag asset_pack_path('media/images/homepage/opportunities-illustration.svg'),
                     alt: "Illustration métiers disponibles",

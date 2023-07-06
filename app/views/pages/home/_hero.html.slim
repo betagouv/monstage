@@ -1,5 +1,5 @@
-header.bg-cover-image-homepage.bg-home-hero-image.container-xl.px-0.fr-pb-3w
-  .container-monstage.container-xl.homepage.px-0
+header.bg-cover-image-homepage.container-xl.px-0.fr-pb-3w
+  .container-monstage.container-xl.homepage.px-0.bg-home-hero-image
     .row.fr-mb-4w.mx-0
       .col-lg-12.col-md-12.px-0
         .fr-pt-5w
@@ -15,11 +15,11 @@ header.bg-cover-image-homepage.bg-home-hero-image.container-xl.px-0.fr-pb-3w
           .fr-card__body.fr-pt-2w
             .fr-card__content
               h3.h4.fr-card__title.fr-mb-2w
-                = link_to 'Élèves de 3ème  REP et REP+', '#', class: 'text-dark'
+                = link_to 'Élèves de 3ème REP et REP+', '#', class: 'text-dark'
               p.fr-card__desc
                 | Postulez et suivez vos candidatures pour trouver un stage.
             .fr-card__footer
-              = link_to 'Trouver un stage', '#', class: 'fr-btn fr-btn--secondary'
+              = link_to 'Trouver un stage', eleves_path, class: 'fr-btn fr-btn--secondary'
           .fr-card__header.fr-my-4w
             ul.fr-badges-group.fr-p-4w
               li
@@ -34,7 +34,7 @@ header.bg-cover-image-homepage.bg-home-hero-image.container-xl.px-0.fr-pb-3w
               p.fr-card__desc
                 | Faites découvrir vos métiers. Déposez des offres de stages  pour un ou plusieurs élèves.  
             .fr-card__footer
-              = link_to 'Déposer une offre', '#', class: 'fr-btn fr-btn--secondary'
+              = link_to 'Déposer une offre', professionnels_path, class: 'fr-btn fr-btn--secondary'
           .fr-card__header.fr-my-4w
             ul.fr-badges-group.fr-p-4w
               li
@@ -52,7 +52,7 @@ header.bg-cover-image-homepage.bg-home-hero-image.container-xl.px-0.fr-pb-3w
               p.fr-card__desc
                 | Postulez et suivez vos candidatures pour trouver un stage.
             .fr-card__footer
-              = link_to 'Activer votre établissement', '#', class: 'fr-btn fr-btn--secondary'
+              = link_to 'Activer votre établissement', equipe_pedagogique_path, class: 'fr-btn fr-btn--secondary'
           .fr-card__header.fr-my-4w
             ul.fr-badges-group.fr-p-4w
               li
