@@ -2,7 +2,7 @@
 
 class InternshipApplicationsController < ApplicationController
   before_action :persist_login_param, only: %i[new]
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: %i[update]
   before_action :set_internship_offer
 
   def index
@@ -73,6 +73,31 @@ class InternshipApplicationsController < ApplicationController
       },
       user: current_user_or_visitor
     ).all.includes([:sector]).order(id: :desc).last(6)
+  end
+
+  def edit_transfer
+    @internship_application = InternshipApplication.find(params[:id])
+    authorize! :transfer, @internship_application
+  end
+
+  def transfer
+    @internship_application = InternshipApplication.find(params[:id])
+    authorize! :transfer, @internship_application
+    # send email to the invited employer
+    if params[:destinations].present?
+      @internship_application.update(aasm_state: :examined)
+      @internship_application.generate_token
+
+      params[:destinations].split(',').each do |destination|
+        EmployerMailer.transfer_internship_application(
+          internship_application: @internship_application, 
+          employer_id: current_user.id,
+          email: destination,
+          message: params[:comment]).deliver_now unless destination.blank?
+      end
+    end
+
+    redirect_to dashboard_internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application), flash: { success: "La candidature a été transmises avec succès, son statut est à l'étude" }
   end
 
   private

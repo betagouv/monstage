@@ -310,6 +310,12 @@ class InternshipApplication < ApplicationRecord
     end
   end
 
+  def generate_token
+    return if access_token.present?
+    self.access_token = SecureRandom.hex(10)
+    self.save
+  end
+
   def create_agreement
     return unless internship_agreement_creation_allowed?
 
