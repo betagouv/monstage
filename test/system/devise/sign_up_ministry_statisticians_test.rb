@@ -17,7 +17,7 @@ class SignUpMinistryStatisticiansTest < ApplicationSystemTestCase
       find("input[name='user[last_name]']").fill_in(with: 'Fourcade')
       fill_in 'Adresse électronique', with: bad_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
-      all('input[type="checkbox"]', visible: false)[1].check
+      execute_script("document.getElementById('user_accept_terms').checked = true;")
       click_on "Valider"
     end
 
@@ -28,7 +28,7 @@ class SignUpMinistryStatisticiansTest < ApplicationSystemTestCase
       find("input[name='user[last_name]']").fill_in(with: 'Fourcade')
       fill_in 'Adresse électronique', with: email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
-      all('input[type="checkbox"]', visible: false)[1].check
+      execute_script("document.getElementById('user_accept_terms').checked = true;")
       click_on "Valider"
     end
 

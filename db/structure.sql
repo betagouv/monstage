@@ -735,7 +735,8 @@ CREATE TABLE public.internship_applications (
     examined_at timestamp(6) without time zone,
     validated_by_employer_at timestamp(6) without time zone,
     dunning_letter_count integer DEFAULT 0,
-    magic_link_tracker integer DEFAULT 0
+    magic_link_tracker integer DEFAULT 0,
+    access_token character varying
 );
 
 
@@ -3134,6 +3135,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230516162131'),
 ('20230516193352'),
 ('20230517092159'),
-('20230531094449');
+('20230531094449'),
+('20230628133149');
 
 
