@@ -58,7 +58,11 @@ class TeamMemberInvitation < ApplicationRecord
   end
 
   def fetch_invitee_in_db
-    Users::Employer.kept.find_by(email: invitation_email)
+    user = User.kept.find_by(email: invitation_email)
+    return nil if user.nil?
+    return nil unless user.employer_like?
+    
+    user
   end
 
   def member_is_inviter?
