@@ -50,6 +50,8 @@ Rails.application.routes.draw do
       end
       resources :internship_applications, path: 'candidatures', only: %i[new create index show update] do
         member do
+          get :edit_transfer
+          post :transfer
           get :completed
         end
       end

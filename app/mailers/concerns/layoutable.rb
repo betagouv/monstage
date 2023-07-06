@@ -19,7 +19,7 @@ module Layoutable
 
     # for consistent email formatting accross email reader,
     # ensure <p> styles are always style with p style={p_styles}
-    helper_method :p_styles, :head_styles, :span_bold, :p_cyclop_styles, :head_cyclop_styles,:hint_styles
+    helper_method :p_styles, :p_styles_italic, :head_styles, :span_bold, :p_cyclop_styles, :head_cyclop_styles,:hint_styles
 
     def font_family
       '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji'
