@@ -191,6 +191,9 @@ class Ability
     can %i[create], InternshipAgreement
 
     can %i[index update], InternshipApplication
+    can :transfer, InternshipApplication do |internship_application|
+      internship_application.internship_offer.employer_id == user.id
+    end
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
 
     as_employers_signatory_abilities(user: user)
