@@ -760,6 +760,39 @@ ALTER SEQUENCE public.internship_applications_id_seq OWNED BY public.internship_
 
 
 --
+-- Name: internship_offer_areas; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.internship_offer_areas (
+    id bigint NOT NULL,
+    employer_type character varying,
+    employer_id bigint,
+    name character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: internship_offer_areas_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.internship_offer_areas_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: internship_offer_areas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.internship_offer_areas_id_seq OWNED BY public.internship_offer_areas.id;
+
+
+--
 -- Name: internship_offer_info_weeks; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -873,6 +906,47 @@ ALTER SEQUENCE public.internship_offer_keywords_id_seq OWNED BY public.internshi
 
 
 --
+-- Name: internship_offer_student_infos; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.internship_offer_student_infos (
+    id bigint NOT NULL,
+    max_candidates integer,
+    school_id integer,
+    employer_id integer,
+    last_date date,
+    weeks_count integer DEFAULT 0 NOT NULL,
+    internship_offer_student_info_weeks_count integer DEFAULT 0 NOT NULL,
+    daily_hours jsonb DEFAULT '{}'::jsonb,
+    weekly_hours text[] DEFAULT '{}'::text[],
+    weekly_lunch_break text,
+    max_students_per_group integer DEFAULT 1 NOT NULL,
+    remaining_seats_count integer DEFAULT 0,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: internship_offer_student_infos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.internship_offer_student_infos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: internship_offer_student_infos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.internship_offer_student_infos_id_seq OWNED BY public.internship_offer_student_infos.id;
+
+
+--
 -- Name: internship_offer_weeks; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -973,7 +1047,8 @@ CREATE TABLE public.internship_offers (
     hidden_duplicate boolean DEFAULT false,
     daily_hours jsonb,
     hosting_info_id bigint,
-    practical_info_id bigint
+    practical_info_id bigint,
+    internship_offer_area_id bigint
 );
 
 
@@ -1657,6 +1732,13 @@ ALTER TABLE ONLY public.internship_applications ALTER COLUMN id SET DEFAULT next
 
 
 --
+-- Name: internship_offer_areas id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_areas ALTER COLUMN id SET DEFAULT nextval('public.internship_offer_areas_id_seq'::regclass);
+
+
+--
 -- Name: internship_offer_info_weeks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1675,6 +1757,13 @@ ALTER TABLE ONLY public.internship_offer_infos ALTER COLUMN id SET DEFAULT nextv
 --
 
 ALTER TABLE ONLY public.internship_offer_keywords ALTER COLUMN id SET DEFAULT nextval('public.internship_offer_keywords_id_seq'::regclass);
+
+
+--
+-- Name: internship_offer_student_infos id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_student_infos ALTER COLUMN id SET DEFAULT nextval('public.internship_offer_student_infos_id_seq'::regclass);
 
 
 --
@@ -1910,6 +1999,14 @@ ALTER TABLE ONLY public.internship_applications
 
 
 --
+-- Name: internship_offer_areas internship_offer_areas_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_areas
+    ADD CONSTRAINT internship_offer_areas_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: internship_offer_info_weeks internship_offer_info_weeks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1931,6 +2028,14 @@ ALTER TABLE ONLY public.internship_offer_infos
 
 ALTER TABLE ONLY public.internship_offer_keywords
     ADD CONSTRAINT internship_offer_keywords_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: internship_offer_student_infos internship_offer_student_infos_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_student_infos
+    ADD CONSTRAINT internship_offer_student_infos_pkey PRIMARY KEY (id);
 
 
 --
@@ -2224,6 +2329,13 @@ CREATE INDEX index_internship_applications_on_week_id ON public.internship_appli
 
 
 --
+-- Name: index_internship_offer_areas_on_employer; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offer_areas_on_employer ON public.internship_offer_areas USING btree (employer_type, employer_id);
+
+
+--
 -- Name: index_internship_offer_info_weeks_on_internship_offer_info_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2333,6 +2445,13 @@ CREATE INDEX index_internship_offers_on_group_id ON public.internship_offers USI
 --
 
 CREATE INDEX index_internship_offers_on_hosting_info_id ON public.internship_offers USING btree (hosting_info_id);
+
+
+--
+-- Name: index_internship_offers_on_internship_offer_area_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offers_on_internship_offer_area_id ON public.internship_offers USING btree (internship_offer_area_id);
 
 
 --
@@ -2785,6 +2904,14 @@ ALTER TABLE ONLY public.active_storage_variant_records
 
 
 --
+-- Name: internship_offers fk_rails_9bcd71f8ef; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offers
+    ADD CONSTRAINT fk_rails_9bcd71f8ef FOREIGN KEY (internship_offer_area_id) REFERENCES public.internship_offer_areas(id);
+
+
+--
 -- Name: internship_offer_info_weeks fk_rails_9d43a53fc8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3167,6 +3294,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230616164423'),
 ('20230620115539'),
 ('20230628133149'),
-('20230629141931');
+('20230629141931'),
+('20230703093100'),
+('20230707082633'),
+('20230707082704'),
+('20230707083923');
 
 

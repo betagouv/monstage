@@ -4,6 +4,7 @@ module Statisticianable
   extend ActiveSupport::Concern
 
   included do
+    include Teamable
     has_many :internship_offers, as: :employer,
              dependent: :destroy
 
@@ -15,12 +16,7 @@ module Statisticianable
     has_many :organisations
     has_many :tutors
     has_many :internship_offer_infos
-    has_many :team_members,
-              dependent: :destroy,
-              foreign_key: :user_id
-    has_many :team_member_invitations,
-             dependent: :destroy,
-             foreign_key: :user_id
+
 
     before_update :trigger_agreements_creation
     before_validation :assign_email_whitelist_and_confirm

@@ -33,7 +33,7 @@ module StepperProxy
       end
 
       def enough_weeks
-        weeks = self.try(:internship_offer_weeks) || self&.hosting_info_weeks || []
+        weeks = self.try(:internship_offer_weeks) || self.try(:hosting_info_weeks) || []
         return if weeks.size.zero?
         return if (max_candidates / max_students_per_group - weeks.size) <= 0
 

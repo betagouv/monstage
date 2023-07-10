@@ -44,9 +44,9 @@ class TeamMemberInvitationControllerTest < ActionDispatch::IntegrationTest
     employer_1 = create(:employer)
     employer_2 = create(:employer)
     team_member_invitation = create :team_member_invitation,
-                         inviter_id: employer_1.id,
-                         invitation_email: employer_2.email
-    assert employer_1.team.team_size.zero?
+                                    inviter_id: employer_1.id,
+                                    invitation_email: employer_2.email
+    refute employer_1.team.alive?
     sign_in employer_1
     get new_dashboard_team_member_invitation_path
     assert_response :success
@@ -174,9 +174,12 @@ class TeamMemberInvitationControllerTest < ActionDispatch::IntegrationTest
     # Unused context
     create(:team_member_invitation,
            inviter: employer_1,
-           member: employer_3,
+           member: nil,
            invitation_email: employer_3.email)
 
+    assert_equal 3, TeamMemberInvitation.count
+    assert_equal 2, TeamMemberInvitation.accepted_invitation.count
+    assert_equal 2, TeamMemberInvitation.pluck(:member_id).compact.uniq.count
     sign_in employer_2
     get new_dashboard_team_member_invitation_path
     assert_response :success

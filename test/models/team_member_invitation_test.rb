@@ -53,7 +53,7 @@ class TeamMemberInvitationTest < ActiveSupport::TestCase
                          invitation_email: invitee_employer.email
     )
     team_member_invitation.refuse_invitation!
-    assert 0, employer.team.team_size
+    refute employer.team.alive?
     assert 1, TeamMemberInvitation.refused_invitation.count
   end
 end

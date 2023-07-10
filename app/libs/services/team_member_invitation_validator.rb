@@ -27,7 +27,7 @@ module Services
 
     def already_in_team?
       team = current_user.team
-      return false unless team&.team_size&.positive?
+      return false unless team.try(:alive?)
 
       team_members_email = team.team_members.pluck(:invitation_email)
       email.in?(team_members_email)

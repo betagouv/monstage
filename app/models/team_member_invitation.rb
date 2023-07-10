@@ -37,7 +37,7 @@ class TeamMemberInvitation < ApplicationRecord
       transitions from: :pending_invitation,
                   to: :refused_invitation,
                   after: proc { |*_args|
-        update(invitation_refused_at: Time.now)
+        update(invitation_refused_at: Time.now, member_id: nil)
       }
     end
   end
@@ -90,7 +90,7 @@ class TeamMemberInvitation < ApplicationRecord
   end
 
   def team_owner_id
-    return nil if team.team_size.zero?
+    return nil if team.alive?
 
     team.team_owner_id
   end
