@@ -5,13 +5,12 @@
 .container-homepage
   .mx-0.light-grey-background data-controller='modal-covid'
     = render 'pages/home/hero'
-    / = render 'pages/home/webinar'
     = render 'pages/home/everyone'
 .fr-container
   = render 'pages/home/metrics'
 .container-homepage.light-grey-background.fr-py-4w  
   .container-monstage
-    = render 'pages/home/faq'
+    .fr-px-2w.fr-px-md-0= render 'pages/home/faq'
 .container-homepage.light-blue-background.fr-py-4w  
   .container-homepage
     .container-monstage
@@ -22,4 +21,6 @@
     = render 'pages/home/partners'
     .d-none.d-md-block
       = render 'pages/home/elevator'
+
+
   / = render 'pages/home/social_network'

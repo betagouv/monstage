@@ -79,24 +79,40 @@ a:hover {
   background-position: right bottom;
 }
 
-.bg-home-hero-image {
-  background-image: url('../images/homepage/hero-illustration.svg');
-  background-repeat: no-repeat;
-  background-position: right bottom;
+@media (min-width: 768px) {
+  .bg-home-hero-image {
+    background-image: url('../images/homepage/hero-illustration.svg');
+    background-repeat: no-repeat;
+    background-position: right bottom;
+  }
 }
 
 .fr-card-with-arrow::before {
   content: "" !important;
 }
 
+@media (min-width: 768px) {
 .fr-tile-left-top-img .fr-tile__img {
   align-items: start;
-  // justify-content: start;
-  // margin: 0 2rem 0 0 !important;
   margin: -3rem 0 2rem 2rem !important;
   justify-content: center;
 
-  // flex-shrink: 1;
+}
+
+// media only mobile
+// @media 
+
+@media (max-width: 768px) {
+  .newsletter-button {
+    margin: 0 auto !important;
+  }
+}
+
+// @media (max-width: 768px) {
+// .fr-tile-left-top-img .fr-tile__img {
+//   align-items: start;
+//   margin: -3rem 0 2rem 2rem !important;
+//   justify-content: center;
 }
 
 .fr-tile-left-top-img .fr-tile--horizontal-md {
