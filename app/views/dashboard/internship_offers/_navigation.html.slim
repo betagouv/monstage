@@ -14,7 +14,9 @@
       - else
         - if can?(:update, @internship_offer)
           .fr-mx-1w data-turbo="false"
-            = link_to '', edit_dashboard_internship_offer_path(@internship_offer.to_param), class: 'fr-btn fr-icon-edit-fill test-edit-button'
+            = link_to '',
+                      edit_dashboard_internship_offer_path(@internship_offer.to_param),
+                      class: 'fr-btn fr-icon-edit-fill test-edit-button'
         - if can?(:renew, @internship_offer) || can?(:duplicate, @internship_offer)
           .fr-mx-1w
             = link_to '', new_dashboard_internship_offer_path(duplicate_id: internship_offer.to_param), class: 'fr-btn fr-icon-file-add-line fr-btn--icon fr-btn--secondary test-duplicate-button'

@@ -8,8 +8,6 @@
   z-index: 100;
 }
 
-
-
 .employer {
   .fr-tabs{
     min-height: 3.1rem;
@@ -342,4 +340,22 @@ $sortLinkOffset: 15px;
 }
 .index-offer-title{
   min-width: 430px;
+}
+
+.bar-area{
+  height: 65px;
+  width: 1280px !important;
+
+  background: linear-gradient(#F8F8F8,#F8F8F8 0%, #FFF 35%, #FFFFFF 100%);
+  border-bottom: 1px solid #F8F8F8;
+  width: 1232px;
+  li.fr-nav__item{
+    margin-right: 15px;
+    a, button{
+      padding-top: 20px;
+      color: black;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  }
 }

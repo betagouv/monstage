@@ -20,7 +20,7 @@ module Users
       internship_offer = create(:weekly_internship_offer, employer: operator)
       operator.reload
 
-      assert_equal internship_offer, operator.internship_offers.first
+      assert_equal internship_offer, operator.personal_internship_offers.first
     end
   end
 end

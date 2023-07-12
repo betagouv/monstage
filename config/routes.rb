@@ -96,6 +96,11 @@ Rails.application.routes.draw do
         get '/information', to: 'schools#information', module: 'schools'
       end
 
+      resources :internship_offer_areas, path: 'espaces' do
+        get :filter_by_area, on: :member
+        resources :area_notifications, path: 'notifications-d-espace', only: %i[edit_update], module: 'internship_offer_areas'
+      end
+
       resources :internship_offers, path: 'offres-de-stage', except: %i[show] do
         resources :internship_applications, path: 'candidatures', only: %i[update index show], module: 'internship_offers' do
           patch :set_to_read, on: :member

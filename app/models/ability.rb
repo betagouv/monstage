@@ -203,7 +203,7 @@ class Ability
   def employer_abilities(user:)
     as_employers_like(user: user)
     as_employers_signatory_abilities(user: user)
-    as_back_office_user(user: user)
+    as_account_user(user: user)
     can %i[sign_with_sms choose_function subscribe_to_webinar] , User
     can :see_minister_video, User
     can :create_remote_internship_request, SupportTicket # TO DO REMOVE
@@ -228,13 +228,13 @@ class Ability
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
   end
 
-  def as_back_office_user(user:)
+  def as_account_user(user:)
     can :show, :account
   end
 
   def as_employers_like(user:)
-
     can_manage_teams(user: user)
+    can_manage_areas(user: user)
     can :supply_offers, User
     can :renew, InternshipOffer do |internship_offer|
       renewable?(internship_offer: internship_offer, user: user)
@@ -297,8 +297,31 @@ class Ability
     end
   end
 
+  def can_manage_areas(user: )
+    can :create, InternshipOfferArea
+    
+    can %i[update_areas], InternshipOfferArea do |area|
+      if user.team.alive?
+        user.team.id_in_team?(area.employer_id)
+      else
+        user.id == area.employer_id
+      end
+    end
+
+    can %i[destroy], InternshipOfferArea do |area|
+      if user.team.alive?
+        condition = user.team.id_in_team?(area.employer_id)
+      else
+        condition = user.id == area.employer_id
+      end
+      user.team_areas.count > 1 && condition
+    end
+
+    can :generaly_destroy, InternshipOfferArea, user.team_areas.count > 1
+  end
+
   def operator_abilities(user:)
-    as_back_office_user(user:user)
+    as_account_user(user:user)
     as_employers_like(user:user)
 
     can :choose_operator, :sign_up

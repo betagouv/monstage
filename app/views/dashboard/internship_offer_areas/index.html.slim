@@ -1,0 +1,64 @@
+- content_for :page_title, "#{t(".page_title")} | Monstage"
+= render 'layouts/breadcrumb', links: [ [current_user.presenter.dashboard_name_link, current_user.dashboard_name],
+                                        ['', 'Mes espaces']]
+= render 'dashboard/internship_offers/areas_bar'
+.d-flex
+  = image_tag asset_pack_path('media/images/pages/areas/space_girl.svg'),
+                          alt: 'Gérez vos espaces en équipe',
+                          class: ''
+  .fr-ml-6w
+    h1.fr-h3.fr-mt-2w.fr-mb-1w Nouvel espace
+    p.fr-mt-n-1w
+      |
+        Vous souhaitez différencier la gestion des  offres et des candidature
+        par lieux, par équipes, par filiales ou collaborateur.
+- if can?(:create, InternshipOfferArea)
+  .text-right.fr-mt-5v
+    button.fr-btn.fr-icon-add-line.fr-btn--icon-left[data-fr-opened="false" aria-controls="fr-modal-add-space"]
+      | Créer un nouvel espace
+.fr-table.fr-table--layout-fixed.fr-mt-1w
+  table
+    thead
+      tr
+        th scope="col" Nom de l'espace
+        th scope="col" Candidatures reçues
+        th scope="col" Candidatures refusées
+        th scope="col" Candidatures en attente
+        th scope="col" Candidatures acceptées
+
+        - if current_user.team_areas.count > 1
+          th scope="col" Supprimer l'espace
+    tbody
+      - @internship_offer_areas.each do |area|
+        tr
+          td
+            = area.name
+          td
+            = "TODO"
+          td
+            = "TODO"
+          td
+            = "TODO"
+          td
+            = "TODO"
+          td
+            - if can?(:destroy, area)
+              = link_to dashboard_internship_offer_area_path(area),
+                        method: :delete,
+                        data: { confirm: "Êtes-vous sûr de vouloir supprimer #{area.name} ?" } do
+                span.fr-fi-delete-line
+      tr
+        td
+          | Total
+        td
+            = "TODO"
+        td
+          = "TODO"
+        td
+          = "TODO"
+        td
+          = "TODO"
+        td
+#fr-modal-add-space-dialog
+  = render 'dashboard/internship_offer_areas/areas_modal_dialog',
+            internship_offer_area: @internship_offer_area
