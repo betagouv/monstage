@@ -33,7 +33,7 @@ class InternshipOfferAreaTest < ActiveSupport::TestCase
   test "user can access internship_offers" do
     area = create(:area)
     employer = area.employer
-    offer = create(:weekly_internship_offer, internship_offer_area: area, employer: employer)
+    offer = create(:weekly_internship_offer, internship_offer_area: area)
     assert_equal 1, area.internship_offers.count
     assert employer.internship_offers.count.positive?
     assert_equal area, employer.internship_offers.first.internship_offer_area

@@ -363,39 +363,6 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
--- Name: area_notifications; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.area_notifications (
-    id bigint NOT NULL,
-    user_id bigint NOT NULL,
-    internship_offer_area_id bigint NOT NULL,
-    notify boolean DEFAULT true,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: area_notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.area_notifications_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: area_notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.area_notifications_id_seq OWNED BY public.area_notifications.id;
-
-
---
 -- Name: class_rooms; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1611,8 +1578,7 @@ CREATE TABLE public.users (
     subscribed_to_webinar_at timestamp(6) without time zone DEFAULT NULL::timestamp without time zone,
     agreement_signatorable boolean DEFAULT false,
     created_by_teacher boolean DEFAULT false,
-    survey_answered boolean DEFAULT false,
-    current_area_id integer
+    survey_answered boolean DEFAULT false
 );
 
 
@@ -1693,13 +1659,6 @@ ALTER TABLE ONLY public.active_storage_blobs ALTER COLUMN id SET DEFAULT nextval
 --
 
 ALTER TABLE ONLY public.active_storage_variant_records ALTER COLUMN id SET DEFAULT nextval('public.active_storage_variant_records_id_seq'::regclass);
-
-
---
--- Name: area_notifications id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.area_notifications ALTER COLUMN id SET DEFAULT nextval('public.area_notifications_id_seq'::regclass);
 
 
 --
@@ -1957,14 +1916,6 @@ ALTER TABLE ONLY public.active_storage_variant_records
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
-
-
---
--- Name: area_notifications area_notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.area_notifications
-    ADD CONSTRAINT area_notifications_pkey PRIMARY KEY (id);
 
 
 --
@@ -2256,27 +2207,6 @@ CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_b
 --
 
 CREATE UNIQUE INDEX index_active_storage_variant_records_uniqueness ON public.active_storage_variant_records USING btree (blob_id, variation_digest);
-
-
---
--- Name: index_area_notifications_on_internship_offer_area_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_area_notifications_on_internship_offer_area_id ON public.area_notifications USING btree (internship_offer_area_id);
-
-
---
--- Name: index_area_notifications_on_user_and_area; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_area_notifications_on_user_and_area ON public.area_notifications USING btree (user_id, internship_offer_area_id);
-
-
---
--- Name: index_area_notifications_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_area_notifications_on_user_id ON public.area_notifications USING btree (user_id);
 
 
 --
@@ -2838,14 +2768,6 @@ ALTER TABLE ONLY public.signatures
 
 
 --
--- Name: area_notifications fk_rails_2194cad748; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.area_notifications
-    ADD CONSTRAINT fk_rails_2194cad748 FOREIGN KEY (internship_offer_area_id) REFERENCES public.internship_offer_areas(id);
-
-
---
 -- Name: team_member_invitations fk_rails_21c6860154; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3003,14 +2925,6 @@ ALTER TABLE ONLY public.internship_offer_info_weeks
 
 ALTER TABLE ONLY public.internship_offers
     ADD CONSTRAINT fk_rails_aaa97f3a41 FOREIGN KEY (sector_id) REFERENCES public.sectors(id);
-
-
---
--- Name: area_notifications fk_rails_ab915cf6e4; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.area_notifications
-    ADD CONSTRAINT fk_rails_ab915cf6e4 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -3384,8 +3298,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230703093100'),
 ('20230707082633'),
 ('20230707082704'),
-('20230707083923'),
-('20230711161600'),
-('20230712074733');
+('20230707083923');
 
 

@@ -7,9 +7,6 @@ module Dashboard
     helper_method :order_direction
 
     def index
-      if current_user.employer_like?
-        @internship_offer_areas = current_user.internship_offer_areas
-      end
       authorize! :index, Acl::InternshipOfferDashboard.new(user: current_user)
       @internship_offers = finder.all
       order_param = order_direction.nil? ? :published_at : {order_column => order_direction}

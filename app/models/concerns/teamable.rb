@@ -36,21 +36,14 @@ module Teamable
     has_many :tutors #TODO keep ?
     has_many :internship_offer_infos #TODO keep ?
 
-    scope :internship_offers, lambda {
-      InternshipOffer.where(internship_offer_area_id: fetch_current_area_id)
-                     .where(employer_id: team_members_ids)
-    }
-    def personal_internship_offers
-      InternshipOffer.where(employer_id: id)
-    end
-
-    def team_internship_offers
-      InternshipOffer.where(employer_id: team_members_ids)
-    end
+    # scope :internship_offers, lambda do
+    #   InternshipOffer.joins(internship_offer_area: :employer)
+    #                  .where(internship_offer_areas: { employer: all })
+    # end
 
     def internship_offers
-      InternshipOffer.where(internship_offer_area_id: fetch_current_area_id)
-                     .where(employer_id: team_members_ids)
+      InternshipOffer.joins(:internship_offer_area)
+                     .where(internship_offer_area: {employer_id: team_members_ids})
     end
 
     # def internship_offer_areas
@@ -87,22 +80,6 @@ module Teamable
 
     def refused_invitations
       TeamMemberInvitation.refused_invitation.where(inviter_id: team_id)
-    end
-
-    def latest_area_id
-      internship_offer_areas.order(updated_at: :desc).first.id
-    end
-
-    def current_area_id_memorize(id)
-      update(current_area_id:  id)
-    end
-
-    def fetch_current_area_id
-      current_area_id.presence || latest_area_id
-    end
-
-    def team_areas
-      internship_offer_areas.where(employer_id: team_members_ids)
     end
   end
 end

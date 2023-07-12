@@ -601,8 +601,6 @@ fr:
         discarded: Supprimées
   dashboard:
     internship_offer:
-      index: 
-        add_area: "Ajouter un espace"
       created: Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.
   views:
     pagination:

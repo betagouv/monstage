@@ -83,9 +83,6 @@ fr:
     support_tickets:
       new:
         page_title: "Demande de stage à distance"
-    internship_offer_areas:
-      index: 
-        page_title: Liste de mes espaces
   internship_applications:
     show:
       page_title: "Ma candidature"

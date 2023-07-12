@@ -52,10 +52,6 @@ FactoryBot.define do
     factory :employer, class: 'Users::Employer', parent: :user do
       type { 'Users::Employer' }
       employer_role { 'PDG' }
-      after(:create) do |employer|
-        create(:area, employer_id: employer.id)
-        current_area_id: employer.areas.first.id
-      end
     end
 
     factory :god, class: 'Users::God', parent: :user do
@@ -119,9 +115,6 @@ FactoryBot.define do
       before(:create) do |user|
         create(:statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
       end
-      after(:create) do |employer|
-        create(:area, employer_id: employer.id)
-      end
     end
 
     factory :education_statistician, class: 'Users::EducationStatistician', parent: :user do
@@ -129,9 +122,6 @@ FactoryBot.define do
       agreement_signatorable { false }
       before(:create) do |user|
         create(:education_statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
-      end
-      after(:create) do |employer|
-        create(:area, employer_id: employer.id)
       end
     end
 
@@ -142,9 +132,6 @@ FactoryBot.define do
         white_list { create(:ministry_statistician_email_whitelist) }
       end
       email { white_list.email }
-      after(:create) do |employer|
-        create(:area, employer_id: employer.id)
-      end
     end
 
     factory :user_operator, class: 'Users::Operator', parent: :user do
@@ -156,9 +143,6 @@ FactoryBot.define do
         after(:create) do |user|
           user.operator.update(api_full_access: true)
         end
-      end
-      after(:create) do |employer|
-        create(:area, employer_id: employer.id)
       end
     end
 

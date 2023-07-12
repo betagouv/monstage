@@ -91,12 +91,11 @@ module Dashboard::TeamMemberInvitations
       assert_equal 1, all('span.fr-badge.fr-badge--no-icon.fr-badge--error', text: "refusée".upcase).count
     end
 
-     test 'when two employers are in the same team on a single area, ' \
+     test 'when two employers are in the same team, ' \
          'they can manage internship_applications of the team' do
-      area = create(:area) 
-      employer_1 = create(:employer, current_area_id: area.id)
-      employer_2 = create(:employer, current_area_id: area.id)
-      internship_offer = create(:weekly_internship_offer, employer: employer_1, internship_offer_area_id: area.id)
+      employer_1 = create(:employer)
+      employer_2 = create(:employer)
+      internship_offer = create(:weekly_internship_offer, employer: employer_1)
       internship_application_1 = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
       create :team_member_invitation,
              :accepted_invitation,
@@ -117,12 +116,11 @@ module Dashboard::TeamMemberInvitations
       find('p.fr-badge--info', text: "en attente de réponse".upcase)
     end
 
-    test 'when two employers are in the same team on a single area, ' \
+    test 'when two employers are in the same team, ' \
          'they can manage internship_agreements of the team' do
-      area = create(:area) 
-      employer_1 = create(:employer, current_area_id: area.id)
-      employer_2 = create(:employer, current_area_id: area.id)
-      internship_offer = create(:weekly_internship_offer, employer: employer_1, internship_offer_area: area)
+      employer_1 = create(:employer)
+      employer_2 = create(:employer)
+      internship_offer = create(:weekly_internship_offer, employer: employer_1)
       internship_application_1 = create(:weekly_internship_application, :approved, internship_offer: internship_offer)
       assert InternshipAgreement.count == 1
       student = internship_application_1.student
@@ -231,12 +229,11 @@ module Dashboard::TeamMemberInvitations
       assert_equal 1, all('span.fr-badge.fr-badge--no-icon.fr-badge--error', text: "refusée".upcase).count
     end
 
-     test 'when two user_operators are in the same team on a single area, ' \
+     test 'when two user_operators are in the same team, ' \
           'they can manage internship_applications of the team' do
-      area = create(:area)
-      user_operator_1 = create(:user_operator, current_area_id: area.id)
-      user_operator_2 = create(:user_operator, current_area_id: area.id)
-      internship_offer = create(:weekly_internship_offer, employer: user_operator_1, internship_offer_area_id: area.id)
+      user_operator_1 = create(:user_operator)
+      user_operator_2 = create(:user_operator)
+      internship_offer = create(:weekly_internship_offer, employer: user_operator_1)
       internship_application_1 = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
       create :team_member_invitation,
              :accepted_invitation,
@@ -349,12 +346,11 @@ module Dashboard::TeamMemberInvitations
       assert_equal 1, all('span.fr-badge.fr-badge--no-icon.fr-badge--error', text: "refusée".upcase).count
     end
 
-    test 'when two statisticians are in the same team on a single area, ' \
+    test 'when two statisticians are in the same team, ' \
           'they can manage internship_applications of the team' do
-      area = create(:area)
-      statistician_1 = create(:statistician, agreement_signatorable: true, current_area_id: area.id)
-      statistician_2 = create(:statistician, agreement_signatorable: true, current_area_id: area.id)
-      internship_offer = create(:weekly_internship_offer, employer: statistician_1, internship_offer_area_id: area.id)
+      statistician_1 = create(:statistician)
+      statistician_2 = create(:statistician)
+      internship_offer = create(:weekly_internship_offer, employer: statistician_1)
       internship_application_1 = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
       create :team_member_invitation,
              :accepted_invitation,
@@ -377,12 +373,11 @@ module Dashboard::TeamMemberInvitations
       find('p.fr-badge--info', text: "en attente de réponse".upcase)
     end
 
-    test 'as statistician, when two statisticians are in the same team on a single area, ' \
+    test 'as statistician, when two statisticians are in the same team, ' \
           'they can manage internship_agreements of the team' do
-      area = create(:area)
-      statistician_1 = create(:statistician, agreement_signatorable: true, current_area_id: area.id)
-      statistician_2 = create(:statistician, agreement_signatorable: true, current_area_id: area.id)
-      internship_offer = create(:weekly_internship_offer, employer: statistician_1, internship_offer_area_id: area.id)
+      statistician_1 = create(:statistician, agreement_signatorable: true)
+      statistician_2 = create(:statistician, agreement_signatorable: true)
+      internship_offer = create(:weekly_internship_offer, employer: statistician_1)
       internship_application_1 = create(:weekly_internship_application, :approved, internship_offer: internship_offer)
       assert InternshipAgreement.count == 1
       create :team_member_invitation,
