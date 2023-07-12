@@ -92,27 +92,22 @@ a:hover {
 }
 
 @media (min-width: 768px) {
-.fr-tile-left-top-img .fr-tile__img {
-  align-items: start;
-  margin: -3rem 0 2rem 2rem !important;
-  justify-content: center;
-
-}
-
-// media only mobile
-// @media 
-
-@media (max-width: 768px) {
-  .newsletter-button {
-    margin: 0 auto !important;
+  .fr-tile-left-top-img .fr-tile__img {
+    align-items: start;
+    margin: -3rem 0 2rem 2rem !important;
+    justify-content: center;
   }
 }
 
-// @media (max-width: 768px) {
-// .fr-tile-left-top-img .fr-tile__img {
-//   align-items: start;
-//   margin: -3rem 0 2rem 2rem !important;
-//   justify-content: center;
+.newsletter-button .fr-btn {
+  justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .newsletter-button .fr-btn {
+    align-items: end;
+  }
 }
 
 .fr-tile-left-top-img .fr-tile--horizontal-md {

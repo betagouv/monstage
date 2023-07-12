@@ -1,7 +1,7 @@
 .container-homepage
-  = render 'layouts/navbar'
-.fr-container
-  = render 'pages/home/top_nav'
+  = render 'layouts/navbar', home_nav_bar: true
+/ .fr-container.d-none.d-md-block
+/   = render 'pages/home/top_nav'
 .container-homepage
   .mx-0.light-grey-background data-controller='modal-covid'
     = render 'pages/home/hero'
