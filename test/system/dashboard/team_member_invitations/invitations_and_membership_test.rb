@@ -13,8 +13,8 @@ module Dashboard::TeamMemberInvitations
       fill_in 'team_member_invitation[invitation_email]', with: employer_2.email
       click_on 'Inviter'
       assert_text "Membre d'équipe invité avec succès"
-      assert_equal 0, employer_1.team.team_size
-      assert_equal 0, employer_2.team.team_size
+      refute employer_1.team.alive?
+      refute employer_2.team.alive?
       assert_equal 1, employer_1.team_member_invitations.count
     end
 
@@ -269,7 +269,8 @@ module Dashboard::TeamMemberInvitations
       assert_text "Membre d'équipe invité avec succès"
       assert_equal 0, statistician_1.team.team_size
       assert_equal 0, statistician_2.team.team_size
-      assert_equal 1, statistician_1.team_member_invitations.count
+      collection = statistician_1.team_member_invitations
+      assert_equal 1, collection.count
     end
 
     test 'when two statisticians are in the same team, ' \

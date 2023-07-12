@@ -1,4 +1,4 @@
-# Team speficics is that 
+# Team speficics is that
 # - they share the same inviter_id and
 # - team_member is not nil
 class Team
@@ -6,9 +6,9 @@ class Team
     return if db_user.nil?
 
     team_member.update!(member_id: @db_user.id)
-    add_owner unless is_in_team?(team_owner_id)
+    add_owner unless id_in_team?(team_owner_id)
     team_member.reject_pending_invitations
-    build
+    set_team_members
   end
 
   def remove_member
@@ -27,10 +27,6 @@ class Team
     end
   end
 
-  def is_in_team?(user_id)
-    team_members.pluck(:member_id).include?(user_id)
-  end
-
   def alive?
     team_size.positive?
   end
@@ -45,9 +41,15 @@ class Team
     User.find_by(id: team_member.member_id)
   end
 
-  attr_accessor :user, :team_member, :team_owner_id, :team_members
+  def id_in_team?(user_id)
+    team_members.pluck(:member_id).include?(user_id)
+  end
 
+  attr_accessor :user, :team_member, :team_owner_id, :team_members
+  
+  #----------------------------------
   private
+  #----------------------------------
 
   def db_user
     @db_user ||= User.kept.find_by(email: team_member.invitation_email)
@@ -63,13 +65,14 @@ class Team
 
   def add_owner
     team_owner = User.kept.find(team_owner_id)
-    return if team_owner.nil?
+    return if team_owner.nil? # if ever team_owner is anonymized in between
 
     TeamMemberInvitation.create!(
       member_id: team_owner_id,
       inviter_id: team_owner_id,
       aasm_state: :accepted_invitation,
-      invitation_email: team_owner.email)
+      invitation_email: team_owner.email
+    )
   end
 
   def fetch_another_owner_id
@@ -92,12 +95,6 @@ class Team
     else
       @team_members = base_query.where(inviter_id: team_owner_id)
     end
-  end
-
-  def build
-    set_team_member
-    set_team_owner_id
-    set_team_members
   end
 
   def base_query

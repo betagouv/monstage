@@ -1,8 +1,8 @@
 class InternshipOfferArea < ApplicationRecord
-  belongs_to :employer, class_name: "User"
+  belongs_to :employer, polymorphic: true
   has_many :internship_offers
 
-  validates :employer, :name, presence: true
-  validates :name, uniqueness: { scope: :employer_id }
-
+  validates :name,
+            presence: true,
+            uniqueness: { scope: :employer_id }
 end

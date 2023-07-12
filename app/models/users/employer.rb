@@ -6,20 +6,6 @@ module Users
     include Signatorable
     include Teamable
 
-
-    has_many :internship_offers, as: :employer,
-                                 dependent: :destroy
-
-    has_many :kept_internship_offers, -> { merge(InternshipOffer.kept) },
-             class_name: 'InternshipOffer', foreign_key: 'employer_id'
-
-    has_many :internship_applications, through: :kept_internship_offers
-    has_many :internship_agreements, through: :internship_applications
-
-    has_many :organisations
-    has_many :tutors
-    has_many :internship_offer_infos
-
     def custom_dashboard_path
       return custom_candidatures_path if internship_applications.submitted.any?
       url_helpers.dashboard_internship_offers_path

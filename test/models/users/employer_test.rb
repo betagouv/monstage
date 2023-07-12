@@ -61,8 +61,10 @@ module Users
       create(:team_member_invitation, :accepted_invitation, inviter_id: employer_1.id, member_id: employer_1.id)
       internship_offer_1 = create(:weekly_internship_offer, employer: employer_1)
       internship_offer_2 = create(:weekly_internship_offer, employer: employer_2)
-      assert_equal [internship_offer_1.id, internship_offer_2.id].sort, employer_2.internship_offers.to_a.map(&:id).sort
-      assert_equal [internship_offer_1.id, internship_offer_2.id].sort, employer_1.internship_offers.to_a.map(&:id).sort
+      assert_equal [internship_offer_1.id, internship_offer_2.id].sort,
+                    employer_2.internship_offers.to_a.map(&:id).sort
+      assert_equal [internship_offer_1.id, internship_offer_2.id].sort,
+                    employer_1.internship_offers.to_a.map(&:id).sort
     end
   end
 end

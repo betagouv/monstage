@@ -30,6 +30,45 @@ class Ability
     can %i[read apply], InternshipOffer
   end
 
+  def god_abilities
+    can :show, :account
+    can :manage, School
+    can :manage, Sector
+    can %i[destroy see_tutor], InternshipOffer
+    can %i[read update export unpublish publish], InternshipOffer
+    can %i[read update destroy export], InternshipApplication
+    can :manage, EmailWhitelists::EducationStatistician
+    can :manage, EmailWhitelists::PrefectureStatistician
+    can :manage, EmailWhitelists::Ministry
+    can :manage, InternshipOfferKeyword
+    can :manage, Group
+    can :access, :rails_admin   # grant access to rails_admin
+    can %i[read update delete discard export], InternshipOffers::Api
+    can :read, :dashboard       # grant access to the dashboard
+    can :read, :kpi # grant access to the dashboard
+    can %i[index department_filter], Acl::Reporting do |_acl|
+      true
+    end
+    can %i[index_and_filter], Reporting::InternshipOffer
+    can :manage, InternshipAgreement
+    can %i[ switch_user
+            read
+            update
+            destroy
+            export
+            export_reporting_dashboard_data
+            see_reporting_dashboard
+            see_reporting_internship_offers
+            see_reporting_schools
+            see_reporting_associations
+            see_reporting_enterprises
+            see_dashboard_enterprises_summary
+            see_dashboard_administrations_summary
+            see_dashboard_associations_summary], User
+    can :manage, Operator
+    can :see_minister_video, User
+  end
+
   def student_abilities(user:)
     can :look_for_offers, User
     can :show, :account
@@ -54,7 +93,6 @@ class Ability
                          convention_signed]
       user.student? && ok_canceling.include?(internship_application.aasm_state)
     end
-
 
     can %i[show
            update
@@ -107,7 +145,6 @@ class Ability
       signature.internship_agreement.student.school == user.school
     end
   end
-
 
   def school_manager_abilities(user:)
     can %i[list_invitations
@@ -164,9 +201,10 @@ class Ability
   end
 
   def employer_abilities(user:)
-    can %i[supply_offers sign_with_sms choose_function subscribe_to_webinar] , User
-    can :show, :account
-
+    as_employers_like(user: user)
+    as_employers_signatory_abilities(user: user)
+    as_back_office_user(user: user)
+    can %i[sign_with_sms choose_function subscribe_to_webinar] , User
     can :see_minister_video, User
     can :create_remote_internship_request, SupportTicket # TO DO REMOVE
 
@@ -185,39 +223,88 @@ class Ability
 
     can %i[index update], InternshipApplication
     can :transfer, InternshipApplication do |internship_application|
-      internship_application.internship_offer.employer_id == user.id
+      internship_application.internship_offer.internship_offer_area.employer_id == user.id
     end
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
-    can_manage_teams(user: user)
-    as_employers_signatory_abilities(user: user)
   end
 
-  def operator_abilities(user:)
-    can :supply_offers, User
+  def as_back_office_user(user:)
     can :show, :account
-    can :choose_operator, :sign_up
-    can :change, :department
-    can %i[create see_tutor], InternshipOffer
+  end
+
+  def as_employers_like(user:)
+
+    can_manage_teams(user: user)
+    can :supply_offers, User
     can :renew, InternshipOffer do |internship_offer|
       renewable?(internship_offer: internship_offer, user: user)
     end
     can :duplicate, InternshipOffer do |internship_offer|
       duplicable?(internship_offer: internship_offer, user: user)
     end
-    can %i[read update discard], InternshipOffer, employer_id: user.id
-    can :create, InternshipOffers::Api
-    can %i[update discard], InternshipOffers::Api, employer_id: user.id
-    # internship_offer stepper
+    can %i[create see_tutor], InternshipOffer
+    can %i[read update discard publish], InternshipOffer , employer_id: user.team_members_ids
     can %i[create], InternshipOfferInfo
     can %i[create], HostingInfo
     can %i[create], PracticalInfo
-    can %i[update edit], InternshipOfferInfo, employer_id: user.id
-    can %i[update edit], HostingInfo, employer_id: user.id
-    can %i[update edit], PracticalInfo, employer_id: user.id
     can %i[create], Organisation
-    can %i[update edit], Organisation, employer_id: user.id
+    can %i[update edit renew], InternshipOfferInfo , employer_id: user.team_members_ids
+    can %i[update edit renew], HostingInfo , employer_id: user.team_members_ids
+    can %i[update edit renew], PracticalInfo , employer_id: user.team_members_ids
+    can %i[update edit], Organisation , employer_id: user.team_members_ids
     can %i[create], Tutor
     can %i[index update], InternshipApplication
+  end
+
+  def as_employers_signatory_abilities(user:)
+    can :create, InternshipAgreement
+    can %i[
+      read
+      index
+      edit
+      update
+      edit_organisation_representative_role
+      edit_tutor_email
+      edit_tutor_role
+      edit_activity_scope_rich_text
+      edit_activity_preparation_rich_text
+      edit_activity_learnings_rich_text
+      edit_complementary_terms_rich_text
+      edit_date_range
+      edit_organisation_representative_full_name
+      edit_siret
+      edit_tutor_full_name
+      edit_weekly_hours
+      sign
+      sign_internship_agreements
+    ], InternshipAgreement do |agreement|
+      agreement.employer.id.in?(user.team_members_ids)
+    end
+    can :create, Signature do |signature|
+      signature.internship_agreement.internship_offer.internship_offer_area.employer_id.in?(user.team_members_ids)
+    end
+  end
+
+  def can_manage_teams(user: )
+    can %i[manage_teams], TeamMemberInvitation 
+    can %i[destroy], TeamMemberInvitation do |team_member_invitation|
+      if user.team.alive?
+        condition = user.team.id_in_team?(team_member_invitation.member_id)
+      else
+        condition = user == team_member_invitation.inviter_id
+      end
+      team_member_invitation.member_id != user.id && condition
+    end
+  end
+
+  def operator_abilities(user:)
+    as_back_office_user(user:user)
+    as_employers_like(user:user)
+
+    can :choose_operator, :sign_up
+    can :change, :department
+    can %i[update discard], InternshipOffers::Api, employer_id: user.team_members_ids
+    can :create, InternshipOffers::Api
     can :show, :api_token
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
     can %i[index_and_filter], Reporting::InternshipOffer
@@ -229,46 +316,6 @@ class Ability
            see_reporting_schools
            see_reporting_enterprises
            check_his_statistics], User
-    can_manage_teams(user: user)
-  end
-
-  def god_abilities
-    can :show, :account
-    can :manage, School
-    can :manage, Sector
-    can %i[destroy see_tutor], InternshipOffer
-    can %i[read update export unpublish publish], InternshipOffer
-    can %i[read update destroy export], InternshipApplication
-    can :manage, EmailWhitelists::EducationStatistician
-    can :manage, EmailWhitelists::PrefectureStatistician
-    can :manage, EmailWhitelists::Ministry
-    can :manage, InternshipOfferKeyword
-    can :manage, Group
-    can :access, :rails_admin   # grant access to rails_admin
-    can %i[read update delete discard export], InternshipOffers::Api
-    can :read, :dashboard       # grant access to the dashboard
-    can :read, :kpi # grant access to the dashboard
-    can %i[index department_filter], Acl::Reporting do |_acl|
-      true
-    end
-    can %i[index_and_filter], Reporting::InternshipOffer
-    can :manage, InternshipAgreement
-    can %i[ switch_user
-            read
-            update
-            destroy
-            export
-            export_reporting_dashboard_data
-            see_reporting_dashboard
-            see_reporting_internship_offers
-            see_reporting_schools
-            see_reporting_associations
-            see_reporting_enterprises
-            see_dashboard_enterprises_summary
-            see_dashboard_administrations_summary
-            see_dashboard_associations_summary], User
-    can :manage, Operator
-    can :see_minister_video, User
   end
 
   def statistician_abilities(user:)
@@ -322,69 +369,17 @@ class Ability
   end
 
   def common_to_all_statisticians(user: )
+    as_employers_like(user: user)
+    as_employers_signatory_abilities(user: user) if user.agreement_signatorable?
     can %i[
-      supply_offers
       subscribe_to_webinar
       choose_to_sign_agreements
       ], User
 
-    can %i[index update], InternshipApplication
-    can %i[read create see_tutor], InternshipOffer
-    can %i[read update discard publish], InternshipOffer, employer_id: user.id
-    can :renew, InternshipOffer do |internship_offer|
-      renewable?(internship_offer: internship_offer, user: user)
-    end
-    can :duplicate, InternshipOffer do |internship_offer|
-      duplicable?(internship_offer: internship_offer, user: user)
-    end
-
-    can %i[create], InternshipOfferInfo
-    can %i[create], HostingInfo
-    can %i[create], PracticalInfo
-    can %i[update edit], InternshipOfferInfo, employer_id: user.id
-    can %i[update edit], HostingInfo, employer_id: user.id
-    can %i[update edit], PracticalInfo, employer_id: user.id
-
-    can %i[create], Organisation
-    can %i[update edit], Organisation, employer_id: user.id
-    can %i[create], Tutor
-
     can %i[index], Acl::InternshipOfferDashboard
     can %i[see_reporting_dashboard
            see_dashboard_administrations_summary], User
-
     can :see_minister_video, User
-    as_employers_signatory_abilities(user: user) if user.agreement_signatorable?
-    can_manage_teams(user: user)
-  end
-
-  def as_employers_signatory_abilities(user:)
-    can :create, InternshipAgreement
-    can %i[
-      read
-      index
-      edit
-      update
-      edit_organisation_representative_role
-      edit_tutor_email
-      edit_tutor_role
-      edit_activity_scope_rich_text
-      edit_activity_preparation_rich_text
-      edit_activity_learnings_rich_text
-      edit_complementary_terms_rich_text
-      edit_date_range
-      edit_organisation_representative_full_name
-      edit_siret
-      edit_tutor_full_name
-      edit_weekly_hours
-      sign
-      sign_internship_agreements
-    ], InternshipAgreement do |agreement|
-      agreement.employer.id.in?(user.team_members_ids)
-    end
-    can :create, Signature do |signature|
-      signature.internship_agreement.internship_offer.employer_id.in?(user.team_members_ids)
-    end
   end
 
   def common_school_management_abilities(user:)
@@ -432,15 +427,6 @@ class Ability
       agreement.internship_application.student.school_id == user.school_id
     end
   end
-
-  def can_manage_teams(user: )
-    can %i[manage_teams], TeamMemberInvitation
-    can %i[destroy], TeamMemberInvitation do |team_member_invitation|
-      team_member_invitation.member_id != user.id &&
-      team_member_invitation.team_owner_id == user&.team&.team_owner_id
-    end
-  end
-
 
   private
 
