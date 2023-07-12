@@ -8,12 +8,14 @@
 .container-homepage
   .container-monstage
     = render 'pages/home/howitworks_school_management'
+.container-homepage
+  .mx-0.light-grey-background
+    = render 'pages/home/everyone_pro'    
 .container-homepage.light-grey-background.fr-py-3w
   .container-monstage
     = render 'pages/home/faq_school_management'
 .container-monstage
-  .mx-0.fr-my-3w
-     iframe width="100%" height="300" frameborder="0" src="https://app.livestorm.co/monstagedetroisieme/upcoming?limit=6" title="Événements Monstagedetroisieme.fr | Livestorm"
+  = render 'pages/home/livestorm'
 .container-monstage
   .mx-0.fr-my-3w
     = render 'pages/home/internship_offers'  
