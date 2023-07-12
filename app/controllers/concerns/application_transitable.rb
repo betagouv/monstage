@@ -5,8 +5,7 @@ module ApplicationTransitable
 
     def update
       authenticate_user! unless params[:sgid].present? || params[:token].present?
-      authorize_through_sgid? || authorize!(:update, @internship_application)
-      authorize_through_token?
+      authorize_through_sgid? || authorize_through_token? || authorize!(:update, @internship_application)
       if valid_transition?
         @internship_application.send(params[:transition].to_sym)
         @internship_application.update!(optional_internship_application_params)
@@ -24,7 +23,7 @@ module ApplicationTransitable
                       flash: { success: 'Impossible de traiter votre requête, veuillez contacter notre support' }
       end
     rescue AASM::InvalidTransition => e
-      redirect_back fallback_location: current_user.custom_dashboard_path,
+      redirect_back fallback_location: current_user ? current_user.custom_dashboard_path || root_path : root_path,
                     flash: { warning: 'Cette candidature a déjà été traitée' }
     end
 
