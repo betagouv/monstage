@@ -11,15 +11,12 @@ header.bg-cover-image-homepage.bg-student-hero-image.container-xl.px-0.fr-pb-3w
             br
             | de qualité !
           
-      / .col-lg-6.col-md-12.d-flex.align-items-end.justify-content-center
-      /   .d-none.d-sm-block
-      /     = image_tag asset_pack_path('media/images/homepage/hero-illustration.svg'), alt: 'Trouvez un stage', class: 'fr-mt-5w'
-      / .col-lg-6.col-md-6
-      /     .d-md-none
-      /       p.mt-4.py-lg-4.py-md-3.py-sm-3.py-xs-2.text-center
-      /         = link_to internship_offers_path(current_user_or_visitor.default_search_options),
-      /                   class: 'fr-btn fr-icon-search-line fr-btn--icon-right bg-white fr-px-6w'  do
-      /           = "Rechercher un stage "
+    .row.d-md-none  
+      .col-12
+        p.mt-4.py-lg-4.py-md-3.py-sm-3.py-xs-2.text-center
+          = link_to internship_offers_path(current_user_or_visitor.default_search_options),
+                    class: 'fr-btn fr-icon-search-line fr-btn--icon-right bg-white fr-px-6w'  do
+            = "Rechercher un stage "
 
   .container-monstage.light-grey-background.d-none.d-sm-block
     .row.no-gutters.fr-p-2w

@@ -1,12 +1,13 @@
-nav.fr-nav id="header-navigation" role="navigation" aria-label="Menu principal"
-  ul.fr-nav__list
-    li.fr-nav__item
-      = link_to 'Accueil', root_path, class: 'fr-nav__link', aria: { current: (current_page?(root_path) ? 'page' : nil) }
-    li.fr-nav__item
-      = link_to 'Élèves', eleves_path, class: 'fr-nav__link', aria: { current: (current_page?(eleves_path) ? 'page' : nil) }
-    li.fr-nav__item
-      = link_to 'Professionnels', professionnels_path, class: 'fr-nav__link', aria: { current: (current_page?(professionnels_path) ? 'page' : nil) }
-    li.fr-nav__item
-      = link_to 'Équipes pédagogiques', equipe_pedagogique_path, class: 'fr-nav__link', aria: { current: (current_page?(equipe_pedagogique_path) ? 'page' : nil) }
-    li.fr-nav__item
-      = link_to 'Référents administratifs', referents_path, class: 'fr-nav__link', aria: { current: (current_page?(referents_path) ? 'page' : nil) }
+.d-none.d-md-block
+  nav.fr-nav id="header-navigation" role="navigation" aria-label="Menu principal"
+    ul.fr-nav__list
+      li.fr-nav__item
+        = link_to 'Accueil', root_path, class: 'fr-nav__link', aria: { current: (current_page?(root_path) ? 'page' : nil) }
+      li.fr-nav__item
+        = link_to 'Élèves', eleves_path, class: 'fr-nav__link', aria: { current: (current_page?(eleves_path) ? 'page' : nil) }
+      li.fr-nav__item
+        = link_to 'Professionnels', professionnels_path, class: 'fr-nav__link', aria: { current: (current_page?(professionnels_path) ? 'page' : nil) }
+      li.fr-nav__item
+        = link_to 'Équipes pédagogiques', equipe_pedagogique_path, class: 'fr-nav__link', aria: { current: (current_page?(equipe_pedagogique_path) ? 'page' : nil) }
+      li.fr-nav__item
+        = link_to 'Référents administratifs', referents_path, class: 'fr-nav__link', aria: { current: (current_page?(referents_path) ? 'page' : nil) }

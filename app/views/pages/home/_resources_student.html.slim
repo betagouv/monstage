@@ -1,0 +1,28 @@
+.fr-my-4w
+  .row.fr-mb-3w
+    .col-lg-8.col-md-8.col-sm-12
+      h2.fr-h1.text-blue-france.pl-1.mb-0.pb-3
+        | Ressources utiles
+    .col-lg-4.col-md-4.col-sm-12.mb-3
+      .text-center-right
+        = link_to "Voir toutes les ressources", "/documents-utiles",
+                  title: 'Documents utiles',
+                  class: "fr-raw-link fr-btn fr-btn--secondary"
+  .row.fr-pb-7w
+    = render partial: "pages/home/resource_card",
+            locals: { badge: "PDF",
+                      link_title: "Flyer de présentation Elèves",
+                      file: "https://drive.google.com/file/d/1vo5MgKosaXqCgnVjWuiyHQcQymnxlyGy/view?usp=sharing" }
+    = render partial: "pages/home/resource_card",
+            locals: { badge: "PDF",
+                      link_title: "Flyer de présentation Professionnels",
+                      file: "https://drive.google.com/file/d/1njqHXS3PspT-xQfL4w-eoKHWydU3VZcn/view?usp=sharing" }
+    = render partial: "pages/home/resource_card",
+            locals: { badge: "PDF",
+                      link_title: "Carnet de bord du stagiaire",
+                      file: "https://drive.google.com/file/d/16ksaDVddY_zHIT1wfGx96IgDm5qzJhf3/view?usp=sharing" }
+    = render partial: "pages/home/resource_card",
+            locals: { badge: "PDF",
+                      link_title: "Calendrier d’une semaine de stage à remplir",
+                      file: "https://www.monstagedetroisieme.fr//documents_utiles/MS3_Programme-a-remplir.pdf" }
+

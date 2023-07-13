@@ -61,10 +61,12 @@ a:hover {
   background-color: $blue;
 }
 
-.bg-student-hero-image {
-  background-image: url('../images/homepage/hero-illustration.svg');
-  background-repeat: no-repeat;
-  background-position: right bottom;
+@media (min-width: 768px) {
+  .bg-student-hero-image {
+    background-image: url('../images/homepage/hero-illustration.svg');
+    background-repeat: no-repeat;
+    background-position: right bottom;
+  }
 }
 
 .bg-pro-hero-image {
