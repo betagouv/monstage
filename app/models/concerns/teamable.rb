@@ -24,23 +24,38 @@ module Teamable
              class_name: 'InternshipOffer',
              foreign_key: 'employer_id'
 
-    has_many :kept_internship_offers, -> { merge(InternshipOffer.kept) },
-             class_name: 'InternshipOffer', foreign_key: 'employer_id'
+    has_many :kept_internship_offers,
+             -> { merge(InternshipOffer.kept) },
+             class_name: 'InternshipOffer',
+             foreign_key: 'employer_id'
 
     has_many :internship_applications, through: :kept_internship_offers
     has_many :internship_agreements, through: :internship_applications
     has_many :organisations  #TODO keep ?
     has_many :tutors #TODO keep ?
     has_many :internship_offer_infos #TODO keep ?
+    belongs_to :current_area,
+               class_name: 'InternshipOfferArea',
+               foreign_key: 'current_area_id',
+               optional: true
 
-    # scope :internship_offers, lambda do
-    #   InternshipOffer.joins(internship_offer_area: :employer)
-    #                  .where(internship_offer_areas: { employer: all })
-    # end
 
     def internship_offers
       InternshipOffer.joins(:internship_offer_area)
                      .where(internship_offer_area: {employer_id: team_members_ids})
+
+    end
+
+    def personal_internship_offers
+      InternshipOffer.where(employer_id: id)
+    end
+
+    def team_internship_offers
+      InternshipOffer.where(employer_id: team_members_ids)
+    end
+
+    def ui_internship_offers
+      team_internship_offers.where(internship_offer_area_id: fetch_current_area_id)
     end
 
     # def internship_offer_areas
@@ -79,10 +94,26 @@ module Teamable
       TeamMemberInvitation.refused_invitation.where(inviter_id: team_id)
     end
 
+    def team_areas
+      internship_offer_areas.where(employer_id: team_members_ids)
+    end
+
+    def current_area_id_memorize(id)
+      update(current_area_id:  id)
+    end
+
+    def fetch_current_area_id
+      current_area_id.presence || latest_area_id
+    end
+
     private
 
     def create_internship_offer_area
       internship_offer_areas.create(name: "Mon espace")
+    end
+
+    def latest_area_id
+      internship_offer_areas.order(updated_at: :desc).first.id
     end
   end
 end

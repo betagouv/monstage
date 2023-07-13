@@ -62,6 +62,7 @@ class AbilityTest < ActiveSupport::TestCase
     alt_internship_offer = create(:weekly_internship_offer, employer: another_employer)
     internship_offer_api = create(:api_internship_offer, employer: employer)
     internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+    internship_application_other = create(:weekly_internship_application, internship_offer: alt_internship_offer)
     internship_agreement   = create(:internship_agreement, :created_by_system,
                                     internship_application: internship_application)
     ability = Ability.new(employer)
@@ -84,8 +85,6 @@ class AbilityTest < ActiveSupport::TestCase
            'employers should be able to discard internships offer that belongs to him')
     assert(ability.can?(:index, Acl::InternshipOfferDashboard.new(user: employer)),
            'employers should be able to index InternshipOfferDashboard')
-    assert(ability.can?(:create_remote_internship_request, SupportTicket),
-           'employers should be able to ask how ask for remote internships support')
     %i[
     create
       edit
@@ -108,6 +107,8 @@ class AbilityTest < ActiveSupport::TestCase
     internship_agreement.update_columns(aasm_state: :started_to_sign)
     assert(ability.can?(:sign_with_sms, User))
     assert(ability.can?(:sign_internship_agreements, internship_agreement.reload), "Signature fails")
+    assert(ability.can?(:transfer, internship_application.reload), "Transfer my own application fails")
+    refute(ability.can?(:transfer, internship_application_other.reload), "Transfer my own application fails")
   end
 
   test 'God' do

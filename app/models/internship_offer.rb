@@ -34,8 +34,8 @@ class InternshipOffer < ApplicationRecord
   belongs_to :internship_offer_info, optional: true
   belongs_to :hosting_info, optional: true
   belongs_to :practical_info, optional: true
-  belongs_to :internship_offer_area, optional: true
   belongs_to :employer, polymorphic: true, optional: true
+  belongs_to :internship_offer_area, optional: true, touch: true
   # keep_me has_one :employer, through: :internship_offer_area, source_type: 'User'
   has_many :favorites
   has_many :users, through: :favorites
@@ -302,7 +302,6 @@ class InternshipOffer < ApplicationRecord
     organisation.update_columns(group_id: self.group_id) if attribute_changed?(:group_id)
     organisation.update_columns(is_public: self.is_public) if attribute_changed?(:is_public)
   end
-
 
   def generate_offer_from_attributes(white_list)
     internship_offer = InternshipOffer.new(attributes.slice(*white_list))

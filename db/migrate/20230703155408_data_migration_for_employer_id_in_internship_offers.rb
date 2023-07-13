@@ -4,7 +4,7 @@ class DataMigrationForEmployerIdInInternshipOffers < ActiveRecord::Migration[7.0
       allowed_environments: %w[development test production],
       task_name: 'data_migrations:add_area_reference_to_internship_offer',
       arguments: []
-    ).play_task_once(run_with_a_job: true)
+    ).play_task_each_time(run_with_a_job: true)
   end
 
   def down

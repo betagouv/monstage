@@ -14,6 +14,7 @@ FactoryBot.define do
     phone_password_reset_count { 0 }
     last_phone_password_reset { 10.days.ago }
 
+    # Student
     factory :student, class: 'Users::Student', parent: :user do
       type { 'Users::Student' }
 
@@ -30,7 +31,6 @@ FactoryBot.define do
       trait :female do
         gender { 'f' }
       end
-
 
       trait :not_precised do
         gender { 'np' }
@@ -49,7 +49,18 @@ FactoryBot.define do
       end
     end
 
-    factory :employer, class: 'Users::Employer', parent: :user do
+    trait :with_current_area do
+      after(:create) do |user|
+        user.current_area = user.internship_offer_areas.first
+        user.save
+      end
+    end
+
+    # Employer
+    factory :employer,
+            class: 'Users::Employer',
+            traits: %i[with_current_area] ,
+            parent: :user do
       type { 'Users::Employer' }
       employer_role { 'PDG' }
     end
@@ -109,7 +120,10 @@ FactoryBot.define do
       sequence(:email) { |n| "cpe.#{n}@#{school.email_domain_name}" }
     end
 
-    factory :statistician, class: 'Users::PrefectureStatistician', parent: :user do
+    factory :statistician,
+            class: 'Users::PrefectureStatistician',
+            traits: %i[with_current_area],
+            parent: :user do
       type { 'Users::PrefectureStatistician' }
       agreement_signatorable { false }
       before(:create) do |user|
@@ -117,7 +131,10 @@ FactoryBot.define do
       end
     end
 
-    factory :education_statistician, class: 'Users::EducationStatistician', parent: :user do
+    factory :education_statistician,
+            traits: %i[with_current_area],
+            parent: :user,
+            class: 'Users::EducationStatistician' do
       type { 'Users::EducationStatistician' }
       agreement_signatorable { false }
       before(:create) do |user|
@@ -125,7 +142,10 @@ FactoryBot.define do
       end
     end
 
-    factory :ministry_statistician, class: 'Users::MinistryStatistician', parent: :user do
+    factory :ministry_statistician,
+            traits: %i[with_current_area],
+            parent: :user,
+            class: 'Users::MinistryStatistician' do
       type { 'Users::MinistryStatistician' }
       agreement_signatorable { false }
       transient do
@@ -134,7 +154,10 @@ FactoryBot.define do
       email { white_list.email }
     end
 
-    factory :user_operator, class: 'Users::Operator', parent: :user do
+    factory :user_operator,
+            traits: %i[with_current_area],
+            parent: :user,
+            class: 'Users::Operator' do
       type { 'Users::Operator' }
       operator
       api_token { SecureRandom.uuid }

@@ -12,12 +12,12 @@ namespace :data_migrations do
 
   desc 'create add area_reference to_internship offer'
   task add_area_reference_to_internship_offer: :environment do
-  InternshipOffer.all.find_each do |offer|
+    InternshipOffer.all.find_each do |offer|
       print "."
       employer = User.find(offer.employer_id)
       puts "no_employer with #{offer.id}" if employer.nil?
       puts "no_area with #{offer.id}" if employer.internship_offer_areas.empty?
-      offer.update_column(:internship_offer_area_id, employer.internship_offer_areas.first.id)
+      offer.update_columns(internship_offer_area_id: employer.internship_offer_areas.first.id)
     end
   end
 

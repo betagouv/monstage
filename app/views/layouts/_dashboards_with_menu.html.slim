@@ -1,6 +1,7 @@
 - badge_counter = Finders::TabEmployer.new(user: current_user)
 - applications_notice = badge_counter.pending_internship_offers_actions(@internship_offers)
 - agreements_notice = badge_counter.pending_agreements_actions_count
+= render 'dashboard/internship_offers/areas_bar'
 .dashboard-container
   .dashboard-container-child
     = render 'dashboard/internship_offers/sidemenu',

@@ -203,38 +203,21 @@ class Ability
   def employer_abilities(user:)
     as_employers_like(user: user)
     as_employers_signatory_abilities(user: user)
-    as_back_office_user(user: user)
+    as_account_user(user: user)
     can %i[sign_with_sms choose_function subscribe_to_webinar] , User
-    can :see_minister_video, User
-    can :create_remote_internship_request, SupportTicket # TO DO REMOVE
-
-    can %i[create see_tutor], InternshipOffer
-    can %i[read update discard publish], InternshipOffer, employer_id: user.id
-    can %i[create], InternshipOfferInfo
-    can %i[create], HostingInfo
-    can %i[create], PracticalInfo
-    can %i[update edit renew], InternshipOfferInfo, employer_id: user.id
-    can %i[update edit renew], HostingInfo, employer_id: user.id
-    can %i[update edit renew], PracticalInfo, employer_id: user.id
-    can %i[create], Organisation
-    can %i[update edit], Organisation, employer_id: user.id
-    can %i[create], Tutor
-    can %i[create], InternshipAgreement
-
-    can %i[index update], InternshipApplication
     can :transfer, InternshipApplication do |internship_application|
-      internship_application.internship_offer.internship_offer_area.employer_id == user.id
+      internship_application.internship_offer.employer_id == user.id
     end
-    can %i[index], Acl::InternshipOfferDashboard, &:allowed?
   end
 
-  def as_back_office_user(user:)
+  def as_account_user(user:)
     can :show, :account
   end
 
   def as_employers_like(user:)
-
     can_manage_teams(user: user)
+    can_manage_areas(user: user)
+    can %i[index], Acl::InternshipOfferDashboard
     can :supply_offers, User
     can :renew, InternshipOffer do |internship_offer|
       renewable?(internship_offer: internship_offer, user: user)
@@ -297,8 +280,31 @@ class Ability
     end
   end
 
+  def can_manage_areas(user: )
+    can :create, InternshipOfferArea
+    
+    can %i[update_areas], InternshipOfferArea do |area|
+      if user.team.alive?
+        user.team.id_in_team?(area.employer_id)
+      else
+        user.id == area.employer_id
+      end
+    end
+
+    can %i[destroy], InternshipOfferArea do |area|
+      if user.team.alive?
+        condition = user.team.id_in_team?(area.employer_id)
+      else
+        condition = user.id == area.employer_id
+      end
+      user.team_areas.count > 1 && condition
+    end
+
+    can :generaly_destroy, InternshipOfferArea, user.team_areas.count > 1
+  end
+
   def operator_abilities(user:)
-    as_back_office_user(user:user)
+    as_account_user(user:user)
     as_employers_like(user:user)
 
     can :choose_operator, :sign_up
@@ -306,7 +312,6 @@ class Ability
     can %i[update discard], InternshipOffers::Api, employer_id: user.team_members_ids
     can :create, InternshipOffers::Api
     can :show, :api_token
-    can %i[index], Acl::InternshipOfferDashboard, &:allowed?
     can %i[index_and_filter], Reporting::InternshipOffer
     can %i[index], Acl::Reporting do |_acl|
       true
@@ -325,7 +330,6 @@ class Ability
 
     can %i[create], Organisation
 
-    can %i[index], Acl::InternshipOfferDashboard, &:allowed?
     can %i[index], Acl::Reporting, &:allowed?
 
     can %i[index_and_filter], Reporting::InternshipOffer
@@ -341,7 +345,6 @@ class Ability
   def education_statistician_abilities(user:)
     common_to_all_statisticians(user: user)
     can %i[create], Organisation
-    can %i[index], Acl::InternshipOfferDashboard, &:allowed?
     can %i[index], Acl::Reporting, &:allowed?
 
     can %i[index_and_filter], Reporting::InternshipOffer
@@ -376,7 +379,7 @@ class Ability
       choose_to_sign_agreements
       ], User
 
-    can %i[index], Acl::InternshipOfferDashboard
+    
     can %i[see_reporting_dashboard
            see_dashboard_administrations_summary], User
     can :see_minister_video, User

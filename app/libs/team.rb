@@ -31,6 +31,10 @@ class Team
     team_size.positive?
   end
 
+  def not_exists?
+    !alive?
+  end
+
   def team_size
     return 0 unless team_owner_id
 
@@ -46,7 +50,7 @@ class Team
   end
 
   attr_accessor :user, :team_member, :team_owner_id, :team_members
-  
+
   #----------------------------------
   private
   #----------------------------------
@@ -67,18 +71,30 @@ class Team
     team_owner = User.kept.find(team_owner_id)
     return if team_owner.nil? # if ever team_owner is anonymized in between
 
+    #Following is team creation time !
     TeamMemberInvitation.create!(
       member_id: team_owner_id,
       inviter_id: team_owner_id,
       aasm_state: :accepted_invitation,
       invitation_email: team_owner.email
     )
+    team_init
   end
 
   def fetch_another_owner_id
     team_members.map(&:member_id)
                 .reject { |id| id == team_owner_id }
                 .first
+  end
+
+  def team_init
+    # all areas are now shared, notifications should be settled
+    user.team_areas.each do |area|
+      area.area_notifications.create!(
+        user: user,
+        notify: true
+      )
+    end
   end
 
   def set_team_member
