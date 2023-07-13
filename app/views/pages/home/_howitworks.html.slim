@@ -1,0 +1,47 @@
+.row.fr-my-3w.fr-py-3w
+  .col-12 
+    h3.h1 Comment ça marche ?
+
+.row.align-items-start.fr-my-4w
+  .col-md-3.col-sm-12.d-flex.align-items-center
+    .fr-px-2w.align-items-center
+      = image_tag asset_pack_path('media/images/homepage/trouver-un-stage.svg'),
+                    alt: "Trouver un stage",
+                    width: '100%'
+  
+  .col-md-3.col-sm-12.d-flex.align-items-stretch
+    .fr-px-2w
+      = image_tag asset_pack_path('media/images/homepage/01.svg'),
+                    alt: "Premièrement",
+                    height: '47px',
+                    'aria-hidden': "true"
+      h3.text-grey-50.my-4
+        | Vérifier que votre collège est en REP, REP+
+      p.mt-3.fr-text.mb-lg-5.mb-md-5.mb-sm-4.mb-3
+        | Tous les élèves ne peuvent pas postuler sur ce site. Vérifier si votre collège est en REP ou REP+
+      p.mt-4.text-center-left
+        = link_to 'Accédez à la liste des collèges', 'https://data.education.gouv.fr/explore/dataset/fr-en-etablissements-ep/table/?disjunctive.ep_2022_2023&disjunctive.type_etablissement&disjunctive.libelle_academie&disjunctive.libelle_departement&disjunctive.nom_commune&disjunctive.libelle_region&disjunctive.uai_tete_de_reseau&disjunctive.qp_a_proximite_o_n&refine.ep_2022_2023=REP&refine.ep_2022_2023=REP%2B&refine.type_etablissement=Coll%C3%A8ge', class: ''
+
+  / 2
+  .col-md-3.col-sm-12.d-flex.align-items-stretch
+    .fr-px-2w
+      = image_tag asset_pack_path('media/images/homepage/02.svg'),
+                  alt: "Premièrement",
+                  height: '47px',
+                  'aria-hidden': "true"
+      h3.text-grey-50.my-4
+        | Cherchez et postulez au stage qui vous fait envie !
+      p.mt-3.fr-text.mb-lg-5.mb-md-5.mb-sm-4.mb-3
+        | Consultez de nombreuses offres, soignez votre candidature et postulez à vos stages préférés.
+      
+  / 3
+  .col-md-3.col-sm-12.d-flex.align-items-stretch
+    .fr-px-2w
+      = image_tag asset_pack_path('media/images/homepage/03.svg'),
+                  alt: "Premièrement",
+                  height: '47px',
+                  'aria-hidden': "true"
+      h3.text-grey-50.my-4
+        | Confirmez votre venue à l’entreprise.
+      p.mt-3.fr-text.mb-lg-5.mb-md-5.mb-sm-4.mb-3
+        | Rester attentif aux réponses de l’entreprise. Vous devrez aussi confirmer le stage où vous voulez aller.

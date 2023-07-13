@@ -157,6 +157,10 @@ Rails.application.routes.draw do
   get '/inscription-permanence', to: 'pages#register_to_webinar'
   # To be removed after june 2023
   get '/register_to_webinar', to: 'pages#register_to_webinar'
+  get '/eleves', to: 'pages#student_landing'
+  get '/professionnels', to: 'pages#pro_landing'
+  get '/equipe-pedagogique', to: 'pages#school_management_landing'
+  get '/referents', to: 'pages#statistician_landing'
 
   # Redirects
   get '/dashboard/internship_offers/:id', to: redirect('/internship_offers/%{id}', status: 302)

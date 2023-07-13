@@ -1,5 +1,10 @@
-.container-monstage.light-grey-background.fr-py-md-4w
+.container-monstage.light-grey-background.fr-py-4w
   .row.fr-py-5w.fr-my-5w.d-flex
+    .col-md-6.col-sm-12.text-center
+      = image_tag asset_pack_path('media/images/homepage/opportunities-illustration.svg'),
+                    alt: "Illustration métiers disponibles",
+                    width:'100%',
+                    class:'fr-px-5w'
     .col-md-6.col-sm-12.fr-px-2w
       h2.h2.fr-desktop-lg.fr-px-2w.px-sm-2.px-md-0
         | Des stages pour tous, une opportunité pour chacun.
@@ -17,20 +22,8 @@
           le meilleur intérêt des élèves en leur offrant la meilleure
           expérience du stage possible.
       p.py-4.fr-px-2w.px-sm-2.px-md-0.text-center-left
-        - if current_page?(root_path)
-          = link_to "Trouver un stage ", eleves_path, class: 'fr-btn fr-btn--secondary fr-raw-link fr-px-8w'
-        - else 
-          = link_to internship_offers_path(current_user_or_visitor.default_search_options),
-                    class: 'fr-btn fr-btn--secondary fr-raw-link fr-px-8w',
-                    data: { :"test-id" => 'mobile-search-button-first' }
-            = "Trouver un stage "
-            
-
-
-    / d-none if screen xs
-
-    .col-md-6.col-sm-12.text-center.d-none.d-sm-block
-      = image_tag asset_pack_path('media/images/homepage/opportunities-illustration.svg'),
-                    alt: "Illustration métiers disponibles",
-                    width:'100%',
-                    class:'fr-px-5w'
+        = link_to internship_offers_path(current_user_or_visitor.default_search_options),
+                  class: 'fr-btn fr-btn--secondary fr-raw-link fr-px-8w',
+                  data: { :"test-id" => 'mobile-search-button-first' }
+          = "Trouver un stage "
+    

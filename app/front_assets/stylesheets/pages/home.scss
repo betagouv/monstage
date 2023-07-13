@@ -48,6 +48,10 @@ a:hover {
   background-color: $grey-975;
 }
 
+.light-blue-background {
+  background-color: #F5F5FF;
+}
+
 .container-monstage {
   max-width: 1200px;
   margin: auto;
@@ -55,6 +59,69 @@ a:hover {
 }
 .bg-cover-image-homepage {
   background-color: $blue;
+}
+
+@media (min-width: 768px) {
+  .bg-student-hero-image {
+    background-image: url('../images/homepage/hero-illustration.svg');
+    background-repeat: no-repeat;
+    background-position: right bottom;
+  }
+}
+
+.bg-pro-hero-image {
+  background-image: url('../images/homepage/metiers.svg');
+  background-repeat: no-repeat;
+  background-position: right bottom;
+}
+
+.bg-school-management-hero-image {
+  background-image: url('../images/homepage/school-management.svg');
+  background-repeat: no-repeat;
+  background-position: right bottom;
+}
+
+@media (min-width: 768px) {
+  .bg-home-hero-image {
+    background-image: url('../images/homepage/hero-illustration.svg');
+    background-repeat: no-repeat;
+    background-position: right bottom;
+  }
+}
+
+.fr-card-with-arrow::before {
+  content: "" !important;
+}
+
+@media (min-width: 768px) {
+  .fr-tile-left-top-img .fr-tile__img {
+    align-items: start;
+    margin: -3rem 0 2rem 2rem !important;
+    justify-content: center;
+  }
+}
+
+.newsletter-button .fr-btn {
+  justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .newsletter-button .fr-btn {
+    align-items: end;
+  }
+}
+
+.fr-tile-left-top-img .fr-tile--horizontal-md {
+  align-items: start;
+}
+
+.fr-card {
+  background-color: white;
+}
+
+.fr-nav__link[aria-current] {
+  background-color: $blue-france-light;
 }
 
 h1,
@@ -321,36 +388,42 @@ img.covering {
 }
 
 .bg-logo_viens_voir_mon_taf {
-  width: 282px; height: 100px;
-  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -10px -10px;
+  width: 150px; height: 100px;
+  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -60px -10px;
 }
 
 .bg-logo_jobirl {
-  width: 282px; height: 100px;
-  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -10px -130px;
+  width: 150px; height: 100px;
+  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -60px -130px;
 }
 
 .bg-logo_entreprises_pour_la_cite {
-  width: 282px; height: 100px;
-  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -312px -10px;
+  width: 150px; height: 100px;
+  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -370px -10px;
 }
 
 .bg-logo_un_stage_et_apres {
-  width: 282px; height: 100px;
-  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -312px -130px;
+  width: 150px; height: 100px;
+  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -370px -130px;
 }
 
 .bg-logo_le_reseau {
-  width: 282px; height: 100px;
-  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -10px -250px;
+  width: 150px; height: 100px;
+  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -65px -250px;
 }
 
 .bg-logo_moi_dans_10_ans_my_future {
-  width: 282px; height: 100px;
-  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -312px -250px;
+  width: 180px; height: 100px;
+  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -340px -250px;
 }
 
 .bg-logo_tous_en_stage {
-  width: 282px; height: 100px;
-  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -10px -370px;
+  width: 150px; height: 100px;
+  background: url('../images/homepage/partenaires/logo_partenaires.jpg') -60px -370px;
+}
+
+.fr-btn-white {
+  background-color: #fff;
+  color: #100090;
+  border-color: #100090;
 }

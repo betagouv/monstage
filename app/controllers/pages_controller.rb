@@ -2,7 +2,7 @@
 
 class PagesController < ApplicationController
   WEBINAR_URL = ENV.fetch('WEBINAR_URL').freeze
-  layout 'homepage', only: :home
+  layout 'homepage', only: [:home, :student_landing, :pro_landing, :school_management_landing, :statistician_landing]
 
   def statistiques
     render 'pages/statistiques', layout: 'statistiques'
@@ -28,5 +28,21 @@ class PagesController < ApplicationController
         )
       end
     end
+  end
+
+  def student_landing
+    @internship_offers = InternshipOffer.last(3)
+  end
+
+  def pro_landing
+    # @internship_offers = InternshipOffer.last(3)
+  end
+
+  def school_management_landing
+    @internship_offers = InternshipOffer.last(3)
+  end
+
+  def statistician_landing
+    @internship_offers = InternshipOffer.last(3)
   end
 end

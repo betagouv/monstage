@@ -1,39 +1,64 @@
-header.bg-cover-image-homepage.container-xl
-  .container-monstage.container-xl.homepage
-    .row
-      .col-lg-6.col-md-12
-        .px-xl-0.px-lg-3-px-md-3.px-sm-3.px-3
-          .fr-pt-5w
-            h1.fr-h1.fr-pt-5w.white
-              | Des stages de troisième
-              br
-              |de premier choix.
-          p.fr-text--lead.white.py-lg-4.py-md-3.py-sm-3.py-xs-2
-            |
-              Trouvez votre stage parmi une grande quantité d’offres
-              de qualité, dédiées aux élèves scolarisés en
-            span
-              strong = " REP/REP+."
-          .d-none.d-md-block
-            p.mt-4.py-lg-4.py-md-3.py-sm-3.py-xs-2
-          .d-md-none
-            p.mt-4.py-lg-4.py-md-3.py-sm-3.py-xs-2.text-center
-              = link_to internship_offers_path(current_user_or_visitor.default_search_options),
-                        class: 'fr-btn fr-icon-search-line fr-btn--icon-right bg-white fr-px-6w'  do
-                = "Rechercher un stage "
-      .col-lg-6.col-md-12.d-flex.align-items-end.justify-content-center
-        .d-none.d-sm-block
-          = image_tag asset_pack_path('media/images/homepage/hero-illustration.svg'), alt: 'Trouvez un stage', class: 'fr-mt-5w'
+header.bg-cover-image-homepage.container-xl.px-0.fr-pb-3w
+  .container-monstage.container-xl.homepage.px-md-0
+    .row.fr-mb-4w.mx-0
+      .col-lg-12.col-md-12.px-0
+        .fr-pt-5w
+          h1.fr-h1.white
+            | Des stages de 3ème de qualité 
+            br
+            | dédiées aux élèves scolarisés en REP/REP+
+         
+    .row.
+      / Card student
+      .col-lg-4.col-md-12.fr-mb-2w
+        .fr-card.fr-enlarge-link
+          .fr-card__body.fr-pt-2w
+            .fr-card__content
+              h3.h4.fr-card__title.fr-mb-2w
+                = link_to 'Élèves de 3ème REP et REP+', '#', class: 'text-dark'
+              p.fr-card__desc
+                | Postulez et suivez vos candidatures pour trouver un stage.
+            .fr-card__footer
+              = link_to 'Trouver un stage', eleves_path, class: 'fr-btn fr-btn--secondary'
+          .fr-card__header.fr-my-4w
+            ul.fr-badges-group.fr-p-4w
+              li
+                p.fr-badge.fr-badge--purple-glycine élèves
+      / Card pro
+      .col-lg-4.col-md-12.fr-mb-2w
+        .fr-card.fr-enlarge-link
+          .fr-card__body.fr-pt-2w
+            .fr-card__content
+              h3.h4.fr-card__title.fr-mb-2w
+                = link_to 'Entreprises, Administrations', '#', class: 'text-dark'
+              p.fr-card__desc
+                | Faites découvrir vos métiers. Déposez des offres de stages  pour un ou plusieurs élèves.  
+            .fr-card__footer
+              = link_to 'Déposer une offre', professionnels_path, class: 'fr-btn fr-btn--secondary'
+          .fr-card__header.fr-my-4w
+            ul.fr-badges-group.fr-p-4w
+              li
+                p.fr-badge.fr-badge--yellow-tournesol professionnels
+      / Card school
+      .col-lg-4.col-md-12.fr-mb-2w
+        .fr-card.fr-enlarge-link
+          .fr-card__body.fr-pt-2w
+            .fr-card__content
+              h3.h4.fr-card__title.fr-mb-2w
+                = link_to '#', class: 'text-dark' do 
+                  | Équipes
+                  br
+                  |  pédagogiques
+              p.fr-card__desc
+                | Inscrivez votre établissement  et accompagnez vos élèves dans leurs recherches.
+            .fr-card__footer
+              = link_to 'Activer votre établissement', equipe_pedagogique_path, class: 'fr-btn fr-btn--secondary'
+          .fr-card__header.fr-my-4w
+            ul.fr-badges-group.fr-p-4w
+              li
+                p.fr-badge.fr-badge--info.fr-badge--no-icon éducation
 
-.container-monstage.light-grey-background.d-none.d-sm-block
-  .row.no-gutters.search-form.mt-1
-    .col-12 = render partial: "internship_offers/search/form",
-                     locals: { render_as_partial: true,
-                               url: internship_offers_path,
-                               default_values: user_presenter.default_search_options,
-                               form_id: :home_search_form }
-    .actions.d-stick.d-md-none.p-2.fitting.text-center
-      = link_to internship_offers_path(current_user_or_visitor.default_search_options),
-                class: 'fr-btn fr-icon-search-line fr-btn--icon-right fr-px-11w',
-                data: { :"test-id" => 'mobile-search-button' }
-        = "Rechercher un stage "
+            
+      / .col-lg-3.col-md-12.d-flex.align-items-end.justify-content-center
+      /   .d-none.d-sm-block
+      /     = image_tag asset_pack_path('media/images/homepage/hero-illustration.svg'), alt: 'Trouvez un stage', class: 'fr-mt-5w'

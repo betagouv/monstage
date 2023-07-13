@@ -1,0 +1,35 @@
+.container-homepage
+  = render 'layouts/navbar', home_nav_bar: true
+.fr-container
+  = render 'pages/home/top_nav'
+.container-homepage
+  .mx-0.light-grey-background
+    = render 'pages/home/hero_statistician'
+.container-homepage.fr-py-3w
+  .container-monstage
+    = render 'pages/home/howitworks_statistician'
+.container-homepage.light-grey-background.fr-py-3w
+  .container-monstage
+    = render 'pages/home/dashboard_statistician'
+.container-homepage
+  .container-monstage
+    = render 'pages/home/statistician_access'
+.container-homepage.fr-py-4w  
+  .container-homepage
+    .container-monstage
+      = render 'pages/home/faq_statistician'
+.container-homepage.light-grey-background
+  .container-monstage
+    = render 'pages/home/dispositif'
+.container-home.fr-py-3w
+  .container-monstage
+    = render 'pages/home/resources'      
+.container-home.light-blue-background.fr-py-4w
+  .container-monstage
+    = render 'pages/home/newsletter'      
+.container-homepage    
+  .container-monstage.homepage
+    = render 'pages/home/sponsors'
+    = render 'pages/home/partners'
+    .d-none.d-md-block
+      = render 'pages/home/elevator'
