@@ -344,7 +344,7 @@ $sortLinkOffset: 15px;
 
 .bar-area{
   height: 65px;
-  width: 1280px !important;
+  width: 1180px !important;
 
   background: linear-gradient(#F8F8F8,#F8F8F8 0%, #FFF 35%, #FFFFFF 100%);
   border-bottom: 1px solid #F8F8F8;
@@ -356,6 +356,9 @@ $sortLinkOffset: 15px;
       color: black;
       text-decoration: none;
       font-weight: 600;
+    }
+    a[aria-current='page']{
+      background-color: #e4e0f1;
     }
   }
 }
