@@ -1,6 +1,8 @@
 require "test_helper"
 
+
 class InternshipOfferAreaTest < ActiveSupport::TestCase
+  include TeamAndAreasHelper
   test "factory is valid" do
     assert build(:area).valid?
   end
@@ -39,5 +41,15 @@ class InternshipOfferAreaTest < ActiveSupport::TestCase
     assert_equal area, employer.internship_offers.first.internship_offer_area
     assert_equal employer, employer.internship_offers.first.internship_offer_area.employer
     assert_equal offer, employer.internship_offers.first
+  end
+
+  test "team's areas are shared" do
+    employer_1 = create(:employer)
+    byebug
+    employer_2 = create(:employer)
+    internship_offer = create_internship_offer_visible_by_two(employer_1, employer_2)
+    create(:area, name: "placido_domingo", employer: employer_1)
+    assert_equal 2, employer_1.internship_offer_areas.count
+    assert_equal 2, employer_2.internship_offer_areas.count
   end
 end

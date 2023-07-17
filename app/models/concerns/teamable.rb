@@ -58,9 +58,11 @@ module Teamable
       team_internship_offers.where(internship_offer_area_id: fetch_current_area_id)
     end
 
-    # def internship_offer_areas
-    #   InternshipOfferArea.where(employer_id: team_members_ids)
-    # end
+    def internship_offer_areas
+      super if team.not_exists?
+
+      InternshipOfferArea.where(employer_id: team_members_ids)
+    end
 
     def internship_agreements
       return super unless team.alive?
