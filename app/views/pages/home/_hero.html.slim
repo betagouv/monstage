@@ -6,21 +6,21 @@ header.bg-cover-image-homepage.container-xl.px-0.fr-pb-3w
           h1.fr-h1.white
             | Des stages de 3ème de qualité 
             br
-            | dédiées aux élèves scolarisés en REP/REP+
+            | dédiés aux élèves scolarisés en REP/REP+
          
     .row.
       / Card student
       .col-lg-4.col-md-12.fr-mb-2w
         .fr-card.fr-enlarge-link
           .fr-card__body.fr-pt-2w
-            .fr-card__content
+            .fr-card__content.fr-mt-2w.fr-pb-4w
               h3.h4.fr-card__title.fr-mb-2w
                 = link_to 'Élèves de 3ème REP et REP+', '#', class: 'text-dark'
               p.fr-card__desc
                 | Postulez et suivez vos candidatures pour trouver un stage.
             .fr-card__footer
               = link_to 'Trouver un stage', eleves_path, class: 'fr-btn fr-btn--secondary'
-          .fr-card__header.fr-my-4w
+          .fr-card__header.fr-my-1w
             ul.fr-badges-group.fr-p-4w
               li
                 p.fr-badge.fr-badge--purple-glycine élèves
@@ -28,14 +28,14 @@ header.bg-cover-image-homepage.container-xl.px-0.fr-pb-3w
       .col-lg-4.col-md-12.fr-mb-2w
         .fr-card.fr-enlarge-link
           .fr-card__body.fr-pt-2w
-            .fr-card__content
+            .fr-card__content.fr-mt-2w.fr-pb-4w
               h3.h4.fr-card__title.fr-mb-2w
                 = link_to 'Entreprises, Administrations', '#', class: 'text-dark'
               p.fr-card__desc
                 | Faites découvrir vos métiers. Déposez des offres de stages  pour un ou plusieurs élèves.  
             .fr-card__footer
               = link_to 'Déposer une offre', professionnels_path, class: 'fr-btn fr-btn--secondary'
-          .fr-card__header.fr-my-4w
+          .fr-card__header.fr-my-1w
             ul.fr-badges-group.fr-p-4w
               li
                 p.fr-badge.fr-badge--yellow-tournesol professionnels
@@ -43,7 +43,7 @@ header.bg-cover-image-homepage.container-xl.px-0.fr-pb-3w
       .col-lg-4.col-md-12.fr-mb-2w
         .fr-card.fr-enlarge-link
           .fr-card__body.fr-pt-2w
-            .fr-card__content
+            .fr-card__content.fr-mt-2w.fr-pb-4w
               h3.h4.fr-card__title.fr-mb-2w
                 = link_to '#', class: 'text-dark' do 
                   | Équipes
@@ -53,7 +53,7 @@ header.bg-cover-image-homepage.container-xl.px-0.fr-pb-3w
                 | Inscrivez votre établissement  et accompagnez vos élèves dans leurs recherches.
             .fr-card__footer
               = link_to 'Activer votre établissement', equipe_pedagogique_path, class: 'fr-btn fr-btn--secondary'
-          .fr-card__header.fr-my-4w
+          .fr-card__header.fr-my-1w
             ul.fr-badges-group.fr-p-4w
               li
                 p.fr-badge.fr-badge--info.fr-badge--no-icon éducation

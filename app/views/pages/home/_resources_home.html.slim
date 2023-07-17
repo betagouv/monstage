@@ -8,21 +8,9 @@
         = link_to "Voir toutes les ressources", "/documents-utiles",
                   title: 'Documents utiles',
                   class: "fr-raw-link fr-btn fr-btn--secondary"
-  .row.fr-pb-7w
-    = render partial: "pages/home/resource_card",
-            locals: { badge: "Dossier",
-                      link_title: "Kit de communication",
-                      file: "https://drive.google.com/drive/u/1/folders/12rXDxZRgxxPkzj7JfzDSphoxA63TAUox" }
-    = render partial: "pages/home/resource_card",
-            locals: { badge: "PDF",
-                      link_title: "Carnet de bord du stagiaire",
-                      file: "https://drive.google.com/file/d/16ksaDVddY_zHIT1wfGx96IgDm5qzJhf3/view?usp=sharing" }
-    = render partial: "pages/home/resource_card",
-            locals: { badge: "PDF",
-                      link_title: "Calendrier d’une semaine de stage à remplir",
-                      file: "https://www.monstagedetroisieme.fr//documents_utiles/MS3_Programme-a-remplir.pdf" }
-    = render partial: "pages/home/resource_card",
-            locals: { badge: "PDF",
-                      link_title: "Flyer de présentation Professionnels",
-                      file: "https://drive.google.com/file/d/1njqHXS3PspT-xQfL4w-eoKHWydU3VZcn/view?usp=sharing" }
+  .row.fr-pb-7w.fr-ml-1w
+    .fr-text--lg
+      | Accédez à des ressources sur les questions d’orientation professionnelle des élèves issus 
+      br
+      | des quartiers prioritaires de la politique de la ville (entreprises, métiers, ...)
 

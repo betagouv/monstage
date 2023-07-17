@@ -126,6 +126,12 @@ import './documents_utiles/MS3_Programme-a-remplir.jpg';
 import './documents_utiles/USEA-Carnet-Stage-Education.jpg';
 import './documents_utiles/USEA-Cherchez-la-chercheuse.jpg';
 import './documents_utiles/versLinfini.jpg';
+import './documents_utiles/eleves.jpg';
+import './documents_utiles/equipe-pedago.jpg';
+import './documents_utiles/offreurs.jpg';
+import './documents_utiles/partenaires.jpg';
+import './documents_utiles/referents.jpg';
+
 
 import './modes_d_emploi/miniature-MS3_Mode-d-emploi-eleves.jpg';
 import './modes_d_emploi/miniature-MS3_Mode-d-emploi-entreprises.jpg';
