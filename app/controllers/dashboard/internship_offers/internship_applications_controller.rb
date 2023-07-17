@@ -18,7 +18,6 @@ module Dashboard
           params[:order]
         )
         @internship_applications = @internship_applications.page(params[:page])
-        @internship_offer_areas = current_user.internship_offer_areas
       end
 
       def set_to_read
@@ -34,7 +33,6 @@ module Dashboard
         authorize! :index, Acl::InternshipOfferDashboard.new(user: current_user)
         @internship_offers = current_user.internship_offers
         @internship_applications = fetch_user_internship_applications
-        @internship_offer_areas = current_user.internship_offer_areas
         @received_internship_applications = @internship_applications.where(aasm_state: InternshipApplication.received_states)
         @approved_internship_applications = @internship_applications.where(aasm_state: InternshipApplication.approved_states)
         @rejected_internship_applications = @internship_applications.where(aasm_state: InternshipApplication.rejected_states)
