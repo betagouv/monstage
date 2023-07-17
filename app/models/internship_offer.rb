@@ -290,7 +290,7 @@ class InternshipOffer < ApplicationRecord
     self.group_id = organisation.group_id
     self.is_public = organisation.is_public
   end
-
+  
   def update_organisation
     return unless organisation && !organisation.new_record?
 

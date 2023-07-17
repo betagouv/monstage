@@ -2,11 +2,12 @@ require 'application_system_test_case'
 module Dashboard::InternshipOffers
   class InternshipApplicationsUpdateTest < ApplicationSystemTestCase
     include Devise::Test::IntegrationHelpers
+    include TeamAndAreasHelper
 
     test 'employer can set to read status an internship_application' do
-      internship_offer = create(:weekly_internship_offer)
+      employer, internship_offer = create_employer_and_offer
       internship_application = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
-      sign_in(internship_application.employer)
+      sign_in(employer)
       visit dashboard_candidatures_path
       click_link 'Répondre'
       click_on 'retour'
@@ -16,9 +17,9 @@ module Dashboard::InternshipOffers
     end
 
     test 'employer can set to examine status an internship_application' do
-      internship_offer = create(:weekly_internship_offer)
+      employer, internship_offer = create_employer_and_offer
       internship_application = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
-      sign_in(internship_application.employer)
+      sign_in(employer)
       visit dashboard_internship_offer_internship_application_path(internship_offer, internship_application)
       click_on 'Etudier'
       text = find("#internship_application_examined_message").text
@@ -31,9 +32,9 @@ module Dashboard::InternshipOffers
     end
     
     test 'employer can reject an internship_application' do
-      internship_offer = create(:weekly_internship_offer)
+      employer, internship_offer = create_employer_and_offer
       internship_application = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
-      sign_in(internship_application.employer)
+      sign_in(employer)
       visit dashboard_internship_offer_internship_application_path(internship_offer, internship_application)
       click_on 'Refuser'
       find("#internship_application_rejected_message").click.set("(test ata test)")
@@ -47,9 +48,9 @@ module Dashboard::InternshipOffers
     end
 
     test 'employer can accept an internship_application' do
-      internship_offer = create(:weekly_internship_offer)
+      employer, internship_offer = create_employer_and_offer
       internship_application = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
-      sign_in(internship_application.employer)
+      sign_in(employer)
       visit dashboard_internship_offer_internship_application_path(internship_offer, internship_application)
       click_on 'Accepter'
       click_button 'Confirmer'

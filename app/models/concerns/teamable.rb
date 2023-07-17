@@ -40,11 +40,6 @@ module Teamable
                optional: true
 
 
-    def internship_offers
-      InternshipOffer.joins(:internship_offer_area)
-                     .where(internship_offer_area: {employer_id: team_members_ids})
-
-    end
 
     def personal_internship_offers
       InternshipOffer.where(employer_id: id)
@@ -56,6 +51,23 @@ module Teamable
 
     def ui_internship_offers
       team_internship_offers.where(internship_offer_area_id: fetch_current_area_id)
+    end
+
+    def internship_offers
+      InternshipOffer.where(internship_offer_area_id: fetch_current_area_id)
+                     .where(employer_id: team_members_ids)
+    end
+
+    def anonymize(send_email: true)
+      if team.alive?
+        move_internship_offers_ownership_to_team
+        team.remove_member
+      else
+        InternshipOffer.where(employer_id: id).each do |offer|
+          offer.discard
+        end
+      end
+      super(send_email: send_email)
     end
 
     def internship_offer_areas
@@ -108,14 +120,31 @@ module Teamable
       current_area_id.presence || latest_area_id
     end
 
+    # -------------------------------
     private
+    # -------------------------------
 
     def create_internship_offer_area
-      internship_offer_areas.create(name: "Mon espace")
+      internship_offer_areas.create(name: "Espace de #{presenter.short_name}")
     end
 
     def latest_area_id
       internship_offer_areas.order(updated_at: :desc).first.id
     end
+
+    def move_internship_offers_ownership_to_team
+      if team.team_size == 2
+        other_employer_id = team.team_members.pluck(:member_id) - [id]
+        personal_internship_offers.update_all(employer_id: other_employer_id)
+        team.remove_member
+      else # more than 2 members
+        team_to_quit = team
+        team_to_quit.remove_member
+        personal_internship_offers.update_all(
+          employer_id: team_to_quit.team_owner_id
+        )
+      end
+    end
+
   end
 end

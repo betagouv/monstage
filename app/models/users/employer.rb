@@ -30,13 +30,6 @@ module Users
     def employer? ; true end
     def agreement_signatorable? ; true end
 
-    def anonymize(send_email: true)
-      super
-
-      team.remove_member if team&.team_size&.positive?
-      internship_offers.map(&:anonymize)
-    end
-
     def signatory_role
       Signature.signatory_roles[:employer]
     end

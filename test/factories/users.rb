@@ -51,7 +51,8 @@ FactoryBot.define do
 
     trait :with_current_area do
       after(:create) do |user|
-        user.current_area = user.internship_offer_areas.first
+        area = create(:area, employer_id: user.id, name: FFaker::Lorem.word)
+        user.current_area = area
         user.save
       end
     end

@@ -118,7 +118,8 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       :weekly_internship_offer,
       employer: employer,
       weeks: older_weeks,
-      organisation: organisation
+      organisation: organisation,s
+      internship_offer_area_id: employer.current_area_id
     )
     sign_in(employer)
     visit dashboard_internship_offers_path(internship_offer: current_internship_offer)

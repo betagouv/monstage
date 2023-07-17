@@ -208,6 +208,7 @@ class Ability
     can :transfer, InternshipApplication do |internship_application|
       internship_application.internship_offer.employer_id == user.id
     end
+    can :see_minister_video, User
   end
 
   def as_account_user(user:)
