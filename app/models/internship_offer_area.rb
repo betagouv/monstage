@@ -10,6 +10,16 @@ class InternshipOfferArea < ApplicationRecord
   validates :name,
             presence: true,
             uniqueness: { scope: :employer_id }
+
+  validate :name_uniqueness_in_team
   accepts_nested_attributes_for :area_notifications
 
+  private
+
+  def name_uniqueness_in_team
+    employer = User.find(employer_id)
+    if employer.internship_offer_areas.pluck(:name).include?(name)
+      errors.add(:name, :taken)
+    end
+  end
 end
