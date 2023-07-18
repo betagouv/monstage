@@ -1,8 +1,10 @@
 - if current_user
+  - content_for(:page_title, "#{t(".page_title", name: @internship_application.student.presenter.full_name)} | Monstage")
   - presenter = @internship_application.presenter(current_user)
   = render 'layouts/breadcrumb',
             links: [ [current_user.presenter.dashboard_name_link, current_user.dashboard_name],
                     ['', @internship_application.internship_offer.title]]
+
   - if current_user.student?
     .sticky-top.white-header
       .fr-mb-5w

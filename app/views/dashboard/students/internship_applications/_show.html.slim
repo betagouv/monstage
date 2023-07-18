@@ -45,30 +45,13 @@
           | retour
 - if current_user.student?
   - if internship_application.approved?
-    .row
-      .col-12.py-2
-        .container-monstage-application
-          .grey-container-application
-            .row
-              .col-sm-8.col-lg-12
-                .fr-callout
-                  h3.h5.fr-callout__title Contact de l'employeur
-                  p.fr-callout__text
-                    ul
-                      li.test-employer-name
-                        = "votre responsable dans l'entreprise : "
-                        strong = internship_offer.employer.presenter.formal_name
-                      li.test-employer-email
-                        = "son adresse email : "
-                        strong = internship_offer.employer.email
-                      - if internship_offer.employer.phone
-                        li.test-employer-phone
-                          = "son numéro de téléphone : "
-                          strong = internship_offer.employer.phone
-                  = mail_to(internship_offer.employer.email, 
-                          'Lui écrire',
-                          subject: "[Stagiaire #{internship_application.student.presenter.short_civil_full_name}] - prise de contact",
-                          class: 'fr-btn fr-btn--sm fr-mt-2w')
+    = render "dashboard/students/internship_applications/contact_details",
+              internship_offer: internship_offer,
+              internship_application: internship_application
+  - elsif presenter.with_employer_explanation?
+    = render "dashboard/students/internship_applications/employer_explanation",
+              internship_offer: internship_offer,
+              internship_application: internship_application
 
   .row
     .col-12
@@ -79,8 +62,8 @@
         .col-sm-8.col-lg-12
           .fr-px-1w
             = render "internship_offers/show_details",
-                     internship_offer: internship_offer,
-                     hidden_parts: true
+                      internship_offer: internship_offer,
+                      hidden_parts: true
 .row
   .col-12
     h2.h3.fr-mt-4w.fr-mb-2w
