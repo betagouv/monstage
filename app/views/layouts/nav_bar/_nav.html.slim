@@ -1,0 +1,102 @@
+- standard_option = { class: 'fr-nav__link text-decoration-none mr-4' }
+nav#navigation-773.fr-nav.[role="navigation" aria-label="Menu principal"]
+  ul.fr-nav__list
+    li.fr-nav__item
+      = render partial: 'layouts/extra_for_devs'
+    - if user_signed_in?
+      - unless current_user.employer_like?
+        li.fr-nav__item
+          = link_to 'Accueil',
+                    root_path,
+                    class: "fr-nav__link text-decoration-none mr-4 #{current_page?(root_path) ? 'active' : ''}"
+        li.fr-nav__item
+          - options = standard_option
+          - options = options.merge({ :'aria-current' => 'page' }) if current_page?(internship_offers_path) && !request.url.include?('origine=dashboard')
+          = link_to 'Recherche',
+                    user_presenter.default_internship_offers_path,
+                    options
+        li.fr-nav__item
+          - options = standard_option
+          - options = options.merge({ :'aria-current' => 'page' }) if custom_dashboard_controller?(user: current_user)
+          = link_to current_user.dashboard_name,
+                    current_user.custom_dashboard_path,
+                    options
+        - if can?(:supply_offers, current_user) && !current_user.operator? && !current_user.employer?
+          li.fr-nav__item
+            - active = current_page?(dashboard_internship_offers_path) || request.url.include?('origine=dashboard') ? 'page' : ''
+            - options = standard_option
+            - options = options.merge({ :'aria-current' => active }) if current_page?(dashboard_internship_offers_path)
+            = link_to 'Mes offres',
+                      dashboard_internship_offers_path,
+                      options
+      - if can?(:create, InternshipOfferArea)
+        li.fr-nav__item
+          - active = current_page?(dashboard_internship_offer_areas_path) || request.url.include?('origine=dashboard') ? 'page' : ''
+          button.fr-nav__btn[aria-expanded="false" aria-controls="menu-espaces" aria-current="#{active}"]
+            | Espaces
+          #menu-espaces.fr-collapse.fr-menu
+            ul.fr-menu__list
+              li
+                - current_user.team_areas.each do |area|
+                  - aria_controls = { controls: 'fr-modal-add-space' }
+                  - cur_area_id = current_user.fetch_current_area_id
+                  - aria_controls.merge!({ current: "page" }) if area.id == cur_area_id
+                  = link_to area.name,
+                            filter_by_area_dashboard_internship_offer_area_path(id: area.id),
+                            class: 'fr-nav__link',
+                            target: '_self',
+                            aria: aria_controls
+      - if can?(:manage_teams, TeamMemberInvitation)
+        li.fr-nav__item
+          - options = standard_option
+          - options = options.merge({ :'aria-current' => "page" }) if current_page?(dashboard_team_member_invitations_path)
+          = link_to dashboard_team_member_invitations_path, options do
+            table
+              tbody
+                tr
+                  td.fr-mt-1v
+                    = image_tag asset_pack_path 'media/images/pages/teams/team_icon_plus.svg',
+                                alt: "logo d'équipe",
+                                height: '20px',
+                                class: 'fr-pr-8v fr-pt-8v'
+                  td.fr-pl-1v
+                    = 'équipe'.capitalize
+
+      - if can?(:create, Favorite)
+        li.fr-nav__item
+          - options = standard_option
+          - options = options.merge({ :'aria-current' => 'page' }) if current_page?(favorites_path)
+          = link_to favorites_path, options do
+            | Mes annonces favorites
+            - if current_user.favorites.count.positive?
+              span.fr-badge.fr-badge--info.fr-badge--sm.fr-badge--no-icon.fr-ml-1w= current_user.favorites.count
+      - if can?(:check_his_statistics, current_user)
+        li.fr-nav__item
+          - options = standard_option
+          - options = options.merge({ :'aria-current' => 'page' }) if (request.path =~ /^\/reporting\//)
+          = link_to 'Statistiques',
+                    reporting_internship_offers_path(default_reporting_url_options(current_user)),
+                    options
+      li.fr-nav__item
+        - options = standard_option
+        - options = options.merge({ :'aria-current' => 'page' }) if account_controller?(user: current_user)
+        = link_to current_user.account_link_name, account_path, options
+
+      - if cookies.signed[Rails.application.credentials.dig(:cookie_switch_back)].present?
+        li.fr-nav__item
+          = link_to destroy_user_session_path,
+                    class: "fr-nav__link text-decoration-none mr-4",
+                    method: :delete do
+          .inline-block style="text-decoration: none;background-color: red; color: #fff; font-weight: bold; padding-left: 5px; padding-right: 5px "
+            i.white.fas.fa-lg.fa-caret-right.mr-1
+            | Admin
+
+    - else
+      li.fr-nav__item
+        - options = {class: "fr-nav__link fr-icon-lock-line text-decoration-none extended-150 "}
+        - options = options.merge({ :'aria-current' => 'page' }) if current_controller?(:sessions)
+        = link_to 'Connexion', new_user_session_path, options
+      li.fr-nav__item
+        - options = {class: "fr-nav__link fr-icon-user-line text-decoration-none extended-200"}
+        - options = options.merge({ :'aria-current' => 'page' }) if current_controller?(:registrations)
+        = link_to 'Créer mon compte', new_user_registration_path, options
