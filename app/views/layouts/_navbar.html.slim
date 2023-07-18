@@ -32,25 +32,26 @@
                   li
                     = render partial: 'layouts/extra_for_devs'
                   - if user_signed_in?
-                    li
-                      = link_to 'Accueil',
-                                root_path,
-                                class: "fr-link text-decoration-none mr-4 #{current_page?(root_path) ? 'active' : ''}"
-                    li
-                      - active = current_page?(internship_offers_path) && !request.url.include?('origine=dashboard') ? 'active' : ''
-                      = link_to 'Recherche',
-                                user_presenter.default_internship_offers_path,
-                                class: "fr-link text-decoration-none mr-4 #{active}"
-                    li
-                      = link_to current_user.dashboard_name,
-                                current_user.custom_dashboard_path,
-                                class: "fr-link text-decoration-none mr-4  #{custom_dashboard_controller?(user: current_user) ? 'active' : ''}"
-                    - if can?(:supply_offers, current_user) && !current_user.operator? && !current_user.employer?
+                    - unless current_user.employer_like?
                       li
-                        - active = current_page?(dashboard_internship_offers_path) || request.url.include?('origine=dashboard') ? 'active' : ''
-                        = link_to 'Mes offres',
-                                  dashboard_internship_offers_path,
+                        = link_to 'Accueil',
+                                  root_path,
+                                  class: "fr-link text-decoration-none mr-4 #{current_page?(root_path) ? 'active' : ''}"
+                      li
+                        - active = current_page?(internship_offers_path) && !request.url.include?('origine=dashboard') ? 'active' : ''
+                        = link_to 'Recherche',
+                                  user_presenter.default_internship_offers_path,
                                   class: "fr-link text-decoration-none mr-4 #{active}"
+                      li
+                        = link_to current_user.dashboard_name,
+                                  current_user.custom_dashboard_path,
+                                  class: "fr-link text-decoration-none mr-4  #{custom_dashboard_controller?(user: current_user) ? 'active' : ''}"
+                      - if can?(:supply_offers, current_user) && !current_user.operator? && !current_user.employer?
+                        li
+                          - active = current_page?(dashboard_internship_offers_path) || request.url.include?('origine=dashboard') ? 'active' : ''
+                          = link_to 'Mes offres',
+                                    dashboard_internship_offers_path,
+                                    class: "fr-link text-decoration-none mr-4 #{active}"
                     - if can?(:create, InternshipOfferArea)
                       li
                         - active = current_page?(dashboard_internship_offer_areas_path) || request.url.include?('origine=dashboard') ? 'active' : ''
@@ -60,9 +61,18 @@
                     - if can?(:manage_teams, TeamMemberInvitation)
                       li
                         - active = current_page?(dashboard_team_member_invitations_path) || request.url.include?('origine=dashboard') ? 'active' : ''
-                        = link_to 'équipe'.capitalize,
-                                  dashboard_team_member_invitations_path,
-                                  class: "fr-link text-decoration-none mr-4 #{active}"
+                        = link_to dashboard_team_member_invitations_path,
+                                  class: "fr-link text-decoration-none mr-4 #{active}" do
+                          table
+                            tbody
+                              tr
+                                td.fr-mt-1v
+                                  = image_tag asset_pack_path 'media/images/pages/teams/team_icon_plus.svg',
+                                              alt: "logo d'équipe",
+                                              height: '20px',
+                                              class: 'fr-pr-8v fr-pt-8v'
+                                td.fr-pl-1v
+                                  = 'équipe'.capitalize
 
                     - if can?(:create, Favorite)
                       li
