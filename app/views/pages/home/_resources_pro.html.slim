@@ -7,7 +7,7 @@
       .text-center-right
         = link_to "Voir toutes les ressources", "/documents-utiles",
                   title: 'Documents utiles',
-                  class: "fr-btn fr-btn--primary fr-raw-link fr-px-7v"
+                  class: "fr-raw-link fr-btn fr-btn--secondary"
   .row.fr-pb-7w
     = render partial: "pages/home/resource_card",
             locals: { badge: "Dossier",
@@ -15,8 +15,8 @@
                       file: "https://drive.google.com/drive/u/1/folders/12rXDxZRgxxPkzj7JfzDSphoxA63TAUox" }
     = render partial: "pages/home/resource_card",
             locals: { badge: "PDF",
-                      link_title: "Fichier de présentation Élèves",
-                      file: "https://drive.google.com/file/d/1vo5MgKosaXqCgnVjWuiyHQcQymnxlyGy/view?usp=sharing" }
+                      link_title: "Fichier de présentation Professionnels",
+                      file: "https://drive.google.com/file/d/1njqHXS3PspT-xQfL4w-eoKHWydU3VZcn/view?usp=drive_link" }
     = render partial: "pages/home/resource_card",
             locals: { badge: "PDF",
                       link_title: "Carnet de bord du stagiaire",
