@@ -1,5 +1,5 @@
 module Dashboard
-  module InternshipOfferArea
+  module InternshipOfferAreas
     class AreaNotificationsController < ApplicationController
 
       before_action :authenticate_user!
