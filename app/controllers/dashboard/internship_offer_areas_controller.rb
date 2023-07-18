@@ -49,12 +49,28 @@ module Dashboard
     end
 
     def update
+      if @internship_offer_area.update(internship_offer_area_params)
+        redirect_to dashboard_internship_offers_path,
+                    notice: "Modification du nom d'espace opérée"
+      else
+        respond_to do |format|
+          format.turbo_stream do
+            path = 'dashboard/internship_offer_areas/edit_areas_modal_dialog'
+            render turbo_stream:
+              turbo_stream.replace("fr-modal-edit-space-dialog",
+                                    partial: path,
+                                    locals: { current_user: current_user,
+                                              internship_offer_area: @internship_offer_area })
+          end
+        end
+      end
     end
 
     def destroy
       authorize! :destroy, @internship_offer_area
-      move_offers_around
+      move_internship_offers_to_another_area
       message = 'Espace supprimé avec succès.'
+      @internship_offer_area.destroy
       redirect_to dashboard_internship_offer_areas_path, flash: { success: message }
     rescue ActiveRecord::RecordInvalid
       render :new, status: :bad_request
@@ -62,8 +78,14 @@ module Dashboard
 
     private
 
-    def move_offers_around
-      raise('Not implemented yet')
+    def move_internship_offers_to_another_area
+      target_area = current_user.internship_offer_areas
+                                .reject { |area| area == @internship_offer_area }
+                                .order(created_at: :asc)
+                                .first
+      @internship_offer_area.internship_offers.each do |offer|
+        offer.update!(internship_offer_area: target_area)
+      end
       @internship_offer_area.destroy!
     end
 
@@ -72,7 +94,8 @@ module Dashboard
         AreaNotification.create!(
           user_id: user_id,
           area_id: area.id,
-          notify: true)
+          notify: true
+        )
       end
     end
 
