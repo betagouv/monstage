@@ -1,6 +1,6 @@
 class InternshipOfferArea < ApplicationRecord
   belongs_to :employer, polymorphic: true
-  has_many :users, 
+  has_many :users,
            foreign_key: 'current_area_id',
            class_name: 'User',
            inverse_of: :internship_offer_area

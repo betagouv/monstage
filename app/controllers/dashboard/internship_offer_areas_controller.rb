@@ -16,7 +16,8 @@ module Dashboard
     end
 
     def create
-      @internship_offer_area = current_user.internship_offer_areas.build(internship_offer_area_params)
+      parameters = internship_offer_area_params.merge(employer_type: 'User')
+      @internship_offer_area = current_user.internship_offer_areas.build(parameters)
       if @internship_offer_area.save
         current_user.current_area_id_memorize(@internship_offer_area.id)
         if current_user.team.alive?
@@ -31,11 +32,9 @@ module Dashboard
         respond_to do |format|
           format.turbo_stream do
             path = 'dashboard/internship_offer_areas/areas_modal_dialog'
-            error_message = @internship_offer_area.errors.full_messages
             render turbo_stream:
               turbo_stream.replace("fr-modal-add-space-dialog",
                                     partial: path,
-                                    error_message: error_message,
                                     locals: { current_user: current_user,
                                               internship_offer_area: @internship_offer_area })
           end
