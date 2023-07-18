@@ -49,13 +49,8 @@ module Teamable
       InternshipOffer.where(employer_id: team_members_ids)
     end
 
-    def ui_internship_offers
-      team_internship_offers.where(internship_offer_area_id: fetch_current_area_id)
-    end
-
     def internship_offers
-      InternshipOffer.where(internship_offer_area_id: fetch_current_area_id)
-                     .where(employer_id: team_members_ids)
+      team_internship_offers.where(internship_offer_area_id: fetch_current_area_id)
     end
 
     def anonymize(send_email: true)

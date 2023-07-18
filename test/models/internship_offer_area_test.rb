@@ -50,4 +50,13 @@ class InternshipOfferAreaTest < ActiveSupport::TestCase
     assert_equal 3, employer_1.internship_offer_areas.count
     assert_equal 3, employer_2.internship_offer_areas.count
   end
+
+  test "areas do not share offers" do
+    employer, offer = create_employer_and_offer
+    area = offer.internship_offer_area
+    new_area = create(:area, name: "placido_domingo", employer: employer)
+    assert_equal 1, employer.internship_offers.count
+    employer.current_area_id_memorize(new_area.id)
+    assert_equal 0, employer.internship_offers.count
+  end
 end
