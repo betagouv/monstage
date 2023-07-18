@@ -79,12 +79,13 @@ module Dashboard
 
     def move_internship_offers_to_another_area
       target_area = current_user.internship_offer_areas
-                                .reject { |area| area == @internship_offer_area }
                                 .order(created_at: :asc)
+                                .reject { |area| area == @internship_offer_area }
                                 .first
       @internship_offer_area.internship_offers.each do |offer|
         offer.update!(internship_offer_area: target_area)
       end
+      current_user.current_area_id_memorize(target_area.id)
       @internship_offer_area.destroy!
     end
 
