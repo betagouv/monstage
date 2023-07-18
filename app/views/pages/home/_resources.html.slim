@@ -10,13 +10,13 @@
                   class: "fr-raw-link fr-btn fr-btn--secondary"
   .row.fr-pb-7w
     = render partial: "pages/home/resource_card",
-            locals: { badge: "PDF",
-                      link_title: "Fichier de présentation Élèves",
-                      file: "https://drive.google.com/file/d/1vo5MgKosaXqCgnVjWuiyHQcQymnxlyGy/view?usp=sharing" }
-    = render partial: "pages/home/resource_card",
             locals: { badge: "Dossier",
                       link_title: "Kit de communication",
                       file: "https://drive.google.com/drive/u/1/folders/12rXDxZRgxxPkzj7JfzDSphoxA63TAUox" }
+    = render partial: "pages/home/resource_card",
+            locals: { badge: "PDF",
+                      link_title: "Fichier de présentation Élèves",
+                      file: "https://drive.google.com/file/d/1vo5MgKosaXqCgnVjWuiyHQcQymnxlyGy/view?usp=sharing" }
     = render partial: "pages/home/resource_card",
             locals: { badge: "PDF",
                       link_title: "Carnet de bord du stagiaire",
