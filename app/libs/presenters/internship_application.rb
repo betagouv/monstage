@@ -6,6 +6,9 @@ module Presenters
     delegate :internship_offer, to: :internship_application
     delegate :title, to: :internship_offer, prefix: true
     delegate :employer_name, to: :internship_offer
+    delegate :canceled_by_employer_message, to: :internship_application
+    delegate :rejected_message, to: :internship_application
+    delegate :examined_message, to: :internship_application
 
     def expires_in
       start = internship_application.updated_at
@@ -238,6 +241,41 @@ module Presenters
       current_state_in_list?(ok_for_employer_validation_states)
     end
 
+    def with_employer_explanation?
+      return false unless internship_application.aasm_state.in?(::InternshipApplication.with_employer_explanations_states)
+
+      explanation_count.positive?
+    end
+
+    def explanation_count
+      count = 0
+      count += 1 if internship_application.canceled_by_employer_message?
+      count += 1 if internship_application.rejected_message?
+      count += 1 if internship_application.examined_message?
+      count
+    end
+
+    def employer_explanations
+      motives = []
+      examined_motive = { meth: :examined_message, label: 'Mise à l\'étude par  l\'entreprise' }
+      canceled_motive = { meth: :canceled_by_employer_message, label: 'Annulation par l\'entreprise' }
+      rejected_motive = { meth: :rejected_message, label: 'Refus par l\'entreprise' }
+
+      motives << examined_motive if internship_application.examined_message?
+      motives << examined_motive if internship_application.canceled_by_employer_message?
+      motives << rejected_motive if internship_application.rejected_message?
+
+      motives.map do |motive|
+        text = internship_application.send(motive[:meth].to_s)
+        text.blank? ? nil : "<p><strong>#{motive[:label]}</strong> : </br>#{text}"
+      end.compact
+      # explanations = []
+      # explanations << internship_application.canceled_by_employer_message if internship_application.canceled_by_employer?
+      # "#{internship_application.canceled_by_employer_message.to_s}" \
+      # "#{internship_application.rejected_message.to_s}" \
+      # "#{internship_application.examined_message.to_s}".html_safe
+    end
+
     attr_reader :internship_application,
                 :student,
                 :internship_offer,
@@ -272,6 +310,5 @@ module Presenters
     def current_state_in_list?(state_array)
       state_array.include?(internship_application.aasm_state)
     end
-
   end
 end

@@ -24,6 +24,8 @@ fr:
       internship_applications:
         index:
           page_title: "Mes candidatures"
+        show:
+          page_title: "Candidature '%{name}'"
       new:
         page_title: "Déposer une offre de stage"
     schools:
