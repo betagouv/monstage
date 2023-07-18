@@ -5,20 +5,21 @@ nav.fr-sidemenu.fr-sidemenu--sticky aria-labelledby="dashboard-title"
       |  Dans cette rubrique
     #fr-sidemenu-wrapper.fr-collapse
       ul.fr-sidemenu__list
-        - [{label: "Offres de stage", path: dashboard_internship_offers_path},
-           {label: "Candidatures", path: dashboard_candidatures_path, notice: applications_notice},
-           {label: "Conventions", path: dashboard_internship_agreements_path, notice: agreements_notice}].each do |link_material|
+        - [{label: "Offres de stage", path: dashboard_internship_offers_path, authorization: true},
+           {label: "Candidatures", path: dashboard_candidatures_path, notice: applications_notice, authorization: true},
+           {label: "Conventions", path: dashboard_internship_agreements_path, notice: agreements_notice, authorization: can?(:index, InternshipAgreement )}].each do |link_material|
           - current_page_active = current_page?(link_material[:path])
           - li_extra_class = current_page_active ? "fr-sidemenu__item--active" : ""
           - link_options = {class: 'fr-sidemenu__link'}
           - link_options.merge!({:'aria-current'=>'page'}) if current_page_active
-          li class="fr-sidemenu__item #{li_extra_class}"
-            .sidemenu-box
-              .sidemenu-box-left
-                = link_to link_material[:path],
-                          link_options do
-                  = link_material[:label]
-              - if link_material[:notice] && link_material[:notice].to_i > 0
-                .sidemenu-box-right
-                  p.fr-badge.fr-badge--new.fr-badge--no-icon.fr-mt-3v
-                    = link_material[:notice] 
+          - if link_material[:authorization]
+            li class="fr-sidemenu__item #{li_extra_class}"
+              .sidemenu-box
+                .sidemenu-box-left
+                  = link_to link_material[:path],
+                            link_options do
+                    = link_material[:label]
+                - if link_material[:notice] && link_material[:notice].to_i > 0
+                  .sidemenu-box-right
+                    p.fr-badge.fr-badge--new.fr-badge--no-icon.fr-mt-3v
+                      = link_material[:notice] 
