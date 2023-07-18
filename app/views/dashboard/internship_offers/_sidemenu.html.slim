@@ -1,15 +1,20 @@
-table
-  tbody
-    tr
-      td
-        h1#fr-sidemenu-title.h3.text-dark[data-fr-opened="false"
-                                          aria-controls="fr-modal-edit-space-dialog"]
-          = current_user.current_area.name
-      td
-        span.fr-icon-pencil-line.fr-pt-0.fr-ml-1w [aria-hidden="true"
-                                            aria-label="Modifier le nom d'un espace"
-                                            data-fr-opened="false"
+- if current_user.employer_like?
+  = render 'dashboard/internship_offer_areas/edit_areas_modal_dialog',
+            internship_offer_area: current_user.current_area
+  table
+    tbody
+      tr
+        td
+          h1#fr-sidemenu-title.h3.text-dark[data-fr-opened="false"
                                             aria-controls="fr-modal-edit-space-dialog"]
+            = current_user.current_area.name
+        td
+          span.fr-icon-pencil-line.fr-pt-0.fr-ml-1w [aria-hidden="true"
+                                              aria-label="Modifier le nom d'un espace"
+                                              data-fr-opened="false"
+                                              aria-controls="fr-modal-edit-space-dialog"]
+- else
+  h1#fr-sidemenu-title.h3.text-dark Tableau de bord
 nav.fr-sidemenu.fr-sidemenu--sticky aria-labelledby="dashboard-title"
   .fr-sidemenu__inner
     button.fr-sidemenu__btn[hidden aria-controls="fr-sidemenu-wrapper" aria-expanded="false"]
@@ -33,6 +38,5 @@ nav.fr-sidemenu.fr-sidemenu--sticky aria-labelledby="dashboard-title"
                 .sidemenu-box-right
                   p.fr-badge.fr-badge--new.fr-badge--no-icon.fr-mt-3v
                     = link_material[:notice]
-= render 'dashboard/internship_offer_areas/edit_areas_modal_dialog',
-          internship_offer_area: current_user.current_area
+
 

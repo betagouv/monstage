@@ -334,6 +334,7 @@ fr:
         week: Semaine
 
       invitation:
+        email: Email
         roles:
           teacher: Professeur
           school_manager: Chef d'établissement

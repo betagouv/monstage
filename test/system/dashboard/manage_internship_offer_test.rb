@@ -118,7 +118,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       :weekly_internship_offer,
       employer: employer,
       weeks: older_weeks,
-      organisation: organisation,s
+      organisation: organisation,
       internship_offer_area_id: employer.current_area_id
     )
     sign_in(employer)
