@@ -78,6 +78,35 @@ module Teamable
       InternshipAgreement.where(internship_application: internship_applications)
     end
 
+    def internship_offer_ids_by_area(area_id: )
+      InternshipOffer.where(employer_id: team_members_ids)
+                     .where(internship_offer_area_id: area_id || fetch_current_area_id)
+                     .pluck(:id)
+    end
+
+    def internship_applications_by_area(area_id: )
+      offer_ids = internship_offer_ids_by_area(area_id: area_id)
+      return InternshipApplication.none if offer_ids.empty?
+
+      InternshipApplication.where(internship_offer_id: offer_ids)
+    end
+
+    def internship_applications_by_area_and_states(area_id:, aasm_state: )
+      offer_ids = internship_offer_ids_by_area(area_id: area_id)
+      return InternshipApplication.none if offer_ids.empty?
+
+      InternshipApplication.where(internship_offer_id: offer_ids)
+                           .where(aasm_state: aasm_state)
+    end
+
+    def internship_applications_by_states( aasm_state: )
+      offer_ids = team_internship_offers.pluck(:id)
+      return InternshipApplication.none if offer_ids.empty?
+
+      InternshipApplication.where(internship_offer_id: offer_ids)
+                           .where(aasm_state: aasm_state)
+    end
+
     def team
       Team.new(self)
     end

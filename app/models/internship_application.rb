@@ -277,6 +277,10 @@ class InternshipApplication < ApplicationRecord
     GlobalID::Locator.locate_signed( sgid)
   end
 
+  def self.pending_states
+    %w[submitted read_by_employer examined]
+  end
+
   def self.received_states
     %w[submitted read_by_employer examined expired]
   end

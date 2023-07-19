@@ -33,13 +33,13 @@
             = link_to area.name,
                    filter_by_area_dashboard_internship_offer_area_path(id: area.id)
           td
-            = 0
+            = current_user.internship_applications_by_area_and_states( area_id: area.id, aasm_state: InternshipApplication::received_states ).count
           td
-            = 0
+            = current_user.internship_applications_by_area_and_states( area_id: area.id, aasm_state: InternshipApplication::rejected_states ).count
           td
-            = 0
+            = current_user.internship_applications_by_area_and_states( area_id: area.id, aasm_state: InternshipApplication::pending_states ).count
           td
-            = 0
+            = current_user.internship_applications_by_area_and_states( area_id: area.id, aasm_state: :approved ).count
           - if can?(:destroy, area)
             td
               = link_to dashboard_internship_offer_area_path(area),
@@ -50,13 +50,13 @@
         td
           | Total
         td
-            = 0
+          = current_user.internship_applications_by_states( aasm_state: InternshipApplication::received_states ).count
         td
-          = 0
+          = current_user.internship_applications_by_states( aasm_state: InternshipApplication::rejected_states ).count
         td
-          = 0
+          = current_user.internship_applications_by_states( aasm_state: InternshipApplication::pending_states ).count
         td
-          = 0
+          = current_user.internship_applications_by_states( aasm_state: :approved ).count
         - if current_user.team_areas.count > 1
           td
 #fr-modal-add-space-dialog
