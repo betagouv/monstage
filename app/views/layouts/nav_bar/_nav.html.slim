@@ -4,7 +4,7 @@ nav#navigation-773.fr-nav.[role="navigation" aria-label="Menu principal"]
     li.fr-nav__item
       = render partial: 'layouts/extra_for_devs'
     - if user_signed_in?
-      - unless current_user.employer_like?
+      - unless current_user.employer?
         li.fr-nav__item
           = link_to 'Accueil',
                     root_path,
@@ -93,7 +93,7 @@ nav#navigation-773.fr-nav.[role="navigation" aria-label="Menu principal"]
 
     - else
       li.fr-nav__item
-        - options = {class: "fr-nav__link fr-icon-lock-line text-decoration-none extended-150 "}
+        - options = {class: "fr-nav__link fr-icon-lock-line text-decoration-none extended-150"}
         - options = options.merge({ :'aria-current' => 'page' }) if current_controller?(:sessions)
         = link_to 'Connexion', new_user_session_path, options
       li.fr-nav__item

@@ -80,7 +80,10 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     travel_to(Date.new(2022, 1, 10)) do
       employer = create(:employer)
       weeks = Week.selectable_from_now_until_end_of_school_year.last(4)
-      internship_offer = create(:weekly_internship_offer, employer: employer, weeks: weeks)
+      internship_offer = create(:weekly_internship_offer,
+                                employer: employer,
+                                weeks: weeks,
+                                internship_offer_area_id: employer.current_area_id)
       assert_equal 1, internship_offer.max_candidates
       sign_in(employer)
       visit dashboard_internship_offers_path(internship_offer: internship_offer)
@@ -142,6 +145,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       current_internship_offer = create(
         :weekly_internship_offer,
         employer: employer,
+        internship_offer_area_id: employer.current_area_id,
         weeks: older_weeks,
         published_at: nil
       )
@@ -178,14 +182,17 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
            :accepted_invitation,
            inviter_id: employer_1.id,
            member_id: employer_1.id)
-    internship_offer_1 = create(:weekly_internship_offer, employer: employer_1)
-    internship_offer_2 = create(:weekly_internship_offer, employer: employer_2)
-    internship_offer_3 = create(:weekly_internship_offer, employer: employer_3)
+    internship_offer_1 = create(:weekly_internship_offer, employer: employer_1, internship_offer_area_id: employer_1.current_area_id)
+    internship_offer_2 = create(:weekly_internship_offer, employer: employer_2, internship_offer_area_id: employer_2.current_area_id)
+    internship_offer_3 = create(:weekly_internship_offer, employer: employer_3, internship_offer_area_id: employer_3.current_area_id)
 
     sign_in(employer_1)
     visit dashboard_internship_offers_path
+    click_link "Offres de stage"
     assert page.has_content?(internship_offer_1.title)
+    click_link(employer_2.current_area.name)
+    click_link "Offres de stage"
     assert page.has_content?(internship_offer_2.title)
-    refute page.has_content?(internship_offer_3.title)
+    assert_select('a', text: employer_3.current_area.name, count: 0)
   end
 end

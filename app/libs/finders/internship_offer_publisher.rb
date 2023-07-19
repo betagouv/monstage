@@ -17,9 +17,7 @@ module Finders
 
     def operator_query
       query = common_filter do
-        InternshipOffer.kept
-                       .where(employer: user)
-                       .where(internship_offer_area_id: user.fetch_current_area_id)
+        user.internship_offers.kept
       end
 
       query
@@ -49,9 +47,7 @@ module Finders
     end
 
     def proposed_offers
-      InternshipOffer.kept
-                     .where(employer_id: user.team_members_ids)
-                     .where(internship_offer_area_id: user.fetch_current_area_id)
+      user.internship_offers.kept
     end
   end
 end

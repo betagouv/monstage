@@ -27,4 +27,12 @@ module TeamAndAreasHelper
                    internship_offer_area: employer.current_area)
     [employer, offer]
   end
+
+  def create_user_operator_and_api_offer(operator_id)
+    user_operator = create(:user_operator, operator_id: operator_id)
+    offer = create(:api_internship_offer,
+                    employer: user_operator,
+                    internship_offer_area: user_operator.current_area)
+    [user_operator, offer]
+  end
 end
