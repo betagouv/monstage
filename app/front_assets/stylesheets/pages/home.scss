@@ -35,7 +35,7 @@ a:hover {
 .visible-smaller-md {}
 
 .homepage {
-  // overflow-x: hidden; Not specific enough
+  overflow-x: hidden;
 }
 .fr-card__title.title-cards-in-a-row.home {
   min-height: 5rem;
@@ -214,13 +214,6 @@ img.covering {
   width: 100%;
   height: 100%;
   border: 0;
-}
-
-.fr-nav__link.extended-150 {
-  width: 150px;
-}
-.fr-nav__link.extended-200 {
-  width: 200px;
 }
 @include media-breakpoint-up(md) {
   .sticky-top-customed {
