@@ -221,6 +221,7 @@ class InternshipApplication < ApplicationRecord
                                 StudentMailer.internship_application_canceled_by_employer_email(internship_application: self)
                               end
                            end
+                           self.internship_agreement&.destroy
                          }
     end
 
@@ -234,6 +235,7 @@ class InternshipApplication < ApplicationRecord
                                internship_application: self
                              )
                            end
+                           self.internship_agreement&.destroy
                          }
     end
 
