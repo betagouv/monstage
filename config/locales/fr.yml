@@ -613,8 +613,9 @@ fr:
         kept: Actives
         discarded: Supprimées
   dashboard:
-    internship_offer:
+    internship_offer_area:
       index: "Tous mes espaces"
+    internship_offer:
       created: Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.
   views:
     pagination:

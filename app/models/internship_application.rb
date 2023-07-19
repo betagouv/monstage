@@ -277,12 +277,12 @@ class InternshipApplication < ApplicationRecord
     GlobalID::Locator.locate_signed( sgid)
   end
 
-  def self.pending_states
-    %w[submitted read_by_employer examined]
-  end
-
   def self.received_states
     %w[submitted read_by_employer examined expired]
+  end
+
+  def self.pending_states
+    received_states + %w[validated_by_employer]
   end
 
   def self.rejected_states
@@ -426,10 +426,6 @@ class InternshipApplication < ApplicationRecord
     return false unless internship_offer.employer.employer_like?
 
     true
-  end
-
-  def pending_states
-    %w[submitted read_by_employer examined validated_by_employer]
   end
 
   def employer_aware_states

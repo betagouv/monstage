@@ -7,7 +7,7 @@
           - options = { class: 'fr-nav__link', target: '_self' }
           - options.merge!({ :'aria-current' => "page" }) if current_page?(dashboard_internship_offer_areas_path)
           = link_to dashboard_internship_offer_areas_path, options do
-            = t('dashboard.internship_offer.index')
+            = t('dashboard.internship_offer_area.index')
         - internship_offer_areas.each do |area|
           li.fr-nav__item
             - aria_controls = { controls: 'fr-modal-add-space' }
