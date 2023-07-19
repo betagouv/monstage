@@ -29,6 +29,9 @@ module RailsAdminInternshipOfferable
                        :submitted_applications_count,
                        :rejected_applications_count,
                        :tutor
+        field :internship_offer_area do
+          label "Espace"
+        end
       end
 
       edit do

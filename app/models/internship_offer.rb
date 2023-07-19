@@ -36,7 +36,6 @@ class InternshipOffer < ApplicationRecord
   belongs_to :practical_info, optional: true
   belongs_to :employer, polymorphic: true, optional: true
   belongs_to :internship_offer_area, optional: true, touch: true
-  # keep_me has_one :employer, through: :internship_offer_area, source_type: 'User'
   has_many :favorites
   has_many :users, through: :favorites
 
@@ -139,43 +138,6 @@ class InternshipOffer < ApplicationRecord
     where.not(id: InternshipApplication.where(user_id: user.id).map(&:internship_offer_id))
   }
 
-  # Associations
-  # has_many :internship_applications, as: :internship_offer,
-  #                                    foreign_key: 'internship_offer_id'
-  # has_many :favorites
-  # has_many :users, through: :favorites
-
-  # belongs_to :employer, polymorphic: true
-  # belongs_to :internship_offer_info, optional: true
-  # belongs_to :hosting_info, optional: true
-  # belongs_to :practical_info, optional: true
-  # belongs_to :organisation, optional: true
-  # accepts_nested_attributes_for :organisation, allow_destroy: true
-  # has_rich_text :employer_description_rich_text
-
-  # # Callbacks
-  # after_initialize :init
-
-  # before_validation :update_organisation
-
-  # before_save :sync_first_and_last_date,
-  #             :reverse_academy_by_zipcode
-
-  # before_create :preset_published_at_to_now
-  # after_commit :sync_internship_offer_keywords
-
-  # # Scopes
-  # scope :published, -> { where.not(published_at: nil) }
-
-  # paginates_per PAGE_SIZE
-
-  # delegate :email, to: :employer, prefix: true, allow_nil: true
-  # delegate :phone, to: :employer, prefix: true, allow_nil: true
-  # delegate :name, to: :sector, prefix: true
-
-  # # Callbacks
-  # before_save :update_remaining_seats
-
   aasm do
     state :drafted, initial: true
     state :published,
@@ -259,7 +221,7 @@ class InternshipOffer < ApplicationRecord
                     tutor_name tutor_phone tutor_email tutor_role employer_website
                     employer_name street zipcode city department region academy
                     is_public group school_id coordinates first_date last_date
-                    siret employer_manual_enter
+                    siret employer_manual_enter internship_offer_area_id
                     internship_offer_info_id organisation_id tutor_id
                     weekly_hours daily_hours]
 
@@ -274,6 +236,7 @@ class InternshipOffer < ApplicationRecord
                     tutor_name tutor_phone tutor_email tutor_role employer_website
                     employer_name is_public group school_id coordinates
                     first_date last_date siret employer_manual_enter
+                    internship_offer_area_id
                     internship_offer_info_id organisation_id tutor_id
                     weekly_hours daily_hours]
 
@@ -290,7 +253,7 @@ class InternshipOffer < ApplicationRecord
     self.group_id = organisation.group_id
     self.is_public = organisation.is_public
   end
-  
+
   def update_organisation
     return unless organisation && !organisation.new_record?
 
