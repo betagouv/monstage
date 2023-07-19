@@ -1,6 +1,4 @@
 - content_for :page_title, "#{t(".page_title")} | Monstage"
-= render 'layouts/breadcrumb', links: [ [current_user.presenter.dashboard_name_link, current_user.dashboard_name],
-                                        ['', 'Mes espaces']]
 = render 'dashboard/internship_offers/areas_bar'
 .d-flex
   = image_tag asset_pack_path('media/images/pages/areas/space_girl.svg'),
@@ -32,7 +30,8 @@
       - @internship_offer_areas.each do |area|
         tr
           td
-            = area.name
+            = link_to area.name,
+                   filter_by_area_dashboard_internship_offer_area_path(id: area.id)
           td
             = 0
           td

@@ -1,4 +1,3 @@
-= render 'layouts/breadcrumb', links: [ ['', 'Mon tableau de bord'] ]
 = render layout: 'layouts/dashboards_with_menu' do
   - selected_tab = params[:tab] || 'received!'
   h1.h4.text-dark.fr-my-8w Les candidatures
@@ -21,8 +20,8 @@
                                                                  role="tab"
                                                                  aria-selected="#{ selected_tab.in?(%w[reject! cancel_by_employer! cancel_by_student!])}"
                                                                  aria-controls="tabpanel-refused-panel"]
-
           | Refusées
+
     #tabpanel-received-panel.fr-tabs__panel.fr-tabs__panel--selected[role="tabpanel"
                                                                 aria-labelledby="tabpanel-received"
                                                                 tabindex="0"]

@@ -1,6 +1,3 @@
-= render 'layouts/breadcrumb',
-          links: [['', 'Mon tableau de bord']]
-
 = render layout: 'layouts/dashboards_with_menu' do
   - # School managers and Employers do not have the same tabs  i.e. layout
   - if current_user.school_management?

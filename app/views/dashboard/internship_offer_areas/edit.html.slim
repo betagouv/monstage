@@ -1,6 +1,4 @@
 - content_for :page_title, "#{t(".page_title")} | Monstage"
-= render 'layouts/breadcrumb', links: [ [current_user.presenter.dashboard_name_link, current_user.dashboard_name],
-                                        ['', "Mon espace '#{@internship_offer_area.name}'"]]
 = render 'dashboard/internship_offers/areas_bar'
 h1.fr-h3.text-dark = @internship_offer_area.name
 .d-flex
