@@ -120,6 +120,14 @@ module Teamable
       members.empty? ? [id] : members
     end
 
+    def db_team_members
+      users = []
+      team_members_ids.each do |user_id|
+        users << User.find_by(id: user_id)
+      end
+      users.compact
+    end
+    
     def pending_invitation_to_a_team
       TeamMemberInvitation.with_pending_invitations.find_by(invitation_email: email)
     end

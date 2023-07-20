@@ -22,11 +22,11 @@ module Dashboard
         current_user.current_area_id_memorize(@internship_offer_area.id)
         if current_user.team.alive?
           set_areas_notifications(@internship_offer_area)
-          redirect_to edit_dashboard_internship_offer_area_path(@internship_offer_area),
-                      flash: { success: 'Espace créé avec succès.' }
+          redirect_to dashboard_internship_offer_areas_path, notice: 'Espace créé avec succès.'
+          # redirect_to edit_dashboard_internship_offer_area_area_notification(internship_offer_area_id: @internship_offer_area),
+          #             flash: { success: 'Espace créé avec succès.' }
         else
-          redirect_to dashboard_internship_offers_path,
-                      flash: { success: 'Espace créé avec succès.' }
+          redirect_to dashboard_internship_offer_areas_path, notice: 'Espace créé avec succès.'
         end
       else
         respond_to do |format|
@@ -49,8 +49,14 @@ module Dashboard
 
     def update
       if @internship_offer_area.update(internship_offer_area_params)
-        redirect_to dashboard_internship_offers_path,
-                    notice: "Modification du nom d'espace opérée"
+        notice = 'Modification du nom d\'espace opérée'
+        if current_user.team.alive?
+          redirect_to dashboard_internship_offer_areas_path,
+                      notice: notice
+        else
+          redirect_to dashboard_internship_offers_path,
+                    notice: notice
+        end
       else
         respond_to do |format|
           format.turbo_stream do
@@ -85,18 +91,24 @@ module Dashboard
       @internship_offer_area.internship_offers.each do |offer|
         offer.update!(internship_offer_area: target_area)
       end
-      current_user.current_area_id_memorize(target_area.id)
+      if current_user.team.alive?
+        current_user.db_team_members.each do |user|
+          user.current_area_id_memorize(target_area.id) if user.current_area_id == @internship_offer_area.id
+        end
+      else
+        current_user.current_area_id_memorize(target_area.id)
+      end
       @internship_offer_area.destroy!
     end
 
     def set_areas_notifications(area)
-      current_user.team_members_ids do |user_id|
-        AreaNotification.create!(
-          user_id: user_id,
-          area_id: area.id,
-          notify: true
-        )
-      end
+      # current_user.team_members_ids do |user_id|
+      #   AreaNotification.create!(
+      #     user_id: user_id,
+      #     area_id: area.id,
+      #     notify: true
+      #   )
+      # end
     end
 
     def internship_offer_area_params
