@@ -18,7 +18,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     sign_in(employer)
     get employer.custom_dashboard_path
     assert_select("li a.fr-link.mr-4", text: 'Espaces', count: 1)
-    assert_select("li table tbody tr td.fr-pl-1v", text: 'équipe'.capitalize, count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'équipe'.capitalize, count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Mon compte', count: 1)
   end
 
@@ -38,7 +38,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     assert_select("li a.fr-link.mr-4", text: 'Ma classe', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Espaces', count: 0)
-    assert_select("li table tbody tr td.fr-pl-1v", text: 'équipe'.capitalize, count: 0)
+    assert_select("li a.fr-link.mr-4", text: 'équipe'.capitalize, count: 0)
   end
 
   test 'other' do
@@ -66,7 +66,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     assert_select("li a.fr-link.mr-4", text: 'Statistiques', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Espaces', count: 1)
-    assert_select("li table tbody tr td.fr-pl-1v", text: 'équipe'.capitalize, count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'équipe'.capitalize, count: 1)
   end
 
   test 'school_manager' do
@@ -84,7 +84,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     assert_select("li a.fr-link.mr-4", text: 'Mon établissement', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Espaces', count: 0)
-    assert_select("li table tbody tr td.fr-pl-1v", text: 'équipe'.capitalize, count: 0)
+    assert_select("li a.fr-link.mr-4", text: 'équipe'.capitalize, count: 0)
   end
 
   test 'student' do
@@ -102,7 +102,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     assert_select("li a.fr-link.mr-4", text: 'Candidatures', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Espaces', count: 0)
-    assert_select("li table tbody tr td.fr-pl-1v", text: 'équipe'.capitalize, count: 0)
+    assert_select("li a.fr-link.mr-4", text: 'équipe'.capitalize, count: 0)
   end
 
   test 'teacher' do
@@ -121,7 +121,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     assert_select("li a.fr-link.mr-4", text: 'Ma classe', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Espaces', count: 0)
-    assert_select("li table tbody tr td.fr-pl-1v", text: 'équipe'.capitalize, count: 0)
+    assert_select("li a.fr-link.mr-4", text: 'équipe'.capitalize, count: 0)
   end
 
   test 'statistician' do
@@ -136,7 +136,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Espaces', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Espaces', count: 1)
-    assert_select("li table tbody tr td.fr-pl-1v", text: 'équipe'.capitalize, count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'équipe'.capitalize, count: 1)
   end
 
   test 'ministry statistician' do
@@ -151,7 +151,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Espaces', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Espaces', count: 1)
-    assert_select("li table tbody tr td.fr-pl-1v", text: 'équipe'.capitalize, count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'équipe'.capitalize, count: 1)
   end
 
   test 'education statistician' do
@@ -165,6 +165,6 @@ class NavbarTest < ActionDispatch::IntegrationTest
     assert_select("li a.fr-link.mr-4", text: 'Mes offres', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Espaces', count: 1)
-    assert_select("li table tbody tr td.fr-pl-1v", text: 'équipe'.capitalize, count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'équipe'.capitalize, count: 1)
   end
 end
