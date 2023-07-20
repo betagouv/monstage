@@ -35,16 +35,7 @@
             - active = current_page?(dashboard_team_member_invitations_path) || request.url.include?('origine=dashboard') ? 'active' : ''
             = link_to dashboard_team_member_invitations_path,
                       class: "fr-link text-decoration-none mr-4 #{active}" do
-              table
-                tbody
-                  tr
-                    td.fr-mt-1v
-                      = image_tag asset_pack_path 'media/images/pages/teams/team_icon_plus.svg',
-                                  alt: "logo d'équipe",
-                                  height: '20px',
-                                  class: 'fr-pr-8v fr-pt-8v'
-                    td.fr-pl-1v
-                      = 'équipe'.capitalize
+              = 'équipe'.capitalize
 
         - if can?(:create, Favorite)
           li

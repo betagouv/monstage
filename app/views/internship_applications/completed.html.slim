@@ -4,7 +4,7 @@ div.fr-container style="overflow: hidden;"
   .success-banner.fr-mt-8w
     .row.fr-mx-5w.no-xs-margin
       .col-12.col-sm-3.fr-mb-4w.fr-mb-sm-0
-        = image_tag asset_pack_path("media/images/internship_applications/#{@internship_application.student.gender == 'f' ? 'girl' : 'boy'}.svg"), alt: '', class: 'image-character'
+        = image_tag asset_pack_path("media/images/internship_applications/#{@internship_application.student.gender == 'f' ? 'girl' : 'boy'}.svg"), alt: 'jeune eleve', class: 'image-character'
       .col-12.col-sm-9.fr-pl-4w.d-flex.align-items-center.pl-xs-1
         .bloc
           .h1.fr-pl-2w.ml-xs-0
@@ -44,7 +44,7 @@ div.fr-container style="overflow: hidden;"
                     = "Du #{I18n.localize(internship_offer.first_date, format: :human_mm_dd_yyyy)} au #{I18n.localize(internship_offer.last_date, format: :human_mm_dd_yyyy)}"
             .fr-card__header
               .fr-card__img
-                = image_tag asset_pack_path("media/images/sectors/#{internship_offer.sector.cover}"), alt: '', class: 'fr-responsive-img'
+                = image_tag asset_pack_path("media/images/sectors/#{internship_offer.sector.cover}"), alt: 'image de secteur', class: 'fr-responsive-img'
               ul.fr-badges-group
                 li
                   .fr-tag
