@@ -393,7 +393,7 @@ class InternshipApplication < ApplicationRecord
   end
 
   def cancel_all_pending_applications
-    student.internship_applications.where(aasm_state: pending_states).each do |application|
+    student.internship_applications.where(aasm_state: InternshipApplication::pending_states).each do |application|
       application.cancel_by_student_confirmation!
     end
   end
