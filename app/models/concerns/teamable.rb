@@ -116,7 +116,7 @@ module Teamable
     end
 
     def team_members_ids
-      members = team.team_members.pluck(:member_id)
+      members = team.team_members.pluck(:member_id).compact
       members.empty? ? [id] : members
     end
 

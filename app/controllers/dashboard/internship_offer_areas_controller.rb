@@ -16,8 +16,11 @@ module Dashboard
     end
 
     def create
-      parameters = internship_offer_area_params.merge(employer_type: 'User')
-      @internship_offer_area = current_user.internship_offer_areas.build(parameters)
+      build_params = internship_offer_area_params.merge(
+          employer_type: 'User',
+          employer_id: current_user.id
+      )
+      @internship_offer_area = current_user.internship_offer_areas.build(build_params)
       if @internship_offer_area.save
         current_user.current_area_id_memorize(@internship_offer_area.id)
         if current_user.team.alive?
