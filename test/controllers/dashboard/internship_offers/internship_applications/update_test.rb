@@ -270,6 +270,7 @@ module InternshipOffers::InternshipApplications
 
       assert_equal 'OK', internship_application.canceled_by_employer_message.try(:to_plain_text)
       assert internship_application.canceled_by_employer?
+      assert_nil internship_application.internship_agreement
     end
 
     test 'PATCH #update with cancel_by_student! send email, change aasm_state' do
@@ -346,6 +347,36 @@ module InternshipOffers::InternshipApplications
         internship_application.reload
         assert_equal 'examined', internship_application.aasm_state
       end
+    end
+
+    test 'PATCH when application is approved #update with cancel_by_employer! delete agreement' do
+      internship_application = create(:weekly_internship_application, :approved)
+      assert internship_application.internship_agreement
+      sign_in(internship_application.internship_offer.employer)
+      
+      patch(dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
+              params: { transition: :cancel_by_employer!,
+                        internship_application: { canceled_by_employer_message: 'OK' } })
+        
+      internship_application.reload
+      assert_equal 'OK', internship_application.canceled_by_employer_message.try(:to_plain_text)
+      assert internship_application.canceled_by_employer?
+      assert_nil internship_application.internship_agreement
+    end
+
+    test 'PATCH when application is approved #update with cancel_by_student! delete agreement' do
+      internship_application = create(:weekly_internship_application, :approved)
+      assert internship_application.internship_agreement
+      sign_in(internship_application.internship_offer.employer)
+
+      patch(dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
+              params: { transition: :cancel_by_student!,
+                        internship_application: { canceled_by_employer_message: 'OK' } })
+        
+      internship_application.reload
+      assert_equal 'OK', internship_application.canceled_by_employer_message.try(:to_plain_text)
+      assert internship_application.canceled_by_student?
+      assert_nil internship_application.internship_agreement
     end
   end
 end
