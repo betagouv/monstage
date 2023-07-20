@@ -14,10 +14,11 @@ module Builders
           .merge(preprocess_practical_info_to_params(practical_info))
           .merge(employer_id: user.id, employer_type: 'User')
           .merge(
-            organisation_id: organisation.id, 
-            internship_offer_info_id: internship_offer_info.id, 
-            hosting_info_id: hosting_info.id, 
-            practical_info_id: practical_info.id)
+            organisation_id: organisation.id,
+            internship_offer_info_id: internship_offer_info.id,
+            hosting_info_id: hosting_info.id,
+            practical_info_id: practical_info.id,
+            internship_offer_area_id: user.current_area_id)
         )
         internship_offer.save!
         callback.on_success.try(:call, internship_offer)
@@ -32,7 +33,9 @@ module Builders
       preprocess_organisation(params)
       create_params = preprocess_api_params(params, fallback_weeks: true)
       internship_offer = model.create!(create_params)
-      internship_offer.update(aasm_state: 'published')
+      internship_offer.update(
+        aasm_state: 'published',
+        internship_offer_area_id: user.current_area_id)
       callback.on_success.try(:call, internship_offer)
     rescue ActiveRecord::RecordInvalid => e
       if duplicate?(e.record)
