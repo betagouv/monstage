@@ -63,7 +63,7 @@ module Dashboard
                       to: "submitted" do
           find('input[value="Envoyer la demande"]').click
         end
-        find '.fr-badge.fr-badge--info', text: "ENVOYÉE"
+        find '.fr-badge.fr-badge--info', text: "SANS RÉPONSE DE L'ENTREPRISE"
         find "a#show_link_#{internship_application.id}", text: "Voir"
       end
 
