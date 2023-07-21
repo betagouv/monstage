@@ -41,12 +41,12 @@ module Finders
 
       InternshipOffer.kept
                      .joins(:internship_applications)
-                     .where(offers_at[:employer_id].eq(user.id))
+                     .where(offers_at[:employer_id].in(people_in_team_ids))
                      .where(applications_at[:aasm_state].eq('approved'))
     end
 
     def proposed_offers
-      user.internship_offers.kept
+      InternshipOffer.kept.where(employer_id: user.team_members_ids)
     end
   end
 end

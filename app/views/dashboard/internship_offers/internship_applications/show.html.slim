@@ -90,38 +90,9 @@
       h3.h5 Motivations
       p = @internship_application.motivation.to_s
 
-    row.no-gutters.mt-2
-      .col-10
-        .row
-          .col-12.mb-3
-            h3.h6
-              i.fa-fw.fas.fa-user
-              | Informations sur l'élève
-            = render partial: "/internship_applications/student_details",
+    = render partial: "/internship_applications/student_details",
                       locals: { student: @internship_application.student,
                               internship_application: @internship_application}
-        .row
-          - resume_content = @internship_application.student.resume_educational_background.to_s
-          - resume_languages = @internship_application.student.resume_languages.to_s
-          - resume_other = @internship_application.student.resume_other.to_s
-          .col-md-4.col-sm-8.col-xs-12
-            - if resume_content.present? || resume_languages.present?
-              h3.h6 Parcours Scolaire
-              .reboot-trix-content = resume_content
-              - if resume_languages.present?
-                h3.h6.mt-3 Langues
-                .reboot-trix-content = resume_languages
-
-          .col-md-4.col-sm-8.col-xs-12
-            - if resume_other.present?
-              h3.h6 Activités extra-scolaires
-              .reboot-trix-content = resume_other
-
-        - if @internship_application.student.handicap?
-          h3.h6.mt-3
-            i.fas.fa-wheelchair
-            Besoin d'accompagnement
-          .reboot-trix-content.student-handicap = @internship_application.student.handicap.to_s
     .grey-container-application
       - if current_user&.employer_like? || params[:token].present?
         = render "dashboard/internship_offers/internship_applications/actions/employer_decisions",

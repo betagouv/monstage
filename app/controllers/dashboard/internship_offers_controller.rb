@@ -7,14 +7,10 @@ module Dashboard
     helper_method :order_direction
 
     def index
-      authorize! :index,
-                 Acl::InternshipOfferDashboard.new(user: current_user)
+      authorize! :index, Acl::InternshipOfferDashboard.new(user: current_user)
       @internship_offers = finder.all
-      if order_direction.nil? 
-        @internship_offers = @internship_offers.order(:published_at)
-      else  
-        @internship_offers = @internship_offers.order(order_column => order_direction)
-      end
+      order_param = order_direction.nil? ? :published_at : {order_column => order_direction}
+      @internship_offers = @internship_offers.order(order_param)
     end
 
     # duplicate submit

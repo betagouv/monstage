@@ -1,0 +1,15 @@
+= render 'layouts/breadcrumb', links: [ [dashboard_team_member_invitations_path, 'Equipe'], ['', 'Nouveaux membres'] ]
+h1.fr-h3 Inviter des membres d’équipe
+
+.row
+  .col-md-6.col-sm-12
+    = render 'dashboard/team_member_invitations/invitation_form'
+  .col-md-6.col-sm-12
+    .fr-callout 
+      h3.fr-callout__title Concernant l'invitation 
+      p.fr-callout__text
+        |
+          Vous avez la possibilité d'inviter tous les membres de votre équipe 
+          à collaborer sur le dépôt d’offres et la gestion des candidatures. 
+          Les membres invités recevront un e-mail leur permettant de procéder 
+          facilement à leur inscription.

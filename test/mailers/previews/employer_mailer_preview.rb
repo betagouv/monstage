@@ -57,4 +57,17 @@ class EmployerMailerPreview < ActionMailer::Preview
       internship_agreement: InternshipAgreement.first
     )
   end
+
+  def team_member_invitation_email
+    employers = Users::Employer.all.first(2)
+    team_member_invitation = TeamMemberInvitation.create(
+      user: employers.first,
+      invitation_email: employers.second.email
+    )
+    EmployerMailer.team_member_invitation_email(
+      team_member_invitation,
+      user: employers.second,
+      current_user: employers.first
+    )
+  end
 end

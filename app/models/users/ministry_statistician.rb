@@ -4,7 +4,7 @@ module Users
   class MinistryStatistician < User
     include Signatorable
     include Statisticianable
-
+    
     METABASE_DASHBOARD_ID = 10
 
     has_one :ministry_email_whitelist,

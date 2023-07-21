@@ -77,7 +77,7 @@ module Dashboard
     end
 
     def index
-      authorize! :read, InternshipAgreement
+      authorize! :index, InternshipAgreement
       @internship_offers = current_user.internship_offers if current_user.employer_like?
       @internship_agreements = current_user.internship_agreements
                                            .includes(
@@ -91,7 +91,6 @@ module Dashboard
       @no_agreement_internship_application_list = current_user.internship_applications
                                                               .approved
                                                               .select { |ia| ia.student.school.school_manager.nil? }
-  
     end
 
     private

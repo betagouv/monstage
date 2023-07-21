@@ -111,7 +111,7 @@ module Finders
           .or(InternshipOffers::Api.send(scope))
       else
         InternshipOffers::WeeklyFramed.send(scope, args)
-        .or(InternshipOffers::Api.send(scope, args))
+          .or(InternshipOffers::Api.send(scope, args))
       end
     end
   end

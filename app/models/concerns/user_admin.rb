@@ -3,12 +3,10 @@
 module UserAdmin
   extend ActiveSupport::Concern
 
-  DEFAULT_FIELDS = %i[id email first_name last_name]
-  ACCOUNT_FIELDS = %i[confirmed_at sign_in_count]
-
+  DEFAULT_FIELDS      = %i[id email first_name last_name]
+  ACCOUNT_FIELDS      = %i[confirmed_at sign_in_count]
   DEFAULT_EDIT_FIELDS = %i[first_name last_name email phone password confirmed_at type discarded_at]
-
-  DEFAULT_SCOPES = %i[kept discarded]
+  DEFAULT_SCOPES      = %i[kept discarded]
 
   included do
     rails_admin do
@@ -29,10 +27,6 @@ module UserAdmin
       edit do
         fields(*DEFAULT_EDIT_FIELDS)
       end
-
-      # show do
-      #   fields(*UserAdmin::DEFAULT_FIELDS)
-      # end
 
       show do
         fields(*DEFAULT_FIELDS)

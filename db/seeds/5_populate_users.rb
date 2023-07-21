@@ -28,6 +28,14 @@ def populate_users
       phone: '+330622554144'
     )
   ).save!
+  with_class_name_for_defaults(
+    Users::Employer.new(
+      email: 'other_employer@ms3e.fr',
+      password: 'review',
+      employer_role: 'PDG',
+      phone: '+330622554145'
+    )
+  ).save!
   with_class_name_for_defaults(Users::God.new(email: 'god@ms3e.fr', password: 'review')).save!
 
   school_manager = with_class_name_for_defaults(Users::SchoolManagement.new(

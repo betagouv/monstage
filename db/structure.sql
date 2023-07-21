@@ -760,6 +760,39 @@ ALTER SEQUENCE public.internship_applications_id_seq OWNED BY public.internship_
 
 
 --
+-- Name: internship_offer_areas; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.internship_offer_areas (
+    id bigint NOT NULL,
+    employer_type character varying,
+    employer_id bigint,
+    name character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: internship_offer_areas_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.internship_offer_areas_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: internship_offer_areas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.internship_offer_areas_id_seq OWNED BY public.internship_offer_areas.id;
+
+
+--
 -- Name: internship_offer_info_weeks; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1014,7 +1047,8 @@ CREATE TABLE public.internship_offers (
     hidden_duplicate boolean DEFAULT false,
     daily_hours jsonb,
     hosting_info_id bigint,
-    practical_info_id bigint
+    practical_info_id bigint,
+    internship_offer_area_id bigint
 );
 
 
@@ -1423,6 +1457,41 @@ ALTER SEQUENCE public.task_registers_id_seq OWNED BY public.task_registers.id;
 
 
 --
+-- Name: team_member_invitations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.team_member_invitations (
+    id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    inviter_id bigint NOT NULL,
+    member_id bigint,
+    invitation_email character varying(150) NOT NULL,
+    invitation_refused_at timestamp(6) without time zone,
+    aasm_state character varying DEFAULT 'pending_invitation'::character varying
+);
+
+
+--
+-- Name: team_member_invitations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.team_member_invitations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: team_member_invitations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.team_member_invitations_id_seq OWNED BY public.team_member_invitations.id;
+
+
+--
 -- Name: tutors; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1663,6 +1732,13 @@ ALTER TABLE ONLY public.internship_applications ALTER COLUMN id SET DEFAULT next
 
 
 --
+-- Name: internship_offer_areas id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_areas ALTER COLUMN id SET DEFAULT nextval('public.internship_offer_areas_id_seq'::regclass);
+
+
+--
 -- Name: internship_offer_info_weeks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1772,6 +1848,13 @@ ALTER TABLE ONLY public.signatures ALTER COLUMN id SET DEFAULT nextval('public.s
 --
 
 ALTER TABLE ONLY public.task_registers ALTER COLUMN id SET DEFAULT nextval('public.task_registers_id_seq'::regclass);
+
+
+--
+-- Name: team_member_invitations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.team_member_invitations ALTER COLUMN id SET DEFAULT nextval('public.team_member_invitations_id_seq'::regclass);
 
 
 --
@@ -1916,6 +1999,14 @@ ALTER TABLE ONLY public.internship_applications
 
 
 --
+-- Name: internship_offer_areas internship_offer_areas_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_areas
+    ADD CONSTRAINT internship_offer_areas_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: internship_offer_info_weeks internship_offer_info_weeks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2049,6 +2140,14 @@ ALTER TABLE ONLY public.signatures
 
 ALTER TABLE ONLY public.task_registers
     ADD CONSTRAINT task_registers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: team_member_invitations team_member_invitations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.team_member_invitations
+    ADD CONSTRAINT team_member_invitations_pkey PRIMARY KEY (id);
 
 
 --
@@ -2230,6 +2329,13 @@ CREATE INDEX index_internship_applications_on_week_id ON public.internship_appli
 
 
 --
+-- Name: index_internship_offer_areas_on_employer; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offer_areas_on_employer ON public.internship_offer_areas USING btree (employer_type, employer_id);
+
+
+--
 -- Name: index_internship_offer_info_weeks_on_internship_offer_info_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2339,6 +2445,13 @@ CREATE INDEX index_internship_offers_on_group_id ON public.internship_offers USI
 --
 
 CREATE INDEX index_internship_offers_on_hosting_info_id ON public.internship_offers USING btree (hosting_info_id);
+
+
+--
+-- Name: index_internship_offers_on_internship_offer_area_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offers_on_internship_offer_area_id ON public.internship_offers USING btree (internship_offer_area_id);
 
 
 --
@@ -2496,6 +2609,20 @@ CREATE INDEX index_signatures_on_user_id ON public.signatures USING btree (user_
 
 
 --
+-- Name: index_team_member_invitations_on_inviter_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_team_member_invitations_on_inviter_id ON public.team_member_invitations USING btree (inviter_id);
+
+
+--
+-- Name: index_team_member_invitations_on_member_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_team_member_invitations_on_member_id ON public.team_member_invitations USING btree (member_id);
+
+
+--
 -- Name: index_users_on_api_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2625,11 +2752,27 @@ ALTER TABLE ONLY public.hosting_info_weeks
 
 
 --
+-- Name: team_member_invitations fk_rails_16e04ba94e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.team_member_invitations
+    ADD CONSTRAINT fk_rails_16e04ba94e FOREIGN KEY (inviter_id) REFERENCES public.users(id);
+
+
+--
 -- Name: signatures fk_rails_19164d1054; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.signatures
     ADD CONSTRAINT fk_rails_19164d1054 FOREIGN KEY (internship_agreement_id) REFERENCES public.internship_agreements(id);
+
+
+--
+-- Name: team_member_invitations fk_rails_21c6860154; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.team_member_invitations
+    ADD CONSTRAINT fk_rails_21c6860154 FOREIGN KEY (member_id) REFERENCES public.users(id);
 
 
 --
@@ -2758,6 +2901,14 @@ ALTER TABLE ONLY public.internship_applications
 
 ALTER TABLE ONLY public.active_storage_variant_records
     ADD CONSTRAINT fk_rails_993965df05 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
+
+
+--
+-- Name: internship_offers fk_rails_9bcd71f8ef; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offers
+    ADD CONSTRAINT fk_rails_9bcd71f8ef FOREIGN KEY (internship_offer_area_id) REFERENCES public.internship_offer_areas(id);
 
 
 --
@@ -3136,6 +3287,19 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230516193352'),
 ('20230517092159'),
 ('20230531094449'),
-('20230628133149');
+('20230607101323'),
+('20230607115359'),
+('20230616143729'),
+('20230616143933'),
+('20230616164423'),
+('20230620115539'),
+('20230628133149'),
+('20230629141931'),
+('20230703093100'),
+('20230707082633'),
+('20230707082704'),
+('20230707083923'),
+('20230711161600'),
+('20230712074733');
 
 

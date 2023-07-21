@@ -70,7 +70,7 @@ module Signatorable
 
     def already_signed?(internship_agreement_id:)
       return false if school_management? && !school_manager?
-      
+
       InternshipAgreement.joins(:signatures)
                          .where(id: internship_agreement_id)
                          .where(signatures: {user_id: id})
@@ -78,10 +78,12 @@ module Signatorable
     end
 
     def can_sign?(internship_agreement)
-      return false if school_management? && !school_manager?
-      internship_agreement.school.id == school_id || \
-        internship_agreement.employer.id == id || \
-        internship_agreement.employee.id == employer_id
+      if school_management? && !school_manager?
+        return false
+      else
+        internship_agreement.school.id == school_id ||
+          internship_agreement.employer.id == team_id 
+      end
     end
   end
 end

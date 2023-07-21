@@ -93,8 +93,6 @@ jobs: # a collection of steps
           command: |
             mkdir test-results
             PARALLEL_WORKERS=1 ~/project/infra/test/system_desktop.sh
-      - store_test_results:
-          path: test-results
       - store_artifacts:
           path: tmp/screenshots
 
