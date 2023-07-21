@@ -6,7 +6,7 @@
     .col
       h1.h2.mb-3 Transférer une candidature
 
-  = form_with url: transfer_internship_offer_internship_application_path(@internship_application), method: :post, data: {turbo: false} do |form|
+  = form_with url: transfer_internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application), method: :post, data: {turbo: false} do |form|
     div data-controller='transfer-application' data-action="input->transfer-application#checkForm"
       = form.hidden_field :destinations, class: 'hidden-destinataires-input'
       .row

@@ -6,27 +6,63 @@
 
 .row
   .col-12.py-5
-    h2.h3 Modes d'emploi
+    h2.h3 Fichiers de présentation
 
 .row
-  - { "Élève" => "MS3_Mode-d-emploi-eleves",
-      "Entreprise" => "MS3_Mode-d-emploi-entreprises",
-      "Équipe pédagogique" => "MS3_Mode-d-emploi-membres-pedagogique",
-      "référents administratifs et départementaux" => "MS3_Mode-d-emploi-referents-departementaux",
-      "Tous les utilisateurs" => "MS3_Mode-d-emploi-global-2022" }.each do |user_segmeent, file_name|
-    .col-12.col-sm-6.col-md-4.col-lg-3.text-center
-      = link_to "#{root_url}/modes_d_emploi/#{file_name}.pdf", title: "Accéder au mode d'emploi #{user_segmeent}"  do
-        = image_tag asset_pack_path("media/images/modes_d_emploi/miniature-#{file_name}.jpg"), alt: "Couverture du mode d'emploi #{user_segmeent}", size: '200x283', class: 'img-thumbnail'
-        p
-          br
-          = "Mode d'emploi"
-          br
-          = user_segmeent
-          br
-          = (File.size(Rails.root.join("public", "modes_d_emploi", "#{file_name}.pdf")) / 1_024_000.0).ceil(1)
-          | Mb
-          br
-          | MonStageDe3eme
+  .col-12.col-sm-6.col-md-4.col-lg-3.text-center
+    = link_to "https://drive.google.com/file/d/1vo5MgKosaXqCgnVjWuiyHQcQymnxlyGy/view?usp=drive_link", title: 'Fichier de présentation - Élèves'  do
+      = image_tag asset_pack_path("media/images/documents_utiles/eleves.jpg"), alt: 'Fichier de présentation - Élèves', size: '200x283', class: 'img-thumbnail'
+      p
+        br
+        | Fichier de présentation - Élèves
+        br
+        | PDF
+        br
+        | MonStageDe3eme
+
+  .col-12.col-sm-6.col-md-4.col-lg-3.text-center
+    = link_to "https://drive.google.com/file/d/1njqHXS3PspT-xQfL4w-eoKHWydU3VZcn/view?usp=drive_link", title: 'Fichier de présentation - Professionnels'  do
+      = image_tag asset_pack_path("media/images/documents_utiles/offreurs.jpg"), alt: 'Fichier de présentation - Professionnels', size: '200x283', class: 'img-thumbnail'
+      p
+        br
+        | Fichier de présentation - Professionnels
+        br
+        | PDF
+        br
+        | MonStageDe3eme
+
+  .col-12.col-sm-6.col-md-4.col-lg-3.text-center
+    = link_to "https://drive.google.com/file/d/1wdMt1h7Njh3B3MpLTFvWhDZIT8HZ-QoO/view?usp=drive_link", title: 'Fichier de présentation - Équipes pédagogiques'  do
+      = image_tag asset_pack_path("media/images/documents_utiles/equipe-pedago.jpg"), alt: 'Fichier de présentation - Équipes pédagogiques', size: '200x283', class: 'img-thumbnail'
+      p
+        br
+        | Fichier de présentation - Équipes pédagogiques
+        br
+        | PDF
+        br
+        | MonStageDe3eme
+
+  .col-12.col-sm-6.col-md-4.col-lg-3.text-center
+    = link_to "https://drive.google.com/file/d/1PHaVOrAorPiaz4diLCjQrbCBcwNfxNZ5/view?usp=drive_link", title: 'Fichier de présentation - Partenaires'  do
+      = image_tag asset_pack_path("media/images/documents_utiles/partenaires.jpg"), alt: 'Fichier de présentation - Partenaires', size: '200x283', class: 'img-thumbnail'
+      p
+        br
+        | Fichier de présentation - Partenaires
+        br
+        | PDF
+        br
+        | MonStageDe3eme
+
+  .col-12.col-sm-6.col-md-4.col-lg-3.text-center
+    = link_to "https://drive.google.com/file/d/1hsTz0cX_a4zJzL61JqPLllGPUV5sOWrT/view?usp=drive_link", title: 'Fichier de présentation - Référents'  do
+      = image_tag asset_pack_path("media/images/documents_utiles/referents.jpg"), alt: 'Fichier de présentation - Référents', size: '200x283', class: 'img-thumbnail'
+      p
+        br
+        | Fichier de présentation - Référents
+        br
+        | PDF
+        br
+        | MonStageDe3eme
 
 
 .row

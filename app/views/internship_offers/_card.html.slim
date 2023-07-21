@@ -1,0 +1,21 @@
+.fr-card.fr-enlarge-link data-test-id="#{internship_offer.id}"
+  .fr-card__body
+    .fr-card__content
+      h4.fr-card__title
+        = link_to internship_offer.title, internship_offer_path(internship_offer), class: "row-link text-dark"
+         
+      .fr-card__detail
+        .mr-auto = internship_offer.employer_name
+        
+      .fr-card__desc
+        p.blue-france = internship_offer.city
+        .blue-france.fr-text--bold.my-2
+          = "Du #{I18n.localize(internship_offer.first_date, format: :human_mm_dd_yyyy)} au #{I18n.localize(internship_offer.last_date, format: :human_mm_dd_yyyy)}"
+        
+  .fr-card__header
+    .fr-card__img
+      = image_tag asset_pack_path("media/images/sectors/#{internship_offer.sector.cover}"), class: 'fr-responsive-img', alt: 'secteur'
+    ul.fr-badges-group
+      li
+        .fr-tag = internship_offer.sector.name
+      
