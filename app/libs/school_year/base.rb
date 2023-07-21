@@ -61,10 +61,6 @@ module SchoolYear
       date.month
     end
 
-    def june_to_december
-      6..12
-    end
-
     def last_week_of_may?
       last_day_of_may = Date.new(current_year, MONTH_OF_YEAR_SHIFT, DAY_OF_YEAR_SHIFT)
       date.between?(last_day_of_may.beginning_of_week, last_day_of_may.end_of_week)

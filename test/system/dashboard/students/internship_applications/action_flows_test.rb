@@ -372,6 +372,68 @@ module Dashboard
           click_link "Connexion" # demonstrates user is not logged in
         end
       end
+
+      test "reasons for rejection are explicit for students when employer rejects internship_application" do
+        travel_to Date.new(2019, 10, 1) do
+          weeks = [Week.find_by(number: 1, year: 2020),Week.find_by(number: 2, year: 2020)]
+          school = create(:school, weeks: weeks)
+          student = create(:student,
+                    school: school,
+                    class_room: create(:class_room, school: school))
+          internship_offer = create(:weekly_internship_offer, weeks: weeks)
+          internship_application = create( :weekly_internship_application,
+                                           :submitted,
+                                           internship_offer: internship_offer,
+                                           student: student)
+
+          sign_in(internship_offer.employer)
+          visit dashboard_internship_offers_path
+          click_link "Candidatures"
+          click_link "Répondre"
+          click_button "Refuser"
+          selector = "#internship_application_rejected_message"
+          find(selector).native.send_keys('Le tuteur est malade')
+          click_button "Confirmer"
+          assert_equal "rejected", internship_application.reload.aasm_state
+          sign_out(internship_offer.employer)
+
+          sign_in(student)
+          visit dashboard_students_internship_applications_path(student_id: student.id)
+          click_link "Voir"
+          assert_text "Le tuteur est malade"
+        end
+      end
+
+      test "examined motives are explicit for students when employer rejects internship_application" do
+        travel_to Date.new(2019, 10, 1) do
+          weeks = [Week.find_by(number: 1, year: 2020),Week.find_by(number: 2, year: 2020)]
+          school = create(:school, weeks: weeks)
+          student = create(:student,
+                    school: school,
+                    class_room: create(:class_room, school: school))
+          internship_offer = create(:weekly_internship_offer, weeks: weeks)
+          internship_application = create( :weekly_internship_application,
+                                           :submitted,
+                                           internship_offer: internship_offer,
+                                           student: student)
+
+          sign_in(internship_offer.employer)
+          visit dashboard_internship_offers_path
+          click_link "Candidatures"
+          click_link "Répondre"
+          click_button "Etudier"
+          selector = "#internship_application_examined_message"
+          find(selector).native.send_keys('Votre profil pourrait intéresser le département des ventes')
+          click_button "Confirmer"
+          assert_equal "examined", internship_application.reload.aasm_state
+          sign_out(internship_offer.employer)
+
+          sign_in(student)
+          visit dashboard_students_internship_applications_path(student_id: student.id)
+          click_link "Voir"
+          assert_text "Votre profil pourrait intéresser le département des ventes"
+        end
+      end
     end
   end
 end

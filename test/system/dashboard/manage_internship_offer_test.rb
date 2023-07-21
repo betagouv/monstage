@@ -187,4 +187,20 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     assert page.has_content?(internship_offer_2.title)
     refute page.has_content?(internship_offer_3.title)
   end
+
+  test 'Employers users shall not be pushed to home when no agreement in list' do
+    employer = create(:employer)
+    sign_in(employer)
+    visit dashboard_internship_offers_path
+    click_link('Conventions')
+    find("h4.fr-h4", text: 'Aucune convention de stage ne requiert votre attention pour le moment.')
+  end
+
+  test 'Operator users shall not be pushed to home when no agreement in list' do
+    user_operator = create(:user_operator)
+    sign_in(user_operator)
+    visit dashboard_internship_offers_path
+    assert page.has_css?('a', text: 'Candidatures', count: 1)
+    assert page.has_css?('a', text: 'Conventions', count: 0)
+  end
 end

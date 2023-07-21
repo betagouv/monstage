@@ -204,8 +204,8 @@ class Ability
     as_employers_like(user: user)
     as_employers_signatory_abilities(user: user)
     as_back_office_user(user: user)
-    can %i[sign_with_sms choose_function subscribe_to_webinar] , User
-    can :see_minister_video, User
+    can %i[supply_offers sign_with_sms choose_function subscribe_to_webinar] , User
+    can :show, :account
     can :create_remote_internship_request, SupportTicket # TO DO REMOVE
 
     can %i[create see_tutor], InternshipOffer
@@ -318,6 +318,44 @@ class Ability
            check_his_statistics], User
   end
 
+  def god_abilities
+    can :show, :account
+    can :manage, School
+    can :manage, Sector
+    can %i[destroy see_tutor], InternshipOffer
+    can %i[read update export unpublish publish], InternshipOffer
+    can %i[read update destroy export], InternshipApplication
+    can :manage, EmailWhitelists::EducationStatistician
+    can :manage, EmailWhitelists::PrefectureStatistician
+    can :manage, EmailWhitelists::Ministry
+    can :manage, InternshipOfferKeyword
+    can :manage, Group
+    can :access, :rails_admin   # grant access to rails_admin
+    can %i[read update delete discard export], InternshipOffers::Api
+    can :read, :dashboard       # grant access to the dashboard
+    can :read, :kpi # grant access to the dashboard
+    can %i[index department_filter], Acl::Reporting do |_acl|
+      true
+    end
+    can %i[index_and_filter], Reporting::InternshipOffer
+    can :manage, InternshipAgreement
+    can %i[ switch_user
+            read
+            update
+            destroy
+            export
+            export_reporting_dashboard_data
+            see_reporting_dashboard
+            see_reporting_internship_offers
+            see_reporting_schools
+            see_reporting_associations
+            see_reporting_enterprises
+            see_dashboard_enterprises_summary
+            see_dashboard_administrations_summary
+            see_dashboard_associations_summary], User
+    can :manage, Operator
+  end
+
   def statistician_abilities(user:)
     common_to_all_statisticians(user: user)
 
@@ -379,7 +417,7 @@ class Ability
     can %i[index], Acl::InternshipOfferDashboard
     can %i[see_reporting_dashboard
            see_dashboard_administrations_summary], User
-    can :see_minister_video, User
+    as_employers_signatory_abilities(user: user) if user.employer_like?
   end
 
   def common_school_management_abilities(user:)
@@ -425,6 +463,38 @@ class Ability
     can %i[see_tutor], InternshipOffer
     can %i[read], InternshipAgreement do |agreement|
       agreement.internship_application.student.school_id == user.school_id
+    end
+  end
+
+  def as_employers_signatory_abilities(user:)
+    can %i[
+      create
+      index
+    ], InternshipAgreement
+
+    can %i[
+      read
+      edit
+      update
+      edit_organisation_representative_role
+      edit_tutor_email
+      edit_tutor_role
+      edit_activity_scope_rich_text
+      edit_activity_preparation_rich_text
+      edit_activity_learnings_rich_text
+      edit_complementary_terms_rich_text
+      edit_date_range
+      edit_organisation_representative_full_name
+      edit_siret
+      edit_tutor_full_name
+      edit_weekly_hours
+      sign
+      sign_internship_agreements
+    ], InternshipAgreement do |agreement|
+      agreement.employer == user && user.employer_like?
+    end
+    can :create, Signature do |signature|
+      signature.internship_agreement.internship_offer.employer_id == user.id
     end
   end
 

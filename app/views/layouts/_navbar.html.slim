@@ -31,6 +31,13 @@
                 ul.fr-links-group
                   li
                     = render partial: 'layouts/extra_for_devs'
+                  - if defined?(home_nav_bar) && home_nav_bar
+                    .d-block.d-sm-none
+                      li= link_to 'Accueil', root_path, class: 'fr-link text-decoration-none'
+                      li= link_to 'Élèves', eleves_path, class: 'fr-link text-decoration-none'
+                      li= link_to 'Professionnels', professionnels_path, class: 'fr-link text-decoration-none'
+                      li= link_to 'Équipes pédagogiques', equipe_pedagogique_path, class: 'fr-link text-decoration-none'
+                      li= link_to 'Référents administratifs', referents_path, class: 'fr-link text-decoration-none'
                   - if user_signed_in?
                     li
                       = link_to 'Accueil',

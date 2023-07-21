@@ -16,20 +16,21 @@ export default class extends Controller {
     input.name = 'formulaire[destinataires][]';
     input.className = 'fr-input destinataire-input fr-my-3w';
 
-    // const removeButton = document.createElement('span');
-    // removeButton.textContent = 'Supprimer';
-    // removeButton.dataset.action = 'click->destinataire#supprimerDestinataire';
-
     const formGroup = document.createElement('div');
     formGroup.className = 'form-group ';
-    formGroup.appendChild(input);
-    // formGroup.appendChild(removeButton);
-
+    formGroup.appendChild(input);  
     this.containerTarget.appendChild(formGroup);
 
+    this.addListeners();
     this.updateHiddenRecipients();
   }
 
+  addListeners() {
+    const destinataireInputs = this.element.querySelectorAll('.destinataire-input');
+    destinataireInputs.forEach(input => {
+      input.addEventListener('input', this.updateHiddenRecipients.bind(this));
+    });
+  }
 
   updateHiddenRecipients() {
     const destinataires = this.containerTarget.querySelectorAll('.destinataire-input');
@@ -54,6 +55,8 @@ export default class extends Controller {
     });
   }
 
-  connect() {}
+  connect() {
+    this.addListeners();
+  }
   disconnect() {}
 }
