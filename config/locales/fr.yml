@@ -229,6 +229,46 @@ fr:
               already_signed: Le chef d'établissement a déjà signé. En attente de la signature de l’employeur.
               not_signed_yet: L'employeur a déjà signé. En attente de votre signature.
             signed_by_all: Signée par toutes les parties.
+          cpe:
+            draft: En attente de l'offreur.
+            started_by_employer: En attente de l'offreur.
+            completed_by_employer: Votre convention est remplie par l'offreur, mais vous ne l'avez pas renseignée.
+            started_by_school_manager: Votre convention est remplie, mais pas validée.
+            validated: Votre convention est prête.
+            signatures_started:
+              already_signed: Le chef d'établissement a déjà signé. En attente de la signature de l’employeur.
+              not_signed_yet: L'employeur a déjà signé. En attente de votre signature.
+            signed_by_all: Signée par toutes les parties.
+          main_teacher:
+            draft: En attente de l'offreur.
+            started_by_employer: En attente de l'offreur.
+            completed_by_employer: Votre convention est remplie par l'offreur, mais vous ne l'avez pas renseignée.
+            started_by_school_manager: Votre convention est remplie, mais pas validée.
+            validated: Votre convention est prête.
+            signatures_started:
+              already_signed: Le chef d'établissement a déjà signé. En attente de la signature de l’employeur.
+              not_signed_yet: L'employeur a déjà signé. En attente de votre signature.
+            signed_by_all: Signée par toutes les parties.
+          other:
+            draft: En attente de l'offreur.
+            started_by_employer: En attente de l'offreur.
+            completed_by_employer: Votre convention est remplie par l'offreur, mais vous ne l'avez pas renseignée.
+            started_by_school_manager: Votre convention est remplie, mais pas validée.
+            validated: Votre convention est prête.
+            signatures_started:
+              already_signed: Le chef d'établissement a déjà signé. En attente de la signature de l’employeur.
+              not_signed_yet: L'employeur a déjà signé. En attente de votre signature.
+            signed_by_all: Signée par toutes les parties.
+          teacher:
+            draft: En attente de l'offreur.
+            started_by_employer: En attente de l'offreur.
+            completed_by_employer: Votre convention est remplie par l'offreur, mais vous ne l'avez pas renseignée.
+            started_by_school_manager: Votre convention est remplie, mais pas validée.
+            validated: Votre convention est prête.
+            signatures_started:
+              already_signed: Le chef d'établissement a déjà signé. En attente de la signature de l’employeur.
+              not_signed_yet: L'employeur a déjà signé. En attente de votre signature.
+            signed_by_all: Signée par toutes les parties.
           employer:
             draft: À remplir par les deux parties.
             started_by_employer: Votre convention est remplie, mais elle n'est pas envoyée au chef d'établissement.

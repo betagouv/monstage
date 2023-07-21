@@ -380,10 +380,8 @@ class Ability
       choose_to_sign_agreements
       ], User
 
-    
     can %i[see_reporting_dashboard
            see_dashboard_administrations_summary], User
-    can :see_minister_video, User
   end
 
   def common_school_management_abilities(user:)

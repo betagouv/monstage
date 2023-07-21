@@ -1,0 +1,33 @@
+.container-monstage.light-grey-background.fr-py-md-4w
+  .row.fr-py-5w.fr-my-5w.d-flex
+    .col-md-6.col-sm-12.fr-px-2w
+      h2.h2.fr-desktop-lg.fr-px-2w.px-sm-2.px-md-0
+        | Des stages pour tous, une opportunité pour chacun.
+      p.mt-3.fr-text.mb-lg-5.mb-md-5.mb-sm-4.mb-3.fr-px-2w.px-sm-2.px-md-0
+        |
+          Plus qu’un passage obligatoire, le stage de troisième est une
+          opportunité unique d’explorer le monde du travail.
+          L’expérience, forcément enrichissante, aide l’élève à ouvrir
+          ses horizons professionnels et à dessiner son projet personnel.
+
+      p.fr-text.fr-px-2w.px-sm-2.px-md-0
+        |
+          Notre plateforme permet de mettre en relation des établissements
+          scolaires éligibles et des partenaires engagés afin d’agir dans
+          le meilleur intérêt des élèves en leur offrant la meilleure
+          expérience du stage possible.
+      p.py-4.fr-px-2w.px-sm-2.px-md-0.text-center-left
+        = link_to internship_offers_path(current_user_or_visitor.default_search_options),
+                  class: 'fr-btn fr-btn--secondary fr-raw-link fr-px-8w',
+                  data: { :"test-id" => 'mobile-search-button-first' }
+          = "Découvrez les stages proposés "
+            
+
+
+    / d-none if screen xs
+
+    .col-md-6.col-sm-12.text-center.d-none.d-sm-block
+      = image_tag asset_pack_path('media/images/homepage/opportunities-illustration.svg'),
+                    alt: "Illustration métiers disponibles",
+                    width:'100%',
+                    class:'fr-px-5w'

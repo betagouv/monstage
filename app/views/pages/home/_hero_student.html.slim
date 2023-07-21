@@ -1,0 +1,32 @@
+header.bg-cover-image-homepage.bg-student-hero-image.container-xl.px-0.fr-pb-3w
+  .container-monstage.container-xl.homepage.px-0
+    .row.fr-my-4w.mx-0
+      .col-lg-12.col-md-12
+        p.h2.white.py-lg-4.py-md-3.py-sm-3.py-xs-2
+          |
+            Pour les élèves de 3ème REP, REP+
+        .fr-py-1w
+          h1.fr-display--md.white
+            | Trouvez ici un stage
+            br
+            | de qualité !
+          
+    .row.d-md-none  
+      .col-12
+        p.mt-4.py-lg-4.py-md-3.py-sm-3.py-xs-2.text-center
+          = link_to internship_offers_path(current_user_or_visitor.default_search_options),
+                    class: 'fr-btn fr-icon-search-line fr-btn--icon-right bg-white fr-px-6w'  do
+            = "Rechercher un stage "
+
+  .container-monstage.light-grey-background.d-none.d-sm-block
+    .row.no-gutters.fr-p-2w
+      .col-12 = render partial: "internship_offers/search/form",
+                      locals: { render_as_partial: true,
+                                url: internship_offers_path,
+                                default_values: user_presenter.default_search_options,
+                                form_id: :home_search_form }
+      .actions.d-stick.d-md-none.p-2.fitting.text-center
+        = link_to internship_offers_path(current_user_or_visitor.default_search_options),
+                  class: 'fr-btn fr-icon-search-line fr-btn--icon-right fr-px-11w',
+                  data: { :"test-id" => 'mobile-search-button' }
+          = "Rechercher un stage "

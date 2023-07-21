@@ -99,7 +99,7 @@ class InternshipApplicationsController < ApplicationController
     end
 
     redirect_to dashboard_internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application),
-                flash: { success: "La candidature a été transmises avec succès, son statut est à l'étude" }
+                flash: { success: "La candidature a été transmise avec succès, son statut est à l'étude" }
   end
 
   private
