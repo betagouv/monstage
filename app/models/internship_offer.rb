@@ -34,9 +34,8 @@ class InternshipOffer < ApplicationRecord
   belongs_to :internship_offer_info, optional: true
   belongs_to :hosting_info, optional: true
   belongs_to :practical_info, optional: true
-  belongs_to :internship_offer_area, optional: true
   belongs_to :employer, polymorphic: true, optional: true
-  # keep_me has_one :employer, through: :internship_offer_area, source_type: 'User'
+  belongs_to :internship_offer_area, optional: true, touch: true
   has_many :favorites
   has_many :users, through: :favorites
 
@@ -86,6 +85,8 @@ class InternshipOffer < ApplicationRecord
                       prefix: true
                     }
                   }
+
+  scope :published, -> { where.not(published_at: nil) }
 
   scope :by_sector, lambda { |sector_id|
     where(sector_id: sector_id)
@@ -137,43 +138,6 @@ class InternshipOffer < ApplicationRecord
     where.not(id: InternshipApplication.where(user_id: user.id).map(&:internship_offer_id))
   }
 
-  # Associations
-  has_many :internship_applications, as: :internship_offer,
-                                     foreign_key: 'internship_offer_id'
-  has_many :favorites
-  has_many :users, through: :favorites
-
-  belongs_to :employer, polymorphic: true
-  belongs_to :internship_offer_info, optional: true
-  belongs_to :hosting_info, optional: true
-  belongs_to :practical_info, optional: true
-  belongs_to :organisation, optional: true
-  accepts_nested_attributes_for :organisation, allow_destroy: true
-  has_rich_text :employer_description_rich_text
-
-  # Callbacks
-  after_initialize :init
-
-  before_validation :update_organisation
-
-  before_save :sync_first_and_last_date,
-              :reverse_academy_by_zipcode
-
-  before_create :preset_published_at_to_now
-  after_commit :sync_internship_offer_keywords
-
-  # Scopes
-  scope :published, -> { where.not(published_at: nil) }
-
-  paginates_per PAGE_SIZE
-
-  delegate :email, to: :employer, prefix: true, allow_nil: true
-  delegate :phone, to: :employer, prefix: true, allow_nil: true
-  delegate :name, to: :sector, prefix: true
-
-  # Callbacks
-  before_save :update_remaining_seats
-
   aasm do
     state :drafted, initial: true
     state :published,
@@ -191,6 +155,8 @@ class InternshipOffer < ApplicationRecord
       }
     end
   end
+
+  # Methods
 
   def departement
     Department.lookup_by_zipcode(zipcode: zipcode)
@@ -255,7 +221,7 @@ class InternshipOffer < ApplicationRecord
                     tutor_name tutor_phone tutor_email tutor_role employer_website
                     employer_name street zipcode city department region academy
                     is_public group school_id coordinates first_date last_date
-                    siret employer_manual_enter
+                    siret employer_manual_enter internship_offer_area_id
                     internship_offer_info_id organisation_id tutor_id
                     weekly_hours daily_hours]
 
@@ -270,6 +236,7 @@ class InternshipOffer < ApplicationRecord
                     tutor_name tutor_phone tutor_email tutor_role employer_website
                     employer_name is_public group school_id coordinates
                     first_date last_date siret employer_manual_enter
+                    internship_offer_area_id
                     internship_offer_info_id organisation_id tutor_id
                     weekly_hours daily_hours]
 
@@ -286,7 +253,7 @@ class InternshipOffer < ApplicationRecord
     self.group_id = organisation.group_id
     self.is_public = organisation.is_public
   end
-  
+
   def update_organisation
     return unless organisation && !organisation.new_record?
 
@@ -298,7 +265,6 @@ class InternshipOffer < ApplicationRecord
     organisation.update_columns(group_id: self.group_id) if attribute_changed?(:group_id)
     organisation.update_columns(is_public: self.is_public) if attribute_changed?(:is_public)
   end
-    
 
   def generate_offer_from_attributes(white_list)
     internship_offer = InternshipOffer.new(attributes.slice(*white_list))
@@ -353,7 +319,7 @@ class InternshipOffer < ApplicationRecord
 
   def update_all_favorites
     if approved_applications_count >= max_candidates || Time.now > last_date
-      Favorite.where(internship_offer_id: id).destroy_all 
+      Favorite.where(internship_offer_id: id).destroy_all
     end
   end
 

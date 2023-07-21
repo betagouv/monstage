@@ -1,0 +1,21 @@
+- content_for :page_title, "#{t(".page_title")} | Monstage"
+= render 'dashboard/internship_offers/areas_bar'
+h1.fr-h3.text-dark = @internship_offer_area.name
+.d-flex
+  = image_tag asset_pack_path('media/images/pages/teams/team.png'),
+                          alt: 'Gérez vos annonce en équipe',
+                          class: ''
+  .fr-ml-6w
+    h1.fr-h3.fr-mt-11w Qui va recevoir les notifications des <br/>candidatures pour cet espace ?
+    - if can?(:update_areas, @internship_offer_area)
+      = form_with model: @internship_offer_area,
+                  url: dashboard_internship_offer_areas_path,
+                  method: :patch,
+                  class: 'fr-mt-2w' do |form|
+        fieldset#radio-hint-notifs.fr-fieldset[aria-labelledby="radio-hint-notifs-legend radio-hint-notifs-messages"]
+          .fr-fieldset__element
+            = form.fields_for :area_notifications do |area_notif_form|
+              .fr-radio-group
+                input#radio-hint-notifs-1[type="radio" name="radio-hint-notifs"]
+                label.fr-label[for="radio-hint-notifs-1"]
+                  |  Libellé bouton radio 

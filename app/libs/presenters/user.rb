@@ -9,6 +9,10 @@ module Presenters
     delegate :default_search_options, to: :user
     delegate :email, to: :user
 
+    def initials
+      "#{user.first_name[0].capitalize}#{user.last_name[0].capitalize}"
+    end
+
     def short_name
       "#{user.first_name[0].capitalize}. #{user.last_name}"
     end

@@ -1,4 +1,4 @@
-= render 'layouts/breadcrumb', links: [ ['', 'Mon tableau de bord'] ]
+= render 'layouts/breadcrumb', links: [ ['', 'Mon tableau de bord'] ] unless current_user.employer_like?
 = render layout: 'layouts/dashboards_with_menu' do
   .row.fr-row--gutters.fr-mt-7w
     .fr-col-6

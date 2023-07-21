@@ -51,7 +51,8 @@ class InternshipApplicationsController < ApplicationController
     set_internship_offer
     authorize! :apply, @internship_offer
 
-    @internship_application = InternshipApplication.create!({user_id: current_user.id}.merge(create_internship_application_params))
+    appli_params = {user_id: current_user.id}.merge(create_internship_application_params)
+    @internship_application = InternshipApplication.create!(appli_params)
     redirect_to internship_offer_internship_application_path(@internship_offer,
                                                              @internship_application)
   rescue ActiveRecord::RecordInvalid => e
@@ -90,14 +91,15 @@ class InternshipApplicationsController < ApplicationController
 
       params[:destinations].split(',').each do |destination|
         EmployerMailer.transfer_internship_application(
-          internship_application: @internship_application, 
+          internship_application: @internship_application,
           employer_id: current_user.id,
           email: destination,
           message: params[:comment]).deliver_now unless destination.blank?
       end
     end
 
-    redirect_to dashboard_internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application), flash: { success: "La candidature a été transmise avec succès, son statut est à l'étude" }
+    redirect_to dashboard_internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application),
+                flash: { success: "La candidature a été transmise avec succès, son statut est à l'étude" }
   end
 
   private

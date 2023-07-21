@@ -11,7 +11,7 @@ module UserAdmin
   included do
     rails_admin do
       weight 1
-      
+
       list do
         fields(*DEFAULT_FIELDS)
         field :type do

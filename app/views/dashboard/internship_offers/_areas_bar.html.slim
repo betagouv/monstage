@@ -1,0 +1,20 @@
+- if current_user.employer_like?
+  - internship_offer_areas = current_user.internship_offer_areas
+  .bar-area.fr-mb-3w
+    nav#header-navigation.fr-nav[role="navigation" aria-label="Menu des espaces"]
+      ul.fr-nav__list
+        li.fr-nav__item
+          - options = { class: 'fr-nav__link', target: '_self' }
+          - options.merge!({ :'aria-current' => "page" }) if current_page?(dashboard_internship_offer_areas_path)
+          = link_to dashboard_internship_offer_areas_path, options do
+            = t('dashboard.internship_offer_area.index')
+        - internship_offer_areas.each do |area|
+          li.fr-nav__item
+            - aria_controls = { controls: 'fr-modal-add-space' }
+            - cur_area_id = current_user.fetch_current_area_id
+            - aria_controls.merge!({ current: "page" }) if area.id == cur_area_id && !current_page?(dashboard_internship_offer_areas_path)
+            = link_to filter_by_area_dashboard_internship_offer_area_path(id: area.id),
+                      class: 'fr-nav__link',
+                      target: '_self',
+                      aria: aria_controls do
+              = area.name

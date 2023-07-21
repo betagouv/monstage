@@ -4,6 +4,8 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
+  include TeamAndAreasHelper
+
   test 'creation requires accept terms' do
     user = Users::SchoolManagement.new
     user.valid?
@@ -98,7 +100,9 @@ class UserTest < ActiveSupport::TestCase
     employer = create(:employer, email: 'test@test.com', first_name: 'Toto', last_name: 'Tata',
                                  current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1')
 
-    internship_offer = create(:weekly_internship_offer, employer: employer)
+    internship_offer = create(:weekly_internship_offer,
+                              employer: employer,
+                              internship_offer_area: employer.current_area)
 
     employer.anonymize
 
@@ -106,12 +110,48 @@ class UserTest < ActiveSupport::TestCase
     assert internship_offer.discarded?
   end
 
+  test 'anonymize employer when in a team' do
+    employer   = create(:employer)
+    employer_2 = create(:employer)
+
+    internship_offer = create_internship_offer_visible_by_two(employer, employer_2)
+    assert_equal employer.id, internship_offer.employer_id
+
+    employer.anonymize
+
+    assert employer_2.id, internship_offer.reload.employer_id
+    assert employer_2.team.not_exists?
+
+    internship_offer.reload
+    refute internship_offer.discarded?
+  end
+
+  test 'anonymize employer when in a team with tree' do
+    employer   = create(:employer)
+    employer_2 = create(:employer)
+    employer_3 = create(:employer)
+
+    internship_offer = create_internship_offer_visible_by_two(employer, employer_2)
+    create(:team_member_invitation, :accepted_invitation, inviter_id: employer.id, member_id: employer_3.id)
+    assert_equal 3, employer.team.team_size
+    assert_equal employer.id, internship_offer.employer_id
+
+    employer.anonymize
+
+    assert employer_3.id, internship_offer.reload.employer_id
+    assert employer_3.team.alive?
+    assert employer_2.team.alive?
+
+    internship_offer.reload
+    refute internship_offer.discarded?
+  end
+
   test 'validate email bad' do
     user = build(:employer, email: 'lol')
     refute user.valid?
     assert_equal ['Le format de votre email semble incorrect'], user.errors.messages[:email]
   end
-  
+
   test "when updating one's email both removing and adding contact jobs are enqueued" do
     student = create(:student)
 

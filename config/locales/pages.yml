@@ -85,6 +85,13 @@ fr:
     support_tickets:
       new:
         page_title: "Demande de stage à distance"
+    internship_offer_areas:
+      new:
+        page_title: "Ajouter un espace"
+      edit:
+        page_title: "Destinataire des notifications"
+      index: 
+        page_title: Liste de mes espaces
   internship_applications:
     show:
       page_title: "Ma candidature"

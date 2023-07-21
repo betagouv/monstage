@@ -27,8 +27,18 @@ class Team
     end
   end
 
+  def self.remove_member_by_id(db_id)
+    @team_member = TeamMemberInvitation.find_by(member_id: db_id)
+    return if @team_member.nil?
+    Team.new(@team_member).remove_member
+  end
+
   def alive?
     team_size.positive?
+  end
+
+  def not_exists?
+    !alive?
   end
 
   def team_size
@@ -46,7 +56,7 @@ class Team
   end
 
   attr_accessor :user, :team_member, :team_owner_id, :team_members
-  
+
   #----------------------------------
   private
   #----------------------------------
@@ -67,18 +77,57 @@ class Team
     team_owner = User.kept.find(team_owner_id)
     return if team_owner.nil? # if ever team_owner is anonymized in between
 
+    #Following is team creation time !
     TeamMemberInvitation.create!(
       member_id: team_owner_id,
       inviter_id: team_owner_id,
       aasm_state: :accepted_invitation,
       invitation_email: team_owner.email
     )
+    team_init
   end
 
   def fetch_another_owner_id
     team_members.map(&:member_id)
                 .reject { |id| id == team_owner_id }
                 .first
+  end
+
+  def team_init
+    team_double_names_harmonize
+    notify
+  end
+
+  def notify
+    # all areas are now shared, notifications should be settled
+    user.team_areas.each do |area|
+      area.area_notifications.create!(
+        user: user,
+        notify: true
+      )
+    end
+  end
+
+  def team_double_names_harmonize
+    doubles = {}
+    InternshipOfferArea.where(employer_id: team_members.pluck(:member_id)).each do |area|
+      if doubles[area.name].nil?
+        doubles[area.name] = [area]
+      else
+        doubles[area.name] << area
+      end
+    end
+    doubles.each do |name, area_array|
+      next if area_array.size == 1
+
+      harmonize(area_array, name)
+    end
+  end
+
+  def harmonize(area_array, name)
+    area_array.each do |area|
+      area.update!(name: "#{name}-#{area.employer.presenter.initials}")
+    end
   end
 
   def set_team_member

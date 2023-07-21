@@ -51,7 +51,7 @@ module Dashboard
         select('Professeur', from: 'Fonction')
         click_button("Inviter un membre de l'équipe")
       end
-      find("p#text-input-error-desc-error-email",text: "L'adresse email utilisée doit être officielle.<br>ex: XXXX@ac-academie.fr")
+      find("p#text-input-error-desc-error-email",text: "Email : l'adresse email utilisée doit être officielle.<br>ex: xxxx@ac-academie.fr")
     end
 
     test 'school manager fails gracefully when inviting one of his teacher with no function' do

@@ -6,10 +6,7 @@ module Teamable
   extend ActiveSupport::Concern
 
   included do
-    has_many :members_in_team,
-              class_name: 'TeamMemberInvitation',
-              dependent: :destroy,
-              foreign_key: :member_id
+    after_create_commit :create_internship_offer_area
 
     has_many :team_member_invitations,
              dependent: :destroy,
@@ -27,34 +24,87 @@ module Teamable
              class_name: 'InternshipOffer',
              foreign_key: 'employer_id'
 
-    has_many :kept_internship_offers, -> { merge(InternshipOffer.kept) },
-             class_name: 'InternshipOffer', foreign_key: 'employer_id'
+    has_many :kept_internship_offers,
+             -> { merge(InternshipOffer.kept) },
+             class_name: 'InternshipOffer',
+             foreign_key: 'employer_id'
 
     has_many :internship_applications, through: :kept_internship_offers
     has_many :internship_agreements, through: :internship_applications
     has_many :organisations  #TODO keep ?
     has_many :tutors #TODO keep ?
     has_many :internship_offer_infos #TODO keep ?
+    belongs_to :current_area,
+               class_name: 'InternshipOfferArea',
+               foreign_key: 'current_area_id',
+               optional: true
 
-    # scope :internship_offers, lambda do
-    #   InternshipOffer.joins(internship_offer_area: :employer)
-    #                  .where(internship_offer_areas: { employer: all })
-    # end
 
-    def internship_offers
-      InternshipOffer.joins(:internship_offer_area)
-                     .where(internship_offer_area: {employer_id: team_members_ids})
+
+    def personal_internship_offers
+      InternshipOffer.where(employer_id: id)
     end
 
-    # def internship_offer_areas
-    #   InternshipOfferArea.where(employer_id: team_members_ids)
-    # end
+    def team_internship_offers
+      InternshipOffer.where(employer_id: team_members_ids)
+    end
+
+    def internship_offers
+      team_internship_offers.where(internship_offer_area_id: fetch_current_area_id)
+    end
+
+    def anonymize(send_email: true)
+      if team.alive?
+        move_internship_offers_ownership_to_team
+        team.remove_member
+      else
+        InternshipOffer.where(employer_id: id).each do |offer|
+          offer.discard
+        end
+      end
+      super(send_email: send_email)
+    end
+
+    def internship_offer_areas
+      super if team.not_exists?
+
+      InternshipOfferArea.where(employer_id: team_members_ids)
+    end
 
     def internship_agreements
       return super unless team.alive?
 
       internship_applications = InternshipApplication.where(internship_offer: internship_offers)
       InternshipAgreement.where(internship_application: internship_applications)
+    end
+
+    def internship_offer_ids_by_area(area_id: )
+      InternshipOffer.where(employer_id: team_members_ids)
+                     .where(internship_offer_area_id: area_id || fetch_current_area_id)
+                     .pluck(:id)
+    end
+
+    def internship_applications_by_area(area_id: )
+      offer_ids = internship_offer_ids_by_area(area_id: area_id)
+      return InternshipApplication.none if offer_ids.empty?
+
+      InternshipApplication.where(internship_offer_id: offer_ids)
+    end
+
+    def internship_applications_by_area_and_states(area_id:, aasm_state: )
+      offer_ids = internship_offer_ids_by_area(area_id: area_id)
+      return InternshipApplication.none if offer_ids.empty?
+
+      InternshipApplication.where(internship_offer_id: offer_ids)
+                           .where(aasm_state: aasm_state)
+    end
+
+    def internship_applications_by_states( aasm_state: )
+      offer_ids = team_internship_offers.pluck(:id)
+      return InternshipApplication.none if offer_ids.empty?
+
+      InternshipApplication.where(internship_offer_id: offer_ids)
+                           .where(aasm_state: aasm_state)
     end
 
     def team
@@ -66,10 +116,18 @@ module Teamable
     end
 
     def team_members_ids
-      members = team.team_members.pluck(:member_id)
+      members = team.team_members.pluck(:member_id).compact
       members.empty? ? [id] : members
     end
 
+    def db_team_members
+      users = []
+      team_members_ids.each do |user_id|
+        users << User.find_by(id: user_id)
+      end
+      users.compact
+    end
+    
     def pending_invitation_to_a_team
       TeamMemberInvitation.with_pending_invitations.find_by(invitation_email: email)
     end
@@ -81,5 +139,44 @@ module Teamable
     def refused_invitations
       TeamMemberInvitation.refused_invitation.where(inviter_id: team_id)
     end
+
+    def team_areas
+      internship_offer_areas.where(employer_id: team_members_ids)
+    end
+
+    def current_area_id_memorize(id)
+      update(current_area_id:  id)
+    end
+
+    def fetch_current_area_id
+      current_area_id.presence || latest_area_id
+    end
+
+    # -------------------------------
+    private
+    # -------------------------------
+
+    def create_internship_offer_area
+      internship_offer_areas.create(name: "Espace de #{presenter.short_name}")
+    end
+
+    def latest_area_id
+      internship_offer_areas.order(updated_at: :desc).first.id
+    end
+
+    def move_internship_offers_ownership_to_team
+      if team.team_size == 2
+        other_employer_id = team.team_members.pluck(:member_id) - [id]
+        personal_internship_offers.update_all(employer_id: other_employer_id)
+        team.remove_member
+      else # more than 2 members
+        team_to_quit = team
+        team_to_quit.remove_member
+        personal_internship_offers.update_all(
+          employer_id: team_to_quit.team_owner_id
+        )
+      end
+    end
+
   end
 end

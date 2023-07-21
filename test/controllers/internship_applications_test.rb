@@ -27,8 +27,8 @@ class InternshipApplicationsControllerTest < ActionDispatch::IntegrationTest
     sign_in(employer)
 
     assert_difference('ActionMailer::Base.deliveries.count', 2) do
-      params = { 
-        comment: 'test', 
+      params = {
+        comment: 'test',
         destinations: 'test@mail.com,jojo@mail.com'
       }
       post transfer_internship_offer_internship_application_path(internship_offer, internship_application), params: params

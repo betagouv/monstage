@@ -8,3 +8,9 @@ a.red-delete{
     color: var(--red-marianne-425-625-hover);
   }
 }
+.cursor_grab{
+  cursor: grab;
+  .with_blue{
+    color: $blue-france;
+  }
+}

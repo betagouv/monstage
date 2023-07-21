@@ -2,6 +2,7 @@ require 'application_system_test_case'
 module Dashboard::TeamMemberInvitations
   class InvitationAndMembershipTest < ApplicationSystemTestCase
     include Devise::Test::IntegrationHelpers
+    include TeamAndAreasHelper
 
     test 'team member can invite a new team member' do
       employer_1 = create(:employer)
@@ -22,15 +23,8 @@ module Dashboard::TeamMemberInvitations
          'they cannot place an invitation to the same third employer' do
       employer_1 = create(:employer)
       employer_2 = create(:employer)
+      create_team(employer_1, employer_2)
       employer_3 = create(:employer)
-      create :team_member_invitation,
-             :accepted_invitation,
-             inviter_id: employer_1.id,
-             member_id: employer_2.id
-      create :team_member_invitation,
-             :accepted_invitation,
-             inviter_id: employer_1.id,
-             member_id: employer_1.id
 
       sign_in(employer_1)
       visit dashboard_team_member_invitations_path
@@ -91,21 +85,12 @@ module Dashboard::TeamMemberInvitations
       assert_equal 1, all('span.fr-badge.fr-badge--no-icon.fr-badge--error', text: "refusée".upcase).count
     end
 
-     test 'when two employers are in the same team, ' \
+     test 'when two employers are in the same team on a single area, ' \
          'they can manage internship_applications of the team' do
       employer_1 = create(:employer)
       employer_2 = create(:employer)
-      internship_offer = create(:weekly_internship_offer, employer: employer_1)
+      internship_offer = create_internship_offer_visible_by_two(employer_1, employer_2)
       internship_application_1 = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
-      create :team_member_invitation,
-             :accepted_invitation,
-             inviter_id: employer_1.id,
-             member_id: employer_2.id
-      create :team_member_invitation,
-             :accepted_invitation,
-             inviter_id: employer_1.id,
-             member_id: employer_1.id
-      assert employer_2.team.team_size == 2
 
       sign_in(employer_2)
       visit dashboard_candidatures_path
@@ -116,22 +101,14 @@ module Dashboard::TeamMemberInvitations
       find('p.fr-badge--info', text: "en attente de réponse".upcase)
     end
 
-    test 'when two employers are in the same team, ' \
+    test 'when two employers are in the same team on a single area, ' \
          'they can manage internship_agreements of the team' do
       employer_1 = create(:employer)
       employer_2 = create(:employer)
-      internship_offer = create(:weekly_internship_offer, employer: employer_1)
+      internship_offer = create_internship_offer_visible_by_two(employer_1, employer_2)
       internship_application_1 = create(:weekly_internship_application, :approved, internship_offer: internship_offer)
       assert InternshipAgreement.count == 1
       student = internship_application_1.student
-      create :team_member_invitation,
-             :accepted_invitation,
-             inviter_id: employer_1.id,
-             member_id: employer_2.id
-      create :team_member_invitation,
-             :accepted_invitation,
-             inviter_id: employer_1.id,
-             member_id: employer_1.id
 
       sign_in(employer_2)
       visit dashboard_internship_agreements_path
@@ -160,15 +137,8 @@ module Dashboard::TeamMemberInvitations
          'they cannot place an invitation to the same third employer' do
       user_operator_1 = create(:user_operator)
       user_operator_2 = create(:user_operator)
+      create_team(user_operator_1, user_operator_2)
       user_operator_3 = create(:user_operator)
-      create :team_member_invitation,
-             :accepted_invitation,
-             inviter_id: user_operator_1.id,
-             member_id: user_operator_2.id
-      create :team_member_invitation,
-             :accepted_invitation,
-             inviter_id: user_operator_1.id,
-             member_id: user_operator_1.id
 
       sign_in(user_operator_1)
       visit dashboard_team_member_invitations_path
@@ -229,21 +199,12 @@ module Dashboard::TeamMemberInvitations
       assert_equal 1, all('span.fr-badge.fr-badge--no-icon.fr-badge--error', text: "refusée".upcase).count
     end
 
-     test 'when two user_operators are in the same team, ' \
+     test 'when two user_operators are in the same team on a single area, ' \
           'they can manage internship_applications of the team' do
       user_operator_1 = create(:user_operator)
       user_operator_2 = create(:user_operator)
-      internship_offer = create(:weekly_internship_offer, employer: user_operator_1)
+      internship_offer = create_internship_offer_visible_by_two(user_operator_1, user_operator_2)
       internship_application_1 = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
-      create :team_member_invitation,
-             :accepted_invitation,
-             inviter_id: user_operator_1.id,
-             member_id: user_operator_2.id
-      create :team_member_invitation,
-             :accepted_invitation,
-             inviter_id: user_operator_1.id,
-             member_id: user_operator_1.id
-      assert user_operator_2.team.team_size == 2
 
       sign_in(user_operator_2)
       visit dashboard_candidatures_path
@@ -277,15 +238,8 @@ module Dashboard::TeamMemberInvitations
          'they cannot place an invitation to the same third employer' do
       statistician_1 = create(:statistician)
       statistician_2 = create(:statistician)
+      create_team(statistician_1, statistician_2)
       statistician_3 = create(:statistician)
-      create :team_member_invitation,
-             :accepted_invitation,
-             inviter_id: statistician_1.id,
-             member_id: statistician_2.id
-      create :team_member_invitation,
-             :accepted_invitation,
-             inviter_id: statistician_1.id,
-             member_id: statistician_1.id
 
       sign_in(statistician_1)
       visit dashboard_team_member_invitations_path
@@ -346,20 +300,12 @@ module Dashboard::TeamMemberInvitations
       assert_equal 1, all('span.fr-badge.fr-badge--no-icon.fr-badge--error', text: "refusée".upcase).count
     end
 
-    test 'when two statisticians are in the same team, ' \
+    test 'when two statisticians are in the same team on a single area, ' \
           'they can manage internship_applications of the team' do
-      statistician_1 = create(:statistician)
-      statistician_2 = create(:statistician)
-      internship_offer = create(:weekly_internship_offer, employer: statistician_1)
+      statistician_1 = create(:statistician, agreement_signatorable: true)
+      statistician_2 = create(:statistician, agreement_signatorable: true)
+      internship_offer = create_internship_offer_visible_by_two(statistician_1, statistician_2)
       internship_application_1 = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
-      create :team_member_invitation,
-             :accepted_invitation,
-             inviter_id: statistician_1.id,
-             member_id: statistician_2.id
-      create :team_member_invitation,
-             :accepted_invitation,
-             inviter_id: statistician_1.id,
-             member_id: statistician_1.id
       assert statistician_2.team.team_size == 2
 
       sign_in(statistician_2)
@@ -373,21 +319,13 @@ module Dashboard::TeamMemberInvitations
       find('p.fr-badge--info', text: "en attente de réponse".upcase)
     end
 
-    test 'as statistician, when two statisticians are in the same team, ' \
+    test 'as statistician, when two statisticians are in the same team on a single area, ' \
           'they can manage internship_agreements of the team' do
       statistician_1 = create(:statistician, agreement_signatorable: true)
       statistician_2 = create(:statistician, agreement_signatorable: true)
-      internship_offer = create(:weekly_internship_offer, employer: statistician_1)
+      internship_offer = create_internship_offer_visible_by_two(statistician_1, statistician_2)
       internship_application_1 = create(:weekly_internship_application, :approved, internship_offer: internship_offer)
       assert InternshipAgreement.count == 1
-      create :team_member_invitation,
-              :accepted_invitation,
-              inviter_id: statistician_1.id,
-              member_id: statistician_2.id
-      create :team_member_invitation,
-              :accepted_invitation,
-              inviter_id: statistician_1.id,
-              member_id: statistician_1.id
 
       sign_in(statistician_2)
       visit dashboard_internship_agreements_path

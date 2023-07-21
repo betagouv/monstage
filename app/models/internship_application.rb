@@ -285,6 +285,10 @@ class InternshipApplication < ApplicationRecord
     %w[submitted read_by_employer examined expired]
   end
 
+  def self.pending_states
+    received_states + %w[validated_by_employer]
+  end
+
   def self.rejected_states
     %w[rejected canceled_by_employer canceled_by_student]
   end
@@ -397,7 +401,7 @@ class InternshipApplication < ApplicationRecord
   end
 
   def cancel_all_pending_applications
-    student.internship_applications.where(aasm_state: pending_states).each do |application|
+    student.internship_applications.where(aasm_state: InternshipApplication::pending_states).each do |application|
       application.cancel_by_student_confirmation!
     end
   end
@@ -430,10 +434,6 @@ class InternshipApplication < ApplicationRecord
     return false unless internship_offer.employer.employer_like?
 
     true
-  end
-
-  def pending_states
-    %w[submitted read_by_employer examined validated_by_employer]
   end
 
   def employer_aware_states

@@ -4,6 +4,7 @@ module Dashboard
   module Students
     class AutocompleteSchoolTest < ApplicationSystemTestCase
       include Devise::Test::IntegrationHelpers
+      include TeamAndAreasHelper
 
       test 'student can browse his internship_applications' do
         school = create(:school, :with_school_manager)
@@ -375,18 +376,19 @@ module Dashboard
 
       test "reasons for rejection are explicit for students when employer rejects internship_application" do
         travel_to Date.new(2019, 10, 1) do
+          employer = create(:employer)
           weeks = [Week.find_by(number: 1, year: 2020),Week.find_by(number: 2, year: 2020)]
           school = create(:school, weeks: weeks)
           student = create(:student,
                     school: school,
                     class_room: create(:class_room, school: school))
-          internship_offer = create(:weekly_internship_offer, weeks: weeks)
+          internship_offer = create(:weekly_internship_offer, weeks: weeks, internship_offer_area: employer.current_area, employer: employer)
           internship_application = create( :weekly_internship_application,
                                            :submitted,
                                            internship_offer: internship_offer,
                                            student: student)
 
-          sign_in(internship_offer.employer)
+          sign_in(employer)
           visit dashboard_internship_offers_path
           click_link "Candidatures"
           click_link "Répondre"
@@ -411,13 +413,14 @@ module Dashboard
           student = create(:student,
                     school: school,
                     class_room: create(:class_room, school: school))
-          internship_offer = create(:weekly_internship_offer, weeks: weeks)
+          employer, internship_offer = create_employer_and_offer
+          internship_offer.weeks = weeks
           internship_application = create( :weekly_internship_application,
                                            :submitted,
                                            internship_offer: internship_offer,
                                            student: student)
 
-          sign_in(internship_offer.employer)
+          sign_in(employer)
           visit dashboard_internship_offers_path
           click_link "Candidatures"
           click_link "Répondre"

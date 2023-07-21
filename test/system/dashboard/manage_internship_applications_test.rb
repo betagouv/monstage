@@ -19,8 +19,7 @@ module Dashboard
       weekly_internship_applications = AASM_STATES.map do |state|
         create(:weekly_internship_application,
                state,
-               internship_offer: create(:weekly_internship_offer,
-                                        employer: @employer))
+               internship_offer: create(:weekly_internship_offer, employer: @employer, internship_offer_area_id: @employer.current_area_id))
       end
 
       sign_in(@employer)

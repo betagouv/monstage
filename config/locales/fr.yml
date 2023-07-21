@@ -36,6 +36,9 @@ fr:
       internship_agreement:
         one: Convention
         other: Conventions
+      internship_offer_area:
+        one: Espace
+        other: Espaces
       internship_offers/weekly_framed:
         one: Offre pour la 3eme
         other: Offres pour la 3eme
@@ -169,6 +172,8 @@ fr:
         tutor_phone: Téléphone du tuteur
         tutor_email: Email du tuteur
         tutor_role: Fonction du tuteur
+      internship_offer_area:
+        name : Nom d'espace
       team_member_invitation:
         member_id: id du membre
         inviter_id: id du membre invitant
@@ -284,7 +289,7 @@ fr:
               already_signed: Vous avez déjà signé. En attente de la signature de l’employeur.
               not_signed_yet: L'employeur a déjà signé. En attente de votre signature.
             signed_by_all: Signée par toutes les parties.
-      signature: 
+      signature:
         signatory_role: signataire
 
       internship_offer:
@@ -367,8 +372,9 @@ fr:
           canceled_by_student: annulée par l'élève
           convention_signed: convention signée
         week: Semaine
-      
+
       invitation:
+        email: Email
         roles:
           teacher: Professeur
           school_manager: Chef d'établissement
@@ -476,6 +482,13 @@ fr:
               required: "Veuillez choisir un secteur pour l'offre de stage"
             weeks:
               blank: Veuillez saisir des semaines de stage
+        internship_offer_area:
+          attributes:
+            name:
+              blank: "Veuillez saisir un nom d'espace"
+              invalid: "Ce nom d'espace est incorrect"
+              taken: "Ce nom d'espace est déjà utilisé"
+
 
         tutor:
           attributes: &tutor_errors
@@ -640,6 +653,8 @@ fr:
         kept: Actives
         discarded: Supprimées
   dashboard:
+    internship_offer_area:
+      index: "Tous mes espaces"
     internship_offer:
       created: Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.
   views:
