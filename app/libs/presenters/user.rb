@@ -116,11 +116,11 @@ module Presenters
     def subscribe_fields(as:)
       case as
       when "Employer"
-        %i[employer_role email minister_video]
+        %i[employer_role email]
       when "SchoolManagement"
         %i[school email school_id class_room_id role ]
       when 'MinistryStatistician', 'Statistician', 'EducationStatistician'
-        %i[email minister_video]
+        %i[email]
       else
         []
       end

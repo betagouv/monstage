@@ -42,7 +42,7 @@ module Presenters
                     }]
         }
       when "submitted"
-        label = reader.student? ? 'envoyée' : 'nouveau'
+        label = reader.student? || reader.school_management? ? "Sans réponse de l'entreprise" : 'nouveau'
         action_label = reader.student? ? 'Voir' : 'Répondre'
         action_level = reader.student? ? 'tertiary' : 'primary'
         { label: label,
@@ -53,7 +53,7 @@ module Presenters
                     }]
         }
       when "read_by_employer"
-        action_label = reader.student? ? 'Voir' : 'Répondre'
+        action_label = reader.student? || reader.school_management? ? 'Voir' : 'Répondre'
         action_level = reader.student? ? 'tertiary' : 'primary'
         { label: "lue",
           badge: 'warning',
@@ -73,7 +73,7 @@ module Presenters
                     }]
         }
       when "validated_by_employer"
-        label = reader.student? ? 'acceptée par l\'entreprise' : 'en attente de réponse'
+        label = reader.student? || reader.school_management? ? 'acceptée par l\'entreprise' : 'en attente de réponse'
         action_label = reader.student? ? 'Répondre' : 'Voir'
         action_level = reader.student? ? 'primary' : 'tertiary'
         badge = reader.student? ? 'success' : 'info'
@@ -85,7 +85,7 @@ module Presenters
                       }]
         }
       when "canceled_by_employer"
-        label = reader.student? ? 'annulée par l\'entreprise' : 'refusée'
+        label = reader.student? || reader.school_management? ? 'annulée par l\'entreprise' : 'refusée'
         { label: 'refusée par l\'entreprise',
           badge: 'error',
           actions: [ { label: 'Voir',
@@ -94,7 +94,7 @@ module Presenters
                       }]
         }
       when  "rejected"
-        label = reader.student? ? 'refusée par l\'entreprise' : 'refusée'
+        label = reader.student? || reader.school_management? ? 'refusée par l\'entreprise' : 'refusée'
         { label: 'refusée par l\'entreprise',
           badge: 'error',
           actions: [ { label: 'Voir',
@@ -103,7 +103,7 @@ module Presenters
                       }]
         }
       when "canceled_by_student"
-        label = reader.student? ? 'annulée' : 'annulée par l\'élève'
+        label = reader.student? || reader.school_management? ? 'annulée' : 'annulée par l\'élève'
         { label: label,
           badge:'purple-glycine',
           actions: [ { label: 'Voir',

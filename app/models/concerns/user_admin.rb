@@ -28,10 +28,6 @@ module UserAdmin
         fields(*DEFAULT_EDIT_FIELDS)
       end
 
-      # show do
-      #   fields(*UserAdmin::DEFAULT_FIELDS)
-      # end
-
       show do
         fields(*DEFAULT_FIELDS)
         field :confirmation_sent_at do
