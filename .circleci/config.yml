@@ -62,7 +62,9 @@ jobs: # a collection of steps
           command:  |
             yarn install --ignore-engines --cache-folder ~/.cache/yarn
 
-      - run: bundle exec rake webpacker:compile
+      - run:
+          name: Assets precompile
+          command: bundle exec rake webpacker:compile
 
       - save_cache:
           name: Store yarn cache
