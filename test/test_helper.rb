@@ -22,6 +22,8 @@ require 'webmock/minitest'
 # https://stackoverflow.com/questions/70967207/selenium-chromedriver-cannot-construct-keyevent-from-non-typeable-key/70971698#70971698
 require 'webdrivers/chromedriver'
 
+Webdrivers::Chromedriver.required_version = "114.0.5735.90"
+
 Capybara.save_path = Rails.root.join('tmp/screenshots')
 
 Minitest::Retry.use!(
