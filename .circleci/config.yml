@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   node: circleci/node@5.0.2
+  browser-tools: circleci/browser-tools@1.4.3
 jobs: # a collection of steps
   build: # runs not using Workflows must have a `build` job as entry point
     working_directory: ~/project
@@ -28,17 +29,8 @@ jobs: # a collection of steps
       - node/install:
           install-yarn: true
           node-version: '16.15'
-      - run:
-          name: Update Chromedriver
-          command: |
-          115.0.5790.102
-          steps:
       - browser-tools/install-browser-tools:
-          chrome-version: 114.0.5735.90
-          # CHROME_VERSION="114.0.5735.143"
-          # sudo wget --no-check-certificate --no-verbose -O /tmp/chrome.deb https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_VERSION}_amd64.deb
-          # sudo apt install -y /tmp/chrome.deb
-          # sudo rm /tmp/chrome.deb
+          chrome-version: 114.0.5735.90 
       - run:
           name: ruby version
           command: ruby --version
