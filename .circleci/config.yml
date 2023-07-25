@@ -84,16 +84,11 @@ jobs: # a collection of steps
           command: dockerize -wait tcp://localhost:6379 -timeout 1m
 
       - run:
-          name: info on /etc/apt/sources.list.d/ directory
-          command: ls -la /etc/apt/sources.list.d/
-
-      - run:
           name: Load DB schema
           environment:
             DATABASE_URL: "postgis://monstage_test:monstage_test@localhost:5432/monstage_test"
           command: |
-            sudo apt-get update
-            sudo apt-get install postgresql-client
+            sudo apt-get update && sudo apt install postgresql-client
             bundle exec bin/rails db:create db:schema:load --trace
 
       - run:
