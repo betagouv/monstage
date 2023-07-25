@@ -88,7 +88,7 @@ jobs: # a collection of steps
           environment:
             DATABASE_URL: "postgis://monstage_test:monstage_test@localhost:5432/monstage_test"
           command: |
-            sudo apt-get update -y && sudo apt install postgresql-client
+            sudo apt-get update --allow-releaseinfo-change && sudo apt install postgresql-client
             bundle exec bin/rails db:create db:schema:load --trace
 
       - run:
