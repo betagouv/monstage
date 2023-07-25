@@ -26,14 +26,12 @@ jobs: # a collection of steps
 
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory
-      - run:
-          name: uninstall-chrome
-          command: |
-            sudo apt-get remove google-chrome-stable
+
       - node/install:
           install-yarn: true
           node-version: '16.15'
-      - browser-tools/install-browser-tools:
+
+      - browser-tools/install-chrome:
           chrome-version: '114.0.5735.90'
 
       - run:
