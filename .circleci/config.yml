@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   node: circleci/node@5.0.2
+  browser-tools: circleci/browser-tools@1.4.3
 jobs: # a collection of steps
   build: # runs not using Workflows must have a `build` job as entry point
     working_directory: ~/project
@@ -25,16 +26,27 @@ jobs: # a collection of steps
 
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory
+
       - node/install:
           install-yarn: true
           node-version: '16.15'
+
       - run:
-          name: Update Chromedriver
+          name: get missing parts for chrome
           command: |
-            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-            sudo apt-get update --allow-releaseinfo-change
-            sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-            sudo apt-get upgrade google-chrome-stable
+            sudo apt-get update --allow-releaseinfo-change && sudo apt-get install -y libnss3 libgbm-dev systemd-sysv adwaita-icon-theme at-spi2-core dbus-user-session dconf-gsettings-backend dconf-service fonts-liberation glib-networking glib-networking-common glib-networking-services google-chrome-stable gsettings-desktop-schemas gtk-update-icon-cache libasound2 libasound2-data libatk-bridge2.0-0 libatk1.0-0 libatk1.0-data libatspi2.0-0 libauthen-sasl-perl libavahi-client3 libavahi-common-data libavahi-common3 libclone-perl libcolord2 libcups2 libdata-dump-perl libdconf1 libencode-locale-perl libepoxy0 libfile-basedir-perl libfile-desktopentry-perl libfile-listing-perl libfile-mimeinfo-perl libfont-afm-perl libgbm1 libgtk-3-0 libgtk-3-bin libgtk-3-common libhtml-form-perl libhtml-format-perl libhtml-parser-perl libhtml-tagset-perl libhtml-tree-perl libhttp-cookies-perl libhttp-daemon-perl libhttp-date-perl libhttp-message-perl libhttp-negotiate-perl libio-html-perl libio-socket-ssl-perl libio-stringy-perl libipc-system-simple-perl libjson-glib-1.0-0 libjson-glib-1.0-common liblua5.3-0 liblwp-mediatypes-perl liblwp-protocol-https-perl libmailtools-perl libnet-dbus-perl libnet-http-perl libnet-smtp-ssl-perl libnet-ssleay-perl libnspr4 libnss-systemd libnss3 libpam-systemd libproxy1v5 librest-0.7-0 libsoup-gnome2.4-1 libsoup2.4-1 libtext-iconv-perl libtie-ixhash-perl libtimedate-perl libtry-tiny-perl libu2f-udev liburi-perl libvte-2.91-0 libvte-2.91-common libwayland-cursor0 libwayland-egl1 libwayland-server0 libwww-perl libwww-robotrules-perl libx11-protocol-perl libxcb-shape0 libxcomposite1 libxcursor1 libxft2 libxi6 libxinerama1 libxkbcommon0 libxml-parser-perl libxml-twig-perl libxml-xpathengine-perl libxrandr2 libxtst6 libxv1 libxxf86dga1 perl-openssl-defaults systemd-sysv termit udev x11-utils x11-xserver-utils xdg-utils
+
+      - browser-tools/install-chrome:
+          replace-existing: true
+          chrome-version: '114.0.5735.90'
+
+      - run:
+          name: versions
+          command: |
+            google-chrome --version
+            node -v
+            ruby -v
+
 
       # Restore bundle cache
       # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
@@ -83,8 +95,11 @@ jobs: # a collection of steps
           environment:
             DATABASE_URL: "postgis://monstage_test:monstage_test@localhost:5432/monstage_test"
           command: |
-            sudo apt-get install postgresql-client
+            sudo apt-get update --allow-releaseinfo-change && sudo apt install postgresql-client
             bundle exec bin/rails db:create db:schema:load --trace
+
+
+
 
       - run:
           name: Run TestUnit
