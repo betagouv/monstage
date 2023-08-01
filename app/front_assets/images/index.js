@@ -75,7 +75,9 @@ import './pages/statistics/school.svg';
 
 import './pages/teams/team.png';
 import './pages/teams/team_icon_plus.svg';
+
 import './pages/areas/space_girl.svg';
+import './pages/areas/notification_icon.svg';
 
 import './pages/invitations/email_icon.svg';
 import './pages/invitations/person_icon.svg';

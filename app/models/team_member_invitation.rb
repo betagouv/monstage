@@ -99,14 +99,16 @@ class TeamMemberInvitation < ApplicationRecord
     Team.new(self)
   end
 
+  def refused_invitation?
+    invitation_refused_at.present?
+  end
+  
   private
 
   def after_accepted_invitation
     team.activate_member
   end
 
-  def refused?
-    invitation_refused_at.present?
-  end
+
 
 end

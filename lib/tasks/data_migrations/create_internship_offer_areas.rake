@@ -80,4 +80,20 @@ namespace :data_migrations do
     end
     puts " fin check User"
   end
+
+  desc 'add area reference to users'
+  task add_area_reference_to_users: :environment do
+    User.kept.find_each do |user|
+      next unless user.employer_like?
+
+      print("x") if user.internship_offer_areas.empty?
+      next if user.internship_offer_areas.empty?
+
+      print("o")  if user.current_area_id.present?
+      next if user.current_area_id.present?
+
+      print "."
+      user.update(current_area_id: user.internship_offer_areas.first.id)
+    end
+  end
 end

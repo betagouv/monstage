@@ -14,6 +14,7 @@
             aria-label="Modifier le nom d'un espace"
             data-fr-opened="false"
             aria-controls="fr-modal-edit-space-dialog"]
+
 - else
   h1#fr-sidemenu-title.h3.text-dark Tableau de bord
 nav.fr-sidemenu.fr-sidemenu--sticky aria-labelledby="dashboard-title"
@@ -39,4 +40,4 @@ nav.fr-sidemenu.fr-sidemenu--sticky aria-labelledby="dashboard-title"
                 - if link_material[:notice] && link_material[:notice].to_i > 0
                   .sidemenu-box-right
                     p.fr-badge.fr-badge--new.fr-badge--no-icon.fr-mt-3v
-                      = link_material[:notice] 
+                      = link_material[:notice]

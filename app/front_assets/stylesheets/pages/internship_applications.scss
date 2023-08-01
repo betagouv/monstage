@@ -134,6 +134,22 @@ $line-height: 4px;
 .white-header{
   background: white;
 }
+
+table tr {
+  td.col-name{
+    width: 150px;
+  }
+  td.col-title{
+    width: 350px;
+  }
+  td.col-canceled-intitle{
+    width: 100px
+  }
+  td.col-status{
+    width: 100pxj;
+  }
+}
+
 // media phone
 @media (max-width: 767px) {
   .success-banner {

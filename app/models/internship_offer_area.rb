@@ -13,7 +13,30 @@ class InternshipOfferArea < ApplicationRecord
   validates :employer_id, presence: true
 
   validate :name_uniqueness_in_team
-  accepts_nested_attributes_for :area_notifications
+
+  def team_sibling_areas
+    return InternshipOfferArea.none if employer.team.not_exists?
+
+    employer.internship_offer_areas.where.not(id: id)
+  end
+
+  def single_human_in_charge?
+    return true if employer.team.not_exists?
+
+    AreaNotification.where(user_id: employer.team_members_ids)
+                    .where(notify: true)
+                    .where(internship_offer_area_id: id)
+                    .to_a
+                    .count <= 1
+  end
+
+  def people_in_charge
+    return [] if employer.team.not_exists?
+
+    User.where(id: AreaNotification.where(user_id: employer.team_members_ids)
+                                   .where(notify: true)
+                                   .where(internship_offer_area_id: id))
+  end
 
   private
 

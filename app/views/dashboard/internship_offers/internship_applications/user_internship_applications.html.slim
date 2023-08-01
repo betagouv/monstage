@@ -1,7 +1,13 @@
 = render layout: 'layouts/dashboards_with_menu' do
   - selected_tab = params[:tab] || 'received!'
-  h1.h4.text-dark.fr-my-8w Les candidatures
-  .fr-tabs
+  .d-flex.justify-content-between
+    h2.h4.fr-mr-2w.fr-mt-7w.text-dark Les candidatures
+    .menu-ladder
+      - notification = current_user.fetch_current_area_notification
+      - if can?(:flip_notification, notification)
+        = render 'dashboard/internship_offer_areas/area_notifications/flip_notification',
+                  area_notification: notification
+  .fr-tabs.dashboard
     ul.fr-tabs__list[role="tablist" aria-label="[Candidatures par type]"]
       li
         button#tabpanel-received.fr-tabs__tab.fr-tabs__tab--icon-left[tabindex="0"

@@ -302,6 +302,15 @@ class Ability
     end
 
     can :generaly_destroy, InternshipOfferArea, user.team_areas.count > 1
+
+
+    can :flip_notification, AreaNotification do |area|
+      return false if user.team.not_exists?
+
+      many_people_in_charge_of_area = !user.current_area.single_human_in_charge?
+      current_area_notifications_are_off = !user.fetch_current_area_notification.notify
+      many_people_in_charge_of_area || current_area_notifications_are_off
+    end
   end
 
   def operator_abilities(user:)

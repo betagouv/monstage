@@ -21,6 +21,9 @@ fr:
       update: 'Mot de passe mis à jour.'
   activerecord:
     models:
+      area_notification:
+        one: Notification
+        other: Notifications
       email_whitelists/education_statistician:
         one: Courriel autorisé du Dsden
         other: Courriels autorisés des Dsden
@@ -110,6 +113,10 @@ fr:
         other: Semaines
 
     attributes:
+      area_notification:
+        area: Espace
+        email: Courriel
+        notify: Notifications
       group:
         created_at: Crée le
         is_public: Secteur public
@@ -420,6 +427,12 @@ fr:
       messages:
         bad_email: "just ain't right"
       models:
+        area_notification:
+          attributes:
+            notify:
+              blank: "Veuillez saisir une adresse email"
+              invalid: "Veuillez saisir une adresse email valide"
+              taken: "Cette adresse email est déjà utilisée"
         internship_agreement:
           attributes:
             school_manager_accept_terms: "conditions d'utilisation de la signature"
@@ -484,6 +497,8 @@ fr:
               blank: Veuillez saisir des semaines de stage
         internship_offer_area:
           attributes:
+            base:
+              only_one_left: "Une personne au moins doit être notifiée des candidatures"
             name:
               blank: "Veuillez saisir un nom d'espace"
               invalid: "Ce nom d'espace est incorrect"

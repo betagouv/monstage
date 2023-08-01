@@ -3,19 +3,17 @@
 h1.fr-h3.text-dark = @internship_offer_area.name
 .d-flex
   = image_tag asset_pack_path('media/images/pages/teams/team.png'),
-                          alt: 'Gérez vos annonce en équipe',
-                          class: ''
-  .fr-ml-6w
-    h1.fr-h3.fr-mt-11w Qui va recevoir les notifications des <br/>candidatures pour cet espace ?
-    - if can?(:update_areas, @internship_offer_area)
-      = form_with model: @internship_offer_area,
-                  url: dashboard_internship_offer_areas_path,
-                  method: :patch,
-                  class: 'fr-mt-2w' do |form|
-        fieldset#radio-hint-notifs.fr-fieldset[aria-labelledby="radio-hint-notifs-legend radio-hint-notifs-messages"]
-          .fr-fieldset__element
-            = form.fields_for :area_notifications do |area_notif_form|
-              .fr-radio-group
-                input#radio-hint-notifs-1[type="radio" name="radio-hint-notifs"]
-                label.fr-label[for="radio-hint-notifs-1"]
-                  |  Libellé bouton radio 
+              alt: 'Gérez vos annonce en équipe',
+              height: '255px',
+              class: ''
+  - if can?(:update_areas, @internship_offer_area)
+    .fr-ml-6w.notifications data-controller="toggle-control"
+      h2.fr-h3.fr-mt-11w Qui va recevoir les notifications des <br/>candidatures pour cet espace ?
+      - @internship_offer_area.area_notifications.each do |area_notification|
+        = render 'dashboard/internship_offer_areas/area_notifications/toggle',
+                  area_notification: area_notification
+.text-center 
+  = link_to 'Voir mon nouvel espace',
+            dashboard_internship_offers_path,
+            class: 'fr-btn fr-btn--sm fr-mt-5v'
+

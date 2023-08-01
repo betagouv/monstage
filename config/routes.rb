@@ -98,7 +98,9 @@ Rails.application.routes.draw do
 
       resources :internship_offer_areas, path: 'espaces' do
         get :filter_by_area, on: :member
-        resources :area_notifications, path: 'notifications-d-espace', only: %i[edit update index], module: 'internship_offer_areas'
+        resources :area_notifications, path: 'notifications-d-espace', only: %i[edit update index], module: 'internship_offer_areas' do
+          patch :flip , on: :member
+        end
       end
 
       resources :internship_offers, path: 'offres-de-stage', except: %i[show] do
