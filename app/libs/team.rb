@@ -6,8 +6,8 @@ class Team
   def activate_member
     return if db_user.nil?
 
-    team_member.update!(member_id: @db_user.id)
     add_owner if team_creation_time?
+    team_member.update!(member_id: @db_user.id, inviter_id: team_owner_id)
     team_member.reject_pending_invitations
     set_team_members
     create_default_notifications
