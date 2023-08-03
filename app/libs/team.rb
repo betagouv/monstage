@@ -132,15 +132,16 @@ class Team
   def create_default_notifications
     user.team_areas.each do |area|
       team_members.each do |team_member|
-        search_or_create_hash = {
+        next if team_member.member_id.nil?
+
+        search_or_create_attributes_hash = {
           user_id: team_member.member_id,
           internship_offer_area_id: area.id,
           notify: true
         }
-        next if team_member.member_id.nil?
-        next unless AreaNotification.find_by(search_or_create_hash).nil?
+        next unless AreaNotification.find_by(search_or_create_attributes_hash).nil?
 
-        AreaNotification.create!(search_or_create_hash)
+        AreaNotification.create!(search_or_create_attributes_hash)
       end
     end
   end

@@ -60,6 +60,10 @@ class TeamMemberInvitationTest < ActiveSupport::TestCase
 
   test 'team does not exist with a sole user' do
     employer = create(:employer)
+    team_member_invitation = create(:team_member_invitation,
+                         inviter_id: employer.id,
+                         member_id: nil,
+                         invitation_email: 'testo@mail.fr')
     assert employer.team.not_exists?
   end
 end
