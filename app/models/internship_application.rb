@@ -408,6 +408,7 @@ class InternshipApplication < ApplicationRecord
 
   def should_notify?(employer)
     return true unless employer.employer_like?
+    return true if employer.team.not_exists?
 
     internship_offer.internship_offer_area
                     .area_notifications
