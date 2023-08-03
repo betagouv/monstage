@@ -12,6 +12,7 @@ module Dashboard
       end
 
       def flip
+        can? :manage_abilities, AreaNotification
         parameters = flip_infos(team_flip: params[:team_flip] || false)
         if current_user.team.alive? && 
             (!current_user.current_area.single_human_in_charge? || !@area_notification.notify)

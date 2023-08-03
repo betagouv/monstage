@@ -12,7 +12,7 @@ module Dashboard::InternshipOffers
       click_link 'Répondre'
       click_on 'retour'
       assert internship_application.reload.read_by_employer?
-      find("h1.h4", text: "Les candidatures")
+      find("h2.h4", text: "Les candidatures")
       find('p.fr-mt-1w.fr-badge.fr-badge--sm.fr-badge--warning', text: "LU")
     end
 
@@ -26,7 +26,7 @@ module Dashboard::InternshipOffers
       find("#internship_application_examined_message").click.set("#{text} (test)")
       click_button 'Confirmer'
       assert internship_application.reload.examined?
-      find("h1.h4", text: "Les candidatures")
+      find("h2.h4", text: "Les candidatures")
       find('p.fr-mt-1w.fr-badge.fr-badge--sm.fr-badge--info', text: "à l'étude".upcase)
       find('span#alert-text', text: "Candidature mise à jour.")
     end
@@ -40,7 +40,7 @@ module Dashboard::InternshipOffers
       find("#internship_application_rejected_message").click.set("(test ata test)")
       click_button 'Confirmer'
       assert internship_application.reload.rejected?
-      find("h1.h4", text: "Les candidatures")
+      find("h2.h4", text: "Les candidatures")
       find('p.fr-mt-1w.fr-badge.fr-badge--sm.fr-badge--error', text: "REFUSÉ")
       find('span#alert-text', text: "Candidature refusée.")
       find('button#tabpanel-received[aria-controls="tabpanel-received-panel"]',  text: 'Reçues').click
@@ -55,7 +55,7 @@ module Dashboard::InternshipOffers
       click_on 'Accepter'
       click_button 'Confirmer'
       assert internship_application.reload.validated_by_employer?
-      find("h1.h4", text: "Les candidatures")
+      find("h2.h4", text: "Les candidatures")
       find('p.fr-mt-1w.fr-badge.fr-badge--sm.fr-badge--info', text: "en attente de réponse".upcase)
 
       find('span#alert-text', text: "Candidature mise à jour avec succès.")

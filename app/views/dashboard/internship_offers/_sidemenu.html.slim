@@ -23,6 +23,7 @@ nav.fr-sidemenu.fr-sidemenu--sticky aria-labelledby="dashboard-title"
       |  Dans cette rubrique
     #fr-sidemenu-wrapper.fr-collapse
       ul.fr-sidemenu__list
+        - # TODO make a component
         - [{label: "Offres de stage", path: dashboard_internship_offers_path, authorization: true},
            {label: "Candidatures", path: dashboard_candidatures_path, notice: applications_notice, authorization: true},
            {label: "Conventions", path: dashboard_internship_agreements_path, notice: agreements_notice, authorization: can?(:index, InternshipAgreement )}].each do |link_material|

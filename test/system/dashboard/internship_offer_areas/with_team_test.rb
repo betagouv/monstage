@@ -58,7 +58,7 @@ class WithTeamTest < ApplicationSystemTestCase
     find('label', text: 'Maxime Dus').click
     assert_equal 6, AreaNotification.all.count
 
-    click_link 'Mes espaces'
+    click_link 'Tous mes espaces'
     new_area = InternshipOfferArea.last
     notif_maxime = AreaNotification.find_by(user_id: employer_1.id, internship_offer_area_id: new_area.id)
     refute notif_maxime.notify
@@ -84,5 +84,4 @@ class WithTeamTest < ApplicationSystemTestCase
     assert_equal 1, InternshipOfferArea.all.count
     assert_equal 2, AreaNotification.all.count
   end
-
 end

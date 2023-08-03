@@ -6,7 +6,7 @@ h1.fr-h3.text-dark = @internship_offer_area.name
               alt: 'Gérez vos annonce en équipe',
               height: '255px',
               class: ''
-  - if can?(:update_areas, @internship_offer_area)
+  - if can?(:update, @internship_offer_area)
     .fr-ml-6w.notifications data-controller="toggle-control"
       h2.fr-h3.fr-mt-11w Qui va recevoir les notifications des <br/>candidatures pour cet espace ?
       - @internship_offer_area.area_notifications.each do |area_notification|

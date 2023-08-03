@@ -4,18 +4,22 @@ module Dashboard
     before_action :set_internship_offer_area, only: %i[show edit update destroy flip]
 
     def index
+      authorize! :index, InternshipOfferArea
       @internship_offer_areas = current_user.internship_offer_areas.includes([:employer])
     end
 
     def new
+      authorize! :create, InternshipOfferArea
       @internship_offer_area = current_user.internship_offer_areas.build
     end
 
     def edit
+      authorize! :update, @internship_offer_area
       @internship_offer_areas = current_user.internship_offer_areas
     end
 
     def create
+      authorize! :create, InternshipOfferArea
       build_params = internship_offer_area_params.merge(
           employer_type: 'User',
           employer_id: current_user.id
@@ -50,6 +54,7 @@ module Dashboard
     end
 
     def update
+      authorize! :update, @internship_offer_area
       if @internship_offer_area.update(internship_offer_area_params)
         notice = 'Modification du nom d\'espace opérée'
         redirect_to dashboard_internship_offers_path,
@@ -69,7 +74,7 @@ module Dashboard
     end
 
     def flip
-      @internship_offer_area = InternshipOfferArea.find(params[:id])
+      authorize! :update, @internship_offer_area
       raise 'boom' if @internship_offer_area.nil?
 
       @area_notification = fetch_area_notification ||

@@ -42,9 +42,8 @@ module Dashboard
         assert_equal "Nantes", area.name
         assert_equal employer_1, area.employer
         assert_equal "User", area.employer_type
-        assert_redirected_to edit_dashboard_internship_offer_area_area_notification_path(internship_offer_area_id: @internship_offer_area)
+        assert_redirected_to edit_dashboard_internship_offer_area_path(area)
       end
     end
   end
 end
-8
