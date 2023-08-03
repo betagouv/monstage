@@ -7,7 +7,7 @@ class CreateInternshipOfferAreas < ActiveRecord::Migration[7.0]
       t.timestamps
     end
     TaskManager.new(
-      allowed_environments: %w[development test production],
+      allowed_environments: %w[development test staging production],
       task_name: 'data_migrations:create_internship_offer_areas',
       arguments: []
     ).play_task_once(run_with_a_job: false)
@@ -15,7 +15,7 @@ class CreateInternshipOfferAreas < ActiveRecord::Migration[7.0]
 
   def down
     TaskRegister.where(task_name: 'data_migrations:create_internship_offer_areas').destroy_all
-    TaskManager.new(allowed_environments: %w[development test production],
+    TaskManager.new(allowed_environments: %w[development test staging production],
                     task_name: 'data_migrations:create_internship_offer_areas'
                 ).reset_task_counter
     drop_table :internship_offer_areas
