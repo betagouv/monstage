@@ -406,6 +406,15 @@ class InternshipApplication < ApplicationRecord
     end
   end
 
+  def should_notify?(employer)
+    return true unless employer.employer_like?
+
+    internship_offer.internship_offer_area
+                    .area_notifications
+                    .find_by(user_id: employer.id)
+                    .notify
+  end
+
   rails_admin do
     weight 14
     navigation_label 'Offres'

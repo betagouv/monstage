@@ -18,30 +18,10 @@ class ApplicationMailer < ActionMailer::Base
     @site_url = site_url
     if to.blank?
       Rails.logger.error("mail without recipient sending attempt. Subject: #{subject}")
-    elsif email_array_bypass?(to: to)
-      Rails.logger.info("mail bypassed. Subject: #{subject}")
     else
       params = { to: to, subject: subject }
       params.merge!(cc: cc) unless cc.nil?
       mail(params)
     end
-  end
-
-  private
-
-  def email_array_bypass?(to:)
-    if to.is_a?(Array)
-      to.any? { |email| email_bypass?(to: email) }
-    else
-      email_bypass?(to: to)
-    end
-  end
-
-  def email_bypass?(to:)
-    recipient = User.kept.find_by(email: to)
-    return false if recipient.nil? # as for transfers
-    return false unless recipient.employer_like?
-
-    recipient.fetch_current_area_notification&.notify
   end
 end

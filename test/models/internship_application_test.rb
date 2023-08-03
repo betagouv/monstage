@@ -4,6 +4,7 @@ require 'test_helper'
 
 class InternshipApplicationTest < ActiveSupport::TestCase
   include ThirdPartyTestHelpers
+  include TeamAndAreasHelper
 
   test 'scope remindable' do
     create(:weekly_internship_application, :submitted,
@@ -415,4 +416,21 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     end
     mock_mail.verify
   end
+
+  test "#should_notify_employer_like?" do
+    employer_1 = create(:employer)
+    employer_2 = create(:employer)
+    offer = create_internship_offer_visible_by_two(employer_1, employer_2)
+    internship_application = create(:weekly_internship_application, internship_offer: offer)
+
+    assert internship_application.should_notify?(employer_1)
+    assert internship_application.should_notify?(employer_2)
+
+    #update : employer_1 no longer receives notifications
+    area_notification = employer_1.fetch_current_area_notification
+    area_notification.update_column(:notify, false)
+    refute internship_application.should_notify?(employer_1)
+    assert internship_application.should_notify?(employer_2)
+  end
+
 end

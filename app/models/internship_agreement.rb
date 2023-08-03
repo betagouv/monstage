@@ -123,11 +123,12 @@ class InternshipAgreement < ApplicationRecord
     end
   end
 
-  delegate :student,          to: :internship_application
-  delegate :internship_offer, to: :internship_application
-  delegate :employer,         to: :internship_offer
-  delegate :school,           to: :student
-  delegate :school_manager,   to: :school
+  delegate :student,               to: :internship_application
+  delegate :internship_offer,      to: :internship_application
+  delegate :employer,              to: :internship_offer
+  delegate :school,                to: :student
+  delegate :school_manager,        to: :school
+  delegate :internship_offer_area, to: :internship_offer
 
   scope :having_school_manager, ->{
     joins(internship_application: {student: :school}).merge(School.with_school_manager)

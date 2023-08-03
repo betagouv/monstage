@@ -8,6 +8,11 @@ module TeamAndAreasHelper
            :accepted_invitation,
            inviter_id: employer_1.id,
            member_id: employer_1.id)
+    InternshipOfferArea.all.each do |area|
+      [employer_1, employer_2].each do |employer|
+        AreaNotification.find_or_create_by(user_id: employer.id, internship_offer_area_id: area.id, notify: true)
+      end
+    end
   end
 
   def create_internship_offer_visible_by_two(employer_1, employer_2)

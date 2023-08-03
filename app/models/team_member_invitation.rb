@@ -60,7 +60,7 @@ class TeamMemberInvitation < ApplicationRecord
   def fetch_invitee_in_db
     user = User.kept.find_by(email: invitation_email)
     return nil unless user.try(:employer_like?)
-    
+
     user
   end
 
@@ -78,7 +78,7 @@ class TeamMemberInvitation < ApplicationRecord
               .where(member_id: team_member_ids)
               .each do |pending_member|
                 pending_member.destroy
-              end  
+              end
 
     # refuse invitations to me
     TeamMemberInvitation.pending_invitation
@@ -102,7 +102,7 @@ class TeamMemberInvitation < ApplicationRecord
   def refused_invitation?
     invitation_refused_at.present?
   end
-  
+
   private
 
   def after_accepted_invitation
