@@ -8,8 +8,9 @@ class Team
 
     add_owner if team_creation_time?
     team_member.update!(member_id: @db_user.id, inviter_id: team_owner_id)
-    team_member.reject_pending_invitations
     set_team_members
+    team_homonymes_harmonize
+    team_member.reject_pending_invitations
     create_default_notifications
   end
 
@@ -92,7 +93,6 @@ class Team
       aasm_state: :accepted_invitation,
       invitation_email: team_owner.email
     )
-    team_init
   end
 
   def fetch_another_owner_id
@@ -101,11 +101,7 @@ class Team
                 .first
   end
 
-  def team_init
-    team_double_names_harmonize
-  end
-
-  def team_double_names_harmonize
+  def team_homonymes_harmonize
     doubles = {}
     InternshipOfferArea.where(employer_id: team_members.pluck(:member_id)).each do |area|
       if doubles[area.name].nil?

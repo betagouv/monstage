@@ -7,10 +7,7 @@ class InternshipOfferArea < ApplicationRecord
   has_many :internship_offers
   has_many :area_notifications, dependent: :destroy
 
-  validates :name,
-            presence: true,
-            uniqueness: { scope: :employer_id }
-  validates :employer_id, presence: true
+  validates :employer_id, :name, presence: true
 
   validate :name_uniqueness_in_team
 
