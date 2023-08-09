@@ -35,7 +35,7 @@
                                props: { name: "#{form.object_name}[phone]",
                                         value: current_user.phone,
                                         disabled: phone_mail_disabled,
-                                        withTarget: true})
+                                        withTarget: false})
         .col-12
           .form-group
             = form.label :email, class: 'fr-label', for: 'user_email_1' do
