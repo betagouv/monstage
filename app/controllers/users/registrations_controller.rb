@@ -73,6 +73,7 @@ module Users
         resource.targeted_offer_id ||= params && params.dig(:user, :targeted_offer_id)
         @current_ability = Ability.new(resource)
       end
+      resource.try(:intialize_current_area) if resource.persisted?
     end
 
     def phone_validation

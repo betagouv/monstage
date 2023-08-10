@@ -30,7 +30,9 @@ class EmployerRegistrationsTest < ActionDispatch::IntegrationTest
                                                     phone_suffix: '0612345678',
                                                     accept_terms: '1' } })
     end
-    assert_redirected_to users_registrations_standby_path(id: Users::Employer.last.id)
+    created_employer = Users::Employer.last
+    assert_redirected_to users_registrations_standby_path(id: created_employer.id)
+    assert created_employer.current_area.is_a?(InternshipOfferArea)
   end
 
   test "post should not subscribe when confirmation is sent" do

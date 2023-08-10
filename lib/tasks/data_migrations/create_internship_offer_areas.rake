@@ -29,8 +29,7 @@ namespace :data_migrations do
       next unless user.employer_like?
       next if user.internship_offer_areas.any?
 
-      space = user.internship_offer_areas.build( name: "Mon espace", employer_type: 'User')
-      space.save!
+      InternshipOfferArea.create!( name: "Mon espace", employer_type: 'User', employer_id: user.id)
     end
   end
 

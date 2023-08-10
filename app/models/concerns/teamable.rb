@@ -7,7 +7,6 @@ module Teamable
 
   included do
     include InternshipOfferAreable
-    after_create_commit :create_internship_offer_area
 
     has_many :team_member_invitations,
              dependent: :destroy,
@@ -17,6 +16,11 @@ module Teamable
              as: :employer,
              class_name: 'InternshipOfferArea',
              foreign_key: 'employer_id'
+
+    has_one :internship_offer_area,
+            as: :employer,
+            class_name: 'InternshipOfferArea',
+            foreign_key: 'current_area_id'
 
     has_many :internship_offers,
              through: :internship_offer_areas,
@@ -130,15 +134,20 @@ module Teamable
       TeamMemberInvitation.refused_invitation.where(inviter_id: team_id)
     end
 
+    def intialize_current_area
+      create_current_area(
+        name: "Espace de #{presenter.short_name}",
+        employer_type: 'User',
+        employer_id: self.id
+      )
+      save!
+    end
+    
 
 
     # -------------------------------
     private
     # -------------------------------
-
-    def create_internship_offer_area
-      internship_offer_areas.create(name: "Espace de #{presenter.short_name}")
-    end
 
     def move_internship_offers_ownership_to_team
       if team.team_size == 2
