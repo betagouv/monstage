@@ -58,6 +58,10 @@ class Team
     team_members.pluck(:member_id).include?(user_id)
   end
 
+  def db_members
+    team_members.map { |member| User.find_by(id: member.member_id) }
+  end
+
   attr_accessor :user, :team_member, :team_owner_id, :team_members, :team_creation_time
 
   #----------------------------------

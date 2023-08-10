@@ -423,14 +423,11 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     offer = create_internship_offer_visible_by_two(employer_1, employer_2)
     internship_application = create(:weekly_internship_application, internship_offer: offer)
 
-    assert internship_application.should_notify?(employer_1)
-    assert internship_application.should_notify?(employer_2)
+    assert_equal 2, internship_application.filter_notified_emails.count
 
     #update : employer_1 no longer receives notifications
     area_notification = employer_1.fetch_current_area_notification
     area_notification.update_column(:notify, false)
-    refute internship_application.should_notify?(employer_1)
-    assert internship_application.should_notify?(employer_2)
+    assert_equal [employer_2.email], internship_application.filter_notified_emails
   end
-
 end
