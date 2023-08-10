@@ -99,15 +99,16 @@ module Dashboard
       if params[:commit] != "Valider"
         redirect_to dashboard_internship_offer_areas_path and return
       elsif pure_destruction?(params)
-        target_area = random_area_from_team
+        target_area_id = random_other_area_from_team(@internship_offer_area).id
         InternshipOffer.where(internship_offer_area_id: @internship_offer_area.id).each do |offer|
-          offer.internship_offer_area_id = target_area.id
+          offer.internship_offer_area_id = target_area_id
           offer.anonymize
         end
-        clean_user_references_to_area(target_area_id: target_area.id)
       else
-        move_internship_offers_to_another_area(params)
+        move_internship_offers_to_specific_area(params)
       end
+      clean_user_references_to_area( to_be_removed_area_id: @internship_offer_area.id,
+                                     target_area_id: target_area_id || form_target_area_id)
       @internship_offer_area.destroy
       redirect_to dashboard_internship_offer_areas_path,
                   flash: { success: 'Espace supprimé avec succès.' }
@@ -142,30 +143,29 @@ module Dashboard
       current_user.current_area_id_memorize(@internship_offer_area.id)
     end
 
-    def random_area_from_team
+    def random_other_area_from_team(internship_offer_area)
       current_user.internship_offer_areas
-                  .where.not(id: @internship_offer_area.id)
+                  .where.not(id: internship_offer_area.id)
                   .sample
     end
 
-    def move_internship_offers_to_another_area(params)
+    def move_internship_offers_to_specific_area(params)
       target_area = InternshipOfferArea.find(form_target_area_id)
       @internship_offer_area.internship_offers.each do |offer|
         offer.update!(internship_offer_area: target_area)
       end
-      clean_user_references_to_area(target_area_id: target_area.id)
     end
 
-    def clean_user_references_to_area(target_area_id:)
+    def clean_user_references_to_area(target_area_id:, to_be_removed_area_id:)
+      user_to_update_list = [current_user]
       if current_user.team.alive?
         current_user.db_team_members.each do |user|
-          next unless user.current_area_id == @internship_offer_area.id
+          next unless user.current_area_id == to_be_removed_area_id
 
-          user.current_area_id_memorize(target_area_id)
+          user_to_update_list << user if user.id != current_user.id
         end
-      else
-        current_user.current_area_id_memorize(target_area_id)
       end
+      user_to_update_list.each { |user| user.current_area_id_memorize(target_area_id) }
     end
 
 

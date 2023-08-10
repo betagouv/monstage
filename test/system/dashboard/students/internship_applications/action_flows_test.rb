@@ -25,7 +25,7 @@ module Dashboard
           badge = internship_application.presenter(student).human_state
           find('.h5.internship-offer-title', text: internship_application.internship_offer.title)
           find("a#show_link_#{internship_application.id}", text: badge[:actions].first[:label]).click
-          click_link('toutes mes candidatures')
+          find('a span.fr-icon-arrow-left-line', text:'toutes mes candidatures').click
         end
       end
 
