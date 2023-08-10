@@ -80,8 +80,6 @@ group :development, :test do
   gem "debug"
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
-  gem 'jupyter_on_rails'
-  gem 'ffi-rzmq'
 end
 
 group :development do
@@ -93,9 +91,11 @@ group :development do
   gem 'web-console'
 # Spring speeds up development by keeping your application running in the
 # background. Read more: https://github.com/rails/spring
-gem "spring", "3.0.0"
-  gem 'letter_opener'
-  gem 'activerecord-explain-analyze'
+  gem "spring", "3.0.0"
+  gem "letter_opener"
+  gem "activerecord-explain-analyze"
+  gem "jupyter_on_rails"
+  gem "ffi-rzmq"
 end
 
 
