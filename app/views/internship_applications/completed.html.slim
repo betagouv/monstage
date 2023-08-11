@@ -44,7 +44,7 @@ div.fr-container style="overflow: hidden;"
                     = "Du #{I18n.localize(internship_offer.first_date, format: :human_mm_dd_yyyy)} au #{I18n.localize(internship_offer.last_date, format: :human_mm_dd_yyyy)}"
             .fr-card__header
               .fr-card__img
-                = image_tag asset_pack_path("media/images/sectors/#{internship_offer.sector.cover}"), alt: 'image de secteur', class: 'fr-responsive-img'
+                = image_tag asset_pack_path("media/images/sectors/#{internship_offer.sector.cover}"), alt: 'image de secteur economique', class: 'fr-responsive-img'
               ul.fr-badges-group
                 li
                   .fr-tag

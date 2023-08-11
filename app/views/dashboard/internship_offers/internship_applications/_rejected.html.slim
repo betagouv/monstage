@@ -20,14 +20,14 @@
         - internship_applications.each do |internship_application|
           - prez = internship_application.presenter(current_user)
           tr
-            td style="min-width: 230px;"
+            td.col-name
               = prez.student.presenter.full_name
-            td style="min-width: 570px;"
+            td.col-title
               - prez_offer = internship_application.internship_offer.presenter
               = prez.internship_offer.title
               br/
               = prez_offer.address
-            td
+            td.col-status
               p class="fr-mt-1w fr-badge fr-badge--sm fr-badge--#{prez.human_state[:badge]} fr-badge--no-icon"
                 = prez.human_state[:label]
             td

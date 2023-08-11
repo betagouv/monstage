@@ -54,12 +54,11 @@ class UserUpdateTest < ApplicationSystemTestCase
     sign_in(student.reload)
 
     visit account_path
-    find('h1.h2', text: 'Mon établissement')
     find('#alert-danger', text: 'Veuillez rejoindre un etablissement')
     within('#alert-danger') do
       click_button('Fermer')
     end
-    click_on 'Mon établissement'
+    click_button 'Mon établissement'
     find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Paris ')
     find('li#downshift-0-item-0').click
     select school_new.name, from: "user_school_id"

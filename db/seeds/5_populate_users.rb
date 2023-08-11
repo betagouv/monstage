@@ -18,8 +18,8 @@ def student_maker (school: ,class_room: )
 end
 
 def add_area
-  last_user = User.all.order(:created_at).last
-  last_user.internship_offer_areas.build(name: "Mon espace", employer_type: "User").save!
+  last_user = User.all.order(:updated_at).last
+  last_user.internship_offer_areas.build(name: "Mon espace", employer_type: "User", employer_id: last_user.id).save!
   last_user.update(current_area_id: InternshipOfferArea.last.id)
 end
 
@@ -35,6 +35,7 @@ def populate_users
     )
   ).save!
   add_area
+
   with_class_name_for_defaults(
     Users::Employer.new(
       email: 'other_employer@ms3e.fr',
@@ -44,6 +45,7 @@ def populate_users
     )
   ).save!
   add_area
+
   with_class_name_for_defaults(Users::God.new(email: 'god@ms3e.fr', password: 'review')).save!
 
   school_manager = with_class_name_for_defaults(Users::SchoolManagement.new(
@@ -62,8 +64,8 @@ def populate_users
 
   Operator.all.map do |operator|
     with_class_name_for_defaults(Users::Operator.new(email: "#{operator.name.parameterize}@ms3e.fr", password: 'review', operator: operator)).save!
+    add_area
   end
-  add_area
   with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', operator: Operator.first)).save!
   add_area
 

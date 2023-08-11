@@ -10,9 +10,6 @@ class User < ApplicationRecord
 
   has_many :favorites
 
-  # has_many :users_internship_offers
-  # has_many :internship_offers, through: :users_internship_offers
-
   attr_accessor :phone_prefix, :phone_suffix
 
   devise :database_authenticatable, :registerable,
@@ -204,10 +201,6 @@ class User < ApplicationRecord
     super
   end
 
-  def email_required?
-    false
-  end
-
   def send_confirmation_instructions
     return if created_by_teacher
     super
@@ -246,20 +239,22 @@ class User < ApplicationRecord
   def employer_like? ; false end
   def has_already_approved_an_application? ; false end
   def can_sign?(internship_agreement); false end
+  def email_required? ; false end
 
-  def already_signed?(internship_agreement_id:); true end
-
-  def anonymized? ; self.anonymized end
-
-  def team_id; id end
-  def team_members_ids; [id] end
-  def agreement_signatorable? ; agreement_signatorable end
-
-  def pending_invitation_to_a_team ; [] end
+  def fetch_current_area_notification; nil end
   def create_signature_phone_token ; nil end
   def send_signature_sms_token ; nil end
   def signatory_role ; nil end
   def obfuscated_phone_number ; nil end
+  def satisfaction_survey_id ; nil end
+
+  def already_signed?(internship_agreement_id:); true end
+
+  def team_id; id end
+  def team_members_ids; [id] end
+  def agreement_signatorable? ; agreement_signatorable end
+  def anonymized? ; self.anonymized end
+  def pending_invitation_to_a_team ; [] end
   def team_members ; User.none end
 
   def presenter
@@ -276,10 +271,6 @@ class User < ApplicationRecord
 
   def satisfaction_survey
     Rails.env.production? ? satisfaction_survey_id : ENV['TALLY_STAGING_SURVEY_ID']
-  end
-
-  def satisfaction_survey_id
-    nil
   end
 
   protected

@@ -14,6 +14,7 @@
             aria-label="Modifier le nom d'un espace"
             data-fr-opened="false"
             aria-controls="fr-modal-edit-space-dialog"]
+
 - else
   h1#fr-sidemenu-title.h3.text-dark Tableau de bord
 nav.fr-sidemenu.fr-sidemenu--sticky aria-labelledby="dashboard-title"
@@ -22,6 +23,7 @@ nav.fr-sidemenu.fr-sidemenu--sticky aria-labelledby="dashboard-title"
       |  Dans cette rubrique
     #fr-sidemenu-wrapper.fr-collapse
       ul.fr-sidemenu__list
+        - # TODO make a component
         - [{label: "Offres de stage", path: dashboard_internship_offers_path, authorization: true},
            {label: "Candidatures", path: dashboard_candidatures_path, notice: applications_notice, authorization: true},
            {label: "Conventions", path: dashboard_internship_agreements_path, notice: agreements_notice, authorization: can?(:index, InternshipAgreement )}].each do |link_material|
@@ -39,4 +41,4 @@ nav.fr-sidemenu.fr-sidemenu--sticky aria-labelledby="dashboard-title"
                 - if link_material[:notice] && link_material[:notice].to_i > 0
                   .sidemenu-box-right
                     p.fr-badge.fr-badge--new.fr-badge--no-icon.fr-mt-3v
-                      = link_material[:notice] 
+                      = link_material[:notice]

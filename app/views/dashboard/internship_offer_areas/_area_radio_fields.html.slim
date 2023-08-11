@@ -1,0 +1,25 @@
+- common_name = dom_id(internship_offer_area, :'radio-hint')
+fieldset#radio-hint.fr-fieldset.border[aria-labelledby="radio-hint-legend radio-hint-messages"]
+  legend#radio-hint-legend.fr-fieldset__legend--regular.fr-fieldset__legend
+    | Toutes les offres seront
+  .fr-fieldset__element
+    .fr-radio-group.fr-radio-group--sm
+      - suppr_common_id = SecureRandom.hex(4)
+
+      = form.hidden_field :id, value: internship_offer_area.id
+      input[type="radio"
+            name="#{common_name}"
+            value="0"
+            id="#{suppr_common_id}"
+            checked="checked"]
+      label.fr-label[for="#{suppr_common_id}"]
+        | Supprimées
+  - internship_offer_area.team_sibling_areas.each do |sibling_area|
+    = render '/inputs/dsfr_radio_field',
+            f: form,
+            field: :id,
+            object: sibling_area,
+            name: common_name,
+            size: 'sm',
+            label: "Transférées dans \'#{sibling_area.name}\'"
+  #radio-hint-messages.fr-messages-group[aria-live="assertive"]

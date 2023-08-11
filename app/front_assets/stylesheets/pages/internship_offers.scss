@@ -166,6 +166,11 @@ $sortLinkOffset: 15px;
   font-size: 2rem;
 }
 
+.first-advice, .second-advice, .third-advice{
+  width: 31%;
+  margin : 8px 24px;
+}
+
 .container-downshift{position: relative;}
 
 // custom dimension table for dashboard/internship_offers#index
@@ -237,7 +242,7 @@ $sortLinkOffset: 15px;
   a.leaflet-popup-close-button {
     display: none !important;
   }
-  
+
   .leaflet-popup-content {
     width: 250px;
     margin: 0 !important;
@@ -300,6 +305,20 @@ $sortLinkOffset: 15px;
   margin-top: -5px ;
 }
 
+.notifications{
+  .fr-toggle.fr-toggle--label-left{
+    width: 300px;
+  }
+  label {
+    padding-top: 17px;
+    padding-right: 15px;
+  }
+  .fr-toggle input[type=checkbox] {
+    margin-top: 15px;
+    margin-left: -40px;
+  }
+}
+
 .dashboard-container{
   display: flex;
 }
@@ -312,13 +331,8 @@ $sortLinkOffset: 15px;
 }
 
 .menu-ladder{
-  position: relative;
-  height: 130px;
-}
-.publish-adjust-position{
-  position: absolute;
-  bottom: 0;
-  right:0
+  display: block;
+  height: 140px;
 }
 
 .fr-sidemenu__list {

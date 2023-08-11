@@ -1,11 +1,11 @@
-.fr-toggle data-controller='toggle-publish'
+.fr-toggle data-controller='toggle-activate'
   - options = { id: "axe-#{id}",
                 class: 'fr-toggle__input',
                 :'aria-describedby' => "#{id}-hint-text",
                 title: 'Publier / Masquer' }
   - if submit
-    - options.merge!({data: { action: 'change->toggle-publish#toggle',
-                      :'toggle-publish-target' => 'checkToggle' }})
+    - options.merge!({data: { action: 'change->toggle-activate#toggle',
+                      :'toggle-activate-target' => 'checkToggle' }})
   = check_box_tag 'toggle_publish',
                    published,
                    published,

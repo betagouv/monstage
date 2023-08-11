@@ -32,8 +32,6 @@ module Users
       end
     end
 
-    def operator? ; true end
-
     def custom_dashboard_path
       url_helpers.dashboard_internship_offers_path
     rescue ActionController::UrlGenerationError

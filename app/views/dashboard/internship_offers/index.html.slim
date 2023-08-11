@@ -1,15 +1,19 @@
 = render 'layouts/breadcrumb', links: [ ['', 'Mon tableau de bord'] ] unless current_user.employer_like?
 = render layout: 'layouts/dashboards_with_menu' do
-  .row.fr-row--gutters.fr-mt-7w
-    .fr-col-6
-      h2.h4.fr-mr-2w.text-dark Les offres
-    - if can?(:create, InternshipOffer)
-      .fr-col-6.text-right.fr-pr-2w
-        .menu-ladder
+  .d-flex.justify-content-between width="600px"
+    h2.h4.fr-mr-2w.fr-mt-7w.text-dark Les offres
+    - notification = current_user.fetch_current_area_notification
+    .d-flex.flex-column
+      - if can?(:flip_notification, notification)
+        = render 'dashboard/internship_offer_areas/area_notifications/flip_notification',
+                  area_notification: notification
+
+      - if can?(:create, InternshipOffer)
+        .mt-auto.text-right
           = link_to new_dashboard_stepper_organisation_path,
-                    class: 'fr-mt-5w publish-adjust-position',
                     id: 'test-create-offer' do
-            button.fr-icon-add-line.fr-btn.fr-btn--icon-left Publier une offre
+            button.fr-icon-add-line.fr-btn.fr-btn--icon-left
+              |Publier une offre
   .row.fr-mt-1v.fr-grid-row--gutters
     .fr-col-12
       = render partial: 'dashboard/internship_offers/offers_and_agreements_content',
@@ -27,8 +31,5 @@
         .col-12.mt-3= paginate(@internship_offers)
 
     - if @internship_offers.empty?
-      .row.fr-mb-2w
-        .col-12
-          h1.h2.mt-4 Aucune offre n'a été publiée selon ces critères
-
+      = render 'dashboard/internship_offers/advices_when_empty'
       = render 'dashboard/satisfaction_survey'
