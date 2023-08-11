@@ -16,6 +16,12 @@ FactoryBot.define do
       aasm_state { :submitted }
       submitted_at { 3.days.ago }
     end
+    
+    trait :read_by_employer do
+      aasm_state { :read_by_employer }
+      submitted_at { 3.days.ago }
+      read_at { 2.days.ago }
+    end
 
     trait :examined do
       aasm_state { :examined }
