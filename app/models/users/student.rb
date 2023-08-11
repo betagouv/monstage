@@ -116,7 +116,11 @@ module Users
       super(send_email: send_email)
 
       update_columns(birth_date: nil,
-                     handicap: nil)
+                     handicap: nil,
+                     current_sign_in_ip: nil,
+                     last_sign_in_ip: nil,
+                     class_room_id: nil)
+      update_columns(phone: 'NA') unless phone.nil?
       resume_educational_background.try(:delete)
       resume_other.try(:delete)
       resume_languages.try(:delete)
@@ -138,9 +142,7 @@ module Users
     end
 
     def has_already_approved_an_application?
-      internship_applications
-        .approved
-        .any?
+      internship_applications.approved.any?
     end
   end
 end

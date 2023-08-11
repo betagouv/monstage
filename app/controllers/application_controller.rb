@@ -38,4 +38,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # use with trace :my_var, binding
+  def trace(sym_var, binding)
+    require 'pretty_console'
+    var_value = eval(sym_var.to_s, binding)
+    puts " "
+    puts_in_orange_loudly " ---------------------------- "
+    puts_in_green_loudly "#{sym_var} = #{var_value}"
+    puts_in_orange_loudly " ---------------------------- "
+    puts " "
+  end
 end

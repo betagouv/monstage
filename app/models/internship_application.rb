@@ -381,6 +381,11 @@ class InternshipApplication < ApplicationRecord
 
   def anonymize
     motivation.try(:delete)
+    return unless student_phone || student_email
+
+    self.student_phone = nil
+    self.student_email = nil
+    self.save
   end
 
   def short_target_url(application)
