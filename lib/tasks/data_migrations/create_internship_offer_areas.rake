@@ -24,6 +24,8 @@ namespace :data_migrations do
       InternshipOffer.find_by(id: 25044).try(:anonymize)
       InternshipOffer.find_by(id: 25425).try(:anonymize)
       InternshipOffer.find_by(id: 28770).try(:anonymize)
+      InternshipOffer.find_by(id: 29175).try(:anonymize)
+      InternshipOffer.find_by(id: 36036).try(:anonymize)
     end
     if Rails.env.staging?
       InternshipOffer.find_by(id: 895).try(:anonymize)
@@ -39,8 +41,9 @@ namespace :data_migrations do
 
     User.kept
         .where(type: employer_like_types)
-        .find_each do |user|
-      next if user.internship_offer_areas.any?
+        .in_batches
+        .each_record do |user|
+      next unless user.internship_offer_areas.empty?
 
       InternshipOfferArea.create!( name: "Mon espace", employer_type: 'User', employer_id: user.id)
     end
@@ -48,7 +51,19 @@ namespace :data_migrations do
 
   desc 'create add area_reference to_internship offer'
   task add_area_reference_to_internship_offer: :environment do
-    # update_array = []
+    if Rails.env.production?
+        InternshipOffer.find_by(id: 29175).try(:anonymize)
+        InternshipOffer.find_by(id: 36036).try(:anonymize)
+    end
+    User.kept
+        .where(type: employer_like_types)
+        .in_batches
+        .each_record do |user|
+      next if user.internship_offer_areas.any?
+
+      InternshipOfferArea.create!( name: "Mon espace", employer_type: 'User', employer_id: user.id)
+    end
+    puts ' ---- areas are created for all employers ----'
     InternshipOffer.kept
                    .includes(:employer)
                    .in_batches
