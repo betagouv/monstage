@@ -25,13 +25,25 @@ class UserTest < ActiveSupport::TestCase
                                gender: 'm', class_room_id: class_room.id, resume_educational_background: 'Zer',
                                resume_other: 'chocolat', resume_languages: 'FR', phone: '+330600110011',
                                handicap: 'malvoyant')
+    internship_application = create(
+      :weekly_internship_application,
+      student: student,
+      motivation: 'a wonderful world', 
+      student_phone: '33601254118',
+      student_email: 'test@free.fr'
+    )
+    assert internship_application.motivation.present?
+    assert_equal 'a wonderful world', internship_application.motivation.body.to_plain_text
 
     assert_enqueued_jobs 1, only: AnonymizeUserJob do
       student.anonymize
     end
 
     assert_equal 'm', student.gender
-    assert_equal class_room.id, student.class_room_id
+    assert_nil  internship_application.reload.motivation.body
+    assert_nil internship_application.student_phone
+    assert_nil internship_application.student_email
+    assert_equal nil, student.class_room_id
 
     assert_not_equal 'test@test.com', student.email
     assert_not_equal 'Toto', student.first_name
@@ -41,7 +53,7 @@ class UserTest < ActiveSupport::TestCase
     assert_not_equal '01/01/2000', student.birth_date
 
     assert_equal 'm', student.gender
-    assert_equal class_room.id, student.class_room_id
+    assert_nil student.class_room_id
     assert_not_equal 'Zer', student.resume_educational_background
     assert_not_equal 'chocolat', student.resume_other
     assert_not_equal 'chocolat', student.resume_languages
@@ -64,7 +76,7 @@ class UserTest < ActiveSupport::TestCase
     end
 
     assert_equal 'm', student.gender
-    assert_equal class_room.id, student.class_room_id
+    assert_equal nil, student.class_room_id
 
     assert_not_equal '', student.email
     assert_not_equal 'Toto', student.first_name
