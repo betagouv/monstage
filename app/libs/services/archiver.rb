@@ -3,15 +3,16 @@ module Services
   class Archiver
 
     def archive_students
-      Users::Student.where(created_at: (begins_at..ends_at))
+      Users::Student.kept
+                    .where(created_at: (begins_at..ends_at))
                     .where.not(anonymized: true)
-                    .in_batches(of: 10)
+                    .in_batches(of: 100)
                     .each_record(&:archive)
     end
 
     def delete_invitations
       Invitation.where(created_at: (begins_at..ends_at))
-                .in_batches(of: 10)
+                .in_batches(of: 100)
                 .each_record(&:destroy)
     end
 
