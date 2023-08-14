@@ -5,7 +5,6 @@ module Services
     def archive_students
       Users::Student.kept
                     .where(created_at: (begins_at..ends_at))
-                    .where.not(anonymized: true)
                     .in_batches(of: 100)
                     .each_record(&:archive)
     end
