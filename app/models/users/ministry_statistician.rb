@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Users
-  class MinistryStatistician < User
+  class MinistryStatistician < Statistician
     include Signatorable
     include Statisticianable
     

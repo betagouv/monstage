@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 module Users
-  class PrefectureStatistician < User
+  class PrefectureStatistician < Statistician
     include Signatorable
-    include Statisticianable
     include StatisticianDepartmentable
 
     has_one :email_whitelist,

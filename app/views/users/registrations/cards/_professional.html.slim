@@ -1,0 +1,16 @@
+.fr-card
+  .fr-card__body
+    .fr-card__content
+      h3.fr-h4
+        | Entreprise,<br/>Administration
+      p.fr-text
+        | Faites découvrir vos métiers. Déposez des offres de stages pour un ou plusieurs élèves.
+    .fr-card__footer
+      ul.fr-btns-group.fr-btns-group--inline-reverse.fr-btns-group--inline-lg
+        li
+          = link_to "Inscription",
+                    new_user_registration_path(as: 'Employer'),
+                    class: 'fr-btn fr-btn--secondary'
+  .fr-card__header
+    .fr-ml-4w.fr-mt-5w
+      .fr-badge.fr-badge--new.fr-badge--no-icon professionnel

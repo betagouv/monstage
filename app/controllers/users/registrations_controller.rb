@@ -37,7 +37,11 @@ module Users
     def new
       @resource_channel = resource_channel
       options = {}
-      options = options.merge(targeted_offer_id: params.dig(:user, :targeted_offer_id)) if params.dig(:user, :targeted_offer_id)
+      if params.dig(:user, :targeted_offer_id)
+        options = options.merge(
+          targeted_offer_id: params.dig(:user, :targeted_offer_id)
+        )
+      end
 
       if UserManager.new.valid?(params: params)
         super do |resource|
@@ -60,9 +64,8 @@ module Users
       [:statistician_registration_checking,
        :honey_pot_checking,
        :phone_reuse_checking].each do |check|
-
-        check_proc = send(check, params)
-        (check_proc.call and return) if check_proc.respond_to?(:call)
+          check_proc = send(check, params)
+          (check_proc.call and return) if check_proc.respond_to?(:call)
       end
       params[:user].delete(:confirmation_email) if params.dig(:user, :confirmation_email)
       params[:user] = merge_identity(params) if params.dig(:user, :identity_token)
@@ -142,6 +145,7 @@ module Users
           phone_suffix
           role
           school_id
+          statistician_type
           targeted_offer_id
           type
         ]

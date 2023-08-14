@@ -68,6 +68,35 @@
                                    resource_name: resource_name,
                                    option: { required: true },
                                    errors: errors }
+                - if as == "Statistician"
+                  .fr-mt-3w.fr-ml-1w
+                    p Vous êtes référent :
+                    fieldset#radio-hint.fr-fieldset data-controller="statistician-registration"
+                      .fr-fieldset__element
+                        .fr-radio-group
+                          = f.radio_button :statistician_type,
+                                            "ministry",
+                                            class: "fr-radio__input",
+                                            required: true
+                          label.fr-label[for="user_statistician_ministry_type"]
+                            | d'administration centrale
+                      .fr-fieldset__element
+                        .fr-radio-group
+                          = f.radio_button :statistician_type,
+                                            "department",
+                                            class: "fr-radio__input",
+                                            required: true
+                          label.fr-label[for="user_statistician_department_type"]
+                            | départemental
+                      .fr-fieldset__element
+                        .fr-radio-group
+                          = f.radio_button :statistician_type,
+                                            "education",
+                                            class: "fr-radio__input",
+                                            required: true
+                          label.fr-label[for="user_statistician_education"]
+                            | DSDEN
+                      
                 - if user_presenter.show_when_subscribe?(as: as, field: :role)
                   .fr-fieldset__element
                     - error_tag  = errors.field_error_tag(resource_name: resource_name, resource: resource, field: :role) if errors.present?

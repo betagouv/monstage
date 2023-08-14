@@ -106,6 +106,5 @@ module Statisticianable
     def signatory_role
       Signature.signatory_roles[:employer]
     end
-
   end
 end

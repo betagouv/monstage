@@ -10,7 +10,7 @@ class User < ApplicationRecord
 
   has_many :favorites
 
-  attr_accessor :phone_prefix, :phone_suffix
+  attr_accessor :phone_prefix, :phone_suffix, :statistician_type
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable,
