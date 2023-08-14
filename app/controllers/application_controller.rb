@@ -1,7 +1,8 @@
 # frozen_string_literal: true
-
+require 'utilities'
 class ApplicationController < ActionController::Base
   include Turbo::Redirection
+  include Utilities
 
   helper Turbo::FramesHelper if Rails.env.test?
   helper Turbo::StreamsHelper if Rails.env.test?
@@ -36,16 +37,5 @@ class ApplicationController < ActionController::Base
     if current_user && current_user.missing_school?
       redirect_to account_path(:school), flash: {warning: 'Veuillez choisir un établissement scolaire'}
     end
-  end
-
-  # use with trace :my_var, binding
-  def trace(sym_var, binding)
-    require 'pretty_console'
-    var_value = eval(sym_var.to_s, binding)
-    puts " "
-    puts_in_orange_loudly " ---------------------------- "
-    puts_in_green_loudly "#{sym_var} = #{var_value}"
-    puts_in_orange_loudly " ---------------------------- "
-    puts " "
   end
 end
