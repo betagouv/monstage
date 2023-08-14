@@ -1,0 +1,13 @@
+- size ||= ""
+- if object&.errors.blank?
+  - common_id = SecureRandom.hex(6)
+  .fr-fieldset__element
+    div class="fr-radio-group #{size=="sm" ? 'fr-radio-group--sm' : ''}"
+      input[type="radio" 
+            name="#{name}"
+            value="#{object.id}"
+            id="#{common_id}"]
+      label.fr-label[for="#{common_id}"]
+        = label
+- else
+  = "Non développé"

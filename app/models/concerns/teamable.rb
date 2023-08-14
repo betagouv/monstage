@@ -6,7 +6,7 @@ module Teamable
   extend ActiveSupport::Concern
 
   included do
-    after_create_commit :create_internship_offer_area
+    include InternshipOfferAreable
 
     has_many :team_member_invitations,
              dependent: :destroy,
@@ -16,6 +16,11 @@ module Teamable
              as: :employer,
              class_name: 'InternshipOfferArea',
              foreign_key: 'employer_id'
+
+    has_one :internship_offer_area,
+            as: :employer,
+            class_name: 'InternshipOfferArea',
+            foreign_key: 'current_area_id'
 
     has_many :internship_offers,
              through: :internship_offer_areas,
@@ -34,12 +39,6 @@ module Teamable
     has_many :organisations  #TODO keep ?
     has_many :tutors #TODO keep ?
     has_many :internship_offer_infos #TODO keep ?
-    belongs_to :current_area,
-               class_name: 'InternshipOfferArea',
-               foreign_key: 'current_area_id',
-               optional: true
-
-
 
     def personal_internship_offers
       InternshipOffer.where(employer_id: id)
@@ -65,12 +64,6 @@ module Teamable
       super(send_email: send_email)
     end
 
-    def internship_offer_areas
-      super if team.not_exists?
-
-      InternshipOfferArea.where(employer_id: team_members_ids)
-    end
-
     def internship_agreements
       return super unless team.alive?
 
@@ -79,7 +72,8 @@ module Teamable
     end
 
     def internship_offer_ids_by_area(area_id: )
-      InternshipOffer.where(employer_id: team_members_ids)
+      InternshipOffer.kept
+                     .where(employer_id: team_members_ids)
                      .where(internship_offer_area_id: area_id || fetch_current_area_id)
                      .pluck(:id)
     end
@@ -100,7 +94,7 @@ module Teamable
     end
 
     def internship_applications_by_states( aasm_state: )
-      offer_ids = team_internship_offers.pluck(:id)
+      offer_ids = team_internship_offers.kept.pluck(:id)
       return InternshipApplication.none if offer_ids.empty?
 
       InternshipApplication.where(internship_offer_id: offer_ids)
@@ -127,7 +121,7 @@ module Teamable
       end
       users.compact
     end
-    
+
     def pending_invitation_to_a_team
       TeamMemberInvitation.with_pending_invitations.find_by(invitation_email: email)
     end
@@ -140,29 +134,20 @@ module Teamable
       TeamMemberInvitation.refused_invitation.where(inviter_id: team_id)
     end
 
-    def team_areas
-      internship_offer_areas.where(employer_id: team_members_ids)
+    def intialize_current_area
+      create_current_area(
+        name: "Espace de #{presenter.short_name}",
+        employer_type: 'User',
+        employer_id: self.id
+      )
+      save!
     end
+    
 
-    def current_area_id_memorize(id)
-      update(current_area_id:  id)
-    end
-
-    def fetch_current_area_id
-      current_area_id.presence || latest_area_id
-    end
 
     # -------------------------------
     private
     # -------------------------------
-
-    def create_internship_offer_area
-      internship_offer_areas.create(name: "Espace de #{presenter.short_name}")
-    end
-
-    def latest_area_id
-      internship_offer_areas.order(updated_at: :desc).first.id
-    end
 
     def move_internship_offers_ownership_to_team
       if team.team_size == 2
@@ -177,6 +162,5 @@ module Teamable
         )
       end
     end
-
   end
 end

@@ -411,6 +411,17 @@ class InternshipApplication < ApplicationRecord
     end
   end
 
+  def filter_notified_emails
+    original_employer = internship_offer.employer
+    return employer.email if !employer.employer_like? || employer.team.not_exists?
+
+    potential_employers = original_employer.team.db_members
+    emails = potential_employers.map do |potential_employer|
+      should_notify?(potential_employer) ? potential_employer.email : nil
+    end
+    emails.compact
+  end
+
   rails_admin do
     weight 14
     navigation_label 'Offres'
@@ -433,6 +444,13 @@ class InternshipApplication < ApplicationRecord
   end
 
   private
+
+  def should_notify?(employer)
+    internship_offer.internship_offer_area
+                    .area_notifications
+                    .find_by(user_id: employer.id)
+                    .notify
+  end
 
   def internship_agreement_creation_allowed?
     return false unless student.school&.school_manager&.email

@@ -128,7 +128,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     visit dashboard_internship_offers_path(internship_offer: current_internship_offer)
     page.find("a[data-test-id=\"#{current_internship_offer.id}\"]").click
     find(".test-duplicate-button").click
-    find('h1', text: "Dupliquer une offre")
+    find('h1.h2', text: "Dupliquer une offre")
     click_button('Dupliquer l\'offre')
     assert_selector(
       "#alert-text",

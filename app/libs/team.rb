@@ -1,14 +1,17 @@
-# Team speficics is that
-# - they share the same inviter_id and
-# - team_member is not nil
+# Team speficics
+# - they share the same inviter_id (and then team_owner_id)
+# - team_member is nil if invitation is pending or refused
+# - team_member is not nil when invitation is accepted
 class Team
   def activate_member
     return if db_user.nil?
 
-    team_member.update!(member_id: @db_user.id)
-    add_owner unless id_in_team?(team_owner_id)
-    team_member.reject_pending_invitations
+    add_owner if team_creation_time?
+    team_member.update!(member_id: @db_user.id, inviter_id: team_owner_id)
     set_team_members
+    team_homonymes_harmonize
+    team_member.reject_pending_invitations
+    create_default_notifications
   end
 
   def remove_member
@@ -55,11 +58,19 @@ class Team
     team_members.pluck(:member_id).include?(user_id)
   end
 
-  attr_accessor :user, :team_member, :team_owner_id, :team_members
+  def db_members
+    team_members.map { |member| User.find_by(id: member.member_id) }
+  end
+
+  attr_accessor :user, :team_member, :team_owner_id, :team_members, :team_creation_time
 
   #----------------------------------
   private
   #----------------------------------
+
+  def team_creation_time?
+    @team_creation_time = !id_in_team?(team_owner_id)
+  end
 
   def db_user
     @db_user ||= User.kept.find_by(email: team_member.invitation_email)
@@ -74,8 +85,10 @@ class Team
   end
 
   def add_owner
+    # if ever team_owner is anonymized in between the time he sent the
+    # invitation and the time the new member accepts it : kept is the keyword
     team_owner = User.kept.find(team_owner_id)
-    return if team_owner.nil? # if ever team_owner is anonymized in between
+    return if team_owner.nil?
 
     #Following is team creation time !
     TeamMemberInvitation.create!(
@@ -84,7 +97,6 @@ class Team
       aasm_state: :accepted_invitation,
       invitation_email: team_owner.email
     )
-    team_init
   end
 
   def fetch_another_owner_id
@@ -93,22 +105,7 @@ class Team
                 .first
   end
 
-  def team_init
-    team_double_names_harmonize
-    notify
-  end
-
-  def notify
-    # all areas are now shared, notifications should be settled
-    user.team_areas.each do |area|
-      area.area_notifications.create!(
-        user: user,
-        notify: true
-      )
-    end
-  end
-
-  def team_double_names_harmonize
+  def team_homonymes_harmonize
     doubles = {}
     InternshipOfferArea.where(employer_id: team_members.pluck(:member_id)).each do |area|
       if doubles[area.name].nil?
@@ -127,6 +124,25 @@ class Team
   def harmonize(area_array, name)
     area_array.each do |area|
       area.update!(name: "#{name}-#{area.employer.presenter.initials}")
+    end
+  end
+
+
+  # all areas are now shared, team_members exist and notifications should be settled
+  def create_default_notifications
+    user.team_areas.each do |area|
+      team_members.each do |team_member|
+        next if team_member.member_id.nil?
+
+        search_or_create_attributes_hash = {
+          user_id: team_member.member_id,
+          internship_offer_area_id: area.id,
+          notify: true
+        }
+        next unless AreaNotification.find_by(search_or_create_attributes_hash).nil?
+
+        AreaNotification.create!(search_or_create_attributes_hash)
+      end
     end
   end
 
@@ -154,11 +170,13 @@ class Team
     if user_or_team_member.is_a?(User)
       @user = user_or_team_member
       @team_member = TeamMemberInvitation.find_by(member_id: user.id)
+      @team_member = nil if @team_member&.refused_invitation?
     else
       @team_member = user_or_team_member
       @user = User.find_by(email: user_or_team_member.invitation_email)
     end
     set_team_owner_id
     set_team_members
+    @team_creation_time = false
   end
 end

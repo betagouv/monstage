@@ -168,6 +168,7 @@ def populate_internship_offers
   )
   # 3eme generale API
   weeks =  Week.selectable_on_school_year
+  area_id = Users::Operator.first.reload.internship_offer_areas.first.id
   InternshipOffers::Api.create!(
     employer: Users::Operator.first,
     siret: siret,
@@ -191,7 +192,8 @@ def populate_internship_offers
     remote_id: '1',
     permalink: 'https://www.google.fr',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
-    employer_name: 'IBM'
+    employer_name: 'IBM',
+    internship_offer_area_id: area_id
   )
   # 3eme generale API
   weeks = Week.of_previous_school_year
@@ -218,7 +220,8 @@ def populate_internship_offers
     remote_id: '2',
     permalink: 'https://www.google.fr',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'Ministère de l\'Education Nationale'
+    employer_name: 'Ministère de l\'Education Nationale',
+    internship_offer_area_id: area_id
   )
 
   # 3eme generale multi-line

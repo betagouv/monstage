@@ -270,7 +270,7 @@ class Ability
   end
 
   def can_manage_teams(user: )
-    can %i[manage_teams], TeamMemberInvitation 
+    can %i[manage_teams], TeamMemberInvitation
     can %i[destroy], TeamMemberInvitation do |team_member_invitation|
       if user.team.alive?
         condition = user.team.id_in_team?(team_member_invitation.member_id)
@@ -282,9 +282,9 @@ class Ability
   end
 
   def can_manage_areas(user: )
-    can :create, InternshipOfferArea
-    
-    can %i[update_areas], InternshipOfferArea do |area|
+    can %i[create index], InternshipOfferArea
+
+    can %i[update], InternshipOfferArea do |area|
       if user.team.alive?
         user.team.id_in_team?(area.employer_id)
       else
@@ -302,6 +302,21 @@ class Ability
     end
 
     can :generaly_destroy, InternshipOfferArea, user.team_areas.count > 1
+
+
+    can :flip_notification, AreaNotification do |_area_notif|
+      return false if user.team.not_exists?
+
+      many_people_in_charge_of_area = !user.current_area.single_human_in_charge?
+      current_area_notifications_are_off = !user.fetch_current_area_notification.notify
+      many_people_in_charge_of_area || current_area_notifications_are_off
+    end
+
+    can :manage_abilities, AreaNotification do |area_notification|
+      return false if user.team.not_exists?
+
+      area_notification.internship_offer_area.employer_id.in?(user.team_members_ids)
+    end
   end
 
   def operator_abilities(user:)

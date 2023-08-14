@@ -1,0 +1,34 @@
+dialog.fr-modal[id="fr-modal-area-destroy-dialog-#{internship_offer_area.id}"
+                aria-labelledby="fr-modal-area-destroy-title-#{internship_offer_area.id}"
+                role="dialog"]
+
+  .fr-container.fr-container--fluid.fr-container-md
+    .fr-grid-row.fr-grid-row--center
+      .fr-col-12.fr-col-md-8.fr-col-lg-6
+        .fr-modal__body
+          = form_with model: internship_offer_area,
+                          scope: :internship_offer_area,
+                          url: dashboard_internship_offer_area_path(id: internship_offer_area.id),
+                          data: {turbo: false},
+                          method: :delete do |form|
+            .fr-modal__header
+              button.fr-link--close.fr-link[aria-controls="fr-modal-area-destroy-dialog"]
+                | Fermer
+
+            .fr-modal__content
+              h1.fr-modal__title id="fr-modal-area-destroy-title-#{internship_offer_area.id}"
+                span.fr-fi-arrow-right-line.fr-fi--lg
+                = "Suppression de l'espace \"#{internship_offer_area.name}\""
+              = render 'area_radio_fields',
+                        form: form,
+                        internship_offer_area: internship_offer_area
+
+            .fr-modal__footer
+              ul.fr-btns-group.fr-btns-group--right.fr-btns-group--inline-reverse.fr-btns-group--inline-lg.fr-btns-group--icon-left
+                li
+                  = form.submit "Valider",
+                                class: 'fr-btn',
+                                disabled: false
+                li[aria-controls="fr-modal-area-destroy-dialog"]
+                  button.fr-btn.fr-btn--secondary[aria-controls="fr-modal-area-destroy-dialog"]
+                    | Annuler

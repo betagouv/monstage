@@ -1,0 +1,7 @@
+= turbo_frame_tag 'flip_notification' do
+  - presenter = area_notification.presenter
+  = link_to presenter.label,
+            flip_dashboard_internship_offer_area_area_notification_path(presenter.notif_parameters),
+            method: :patch,
+            turbo_method: :patch,
+            class: presenter.klasses
