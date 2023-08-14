@@ -1,7 +1,8 @@
 # frozen_string_literal: true
-
+require 'utilities'
 class ApplicationController < ActionController::Base
   include Turbo::Redirection
+  include Utilities
 
   helper Turbo::FramesHelper if Rails.env.test?
   helper Turbo::StreamsHelper if Rails.env.test?
@@ -37,5 +38,4 @@ class ApplicationController < ActionController::Base
       redirect_to account_path(:school), flash: {warning: 'Veuillez choisir un établissement scolaire'}
     end
   end
-
 end
