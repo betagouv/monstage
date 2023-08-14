@@ -43,6 +43,10 @@ module ApplicationHelper
     current_page?(root_path)
   end
 
+  def in_dashboard?
+    request.path.include?('dashboard') || request.path.include?('tableau-de-bord')
+  end
+
   def statistics?
     controller.class.name.deconstantize == 'Reporting'
   end

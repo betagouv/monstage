@@ -1,23 +1,54 @@
+- student = internship_application.student
+- student_presenter = student.presenter
+- resume_content = student.resume_educational_background.to_s
+- resume_languages = student.resume_languages.to_s
+- resume_other = student.resume_other.to_s
+.row.no-gutters.mt-2
+  .col-10
+    .row
+      .col-12.mb-3
+        h3.h6
+          i.fa-fw.fas.fa-user
+          | Informations sur l'élève
+        table
+          tbody
+            tr
+              td.fr-pr-2w.fr-pb-3w
+                h6.mb-0.text-dark Elève
+                .student-name= student_presenter.name
+              td.fr-pr-2w.fr-pb-3w
+                h6.mb-0.text-dark Âge
+                .student-age= "#{student_presenter.age}"
+            tr
+              td.fr-pr-2w.fr-pb-3w
+                h6.mb-0.text-dark Email
+                .student-email= "#{internship_application.student_email || 'Non communiqué'}"
+              td.fr-pr-2w.fr-pb-3w
+                h6.mb-0.text-dark Téléphone élève ou parents
+                .student-phone= "#{internship_application.student_phone || 'Non communiqué'}"
+            tr
+              td.fr-pr-2w.fr-pb-3w
+                h6.mb-0.text-dark Etablissement
+                .school-name= student_presenter.school_name
+              td.fr-pr-2w.fr-pb-3w
+                h6.mb-0.text-dark Ville
+                .school-city= student_presenter.school_city
+    .row
+      .col-md-4.col-sm-8.col-xs-12
+        - if resume_content.present? || resume_languages.present?
+          h3.h6 Parcours Scolaire
+          .reboot-trix-content = resume_content
+          - if resume_languages.present?
+            h3.h6.mt-3 Langues
+            .reboot-trix-content = resume_languages
 
-- student_presenter = Presenters::Student.new(internship_application.student)
-.row
-  .col-md-4.col-sm-8.col-xs-12.my-2.py-2
-    h6.mb-0.text-dark Elève
-    .student-name= student_presenter.name
-  .col-md-4.col-sm-8.col-xs-12.my-2.py-2
-    h6.mb-0.text-dark Âge
-    .student-age= "#{student_presenter.age}"
-.row
-  .col-md-4.col-sm-8.col-xs-12.my-2.py-2
-    h6.mb-0.text-dark Email
-    .student-email= "#{internship_application.student_email || 'Non communiqué'}"
-  .col-md-4.col-sm-8.col-xs-12.my-2.py-2
-    h6.mb-0.text-dark Téléphone élève ou parents
-    .student-phone= "#{internship_application.student_phone || 'Non communiqué'}"
-.row
-  .col-md-4.col-sm-8.col-xs-12.my-2.py-2
-    h6.mb-0.text-dark Etablissement
-    .school-name= student_presenter.school_name
-  .col-md-4.col-sm-8.col-xs-12.my-2.py-2
-    h6.mb-0.text-dark Ville
-    .school-city= student_presenter.school_city
+      .col-md-4.col-sm-8.col-xs-12
+        - if resume_other.present?
+          h3.h6 Activités extra-scolaires
+          .reboot-trix-content = resume_other
+
+    - if internship_application.student.handicap?
+      h3.h6.mt-3
+        i.fas.fa-wheelchair
+        |Besoin d'accompagnement
+      .reboot-trix-content.student-handicap = internship_application.student.handicap.to_s

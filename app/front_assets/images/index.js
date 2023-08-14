@@ -61,15 +61,23 @@ import './icons/noun_Computer_2646597.svg';
 import './icons/noun_group_Computeur_People.svg';
 import './icons/noun_group_establishment.svg';
 import './icons/noun_people_3139638.svg';
+import './icons/arrow_right.svg';
 import './icons/full_heart.svg';
 import './icons/empty_heart.svg';
 import './icons/disabled_heart.svg';
+import './icons/file_copy_line.svg';
 
 import './pages/statistics/hand_left.svg';
 import './pages/statistics/hand_right.svg';
 import './pages/statistics/handshake.svg';
 import './pages/statistics/ok.svg';
 import './pages/statistics/school.svg';
+
+import './pages/teams/team.png';
+import './pages/teams/team_icon_plus.svg';
+
+import './pages/areas/space_girl.svg';
+import './pages/areas/notification_icon.svg';
 
 import './pages/invitations/email_icon.svg';
 import './pages/invitations/person_icon.svg';
@@ -79,6 +87,11 @@ import './homepage/back-to-top.svg';
 import './homepage/01.svg';
 import './homepage/02.svg';
 import './homepage/03.svg';
+import './homepage/04.svg';
+import './homepage/contract.svg';
+import './homepage/dl_resource.png';
+import './homepage/france.svg';
+import './homepage/dashboard.svg';
 
 import './homepage/resources/etablissements.svg';
 import './homepage/resources/parents_eleves.svg';
@@ -94,6 +107,8 @@ import './homepage/opportunities-illustration.svg';
 import './homepage/ms3e-big-badge.svg';
 import './homepage/accompagner-vos-eleves.svg';
 import './homepage/trouver-un-stage.svg';
+import './homepage/metiers.svg';
+import './homepage/school-management.svg';
 import './homepage/accueillir-un-stagiaire.svg';
 import './homepage/link-step-1-2.svg';
 import './homepage/link-step-2-3.svg';
@@ -117,6 +132,12 @@ import './documents_utiles/MS3_Programme-a-remplir.jpg';
 import './documents_utiles/USEA-Carnet-Stage-Education.jpg';
 import './documents_utiles/USEA-Cherchez-la-chercheuse.jpg';
 import './documents_utiles/versLinfini.jpg';
+import './documents_utiles/eleves.jpg';
+import './documents_utiles/equipe-pedago.jpg';
+import './documents_utiles/offreurs.jpg';
+import './documents_utiles/partenaires.jpg';
+import './documents_utiles/referents.jpg';
+
 
 import './modes_d_emploi/miniature-MS3_Mode-d-emploi-eleves.jpg';
 import './modes_d_emploi/miniature-MS3_Mode-d-emploi-entreprises.jpg';

@@ -9,6 +9,10 @@ module Presenters
     delegate :default_search_options, to: :user
     delegate :email, to: :user
 
+    def initials
+      "#{user.first_name[0].capitalize}.#{user.last_name[0].capitalize}."
+    end
+
     def short_name
       "#{user.first_name[0].capitalize}. #{user.last_name}"
     end
@@ -27,11 +31,16 @@ module Presenters
 
     def civil_name
       name = user.last_name.downcase.capitalize
+      "#{gender_text} #{name}".strip
+    end
+
+    def short_civil_full_name
+      name = full_name
       case user.gender
       when 'm'
-        "Monsieur #{name}"
+        "M. #{name}"
       when 'f'
-        "Madame #{name}"
+        "Mme #{name}"
       else
         name
       end
@@ -107,11 +116,11 @@ module Presenters
     def subscribe_fields(as:)
       case as
       when "Employer"
-        %i[employer_role email minister_video]
+        %i[employer_role email]
       when "SchoolManagement"
         %i[school email school_id class_room_id role ]
       when 'MinistryStatistician', 'Statistician', 'EducationStatistician'
-        %i[email minister_video]
+        %i[email]
       else
         []
       end

@@ -17,11 +17,20 @@ div [data-controller="select-weeks"
                         { class: '',
                           disabled: allow_select_all,
                           data: { "internship-offer-infos-target": "allYearLong",
-                                  action: "change->select-weeks#handleToggleWeeks"}}
+                                  action: "change->select-weeks#showAllYearLong"}}
         = label_tag 'all_year_long', class: 'custom-control-label fr-label' do
           | Toute l'année scolaire
 
-          = " #{current_weeks.first.year}-#{current_weeks.first.year + 1}"
+          = " #{SchoolYear::Current.new.beginning_of_period.year}-#{SchoolYear::Current.new.end_of_period.year}"
+
+        = check_box_tag 'specific_weeks',
+                        false,
+                        !preselect_all,
+                        { disabled: allow_select_all,
+                          data: { "internship-offer-infos-target": "specificWeeks",
+                                  action: "change->select-weeks#showSpecificWeeks"}}
+        = label_tag 'specific_weeks', class: 'fr-label' do
+          | Semaines spécifiques
 
     div data-select-weeks-target="checkboxesContainer" class="#{preselect_all ? 'd-none' : ''}"
       .row

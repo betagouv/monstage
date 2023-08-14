@@ -30,6 +30,16 @@ class TaskManager
     end
   end
 
+  def reset_task_counter
+    PrettyConsole.say_in_yellow("--Start resetting task #{task_name} with #{arguments} on " \
+      "#{actual_environment}--")
+    TaskRegister.where(task_name: task_name, used_environment: actual_environment)
+                .destroy_all
+    PrettyConsole.say_in_yellow(
+      "---   Done    ---"
+    )
+  end
+  
   attr_accessor :allowed_environments, :played_at, :task_name, :arguments, :actual_environment
 
   private

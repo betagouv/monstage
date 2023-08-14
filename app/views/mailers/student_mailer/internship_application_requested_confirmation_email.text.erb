@@ -1,0 +1,10 @@
+<%= "Candidature au stage \"#{@internship_application.internship_offer.title}\" acceptée !" %>
+
+<%= @internship_application.approved_message.to_plain_text %>
+
+Si vous souhaitez contacter l'employeur, vous pouvez le faire à l'adresse suivante : 
+
+<%= @internship_application.internship_offer.employer.email %>
+
+À bientôt,
+L'équipe Mon Stage de 3e.

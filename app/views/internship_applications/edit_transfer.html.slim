@@ -1,0 +1,45 @@
+= render 'layouts/breadcrumb',
+          links: [ [dashboard_students_internship_applications_path(@internship_application.student), 'Mes candidatures'],
+                   ['', 'Transférer'] ]
+.fr-container
+  .row
+    .col
+      h1.h2.mb-3 Transférer une candidature
+
+  = form_with url: transfer_internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application), method: :post, data: {turbo: false} do |form|
+    div data-controller='transfer-application' data-action="input->transfer-application#checkForm"
+      = form.hidden_field :destinations, class: 'hidden-destinataires-input'
+      .row
+        .col-12 
+          .fr-text.font-weight-bold.fr-my-2w
+            | Indiquez le ou les destinataires
+      .row   
+        .col-6
+          .form-group.fr-my-3w data={ 'target': 'transfer-application.container' }
+            = form.label :destination, "Adresse email"
+            = form.text_field :destination, class: 'fr-input destinataire-input', placeholder: 'magali@organisation.fr', required: true, data: { "transfer-application-target": "email", 'target': 'transfer-application.requiredField'}
+
+          .fr-mt-2w 
+            = button_to 'Ajouter un destinataire', '#', class: 'fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-add-line', data: { "transfer-form-target": "addDestination", 'action': 'click->transfer-application#addDestinataire' }
+      
+        .col-6
+          .fr-alert.fr-alert--info
+            h3.fr-alert__title Transférer une candidature
+            p Vous pouvez transmettre la candidature à un tiers afin qu’il/elle réponde. Vous serez  informé de sa réponse sur votre tableau de bord. L’élève recevra également la réponse.
+      
+      .row.fr-mt-6w
+        .col-12 
+          .fr-text.font-weight-bold.fr-my-2w
+            | Ajoutez toutes les informations utiles
+      .row
+        .col-6 
+          .form-group.fr-my-3w
+            = form.label :comment, "Message à joindre à la candidature"
+            = form.text_area :comment, class: 'fr-input', placeholder: 'Message', required: true, rows: 6, data: { "transfer-application-target": "comment", 'target': 'transfer-application.requiredField'}
+      .row 
+        .col-6
+          /  Submit buttons
+          .fr-mt-3w
+            = link_to 'Annuler', dashboard_internship_offer_internship_application_path(internship_offer: @internship_application.internship_offer, internship_application: @internship_application), class: 'fr-btn fr-btn--secondary fr-mr-3w'
+            = form.submit 'Envoyer', class: 'fr-btn', disabled: true, 'data-target': "transfer-application.submitButton"
+        

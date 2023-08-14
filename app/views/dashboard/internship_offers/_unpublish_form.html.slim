@@ -2,5 +2,5 @@ div id="pub_frag_#{dom_id(@internship_offer)}"
   = link_to '', dashboard_internship_offer_path(@internship_offer.to_param, internship_offer: {published_at: nil}),
                 class: 'fr-btn fr-icon-eye-off-line fr-btn--icon fr-btn--secondary',
                 method: :patch,
-                data: { :"test-id" => "toggle-publish-#{@internship_offer.id}"}
+                data: { :"test-id" => "toggle-activate-#{@internship_offer.id}"}
 

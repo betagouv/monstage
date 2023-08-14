@@ -8,8 +8,6 @@
   z-index: 100;
 }
 
-
-
 .employer {
   .fr-tabs{
     min-height: 3.1rem;
@@ -101,18 +99,18 @@ table.employer tbody tr td.title {
 
 .col-label-sorting{
   display: block;
-  height: 25px;
+  height: 35px;
 }
 // sorting headers for dashboard/internship_offers#index
 $sortLinkOffset: 15px;
 .sort-links{
-  $sort-arrow-height: 10px;
+  $sort-arrow-height: 15px;
   display: inline-block;
   position: absolute;
   top: 35%;
-  margin-top: -$sort-arrow-height;
+  margin-top: -11px;
   .currently-sorting{
-    color: yellow !important;
+    color: $blue-france !important;
   }
 
   .sort-link{
@@ -120,10 +118,10 @@ $sortLinkOffset: 15px;
     height: $sort-arrow-height;
     line-height: 8px;
     text-decoration: none;
+    padding-left: 10px;
   }
   .sort-link.active{
     opacity: 1;
-
   }
 }
 
@@ -132,6 +130,16 @@ $sortLinkOffset: 15px;
   .leaflet-container {
     height: 100% !important;
   }
+}
+.container-monstage-application {
+  max-width: 690px;
+  position: relative;
+}
+.grey-container-application{
+  padding: 2rem;
+}
+.grey-container-application.with-grey-background{
+  background-color: var(--background-default-grey-hover);
 }
 
 // sort links container
@@ -156,6 +164,11 @@ $sortLinkOffset: 15px;
 .list-item .fa,
 .list-item .svg-inline--fa{
   font-size: 2rem;
+}
+
+.first-advice, .second-advice, .third-advice{
+  width: 31%;
+  margin : 8px 24px;
 }
 
 .container-downshift{position: relative;}
@@ -229,7 +242,7 @@ $sortLinkOffset: 15px;
   a.leaflet-popup-close-button {
     display: none !important;
   }
-  
+
   .leaflet-popup-content {
     width: 250px;
     margin: 0 !important;
@@ -268,4 +281,98 @@ $sortLinkOffset: 15px;
 
 .fr-responsive-img {
   aspect-ratio: auto !important;
+}
+
+.toggle-block{
+  display: flex;
+  .label{
+    display: block;
+    width: 70px;
+    padding-top: 12px;
+  }
+  .toggle-swap{
+    display: block;
+    width: 70px;
+    height: 50px;
+    top: 35px;
+    .fr-toggle label{
+      top: -40px;
+      left: 0px;
+    }
+  }
+}
+.fr-toggle input[type=checkbox] {
+  margin-top: -5px ;
+}
+
+.notifications{
+  .fr-toggle.fr-toggle--label-left{
+    width: 300px;
+  }
+  label {
+    padding-top: 17px;
+    padding-right: 15px;
+  }
+  .fr-toggle input[type=checkbox] {
+    margin-top: 15px;
+    margin-left: -40px;
+  }
+}
+
+.dashboard-container{
+  display: flex;
+}
+.dashboard-container-child{
+  flex: 1 1 auto;
+}
+.dashboard-container-child:first-child{
+  flex: 1 1 $sidemenu-width;
+  min-width: $sidemenu-width;
+}
+
+.menu-ladder{
+  display: block;
+  height: 140px;
+}
+
+.fr-sidemenu__list {
+  .sidemenu-box{
+    display: flex;
+    .sidemenu-box-left {
+      display: block;
+      width: 140px;
+      padding-left: 0;
+      text-align: left;
+    }
+    .sidemenu-box-right {
+      display: block;
+      text-align: right;
+      width: 40px;
+      padding-right: 0;
+    }
+  }
+}
+.index-offer-title{
+  min-width: 430px;
+}
+
+.bar-area{
+  height: 65px;
+  width: 1220px !important;
+
+  background: linear-gradient(#F8F8F8,#F8F8F8 0%, #FFF 35%, #FFFFFF 100%);
+  border-bottom: 1px solid #F8F8F8;
+  width: 1232px;
+  li.fr-nav__item{
+    margin-right: 15px;
+    a, button{
+      padding-top: 20px;
+      color: black;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    a[aria-current='page']{
+      background-color: #e4e0f1;
+    }
+  }
 }

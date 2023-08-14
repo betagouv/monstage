@@ -3,7 +3,6 @@
 class School < ApplicationRecord
   include Nearbyable
   include Zipcodable
-  include SchoolAdmin
   include SchoolUsersAssociations
 
   has_many :class_rooms, dependent: :destroy

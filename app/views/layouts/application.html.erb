@@ -26,7 +26,9 @@
       <header role="banner" class="custom-navbar">
         <div class="col px-0">
           <%= render "layouts/navbar" %>
-          <%= render 'layouts/webinar_banner' if can?(:subscribe_to_webinar, current_user_or_visitor)%>
+          <% unless in_dashboard? %>
+            <%= render 'layouts/webinar_banner' if can?(:subscribe_to_webinar, current_user_or_visitor)%>
+          <% end %>
         </div>
       </header>
 
@@ -56,5 +58,8 @@
         </div>
       </form>
     </dialog>
+    <% if current_user && current_user.pending_invitation_to_a_team.present? %>
+      <%= render 'dashboard/team_member_invitations/dialog_form' %>
+    <% end %>
   </body>
 </html>

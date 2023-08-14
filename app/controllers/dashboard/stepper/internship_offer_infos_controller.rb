@@ -4,12 +4,13 @@ module Dashboard::Stepper
   # Step 2 of internship offer creation: fill in offer details/info
   class InternshipOfferInfosController < ApplicationController
     before_action :authenticate_user!
+    before_action :fetch_internship_offer_info, only: %i[edit update]
 
     # render step 2
     def new
       authorize! :create, InternshipOfferInfo
 
-      @internship_offer_info = InternshipOfferInfo.new
+      @internship_offer_info = InternshipOfferInfos::WeeklyFramed.new
       @organisation = Organisation.find(params[:organisation_id])
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
@@ -17,12 +18,12 @@ module Dashboard::Stepper
     # process step 2
     def create
       authorize! :create, InternshipOfferInfo
-      @internship_offer_info = InternshipOfferInfo.new(
+      @internship_offer_info = InternshipOfferInfos::WeeklyFramed.new(
         {}.merge(internship_offer_info_params)
           .merge(employer_id: current_user.id)
       )
       @internship_offer_info.save!
-      redirect_to(new_dashboard_stepper_tutor_path(
+      redirect_to(new_dashboard_stepper_hosting_info_path(
                     organisation_id: params[:organisation_id],
                     internship_offer_info_id: @internship_offer_info.id
       ))
@@ -34,25 +35,23 @@ module Dashboard::Stepper
 
     # render back to step 2
     def edit
-      @internship_offer_info = InternshipOfferInfo.find(params[:id])
-      @organisation = Organisation.find(params[:organisation_id])
       authorize! :edit, @internship_offer_info
-      @available_weeks = Week.selectable_from_now_until_end_of_school_year
+      @organisation = Organisation.find(params[:organisation_id])
+      @available_weeks = Week.selectable_on_school_year_when_editing
     end
 
     # process update following a back to step 2 (info was created, it's updated)
     def update
-      @internship_offer_info = InternshipOfferInfo.find(params[:id])
       authorize! :update, @internship_offer_info
 
       if @internship_offer_info.update(internship_offer_info_params)
-        redirect_to new_dashboard_stepper_tutor_path(
+        redirect_to new_dashboard_stepper_hosting_info_path(
           organisation_id: params[:organisation_id],
           internship_offer_info_id: @internship_offer_info.id
         )
       else
         @organisation = Organisation.find(params[:organisation_id])
-        @available_weeks = Week.selectable_from_now_until_end_of_school_year
+        @available_weeks = Week.selectable_on_school_year_when_editing
         render :new, status: :bad_request
       end
     end
@@ -78,6 +77,10 @@ module Dashboard::Stepper
               daily_lunch_break: {},
               week_ids: []
               )
+    end
+
+    def fetch_internship_offer_info
+      @internship_offer_info = InternshipOfferInfos::WeeklyFramed.find(params[:id])
     end
   end
 end

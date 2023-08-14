@@ -20,12 +20,31 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
       sign_in(employer)
       visit edit_dashboard_internship_offer_path(internship_offer)
-      find('input[name="internship_offer[employer_name]"]').fill_in(with: 'NewCompany')
+      find('input[name="internship_offer[organisation_attributes][employer_name]"]').fill_in(with: 'NewCompany')
 
-      click_on "Modifier l'offre"
+      click_on "Publier l'offre"
 
       wait_form_submitted
       assert /NewCompany/.match?(internship_offer.reload.employer_name)
+    end
+  end
+
+  test 'Employer can edit an un published internship offer and have it published' do
+    travel_to(Date.new(2019, 3, 1)) do
+      employer = create(:employer)
+      internship_offer = create(:weekly_internship_offer, employer: employer)
+      internship_offer.update(published_at: nil)
+      refute internship_offer.published?
+
+      sign_in(employer)
+      visit edit_dashboard_internship_offer_path(internship_offer)
+      find('input[name="internship_offer[organisation_attributes][employer_name]"]').fill_in(with: 'NewCompany')
+
+      click_on "Publier l'offre"
+
+      wait_form_submitted
+      assert /NewCompany/.match?(internship_offer.reload.employer_name)
+      assert internship_offer.published?
     end
   end
 
@@ -61,7 +80,10 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     travel_to(Date.new(2022, 1, 10)) do
       employer = create(:employer)
       weeks = Week.selectable_from_now_until_end_of_school_year.last(4)
-      internship_offer = create(:weekly_internship_offer, employer: employer, weeks: weeks)
+      internship_offer = create(:weekly_internship_offer,
+                                employer: employer,
+                                weeks: weeks,
+                                internship_offer_area_id: employer.current_area_id)
       assert_equal 1, internship_offer.max_candidates
       sign_in(employer)
       visit dashboard_internship_offers_path(internship_offer: internship_offer)
@@ -73,7 +95,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
         fill_in('Nombre total d\'élèves que vous souhaitez accueillir sur l\'année scolaire', with: 4)
       end
       execute_script("document.getElementById('internship_offer_max_students_per_group').value = '2';")
-      click_button('Modifier l\'offre')
+      click_button('Publier l\'offre')
       assert_equal 4,
                   internship_offer.reload.max_candidates,
                   'faulty max_candidates'
@@ -85,89 +107,108 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
       find(".test-edit-button").click
       find('label[for="internship_type_true"]').click # max_candidates is now set to 1
-      click_button('Modifier l\'offre')
-      assert_equal 4, internship_offer.reload.max_candidates
+      click_button('Publier l\'offre')
+      assert_equal 1, internship_offer.reload.max_candidates
       assert_equal 1, internship_offer.reload.max_students_per_group
     end
   end
 
-  test 'Employer can filter internship_offers from dashboard filters' do
-    if ENV['RUN_BRITTLE_TEST']
-      travel_to(Date.new(2020, 10, 10)) do
-        employer = create(:employer)
+  test 'Employer can duplicate an internship offer' do
+    employer = create(:employer)
+    older_weeks = [Week.selectable_from_now_until_end_of_school_year.first]
+    organisation = create(:organisation, employer: employer, is_public: true)
+    current_internship_offer = create(
+      :weekly_internship_offer,
+      employer: employer,
+      weeks: older_weeks,
+      organisation: organisation,
+      internship_offer_area_id: employer.current_area_id
+    )
+    sign_in(employer)
+    visit dashboard_internship_offers_path(internship_offer: current_internship_offer)
+    page.find("a[data-test-id=\"#{current_internship_offer.id}\"]").click
+    find(".test-duplicate-button").click
+    find('h1.h2', text: "Dupliquer une offre")
+    click_button('Dupliquer l\'offre')
+    assert_selector(
+      "#alert-text",
+      text: "L'offre de stage a été dupliquée en tenant " \
+            "compte de vos éventuelles modifications."
+    )
+  end
 
-        week_1 = Week.find_by(year: 2019, number: 50) #2019-20
-        week_2 = Week.find_by(year: 2020, number: 2)  #2019-20
-        week_3 = Week.find_by(year: 2021, number: 2)  #2020-21
-
-        # 2019-20
-        create(:weekly_internship_offer,
-              weeks: [week_1, week_2],
-              employer: employer,
-              title: '2019/2020',
-              last_date: week_2.beginning_of_week)
-        assert week_1.id.in?(InternshipOffer.last.internship_offer_weeks.map(&:week_id))
-        assert week_2.id.in?(InternshipOffer.last.internship_offer_weeks.map(&:week_id))
-
-        # 2020-21
-        target_offer = create(:weekly_internship_offer,
-              weeks: [week_3],
-              employer: employer,
-              title: '2020/2021',
-              last_date: week_3.beginning_of_week)
-
-        # wrong employer
-        create(:weekly_internship_offer,
-              weeks: [week_2],
-              title: 'wrong employer',
-              last_date: week_2.beginning_of_week)
-
-        create(:weekly_internship_offer,
-              employer: employer,
-              title: 'an offer')
-
-        # 2019-20 unpublished
-        io = create(:weekly_internship_offer,
-                    employer: employer,
-                    weeks: [week_1, week_2],
-                    title: '2019/2020 unpublished',
-                    last_date: week_2.beginning_of_week)
-        io.update_column(:published_at, nil)
-        io.reload
-
-        # 2020-21
-        application = create(:weekly_internship_application, :approved, internship_offer: target_offer)
-
-        sign_in(employer)
-        visit dashboard_internship_offers_path
-
-        refute page.has_css?('.school_year')
-        click_link('Passées')
-        find('.active', text: "Passées")
-        assert_equal 2, all(".test-internship-offer").count
-
-        select('2019/2020', from: "Années scolaires")
-        find('.active', text: "Passées")
-        assert_equal 2, all(".test-internship-offer").count
-        
-        select('2020/2021', from: "Années scolaires")
-        sleep 0.5
-        find('.active', text: "Passées")
-        assert_equal 0, all(".test-internship-offer").count
-
-        click_link('Dépubliées')
-        find('.active', text: "Dépubliées", wait: 3)
-        assert_equal 0, all(".test-internship-offer").count
-
-        select('2019/2020', from: "Années scolaires")
-        assert page.has_css?('p.internship-item-title.mb-0', count: 1)
-        assert_text('2019/2020 unpublished')
-
-        select('2020/2021', from: "Années scolaires")
-        assert page.has_css?('p.internship-item-title.mb-0', count: 0)
-        page.find("a[href=\"/dashboard/internship_agreements\"]", text: 'Mes conventions de stage')
-        page.find("a[href=\"/dashboard/internship_agreements\"]", text: '1')
-      end
+  test "Employer can edit internship offer when it's missing weeks" do
+    employer = create(:employer)
+    current_internship_offer = nil
+    travel_to(Date.new(2019, 10,1)) do
+      older_weeks = [Week.selectable_from_now_until_end_of_school_year.first]
+      current_internship_offer = create(
+        :weekly_internship_offer,
+        employer: employer,
+        internship_offer_area_id: employer.current_area_id,
+        weeks: older_weeks,
+        published_at: nil
+      )
     end
+    travel_to(Date.new(2021, 9, 1)) do
+      sign_in(employer)
+      visit dashboard_internship_offers_path(internship_offer: current_internship_offer)
+      page.find("a[data-test-id=\"#{current_internship_offer.id}\"]").click
+      find(".test-edit-button").click
+      find('h1', text: "Modifier une offre")
+      click_button('Publier l\'offre')
+      find(".fr-alert.fr-alert--error", text: "Vous devez sélectionner au moins une semaine dans le futur")
+
+      within(".custom-control-checkbox-list") do
+        find("label[for='internship_offer_week_ids_142_checkbox']").click
+      end
+      click_button('Publier l\'offre')
+      assert_selector(
+        "#alert-text",
+        text: "Votre annonce a bien été modifiée"
+      )
+    end
+  end
+
+  test "Employers in a team can see each other's offers" do
+    employer_1 = create(:employer)
+    employer_2 = create(:employer)
+    employer_3 = create(:employer)
+    create(:team_member_invitation,
+           :accepted_invitation,
+           inviter_id: employer_1.id,
+           member_id: employer_2.id)
+    create(:team_member_invitation,
+           :accepted_invitation,
+           inviter_id: employer_1.id,
+           member_id: employer_1.id)
+    internship_offer_1 = create(:weekly_internship_offer, employer: employer_1, internship_offer_area_id: employer_1.current_area_id)
+    internship_offer_2 = create(:weekly_internship_offer, employer: employer_2, internship_offer_area_id: employer_2.current_area_id)
+    internship_offer_3 = create(:weekly_internship_offer, employer: employer_3, internship_offer_area_id: employer_3.current_area_id)
+
+    sign_in(employer_1)
+    visit dashboard_internship_offers_path
+    click_link "Offres de stage"
+    assert page.has_content?(internship_offer_1.title)
+    click_link(employer_2.current_area.name)
+    click_link "Offres de stage"
+    assert page.has_content?(internship_offer_2.title)
+    assert_select('a', text: employer_3.current_area.name, count: 0)
+  end
+
+  test 'Employers users shall not be pushed to home when no agreement in list' do
+    employer = create(:employer)
+    sign_in(employer)
+    visit dashboard_internship_offers_path
+    click_link('Conventions')
+    find("h4.fr-h4", text: 'Aucune convention de stage ne requiert votre attention pour le moment.')
+  end
+
+  test 'Operator users shall not be pushed to home when no agreement in list' do
+    user_operator = create(:user_operator)
+    sign_in(user_operator)
+    visit dashboard_internship_offers_path
+    assert page.has_css?('a', text: 'Candidatures', count: 1)
+    assert page.has_css?('a', text: 'Conventions', count: 0)
   end
 end

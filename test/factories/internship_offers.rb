@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :internship_offer, aliases: %i[with_public_group_internship_offer] do
+    # TODO use transient to set the distinction between weekly and api offers
     sequence(:title) { |n| "Stage de 3è - #{n}" }
     description { 'Lorem ipsum dolor' }
     max_candidates { 1 }
@@ -14,7 +15,8 @@ FactoryBot.define do
     tutor_role { 'comptable' }
     is_public { true }
     group { create(:group, is_public: true) }
-    employer { create(:employer) }  
+    employer { create(:employer) }
+    internship_offer_area { create(:area, employer_id: employer.id, employer_type: 'User') }
     employer_description { 'on envoie du parpaing' }
     street { '1 rue du poulet' }
     zipcode { '75001' }
@@ -22,6 +24,15 @@ FactoryBot.define do
     employer_name { 'Octo' }
     coordinates { Coordinates.paris }
     siret { '11122233300000' }
+    aasm_state { 'published' }
+    organisation { create(:organisation, employer: employer) }
+    hidden_duplicate { false }
+
+    trait :weekly_internship_offer do
+      weeks { [Week.selectable_from_now_until_end_of_school_year.first]}
+      description { 'Lorem ipsum dolor weekly_internship_offer' }
+      remaining_seats_count { max_candidates }
+    end
 
     trait :api_internship_offer do
       weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
@@ -29,13 +40,6 @@ FactoryBot.define do
       permalink { 'https://google.fr' }
       description { 'Lorem ipsum dolor api' }
       sequence(:remote_id) { |n| n }
-    end
-
-    trait :weekly_internship_offer do
-      weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
-      employer { create(:employer) }
-      description { 'Lorem ipsum dolor weekly_internship_offer' }
-      remaining_seats_count { max_candidates }
     end
 
     trait :last_year_weekly_internship_offer do
@@ -62,6 +66,7 @@ FactoryBot.define do
       is_public { false }
       group { create(:group, is_public: false) }
     end
+
     trait :with_public_group do
       is_public { true }
       group { create(:group, is_public: true) }

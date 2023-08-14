@@ -7,7 +7,9 @@ class MinistryStatisticianEmailWhitelistMailer < ApplicationMailer
                                               .groups
                                               .map(&:name)
                                               .join(', ')
-    mail(to: recipient_email,
-         subject: 'Ouverture de votre accès référent central')
+    send_email(
+      to: recipient_email,
+      subject: 'Ouverture de votre accès référent central'
+    )
   end
 end

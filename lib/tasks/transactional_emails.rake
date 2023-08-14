@@ -8,6 +8,12 @@ task internship_application_reminders: :environment do
   end
 end
 
+desc 'To be scheduled in cron a 9pm to remind student to manage their accepted by employer internship applications'
+task students_internship_application_reminders: :environment do
+  Rails.logger.info("Cron runned at #{Time.now.utc}(UTC), internship_application_reminders")
+  Triggers::StudentAcceptedInternshipApplicationReminder.new.enqueue_all
+end
+
 # call by clever cloud cron daily at 9am
 # which does not support custom day cron. so inlined in code
 desc 'To be scheduled in cron a 9pm to remind employer to manage their internship applications'

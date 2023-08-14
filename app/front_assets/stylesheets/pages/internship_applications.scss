@@ -99,6 +99,57 @@ $line-height: 4px;
   }
 }
 
+.statistic-cards {
+  display: block;
+  width: 583px;
+  height: 160px;
+  border: 1px solid $light-grey;
+  padding: 32px 32px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.top-banner-statistics{
+  background-color: #E8EDFF;
+  padding: 16px 32px;
+  margin-bottom: 20px;
+}
+
+.internship-application-status {
+  display: block;
+  width: 583px;
+  height: 244px;
+  border: 1px solid $grey-disabled;
+  padding: 40px 32px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  .internship-application-location{
+    color: $grey-425;
+    margin-top: 12px;
+    margin-bottom: 16px;
+  }
+  .internship-offer-title{}
+  .action { }
+}
+.white-header{
+  background: white;
+}
+
+table tr {
+  td.col-name{
+    width: 150px;
+  }
+  td.col-title{
+    width: 350px;
+  }
+  td.col-canceled-intitle{
+    width: 100px
+  }
+  td.col-status{
+    width: 100pxj;
+  }
+}
+
 // media phone
 @media (max-width: 767px) {
   .success-banner {

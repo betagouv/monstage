@@ -34,7 +34,7 @@ Rails.application.routes.draw do
       put '/utilisateurs/mot-de-passe/update_by_phone', to: 'users/passwords#update_by_phone', as: 'phone_update_password'
       get '/utilisateurs/mot-de-passe/initialisation', to: 'users/passwords#set_up', as: 'set_up_password'
     end
-    
+
     resources :identities, path: 'identites', only: %i[new create]
     resources :schools, path: 'ecoles',only: %i[new create ]
 
@@ -50,6 +50,8 @@ Rails.application.routes.draw do
       end
       resources :internship_applications, path: 'candidatures', only: %i[new create index show update] do
         member do
+          get :edit_transfer
+          post :transfer
           get :completed
         end
       end
@@ -65,9 +67,12 @@ Rails.application.routes.draw do
         end
       end
     end
-
+    # ------------------ DASHBOARD START ------------------
     namespace :dashboard, path: 'tableau-de-bord' do
-      resources :internship_agreements,  path: 'conventions-de-stage', except: %i[destroy] 
+      resources :team_member_invitations, path: 'invitation-equipes', only: %i[create index new destroy] do
+        patch :join, to: 'team_member_invitations#join', on: :member
+      end
+      resources :internship_agreements,  path: 'conventions-de-stage', except: %i[destroy]
       resources :users, path: 'signatures', only: %i[update], module: 'group_signing' do
         member do
           post 'start_signing'
@@ -91,21 +96,42 @@ Rails.application.routes.draw do
         get '/information', to: 'schools#information', module: 'schools'
       end
 
+      resources :internship_offer_areas, path: 'espaces' do
+        get :filter_by_area, on: :member
+        resources :area_notifications, path: 'notifications-d-espace', only: %i[edit update index], module: 'internship_offer_areas' do
+          patch :flip , on: :member
+        end
+      end
+
       resources :internship_offers, path: 'offres-de-stage', except: %i[show] do
-        resources :internship_applications, only: %i[update index], module: 'internship_offers'
+        resources :internship_applications, path: 'candidatures', only: %i[update index show], module: 'internship_offers' do
+          patch :set_to_read, on: :member
+          get :school_details, on: :member
+        end
+        post :publish, on: :member
+        post :remove, on: :member
+        patch :republish, to: 'internship_offers#republish', on: :member
       end
 
       namespace :stepper, path: 'etapes' do
         resources :organisations, only: %i[create new edit update]
         resources :internship_offer_infos, path: 'offre-de-stage-infos', only: %i[create new edit update]
+        resources :hosting_infos, path: 'accueil-infos', only: %i[create new edit update]
+        resources :practical_infos, path: 'infos-pratiques', only: %i[create new edit update]
         resources :tutors, path: 'tuteurs', only: %i[create new]
-      end    
+      end
 
       namespace :students, path: '/:student_id/' do
-        resources :internship_applications, path: 'candidatures', only: %i[index show]
+        resources :internship_applications, path: 'candidatures', only: %i[index show edit update] do
+          post :resend_application, on: :member
+        end
       end
+
+      get 'candidatures', to: 'internship_offers/internship_applications#user_internship_applications'
     end
+    # ------------------ DASHBOARD END ------------------
   end
+  # ------------------ SCOPE END ------------------
 
   namespace :reporting, path: 'reporting' do
     get '/dashboards', to: 'dashboards#index'
@@ -141,6 +167,10 @@ Rails.application.routes.draw do
   get '/inscription-permanence', to: 'pages#register_to_webinar'
   # To be removed after june 2023
   get '/register_to_webinar', to: 'pages#register_to_webinar'
+  get '/eleves', to: 'pages#student_landing'
+  get '/professionnels', to: 'pages#pro_landing'
+  get '/equipe-pedagogique', to: 'pages#school_management_landing'
+  get '/referents', to: 'pages#statistician_landing'
 
   # Redirects
   get '/dashboard/internship_offers/:id', to: redirect('/internship_offers/%{id}', status: 302)

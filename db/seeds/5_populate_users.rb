@@ -3,7 +3,7 @@ def student_maker (school: ,class_room: )
   first_name = 'Kilian' if first_name.include?(' ')
   last_name = FFaker::NameFR.unique.last_name
   last_name = 'Ploquin' if last_name.include?(' ')
-  email = "#{first_name}.#{last_name}@ms3e.fr"
+  email = "#{first_name.gsub(/[éèê]/,'e')}.#{last_name.gsub(/[éèê]/,'e')}@ms3e.fr"
   Users::Student.new(
     first_name: first_name,
     last_name: last_name,
@@ -17,6 +17,12 @@ def student_maker (school: ,class_room: )
   )
 end
 
+def add_area
+  last_user = User.all.order(:updated_at).last
+  last_user.internship_offer_areas.build(name: "Mon espace", employer_type: "User", employer_id: last_user.id).save!
+  last_user.update(current_area_id: InternshipOfferArea.last.id)
+end
+
 def populate_users
   class_room = ClassRoom.first
 
@@ -28,6 +34,18 @@ def populate_users
       phone: '+330622554144'
     )
   ).save!
+  add_area
+
+  with_class_name_for_defaults(
+    Users::Employer.new(
+      email: 'other_employer@ms3e.fr',
+      password: 'review',
+      employer_role: 'PDG',
+      phone: '+330622554145'
+    )
+  ).save!
+  add_area
+
   with_class_name_for_defaults(Users::God.new(email: 'god@ms3e.fr', password: 'review')).save!
 
   school_manager = with_class_name_for_defaults(Users::SchoolManagement.new(
@@ -41,11 +59,15 @@ def populate_users
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', email: "main_teacher_no_class_room@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: "other@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: "teacher@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'cpe', email: "cpe@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'admin_officer', email: "admin_officer@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
 
   Operator.all.map do |operator|
     with_class_name_for_defaults(Users::Operator.new(email: "#{operator.name.parameterize}@ms3e.fr", password: 'review', operator: operator)).save!
+    add_area
   end
   with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', operator: Operator.first)).save!
+  add_area
 
   statistician_email = 'statistician@ms3e.fr'
   ministry_statistician_email = 'ministry_statistician@ms3e.fr'
@@ -55,8 +77,11 @@ def populate_users
   EmailWhitelists::EducationStatistician.create!(email: education_statistician_email, zipcode: 75)
   ministry_email_whitelist = EmailWhitelists::Ministry.create!(email: ministry_statistician_email, groups: last_public_groups)
   with_class_name_for_defaults(Users::PrefectureStatistician.new(email: statistician_email, password: 'review')).save!
+  add_area
   with_class_name_for_defaults(Users::EducationStatistician.new(email: education_statistician_email, password: 'review')).save!
+  add_area
   with_class_name_for_defaults(Users::MinistryStatistician.new(email: ministry_statistician_email, password: 'review')).save!
+  add_area
 end
 
 def populate_students
@@ -70,16 +95,16 @@ def populate_students
   with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: find_default_school_during_test, class_room: ClassRoom.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   # sans classe
   with_class_name_for_defaults(Users::Student.new(email: 'enzo@ms3e.fr', password: 'review', first_name: 'Enzo', last_name: 'Clerc', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 3.days.ago)).save!
-  
+
   5.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_1)).save! }
-  
+
   2.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_2)).save! }
   with_class_name_for_defaults(Users::Student.new(email: 'louis@ms3e.fr', password: 'review', first_name: 'Louis', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'np', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'leon@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Luanco', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
-  
+
   2.times { with_class_name_for_defaults(student_maker(school: school, class_room: class_room_3)).save! }
-  with_class_name_for_defaults(Users::Student.new(email: 'raphaelle@ms3e.fr', password: 'review',first_name: 'Raphaëlle', last_name: 'Mesnard',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Chotin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'raphaelle@ms3e.fr', password: 'review',first_name: 'Raphaëlle', last_name: 'Mesnard',  school: missing_school_manager_school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Chotin',  school: missing_school_manager_school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
 end
 
 call_method_with_metrics_tracking([

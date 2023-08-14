@@ -123,11 +123,12 @@ class InternshipAgreement < ApplicationRecord
     end
   end
 
-  delegate :student,          to: :internship_application
-  delegate :internship_offer, to: :internship_application
-  delegate :employer,         to: :internship_offer
-  delegate :school,           to: :student
-  delegate :school_manager,   to: :school
+  delegate :student,               to: :internship_application
+  delegate :internship_offer,      to: :internship_application
+  delegate :employer,              to: :internship_offer
+  delegate :school,                to: :student
+  delegate :school_manager,        to: :school
+  delegate :internship_offer_area, to: :internship_offer
 
   scope :having_school_manager, ->{
     joins(internship_application: {student: :school}).merge(School.with_school_manager)
@@ -242,17 +243,45 @@ class InternshipAgreement < ApplicationRecord
   end
 
   def ready_to_sign?(user:)
-    aasm_state.to_s.in?(%w[validated signatures_started]) && !signed_by?(user: user)
+    aasm_state.to_s.in?(%w[validated signatures_started]) && \
+      !signed_by?(user: user) && \
+      user.can_sign?(self)
   end
 
   def signed_by?(user:)
     signatures.pluck(:user_id).include?(user.id)
   end
 
+  def signed_by_school?
+    signatures.pluck(:signatory_role).include?('school_manager')
+  end
+
   def presenter(user:)
     Presenters::InternshipAgreement.new(self, user)
   end
 
+  def roles_not_signed_yet
+    Signature.signatory_roles.keys - roles_already_signed
+  end
+
+  def signature_by_role(signatory_role:)
+    return nil if signatures.blank?
+
+    signatures.find_by(signatory_role: signatory_role)
+  end
+
+  def signature_image_attached?(signatory_role:)
+    signature = signature_by_role(signatory_role:signatory_role)
+    return signature.signature_image.attached? if signature && signature.signature_image
+
+    false
+  end
+
+  def signed_by?(user:)
+    return false if user.nil?
+
+    signatures.pluck(:user_id).include?(user.id)
+  end
 
   private
 

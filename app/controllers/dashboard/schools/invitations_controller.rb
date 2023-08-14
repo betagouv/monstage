@@ -53,7 +53,7 @@ module Dashboard
 
       def resend_invitation
         authorize! :create_invitation, Invitation
-        invite_staff(invitation: @invitation, from: @invitation.school_manager )
+        invite_staff(invitation: @invitation, from: @invitation.author )
         redirect_to dashboard_school_users_path,
                     notice: 'Votre invitation a été renvoyée'
       end

@@ -1,9 +1,5 @@
-.col-12.listview-item.py-2.pb-3
-  = link_to dashboard_students_internship_application_path(student_internship_application.student, student_internship_application), class: "" do
-    p.text-strong.internship-item-title.mb-1= student_internship_application.internship_offer.title
-    p.text-muted.internship-item-city.small.mb-2= student_internship_application.internship_offer.city
-    .small
-      = render partial: "dashboard/students/internship_applications/states/#{student_internship_application.aasm_state}",
-               locals: {internship_application: student_internship_application}
+= render 'dashboard/students/internship_applications/states_presenter',
+         internship_application: student_internship_application
 
-  = render "dashboard/internship_offers/internship_applications/convention_signed_modal", internship_application:student_internship_application
+= render "dashboard/internship_offers/internship_applications/convention_signed_modal",
+         internship_application:student_internship_application

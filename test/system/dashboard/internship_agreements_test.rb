@@ -21,7 +21,7 @@ module Dashboard
       create(:internship_agreement, aasm_state: :draft, internship_application: internship_application)
       create(:internship_agreement, aasm_state: :draft, internship_application: internship_application_2)
 
-      
+
       sign_in(employer)
       visit dashboard_internship_agreements_path
 
@@ -233,6 +233,106 @@ module Dashboard
       find('a.fr-btn.button-component-cta-button', text: 'Signée de tous')
     end
 
+    # =================== Admin Officer ===================
+
+    test 'admin_officer reads internship agreement table with correct indications - draft' do
+      internship_agreement = create(:internship_agreement, aasm_state: :draft)
+      admin_officer = create(:admin_officer, school: internship_agreement.school)
+      sign_in(admin_officer)
+      visit dashboard_internship_agreements_path
+      within('td[data-head="Statut"]') do
+        find('div.actions', text: 'En attente de l\'offreur.')
+      end
+      find('a.button-component-cta-button', text: 'En attente')
+    end
+
+    test 'admin_officer reads internship agreement table with correct indications - status: started_by_employer' do
+      internship_agreement = create(:internship_agreement, aasm_state: :started_by_employer)
+      admin_officer = create(:admin_officer, school: internship_agreement.school)
+      sign_in(admin_officer)
+      visit dashboard_internship_agreements_path
+      within('td[data-head="Statut"]') do
+        find('div.actions', text: 'En attente de l\'offreur.')
+      end
+      find('a.button-component-cta-button', text: 'En attente')
+    end
+
+    test 'admin_officer reads internship agreement table with correct indications - status: completed_by_employer' do
+      internship_agreement = create(:internship_agreement, aasm_state: :completed_by_employer)
+      admin_officer = create(:admin_officer, school: internship_agreement.school)
+      sign_in(admin_officer)
+      visit dashboard_internship_agreements_path
+      find('a.button-component-cta-button', text: 'Remplir ma convention').click
+      within('td[data-head="Statut"]') do
+        find('div.actions', text: "Votre convention est remplie par l'offreur, mais vous ne l'avez pas renseignée.")
+      end
+      text = "Le chef d'établissement a été nommé apte à signer les conventions par le conseil d'administration de l'établissement en date du"
+      fill_in text, with: "12/02/2015"
+      click_button('Valider la convention')
+      find('h1 span.fr-fi-arrow-right-line.fr-fi--lg', text: "Valider la convention")
+      click_button('Je valide la convention')
+      find("span#alert-text", text: "La convention est validée, le fichier pdf de la convention est maintenant disponible.")
+    end
+
+    test 'admin_officer reads internship agreement table with correct indications - status: started_by_school_manager' do
+      internship_agreement = create(:internship_agreement, aasm_state: :started_by_school_manager)
+      admin_officer = create(:admin_officer, school: internship_agreement.school)
+      sign_in(admin_officer)
+      visit dashboard_internship_agreements_path
+      within('td[data-head="Statut"]') do
+        find('div.actions', text: "Votre convention est remplie, mais pas validée.")
+      end
+      find('a.button-component-cta-button', text: 'Valider ma convention')
+    end
+
+    test 'admin_officer reads internship agreement table with correct indications - status: validated' do
+      internship_agreement = create(:internship_agreement, aasm_state: :validated)
+      admin_officer = create(:admin_officer, school: internship_agreement.school)
+      sign_in(admin_officer)
+      visit dashboard_internship_agreements_path
+      within('td[data-head="Statut"]') do
+        find('div.actions', text: "Votre convention est prête.")
+      end
+      find('a.button-component-cta-button', text: 'Imprimer')
+    end
+
+    test 'admin_officer reads internship agreement table with correct indications - status: signatures_started with employer' do
+      internship_agreement = create(:internship_agreement, aasm_state: :signatures_started)
+      create(:signature, internship_agreement: internship_agreement, signatory_role: :employer, user_id: internship_agreement.employer.id)
+      admin_officer = create(:admin_officer, school: internship_agreement.school)
+      sign_in(admin_officer)
+      visit dashboard_internship_agreements_path
+      within('td[data-head="Statut"]') do
+        find('.actions.d-flex', text: "L'employeur a déjà signé. En attente de votre signature.")
+      end
+      find('a.button-component-cta-button', text: 'Imprimer')
+    end
+
+    test 'admin_officer reads internship agreement table with correct indications - status: signatures_started with school_manager' do
+      internship_agreement = create(:internship_agreement, aasm_state: :signatures_started)
+      create(:signature, internship_agreement: internship_agreement, signatory_role: :school_manager, user_id: internship_agreement.school_manager.id)
+      admin_officer = create(:admin_officer, school: internship_agreement.school)
+      assert Signature.first.signatory_role == "school_manager"
+      sign_in(admin_officer)
+      visit dashboard_internship_agreements_path
+      within('td[data-head="Statut"]') do
+        find('.actions.d-flex', text: "Le chef d'établissement a déjà signé. En attente de la signature de l’employeur.")
+      end
+      find('a.button-component-cta-button', text: 'Imprimer')
+      find('a.fr-btn.button-component-cta-button', text: 'Déjà signé')
+    end
+
+    test 'admin_officer reads internship agreement table with correct indications - status: signed_by_all' do
+      internship_agreement = create(:internship_agreement, aasm_state: :signed_by_all)
+      sign_in(internship_agreement.school_manager)
+      visit dashboard_internship_agreements_path
+      within('td[data-head="Statut"]') do
+        find('.actions.d-flex', text: "Signée par toutes les parties.")
+      end
+      find('a.button-component-cta-button', text: 'Imprimer')
+      find('a.fr-btn.button-component-cta-button', text: 'Signée de tous')
+    end
+
     # =================== Statistician ===================
 
     test 'statistician without rights attempt to reach internship agreement table fails' do
@@ -348,6 +448,42 @@ module Dashboard
       end
       find('a.button-component-cta-button', text: 'Imprimer')
       find('a.fr-btn.button-component-cta-button', text: 'Signée de tous')
+    end
+
+    test 'statistician with approved internship application when school has no school_manager' do
+      school = create(:school) # without_school_manager
+      student = create(:student, school: school)
+      internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: true))
+      employer = internship_offer.employer
+      internship_application = create(:weekly_internship_application, :approved, student: student, internship_offer: internship_offer)
+
+      stub_request(:get, "https://www.education.gouv.fr/annuaire?department=75&establishment=2&keywords=Coll%C3%A8ge%20evariste%20Gallois&status=All").
+        with(
+          headers: {
+                'Accept'=>'text/html',
+                'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+                'Host'=>'www.education.gouv.fr',
+                'User-Agent'=>'Ruby'
+          }).to_return(status: 200, body: "", headers: {})
+      expected_result = {
+        phone: '0101010101',
+        email: 'test@data.fr',
+        address: '1 rue de la paix 75000 Paris'
+      }
+      Services::SchoolDirectory.stub_any_instance(:fetch_data, expected_result) do
+        sign_in(employer)
+        visit dashboard_internship_agreements_path
+
+        click_link("Contacter l'établissement")
+        find('h1.fr-h3.fr-mt-4w.blue-france', text: "Contact établissement scolaire")
+        find 'h2.fr-h5.fr-mt-4w.blue-france', text: "Coordonnées de l'établissement"
+        find 'p strong', text: "Collège evariste Gallois"
+        find 'p', text: "1 rue de la paix 75000 Paris"
+        assert page.has_text?('1 rue de la paix 75000 Paris', count: 1)
+        assert page.has_text?("01 01 01 01 01", count: 1)
+        assert page.has_text?('test@data.fr', count: 1)
+        click_link ("retour")
+      end
     end
   end
 end

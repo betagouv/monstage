@@ -157,3 +157,8 @@ ul.class-room {
 .no-scroll-bar::-webkit-scrollbar {
   display: none;
 }
+.dashboard {
+  table tr {
+    width: 700px;
+  }
+}

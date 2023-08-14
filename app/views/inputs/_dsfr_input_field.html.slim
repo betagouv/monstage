@@ -29,7 +29,8 @@
                    id: id,
                    required: required
     p.fr-error-text id="text-input-error-desc-error-#{field}"
-      = "#{field} : #{object.errors[field].join(', ').html_safe}"
+      - field_name = t("activerecord.attributes.#{object.class.name.underscore}.#{field}")
+      = "#{field_name} : #{object.errors[field].map(&:downcase).join(', ').html_safe}"
 - else
   .fr-input-group.fr-input-group--valid
     = f.label field,

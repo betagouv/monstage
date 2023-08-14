@@ -7,6 +7,14 @@ class EmployerMailerPreview < ActionMailer::Preview
     )
   end
 
+  def resend_internship_application_submitted_email
+    internship_application = InternshipApplication.submitted.first
+
+    EmployerMailer.resend_internship_application_submitted_email(
+      internship_application: internship_application
+    )
+  end
+
   def internship_applications_reminder_email
     employer = InternshipApplication.first
                                     .internship_offer
@@ -47,6 +55,19 @@ class EmployerMailerPreview < ActionMailer::Preview
   def notify_others_signatures_finished_email
     EmployerMailer.notify_others_signatures_finished_email(
       internship_agreement: InternshipAgreement.first
+    )
+  end
+
+  def team_member_invitation_email
+    employers = Users::Employer.all.first(2)
+    team_member_invitation = TeamMemberInvitation.create(
+      user: employers.first,
+      invitation_email: employers.second.email
+    )
+    EmployerMailer.team_member_invitation_email(
+      team_member_invitation,
+      user: employers.second,
+      current_user: employers.first
     )
   end
 end

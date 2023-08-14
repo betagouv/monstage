@@ -4,6 +4,7 @@ module Statisticianable
   extend ActiveSupport::Concern
 
   included do
+    include Teamable
     has_many :internship_offers, as: :employer,
              dependent: :destroy
 
@@ -15,6 +16,7 @@ module Statisticianable
     has_many :organisations
     has_many :tutors
     has_many :internship_offer_infos
+
 
     before_update :trigger_agreements_creation
     before_validation :assign_email_whitelist_and_confirm
@@ -30,6 +32,10 @@ module Statisticianable
       )
     end
 
+    def custom_candidatures_path(parameters = {})
+      url_helpers.dashboard_candidatures_path(parameters)
+    end
+
     def custom_dashboard_paths
       [
         url_helpers.reporting_internship_offers_path,
@@ -39,6 +45,7 @@ module Statisticianable
     end
 
     def statistician? ; true end
+    def employer_like? ; true end
 
     rails_admin do
       weight 5
@@ -50,7 +57,7 @@ module Statisticianable
         scopes(UserAdmin::DEFAULT_SCOPES)
 
         fields(*UserAdmin::DEFAULT_FIELDS)
-        
+
         fields(*UserAdmin::ACCOUNT_FIELDS)
       end
 

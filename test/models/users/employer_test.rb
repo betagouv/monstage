@@ -3,6 +3,7 @@
 require 'test_helper'
 module Users
   class EmployerTest < ActiveSupport::TestCase
+    include TeamAndAreasHelper
     test 'employer.after_sign_in_path redirects to internship_offers_path' do
       employer = build(:employer)
       assert_equal(employer.after_sign_in_path,
@@ -52,6 +53,26 @@ module Users
             )
       assert employer.already_signed?(internship_agreement_id: internship_agreement_1.id)
       refute employer.already_signed?(internship_agreement_id: internship_agreement_2.id)
+    end
+
+    test '#internship_offers with a team with a one or more area' do
+      employer_1 = create(:employer)
+      assert_equal 1, InternshipOfferArea.count
+      area = employer_1.current_area
+      employer_2 = create(:employer)
+      assert_equal 2, InternshipOfferArea.count
+      internship_offer_1 = create_internship_offer_visible_by_two(employer_1, employer_2)
+      internship_offer_2 = create_internship_offer_visible_by_two(employer_2, employer_1)
+      assert_equal 2, TeamMemberInvitation.count
+      assert_equal [internship_offer_1.id, internship_offer_2.id].sort, employer_2.internship_offers.to_a.map(&:id).sort
+      assert_equal [internship_offer_1.id, internship_offer_2.id].sort, employer_1.internship_offers.to_a.map(&:id).sort
+      internship_offer_3 = create(:weekly_internship_offer,
+                                  employer: employer_1,
+                                  internship_offer_area_id: create(:area).id)
+      assert_equal [internship_offer_1.id, internship_offer_2.id].sort,
+                    employer_2.internship_offers.to_a.map(&:id).sort
+      assert_equal [internship_offer_1.id, internship_offer_2.id].sort,
+                    employer_1.internship_offers.to_a.map(&:id).sort
     end
   end
 end

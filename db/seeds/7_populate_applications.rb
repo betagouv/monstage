@@ -84,13 +84,13 @@ def populate_applications
     student_email: 'paul@gmail.com'
   )
   #-----------------
-  # 4th student [1 approved]
+  # 4th student [0 approved]
   #-----------------
   InternshipApplications::WeeklyFramed.create!(
-    aasm_state: :approved,
+    aasm_state: :validated_by_employer,
     submitted_at: 10.days.ago,
     approved_at: 2.days.ago,
-    student: students[4],
+    student: students.fourth,
     motivation: 'Au taquet',
     internship_offer: offers.fourth,
     week: offers.first.internship_offer_weeks.third.week,
@@ -98,47 +98,98 @@ def populate_applications
     student_email: 'paul@gmail.com'
   )
   InternshipApplications::WeeklyFramed.create!(
-    aasm_state: :approved,
+    aasm_state: :validated_by_employer,
     submitted_at: 9.days.ago,
-    approved_at: 3.days.ago,
-    student: students[5],
-    motivation: 'Assez motivé pour ce stage',
+    validated_by_employer_at: 3.days.ago,
+    student: students.fourth,
+    motivation: 'Assez moyennement motivé pour ce stage',
     internship_offer: offers.fifth,
     week: offers.fifth.internship_offer_weeks.third.week,
     student_phone: '0606060606',
     student_email: 'paul@gmail.com'
   )
   InternshipApplications::WeeklyFramed.create!(
-    aasm_state: :approved,
-    submitted_at: 19.days.ago,
-    approved_at: 13.days.ago,
-    student: students[3],
-    motivation: 'motivé moyennement pour ce stage, je vous préviens',
-    internship_offer: offers[5],
-    week: offers[5].internship_offer_weeks.first.week,
-    student_phone: '0606060606',
-    student_email: 'paul@gmail.com'
-  )
-  InternshipApplications::WeeklyFramed.create!(
-    aasm_state: :approved,
+    aasm_state: :validated_by_employer,
     submitted_at: 29.days.ago,
-    approved_at: 23.days.ago,
-    student: students[2],
+    validated_by_employer_at: 23.days.ago,
+    student: students.fourth,
     motivation: 'motivé moyennement pour ce stage, je vous préviens',
     internship_offer: offers[6],
     week: offers[6].internship_offer_weeks.second.week,
     student_phone: '0606060606',
     student_email: 'paul@gmail.com'
   )
-  # InternshipApplications::WeeklyFramed.create!(
-  #   aasm_state: :approved,
-  #   submitted_at: 29.days.ago,
-  #   approved_at: 23.days.ago,
-  #   student: students[8],
-  #   motivation: 'motivé moyennement pour ce stage, je vous préviens',
-  #   internship_offer: offers[7],
-  #   week: offers[7].internship_offer_weeks.second.week
-  # )
+  InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :examined,
+    submitted_at: 29.days.ago,
+    examined_at: 23.days.ago,
+    student: students.fourth,
+    motivation: 'motivé moyennement pour ce stage, je vous préviens',
+    internship_offer: offers[0],
+    week: offers[0].internship_offer_weeks.last.week
+  )
+  InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :validated_by_employer,
+    submitted_at: 29.days.ago,
+    examined_at: 23.days.ago,
+    validated_by_employer_at: 20.days.ago,
+    student: students.fourth,
+    motivation: 'Très motivé pour ce stage, je vous préviens',
+    internship_offer: offers[0],
+    week: offers[0].internship_offer_weeks.last(2).first.week
+  )
+  #-----------------
+  # 5th student [1 approved]
+  #-----------------
+   InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :approved,
+    submitted_at: 29.days.ago,
+    examined_at: 23.days.ago,
+    approved_at: 20.days.ago,
+    student: students[4],
+    motivation: 'Très motivé pour ce stage, je vous préviens',
+    internship_offer: offers.third,
+    week: offers.third.internship_offer_weeks.last(2).first.week
+  )
+  #-----------------
+  # 6th student [1 approved]
+  #-----------------
+   InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :approved,
+    submitted_at: 29.days.ago,
+    examined_at: 23.days.ago,
+    approved_at: 20.days.ago,
+    student: students[5],
+    motivation: 'Très moyennement motivé pour ce stage, je vous préviens',
+    internship_offer: offers.fourth,
+    week: offers[3].internship_offer_weeks.last(2).first.week
+  )
+  #-----------------
+  # 7th student [1 approved]
+  #-----------------
+   InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :approved,
+    submitted_at: 23.days.ago,
+    examined_at: 21.days.ago,
+    approved_at: 18.days.ago,
+    student: students[6],
+    motivation: 'Très motivé pour ce stage, je vous préviens',
+    internship_offer: offers[4],
+    week: offers[4].internship_offer_weeks.last(2).first.week
+  )
+  #-----------------
+  # 8th student [1 approved]
+  #-----------------
+   InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :approved,
+    submitted_at: 23.days.ago,
+    examined_at: 21.days.ago,
+    approved_at: 18.days.ago,
+    student: students[7],
+    motivation: 'Très motivé pour ce stage, je vous préviens',
+    internship_offer: offers[5],
+    week: offers[5].internship_offer_weeks.last.week
+  )
 end
 
 def populate_agreements

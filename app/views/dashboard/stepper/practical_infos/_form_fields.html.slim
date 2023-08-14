@@ -1,0 +1,26 @@
+
+div data-controller='practical-info-form' data-action="input->practical-info-form#checkForm"
+  .row
+    .col-md-6
+      fieldset 
+        legend.fr-text--lg.font-weight-bold.fr-my-2w Adresse du stage
+        / = form.hidden_field :manual_enter, value: false
+
+        = react_component("FullAddressInput", props: { resourceName: form.object_name,
+                                labelName: 'Adresse',
+                                currentStreet: resource.street,
+                                currentCity: resource.city,
+                                currentZipcode: resource.zipcode,
+                                currentLatitude: resource.coordinates.try(:lat).try(:to_f),
+                                currentLongitude: resource.coordinates.try(:lon).try(:to_f),
+                                currentFullAddress: resource.formatted_autocomplete_address})
+        .form-group
+          = render partial: "dashboard/stepper/practical_infos/daily_hours",
+                  locals: { form: form, disabled: false }
+
+        - if submit_button
+          .fr-mt-3w
+            = link_to 'Précédent', edit_dashboard_stepper_hosting_info_path(params[:hosting_info_id], organisation_id: params[:organisation_id], internship_offer_info_id: params[:internship_offer_info_id]), class: 'fr-btn fr-mr-2w fr-btn--secondary'
+            = button_tag :submit, class: 'fr-btn', disabled: false, 'data-target': "practical-info-form.submitButton" do
+              = "Suivant "
+   

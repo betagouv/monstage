@@ -6,6 +6,7 @@ FactoryBot.define do
     motivation { 'Suis hyper motivé' }
     student_phone { '0606060606' }
     student_email { 'paul@gmail.com' }
+    access_token { nil }
 
     trait :drafted do
       aasm_state { :drafted }
@@ -15,6 +16,19 @@ FactoryBot.define do
       aasm_state { :submitted }
       submitted_at { 3.days.ago }
     end
+    
+    trait :read_by_employer do
+      aasm_state { :read_by_employer }
+      submitted_at { 3.days.ago }
+      read_at { 2.days.ago }
+    end
+
+    trait :examined do
+      aasm_state { :examined }
+      submitted_at { 15.days.ago }
+      examined_at { 2.days.ago }
+      access_token { SecureRandom.hex(10) }
+    end
 
     trait :expired do
       aasm_state { :expired }
@@ -22,10 +36,17 @@ FactoryBot.define do
       expired_at { 3.days.ago }
     end
 
+    trait :validated_by_employer do
+      aasm_state { :validated_by_employer }
+      submitted_at { 15.days.ago }
+      validated_by_employer_at { 2.days.ago }
+    end
+
     trait :approved do
       aasm_state { :approved }
       submitted_at { 3.days.ago }
-      approved_at { 2.days.ago }
+      validated_by_employer_at { 2.days.ago }
+      approved_at { 1.days.ago }
       after(:create) do |internship_application|
         create(:internship_agreement, internship_application: internship_application)
       end
@@ -43,12 +64,21 @@ FactoryBot.define do
       rejected_at { 2.days.ago }
       canceled_at { 2.days.ago }
     end
+
     trait :canceled_by_student do
       aasm_state { :canceled_by_student }
       submitted_at { 3.days.ago }
       canceled_at { 2.days.ago }
     end
 
+    trait :canceled_by_student_confirmation do
+      aasm_state { :canceled_by_student_confirmation }
+      submitted_at { 3.days.ago }
+      validated_by_employer_at { 2.days.ago }
+      approved_at { 1.days.ago }
+    end
+
+    # TODO following should be removed
     trait :convention_signed do
       aasm_state { :convention_signed }
       submitted_at { 3.days.ago }

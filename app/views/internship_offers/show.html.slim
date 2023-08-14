@@ -7,12 +7,13 @@
 div.fr-container
   - if can?(:create, InternshipOffer)
     = render "dashboard/internship_offers/navigation", internship_offer: @internship_offer
-  
+
   .row
     .col-sm-8.col-12
       .fr-px-1w
-        = render "internship_offers/show_details", internship_offer: @internship_offer
-
+        = render "internship_offers/show_details",
+                 internship_offer: @internship_offer,
+                 hidden_parts: false
     .col-sm-4.col-12.mb-4.d-none.d-sm-block
       .sticky-top.fr-px-1w.fr-py-2w
         = render "internship_offers/show_side_details", internship_offer: @internship_offer

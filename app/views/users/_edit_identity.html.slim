@@ -1,11 +1,14 @@
-#identity-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0"
+#identity-panel.fr-tabs__panel.fr-tabs__panel--selected [aria-labelledby="tabpanel-404"
+                                                         role="tabpanel"
+                                                         tabindex="0"
+                                                         data-controller="profile"]
   h1.h2.mb-3 Mon identité
 
   = form_with model: current_user,
               scope: :user,
               url: account_path,
               method: :patch,
-              data: {controller: "profile", turbo: false} do |f|
+              data: { turbo: false } do |f|
     = f.rg2a_explain_required_asterisk
     = render 'layouts/form_errors', resource: current_user, resource_name: :user
 
@@ -44,7 +47,7 @@
                           value: current_user.ministries.map(&:name).join("\n"),
                           disabled: true
             p.fr-p-1w.text-muted.fr-mt-1w
-              small 
+              small
                 = %Q[La liste ci-dessus est établie à l'inscription, veuillez \
                     joindre #{link_to("l'administrateur", contact_path)} \
                     du site monstagedetroisieme.fr pour demander \
@@ -60,7 +63,7 @@
                       {  },
                       { class: "fr-select" }.merge(can?(:change, :department) ? {} : {disabled: true})
 
-      - if can?(:change, :class_room) && current_user.school
+      - if current_user.try(:school) && current_user.school.class_rooms.any? && can?(:change, current_user.school.class_rooms.first)
         .col-md-6.col-xs-12
           .form-group
             = f.label :class_room_id, class: 'fr-label', for: 'user_class_room_id_1' do
@@ -125,5 +128,6 @@
     .row
       .col-md-6.col-xs-12
         .actions.d-flex.d-sm-block
+         span data-profile-target="emailBloc"
           = f.submit 'Enregistrer mes informations',
                       class: 'fr-btn btn-block'

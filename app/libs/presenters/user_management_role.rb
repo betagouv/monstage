@@ -13,7 +13,9 @@ module Presenters
       school_manager: "Chef d'établissement",
       teacher: 'Professeur',
       other: 'Autres fonctions',
-      main_teacher: 'Professeur principal'
+      main_teacher: 'Professeur principal',
+      cpe: 'CPE',
+      admin_officer: 'Responsable administratif'
     }
 
     def role
@@ -42,6 +44,10 @@ module Presenters
           ROLE_TRANSLATOR[:other]
         when :main_teacher
           ROLE_TRANSLATOR[:main_teacher]
+        when :cpe
+          ROLE_TRANSLATOR[:cpe]
+        when :admin_officer
+          ROLE_TRANSLATOR[:admin_officer]
         else
           'Utilisateur'
         end

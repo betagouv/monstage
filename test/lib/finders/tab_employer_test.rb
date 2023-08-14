@@ -18,7 +18,7 @@ module Finders
     test '.pending_internship_offers_actions' do
       employer     = create(:employer)
       status_count = InternshipApplication.aasm.states.count
-      2.times do 
+      1.times do 
         InternshipApplication.aasm.states.each do |state|
           student = create(:student)
           wio = create(:weekly_internship_offer, employer: employer)
@@ -33,7 +33,7 @@ module Finders
       internship_offers = InternshipOffer.all.to_a
       tab_value = TabEmployer.new(user: employer)
                              .pending_internship_offers_actions(internship_offers)
-      assert_equal 2, tab_value
+      assert_equal 3, tab_value # 1 for :read, 1 for :submitted, 1 for :examined
     end
 
     test '.pending_agreements_actions_count with 1 signature by employer' do

@@ -2,13 +2,16 @@
 
 module Users
   class Operator < User
+    include Teamable
+
     belongs_to :operator, foreign_key: :operator_id,
                           class_name: '::Operator'
 
-    has_many :internship_offers, as: :employer,
-                                 dependent: :destroy
+    # has_many :internship_offers, as: :employer,
+    #                              dependent: :destroy
 
-    has_many :internship_applications, through: :internship_offers
+    # keep with following question : do api anonymize offers ? (since teamable uses kept_internship_offers)
+    # has_many :internship_applications, through: :internship_offers
 
     before_create :set_api_token
 
@@ -29,8 +32,6 @@ module Users
       end
     end
 
-    def operator? ; true end
-
     def custom_dashboard_path
       url_helpers.dashboard_internship_offers_path
     rescue ActionController::UrlGenerationError
@@ -42,6 +43,7 @@ module Users
     end
 
     def operator? ; true end
+    def employer_like? ; true end
 
     def presenter
       Presenters::Operator.new(self)

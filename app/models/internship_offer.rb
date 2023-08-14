@@ -2,12 +2,14 @@
 
 require "sti_preload"
 class InternshipOffer < ApplicationRecord
-  include StiPreload
   PAGE_SIZE = 30
   EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
   MAX_CANDIDATES_HIGHEST = 200
   TITLE_MAX_CHAR_COUNT = 150
   DESCRIPTION_MAX_CHAR_COUNT= 500
+
+  include StiPreload #TODO : remove this
+  include AASM
 
   # queries
   include Listable
@@ -16,11 +18,52 @@ class InternshipOffer < ApplicationRecord
 
   include StepperProxy::InternshipOfferInfo
   include StepperProxy::Organisation
-  include StepperProxy::Tutor
+  include StepperProxy::HostingInfo
+  include StepperProxy::PracticalInfo
 
   # utils
   include Discard::Model
   include PgSearch::Model
+
+  # Other associations
+
+  has_many :internship_applications, as: :internship_offer,
+                                     foreign_key: 'internship_offer_id'
+
+  belongs_to :organisation, optional: true
+  belongs_to :internship_offer_info, optional: true
+  belongs_to :hosting_info, optional: true
+  belongs_to :practical_info, optional: true
+  belongs_to :employer, polymorphic: true, optional: true
+  belongs_to :internship_offer_area, optional: true, touch: true
+  has_many :favorites
+  has_many :users, through: :favorites
+
+  accepts_nested_attributes_for :organisation, allow_destroy: true
+
+  has_rich_text :employer_description_rich_text
+
+   # Callbacks
+  before_save :update_remaining_seats
+
+  after_initialize :init
+
+  before_validation :update_organisation
+
+  before_save :sync_first_and_last_date,
+              :reverse_academy_by_zipcode
+
+  before_create :preset_published_at_to_now
+  after_commit :sync_internship_offer_keywords
+
+  paginates_per PAGE_SIZE
+
+  # Délegate
+  delegate :email, to: :employer, prefix: true, allow_nil: true
+  delegate :phone, to: :employer, prefix: true, allow_nil: true
+  delegate :name, to: :sector, prefix: true
+
+  # Scopes
 
   # public.config_search_keyword config is
   # this TEXT SEARCH CONFIGURATION is based on 2 keys concepts
@@ -42,6 +85,8 @@ class InternshipOffer < ApplicationRecord
                       prefix: true
                     }
                   }
+
+  scope :published, -> { where.not(published_at: nil) }
 
   scope :by_sector, lambda { |sector_id|
     where(sector_id: sector_id)
@@ -93,36 +138,25 @@ class InternshipOffer < ApplicationRecord
     where.not(id: InternshipApplication.where(user_id: user.id).map(&:internship_offer_id))
   }
 
-  has_many :internship_applications, as: :internship_offer,
-                                     foreign_key: 'internship_offer_id'
+  aasm do
+    state :drafted, initial: true
+    state :published,
+          :removed
 
-  belongs_to :employer, polymorphic: true
-  belongs_to :organisation, optional: true
-  belongs_to :tutor, optional: true
-  belongs_to :internship_offer_info, optional: true
-  has_many :favorites
-  has_many :users, through: :favorites
+    event :publish do
+      transitions from: :drafted, to: :published, after: proc { |*_args|
+        update!("published_at": Time.now.utc)
+      }
+    end
 
-  has_rich_text :employer_description_rich_text
+    event :remove do
+      transitions from: %i[published drafted], to: :removed, after: proc { |*_args|
+        update!(published_at: nil)
+      }
+    end
+  end
 
-  after_initialize :init
-
-  before_save :sync_first_and_last_date,
-              :reverse_academy_by_zipcode
-
-  before_create :preset_published_at_to_now
-  after_commit :sync_internship_offer_keywords
-
-  scope :published, -> { where.not(published_at: nil) }
-
-  paginates_per PAGE_SIZE
-
-  delegate :email, to: :employer, prefix: true, allow_nil: true
-  delegate :phone, to: :employer, prefix: true, allow_nil: true
-  delegate :name, to: :sector, prefix: true
-
-  # Callbacks
-  before_save :update_remaining_seats
+  # Methods
 
   def departement
     Department.lookup_by_zipcode(zipcode: zipcode)
@@ -133,9 +167,9 @@ class InternshipOffer < ApplicationRecord
     employer.operator
   end
 
-  def published?
-    published_at.present?
-  end
+  def published? ; published_at.present? end
+  def publish! ; update(published_at: Time.zone.now) end
+  def unpublish! ; update(published_at: nil) end
 
   def from_api?
     permalink.present?
@@ -187,11 +221,14 @@ class InternshipOffer < ApplicationRecord
                     tutor_name tutor_phone tutor_email tutor_role employer_website
                     employer_name street zipcode city department region academy
                     is_public group school_id coordinates first_date last_date
-                    siret employer_manual_enter
+                    siret employer_manual_enter internship_offer_area_id
                     internship_offer_info_id organisation_id tutor_id
-                    weekly_hours new_daily_hours]
+                    weekly_hours daily_hours]
 
-    generate_offer_from_attributes(white_list)
+    internship_offer = generate_offer_from_attributes(white_list)
+    organisation = self.organisation.dup
+    internship_offer.organisation = organisation
+    internship_offer
   end
 
   def duplicate_without_location
@@ -199,10 +236,34 @@ class InternshipOffer < ApplicationRecord
                     tutor_name tutor_phone tutor_email tutor_role employer_website
                     employer_name is_public group school_id coordinates
                     first_date last_date siret employer_manual_enter
+                    internship_offer_area_id
                     internship_offer_info_id organisation_id tutor_id
-                    weekly_hours new_daily_hours]
+                    weekly_hours daily_hours]
 
     generate_offer_from_attributes(white_list_without_location)
+  end
+
+  def update_from_organisation
+    return unless organisation
+
+    self.employer_name = organisation.employer_name
+    self.employer_website = organisation.employer_website
+    self.employer_description = organisation.employer_description
+    self.siret = organisation.siret
+    self.group_id = organisation.group_id
+    self.is_public = organisation.is_public
+  end
+
+  def update_organisation
+    return unless organisation && !organisation.new_record?
+
+    # return si aucun changement qui concerne organisation
+    organisation.update_columns(employer_name: self.employer_name) if attribute_changed?(:employer_name)
+    organisation.update_columns(employer_website: self.employer_website) if attribute_changed?(:employer_website)
+    organisation.update_columns(employer_description: self.employer_description) if attribute_changed?(:employer_description)
+    organisation.update_columns(siret: self.siret) if attribute_changed?(:siret)
+    organisation.update_columns(group_id: self.group_id) if attribute_changed?(:group_id)
+    organisation.update_columns(is_public: self.is_public) if attribute_changed?(:is_public)
   end
 
   def generate_offer_from_attributes(white_list)
@@ -248,20 +309,23 @@ class InternshipOffer < ApplicationRecord
     weekly_hours.any?(&:present?)
   end
 
+  def daily_planning?
+    new_daily_hours.except('samedi').values.flatten.any? { |v| !v.blank? }
+  end
+
   def presenter
     Presenters::InternshipOffer.new(self)
   end
 
   def update_all_favorites
     if approved_applications_count >= max_candidates || Time.now > last_date
-      Favorite.where(internship_offer_id: id).destroy_all 
+      Favorite.where(internship_offer_id: id).destroy_all
     end
   end
 
   def update_remaining_seats
-    reserved_places = internship_offer_weeks
-                        .where('internship_offer_weeks.blocked_applications_count > 0')
-                        .count
+    reserved_places = internship_offer_weeks&.sum(:blocked_applications_count)
     self.remaining_seats_count = max_candidates - reserved_places
+    self.published_at = nil if remaining_seats_count.zero?
   end
 end

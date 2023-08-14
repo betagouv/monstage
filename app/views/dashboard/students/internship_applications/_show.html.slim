@@ -1,0 +1,87 @@
+- presenter = internship_application.presenter(current_user)
+= render 'layouts/breadcrumb',
+          links: [ [current_user.presenter.dashboard_name_link, current_user.dashboard_name],
+                   ['', internship_application.internship_offer.title]]
+- if current_user.student?
+  .sticky-top.white-header
+    .fr-mb-5w
+      = link_to dashboard_students_internship_applications_path(current_user.id),
+                class: 'fr-mt-8w ' do
+        span.fr-icon-arrow-left-line.fr-btn--icon-left.fr-raw-link
+          | toutes mes candidatures
+
+    = render "dashboard/internship_offers/internship_applications/internship_application_header",
+              internship_application: internship_application,
+              presenter: presenter,
+              sgid: sgid
+
+  / following avoids modal dialog to be opened within a sticky HTML node that hides modal content
+  - aasm_notifier = internship_application.internship_application_aasm_message_builder(aasm_target: :cancel_by_student!)
+  = render 'dashboard/internship_offers/internship_applications/action_modal_dialog',
+           internship_application: internship_application,
+           aasm_target: :cancel_by_student!,
+           aasm_notifier: aasm_notifier,
+           modal_id: "cancel-by-student-internship-application-#{internship_application.id}",
+           modal_opener_label: "Annuler",
+           message: "Une fois la candidature annulée, un email de notification va être envoyé à l'employeur avec le motif de l'annulation",
+           rich_text: true,
+           subtitle: "Motif de l'annulation",
+           sgid: sgid
+  = render 'dashboard/internship_offers/internship_applications/action_modal_dialog',
+           internship_application: internship_application,
+           aasm_target: :approve!,
+           aasm_notifier: aasm_notifier,
+           modal_id: "approve-internship-application-#{internship_application.id}",
+           modal_opener_label: "Confirmer",
+           message: "En choisissant ce stage, <strong>toutes vos autres candidatures seront annulées et vous ne pourrez pas revenir en arrière.</strong>".html_safe,
+           rich_text: false,
+           subtitle: "",
+           sgid: sgid
+- elsif current_user.employer_like?
+  .fr-mb-5w
+      = link_to dashboard_candidatures_path(current_user.id),
+                class: 'fr-mt-8w ' do
+        span.fr-icon-arrow-left-line.fr-btn--icon-left.fr-raw-link
+          | retour
+- if current_user.student?
+  - if internship_application.approved?
+    = render "dashboard/students/internship_applications/contact_details",
+              internship_offer: internship_offer,
+              internship_application: internship_application
+  - elsif presenter.with_employer_explanation?
+    = render "dashboard/students/internship_applications/employer_explanation",
+              internship_offer: internship_offer,
+              internship_application: internship_application
+
+  .row
+    .col-12
+      h1.h3.fr-mb-7v L'offre de stage
+  .container-monstage-application
+    .grey-container-application.with-grey-background
+      .row
+        .col-sm-8.col-lg-12
+          .fr-px-1w
+            = render "internship_offers/show_details",
+                      internship_offer: internship_offer,
+                      hidden_parts: true
+.row
+  .col-12
+    h2.h3.fr-mt-4w.fr-mb-2w
+      = "#{current_user.employer_like? ? "S" : "M"}a candidature"
+.container-monstage-application
+  .grey-container-application.with-grey-background
+    h2.h4.fr-mb-4w = internship_application.student.presenter.full_name
+    p.fr-icon-calendar-line.fr-btn--icon-left
+      - week = internship_application.week
+      ="Semaine du <strong>#{week.short_select_text_method}</strong>".html_safe
+    - unless internship_application.motivation.to_s.blank?
+      h3.h5 Motivations
+      p = internship_application.motivation.to_s
+    = render partial: "/internship_applications/student_details",
+                      locals: { student: internship_application.student,
+                              internship_application: internship_application}
+
+    .grey-container-application
+      - if current_user.employer_like?
+        = render "dashboard/internship_offers/internship_applications/actions/employer_decisions",
+                internship_application: internship_application

@@ -5,6 +5,14 @@ require 'test_helper'
 class InternshipOfferTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
+  test 'factory is valid' do
+    assert build(:weekly_internship_offer).valid?
+  end
+
+  test 'api factory is valid' do
+    assert build(:api_internship_offer).valid?
+  end
+
   test 'create enqueue SyncInternshipOfferKeywordsJob' do
     assert_enqueued_jobs 1, only: SyncInternshipOfferKeywordsJob do
       create(:weekly_internship_offer)
@@ -81,34 +89,41 @@ class InternshipOfferTest < ActiveSupport::TestCase
       may_thirty_first = Date.new(2021, 5, 31)
       expected_weeks = Week.where('number >= ? and year = ?', september_first.cweek, 2020)
                            .or(Week.where('number <= ? and year = ?', may_thirty_first.cweek, 2021))
-      internship_offer_info = create(:weekly_internship_offer_info, weeks: weeks)
-      assert_equal expected_weeks.ids, internship_offer_info.available_weeks.ids
+      internship_offer = create(:weekly_internship_offer, weeks: weeks)
+      assert_equal expected_weeks.ids, internship_offer.available_weeks.ids
     end
   end
+
   test 'scope available_weeks when may' do
     travel_to(Date.new(2021, 5, 7)) do
       now = Date.today
-      weeks = [Week.where(year: now.year, number: now.cweek).first]
+      weeks = [Week.fetch_from(date: now)]
       september_first = Date.new(2020, 9, 1)
       may_thirty_first = Date.new(2021, 5, 31)
       expected_weeks = Week.where('number >= ? and year = ?', september_first.cweek, 2020)
                            .or(Week.where('number <= ? and year = ?', may_thirty_first.cweek, 2021))
-      internship_offer_info = create(:weekly_internship_offer_info, weeks: weeks)
-      assert_equal expected_weeks.ids, internship_offer_info.available_weeks.ids
+      internship_offer = create(:weekly_internship_offer, weeks: weeks)
+      assert_equal expected_weeks.ids, internship_offer.available_weeks.ids
+      hosting_info = create(:hosting_info, weeks: weeks, max_candidates: weeks.count)
+      assert_equal expected_weeks.ids, hosting_info.available_weeks.map(&:id)
     end
   end
+
   test 'scope available_weeks when june' do
     travel_to(Date.new(2021, 6, 7)) do
-      now = Date.today
-      weeks = [Week.where(year: now.year, number: now.cweek).first]
-      september_first = Date.new(2021, 9, 1)
+      now              = Date.today
+      weeks            = [Week.where(year: now.year, number: now.cweek).first]
+      september_first  = Date.new(2021, 9, 1)
       may_thirty_first = Date.new(2022, 5, 31)
-      expected_weeks = Week.where('number >= ? and year = ?', september_first.cweek, 2021)
+      expected_weeks   = Week.where('number >= ? and year = ?', september_first.cweek, 2021)
                            .or(Week.where('number <= ? and year = ?', may_thirty_first.cweek, 2022))
-      internship_offer_info = create(:weekly_internship_offer_info, weeks: weeks)
-      assert_equal expected_weeks.ids, internship_offer_info.available_weeks.ids
+      internship_offer = create(:weekly_internship_offer, weeks: weeks)
+      assert_equal expected_weeks.ids, internship_offer.available_weeks.ids
+      hosting_info = create(:hosting_info, weeks: weeks, max_candidates: weeks.count)
+      assert_equal expected_weeks.ids, hosting_info.available_weeks.map(&:id)
     end
   end
+
   test 'scope available_weeks when october' do
     travel_to(Date.new(2021, 10, 7)) do
       now = Date.today
@@ -117,8 +132,10 @@ class InternshipOfferTest < ActiveSupport::TestCase
       may_thirty_first = Date.new(2022, 5, 31)
       expected_weeks = Week.where('number >= ? and year = ?', september_first.cweek, 2021)
                            .or(Week.where('number <= ? and year = ?', may_thirty_first.cweek, 2022))
-      internship_offer_info = create(:weekly_internship_offer_info, weeks: weeks)
-      assert_equal expected_weeks.ids, internship_offer_info.available_weeks.ids
+      internship_offer = create(:weekly_internship_offer, weeks: weeks)
+      assert_equal expected_weeks.ids, internship_offer.available_weeks.ids
+      hosting_info = create(:hosting_info, weeks: weeks, max_candidates: weeks.count)
+      assert_equal expected_weeks.ids, hosting_info.available_weeks.map(&:id)
     end
   end
 end

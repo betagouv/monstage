@@ -70,6 +70,7 @@ module Finders
       end
       query = nearby_query(query) if coordinate_params
       query = school_year_query(query) if school_year_param
+      query = hide_duplicated_offers_query(query) unless user.god?
       query
     end
 
@@ -98,6 +99,10 @@ module Finders
       query.merge(proximity_query)
     end
 
+    def hide_duplicated_offers_query(query)
+      query.merge(query.where(hidden_duplicate: false))
+    end
+
     protected
 
     def weekly_framed_scopes(scope, args = nil)
@@ -106,7 +111,7 @@ module Finders
           .or(InternshipOffers::Api.send(scope))
       else
         InternshipOffers::WeeklyFramed.send(scope, args)
-        .or(InternshipOffers::Api.send(scope, args))
+          .or(InternshipOffers::Api.send(scope, args))
       end
     end
   end

@@ -16,11 +16,15 @@ require 'support/school_form_filler'
 require 'support/internship_offer_info_form_filler'
 require 'support/tutor_form_filler'
 require 'support/turbo_assertions_helper'
+require 'support/team_and_areas_helper'
 require 'minitest/retry'
 require 'webmock/minitest'
 # these two lines should be withdrawn whenever the ChromeDriver is ok
 # https://stackoverflow.com/questions/70967207/selenium-chromedriver-cannot-construct-keyevent-from-non-typeable-key/70971698#70971698
 require 'webdrivers/chromedriver'
+
+# version 115 is not working with chromedriver-helper
+Webdrivers::Chromedriver.required_version = "114.0.5735.90"
 
 Capybara.save_path = Rails.root.join('tmp/screenshots')
 
@@ -41,7 +45,8 @@ WebMock.disable_net_connect!(
     /github.com/,
     /github-production-release-asset*/,
     /chromedriver\.storage\.googleapis\.com/,
-    /api-adresse.data.gouv.fr/
+    /api-adresse.data.gouv.fr/,
+    /education.gouv.fr\/annuaire/
   ]
 )
 class ActiveSupport::TestCase

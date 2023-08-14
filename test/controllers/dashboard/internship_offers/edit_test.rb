@@ -28,8 +28,8 @@ module Dashboard::InternshipOffers
       get edit_dashboard_internship_offer_path(internship_offer.to_param)
       assert_select "#internship_offer_max_candidates[value=#{internship_offer.max_candidates}]", count: 1
 
-      internship_offer.available_weeks.each do |week|
-        assert_select 'label', text: week.select_text_method
+      internship_offer.available_weeks_when_editing.each do |week|
+        assert_select 'label', text: week.select_text_method_with_year
       end
       assert_response :success
     end
@@ -76,7 +76,8 @@ module Dashboard::InternshipOffers
         assert_select 'input#all_year_long[disabled]'
 
         internship_offer.weeks.each do |week|
-          assert_select 'label', text: week.select_text_method
+          assert_select "label[for='internship_offer_week_ids_#{week.id}_checkbox']",
+                        text: week.select_text_method_with_year
         end
 
         assert_select("input#internship_offer_week_ids_#{internship_offer.internship_offer_weeks[1].week_id}[disabled='disabled']",
@@ -98,24 +99,19 @@ module Dashboard::InternshipOffers
       sign_in(employer)
       internship_offer = create(:weekly_internship_offer, is_public: true,
                                                           max_candidates: 1,
-                                                          tutor_name: 'fourtin mourcade',
-                                                          tutor_email: 'fourtin@mour.cade',
-                                                          tutor_role: 'tutor',
                                                           employer: employer)
 
       get edit_dashboard_internship_offer_path(internship_offer.to_param)
       assert_response :success
       assert_select 'title', "Offre de stage '#{internship_offer.title}' | Monstage"
-      assert_select '#internship_offer_is_public_true[checked]', count: 1 # "ensure user select kind of group"
-      assert_select '#internship_offer_is_public_false[checked]', count: 0 # "ensure user select kind of group"
+      assert_select '#internship_offer_organisation_attributes_is_public_true[checked]', count: 1 # "ensure user select kind of group"
+      assert_select '#internship_offer_organisation_attributes_is_public_false[checked]', count: 0 # "ensure user select kind of group"
       assert_select '.form-group-select-group.d-none', count: 0
       assert_select '.form-group-select-group', count: 1
-
+      
       assert_select '#internship_type_true[checked]', count: 1
       assert_select '#internship_type_false[checked]', count: 0
 
-      assert_select '#internship_offer_tutor_name[value="fourtin mourcade"]'
-      assert_select '#internship_offer_tutor_email[value="fourtin@mour.cade"]'
       assert_select 'a.btn-back[href=?]', dashboard_internship_offers_path
     end
   end

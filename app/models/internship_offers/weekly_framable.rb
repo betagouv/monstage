@@ -12,6 +12,8 @@ module InternshipOffers
 
       has_many :weeks, through: :internship_offer_weeks
 
+      attr_accessor :republish
+
       scope :ignore_already_applied, lambda { |user:|
         where(type: ['InternshipOffers::WeeklyFramed', 'InternshipOffers::Api'])
           .where.not(id: InternshipApplication.where(user_id: user.id).map(&:internship_offer_id))
@@ -36,7 +38,7 @@ module InternshipOffers
       }
 
       # Retourner toutes les offres qui ont au moins une semaine de libre ???
-      scope :ignore_max_candidates_reached, lambda { 
+      scope :ignore_max_candidates_reached, lambda {
         offer_weeks_ar = InternshipOfferWeek.arel_table
         offers_ar      = InternshipOffer.arel_table
 
@@ -48,7 +50,7 @@ module InternshipOffers
           .group(offers_ar[:id])
       }
 
-      
+
       # scope :ignore_max_internship_offer_weeks_reached, lambda {
       #   where('internship_offer_weeks_count > blocked_weeks_count')
       # }
@@ -59,6 +61,32 @@ module InternshipOffers
         joins(:internship_offer_weeks)
           .where('internship_offer_weeks.week_id in (?)', week_ids)
       }
+
+      scope :shown_to_employer, lambda {
+        where(hidden_duplicate: false)
+      }
+
+      scope :with_weeks_next_year, lambda {
+        # beginning_of_year = SchoolYear::Current.new
+        #                                        .beginning_of_period
+        # beginning_of_next_year = SchoolYear::Current.new
+        #                                             .next_year
+        #                                             .beginning_of_period
+        # from = Week.current.ahead_of_school_year_start? ? beginning_of_year : beginning_of_next_year
+        # to = from + 1.year - 1.day
+        # next_year_weeks_ids = Week.from_date_to_date( from: from, to: to ).ids
+       
+        joins(:internship_offer_weeks).where(
+          internship_offer_weeks: { week_id:  Week.selectable_on_next_school_year }
+        ).distinct
+      }
+
+      def having_weeks_over_several_school_years?
+        next_year_first_date = SchoolYear::Current.new
+                                                  .next_year
+                                                  .beginning_of_period
+        last_date > next_year_first_date
+      end
 
       def weeks_count
         internship_offer_weeks.count
@@ -82,6 +110,12 @@ module InternshipOffers
         internship_applications.empty?
       end
 
+      def next_year_week_ids
+        weeks.to_a
+             .intersection(Week.selectable_on_next_school_year.to_a)
+             .map(&:id)
+      end
+
       #
       # callbacks
       #
@@ -99,6 +133,29 @@ module InternshipOffers
       def duplicate
         internship_offer = super
         internship_offer.week_ids = week_ids
+        internship_offer
+      end
+
+      def split_in_two
+        original_week_ids = week_ids
+        print '.'
+        return nil if next_year_week_ids.empty?
+
+        internship_offer = duplicate
+        internship_offer.week_ids = next_year_week_ids
+        internship_offer.remaining_seats_count = max_candidates
+        internship_offer.employer = employer
+        if internship_offer.valid?
+          internship_offer.save
+        else
+          raise StandardError.new "##{internship_offer.errors.full_messages} - on #{internship_offer.errors.full_messages}"
+        end
+
+        self.week_ids = original_week_ids - next_year_week_ids
+        self.hidden_duplicate = true
+        self.unpublish!
+        save!
+
         internship_offer
       end
     end

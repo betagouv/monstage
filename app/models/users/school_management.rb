@@ -19,7 +19,7 @@ module Users
     belongs_to :class_room, optional: true
     has_many :students, through: :school
     has_many :main_teachers, through: :school
-    has_many :invitations, class_name: 'Invitation', foreign_key: 'user_id'
+    has_many :invitations, class_name: 'Invitation', foreign_key: 'user_id', inverse_of: :author
     has_many :internship_applications, through: :students
     has_many :internship_agreements, through: :internship_applications
 
@@ -39,6 +39,10 @@ module Users
       end
 
       url_helpers.account_path
+    end
+
+    def custom_candidatures_path(parameters: {})
+      url_helpers.root_path
     end
 
     def custom_dashboard_paths
@@ -76,6 +80,8 @@ module Users
 
     def school_management? ; true end
     def school_manager? ; role == 'school_manager' end
+    def admin_officer?  ; role == 'admin_officer' end
+    def cpe?            ; role == 'cpe' end
 
     def school_manager
       try(:school).try(:school_manager)

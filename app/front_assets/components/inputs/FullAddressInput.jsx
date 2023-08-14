@@ -9,6 +9,7 @@ import { broadcast, newCoordinatesChanged } from '../../utils/events';
 // see: https://geo.api.gouv.fr/adresse
 export default function AddressInput({
   resourceName,
+  labelName,
   currentStreet,
   currentCity,
   currentZipcode,
@@ -76,7 +77,9 @@ export default function AddressInput({
 
   return (
     <div>
-      <div className="form-group" id="test-input-full-address">
+      <div className="form-group" id={`test-input-full-address-${resourceName}`}>
+
+
         <div className="container-downshift">
           <Downshift
             initialInputValue={fullAddress}
@@ -107,13 +110,13 @@ export default function AddressInput({
                     htmlFor: `${resourceName}_autocomplete`,
                   })}
                 >
-                  Adresse du lieu où se déroule le stage
+                  {labelName || 'Adresse'}
                   <abbr title="(obligatoire)" aria-hidden="true">
                     *
                   </abbr>
                   <a
                     className="btn-absolute btn btn-link py-0 fr-raw-link"
-                    href="#help-multi-location"
+                    href={`#help-multi-location-${resourceName}`}
                     aria-label="Afficher l'aide"
                     onClick={toggleHelpVisible}
                   >
@@ -126,10 +129,11 @@ export default function AddressInput({
                     {...getInputProps({
                       onChange: inputChange,
                       value: fullAddress,
-                      className: 'form-control',
+                      className: 'fr-input',
                       name: `${resourceName}_autocomplete`,
                       id: `${resourceName}_autocomplete`,
                       placeholder: 'Adresse',
+                      data: {'target': 'organisation-form.requiredField'}
                     })}
                   />
                 </div>
@@ -178,7 +182,7 @@ export default function AddressInput({
           </Downshift>
         </div>
         <div
-          id="help-multi-location"
+          id={`help-multi-location-${resourceName}`}
           className={`${helpVisible ? '' : 'd-none'} my-1 p-2 help-sign-content`}
         >
           Si vous proposez le même stage dans un autre établissement, déposez une offre par
@@ -208,12 +212,13 @@ export default function AddressInput({
               </abbr>
             </label>
             <input
-              className="form-control"
+              className="fr-input"
               value={street}
               readOnly
               type="text"
               name={`${resourceName}[street]`}
               id={`${resourceName}_street`}
+              data-target="organisation-form.requiredField"
             />
           </div>
         </div>
@@ -225,7 +230,7 @@ export default function AddressInput({
               Complément d'adresse
             </label>
             <input
-              className="form-control"
+              className="fr-input"
               type="text"
               name={`${resourceName}[street_complement]`}
               id={`${resourceName}_street_complement`}
@@ -241,13 +246,14 @@ export default function AddressInput({
               </abbr>
             </label>
             <input
-              className="form-control"
+              className="fr-input"
               required="required"
               value={city}
               type="text"
               readOnly
               name={`${resourceName}[city]`}
               id={`${resourceName}_city`}
+              data-target="organisation-form.requiredField"
             />
           </div>
         </div>
@@ -260,13 +266,14 @@ export default function AddressInput({
               </abbr>
             </label>
             <input
-              className="form-control"
+              className="fr-input"
               required="required"
               value={zipcode}
               type="text"
               name={`${resourceName}[zipcode]`}
               id={`${resourceName}_zipcode`}
               readOnly
+              data-target="organisation-form.requiredField"
             />
           </div>
         </div>
