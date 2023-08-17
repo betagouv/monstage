@@ -1612,7 +1612,8 @@ CREATE TABLE public.users (
     agreement_signatorable boolean DEFAULT false,
     created_by_teacher boolean DEFAULT false,
     survey_answered boolean DEFAULT false,
-    current_area_id bigint
+    current_area_id bigint,
+    statistician_validation boolean DEFAULT false
 );
 
 
@@ -3403,6 +3404,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230707083923'),
 ('20230711161600'),
 ('20230712074733'),
-('20230724113109');
+('20230724113109'),
+('20230816221101');
 
 

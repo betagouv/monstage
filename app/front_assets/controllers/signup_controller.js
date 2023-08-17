@@ -135,6 +135,20 @@ export default class extends Controller {
     } catch (e) {}
   }
 
+  onMinistryTypeChange(event) {
+    const ministryType = event.target.value;
+    document.getElementById('new_user').action = '/utilisateurs?as=' + ministryType;
+
+    if ((ministryType == "EducationStatistician") || (ministryType == "PrefectureStatistician")) {
+      $('#statistician-department').removeClass('d-none');
+      $('#statistician-department').addAttr('required');
+    } else {
+      $('#statistician-department').addClass('d-none');
+      $('#statistician-department').removeAttr('required');
+    }
+  }
+
+
   checkPassword() {
     const passwordHintElement = this.passwordHintTarget;
     const passwordGroupElement = this.passwordGroupTarget;

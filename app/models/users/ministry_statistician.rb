@@ -3,14 +3,14 @@
 module Users
   class MinistryStatistician < Statistician
     include Signatorable
-    include Statisticianable
+    # include Statisticianable
     
     METABASE_DASHBOARD_ID = 10
 
-    has_one :ministry_email_whitelist,
-            class_name: 'EmailWhitelists::Ministry',
-            foreign_key: :user_id,
-            dependent: :destroy
+    # has_one :ministry_email_whitelist,
+    #         class_name: 'EmailWhitelists::Ministry',
+    #         foreign_key: :user_id,
+    #         dependent: :destroy
 
     def ministry_email_whitelist
       EmailWhitelists::Ministry.find_by(email: email)
@@ -35,17 +35,30 @@ module Users
     end
 
     def assign_email_whitelist_and_confirm
-      self.ministry_email_whitelist = EmailWhitelists::Ministry.find_by(email: email)
-      self.confirmed_at = Time.now
+      # self.ministry_email_whitelist = EmailWhitelists::Ministry.find_by(email: email)
+      # self.confirmed_at = Time.now
     end
 
     rails_admin do
       list do
-        field :ministeres do
-          formatted_value{
-              bindings[:object]&.email_whitelist&.groups.map(&:name).join(', ')
-          }
+        field :first_name do
+          label 'Prénom'
         end
+        field :last_name do
+          label 'Nom'
+        end
+        field :email do
+          label 'Email'
+        end
+        field :statistician_validation do
+          label 'Validation'
+        end
+
+        # field :ministeres do
+        #   formatted_value{
+        #       bindings[:object]&.email_whitelist&.groups.map(&:name).join(', ')
+        #   }
+        # end
       end
       show do
         field :ministeres do

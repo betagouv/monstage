@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-module Statisticianable
-  extend ActiveSupport::Concern
-
-  included do
+module Users
+  class Statistician < User
+   
     include Teamable
     has_many :internship_offers, as: :employer,
              dependent: :destroy
@@ -21,7 +20,7 @@ module Statisticianable
     before_update :trigger_agreements_creation
     before_validation :assign_email_whitelist_and_confirm
     # Beware : order matters here !
-    validate :email_in_list
+    # validate :email_in_list
 
     scope :active, -> { where(discarded_at: nil) }
 
@@ -106,5 +105,6 @@ module Statisticianable
     def signatory_role
       Signature.signatory_roles[:employer]
     end
-  end
+  
+  end 
 end

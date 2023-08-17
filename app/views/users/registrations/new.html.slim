@@ -71,32 +71,46 @@
                 - if as == "Statistician"
                   .fr-mt-3w.fr-ml-1w
                     p Vous êtes référent :
-                    fieldset#radio-hint.fr-fieldset data-controller="statistician-registration"
+                    fieldset#radio-hint.fr-fieldset 
                       .fr-fieldset__element
                         .fr-radio-group
                           = f.radio_button :statistician_type,
-                                            "ministry",
+                                            "MinistryStatistician",
+                                            id: 'user_statistician_ministry_type',
                                             class: "fr-radio__input",
-                                            required: true
+                                            required: true,
+                                            data: { action: "change->signup#onMinistryTypeChange" }
                           label.fr-label[for="user_statistician_ministry_type"]
-                            | d'administration centrale
+                            | Administration centrale
                       .fr-fieldset__element
                         .fr-radio-group
                           = f.radio_button :statistician_type,
-                                            "department",
+                                            "PrefectureStatistician",
+                                            id: 'user_statistician_department_type',
                                             class: "fr-radio__input",
-                                            required: true
+                                            required: true,
+                                            data: { action: "change->signup#onMinistryTypeChange" }
                           label.fr-label[for="user_statistician_department_type"]
-                            | départemental
+                            | Départemental
                       .fr-fieldset__element
                         .fr-radio-group
                           = f.radio_button :statistician_type,
-                                            "education",
+                                            "EducationStatistician",
+                                            id: 'user_statistician_education',
                                             class: "fr-radio__input",
-                                            required: true
+                                            required: true,
+                                            data: { action: "change->signup#onMinistryTypeChange" }
                           label.fr-label[for="user_statistician_education"]
                             | DSDEN
                       
+                      .fr-fieldset__element.fr-mt-3w.fr-mb-2v.d-none#statistician-department
+                        .row
+                          .col-lg-6.col-12
+                            / select field department
+                            label.fr-label[for="user_department"]
+                              |Choisissez votre département
+                            = f.select :department, options_for_select(Department::MAP.map { |code, name| ["#{code} - #{name}", code] }, resource.department), { prompt: "Départements" }, { class: "fr-select", required: true, data: { action: "change->signup#onDepartmentChange" } }
+
                 - if user_presenter.show_when_subscribe?(as: as, field: :role)
                   .fr-fieldset__element
                     - error_tag  = errors.field_error_tag(resource_name: resource_name, resource: resource, field: :role) if errors.present?

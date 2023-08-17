@@ -148,6 +148,7 @@ module Users
           statistician_type
           targeted_offer_id
           type
+          department
         ]
       )
     end
@@ -168,6 +169,8 @@ module Users
         options = { id: resource.id }
         options = options.merge({ as: 'Student'}) if resource.student?
         users_registrations_phone_standby_path(options)
+      elsif resource.statistician?
+        users_registrations_standby_path(id: resource.id)
       else
         users_registrations_standby_path(id: resource.id)
       end
@@ -211,18 +214,18 @@ module Users
     def statistician_registration_checking(params)
       as = params[:as]
       statisticians = %w[PrefectureStatistician MinistryStatistician EducationStatistitician]
-      if as.in?(statisticians) && EmailWhitelist.where(email: params[:user][:email]).first.nil?
-        unregistered_message = "Votre adresse email n'est pas " \
-                               "enregistrée dans notre base de données. "\
-                               "Veuillez contacter l'administrateur."
-        flash = { danger: unregistered_message }
-        destination = new_user_registration_path(first_name: params[:user][:first_name],
-                                                 last_name: params[:user][:last_name],
-                                                 email: params[:user][:email],
-                                                 accept_terms: params[:user][:accept_terms],
-                                                 as: as)
-        lambda { redirect_to destination, flash: flash }
-      end
+      # if as.in?(statisticians) && EmailWhitelist.where(email: params[:user][:email]).first.nil?
+      #   unregistered_message = "Votre adresse email n'est pas " \
+      #                          "enregistrée dans notre base de données. "\
+      #                          "Veuillez contacter l'administrateur."
+      #   flash = { danger: unregistered_message }
+      #   destination = new_user_registration_path(first_name: params[:user][:first_name],
+      #                                            last_name: params[:user][:last_name],
+      #                                            email: params[:user][:email],
+      #                                            accept_terms: params[:user][:accept_terms],
+      #                                            as: as)
+      #   lambda { redirect_to destination, flash: flash }
+      # end
     end
 
     def honey_pot_checking(params)
