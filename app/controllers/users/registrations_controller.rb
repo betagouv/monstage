@@ -96,6 +96,9 @@ module Users
       end
     end
 
+    def statistician_standby
+    end
+
     # GET /resource/edit
     # def edit
     #   super
@@ -170,7 +173,7 @@ module Users
         options = options.merge({ as: 'Student'}) if resource.student?
         users_registrations_phone_standby_path(options)
       elsif resource.statistician?
-        users_registrations_standby_path(id: resource.id)
+        statistician_standby_path(id: resource.id)
       else
         users_registrations_standby_path(id: resource.id)
       end
