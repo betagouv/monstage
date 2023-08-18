@@ -74,7 +74,7 @@ module Users
       super do |resource|
         clean_invitation(resource)
         resource.targeted_offer_id ||= params && params.dig(:user, :targeted_offer_id)
-        resource.groups.ids = params[:user][:group_id] if params[:user][:group_id].present?
+        resource.groups << Group.find(params[:user][:group_id]) if params[:user][:group_id].present?
         @current_ability = Ability.new(resource)
       end
       resource.try(:intialize_current_area) if resource.persisted?

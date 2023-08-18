@@ -127,6 +127,18 @@ FactoryBot.define do
             parent: :user do
       type { 'Users::PrefectureStatistician' }
       agreement_signatorable { false }
+      department { '60' }
+      before(:create) do |user|
+        create(:statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
+      end
+    end
+
+    factory :prefecture_statistician,
+            class: 'Users::PrefectureStatistician',
+            traits: %i[with_current_area],
+            parent: :user do
+      type { 'Users::PrefectureStatistician' }
+      agreement_signatorable { false }
       before(:create) do |user|
         create(:statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
       end
@@ -138,6 +150,7 @@ FactoryBot.define do
             class: 'Users::EducationStatistician' do
       type { 'Users::EducationStatistician' }
       agreement_signatorable { false }
+      department { '60' }
       before(:create) do |user|
         create(:education_statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
       end
@@ -149,10 +162,7 @@ FactoryBot.define do
             class: 'Users::MinistryStatistician' do
       type { 'Users::MinistryStatistician' }
       agreement_signatorable { false }
-      transient do
-        white_list { create(:ministry_statistician_email_whitelist) }
-      end
-      email { white_list.email }
+      groups { [create(:group, is_public: true), create(:group, is_public: true)] }
     end
 
     factory :user_operator,

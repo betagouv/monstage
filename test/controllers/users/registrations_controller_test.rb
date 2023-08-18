@@ -21,7 +21,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     post user_registration_path(user: data)
 
-    assert_redirected_to reporting_dashboards_path(department: Department::MAP[white_list.zipcode], school_year: SchoolYear::Current.new.beginning_of_period.year)
+    assert_redirected_to statistician_standby_path(id: Users::PrefectureStatistician.last.id)
   end
 
   test 'POST #registrations as ministry statistician whitelisted' do
@@ -37,7 +37,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     post user_registration_path(user: data)
 
-    assert_redirected_to Users::MinistryStatistician.last.custom_dashboard_path
+    assert_redirected_to statistician_standby_path(id: Users::MinistryStatistician.last.id)
   end
 
   test 'POST #registrations as education statistician whitelisted' do
@@ -53,7 +53,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     post user_registration_path(user: data)
 
-    assert_redirected_to Users::EducationStatistician.last.custom_dashboard_path
+    assert_redirected_to statistician_standby_path(id: Users::EducationStatistician.last.id)
   end
 
 

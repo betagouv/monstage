@@ -19,19 +19,20 @@ class MinistryStatiticianRegistrationsTest < ActionDispatch::IntegrationTest
 
   test 'POST #create with right params do not fail creation' do
     email = 'bing@bongo.bang'
-    whitelist = create :ministry_statistician_email_whitelist, email: email
+    group = create(:group, is_public: true)
     assert_difference('Users::MinistryStatistician.count', 1) do
       post user_registration_path(params: { user: { email: email,
                                                     first_name: 'ref',
                                                     last_name: 'central',
                                                     password: 'okokok',
                                                     type: 'Users::MinistryStatistician',
+                                                    group_id: group.id,
                                                     accept_terms: '1' } })
       assert_response 302
     end
     last_ministry_statistician = Users::MinistryStatistician.last
     assert_equal email, last_ministry_statistician.email
-    assert_equal last_ministry_statistician.ministries, whitelist.groups
+    assert_equal last_ministry_statistician.ministries, [group]
   end
 
   test 'when agreement_signatorable goes from false to true a job is launched' do

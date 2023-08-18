@@ -5,7 +5,8 @@ module StatisticianDepartmentable
 
   included do
     # validates :email_whitelist, presence: { message: 'none' }
-
+    validates :department, presence: true
+    
     def dashboard_name
       'Statistiques'
     end

@@ -12,7 +12,7 @@ module Users
                                              accept_terms: true)
 
       assert statistician.invalid?
-      assert_not_empty statistician.errors[:email]
+      assert_not_empty statistician.errors[:department]
     end
 
     test 'creation succeed' do
@@ -23,18 +23,15 @@ module Users
                                              password: 'tototo',
                                              first_name: 'Chef',
                                              last_name: 'Departement',
+                                             department: '75',
                                              accept_terms: true,
                                              email_whitelist: whitelisted_email)
       assert statistician.valid?
     end
 
     test 'departement_name' do
-      whitelisted_email = create(:statistician_email_whitelist,
-                                 email: 'fourcade.m@gmail.com',
-                                 zipcode: '59')
-
-      statistician = create(:statistician, email: whitelisted_email.email, email_whitelist: whitelisted_email)
-      assert_equal 'Nord', statistician.department
+      statistician = create(:education_statistician)
+      assert_equal '60', statistician.department
     end
 
     test 'destroy also destroy email_whitelist' do

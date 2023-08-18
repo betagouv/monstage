@@ -147,9 +147,11 @@ export default class extends Controller {
 
       $('#statistician-ministry').addClass('d-none');
       this.ministrySelectTarget.required = false;
+      this.ministrySelectTarget.value = '';
     } else {
       $('#statistician-department').addClass('d-none');
       this.departmentSelectTarget.required = false;
+      this.departmentSelectTarget.value = '';
 
       $('#statistician-ministry').removeClass('d-none');
       this.ministrySelectTarget.required = true;
