@@ -7,10 +7,17 @@ module Users
     
     METABASE_DASHBOARD_ID = 10
 
-    # has_one :ministry_email_whitelist,
-    #         class_name: 'EmailWhitelists::Ministry',
-    #         foreign_key: :user_id,
-    #         dependent: :destroy
+    has_one :ministry_email_whitelist,
+            class_name: 'EmailWhitelists::Ministry',
+            foreign_key: :user_id,
+            dependent: :destroy
+
+    has_many :user_groups,
+             foreign_key: :user_id,
+             inverse_of: :user
+    has_many :groups,
+              -> { where is_public: true },
+              through: :user_groups
 
     def ministry_email_whitelist
       EmailWhitelists::Ministry.find_by(email: email)
@@ -21,7 +28,7 @@ module Users
     end
 
     def ministries
-      ministry_email_whitelist&.groups
+      groups
     end
 
     def dashboard_name
@@ -40,6 +47,7 @@ module Users
     end
 
     rails_admin do
+      navigation_label "Référents"
       list do
         field :first_name do
           label 'Prénom'
@@ -50,27 +58,51 @@ module Users
         field :email do
           label 'Email'
         end
+        field :ministeres do
+          label 'Ministères'
+          formatted_value{
+              bindings[:object]&.groups.map(&:name).join(', ')
+          }
+        end
         field :statistician_validation do
           label 'Validation'
         end
-
-        # field :ministeres do
-        #   formatted_value{
-        #       bindings[:object]&.email_whitelist&.groups.map(&:name).join(', ')
-        #   }
-        # end
       end
+
+      edit do
+        field :first_name do
+          label 'Prénom'
+        end
+        field :last_name do
+          label 'Nom'
+        end
+        field :email do
+          label 'Email'
+        end
+        # field :group_id do
+        #   label 'Ministère'
+        #   pretty_value do
+        #     bindings[:object]&.group&.name
+        #   end
+        # end
+        field :statistician_validation do
+          label 'Validation'
+        end
+        
+      end
+
       show do
         field :ministeres do
           formatted_value{
-              bindings[:object]&.email_whitelist&.groups.map(&:name).join(', ')
+              bindings[:object]&.groups.map(&:name).join(', ')
           }
         end
       end
+
       export do
         field :ministeres, :string do
           formatted_value{
-              bindings[:object]&.email_whitelist&.groups.map(&:name).join(', ')
+              bindings[:object]&.groups.map(&:name).join(', ')
           }
         end
       end

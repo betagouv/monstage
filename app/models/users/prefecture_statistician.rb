@@ -5,10 +5,11 @@ module Users
     include Signatorable
     include StatisticianDepartmentable
 
-    # has_one :email_whitelist,
-    #         class_name: 'EmailWhitelists::PrefectureStatistician',
-    #         foreign_key: :user_id,
-    #         dependent: :destroy
+    # TODO remove relation
+    has_one :email_whitelist,
+            class_name: 'EmailWhitelists::PrefectureStatistician',
+            foreign_key: :user_id,
+            dependent: :destroy
 
     METABASE_DASHBOARD_ID = 3
 
@@ -19,6 +20,8 @@ module Users
     end
 
     rails_admin do
+      weight 3
+      navigation_label "Référents"
       list do
         field :first_name do
           label 'Prénom'
@@ -32,6 +35,30 @@ module Users
         field :department do
           label 'Département'
           pretty_value { bindings[:object]&.department}
+        end
+        field :statistician_validation do
+          label 'Validation'
+        end
+      end
+
+      edit do
+        field :first_name
+        field :last_name
+        field :email
+        field :department do
+          label 'Département'
+        end
+        field :statistician_validation do
+          label 'Validation'
+        end
+      end
+
+      show do
+        field :first_name
+        field :last_name
+        field :email
+        field :department do
+          label 'Département'
         end
         field :statistician_validation do
           label 'Validation'

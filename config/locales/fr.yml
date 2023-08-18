@@ -410,6 +410,10 @@ fr:
         phone_password_reset_count: Compteur de remise à zéro de mot de passe par téléphone
         anonymized: Anonymisé
         zipcode: Code postal
+        roles:
+          prefecture_statistician: Référent départemental
+          ministry_statistician: Référent central
+          education_statistician: Référent de l'éducation nationale
 
       identity:
         first_name: Prénom

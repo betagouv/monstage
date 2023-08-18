@@ -5,10 +5,11 @@ module Users
     include Signatorable
     include StatisticianDepartmentable
 
-    # has_one :email_whitelist,
-    #         class_name: 'EmailWhitelists::EducationStatistician',
-    #         foreign_key: :user_id,
-    #         dependent: :destroy
+    # TODO remove relation
+    has_one :email_whitelist,
+            class_name: 'EmailWhitelists::EducationStatistician',
+            foreign_key: :user_id,
+            dependent: :destroy
 
     METABASE_DASHBOARD_ID = 8
 
@@ -19,7 +20,7 @@ module Users
     end
 
     rails_admin do
-      navigation_label "Users"
+      navigation_label "Référents"
       list do
         field :first_name do
           label 'Prénom'
@@ -39,6 +40,30 @@ module Users
         end
       end
       
+      edit do
+        field :first_name
+        field :last_name
+        field :email
+        field :department do
+          label 'Département'
+        end
+        field :statistician_validation do
+          label 'Validation'
+        end
+      end
+
+      show do
+        field :first_name
+        field :last_name
+        field :email
+        field :department do
+          label 'Département'
+        end
+        field :statistician_validation do
+          label 'Validation'
+        end
+      end
+
       export do
         field :department, :string do
           export_value do

@@ -1,0 +1,10 @@
+p Bonjour,
+
+p= "#{@statistician.full_name} souhaite rejoindre le service en tant que #{t(@role, scope: 'activerecord.attributes.user.roles')}."
+
+
+= render "mailers/blue_call_to_action",
+         href: @url,
+         label:"Répondre"
+
+p L'équipe Mon stage de troisième

@@ -59,4 +59,14 @@ class GodMailer < ApplicationMailer
       subject: "Monitoring monstagede3e : Candidatures expirées depuis 15 jours au #{@human_date}"
     )
   end
+
+  def new_statistician_email(statistician)
+    @role = statistician.role
+    @statistician = statistician.presenter
+    @url = root_url
+    mail(
+      to: ENV['MANAGER_EMAIL'],
+      subject: "Inscription référent à valider : #{@statistician.full_name}"
+    )
+  end
 end

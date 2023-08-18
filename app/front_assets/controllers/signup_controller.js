@@ -24,6 +24,8 @@ export default class extends Controller {
     'passwordInput',
     'phoneSuffix',
     'schoolPhoneBloc',
+    'departmentSelect',
+    'ministrySelect'
   ];
   // 'passwordConfirmationHint',
   // 'passwordConfirmationGroup',
@@ -141,10 +143,16 @@ export default class extends Controller {
 
     if ((ministryType == "EducationStatistician") || (ministryType == "PrefectureStatistician")) {
       $('#statistician-department').removeClass('d-none');
-      $('#statistician-department').addAttr('required');
+      this.departmentSelectTarget.required = true;
+
+      $('#statistician-ministry').addClass('d-none');
+      this.ministrySelectTarget.required = false;
     } else {
       $('#statistician-department').addClass('d-none');
-      $('#statistician-department').removeAttr('required');
+      this.departmentSelectTarget.required = false;
+
+      $('#statistician-ministry').removeClass('d-none');
+      this.ministrySelectTarget.required = true;
     }
   }
 
