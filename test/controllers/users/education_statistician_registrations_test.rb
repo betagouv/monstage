@@ -19,15 +19,13 @@ class EducationStatisticianRegistrationsTest < ActionDispatch::IntegrationTest
 
   test 'POST #create with missing params fails creation' do
     email = 'jean@educ.fr'
-    create :education_statistician_email_whitelist, email: email, zipcode: '60'
-    assert_difference('Users::EducationStatistician.count', 1) do
+    assert_difference('Users::EducationStatistician.count', 0) do
       post user_registration_path(params: { user: { email: email,
                                                     first_name: 'Jean',
                                                     last_name: 'Ref',
                                                     password: 'okokok',
                                                     type: 'Users::EducationStatistician',
                                                     accept_terms: '1' } })
-      assert_response 302
     end
   end
 
