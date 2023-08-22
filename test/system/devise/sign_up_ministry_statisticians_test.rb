@@ -5,6 +5,7 @@ require 'application_system_test_case'
 class SignUpMinistryStatisticiansTest < ApplicationSystemTestCase
   test 'navigation & interaction works until ministry statistician creation' do
     # go to signup as statistician
+    
     email = 'kikoolol_levrai@gmail.com'
     create(:ministry_statistician_email_whitelist, email: email)
     bad_email = 'lol@lol.fr'
@@ -26,6 +27,8 @@ class SignUpMinistryStatisticiansTest < ApplicationSystemTestCase
     assert_difference('Users::MinistryStatistician.count', 1) do
       fill_in 'Prénom', with: 'Martin'
       find("input[name='user[last_name]']").fill_in(with: 'Fourcade')
+      choose 'Administration centrale'
+      select(Group.public.first.name, from: "user_group_id")
       fill_in 'Adresse électronique', with: email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       execute_script("document.getElementById('user_accept_terms').checked = true;")
