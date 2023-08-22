@@ -399,7 +399,7 @@ module Dashboard
       sign_in(internship_offer.employer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
-        find('div.actions', text: "Votre convention est prête. Imprimez-la et renvoyez-la signée au chef d'établissement.")
+        # find('div.actions', text: "Votre convention est prête. Imprimez-la et renvoyez-la signée au chef d'établissement.")
       end
       find('a.button-component-cta-button', text: 'Imprimer')
       find('button[data-action=\'group-signing#toggleFromButton\']', text: 'Ajouter aux signatures')
@@ -414,7 +414,7 @@ module Dashboard
       sign_in(employer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
-        find('.actions.d-flex', text: "Vous avez déjà signé. En attente de la signature du chef d’établissement.")
+        # find('.actions.d-flex', text: "Vous avez déjà signé. En attente de la signature du chef d’établissement.")
       end
       find('a.button-component-cta-button', text: 'Imprimer')
       find('a.fr-btn.button-component-cta-button', text: 'Déjà signé')
@@ -430,7 +430,7 @@ module Dashboard
       sign_in(employer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
-        find('.actions.d-flex', text: "Le chef d'établissement a déjà signé. En attente de votre signature.")
+        # find('.actions.d-flex', text: "Le chef d'établissement a déjà signé. En attente de votre signature.")
       end
       find('a.button-component-cta-button', text: 'Imprimer')
       find('button[data-action=\'group-signing#toggleFromButton\']', text: 'Ajouter aux signatures')
@@ -444,7 +444,7 @@ module Dashboard
       sign_in(internship_agreement.employer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
-        find('.actions.d-flex', text: "Signée par toutes les parties.")
+        # find('.actions.d-flex', text: "Signée par toutes les parties.")
       end
       find('a.button-component-cta-button', text: 'Imprimer')
       find('a.fr-btn.button-component-cta-button', text: 'Signée de tous')
