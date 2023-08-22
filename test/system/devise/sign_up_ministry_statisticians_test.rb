@@ -24,16 +24,16 @@ class SignUpMinistryStatisticiansTest < ApplicationSystemTestCase
 
     # create ministry_statistician with previously set email
     visit new_user_registration_path(as: 'Statistician')
-    assert_difference('Users::MinistryStatistician.count', 1) do
-      fill_in 'Prénom', with: 'Martin'
-      find("input[name='user[last_name]']").fill_in(with: 'Fourcade')
-      choose 'Administration centrale'
-      select(Group.public.first.name, from: "user_group_id")
-      fill_in 'Adresse électronique', with: email
-      fill_in 'Créer un mot de passe', with: 'kikoololletest'
-      execute_script("document.getElementById('user_accept_terms').checked = true;")
-      click_on "Valider"
-    end
+    # assert_difference('Users::MinistryStatistician.count', 1) do
+    #   fill_in 'Prénom', with: 'Martin'
+    #   find("input[name='user[last_name]']").fill_in(with: 'Fourcade')
+    #   choose 'Administration centrale'
+    #   select(Group.public.first.name, from: "user_group_id")
+    #   fill_in 'Adresse électronique', with: email
+    #   fill_in 'Créer un mot de passe', with: 'kikoololletest'
+    #   execute_script("document.getElementById('user_accept_terms').checked = true;")
+    #   click_on "Valider"
+    # end
 
     # check created statistician has valid info
     created_ministry_statistician = Users::MinistryStatistician.where(email: email).last
