@@ -10,7 +10,7 @@ class SignUpMinistryStatisticiansTest < ApplicationSystemTestCase
     create(:ministry_statistician_email_whitelist, email: email)
     bad_email = 'lol@lol.fr'
 
-    visit new_user_registration_path(as: 'MinistryStatistician')
+    visit new_user_registration_path(as: 'Statistician')
 
     # fails to create ministry_statistician with unexisting email
     assert_difference('Users::MinistryStatistician.count', 0) do
@@ -23,7 +23,7 @@ class SignUpMinistryStatisticiansTest < ApplicationSystemTestCase
     end
 
     # create ministry_statistician with previously set email
-    visit new_user_registration_path(as: 'MinistryStatistician')
+    visit new_user_registration_path(as: 'Statistician')
     assert_difference('Users::MinistryStatistician.count', 1) do
       fill_in 'Prénom', with: 'Martin'
       find("input[name='user[last_name]']").fill_in(with: 'Fourcade')
