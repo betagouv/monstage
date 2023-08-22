@@ -10,7 +10,7 @@ class SignUpStatisticiansTest < ApplicationSystemTestCase
 
     create(:statistician_email_whitelist, email: good_email, zipcode: 60)
 
-    visit new_user_registration_path(as: 'PrefectureStatistician')
+    visit new_user_registration_path(as: 'Statistician')
 
     # fails to create statistician with unexisting email in whitelist
     assert_difference('Users::PrefectureStatistician.count', 0) do
