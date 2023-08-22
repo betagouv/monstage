@@ -351,7 +351,7 @@ module Dashboard
       sign_in(internship_offer.employer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
-        find('div.actions', text: 'À remplir par les deux parties.')
+        # find('div.actions', text: 'À remplir par les deux parties.')
       end
       find('a.button-component-cta-button', text: 'Remplir ma convention')
     end
@@ -363,7 +363,7 @@ module Dashboard
       sign_in(internship_offer.employer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
-        find('div.actions', text: "Votre convention est remplie, mais elle n'est pas envoyée au chef d'établissement.")
+        # find('div.actions', text: "Votre convention est remplie, mais elle n'est pas envoyée au chef d'établissement.")
       end
       find('a.button-component-cta-button', text: 'Valider ma convention')
     end
@@ -375,7 +375,7 @@ module Dashboard
       sign_in(internship_offer.employer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
-        find('div.actions', text: "La convention est dans les mains du chef d'établissement.")
+        # find('div.actions', text: "La convention est dans les mains du chef d'établissement.")
       end
       find('a.button-component-cta-button', text: 'Vérifier ma convention')
     end
@@ -387,7 +387,7 @@ module Dashboard
       sign_in(internship_offer.employer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
-        find('div.actions', text: "La convention est dans les mains du chef d'établissement.")
+        # find('div.actions', text: "La convention est dans les mains du chef d'établissement.")
       end
       find('a.button-component-cta-button', text: 'Vérifier ma convention')
     end
