@@ -10,7 +10,7 @@ class User < ApplicationRecord
 
   has_many :favorites
 
-  attr_accessor :phone_prefix, :phone_suffix
+  attr_accessor :phone_prefix, :phone_suffix, :statistician_type
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable,
@@ -204,7 +204,7 @@ class User < ApplicationRecord
   end
 
   def send_confirmation_instructions
-    return if created_by_teacher
+    return if created_by_teacher || statistician?
     super
   end
 
@@ -216,7 +216,7 @@ class User < ApplicationRecord
     if add_email_to_phone_account?
       self.confirm
     else
-      unless @skip_confirmation_notification || whitelisted? || created_by_teacher
+      unless @skip_confirmation_notification || whitelisted? || created_by_teacher || statistician?
         devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email })
                      .deliver_later
       end

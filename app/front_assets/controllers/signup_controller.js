@@ -24,6 +24,8 @@ export default class extends Controller {
     'passwordInput',
     'phoneSuffix',
     'schoolPhoneBloc',
+    'departmentSelect',
+    'ministrySelect'
   ];
   // 'passwordConfirmationHint',
   // 'passwordConfirmationGroup',
@@ -134,6 +136,28 @@ export default class extends Controller {
       this.wssClient.disconnect();
     } catch (e) {}
   }
+
+  onMinistryTypeChange(event) {
+    const ministryType = event.target.value;
+    document.getElementById('new_user').action = '/utilisateurs?as=' + ministryType;
+
+    if ((ministryType == "EducationStatistician") || (ministryType == "PrefectureStatistician")) {
+      $('#statistician-department').removeClass('d-none');
+      this.departmentSelectTarget.required = true;
+
+      $('#statistician-ministry').addClass('d-none');
+      this.ministrySelectTarget.required = false;
+      this.ministrySelectTarget.value = '';
+    } else {
+      $('#statistician-department').addClass('d-none');
+      this.departmentSelectTarget.required = false;
+      this.departmentSelectTarget.value = '';
+
+      $('#statistician-ministry').removeClass('d-none');
+      this.ministrySelectTarget.required = true;
+    }
+  }
+
 
   checkPassword() {
     const passwordHintElement = this.passwordHintTarget;

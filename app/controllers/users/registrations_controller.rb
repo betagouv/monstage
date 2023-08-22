@@ -37,7 +37,11 @@ module Users
     def new
       @resource_channel = resource_channel
       options = {}
-      options = options.merge(targeted_offer_id: params.dig(:user, :targeted_offer_id)) if params.dig(:user, :targeted_offer_id)
+      if params.dig(:user, :targeted_offer_id)
+        options = options.merge(
+          targeted_offer_id: params.dig(:user, :targeted_offer_id)
+        )
+      end
 
       if UserManager.new.valid?(params: params)
         super do |resource|
@@ -60,9 +64,8 @@ module Users
       [:statistician_registration_checking,
        :honey_pot_checking,
        :phone_reuse_checking].each do |check|
-
-        check_proc = send(check, params)
-        (check_proc.call and return) if check_proc.respond_to?(:call)
+          check_proc = send(check, params)
+          (check_proc.call and return) if check_proc.respond_to?(:call)
       end
       params[:user].delete(:confirmation_email) if params.dig(:user, :confirmation_email)
       params[:user] = merge_identity(params) if params.dig(:user, :identity_token)
@@ -71,9 +74,11 @@ module Users
       super do |resource|
         clean_invitation(resource)
         resource.targeted_offer_id ||= params && params.dig(:user, :targeted_offer_id)
+        resource.groups << Group.find(params[:user][:group_id]) if params[:user][:group_id].present?
         @current_ability = Ability.new(resource)
       end
       resource.try(:intialize_current_area) if resource.persisted?
+      flash.delete(:notice) if params.dig(:user, :statistician_type).present?
     end
 
     def phone_validation
@@ -91,6 +96,9 @@ module Users
           flash: err_message
         )
       end
+    end
+
+    def statistician_standby
     end
 
     # GET /resource/edit
@@ -142,8 +150,10 @@ module Users
           phone_suffix
           role
           school_id
+          statistician_type
           targeted_offer_id
           type
+          department
         ]
       )
     end
@@ -164,6 +174,8 @@ module Users
         options = { id: resource.id }
         options = options.merge({ as: 'Student'}) if resource.student?
         users_registrations_phone_standby_path(options)
+      elsif resource.statistician?
+        statistician_standby_path(id: resource.id)
       else
         users_registrations_standby_path(id: resource.id)
       end
@@ -207,18 +219,18 @@ module Users
     def statistician_registration_checking(params)
       as = params[:as]
       statisticians = %w[PrefectureStatistician MinistryStatistician EducationStatistitician]
-      if as.in?(statisticians) && EmailWhitelist.where(email: params[:user][:email]).first.nil?
-        unregistered_message = "Votre adresse email n'est pas " \
-                               "enregistrée dans notre base de données. "\
-                               "Veuillez contacter l'administrateur."
-        flash = { danger: unregistered_message }
-        destination = new_user_registration_path(first_name: params[:user][:first_name],
-                                                 last_name: params[:user][:last_name],
-                                                 email: params[:user][:email],
-                                                 accept_terms: params[:user][:accept_terms],
-                                                 as: as)
-        lambda { redirect_to destination, flash: flash }
-      end
+      # if as.in?(statisticians) && EmailWhitelist.where(email: params[:user][:email]).first.nil?
+      #   unregistered_message = "Votre adresse email n'est pas " \
+      #                          "enregistrée dans notre base de données. "\
+      #                          "Veuillez contacter l'administrateur."
+      #   flash = { danger: unregistered_message }
+      #   destination = new_user_registration_path(first_name: params[:user][:first_name],
+      #                                            last_name: params[:user][:last_name],
+      #                                            email: params[:user][:email],
+      #                                            accept_terms: params[:user][:accept_terms],
+      #                                            as: as)
+      #   lambda { redirect_to destination, flash: flash }
+      # end
     end
 
     def honey_pot_checking(params)

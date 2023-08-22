@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-module Statisticianable
-  extend ActiveSupport::Concern
-
-  included do
+module Users
+  class Statistician < User
+   
     include Teamable
     has_many :internship_offers, as: :employer,
              dependent: :destroy
@@ -19,9 +18,11 @@ module Statisticianable
 
 
     before_update :trigger_agreements_creation
-    before_validation :assign_email_whitelist_and_confirm
+    # before_validation :confirm
     # Beware : order matters here !
-    validate :email_in_list
+    # validate :email_in_list
+    after_create :notify_manager
+    after_update :confirm_if_validated
 
     scope :active, -> { where(discarded_at: nil) }
 
@@ -46,6 +47,22 @@ module Statisticianable
 
     def statistician? ; true end
     def employer_like? ; true end
+
+    def confirm_if_validated
+      if self.statistician_validation && self.confirmed_at.nil?
+        self.confirmed_at = Time.now if confirmed_at.nil?
+        self.save
+        SendStatisticianValidatedEmailJob.perform_later(self)
+      end
+    end
+
+    def notify_manager
+      SendNewStatisticianEmailJob.perform_later(self)
+    end
+
+    def role
+      self.class.name.demodulize.underscore
+    end
 
     rails_admin do
       weight 5
@@ -106,6 +123,6 @@ module Statisticianable
     def signatory_role
       Signature.signatory_roles[:employer]
     end
-
-  end
+  
+  end 
 end

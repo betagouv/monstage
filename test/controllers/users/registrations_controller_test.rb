@@ -15,13 +15,14 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
       last_name: 'Ref',
       email: white_list.email,
       password: 'password',
+      department: '75',
       type: 'Users::PrefectureStatistician',
       accept_terms: true
     }
 
     post user_registration_path(user: data)
 
-    assert_redirected_to reporting_dashboards_path(department: Department::MAP[white_list.zipcode], school_year: SchoolYear::Current.new.beginning_of_period.year)
+    assert_redirected_to statistician_standby_path(id: Users::PrefectureStatistician.last.id)
   end
 
   test 'POST #registrations as ministry statistician whitelisted' do
@@ -37,7 +38,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     post user_registration_path(user: data)
 
-    assert_redirected_to Users::MinistryStatistician.last.custom_dashboard_path
+    assert_redirected_to statistician_standby_path(id: Users::MinistryStatistician.last.id)
   end
 
   test 'POST #registrations as education statistician whitelisted' do
@@ -46,6 +47,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
       first_name: 'James',
       last_name: 'Ref',
       email: white_list.email,
+      department: '75',
       password: 'password',
       type: 'Users::EducationStatistician',
       accept_terms: true
@@ -53,7 +55,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     post user_registration_path(user: data)
 
-    assert_redirected_to Users::EducationStatistician.last.custom_dashboard_path
+    assert_redirected_to statistician_standby_path(id: Users::EducationStatistician.last.id)
   end
 
 
@@ -64,7 +66,6 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', '/utilisateurs/inscription?as=Employer'
     assert_select 'a[href=?]', '/utilisateurs/inscription?as=SchoolManagement'
     assert_select 'a[href=?]', '/utilisateurs/inscription?as=Statistician'
-    assert_select 'a[href=?]', '/utilisateurs/inscription?as=MinistryStatistician'
   end
 
   test 'GET #registrations_standby as student using path?id=#id with pending account' do

@@ -35,18 +35,6 @@ class MinistryStatisticianEmailWhitelistTest < ActiveSupport::TestCase
     refute ministry_statistician_email_whitelist.valid?, "group should have been public, there's an error here"
   end
 
-  test 'destroy email whitelist also discard statistician' do
-    ministry_statistician = create(:ministry_statistician)
-    ministry_email_whitelist = ministry_statistician.ministry_email_whitelist
-    freeze_time do
-      assert_changes(-> { ministry_statistician.reload.discarded_at.try(:utc) },
-                     from: nil,
-                     to: Time.now.utc) do
-        ministry_email_whitelist.destroy!
-      end
-    end
-  end
-
   test 'sentry#1887500611 destroy email whitelist does not fails when no user' do
     ministry_email_whitelist = create(:statistician_email_whitelist)
 

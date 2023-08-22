@@ -16,7 +16,7 @@ class MigrateSchoolEmployeeToDasenTest < ActiveSupport::TestCase
     refute ex_school_employee.nil?
     assert_equal school_employee.email, ex_school_employee.email
     assert_nil ex_school_employee.school_id
-    assert_equal 'other' , ex_school_employee.role
+    assert_equal 'education_statistician' , ex_school_employee.role
     assert_equal Users::EducationStatistician.name, ex_school_employee.type
   end
 

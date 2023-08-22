@@ -41,6 +41,7 @@ namespace :migrations do
         user.becomes!(Users::EducationStatistician)
         user.school_id = nil
         user.role = :other
+        user.department = short_zipcode
         user.save!
         message = "User email: #{user.email} is now an education statistician " \
                   "in #{short_zipcode} department"

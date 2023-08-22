@@ -229,7 +229,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     # below : 'Pas encore de compte ? Inscrivez-vous'
     # click_on(class: 'text-danger') /!\ do not work
     visit users_choose_profile_path
-    find('a.fr-card__link', text: 'Je suis élève de 3e').click
+    find('.fr-h4', text: 'Élève de 3ème REP et REP+').click
 
     # signup as student
     # assert_difference('Users::Student.count', 1) do

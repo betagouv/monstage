@@ -61,7 +61,7 @@
             = f.select :department,
                       [['Pas de département', nil]] + Department.to_select,
                       {  },
-                      { class: "fr-select" }.merge(can?(:change, :department) ? {} : {disabled: true})
+                      { class: "fr-select", value: current_user.department }.merge(can?(:change, :department) ? {} : {disabled: true})
 
       - if current_user.try(:school) && current_user.school.class_rooms.any? && can?(:change, current_user.school.class_rooms.first)
         .col-md-6.col-xs-12

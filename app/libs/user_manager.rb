@@ -8,14 +8,16 @@ class UserManager
     'SchoolManagement' => Users::SchoolManagement,
     'Student' => Users::Student,
     'Operator' => Users::Operator,
+    'Statistician' => Users::Statistician,
     'PrefectureStatistician' => Users::PrefectureStatistician,
-    'EducationStatistician' => Users::EducationStatistician,
-    'MinistryStatistician' => Users::MinistryStatistician
+    'MinistryStatistician' => Users::MinistryStatistician,
+    'EducationStatistician' => Users::EducationStatistician
   }.freeze
 
   PRESENTERS = {
     "Users::Operator" => Presenters::Operator,
     "Users::PrefectureStatistician" => Presenters::PrefectureStatistician,
+    "Users::EducationStatistician" => Presenters::PrefectureStatistician,
     "Users::God" => Presenters::God,
     "Users::MinistryStatistician" => Presenters::MinistryStatistician
   }
