@@ -26,6 +26,8 @@ class SignUpStatisticiansTest < ApplicationSystemTestCase
     assert_difference('Users::PrefectureStatistician.count', 1) do
       fill_in 'Prénom', with: 'Martin'
       fill_in 'Nom', with: 'Fourcade'
+      choose 'Départemental'
+      select('75', from: "user_department")
       fill_in 'Adresse électronique', with: good_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       execute_script("document.getElementById('user_accept_terms').checked = true;")
