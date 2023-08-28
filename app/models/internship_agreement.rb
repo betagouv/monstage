@@ -12,6 +12,7 @@
 # only use dedicated builder to CRUD those objects
 class InternshipAgreement < ApplicationRecord
   include AASM
+  include Discard::Model
 
   belongs_to :internship_application
   has_many :signatures, dependent: :destroy
@@ -131,7 +132,8 @@ class InternshipAgreement < ApplicationRecord
   delegate :internship_offer_area, to: :internship_offer
 
   scope :having_school_manager, ->{
-    joins(internship_application: {student: :school}).merge(School.with_school_manager)
+    kept.joins(internship_application: {student: :school})
+        .merge(School.with_school_manager)
   }
 
   def at_least_one_validated_terms
@@ -282,6 +284,39 @@ class InternshipAgreement < ApplicationRecord
 
     signatures.pluck(:user_id).include?(user.id)
   end
+
+  def archive
+    fields_to_reset = {
+      organisation_representative_full_name: 'NA',
+      school_representative_full_name: 'NA',
+      student_full_name: 'NA',
+      student_class_room: 'NA',
+      student_school: 'NA',
+      tutor_full_name: 'NA',
+      main_teacher_full_name: 'NA',
+      siret: 'NA',
+      tutor_role: 'NA',
+      tutor_email: 'NA',
+      organisation_representative_role: 'NA',
+      student_address: 'NA',
+      student_phone: 'NA',
+      school_representative_phone: 'NA',
+      student_refering_teacher_phone: 'NA',
+      student_legal_representative_email: 'NA',
+      student_refering_teacher_email: 'NA',
+      student_legal_representative_full_name: 'NA',
+      student_refering_teacher_full_name: 'NA',
+      student_legal_representative_2_full_name: 'NA',
+      student_legal_representative_2_email: 'NA',
+      student_legal_representative_2_phone: 'NA',
+      school_representative_role: 'NA',
+      school_representative_email: 'NA',
+      student_legal_representative_phone: 'NA'
+    }
+    update_columns(fields_to_reset)
+    discard! unless discarded?
+  end
+
 
   private
 

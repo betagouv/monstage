@@ -15,8 +15,15 @@ module Services
                 .each_record(&:destroy)
     end
 
+    def archive_internship_agreements
+      InternshipAgreement.kept
+                         .where(created_at: (begins_at..ends_at))
+                         .in_batches(of: 100)
+                         .each_record(&:archive)
+    end
+
     attr_reader :begins_at, :ends_at
-    def initialize(begins_at:, ends_at:)
+    def initialize(begins_at: 1.year.ago, ends_at: 1.year.from_now )
       @begins_at = begins_at
       @ends_at = ends_at
     end
