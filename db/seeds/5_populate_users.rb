@@ -73,9 +73,9 @@ def populate_users
   ministry_statistician_email = 'ministry_statistician@ms3e.fr'
   education_statistician_email = 'education_statistician@ms3e.fr'
   last_public_groups = Group.where(is_public: true).last(2)
-  with_class_name_for_defaults(Users::PrefectureStatistician.new(email: statistician_email, password: 'review')).save!
+  with_class_name_for_defaults(Users::PrefectureStatistician.new(email: statistician_email, password: 'review', department: 'Oise')).save!
   add_area
-  with_class_name_for_defaults(Users::EducationStatistician.new(email: education_statistician_email, password: 'review')).save!
+  with_class_name_for_defaults(Users::EducationStatistician.new(email: education_statistician_email, password: 'review',department: 'Oise')).save!
   add_area
   with_class_name_for_defaults(Users::MinistryStatistician.new(email: ministry_statistician_email, password: 'review', groups: last_public_groups)).save!
   add_area
