@@ -94,7 +94,7 @@ module Users
       school_manager&.email
     end
 
-    # Not used but certainly useful in the next future (today 20202-04-21)
+    # Not used but certainly useful in the next future (today 2023-04-21)
     # def expire_application_on_week(week:, keep_internship_application_id:)
     #   internship_applications
     #     .where(aasm_state: %i[approved submitted drafted])
