@@ -44,7 +44,7 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
         .my-auto = "Passées"
 
   - # TouDoux checker si ref dep, centraux et opérateurs ça fonctionne
-  - if can?(:edit, InternshipAgreement) && current_user.internship_agreements.count.positive?
+  - if can?(:edit, InternshipAgreement) && current_user.internship_agreements.kept.count.positive?
     - is_active = current_page?(dashboard_internship_agreements_path)
     li
       = link_to dashboard_internship_agreements_path,

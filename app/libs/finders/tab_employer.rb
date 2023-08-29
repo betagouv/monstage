@@ -21,9 +21,11 @@ module Finders
       return 0 if user.operator?
 
       count = user.internship_agreements
+                  .kept
                   .where(aasm_state: [:draft, :started_by_employer, :validated])
                   .count
       count += user.internship_agreements
+                   .kept
                    .signatures_started
                    .joins(:signatures)
                    .where.not(signatures: {signatory_role: :employer} )
@@ -31,7 +33,7 @@ module Finders
     end
 
     def agreements_count
-      user.internship_agreements.count
+      user.internship_agreements.kept.count
     end
 
     private
