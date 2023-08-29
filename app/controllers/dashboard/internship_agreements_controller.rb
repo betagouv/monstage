@@ -82,6 +82,7 @@ module Dashboard
         @internship_offers      = current_user.internship_offers
       end
       @internship_agreements = current_user.internship_agreements
+                                           .kept
                                            .includes(
                                               internship_application: [
                                                 { student: :school },
