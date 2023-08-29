@@ -1,8 +1,6 @@
 # frozen_string_literal: true
-require 'utilities'
 class ApplicationController < ActionController::Base
   include Turbo::Redirection
-  include Utilities
 
   helper Turbo::FramesHelper if Rails.env.test?
   helper Turbo::StreamsHelper if Rails.env.test?
