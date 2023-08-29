@@ -35,8 +35,6 @@
 }
 
 .results-container {
-  overflow: scroll;
-
   .results-col {
     width: calc((100% / 7) + 600px - 30px) !important;
     top: 56px;
