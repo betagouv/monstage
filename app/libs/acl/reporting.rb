@@ -3,7 +3,7 @@
 module Acl
   class Reporting
     def allowed?
-      user.department == params[:department]
+      user.department_name == params[:department]
     end
 
     def ministry_statistician_allowed?

@@ -108,6 +108,10 @@ module Users
       end
     end
 
+    def department_name
+      ''
+    end
+    
     private
 
     def email_in_list

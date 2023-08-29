@@ -18,6 +18,10 @@ module StatisticianDepartmentable
     #   Department.lookup_by_zipcode(zipcode: department_zipcode)
     # end
 
+    def department_name
+      Department::MAP[department]
+    end
+
     def department_zipcode
       # email_whitelist&.zipcode
       department

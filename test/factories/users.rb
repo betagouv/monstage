@@ -140,6 +140,7 @@ FactoryBot.define do
             parent: :user do
       type { 'Users::PrefectureStatistician' }
       agreement_signatorable { false }
+      department { '60' }
       statistician_validation { true }
       before(:create) do |user|
         create(:statistician_email_whitelist, email: user.email, zipcode: '60', user: user)

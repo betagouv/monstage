@@ -65,18 +65,18 @@ module Reporting
 
     test 'GET #index as statistician success ' \
          'when department params match his departement_name' do
-      statistician = create(:statistician)
-      department = statistician.department # Oise
-      create(:weekly_internship_offer, department: department)
+      statistician = create(:prefecture_statistician)
+      department_name = statistician.department_name # Oise
+      offer = create(:weekly_internship_offer, department: department_name)
       sign_in(statistician)
 
-      get reporting_internship_offers_path(department: department, is_public: false)
+      get reporting_internship_offers_path(department: department_name, is_public: false)
       assert_response :success
       total_report = retrieve_html_value('test-total-report','test-total-applications', response)
       assert_equal 0, total_report.to_i
 
       Reporting::InternshipOffer.stub :by_department, Reporting::InternshipOffer.where(discarded_at: nil) do
-        get reporting_internship_offers_path(department: department)
+        get reporting_internship_offers_path(department: 'Oise')
         assert_response :success
         # TODO : check why this is not working
         # assert_equal 2, retrieve_html_value('test-total-report','test-total-applications', response)
@@ -88,7 +88,7 @@ module Reporting
         # assert_equal 0, retrieve_html_value('test-female-approved-applications', 'test-male-approved-applications', response)
         # assert_equal 0, retrieve_html_value('test-no-gender-approved-applications', 'test-male-approved-applications', response)
 
-        get reporting_internship_offers_path(department: department, dimension: 'group')
+        get reporting_internship_offers_path(department: department_name, dimension: 'group')
         assert_response :success
         # assert_equal 1, retrieve_html_value('test-total-report','test-total-applications', response)
         # assert_equal 3, retrieve_html_value('test-total-applications', 'test-total-male-applications', response)
@@ -108,7 +108,7 @@ module Reporting
         assert_equal 0, retrieve_html_value('test-female-approved-applications-null', 'test-male-approved-applications', response)
         assert_equal 0, retrieve_html_value('test-no-gender-approved-applications-null', 'test-male-approved-applications', response)
 
-        get reporting_internship_offers_path(department: department, is_public: true, dimension: 'group')
+        get reporting_internship_offers_path(department: department_name, is_public: true, dimension: 'group')
         assert_response :success
         # assert_equal 1, retrieve_html_value('test-total-report','test-total-applications', response)
         # assert_equal 3, retrieve_html_value('test-total-applications', 'test-total-male-applications', response)
