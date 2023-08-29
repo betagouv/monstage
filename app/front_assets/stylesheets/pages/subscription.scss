@@ -1,0 +1,39 @@
+.three_cards {
+  align-items: flex-start;
+  gap: 26px;
+  .fr-card {
+    .fr-card__body {
+      min-width: 378px;
+      .fr-card__content{
+        h3.fr-h4{
+          min-height: 60px;
+          padding: 0;
+        }
+        padding-bottom: 0;
+      }
+    }
+    .fr-card__content .fr-text {
+      min-height: 75px;
+    }
+  }
+}
+
+.one_card {
+  button.narrow {
+    max-width: 150px;
+  }
+}
+
+.one_card,
+.three_cards {
+  .fr-card {
+    background-color: white !important;
+  }
+}
+
+.cards-column {
+  .fr-card {
+    margin: 24px 8px;
+    background-color: white !important;
+  }
+}

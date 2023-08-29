@@ -391,6 +391,8 @@ class Ability
     as_employers_like(user: user)
     as_employers_signatory_abilities(user: user) if user.agreement_signatorable?
     can %i[
+      choose_statistician_type
+      supply_offers
       subscribe_to_webinar
       choose_to_sign_agreements
       ], User

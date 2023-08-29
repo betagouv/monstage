@@ -5,7 +5,6 @@ module Reporting
 
     def index
       authorize! :index, Acl::Reporting.new(user: current_user, params: params)
-      
       @operators = Operator.all.order(:name)
       respond_to do |format|
         format.xlsx do

@@ -14,7 +14,7 @@ def populate_operators
                   target_count: 710)
   Operator.create(name: "Institut Télémaque",
                   website: "",
-                  logo: 'Logo-telemaque.png',
+                  logo: 'Logo-le-reseau.jpg',
                   target_count: 1200)
   Operator.create(name: "Myfuture",
                   website: "",

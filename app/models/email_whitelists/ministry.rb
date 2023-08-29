@@ -9,44 +9,44 @@ module EmailWhitelists
 
     validate :all_public_group?
 
-    rails_admin do
-      weight 10
-      navigation_label "Listes blanches"
+    # rails_admin do
+    #   weight 10
+    #   navigation_label "Listes blanches"
 
-      list do
-        field :id
-        field :email
-        field :ministry_name do
-          label 'Administration centrale'
-          formatted_value { bindings[:object].groups.map(&:name).join(', ') }
-        end
-      end
+    #   list do
+    #     field :id
+    #     field :email
+    #     field :ministry_name do
+    #       label 'Administration centrale'
+    #       formatted_value { bindings[:object].groups.map(&:name).join(', ') }
+    #     end
+    #   end
 
-      show do
-        field :id
-        field :email
-        field :ministry_names do
-          label 'Administration centrale'
-          formatted_value { bindings[:object].groups.map(&:name).join(', ') }
-        end
-      end
+    #   show do
+    #     field :id
+    #     field :email
+    #     field :ministry_names do
+    #       label 'Administration centrale'
+    #       formatted_value { bindings[:object].groups.map(&:name).join(', ') }
+    #     end
+    #   end
 
-      edit do
-        field :email
-        field :groups do
-          label 'Chercher parmi les ministères'
-          associated_collection_scope do
-            Proc.new do |scope| 
-              scope.is_public
-            end
-          end
-        end
-      end
+    #   edit do
+    #     field :email
+    #     field :groups do
+    #       label 'Chercher parmi les ministères'
+    #       associated_collection_scope do
+    #         Proc.new do |scope| 
+    #           scope.is_public
+    #         end
+    #       end
+    #     end
+    #   end
 
-      configure :ministry_grid_associations do
-        visible(false)
-      end
-    end
+    #   configure :ministry_grid_associations do
+    #     visible(false)
+    #   end
+    # end
 
 
 

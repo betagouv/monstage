@@ -1,0 +1,16 @@
+.fr-card
+  .fr-card__body
+    .fr-card__content
+      h3.fr-h4
+        | Référent administratif
+      p.fr-text
+        | 
+            Vous êtes référent d’administration centrale, départementale ou DSDEN. 
+            Vous souhaitez accéder aux statistiques des offres de stage de 
+            votre votre département ou administration.
+    .fr-card__footer
+      ul.fr-btns-group.fr-btns-group--inline-reverse.fr-btns-group--inline-lg
+        li
+          = link_to "Inscription",
+                    new_user_registration_path(as: 'Statistician'),
+                    class: 'fr-btn fr-btn--secondary'

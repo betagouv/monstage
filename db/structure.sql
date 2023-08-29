@@ -1560,6 +1560,38 @@ ALTER SEQUENCE public.tutors_id_seq OWNED BY public.tutors.id;
 
 
 --
+-- Name: user_groups; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_groups (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    group_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.user_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.user_groups_id_seq OWNED BY public.user_groups.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1612,7 +1644,8 @@ CREATE TABLE public.users (
     agreement_signatorable boolean DEFAULT false,
     created_by_teacher boolean DEFAULT false,
     survey_answered boolean DEFAULT false,
-    current_area_id bigint
+    current_area_id bigint,
+    statistician_validation boolean DEFAULT false
 );
 
 
@@ -1903,6 +1936,13 @@ ALTER TABLE ONLY public.team_member_invitations ALTER COLUMN id SET DEFAULT next
 --
 
 ALTER TABLE ONLY public.tutors ALTER COLUMN id SET DEFAULT nextval('public.tutors_id_seq'::regclass);
+
+
+--
+-- Name: user_groups id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_groups ALTER COLUMN id SET DEFAULT nextval('public.user_groups_id_seq'::regclass);
 
 
 --
@@ -2205,6 +2245,14 @@ ALTER TABLE ONLY public.team_member_invitations
 
 ALTER TABLE ONLY public.tutors
     ADD CONSTRAINT tutors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_groups user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_groups
+    ADD CONSTRAINT user_groups_pkey PRIMARY KEY (id);
 
 
 --
@@ -2693,6 +2741,20 @@ CREATE INDEX index_team_member_invitations_on_member_id ON public.team_member_in
 
 
 --
+-- Name: index_user_groups_on_group_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_groups_on_group_id ON public.user_groups USING btree (group_id);
+
+
+--
+-- Name: index_user_groups_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_groups_on_user_id ON public.user_groups USING btree (user_id);
+
+
+--
 -- Name: index_users_on_api_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2941,6 +3003,14 @@ ALTER TABLE ONLY public.internship_offer_infos
 
 
 --
+-- Name: user_groups fk_rails_6d478d2f65; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_groups
+    ADD CONSTRAINT fk_rails_6d478d2f65 FOREIGN KEY (group_id) REFERENCES public.groups(id);
+
+
+--
 -- Name: internship_applications fk_rails_75752a1ac2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3042,6 +3112,14 @@ ALTER TABLE ONLY public.internship_offers
 
 ALTER TABLE ONLY public.tutors
     ADD CONSTRAINT fk_rails_af56aa365a FOREIGN KEY (employer_id) REFERENCES public.users(id);
+
+
+--
+-- Name: user_groups fk_rails_c298be7f8b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_groups
+    ADD CONSTRAINT fk_rails_c298be7f8b FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -3403,6 +3481,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230707083923'),
 ('20230711161600'),
 ('20230712074733'),
-('20230724113109');
+('20230724113109'),
+('20230816221101'),
+('20230818072958');
 
 
