@@ -71,7 +71,8 @@ module Signatorable
     def already_signed?(internship_agreement_id:)
       return false if school_management? && !school_manager?
 
-      InternshipAgreement.joins(:signatures)
+      InternshipAgreement.kept
+                         .joins(:signatures)
                          .where(id: internship_agreement_id)
                          .where(signatures: {user_id: id})
                          .exists?

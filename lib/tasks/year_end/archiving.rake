@@ -15,7 +15,7 @@ end
   task :archive_students, [] => :environment do |args|
     framing_with_announce("Archiving students and unlinking anonymized students from their class room") do
       ActiveRecord::Base.transaction do
-        Services::Archiver.new(begins_at: Date.new(2019,1,1), ends_at:Date.new(2023,9,1))
+        Services::Archiver.new(begins_at: Date.new(2019,1,1))
         .archive_students
       end
     end
@@ -25,12 +25,24 @@ end
   task :delete_invitations, [] => :environment do |args|
     framing_with_announce("Deleting invitations") do
       ActiveRecord::Base.transaction do
-        Services::Archiver.new(begins_at: Date.new(2019,1,1), ends_at:Date.new(2023,9,1))
+        Services::Archiver.new(begins_at: Date.new(2019,1,1))
                           .delete_invitations
       end
     end
   end
 
+  desc 'anonymize all internship_agreements'
+  task :anonymize_internship_agreements, [] => :environment do |args|
+    framing_with_announce("Anonymizing internship agreements") do
+      ActiveRecord::Base.transaction do
+        Services::Archiver.new(begins_at: Date.new(2019,1,1))
+                          .archive_internship_agreements
+      end
+    end
+  end
+
   desc "anonymize and delete what should be after school year's end"
-  task anonymize_and_delete: [:archive_students, :delete_invitations]
+  task anonymize_and_delete: %i[archive_students
+                                delete_invitations
+                                anonymize_internship_agreements]
 end

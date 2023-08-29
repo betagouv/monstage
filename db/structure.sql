@@ -716,7 +716,8 @@ CREATE TABLE public.internship_agreements (
     student_legal_representative_2_email character varying(70),
     student_legal_representative_2_phone character varying(20),
     school_representative_role character varying(60),
-    school_representative_email character varying(100)
+    school_representative_email character varying(100),
+    discarded_at timestamp(6) without time zone
 );
 
 
@@ -2405,6 +2406,13 @@ CREATE INDEX index_internship_agreement_presets_on_school_id ON public.internshi
 
 
 --
+-- Name: index_internship_agreements_on_discarded_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_agreements_on_discarded_at ON public.internship_agreements USING btree (discarded_at);
+
+
+--
 -- Name: index_internship_agreements_on_internship_application_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3483,6 +3491,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230712074733'),
 ('20230724113109'),
 ('20230816221101'),
-('20230818072958');
+('20230818072958'),
+('20230828084430');
 
 
