@@ -15,7 +15,7 @@ class ApiEntrepriseProxyController < ApplicationController
         siege = etablissement['siege']
         etablissements << {
           siret: siege['siret'],
-          activite: activity(siege['activite_principale']),
+          activite: siege['activite_principale'] ? activity(siege['activite_principale']) : 'N/A',
           uniteLegale: {
             denominationUniteLegale: etablissement['nom_complet']
           },
