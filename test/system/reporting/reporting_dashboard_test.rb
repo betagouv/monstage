@@ -8,7 +8,7 @@ class ReportingDashboardTest < ApplicationSystemTestCase
     @sector_wood = create(:sector, name: 'Filière bois')
     @group1 = create(:group, name: 'group1', is_public: true)
     @group2 = create(:group, name: 'group2', is_public: true)
-    @department = @statistician.department # Oise
+    @department = @statistician.department_name # Oise
     @school = create(
       :school,
       :with_school_manager,

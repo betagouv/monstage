@@ -24,7 +24,7 @@ module Reporting
       statistician = create(:statistician)
       zipcode = "#{statistician.department_zipcode}000"
       sign_in(statistician)
-      get reporting_dashboards_path(department: statistician.department)
+      get reporting_dashboards_path(department: statistician.department_name)
       assert_response :success
     end
 

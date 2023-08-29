@@ -43,7 +43,7 @@ module Reporting
       # From now on, Oise only
 
       get reporting_employers_internship_offers_path(
-        department: statistician.department,
+        department: statistician.department_name,
         dimension: 'group'
       )
       assert_response :success
@@ -65,7 +65,7 @@ module Reporting
 
       #private typology
       get reporting_employers_internship_offers_path(
-        department: statistician.department,
+        department: statistician.department_name,
         dimension: 'private_group'
       )
       assert_response :success
@@ -84,7 +84,7 @@ module Reporting
 
       #public typology
       get reporting_employers_internship_offers_path(
-        department: statistician.department,
+        department: statistician.department_name,
         dimension: 'public_group'
       )
       assert_response :success
@@ -103,7 +103,7 @@ module Reporting
 
       #paqte typology
       get reporting_employers_internship_offers_path(
-        department: statistician.department,
+        department: statistician.department_name,
         dimension: 'paqte_group'
       )
       assert_response :success
@@ -190,7 +190,7 @@ module Reporting
       sign_in(statistician)
 
       get reporting_employers_internship_offers_path(
-        department: statistician.department,
+        department: statistician.department_name,
         dimension: 'group'
       )
       assert_response :success

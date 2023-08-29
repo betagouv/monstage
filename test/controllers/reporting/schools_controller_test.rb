@@ -16,7 +16,7 @@ module Reporting
          'when department params match his departement_name' do
       statistician = create(:statistician)
       sign_in(statistician)
-      get reporting_schools_path(department: statistician.department)
+      get reporting_schools_path(department: statistician.department_name)
       assert_response :success
       assert_select 'title', "Statistiques sur les établissements | Monstage"
     end
@@ -25,7 +25,7 @@ module Reporting
          'when department params match his departement_name' do
       statistician = create(:statistician)
       sign_in(statistician)
-      get reporting_schools_path(department: statistician.department,
+      get reporting_schools_path(department: statistician.department_name,
                                  format: :xlsx)
       assert_response :success
     end

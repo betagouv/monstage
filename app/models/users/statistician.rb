@@ -28,7 +28,7 @@ module Users
 
     def custom_dashboard_path
       url_helpers.reporting_dashboards_path(
-        department: department,
+        department: department_name,
         school_year: SchoolYear::Current.new.beginning_of_period.year
       )
     end
