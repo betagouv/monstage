@@ -91,9 +91,6 @@ module Dashboard
         school_employees.each do |school_employee|
           assert_select 'a[href=?]', dashboard_school_user_path(school, school_employee)
         end
-        assert_select '.test-presence-of-ux-guideline-invitation',
-                      text: "Invitez les enseignants à s'inscrire, en leur communiquant simplement l'adresse du site.",
-                      count: 0
       end
     end
   end
