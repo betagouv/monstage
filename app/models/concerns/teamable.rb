@@ -68,7 +68,7 @@ module Teamable
       return super unless team.alive?
 
       internship_applications = InternshipApplication.where(internship_offer: internship_offers)
-      InternshipAgreement.where(internship_application: internship_applications)
+      InternshipAgreement.kept.where(internship_application: internship_applications)
     end
 
     def internship_offer_ids_by_area(area_id: )

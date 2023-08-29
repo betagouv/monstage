@@ -20,6 +20,8 @@ class UpdatePendingInternshipAgreementsPresetJob < ActiveJob::Base
   end
 
   def pending_internship_agreements
-    @school.internship_agreements.where.not(aasm_state: :validated)
+    @school.internship_agreements
+           .kept
+           .where.not(aasm_state: :validated)
   end
 end
