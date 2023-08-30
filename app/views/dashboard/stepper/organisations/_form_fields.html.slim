@@ -22,12 +22,20 @@
               .form-group.fr-my-2w
                 = form.label :employer_name, "Nom de l’entreprise proposant l’offre"
 
-                = form.text_field :employer_name, class: 'fr-input', placeholder: 'MaSociété', required: true, data: { "organisation-form-target": "organisationName", 'target': 'organisation-form.requiredField'}
+                = form.text_field :employer_name,
+                                  class: 'fr-input',
+                                  placeholder: 'MaSociété',
+                                  required: true,
+                                  data: { "organisation-form-target": "organisationName", 'target': 'organisation-form.requiredField'}
               .form-group.fr-my-2w
                 = form.label :siret, "SIRET"
 
-                = form.text_field :siret, class: 'fr-input', placeholder: 'Mon code SIRET', required: true, data: { "organisation-form-target": "organisationSiret", 'target': 'organisation-form.requiredField' }
-              
+                = form.text_field :siret,
+                                  class: 'fr-input',
+                                  placeholder: 'Mon code SIRET',
+                                  required: true,
+                                  data: { "organisation-form-target": "organisationSiret", 'target': 'organisation-form.requiredField' }
+
               = react_component("FullAddressInput", props: { resourceName: form.object_name,
                                       currentStreet: resource.street,
                                       currentCity: resource.city,
@@ -48,7 +56,7 @@
                 div.fr-radio-group
                   = form.radio_button :is_public, false, class: '', required: true, data: { action: 'change->organisation-form#handleClickIsPublic', 'target': 'organisation-form.requiredField' }
                   = form.label :is_public_false, 'Privé', class: 'fr-label'
-              
+
               div.fr-messages-group#radio-hint-messages aria-live="assertive"
 
             div class="form-group form-group-select-group fr-my-2w #{resource.is_public.nil? ? 'd-none' : ''}" data-organisation-form-target="groupBlock"
@@ -62,23 +70,32 @@
                             { prompt: '-- Indépendant --' },
                             class: "fr-select",
                             data: {:"organisation-form-target" => 'selectGroupName'}
-    
+
     .row.bloc-tooggle class="#{'d-none' unless request.path_info.include?('modification')}"
       .col-md-6
         fieldset aria-labelledby="presentation"
           legend Présentation de l'entreprise
         .form-group.fr-my-2w data-controller='maxlength-input' data-maxlength-input-limit-value="#{InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT}"
-          #label_organisation_description_rich_text.label.fr-label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{form.object_name}_employer_description_rich_text" data-controller="rich-text-label"
+          #label_organisation_description_rich_text.label.fr-label [data-rich-text-label-enable-value=true
+                                                                    data-rich-text-label-for-value="#{form.object_name} employer_description_rich_text"
+                                                                    data-controller="rich-text-label"]
             | Description de l'entreprise (optionnel)
-          = form.rich_text_area :employer_description_rich_text, class: "fr-input col-12 col-lg-12", required: true, data: { :"maxlength-input-target" => 'trixElement' }, aria: {labelledby: 'label_organisation_description_rich_text'}, rows: 5
+          = form.rich_text_area :employer_description_rich_text,
+                                class: "fr-input col-12 col-lg-12",
+                                required: true,
+                                data: { :"maxlength-input-target" => 'trixElement' },
+                                aria: {labelledby: 'label_organisation_description_rich_text'},
+                                rows: 5
+          .fr-alert.fr-alert--error.fr-alert--sm.d-none.fr-mt-1w data-maxlength-input-target="maxLengthMessage"
+            |La description est trop longue
           small.form-text data-maxlength-input-target="trixElementCharCount"
-      
+
         .form-group.fr-my-2w
           = form.label :employer_website, class: 'fr-label' do
             = 'Site web (optionnel)'
             small.form-text.text-muted Afin que l’élève puisse en apprendre plus sur son futur stage
           = form.url_field :employer_website, class: 'fr-input', placeholder: "https://"
-        
+
       .col-md-6
         .fr-alert.fr-alert--info
           h3.fr-alert__title Conseil
