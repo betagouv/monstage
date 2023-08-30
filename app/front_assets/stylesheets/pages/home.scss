@@ -37,7 +37,6 @@ a:hover {
 .homepage {
   overflow-x: hidden;
 }
-.fr-card__title.title-cards-in-a-row.home {
   min-height: 5rem;
   a{
     color: var(--text-title-grey);
@@ -59,6 +58,12 @@ a:hover {
 }
 .bg-cover-image-homepage {
   background-color: $blue;
+}
+
+@media(1024px <= width <= 1218px){
+  .container-homepage .fr-card .fr-card__content {
+      min-height: 220px;
+    }
 }
 
 @media (min-width: 768px) {
@@ -98,6 +103,11 @@ a:hover {
     align-items: start;
     margin: -3rem 0 2rem 2rem !important;
     justify-content: center;
+  }
+}
+@media (768px <= width <= 1138px) {
+  .fr-tile-left-top-img .fr-tile__img {
+    display: none;
   }
 }
 
