@@ -10,12 +10,18 @@ module Dashboard::InternshipOffers
       school = create(:school, :with_school_manager)
       internship_application = create(:weekly_internship_application, :approved)
       internship_application.student.update(school_id: school.id)
-      internship_agreement = create(:internship_agreement, internship_application: internship_application, school_manager_accept_terms: true)
+      internship_agreement = internship_application.internship_agreement
       sign_in(internship_application.internship_offer.employer)
 
       get dashboard_internship_agreements_path
-      assert_select("td[data-head='#{internship_application.internship_offer.title}']")
+      assert_select("td[data-head='#{internship_application.internship_offer.title}']", count: 1)
       assert_response :success
+
+      # testing discard at the same time
+      internship_agreement.discard!
+      get dashboard_internship_agreements_path
+      assert_response :success
+      assert_select("td[data-head='#{internship_application.internship_offer.title}']", count: 0)
     end
 
     test 'GET #edit as employer when missing school_manager renders success but missing internship_agreements' do
@@ -61,7 +67,7 @@ module Dashboard::InternshipOffers
       assert_response :success
       assert_select("td[data-head='#{internship_application.internship_offer.title}']")
     end
-    
+
     test 'GET #index as cpe ' do
       school = create(:school, :with_school_manager)
       cpe = create(:cpe, school: school)
