@@ -63,10 +63,10 @@ module Dashboard::Users
           click_button('Signer la convention')
         end
         find('h1', text: 'Editer, imprimer et bientôt signer les conventions dématérialisées')
+        
+        assert_equal 0, Signature.all.count
+        find('.fr-alert p', text: 'Erreur de code, veuillez recommencer')
       end
-
-      assert_equal 0, Signature.all.count
-      find('.fr-alert p', text: 'Erreur de code, veuillez recommencer')
     end
   end
 end
