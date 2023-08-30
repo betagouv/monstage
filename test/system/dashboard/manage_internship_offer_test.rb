@@ -76,6 +76,18 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     end
   end
 
+  test 'Employer can republish internship_offer' do
+    employer = create(:employer)
+    internship_offer = create(:weekly_internship_offer, employer: employer, published_at: nil)
+
+    sign_in(employer)
+
+    visit internship_offer_path(internship_offer)
+    assert_changes -> { internship_offer.reload.published_at } do
+      page.find('.test-republish-button').click
+    end
+  end
+
   test 'Employer can change max candidates parameter back and forth' do
     travel_to(Date.new(2022, 1, 10)) do
       employer = create(:employer)
