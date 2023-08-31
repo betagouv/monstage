@@ -20,7 +20,7 @@ gem "activerecord-postgis-adapter"; ">= 8.0.1"
 
 # don't bump until fixed, https://github.com/Casecommons/pg_search/issues/446
 gem 'pg_search', '2.3.2'                    # pg search for autocomplete
-gem 'prawn'
+gem 'prawn', github: 'prawnpdf/prawn', branch: 'master'               # pdf generation
 gem 'prawn-styled-text'
 gem 'prawn-table'
 

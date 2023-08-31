@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/prawnpdf/prawn.git
+  revision: 8ceaa105f3e6038fac2eb4b84355d71b00d895f3
+  branch: master
+  specs:
+    prawn (2.4.0)
+      pdf-core (~> 0.9.0)
+      ttfunk (~> 1.7)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -301,9 +310,6 @@ GEM
     pg_search (2.3.2)
       activerecord (>= 5.2)
       activesupport (>= 5.2)
-    prawn (2.4.0)
-      pdf-core (~> 0.9.0)
-      ttfunk (~> 1.7)
     prawn-styled-text (0.1.4)
       oga (~> 2)
       prawn (~> 2)
@@ -540,7 +546,7 @@ DEPENDENCIES
   ovh-rest
   pg
   pg_search (= 2.3.2)
-  prawn
+  prawn!
   prawn-styled-text
   prawn-table
   puma
@@ -562,7 +568,6 @@ DEPENDENCIES
   slim-rails
   split
   spring (= 3.0.0)
-  turbo-rails
   tzinfo-data
   uglifier
   validates_zipcode
