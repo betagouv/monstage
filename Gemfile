@@ -42,7 +42,6 @@ gem "redis", "~> 4.0"
 gem "aws-sdk-s3", require: false
 
 # admin
-
 gem 'rails_admin', '~> 3.0', '< 3.1'
 gem 'rails_admin-i18n'
 gem 'rails_admin_aasm'
@@ -88,7 +87,6 @@ group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'bullet'
   gem 'listen'
-  gem 'web-console'
 # Spring speeds up development by keeping your application running in the
 # background. Read more: https://github.com/rails/spring
   gem "spring", "3.0.0"
@@ -122,7 +120,3 @@ group :test, :development, :review do
   gem 'factory_bot_rails'
   gem 'ffaker'
 end
-
-
-
-

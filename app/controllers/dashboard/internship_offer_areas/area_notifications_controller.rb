@@ -22,7 +22,7 @@ module Dashboard
 
           respond_to do |format|
             format.turbo_stream do
-              render turbo_stream: turbo_stream.replace(parameters[:replace_id], options)
+              render turbo_stream: turbo_stream.replace(parameters[:replace_id], **options)
             end
             format.html do
               destination = edit_dashboard_internship_offer_area_path(@internship_offer_area)

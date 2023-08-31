@@ -33,7 +33,7 @@ module Dashboard::Stepper
           .merge(employer_id: current_user.id)
       )
       @practical_info.save!
-      internship_offer_builder.create_from_stepper(builder_params) do |on|
+      internship_offer_builder.create_from_stepper(**builder_params) do |on|
         on.success do |created_internship_offer|
           redirect_to(internship_offer_path(created_internship_offer, origine: 'dashboard'),
                       flash: { success: 'Votre offre de stage est prête à être publiée.' })

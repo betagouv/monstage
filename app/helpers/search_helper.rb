@@ -30,7 +30,7 @@ module SearchHelper
 
   def month_in_text(month_i, opts)
     month_date = Date.new(Date.today.year, month_i, 1)
-    I18n.localize(month_date, opts).capitalize
+    I18n.localize(month_date, **opts).capitalize
   end
 
   def current_month_for_search
