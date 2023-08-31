@@ -229,7 +229,7 @@ class Ability
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard publish ], InternshipOffer , employer_id: user.team_members_ids
     can :republish, InternshipOffer do |internship_offer|
-      user.team_members_ids.include?(internship_offer.employer_id) && !internship_offer.published_at
+      user.team_members_ids.include?(internship_offer.employer_id) && internship_offer.published_at.nil?
     end
     can %i[create], InternshipOfferInfo
     can %i[create], HostingInfo

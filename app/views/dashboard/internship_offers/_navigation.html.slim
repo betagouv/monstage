@@ -25,6 +25,6 @@
             button.fr-btn.fr-icon-delete-line.fr-btn--icon.fr-btn--secondary.test-discard-button data-fr-opened="false" aria-controls="discard-internship-offer-modal"
         - if can?(:republish, @internship_offer)
           .fr-mx-1w
-            = button_to republish_dashboard_internship_offer_path(internship_offer.to_param, published_at: Time.zone.now), method: :patch do 
-              .fr-btn.fr-icon-eye-line.fr-btn--icon.fr-btn--secondary.test-republish-button
+            = button_to republish_dashboard_internship_offer_path(internship_offer.to_param, published_at: Time.zone.now), method: :patch, class: 'test-republish-button' do 
+              .fr-btn.fr-icon-eye-line.fr-btn--icon.fr-btn--secondary
             

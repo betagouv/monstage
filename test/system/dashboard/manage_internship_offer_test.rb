@@ -78,13 +78,15 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
   test 'Employer can republish internship_offer' do
     employer = create(:employer)
-    internship_offer = create(:weekly_internship_offer, employer: employer, published_at: nil)
-
+    internship_offer = create(:weekly_internship_offer, employer: employer)
+    internship_offer.update(published_at: nil)
+    
     sign_in(employer)
 
     visit internship_offer_path(internship_offer)
     assert_changes -> { internship_offer.reload.published_at } do
       page.find('.test-republish-button').click
+      click_button('Publier l\'offre')
     end
   end
 
