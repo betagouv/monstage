@@ -55,7 +55,7 @@ module InternshipOffers
         employer = InternshipOffer.last.employer
         application = create(:weekly_internship_application, :approved, internship_offer: offer)
         get internship_offer_path(offer)
-        assert_select('.fr-icon-calendar-fill', text:'Disponibles sur 2 semaines:du 20 au 31 janvier')
+        assert_select('.fr-icon-calendar-fill', text:'Disponibles sur 2 semaines:du 20 au 31 janvier 2020')
       end
     end
 
