@@ -10,11 +10,10 @@ module Finders
     def pending_internship_offers_actions(internship_offers)
       return 0 if internship_offers.blank?
       pending_states = %i[read_by_employer submitted examined]
-
-      internship_offers.map(&:internship_applications)
-                       .map { |application| application.where(aasm_state: pending_states) }
-                       .map(&:count)
-                       .sum
+      internship_applications = user.internship_applications
+                                    .where(aasm_state: pending_states)
+                                    .filtering_discarded_students
+                                    .count
     end
 
     def pending_agreements_actions_count
@@ -23,8 +22,11 @@ module Finders
       count = user.internship_agreements
                   .kept
                   .where(aasm_state: [:draft, :started_by_employer, :validated])
+                  .filtering_discarded_students
                   .count
+
       count += user.internship_agreements
+                   .filtering_discarded_students
                    .kept
                    .signatures_started
                    .joins(:signatures)

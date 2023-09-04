@@ -82,6 +82,7 @@ module Dashboard
         @internship_offers      = current_user.internship_offers
       end
       @internship_agreements = current_user.internship_agreements
+                                           .filtering_discarded_students
                                            .kept
                                            .includes(
                                               internship_application: [
@@ -92,6 +93,7 @@ module Dashboard
                                            .reject { |a| a.student.school.school_manager.nil? }
       @school = current_user.school if current_user.school_management?
       @no_agreement_internship_application_list = current_user.internship_applications
+                                                              .filtering_discarded_students
                                                               .approved
                                                               .select { |ia| ia.student.school.school_manager.nil? }
     end
