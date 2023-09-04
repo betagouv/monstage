@@ -7,10 +7,16 @@ module Services
       result = fetch_data
       result = second_try if result.nil?
       result = third_try if result.nil?
-      formatted_phone = result[:phone].nil? ? "" : french_phone_number_format(result[:phone])
+      return nil if result.nil?
+
+      formatted_phone = result[:phone].nil? ? "" : french_phone_number_format(result[:phone] || "")
       address = result[:address].nil? ? "" : sanitize(result[:address])
       email = result[:email].nil? ? "" : result[:email]
-      school.update(fetched_school_phone: formatted_phone, fetched_school_address: address, fetched_school_email: email)
+      school.update(
+        fetched_school_phone: formatted_phone,
+        fetched_school_address: address,
+        fetched_school_email: email
+      )
       result
     end
 
