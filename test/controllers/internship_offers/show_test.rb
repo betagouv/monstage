@@ -41,6 +41,24 @@ module InternshipOffers
       end
     end
 
+    test 'GET #show with applications from other students reduces the number of available weeks' do
+      travel_to(Date.new(2020, 1, 1)) do
+        offer = create(
+          :weekly_internship_offer,
+          weeks: [3,4,5].map {|n| Week.find_by(year: 2020, number: n)},
+          city: 'Bordeaux',
+          coordinates: Coordinates.bordeaux,
+          title: 'Vendeur de cannelés',
+          max_candidates: 3,
+          max_students_per_group: 1
+        )
+        employer = InternshipOffer.last.employer
+        application = create(:weekly_internship_application, :approved, internship_offer: offer)
+        get internship_offer_path(offer)
+        assert_select('.fr-icon-calendar-fill', text:'Disponibles sur 2 semaines:du 20 au 31 janvier')
+      end
+    end
+
     # test 'GET #show as Student displays application form' do
     #   school = create(:school)
     #   student = create(:student, school: school, class_room: create(:class_room, school: school))

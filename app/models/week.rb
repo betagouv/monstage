@@ -3,6 +3,7 @@
 # Calendar weeks
 class Week < ApplicationRecord
   include FormatableWeek
+  WEEK_DURATION = 5
   has_many :internship_offer_weeks, dependent: :destroy,
                                     foreign_key: :week_id
   has_many :internship_applications, dependent: :destroy,
