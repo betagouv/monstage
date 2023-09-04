@@ -53,9 +53,38 @@ module InternshipOffers
           max_students_per_group: 1
         )
         employer = InternshipOffer.last.employer
-        application = create(:weekly_internship_application, :approved, internship_offer: offer)
+        application = create(
+          :weekly_internship_application,
+          :approved,
+          internship_offer: offer,
+          week: Week.find_by(year: 2020, number: 3)
+        )
         get internship_offer_path(offer)
         assert_select('.fr-icon-calendar-fill', text:'Disponibles sur 2 semaines:du 20 au 31 janvier 2020')
+      end
+    end
+
+    test 'GET #show with applications from other students reduces the number ' \
+         'of available weeks with weeklist splitted version' do
+      travel_to(Date.new(2020, 1, 1)) do
+        offer = create(
+          :weekly_internship_offer,
+          weeks: [3,4,5].map {|n| Week.find_by(year: 2020, number: n)},
+          city: 'Bordeaux',
+          coordinates: Coordinates.bordeaux,
+          title: 'Vendeur de cannelés',
+          max_candidates: 3,
+          max_students_per_group: 1
+        )
+        employer = InternshipOffer.last.employer
+        application = create(
+          :weekly_internship_application,
+          :approved,
+          internship_offer: offer,
+          week: Week.find_by(year: 2020, number: 4)
+        )
+        get internship_offer_path(offer)
+        assert_select('.fr-icon-calendar-fill', text:'Disponibles sur 2 semaines:du 13 au 17 janvier 2020du 27 au 31 janvier 2020')
       end
     end
 
@@ -81,7 +110,7 @@ module InternshipOffers
     #   assert_select('.test-missing-school-weeks',
     #                 { count: 1 },
     #                 'missing rendering of call_to_action/student_missing_school_weeks')
-    #   assert_select 'option', count: internship_offer.internship_offer_weeks.count + 1 # Option -- Choisir une semaine -- 
+    #   assert_select 'option', count: internship_offer.internship_offer_weeks.count + 1 # Option -- Choisir une semaine --
     #   assert_select '.btn-danger[disabled]',
     #                 { count: 0 },
     #                 'form should be submitable'
