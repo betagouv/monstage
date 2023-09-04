@@ -62,6 +62,10 @@ class InternshipApplication < ApplicationRecord
       .or(examined.where('submitted_at < :date', date: extended_duration.ago))
   }
 
+  scope :filtering_discarded_students, lambda {
+    joins(:student).where(student: {discarded_at: nil})
+  }
+
   #
   # Ordering scopes (used for ordering in ui)
   #
