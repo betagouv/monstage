@@ -351,6 +351,43 @@ ALTER SEQUENCE public.active_storage_variant_records_id_seq OWNED BY public.acti
 
 
 --
+-- Name: application_trackings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.application_trackings (
+    id bigint NOT NULL,
+    internship_offer_id bigint NOT NULL,
+    student_id bigint,
+    operator_id bigint NOT NULL,
+    application_submitted_at timestamp(6) without time zone,
+    application_approved_at timestamp(6) without time zone,
+    student_generated_id character varying(150),
+    remote_status integer DEFAULT 5 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: application_trackings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.application_trackings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: application_trackings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.application_trackings_id_seq OWNED BY public.application_trackings.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1730,6 +1767,13 @@ ALTER TABLE ONLY public.active_storage_variant_records ALTER COLUMN id SET DEFAU
 
 
 --
+-- Name: application_trackings id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.application_trackings ALTER COLUMN id SET DEFAULT nextval('public.application_trackings_id_seq'::regclass);
+
+
+--
 -- Name: area_notifications id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1990,6 +2034,14 @@ ALTER TABLE ONLY public.active_storage_blobs
 
 ALTER TABLE ONLY public.active_storage_variant_records
     ADD CONSTRAINT active_storage_variant_records_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: application_trackings application_trackings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.application_trackings
+    ADD CONSTRAINT application_trackings_pkey PRIMARY KEY (id);
 
 
 --
@@ -2273,6 +2325,13 @@ ALTER TABLE ONLY public.weeks
 
 
 --
+-- Name: idx_remote_student; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_remote_student ON public.application_trackings USING btree (internship_offer_id, student_id, student_generated_id);
+
+
+--
 -- Name: index_action_text_rich_texts_uniqueness; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2305,6 +2364,27 @@ CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_b
 --
 
 CREATE UNIQUE INDEX index_active_storage_variant_records_uniqueness ON public.active_storage_variant_records USING btree (blob_id, variation_digest);
+
+
+--
+-- Name: index_application_trackings_on_internship_offer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_application_trackings_on_internship_offer_id ON public.application_trackings USING btree (internship_offer_id);
+
+
+--
+-- Name: index_application_trackings_on_operator_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_application_trackings_on_operator_id ON public.application_trackings USING btree (operator_id);
+
+
+--
+-- Name: index_application_trackings_on_student_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_application_trackings_on_student_id ON public.application_trackings USING btree (student_id);
 
 
 --
@@ -2947,6 +3027,14 @@ ALTER TABLE ONLY public.internship_offers
 
 
 --
+-- Name: application_trackings fk_rails_35879f8660; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.application_trackings
+    ADD CONSTRAINT fk_rails_35879f8660 FOREIGN KEY (student_id) REFERENCES public.users(id);
+
+
+--
 -- Name: internship_offers fk_rails_3cef9bdd89; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3016,6 +3104,14 @@ ALTER TABLE ONLY public.internship_offer_infos
 
 ALTER TABLE ONLY public.user_groups
     ADD CONSTRAINT fk_rails_6d478d2f65 FOREIGN KEY (group_id) REFERENCES public.groups(id);
+
+
+--
+-- Name: application_trackings fk_rails_74b6a8c559; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.application_trackings
+    ADD CONSTRAINT fk_rails_74b6a8c559 FOREIGN KEY (operator_id) REFERENCES public.users(id);
 
 
 --
@@ -3492,6 +3588,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230724113109'),
 ('20230816221101'),
 ('20230818072958'),
-('20230828084430');
+('20230828084430'),
+('20230904111221');
 
 

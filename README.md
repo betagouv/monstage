@@ -123,30 +123,6 @@ foreman start -f Procfile.dev
 * [mailers](http://localhost:3000/rails/mailers)
 * [view_components](http://localhost:3000/rails/view_components)
 
-### Etapes de travail jusqu'au merge dans staging
-
-- (staging) $ ```git checkout -b mabranche``` # donc creer sa feature branch
-- (mabranche) $ ```git commit``` # coder sa feature et commiter
-- (mabranche) $ ```git checkout staging``` # besoin de récupérer le code de staging? on repasse sur staging
-- (staging) $ ```git pull origin staging --rebase``` # on rebase la différence par rapport a soi-même
-- (staging) $ ```git checkout mabranche``` # on repasse sur sa branche
-- (mabranche) $ ```git merge staging``` # on merge staging dans sa propre branche
-
-Pour les mises en production, on utilise le script de déploiement après avoir fait :
-- (master) $ ```git merge staging``` # on merge staging dans master
-
-Ainsi, on peut faire des hotfixes à merger directement sur master
-
-Références:
-- https://git-scm.com/docs/git-rebase (git-rebase - Reapply commits on top of another base tip)
-- https://git-scm.com/docs/git-pull (donc ca combine fetch / git merge. avec le --rebase : fetch+rebase)
-
-#### Hotfixes, les étapes
-
-- Développer son fix sur une branche, merger sur master
-- déployer master avec `./infra/production/deploy.sh`
-- merger master sur staging une fois le fix constaté
-- pousser staging sur github
 
 ## test
 

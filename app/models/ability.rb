@@ -326,6 +326,7 @@ class Ability
     can :choose_operator, :sign_up
     can :change, :department
     can %i[update discard], InternshipOffers::Api, employer_id: user.team_members_ids
+    can %i[create update], ApplicationTracking, operator_id: user.team_members_ids
     can :create, InternshipOffers::Api
     can :show, :api_token
     can %i[index_and_filter], Reporting::InternshipOffer

@@ -301,6 +301,17 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 
 * **remote_id** *(string, required)*
 
+## Tracking d'une offre active chez un paratenaire
+**url** : ```#{baseURL}/internship_applications_tracking/#{remote_id}```
+
+**method** : POST
+
+*Paramètres d'url* :
+* **remote_id** *(string, required)*
+* **student_identifier** *(string, required)*
+* **remote_status** *(enum, required)* where remote_status are taken from the following list *['application_submitted', 'application_accepted']*
+
+
 ### Exemple curl
 
 ``` bash
