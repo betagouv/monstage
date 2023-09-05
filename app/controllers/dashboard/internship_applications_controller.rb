@@ -8,6 +8,7 @@ module Dashboard
       authorize! :create, InternshipAgreement
       @internship_offer_areas = current_user.internship_offer_areas
       @internship_applications = current_user.internship_applications
+                                             .filtering_discarded_students
                                              .approved
 
     end
