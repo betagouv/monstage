@@ -100,10 +100,31 @@ module Users
       end
 
       export do
+        field :first_name do
+          label 'Prénom'
+        end
+        field :last_name do
+          label 'Nom'
+        end
+        field :email do
+          label 'Email'
+        end
+        field :created_at do
+          label "Date d'inscription"
+          formatted_value {
+            I18n.l(bindings[:object].created_at, format: '%d/%m/%Y')
+          }
+        end
         field :ministeres, :string do
           formatted_value{
               bindings[:object]&.groups.map(&:name).join(', ')
           }
+        end
+        field :statistician_validation do
+          label 'Validation'
+          export_value do
+            bindings[:object].statistician_validation ? 'Validé' : 'En attente'
+          end
         end
       end
     end
