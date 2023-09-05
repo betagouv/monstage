@@ -21,6 +21,7 @@ Il s'agit d'une API REST qui permet les opérations suivantes :
   - [Création d'une offre](#ref-create-internship-offer)
   - [Modification d'une offre](#ref-modify-internship-offer)
   - [Suppression d'une offre](#ref-destroy-internship-offer)
+  - [Signalement de candidature](#signalement-de-candidature)
 - [Premiers pas et exemples](#premiers-pas-et-exemples)
 
 
@@ -149,6 +150,7 @@ L'API attend en paramètre obligatoire un secteur d'activité associé à une of
 * *Culture et patrimoine*: **c76e6364-7257-473c-89aa-c951141810ce**
 
 Exemple de ce que nous attendons donc un uuid dans nos API :
+
 
 ```
 internship_offer.sector_uuid: "c76e6364-7257-473c-89aa-c951141810ce"
@@ -293,7 +295,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 
 ### <a name="ref-destroy-internship-offer"></a>
 ## Suppression d'une offre
-**url** : ```#{baseURL}/internship_offers/#{remote_id}```
+**url** : ```#{baseURL}/internship_offers/#{remote_id}```  
 
 **method** : DELETE
 
@@ -301,18 +303,36 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 
 * **remote_id** *(string, required)*
 
-## Tracking d'une offre active chez un paratenaire
-**url** : ```#{baseURL}/internship_applications_tracking/#{remote_id}```
+## Signalement de candidature
+Ce service est consommé par le partenaire
+
+Les liens qui ramènent les élèves vers les sites partenaires (jobirl, vvmt, mf) adjoignent les informations suivantes dans l'URL:
+* **remote_id** *(string, required)* = l'identifiant de l'offre chez le partenaire
+* **student_identifier** *(string, required)* = idenfiant de élève fourni par monstagedetroisieme.fr
+
+Quand l'élève postule sur le site partenaire de monstadetroisieme, le partenaire fait l'appel du service suivant:
+
+**url** : ```#{baseURL}/applications_tracking```
 
 **method** : POST
 
 *Paramètres d'url* :
-* **remote_id** *(string, required)*
-* **student_identifier** *(string, required)*
-* **remote_status** *(enum, required)* where remote_status are taken from the following list *['application_submitted', 'application_accepted']*
+* **remote_id** *(string, required)* = l'identifiant de l'offre du point de vue du partenaire
+* **student_identifier** *(string, required)* = l'identifiant fourni initialement avec le lien
+* **remote_status** *(enum, required)* où les valeurs possibles sont à prendre dans la liste suivante
+ *['application_submitted', 'application_accepted']*
+#### Retour succès
+Voir un exemple de retour : ```doc/output/application_trackings/create/created.json```
+
+### Erreurs possibles
+
+#### Argument error
+Voir un exemple de retour : ```doc/output/application_trackings/bad_request/bad_request.json```
+#### Duplicat
+Voir un exemple de retour : ```doc/output/application_trackings/duplicate/conflict.json```
 
 
-### Exemple curl
+## Exemple curl
 
 ``` bash
 curl -H "Authorization: Bearer foobarbaz" \
@@ -322,7 +342,7 @@ curl -H "Authorization: Bearer foobarbaz" \
      https://monstagedetroisieme.fr/api/internship_offers/#{job_irl_id|vvmt_id|myfuture_id|provider_id...}
 ```
 
-### Erreurs
+## Erreurs
 
 - 404, Not Found. Aucune offre n'a été trouvée avec le ```remote_id``` spécifié
 

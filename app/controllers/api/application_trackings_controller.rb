@@ -6,15 +6,23 @@ module Api
       application_tracking_builder.create(params: create_application_tracking_params) do |on|
         on.success(&method(:render_created))
         on.failure(&method(:render_validation_error))
-        on.duplicate(&method(:render_duplicate))
+        on.duplicate(&method(:render_duplicate_tracking))
         on.argument_error(&method(:render_argument_error))
       end
     end
 
-    def update ; end
-    def destroy ; end
-
     private
+
+    def render_duplicate_tracking(duplicate_ar_object)
+      duplicate_specfics = duplicate_ar_object.attributes
+                                              .compact
+                                              .map { |k,v| "#{k} : #{v}"}
+                                              .join(" | ")
+
+      render_error(code: "DUPLICATE_#{capitalize_class_name(duplicate_ar_object)}",
+                   error: "#{underscore_class_name(duplicate_ar_object)} with these attributes (#{duplicate_specfics}) already exists",
+                   status: :conflict)
+    end
 
     def application_tracking_builder
       @builder ||= Builders::ApplicationTrackingBuilder.new(user: current_api_user,

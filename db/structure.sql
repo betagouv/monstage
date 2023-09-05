@@ -358,7 +358,7 @@ CREATE TABLE public.application_trackings (
     id bigint NOT NULL,
     internship_offer_id bigint NOT NULL,
     student_id bigint,
-    operator_id bigint NOT NULL,
+    user_operator_id bigint NOT NULL,
     application_submitted_at timestamp(6) without time zone,
     application_approved_at timestamp(6) without time zone,
     student_generated_id character varying(150),
@@ -2328,7 +2328,7 @@ ALTER TABLE ONLY public.weeks
 -- Name: idx_remote_student; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX idx_remote_student ON public.application_trackings USING btree (internship_offer_id, student_id, student_generated_id);
+CREATE UNIQUE INDEX idx_remote_student ON public.application_trackings USING btree (internship_offer_id, student_id, student_generated_id, remote_status);
 
 
 --
@@ -2374,17 +2374,17 @@ CREATE INDEX index_application_trackings_on_internship_offer_id ON public.applic
 
 
 --
--- Name: index_application_trackings_on_operator_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_application_trackings_on_operator_id ON public.application_trackings USING btree (operator_id);
-
-
---
 -- Name: index_application_trackings_on_student_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_application_trackings_on_student_id ON public.application_trackings USING btree (student_id);
+
+
+--
+-- Name: index_application_trackings_on_user_operator_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_application_trackings_on_user_operator_id ON public.application_trackings USING btree (user_operator_id);
 
 
 --
@@ -2971,6 +2971,14 @@ ALTER TABLE ONLY public.school_internship_weeks
 
 
 --
+-- Name: application_trackings fk_rails_088f0c565f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.application_trackings
+    ADD CONSTRAINT fk_rails_088f0c565f FOREIGN KEY (user_operator_id) REFERENCES public.users(id);
+
+
+--
 -- Name: hosting_info_weeks fk_rails_0ab0d03d1c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3104,14 +3112,6 @@ ALTER TABLE ONLY public.internship_offer_infos
 
 ALTER TABLE ONLY public.user_groups
     ADD CONSTRAINT fk_rails_6d478d2f65 FOREIGN KEY (group_id) REFERENCES public.groups(id);
-
-
---
--- Name: application_trackings fk_rails_74b6a8c559; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.application_trackings
-    ADD CONSTRAINT fk_rails_74b6a8c559 FOREIGN KEY (operator_id) REFERENCES public.users(id);
 
 
 --

@@ -2,18 +2,17 @@
 
 module Builders
   # wrap internship offer creation logic / failure for API/web usage
-  class InternshipOfferBuilder < BuilderBase
+  class ApplicationTrackingBuilder < BuilderBase
 
-    # called by internship_offers#create (duplicate), api/internship_offers#create
+    # called by application_trackings#create (duplicate), api/application_trackings#create
     def create(params:)
       yield callback if block_given?
-      authorize :create, ApplicationTracking
-      # preprocess_tracking_informations(params)
-      create_params = preprocess_api_params(params)
-      internship_offer = ApplicationTracking.create!(create_params)
-      callback.on_success.try(:call, internship_offer)
+      authorize :create, Api::ApplicationTracking
+      create_params = preprocess_api_params(params: params)
+      application_tracking = Api::ApplicationTracking.create!(create_params)
+      callback.on_success.try(:call, application_tracking)
     rescue ActiveRecord::RecordInvalid => e
-      if duplicate?(e.record)
+      if duplicate_instance?(e.record)
         callback.on_duplicate.try(:call, e.record)
       else
         callback.on_failure.try(:call, e.record)
@@ -48,24 +47,29 @@ module Builders
       @callback = InternshipOfferCallback.new
     end
 
-    def preprocess_api_params(params, fallback_weeks:)
+    def preprocess_api_params(params:)
       return params unless from_api?
 
       internship_offer = InternshipOffer.find_by(remote_id: params[:remote_id])
       raise ArgumentError, "remote_id: #{params[:remote_id]} is not valid" if internship_offer.nil?
-      fetch_student && {
+      fetch_student(params: params) && {
         internship_offer_id: internship_offer.id,
         student_id: params[:student_id],
-        student_identifier: params[:student_id] || params[:student_generated_id],
+        user_operator_id: user.id,
+        application_submitted_at: params[:remote_status] == 'application_submitted' ? DateTime.now : nil,
+        application_approved_at: params[:remote_status] == 'application_approved' ? DateTime.now : nil,
+        student_generated_id: params[:student_generated_id],
         remote_status: params[:remote_status]
       }
     end
 
-    def fetch_student
+    def fetch_student(params:)
       sent_id = params[:student_generated_id]
       student = nil
       if sent_id.present? && sent_id.starts_with?('ms3e')
-        student = User.find_by(student_identification: sent_id.split('ms3e').last)
+        complete_id = sent_id.split('ms3e').last
+        arg_id = complete_id.match?(/\A\d+\z/) ? complete_id.to_i : 0
+        student = User.find_by(id: arg_id)
         if student.nil?
           raise ArgumentError, "student_identification: #{sent_id} is not valid"
         end
@@ -78,10 +82,19 @@ module Builders
       context == :api
     end
 
-    def duplicate?(internship_offer)
-      Array(internship_offer.errors.details[:remote_id])
-        .map { |error| error[:error] }
-        .include?(:taken)
+    def duplicate?(create_params:)
+      rejected_keys = %i[student_generated_id application_submitted_at application_approved_at]
+      creation_parameters = create_params.reject { |k, _| k.in?(rejected_keys) }
+      existing_application_tracking = ApplicationTracking.find_by(**creation_parameters)
+      return false if existing_application_tracking.nil?
+
+      raise ActiveRecord::RecordInvalid, existing_application_tracking
+    end
+
+
+    def duplicate_instance?(application_tracking)
+      Array(application_tracking.errors.details[:internship_offer_id])
+        .any? { |error| error[:error] == :taken }
     end
   end
 
