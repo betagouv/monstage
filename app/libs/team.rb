@@ -137,17 +137,18 @@ class Team
         search_or_create_attributes_hash = {
           user_id: team_member.member_id,
           internship_offer_area_id: area.id,
-          notify: true
         }
         next unless AreaNotification.find_by(search_or_create_attributes_hash).nil?
 
-        AreaNotification.create!(search_or_create_attributes_hash)
+        AreaNotification.create!(
+          search_or_create_attributes_hash.merge(notify: true)
+        )
       end
     end
   end
 
   def set_team_member
-    @team_member = base_query.find_by(member_id: user.id)
+    @team_member = accepted_invitations_query.find_by(member_id: user.id)
   end
 
   def set_team_owner_id
@@ -158,11 +159,11 @@ class Team
     if team_owner_id.nil?
       @team_members = TeamMemberInvitation.none
     else
-      @team_members = base_query.where(inviter_id: team_owner_id)
+      @team_members = accepted_invitations_query.where(inviter_id: team_owner_id)
     end
   end
 
-  def base_query
+  def accepted_invitations_query
     TeamMemberInvitation.accepted_invitation
   end
 
