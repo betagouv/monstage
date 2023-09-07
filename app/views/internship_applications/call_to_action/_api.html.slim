@@ -2,8 +2,11 @@
   .mb-1.text-muted.small.d-none.d-sm-block
     = "Offre publiée par #{operator_name(internship_offer)}"
   - if current_user.nil? || current_user.student?
+    - linkto = "#{internship_offer.permalink}?remote_id=#{internship_offer.remote_id}"
+    - if current_user&.student?
+      - linkto = "#{linkto}&ms3e_student_id=#{current_user.id}"
     .actions.d-flex.text-center
-      = link_to internship_offer.permalink,
+      = link_to linkto,
                 class: 'fr-btn',
                 target: "_blank",
                 rel: "external noopener noreferrer",

@@ -361,7 +361,7 @@ CREATE TABLE public.application_trackings (
     user_operator_id bigint NOT NULL,
     application_submitted_at timestamp(6) without time zone,
     application_approved_at timestamp(6) without time zone,
-    student_generated_id character varying(150),
+    ms3e_student_id character varying(150),
     remote_status integer DEFAULT 5 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -2328,7 +2328,7 @@ ALTER TABLE ONLY public.weeks
 -- Name: idx_remote_student; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX idx_remote_student ON public.application_trackings USING btree (internship_offer_id, student_id, student_generated_id, remote_status);
+CREATE UNIQUE INDEX idx_remote_student ON public.application_trackings USING btree (internship_offer_id, student_id, ms3e_student_id, remote_status);
 
 
 --

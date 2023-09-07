@@ -60,7 +60,7 @@ Rails.application.routes.draw do
     resources :favorites, only: %i[create destroy index]
 
     namespace :api, path: 'api' do
-      resources :application_trackings, only: %i[create update destroy]
+      resources :application_trackings, only: %i[create]
       resources :internship_offers, only: %i[create update destroy index]
       resources :schools, only: [] do
         collection do

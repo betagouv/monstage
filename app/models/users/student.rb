@@ -5,7 +5,6 @@ module Users
     include StudentAdmin
 
     belongs_to :school, optional: true
-
     belongs_to :class_room, optional: true
 
     has_many :internship_applications, dependent: :destroy,
@@ -15,17 +14,10 @@ module Users
       end
     end
     has_many :internship_agreements, through: :internship_applications
-
-    # has_many :favorites
-    
-    # has_many :users_internship_offers
     has_many :internship_offers, through: :favorites
-
-    # has_many :favorite_internship_offers, class_name: 'FavoriteInternshipOffer'
-    
-    # has_many :internship_offers, through: :favorite_internship_offers, class_name: 'InternshipOffer'
-    
-    # has_many :users_internship_offers
+    has_many :application_trackings,
+             class_name: 'Api::ApplicationTracking',
+             foreign_key: :student_id
 
     scope :without_class_room, -> { where(class_room_id: nil, anonymized: false) }
 

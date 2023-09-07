@@ -16,7 +16,7 @@ module Api
                 token: "Bearer #{operator.api_token}",
                 application_tracking: {
                   remote_id: internship_offer.remote_id,
-                  student_generated_id: "ms3e#{student.id}",
+                  ms3e_student_id: student.id,
                   remote_status: 'application_submitted'
                 }
               }
@@ -41,7 +41,7 @@ module Api
       parameters = {
         application_tracking: {
           remote_id: internship_offer.remote_id,
-          student_generated_id: "ms3e#{student.id}",
+          ms3e_student_id: student.id,
           remote_status: 'application_submitted'
         }
       }
@@ -64,7 +64,7 @@ module Api
           )
           assert_equal 1, Api::ApplicationTracking.count
           assert_equal 'DUPLICATE_APPLICATION_TRACKING', json_response.to_hash.fetch('code')
-          assert_equal "application_tracking with these attributes (internship_offer_id : #{internship_offer.id} | student_id : #{student.id} | user_operator_id : #{operator.id} | application_submitted_at : 2019-03-01 00:00:00 +0100 | student_generated_id : ms3e#{student.id} | remote_status : application_submitted) already exists",
+          assert_equal "application_tracking with these attributes (internship_offer_id : #{internship_offer.id} | student_id : #{student.id} | user_operator_id : #{operator.id} | application_submitted_at : 2019-03-01 00:00:00 +0100 | ms3e_student_id : #{student.id} | remote_status : application_submitted) already exists",
                        json_response.to_hash.fetch('error')
         end
       end
@@ -78,7 +78,7 @@ module Api
       parameters = {
         application_tracking: {
           remote_id: internship_offer.remote_id,
-          student_generated_id: "ms3e#{student.id}",
+          ms3e_student_id: student.id,
           remote_status: faulty_remote_status
         }
       }

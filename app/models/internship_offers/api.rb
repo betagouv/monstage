@@ -59,6 +59,10 @@ module InternshipOffers
       end
     end
 
+    has_many :application_trackings,
+             class_name: 'Api::ApplicationTracking',
+             foreign_key: :internship_offer_id
+
     validates :remote_id, presence: true
 
     validates :zipcode, zipcode: { country_code: :fr }

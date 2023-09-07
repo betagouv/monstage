@@ -304,11 +304,10 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 * **remote_id** *(string, required)*
 
 ## Signalement de candidature
-Ce service est consommé par le partenaire
 
 Les liens qui ramènent les élèves vers les sites partenaires (jobirl, vvmt, mf) adjoignent les informations suivantes dans l'URL:
 * **remote_id** *(string, required)* = l'identifiant de l'offre chez le partenaire
-* **student_identifier** *(string, required)* = idenfiant de élève fourni par monstagedetroisieme.fr
+* **ms3e_student_id** *(string, optional)* = idenfiant de élève fourni par monstagedetroisieme.fr
 
 Quand l'élève postule sur le site partenaire de monstadetroisieme, le partenaire fait l'appel du service suivant:
 
@@ -318,7 +317,7 @@ Quand l'élève postule sur le site partenaire de monstadetroisieme, le partenai
 
 *Paramètres d'url* :
 * **remote_id** *(string, required)* = l'identifiant de l'offre du point de vue du partenaire
-* **student_identifier** *(string, required)* = l'identifiant fourni initialement avec le lien
+* **ms3e_student_id** *(string, optional)* = l'identifiant fourni initialement avec le lien (à retourner quand il a été fourni initialement)
 * **remote_status** *(enum, required)* où les valeurs possibles sont à prendre dans la liste suivante
  *['application_submitted', 'application_accepted']*
 #### Retour succès

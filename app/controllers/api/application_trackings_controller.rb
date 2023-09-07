@@ -33,7 +33,7 @@ module Api
       params.require(:application_tracking)
             .permit(
               :remote_id,
-              :student_generated_id,
+              :ms3e_student_id,
               :remote_status
             )
     end
