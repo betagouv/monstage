@@ -13,6 +13,8 @@ class School < ApplicationRecord
   has_many :internship_agreements, through: :internship_applications
   has_one :internship_agreement_preset
 
+  has_rich_text :agreement_conditions_rich_text
+
   validates :city, :name, :code_uai, presence: true
 
   validates :zipcode, zipcode: { country_code: :fr }
