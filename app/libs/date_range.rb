@@ -22,7 +22,7 @@ class DateRange
     @weeks             = weeks
     @first_week, @last_week = @weeks.minmax_by(&:id)
     @day_week_start    = @first_week.week_date
-    @day_week_end      = (Week::WEEK_DURATION - 1).days.since(@last_week.week_date)
+    @day_week_end      = (Week::WORKING_WEEK_DURATION - 1).days.since(@last_week.week_date)
     @day_week_start_nr = @day_week_start.day
     @day_week_end_nr   = @day_week_end.day
     @month_week_start  = @day_week_start.month
