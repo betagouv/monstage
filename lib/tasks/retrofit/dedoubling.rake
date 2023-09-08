@@ -32,7 +32,7 @@ namespace :retrofit do
 
   desc 'Retrofit du doublon d\'établissement'
   task :school_dedoubling, [:old_school_id, :new_school_id] => :environment do |t, args|
-    # use with rake "retrofit:school_dedoubling[old_school_id, new_school_id]"
+    # use with ```rake "retrofit:school_dedoubling[old_school_id, new_school_id]"``` in console
 
     old_school_id = args.old_school_id
     new_school_id = args.new_school_id
@@ -55,6 +55,13 @@ namespace :retrofit do
         User.where(school_id: old_school_id).update_all(school_id: new_school_id)
 
         old_school.destroy
+
+        new_school.reload.class_rooms.select(:name).group(:name).having('count(*) > 1').each do |class_room|
+          class_room_ids = new_school.class_rooms.where(name: class_room.name).pluck(:id)
+          kept_class_room_id = class_room_ids.shift
+          Users::Student.where(class_room_id: class_room_ids).update_all(class_room_id: kept_class_room_id)
+          ClassRoom.where(id: class_room_ids).destroy_all
+        end
       end
     end
     PrettyConsole.say_in_green "Done school dedoubling #{old_school_id} ==> #{new_school_id}"
