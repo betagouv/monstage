@@ -419,7 +419,8 @@ class InternshipApplication < ApplicationRecord
 
   def filter_notified_emails
     original_employer = internship_offer.employer
-    return employer.email if !employer.employer_like? || employer.team.not_exists?
+    return employer.email unless employer.employer_like?
+    return employer.email if employer.team.not_exists?
 
     potential_employers = original_employer.team.db_members
     emails = potential_employers.map do |potential_employer|
