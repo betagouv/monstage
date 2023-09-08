@@ -1,0 +1,12 @@
+{
+  "id": 3,
+  "internship_offer_id": 4,
+  "student_id": 16,
+  "user_operator_id": 13,
+  "application_submitted_at": "2019-03-01T00:00:00.000+01:00",
+  "application_approved_at": null,
+  "ms3e_student_id": "16",
+  "remote_status": "application_submitted",
+  "created_at": "2019-03-01T00:00:00.000+01:00",
+  "updated_at": "2019-03-01T00:00:00.000+01:00"
+}

@@ -1,0 +1,4 @@
+{
+  "code": "DUPLICATE_APPLICATION_TRACKING",
+  "error": "application_tracking with these attributes (internship_offer_id : 2 | student_id : 8 | user_operator_id : 5 | application_submitted_at : 2019-03-01 00:00:00 +0100 | ms3e_student_id : 8 | remote_status : application_submitted) already exists"
+}
