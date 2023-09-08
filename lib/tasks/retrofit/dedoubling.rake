@@ -66,4 +66,19 @@ namespace :retrofit do
     end
     PrettyConsole.say_in_green "Done school dedoubling #{old_school_id} ==> #{new_school_id}"
   end
+
+  desc "Temp-retrofit du doublon d'établisement - generateur de script pour la correction des doublons"
+  task :school_dedoubling_script, [] => :environment do |t, args|
+    doubles = School.select([:code_uai]).group(:code_uai).having('count(code_uai) > 1').count
+    doubles.each do |code_uai, val|
+      next if val != 2
+
+      schools = School.where(code_uai: code_uai).pluck(:id).sort
+      old_school_id = schools.first
+      new_school_id = schools.last
+      next if old_school_id == new_school_id
+
+      PrettyConsole.puts_in_green "bundle exec rake \"retrofit:school_dedoubling[#{old_school_id}, #{new_school_id}]\"" 
+    end
+  end
 end
