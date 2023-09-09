@@ -60,6 +60,7 @@ namespace :retrofit do
           class_room_ids = new_school.class_rooms.where(name: class_room.name).pluck(:id)
           kept_class_room_id = class_room_ids.shift
           Users::Student.where(class_room_id: class_room_ids).update_all(class_room_id: kept_class_room_id)
+          Identity.where(class_room_id: class_room_ids).update_all(class_room_id: kept_class_room_id)
           ClassRoom.where(id: class_room_ids).destroy_all
         end
       end
