@@ -19,10 +19,9 @@ module Presenters
       METHODS = %i[group_name
                    human_is_public
                    sector_name
-                   tutor_name
-                   tutor_email
-                   tutor_phone
-                   tutor_role
+                   contact_name
+                   contact_email
+                   contact_phone
                    full_employer
                    full_address
                    full_school
@@ -62,20 +61,16 @@ module Presenters
         instance.group.try(:name) || 'Indépendant'
       end
 
-      def tutor_name
-        instance.tutor_name
+      def contact_name
+        instance.employer.presenter.full_name
       end
 
-      def tutor_email
-        instance.tutor_email
+      def contact_email
+        instance.employer.email
       end
 
-      def tutor_role
-        instance.tutor_role
-      end
-
-      def tutor_phone
-        instance.tutor_phone
+      def contact_phone
+        instance.employer.phone
       end
 
       def full_employer

@@ -13,6 +13,7 @@ module Reporting
     # belongs_to :organisation
     belongs_to :group, optional: true
     belongs_to :school, optional: true
+    belongs_to :employer, polymorphic: true, optional: true
     has_many :internship_offer_weeks
     has_many :weeks, through: :internship_offer_weeks
     has_many :internship_applications
