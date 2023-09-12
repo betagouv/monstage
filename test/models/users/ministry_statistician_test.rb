@@ -18,5 +18,10 @@ module Users
       assert ministries.all?{ |minister| minister.is_public? }
     end
 
+    test 'employer_like? true' do
+      ministry_statistician = create(:ministry_statistician)
+      assert ministry_statistician.employer_like?
+    end
+
   end
 end

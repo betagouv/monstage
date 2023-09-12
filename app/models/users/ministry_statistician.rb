@@ -112,6 +112,8 @@ module Users
       ''
     end
     
+    def employer_like? ; true end
+    
     private
 
     def email_in_list
