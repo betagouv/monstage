@@ -31,5 +31,7 @@ module StatisticianDepartmentable
       email_whitelist&.delete
       super
     end
+
+    def employer_like? ; true end
   end
 end
