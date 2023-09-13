@@ -114,7 +114,8 @@ module InternshipOffers
                  sector_uuid
                  max_candidates
                  max_students_per_group
-                 published_at],
+                 published_at
+                is_public],
         methods: [:formatted_coordinates]
       ))
     end
