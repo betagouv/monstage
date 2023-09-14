@@ -67,6 +67,7 @@ module Api
               :type,
               :max_candidates,
               :max_students_per_group,
+              :is_public,
               coordinates: {},
               weeks: []
             )
@@ -88,6 +89,7 @@ module Api
               :max_candidates,
               :max_students_per_group,
               :published_at,
+              :is_public,
               coordinates: {},
               weeks: []
             )
