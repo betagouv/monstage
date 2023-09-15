@@ -24,6 +24,11 @@ module Users
     after_create :notify_manager
     after_update :confirm_if_validated
 
+    # Validations
+    validates_inclusion_of :accept_terms, in: ['1', true],
+                                        message: :accept_terms,
+                                        on: :create
+                                        
     scope :active, -> { where(discarded_at: nil) }
 
     def custom_dashboard_path
