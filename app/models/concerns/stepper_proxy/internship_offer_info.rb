@@ -79,13 +79,13 @@ module StepperProxy
       raise 'Wrong !!' unless persisted? && respond_to?(:weeks) # temporary
       return nil unless persisted? && respond_to?(:weeks)
 
+      edited_weeks = Week.selectable_on_school_year_when_editing.to_a
+      unless weeks.empty?
+        school_year = SchoolYear::Floating.new(date: weeks.first.week_date)
+        edited_weeks += Week.selectable_on_specific_school_year(school_year: school_year).to_a
+      end
 
-      school_year = SchoolYear::Floating.new(date: weeks.first.week_date)
-
-      [Week.selectable_on_specific_school_year(school_year: school_year),
-       Week.selectable_on_school_year_when_editing].map(&:to_a)
-                                                   .flatten
-                                                   .uniq
+      edited_weeks.compact.uniq
     end
 
     def weeks_class
