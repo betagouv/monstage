@@ -14,7 +14,7 @@ class School < ApplicationRecord
   has_one :internship_agreement_preset
 
   validates :city, :name, :code_uai, presence: true
-
+  validates :code_uai, uniqueness: true
   validates :zipcode, zipcode: { country_code: :fr }
 
   VALID_TYPE_PARAMS = %w[rep rep_plus qpv qpv_proche].freeze

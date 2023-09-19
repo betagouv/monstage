@@ -105,4 +105,13 @@ class SchoolTest < ActiveSupport::TestCase
       assert_equal 2, School.without_weeks_on_current_year.count
     end
   end
+
+  test 'uniq code_uai' do
+    school = create(:school)
+    assert school.valid?
+
+    school_2 = build(:school, code_uai: school.code_uai)
+    assert school_2.invalid?
+    assert_not_empty school_2.errors[:code_uai]
+  end
 end
