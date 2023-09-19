@@ -1,12 +1,13 @@
 version: 2.1
 orbs:
-  node: circleci/node@5.0.2
-  browser-tools: circleci/browser-tools@1.4.3
+  node: circleci/node@5.1.0
+  ruby: circleci/ruby@2.1.0
+  browser-tools: circleci/browser-tools@1.4.4
 jobs: # a collection of steps
   build: # runs not using Workflows must have a `build` job as entry point
     working_directory: ~/project
     docker: # run the steps with Docker
-      - image: circleci/ruby:2.7.2-node-browsers # ...with this image as the primary container; this is where all `steps` will run
+      - image: cimg/ruby:3.2.1-browsers # ...with this image as the primary container; this is where all `steps` will run
         environment: # environment variables for primary container
           BUNDLE_JOBS: 3
           BUNDLE_RETRY: 3
@@ -30,7 +31,6 @@ jobs: # a collection of steps
       - node/install:
           install-yarn: true
           node-version: '16.15'
-
       - run:
           name: get missing parts for chrome
           command: |
@@ -99,9 +99,6 @@ jobs: # a collection of steps
           command: |
             sudo apt-get update --allow-releaseinfo-change && sudo apt install postgresql-client
             bundle exec bin/rails db:create db:schema:load --trace
-
-
-
 
       - run:
           name: Run TestUnit

@@ -23,7 +23,7 @@ module Dashboard
         click_on 'Candidatures'
         internship_applications.each do |_aasm_state, internship_application|
           badge = internship_application.presenter(student).human_state
-          find('.h5.internship-offer-title', text: internship_application.internship_offer.title)
+          find('.internship-application-status .h5.internship-offer-title', text: internship_application.internship_offer.title)
           find("a#show_link_#{internship_application.id}", text: badge[:actions].first[:label]).click
           find('a span.fr-icon-arrow-left-line', text:'toutes mes candidatures').click
         end

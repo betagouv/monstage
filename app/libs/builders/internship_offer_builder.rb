@@ -31,7 +31,7 @@ module Builders
       yield callback if block_given?
       authorize :create, model
       preprocess_organisation(params)
-      create_params = preprocess_api_params(params, fallback_weeks: true)
+      create_params = preprocess_api_params(params, **{fallback_weeks: true})
       internship_offer = model.create!(create_params)
       internship_offer.update(
         aasm_state: 'published',
@@ -88,7 +88,7 @@ module Builders
                user: user,
                fallback_weeks: fallback_weeks }
 
-      Dto::ApiParamsAdapter.new(opts)
+      Dto::ApiParamsAdapter.new(**opts)
                            .sanitize
     end
 

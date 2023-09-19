@@ -203,7 +203,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'user creates his account' do
-    mock_mail = MiniTest::Mock.new
+    mock_mail = Minitest::Mock.new
     mock_mail.expect(:deliver_later, true)
     CustomDeviseMailer.stub :confirmation_instructions, mock_mail do
       student = create(:student, confirmed_at: nil)
@@ -213,7 +213,7 @@ class UserTest < ActiveSupport::TestCase
 
   test 'user updates his email' do
     student = create(:student)
-    mock_mail = MiniTest::Mock.new
+    mock_mail = Minitest::Mock.new
     mock_mail.expect(:deliver_later, true)
     CustomDeviseMailer.stub :update_email_instructions, mock_mail do
       student.update(email: 'myemail@mail.com')

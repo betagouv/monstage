@@ -4,7 +4,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.7.2'
+ruby File.read(".ruby-version").strip
 
 # fwk/server
 gem 'actionpack', ">= 6.1.3.2"
@@ -20,7 +20,7 @@ gem "activerecord-postgis-adapter"; ">= 8.0.1"
 
 # don't bump until fixed, https://github.com/Casecommons/pg_search/issues/446
 gem 'pg_search', '2.3.2'                    # pg search for autocomplete
-gem 'prawn'
+gem 'prawn', github: 'prawnpdf/prawn', branch: 'master'               # pdf generation
 gem 'prawn-styled-text'
 gem 'prawn-table'
 
@@ -42,7 +42,6 @@ gem "redis", "~> 4.0"
 gem "aws-sdk-s3", require: false
 
 # admin
-
 gem 'rails_admin', '~> 3.0', '< 3.1'
 gem 'rails_admin-i18n'
 gem 'rails_admin_aasm'
@@ -88,7 +87,6 @@ group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'bullet'
   gem 'listen'
-  gem 'web-console'
 # Spring speeds up development by keeping your application running in the
 # background. Read more: https://github.com/rails/spring
   gem "spring", "3.0.0"
@@ -122,7 +120,3 @@ group :test, :development, :review do
   gem 'factory_bot_rails'
   gem 'ffaker'
 end
-
-
-
-
