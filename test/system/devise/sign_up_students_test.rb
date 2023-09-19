@@ -43,7 +43,6 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       find("label[for='select-channel-email']",).click
       fill_in 'Adresse électronique', with: existing_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
-      find('label[for="user_accept_terms"]').click
       click_on "Valider"
       find('.fr-alert.fr-alert--error', text: 'Courriel : Un compte est déjà associé à cet email')
       assert_equal existing_email, find('#user_email').value
@@ -52,7 +51,6 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     # create student
     assert_difference('Users::Student.count', 1) do
       find('label', text: 'Par email').click
-      execute_script("document.getElementById('user_accept_terms').checked = true;")
       fill_in 'Adresse électronique', with: 'another@email.com'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       click_on "Valider"
@@ -110,8 +108,6 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     assert_difference('Users::Student.count', 1) do
       fill_in 'Adresse électronique', with: email, wait: 4
       fill_in 'Créer un mot de passe', with: password, wait: 4
-      find('label[for="user_accept_terms"]').click
-      execute_script("document.getElementById('user_accept_terms').checked = true;")
 
       sleep 0.2
       find("input[type='submit']").click
@@ -301,7 +297,6 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       find('label', text: 'Par téléphone').click
       execute_script("document.getElementById('phone-input').value = '#{existing_phone}';")
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
-      execute_script("document.getElementById('user_accept_terms').checked = true;")
       safe_submit
     end
 

@@ -69,27 +69,16 @@ main#content[role="main"
                     #user_password-show-messages.fr-messages-group[aria-live="assertive"]
                       p[data-signup-target="passwordHint"]
                 .fr-fieldset__element
-                  - error_tag  = errors.field_error_tag(resource_name: resource_name, resource: resource, field: :accept_terms)
-                  div class="fr-checkbox-group fr-mb-2v #{error_tag.present? ? 'fr-input-group--error' : ''}"
-                    = f.check_box :accept_terms
-                    label.fr-label for="user_accept_terms"
-                      -link = link_to "conditions d'utilisation",
-                                      conditions_d_utilisation_path,
-                                      target: "_blank",
-                                      title: "conditions d'utilisation (nouvelle fenêtre)",
-                                      rel: "external noopener noreferrer",
-                                      class: "font-weight-normal"
-                      = "J'accepte les&nbsp;#{link} .".html_safe
-                      p
-                        = link_to "Lire la Politique de confidentialité",
-                                  politique_de_confidentialite_path,
-                                  title: "Lire la Politique de confidentialité (nouvelle fenètre)",
-                                  target: "_blank",
-                                  rel: "external noopener noreferrer",
-                                  class: "font-weight-normal"
-                        span.font-weight-normal
-                          = " pour connaître les modalités d'utilisations de mes informations récoltées."
-                    .fr-mt-n3w.fr-mb-3w = error_tag
+                  .fr-my-2w
+                    p
+                      = link_to "Lire la Politique de confidentialité",
+                                politique_de_confidentialite_path,
+                                title: "Lire la Politique de confidentialité (nouvelle fenètre)",
+                                target: "_blank",
+                                rel: "external noopener noreferrer",
+                                class: "font-weight-normal"
+                      span.font-weight-normal
+                        = " pour connaître les modalités d'utilisations de mes informations récoltées."
                 .fr-fieldset__element
                   - error_tag  = errors.field_error_tag(resource_name: resource_name, resource: resource, field: :handicap_present)
                   div class="fr-checkbox-group fr-mb-2v #{error_tag.present? ? 'fr-input-group--error' : ''}"
