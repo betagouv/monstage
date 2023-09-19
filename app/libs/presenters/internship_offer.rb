@@ -71,6 +71,7 @@ module Presenters
          .map(&:week)
          .to_a
          .compact
+         .select{ |week| Week.selectable_on_school_year.include?(week) }
     end
 
     def initialize(internship_offer)

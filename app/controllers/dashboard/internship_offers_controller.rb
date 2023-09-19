@@ -32,13 +32,13 @@ module Dashboard
         end
         on.failure do |failed_internship_offer|
           @internship_offer = failed_internship_offer || InternshipOffer.new
-          @available_weeks = Week.selectable_from_now_until_end_of_school_year
+          @available_weeks = Week.selectable_on_school_year
           render :new, status: :bad_request
         end
       end
     rescue ActionController::ParameterMissing
       @internship_offer = InternshipOffer.new
-      @available_weeks = Week.selectable_from_now_until_end_of_school_year
+      @available_weeks = Week.selectable_on_school_year
       render :new, status: :bad_request
     end
 
@@ -46,7 +46,7 @@ module Dashboard
       authorize! :update, @internship_offer
       @republish = params[:republish].present?
       @republish = true
-      @available_weeks = @internship_offer.available_weeks_when_editing
+      @available_weeks = Week.selectable_on_school_year
     end
 
     def republish
