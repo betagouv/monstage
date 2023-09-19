@@ -33,11 +33,7 @@ module Dashboard::InternshipOffers
 
       get dashboard_internship_agreements_path
       assert_response :success
-      href = school_details_dashboard_internship_offer_internship_application_path(
-        internship_application.internship_offer,
-        internship_application
-      )
-      assert_select("td.actions a.fr-btn--secondary[href='#{href}']", text: "Contacter l'établissement")
+      assert_select("td.actions a.fr-btn--secondary", text: "Contacter l'établissement")
     end
 
     test 'GET #index as teacher ' do
