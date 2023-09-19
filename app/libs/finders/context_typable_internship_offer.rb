@@ -49,7 +49,7 @@ module Finders
     end
 
     def use_params(param_key)
-      return params[param_key] if check_param?(param_key)
+      params[param_key].presence
     end
 
     def check_param?(param_key)
