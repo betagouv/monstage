@@ -76,10 +76,8 @@ module StepperProxy
     end
 
     def available_weeks_when_editing
-      raise 'Wrong !!' unless persisted? && respond_to?(:weeks) # temporary
       return nil unless persisted? && respond_to?(:weeks)
-      
-      Week.selectable_on_school_year
+      Week.selectable_from_now_until_end_of_school_year
     end
 
     def weeks_class
