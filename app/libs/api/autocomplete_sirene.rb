@@ -21,7 +21,7 @@ module Api
     end
 
     def self.search_by_name(name:)
-      uri = URI("#{API_ENTREPRISE_ENDPOINT}?q=#{URI.encode(name)}")
+      uri = URI("#{API_ENTREPRISE_ENDPOINT}?q=#{CGI.escape(name)}")
       headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
