@@ -115,6 +115,11 @@ class InternshipApplication < ApplicationRecord
     where(applications[:aasm_state].in(['approved', 'signed']))
   }
 
+  scope :current_school_year, lambda {
+    where(created_at: SchoolYear::Current.new.beginning_of_period..SchoolYear::Current.new.end_of_period)
+  }
+
+
   #
   # Other stuffs
   #
