@@ -9,16 +9,25 @@ div id="toggle_status_#{dom_id(internship_offer)}" name="toggle_status_#{dom_id(
       .label
         = status_label
       .toggle-swap
-        - params = {internship_offer: {published_at: toggled_published_at}}
-        = link_to dashboard_internship_offer_path(internship_offer.to_param, params),
-                  class: '',
-                  data: { turbo: true },
-                  title: 'Publier / Masquer',
-                  method: :patch do
-          = render 'toggle_publish_element',
-                    published: published,
-                    id: id,
-                    submit: false
+        - if internship_offer.drafted?
+          = link_to internship_offer_path(internship_offer.to_param, origin: 'dashboard'),
+                    class: '',
+                    data: { turbo: false },
+                    title: 'Publier / Masquer' do
+            = render 'toggle_publish_element',
+                      published: published,
+                      id: id,
+                      submit: false
+        - else
+          = link_to dashboard_internship_offer_path(internship_offer.id, internship_offer: { published_at: nil }),
+                    class: '',
+                    data: { turbo: true },
+                    title: 'Publier / Masquer',
+                    method: :patch do
+            = render 'toggle_publish_element',
+                      published: published,
+                      id: id,
+                      submit: false
   - else
     = form_with(model: internship_offer,
                 url: republish_dashboard_internship_offer_path(internship_offer.to_param),

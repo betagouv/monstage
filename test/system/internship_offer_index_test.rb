@@ -28,6 +28,38 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
       end
     end
   end
+  
+  test 'publish navigation when week updates are necessary' do
+    employer = create(:employer)
+    internship_offer = nil
+    travel_to Date.new(2021, 10, 1) do
+      internship_offer = create(:weekly_internship_offer, employer: employer, weeks: [Week.next], internship_offer_area_id: employer.current_area_id)
+      internship_offer.draft!
+    end
+    travel_to Date.new(2022, 10, 8) do
+      sign_in(employer)
+      InternshipOffer.stub :nearby, InternshipOffer.all do
+        InternshipOffer.stub :by_weeks, InternshipOffer.all do
+          refute internship_offer.published?
+          visit dashboard_internship_offers_path
+          within("#toggle_status_#{dom_id(internship_offer)}") do
+            find(".label", text: "Masqué")
+            find("label.fr-toggle__label[for='toggle-#{internship_offer.id}']") # this publishes the internship_offer
+            execute_script("document.getElementById('axe-toggle-#{internship_offer.id}').closest('form').submit()")
+          end
+
+          refute internship_offer.reload.published?
+
+          find "h1.h2", text: "Modifier une offre de stage"
+          find "span#alert-text", text: "Votre annonce n'est pas encore republiée, car il faut ajouter des semaines de stage"
+
+          # find('h3.fr-alert__title', text: 'Ajoutez des semaines aux précédentes')
+
+          find('label', text: 'Semaine 41 - du 11 octobre au 17 octobre 2021').click
+        end
+      end
+    end
+  end
 
   test 'navigation & interaction works for employer' do
     employer = create(:employer)
@@ -98,8 +130,10 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
           end
 
           find("h2.h4", text: "Les offres")
+          sleep 0.05
+          assert internship_offer.reload.drafted?
 
-          within("#toggle_status_#{dom_id(internship_offer.reload)}") do
+          within("#toggle_status_#{dom_id(internship_offer)}") do
             find(".label", text: "Masqué")
           end
           refute internship_offer.reload.published?
@@ -108,7 +142,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
     end
   end
 
-  test 'publish navigation when no updates are necessary' do
+  test 'publish navigation when drafted and no updates are necessary' do
     travel_to Date.new(2021, 10, 1) do
       employer = create(:employer)
       within_2_weeks = Week.find_by(id: Week.current.id + 2)
@@ -126,26 +160,27 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
           visit dashboard_internship_offers_path
           within("#toggle_status_#{dom_id(internship_offer)}") do
             find(".label", text: "Masqué")
-            find("a[rel='nofollow'][data-method='patch']").click # this publishes the internship_offer
+            # following leads to intenship offer detail page because no updates are necessary
+            find("a[title='Publier / Masquer']").click
           end
 
-          find("h2.h4", text: "Les offres")
+          find("h1.h3.text-dark", text: internship_offer.title)
 
-          within("#toggle_status_#{dom_id(internship_offer.reload)}") do
-            find(".label", text: "Publié")
+          within(".fr-container .fat-line-below .col-8.d-print-none") do
+            find("p.fr-badge.fr-badge--new", text: 'MASQUÉ')
           end
-          assert internship_offer.reload.published?
+          assert internship_offer.reload.drafted?
         end
       end
     end
   end
 
-  test 'publish navigation when week updates are necessary' do
+  test 'publish navigation when drafted and week updates are necessary' do
     employer = create(:employer)
     internship_offer = nil
     travel_to Date.new(2021, 10, 1) do
       internship_offer = create(:weekly_internship_offer, employer: employer, weeks: [Week.next], internship_offer_area_id: employer.current_area_id)
-      internship_offer.draft
+      internship_offer.draft!
     end
     travel_to Date.new(2022, 10, 8) do
       sign_in(employer)

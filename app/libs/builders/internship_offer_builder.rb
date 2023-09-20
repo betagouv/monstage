@@ -50,10 +50,15 @@ module Builders
     def update(instance:, params:)
       yield callback if block_given?
       authorize :update, instance
-      instance.publish! if instance.republish
       instance.attributes = preprocess_api_params(params, fallback_weeks: false)
       instance = deal_with_max_candidates_change(params: params, instance: instance)
-      instance.reset_publish_states if from_api?
+      if from_api?
+        instance.reset_publish_states
+      elsif instance.may_publish? && instance.republish
+        instance.publish!
+      elsif instance.may_draft? && params[:published_at].blank?
+        instance.draft!
+      end
       instance.save!
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => e

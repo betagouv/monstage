@@ -33,7 +33,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     travel_to(Date.new(2019, 3, 1)) do
       employer = create(:employer)
       internship_offer = create(:weekly_internship_offer, employer: employer)
-      internship_offer.update(published_at: nil)
+      internship_offer.draft!
       refute internship_offer.published?
 
       sign_in(employer)
