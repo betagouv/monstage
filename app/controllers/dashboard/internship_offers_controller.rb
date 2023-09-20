@@ -46,7 +46,7 @@ module Dashboard
       authorize! :update, @internship_offer
       @republish = params[:republish].present?
       @republish = true
-      @available_weeks = @internship_offer.available_weeks_when_editing
+      @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
 
     def republish

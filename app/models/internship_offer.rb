@@ -328,4 +328,8 @@ class InternshipOffer < ApplicationRecord
     self.remaining_seats_count = max_candidates - reserved_places
     self.published_at = nil if remaining_seats_count.zero?
   end
+
+  def approved_applications_current_school_year
+    internship_applications.approved.current_school_year
+  end
 end

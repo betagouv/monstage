@@ -11,7 +11,7 @@ tr class="test-internship-offer test-internship-offer-#{employer_internship_offe
 
   - ok_applications_count = cols[:approved_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')
   td.text-center.align-middle.accepted-offers data-head="#{ok_applications_count}"
-    = employer_internship_offer.approved_applications_count
+    = employer_internship_offer.approved_applications_current_school_year.count
 
   td.text-center.align-middle.remaining_seats data-head="#{cols[:remaining_seats_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
     = employer_internship_offer.remaining_seats_count
