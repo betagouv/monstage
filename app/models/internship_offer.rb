@@ -45,6 +45,7 @@ class InternshipOffer < ApplicationRecord
 
    # Callbacks
   before_save :update_remaining_seats
+  after_save :draft_if_no_remaining_seats_anymore
 
   after_initialize :init
 
@@ -85,8 +86,6 @@ class InternshipOffer < ApplicationRecord
                       prefix: true
                     }
                   }
-
-  scope :published, -> { where.not(published_at: nil) }
 
   scope :by_sector, lambda { |sector_id|
     where(sector_id: sector_id)
@@ -154,6 +153,12 @@ class InternshipOffer < ApplicationRecord
         update!(published_at: nil)
       }
     end
+
+    event :draft do
+      transitions from: %i[published], to: :drafted, after: proc { |*_args|
+        update!(published_at: nil)
+      }
+    end
   end
 
   # Methods
@@ -166,10 +171,6 @@ class InternshipOffer < ApplicationRecord
     return nil if !from_api?
     employer.operator
   end
-
-  def published? ; published_at.present? end
-  def publish! ; update(published_at: Time.zone.now) end
-  def unpublish! ; update(published_at: nil) end
 
   def from_api?
     permalink.present?
@@ -327,5 +328,11 @@ class InternshipOffer < ApplicationRecord
     reserved_places = internship_offer_weeks&.sum(:blocked_applications_count)
     self.remaining_seats_count = max_candidates - reserved_places
     self.published_at = nil if remaining_seats_count.zero?
+  end
+
+  def draft_if_no_remaining_seats_anymore
+    if remaining_seats_count.zero? && may_draft?
+      update_columns(aasm_state: 'drafted', published_at: nil)
+    end
   end
 end

@@ -78,7 +78,7 @@ module InternshipOffers
       to_be_unpublished += published.where('remaining_seats_count < 1').to_a
       to_be_unpublished.uniq.each do |offer|
         print '.'
-        offer.unpublish!
+        offer.draft!
       end
     end
   end

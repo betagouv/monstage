@@ -370,7 +370,9 @@ module Dashboard
           click_button "Choisir ce stage"
           click_button "Confirmer"
           assert_equal "approved", internship_application.reload.aasm_state
-          click_link "Connexion" # demonstrates user is not logged in
+          within('.fr-header__tools-links') do
+            click_link "Connexion" # demonstrates user is not logged in
+          end
         end
       end
 

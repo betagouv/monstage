@@ -398,7 +398,7 @@ module InternshipOffers
 
     test 'GET #show as Visitor when internship_offer is unpublished redirects to home' do
       internship_offer = create(:weekly_internship_offer)
-      internship_offer.update!(published_at: nil)
+      internship_offer.draft!
       get internship_offer_path(internship_offer)
       assert_redirected_to internship_offers_path
     end
@@ -449,7 +449,7 @@ module InternshipOffers
 
     test 'GET #show as Employer when internship_offer is unpublished works' do
       internship_offer = create(:weekly_internship_offer)
-      internship_offer.update!(published_at: nil)
+      internship_offer.draft!
       sign_in(internship_offer.employer)
       get internship_offer_path(internship_offer)
       assert_response :success
@@ -457,7 +457,7 @@ module InternshipOffers
 
     test 'GET #show as Student when internship_offer is unpublished shall redirect to' do
       internship_offer = create(:weekly_internship_offer)
-      internship_offer.update!(published_at: nil)
+      internship_offer.draft!
       sign_in(create(:student))
       get internship_offer_path(internship_offer)
       assert_response :redirect
