@@ -43,7 +43,7 @@ class UserTest < ActiveSupport::TestCase
     assert_nil  internship_application.reload.motivation.body
     assert_nil internship_application.student_phone
     assert_nil internship_application.student_email
-    assert_equal nil, student.class_room_id
+    assert_nil student.class_room_id
 
     assert_not_equal 'test@test.com', student.email
     assert_not_equal 'Toto', student.first_name
@@ -76,7 +76,7 @@ class UserTest < ActiveSupport::TestCase
     end
 
     assert_equal 'm', student.gender
-    assert_equal nil, student.class_room_id
+    assert_nil student.class_room_id
 
     assert_not_equal '', student.email
     assert_not_equal 'Toto', student.first_name
