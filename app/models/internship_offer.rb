@@ -335,4 +335,8 @@ class InternshipOffer < ApplicationRecord
       update_columns(aasm_state: 'drafted', published_at: nil)
     end
   end
+
+  def approved_applications_current_school_year
+    internship_applications.approved.current_school_year
+  end
 end

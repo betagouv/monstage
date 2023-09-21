@@ -201,7 +201,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
 
           # find('h3.fr-alert__title', text: 'Ajoutez des semaines aux précédentes')
 
-          find('label', text: 'Semaine 41 - du 11 octobre au 17 octobre 2021').click
+          find('label', text: 'Semaine 41 - du 10 octobre au 16 octobre 2022').click
         end
       end
     end

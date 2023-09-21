@@ -157,7 +157,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       find(".test-edit-button").click
       find('h1', text: "Modifier une offre")
       click_button('Publier l\'offre')
-      find(".fr-alert.fr-alert--error", text: "Vous devez sélectionner au moins une semaine dans le futur")
+      find(".form-text", text: "Veuillez saisir au moins une semaine de stage")
 
       within(".custom-control-checkbox-list") do
         find("label[for='internship_offer_week_ids_142_checkbox']").click
