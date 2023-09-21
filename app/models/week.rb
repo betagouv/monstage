@@ -3,6 +3,7 @@
 # Calendar weeks
 class Week < ApplicationRecord
   include FormatableWeek
+  WORKING_WEEK_DURATION = 5
   has_many :internship_offer_weeks, dependent: :destroy,
                                     foreign_key: :week_id
   has_many :internship_applications, dependent: :destroy,
@@ -150,19 +151,5 @@ class Week < ApplicationRecord
 
   def consecutive_to?(other_week)
     self.id.to_i == other_week.id.to_i + 1
-  end
-
-  # This method is not used .... keep ?
-  def self.airtablize(school_year = SchoolYear::Current.new)
-    school_year_str = "#{school_year.beginning_of_period.year}-#{school_year.end_of_period.year}"
-    weeks = Week.selectable_for_school_year(school_year: school_year)
-
-    require 'csv'
-    CSV.open("myfile.csv", "w") do |csv|
-      csv << ["Semaine", "ID MS3e", "year"]
-      weeks.map do |w|
-        csv << [w.select_text_method, w.id, school_year_str]
-      end
-    end
   end
 end

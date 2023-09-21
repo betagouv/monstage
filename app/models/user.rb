@@ -45,9 +45,6 @@ class User < ApplicationRecord
                     format: { with: Devise.email_regexp },
                     allow_blank: true
 
-  validates_inclusion_of :accept_terms, in: ['1', true],
-                                        message: :accept_terms,
-                                        on: :create
   validate :email_or_phone
   validate :keep_email_existence, on: :update
 

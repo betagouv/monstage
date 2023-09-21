@@ -40,7 +40,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
       assert_changes -> { internship_application.reload.submitted_at },
           from: nil,
           to: Time.now.utc do
-        mock_mail = MiniTest::Mock.new
+        mock_mail = Minitest::Mock.new
         mock_mail.expect(:deliver_later, true, [] , wait: 1.second)
         EmployerMailer.stub :internship_application_submitted_email, mock_mail do
           internship_application.submit!
@@ -71,9 +71,9 @@ class InternshipApplicationTest < ActiveSupport::TestCase
       class_room: internship_application.student.class_room,
       school: internship_application.student.school
     )
-    mock_mail_to_main_teacher = MiniTest::Mock.new
+    mock_mail_to_main_teacher = Minitest::Mock.new
     mock_mail_to_main_teacher.expect(:deliver_later, true, [] , wait: 1.second)
-    mock_mail_to_student = MiniTest::Mock.new
+    mock_mail_to_student = Minitest::Mock.new
     mock_mail_to_student.expect(:deliver_later, true, [] , wait: 1.second)
 
     MainTeacherMailer.stub :internship_application_validated_by_employer_email, mock_mail_to_main_teacher do
@@ -107,7 +107,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     )
 
     internship_application.stub :create_agreement, nil do
-      mock_mail_to_main_teacher = MiniTest::Mock.new
+      mock_mail_to_main_teacher = Minitest::Mock.new
       mock_mail_to_main_teacher.expect(:deliver_later, true, [] , wait: 1.second)
 
       MainTeacherMailer.stub :internship_application_approved_with_agreement_email, mock_mail_to_main_teacher do
@@ -125,7 +125,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   #   )
 
   #   internship_application.stub :create_agreement, nil do
-  #     mock_mail_to_main_teacher = MiniTest::Mock.new
+  #     mock_mail_to_main_teacher = Minitest::Mock.new
   #     mock_mail_to_main_teacher.expect(:deliver_later, true, [] , wait: 1.second)
 
   #     MainTeacherMailer.stub :internship_application_approved_with_agreement_email, mock_mail_to_main_teacher do
@@ -144,7 +144,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
         assert_changes -> { internship_application.reload.approved_at },
                       from: nil,
                       to: Time.now.utc do
-          mock_mail_to_student = MiniTest::Mock.new
+          mock_mail_to_student = Minitest::Mock.new
           mock_mail_to_student.expect(:deliver_later, true, [{ wait: 1.second }])
           StudentMailer.stub :internship_application_approved_email, mock_mail_to_student do
             internship_application.save
@@ -165,7 +165,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
 
     internship_application = create(:weekly_internship_application, :submitted, student: student)
 
-    mock_mail_to_main_teacher = MiniTest::Mock.new
+    mock_mail_to_main_teacher = Minitest::Mock.new
     mock_mail_to_main_teacher.expect(:deliver_later, true)
 
     InternshipApplication.stub_any_instance(:after_employer_validation_notifications, nil) do
@@ -186,7 +186,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
 
     internship_application = create(:weekly_internship_application, :validated_by_employer, student: student)
 
-    mock_mail_to_main_teacher = MiniTest::Mock.new
+    mock_mail_to_main_teacher = Minitest::Mock.new
     mock_mail_to_main_teacher.expect(:deliver_later, true)
 
     InternshipApplication.stub_any_instance(:student_approval_notifications, nil) do
@@ -209,7 +209,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
 
     internship_application = create(:weekly_internship_application, :validated_by_employer, student: student)
 
-    mock_mail_to_employer = MiniTest::Mock.new
+    mock_mail_to_employer = Minitest::Mock.new
     mock_mail_to_employer.expect(:deliver_later, true)
 
     EmployerMailer.stub(:internship_application_approved_with_agreement_email,
@@ -229,7 +229,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
 
     # internship_application = create(:weekly_internship_application, :submitted, student: student)
 
-    # mock_mail_to_school_manager = MiniTest::Mock.new
+    # mock_mail_to_school_manager = Minitest::Mock.new
     # mock_mail_to_school_manager.expect(:deliver_later, true)
 
     # InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
@@ -254,7 +254,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
 
     # internship_application = create(:weekly_internship_application, :submitted, student: student)
 
-    # mock_mail_to_main_teacher = MiniTest::Mock.new
+    # mock_mail_to_main_teacher = Minitest::Mock.new
     # mock_mail_to_main_teacher.expect(:deliver_later, true)
 
     # InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
@@ -288,7 +288,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
       assert_changes -> { internship_application.reload.rejected_at },
                      from: nil,
                      to: Time.now.utc do
-        mock_mail = MiniTest::Mock.new
+        mock_mail = Minitest::Mock.new
         mock_mail.expect(:deliver_later, true, [], wait: 1.second)
         StudentMailer.stub :internship_application_rejected_email, mock_mail do
           internship_application.reject!
@@ -305,7 +305,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
       assert_changes -> { internship_application.reload.rejected_at },
                      from: nil,
                      to: Time.now.utc do
-        mock_mail = MiniTest::Mock.new
+        mock_mail = Minitest::Mock.new
         mock_mail.expect(:deliver_later, true, [{wait: 1.second}])
         StudentMailer.stub :internship_application_rejected_email, mock_mail do
           internship_application.reject!
@@ -321,7 +321,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
       assert_changes -> { internship_application.reload.validated_by_employer_at },
                      from: nil,
                      to: Time.now.utc do
-        mock_mail = MiniTest::Mock.new
+        mock_mail = Minitest::Mock.new
         mock_mail.expect(:deliver_later, true, [], wait: 1.second)
         StudentMailer.stub :internship_application_validated_by_employer_email, mock_mail do
           internship_application.employer_validate!
@@ -339,7 +339,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
         assert_changes -> { internship_application.reload.validated_by_employer_at },
                       from: nil,
                       to: Time.now.utc do
-          mock_mail = MiniTest::Mock.new
+          mock_mail = Minitest::Mock.new
           mock_mail.expect(:deliver_later, true, [{wait: 1.second}])
           StudentMailer.stub :internship_application_approved_email, mock_mail do
             internship_application.employer_validate!
@@ -360,7 +360,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
         assert_changes -> { internship_application.reload.canceled_at },
                        from: nil,
                        to: Time.now.utc do
-          mock_mail = MiniTest::Mock.new
+          mock_mail = Minitest::Mock.new
           mock_mail.expect(:deliver_later, true, [], wait: 1.second)
           StudentMailer.stub :internship_application_canceled_by_employer_email,
                              mock_mail do
@@ -408,7 +408,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     student = create(:student)
     internship_application = create(:weekly_internship_application, student: student)
 
-    mock_mail = MiniTest::Mock.new
+    mock_mail = Minitest::Mock.new
     mock_mail.expect(:deliver_later, true, [], wait: 1.second)
 
     StudentMailer.stub :internship_application_validated_by_employer_email, mock_mail do

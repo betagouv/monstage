@@ -362,6 +362,9 @@ fr:
         school_year: Année
         internship_applications: Candidatures
         ministries: Ministères
+        contact_name: Nom du contact
+        contact_email: Courriel du contact
+        contact_phone: Téléphone du contact
         organisation:
           group: Groupe ou institution de tutelle
 

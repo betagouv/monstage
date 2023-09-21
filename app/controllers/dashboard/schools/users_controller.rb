@@ -11,8 +11,10 @@ module Dashboard
                           .keys
                           .map(&:pluralize)
                           .map(&:to_sym)
-        @collection = roles.inject([]) {|whole, role| whole += @school.send(role).kept }
-        @collection += [@school.school_manager]
+        @school_employee_collection = roles.inject([]) {|whole, role|
+          whole += @school.send(role).kept
+        }
+        @school_employee_collection += [@school.school_manager]
 
         @invitations = Invitation.for_people_with_no_account_in(school_id: @school.id)
                                  .order(created_at: :desc)

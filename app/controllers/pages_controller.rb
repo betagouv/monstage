@@ -31,7 +31,7 @@ class PagesController < ApplicationController
   end
 
   def student_landing
-    @internship_offers = InternshipOffer.last(3)
+    @internship_offers = InternshipOffer.includes([:sector]).last(3)
   end
 
   def pro_landing
@@ -39,10 +39,10 @@ class PagesController < ApplicationController
   end
 
   def school_management_landing
-    @internship_offers = InternshipOffer.last(3)
+    @internship_offers = InternshipOffer.includes([:sector]).last(3)
   end
 
   def statistician_landing
-    @internship_offers = InternshipOffer.last(3)
+    @internship_offers = InternshipOffer.includes([:sector]).last(3)
   end
 end

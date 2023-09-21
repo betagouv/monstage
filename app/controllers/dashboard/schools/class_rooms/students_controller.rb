@@ -57,7 +57,6 @@ module Dashboard
         student_params.merge(
           school_id: @class_room.school_id, 
           class_room_id: @class_room.id,
-          accept_terms: true,
           password: Devise.friendly_token.first(8),
           created_by_teacher: true,
         )

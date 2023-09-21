@@ -8,6 +8,12 @@ module Presenters
       " au #{I18n.localize(internship_offer.last_date, format: :human_mm_dd_yyyy)}"
     end
 
+    def weeks_summary
+      { weeks_count: free_weeks.size,
+        weeks_list: Presenters::WeekList.new(weeks: free_weeks)
+      }
+    end
+
     def address
       "#{internship_offer.street}, #{internship_offer.zipcode} #{internship_offer.city}"
     end
@@ -57,6 +63,16 @@ module Presenters
     private
 
     attr_reader :internship_offer
+
+    def free_weeks
+      weeks = internship_offer.internship_offer_weeks.select do |internship_offer_week|
+        internship_offer_week.blocked_applications_count != internship_offer.max_students_per_group
+      end.sort_by{ |internship_offer_week| internship_offer_week.id }
+         .map(&:week)
+         .to_a
+         .compact
+         .select{ |week| Week.selectable_on_school_year.include?(week) }
+    end
 
     def initialize(internship_offer)
       @internship_offer = internship_offer

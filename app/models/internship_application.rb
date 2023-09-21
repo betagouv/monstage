@@ -62,6 +62,10 @@ class InternshipApplication < ApplicationRecord
       .or(examined.where('submitted_at < :date', date: extended_duration.ago))
   }
 
+  scope :filtering_discarded_students, lambda {
+    joins(:student).where(student: {discarded_at: nil})
+  }
+
   #
   # Ordering scopes (used for ordering in ui)
   #
@@ -110,6 +114,11 @@ class InternshipApplication < ApplicationRecord
     applications = InternshipApplication.arel_table
     where(applications[:aasm_state].in(['approved', 'signed']))
   }
+
+  scope :current_school_year, lambda {
+    where(created_at: SchoolYear::Current.new.beginning_of_period..SchoolYear::Current.new.end_of_period)
+  }
+
 
   #
   # Other stuffs
@@ -415,7 +424,8 @@ class InternshipApplication < ApplicationRecord
 
   def filter_notified_emails
     original_employer = internship_offer.employer
-    return employer.email if !employer.employer_like? || employer.team.not_exists?
+    return employer.email unless employer.employer_like?
+    return employer.email if employer.team.not_exists?
 
     potential_employers = original_employer.team.db_members
     emails = potential_employers.map do |potential_employer|

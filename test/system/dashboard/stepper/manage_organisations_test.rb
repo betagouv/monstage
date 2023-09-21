@@ -44,7 +44,6 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
       fill_in_organisation_form(is_public: true, group: group)
       as = 'a' * (InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT + 2)
       find('#organisation_employer_description_rich_text', visible: false).set(as)
-      click_on "Suivant"
       find('.fr-alert.fr-alert--error')
     end
   end

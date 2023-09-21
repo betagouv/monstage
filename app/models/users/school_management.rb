@@ -14,7 +14,11 @@ module Users
               :last_name,
               :role,
               presence: true
-
+    
+    validates_inclusion_of :accept_terms, in: ['1', true],
+              message: :accept_terms,
+              on: :create
+              
     belongs_to :school, optional: true
     belongs_to :class_room, optional: true
     has_many :students, through: :school

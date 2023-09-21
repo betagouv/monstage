@@ -82,6 +82,7 @@ Les offres de stages décrits ci-dessous décrivent les offres réservées aux c
     permalink: lien de redirection pour renvoyer sur le site unique du coté operateur|collectivité|association
     max_candidates: le nombre de candidat possible sur ce stage
     published_at: date de publication de l'offre
+    is_public: Secteur public ou privé
   }
 }
 ```
@@ -197,6 +198,7 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 * **remote_id** *(string, required)*: l'identifiant unique du coté operateur|collectivité|association
 * **permalink** *(url, required)*
 * **max_candidates** *(integer)*
+* **is_public** *(boolean, optional)*: true|false
 
 ### Exemple curl
 
@@ -238,6 +240,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 * **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
 * **permalink** *(url)*
 * **max_candidates** *(integer)*
+* **is_public** *(boolean, optional)*: true|false
 * **published_at** *(datetime.iso8601(0))* : voir [reference](https://ruby-doc.org/stdlib-2.6.1/libdoc/date/rdoc/DateTime.html#method-i-iso8601)
 
 Note : La dépublication s'opère en passant null dans le paramètre published_at

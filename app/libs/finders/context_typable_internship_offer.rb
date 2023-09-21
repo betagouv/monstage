@@ -49,7 +49,7 @@ module Finders
     end
 
     def use_params(param_key)
-      return params[param_key] if check_param?(param_key)
+      params[param_key].presence
     end
 
     def check_param?(param_key)
@@ -110,8 +110,8 @@ module Finders
         InternshipOffers::WeeklyFramed.send(scope)
           .or(InternshipOffers::Api.send(scope))
       else
-        InternshipOffers::WeeklyFramed.send(scope, args)
-          .or(InternshipOffers::Api.send(scope, args))
+        InternshipOffers::WeeklyFramed.send(scope, **args)
+          .or(InternshipOffers::Api.send(scope, **args))
       end
     end
   end

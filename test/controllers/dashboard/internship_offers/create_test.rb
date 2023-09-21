@@ -90,7 +90,7 @@ module Dashboard::InternshipOffers
                max_candidates: 2,
              }
            })
-      assert_select('.fr-alert.fr-alert--error', count: 1)
+      assert_select('.fr-alert.fr-alert--error', count: 2)
       assert_select('.fr-alert.fr-alert--error strong', html: /Code postal/)
       assert_select('.fr-alert.fr-alert--error strong', html: /Description/)
       assert_select('.fr-alert.fr-alert--error strong', html: /Secteur/)

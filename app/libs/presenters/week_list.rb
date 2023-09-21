@@ -56,6 +56,8 @@ module Presenters
       to_range_as_str.split(/(\d*\s?semaines?\s?:?)/)
     end
 
+    attr_reader :weeks, :first_week, :last_week
+
     protected
 
     def render_first_week_only
@@ -70,13 +72,12 @@ module Presenters
         "Disponible sur #{weeks.size} semaines :",
         yield(is_first: true, is_last: false, week: first_week).to_s,
         " → #{yield(is_first: false, is_last: true, week: last_week)}"
-      ].join(' ')
+      ].join(' ').html_safe
     end
 
+    
     private
-
-    attr_reader :weeks, :first_week, :last_week
-
+    
     def initialize(weeks:)
       @weeks = weeks
       @first_week, @last_week = weeks.minmax_by(&:id)
