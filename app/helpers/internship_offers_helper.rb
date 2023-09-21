@@ -89,11 +89,11 @@ module InternshipOffersHelper
   end
 
   def select_daily_start(internship_offer, day)
-    internship_offer.daily_hours.blank? ? '9:00' : internship_offer.daily_hours&.fetch(day, '9:00')
+    internship_offer.daily_hours.blank? ? '' : internship_offer.daily_hours&.fetch(day, '9:00')
   end
 
   def select_daily_end(internship_offer, day)
-    internship_offer.daily_hours.blank? ? '17:00' : internship_offer.daily_hours&.fetch(day, '17:00')
+    internship_offer.daily_hours.blank? ? '' : internship_offer.daily_hours&.fetch(day, '17:00')
   end
 
   def truncate_description(internship_offer)
