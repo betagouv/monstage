@@ -10,6 +10,6 @@ p style=p_styles
     = @internship_application.student.handicap
 
 = render(partial: "mailers/blue_call_to_action",
-         locals: {href: dashboard_candidatures_url(@internship_application.internship_offer),
+         locals: {href: dashboard_internship_offer_internship_application_url(internship_offer_id: @internship_application.internship_offer.id, id: @internship_application.id),
                   label:'Répondre à la candidature'})
 
