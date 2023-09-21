@@ -8,18 +8,7 @@ export default class extends Controller {
     'weeklyLunchBreak',
     'dailyHoursStart',
     'dailyHoursEnd',
-    'lundiHoursStart',
-    'lundiHoursEnd',
-    'mardiHoursStart',
-    'mardiHoursEnd',
-    'mercrediHoursStart',
-    'mercrediHoursEnd',
-    'jeudiHoursStart',
-    'jeudiHoursEnd',
-    'vendrediHoursStart',
-    'vendrediHoursEnd',
-    'samediHoursStart',
-    'samediHoursEnd',
+    'dailyLunchBreak',
   ];
 
   handleToggleWeeklyPlanning(){
@@ -41,26 +30,20 @@ export default class extends Controller {
   }
 
   clean_daily_hours() {
-    this.lundiHoursStartTarget.value = '';
-    this.lundiHoursEndTarget.value = '';
-    this.mardiHoursStartTarget.value = '';
-    this.mardiHoursEndTarget.value = '';
-    this.mercrediHoursStartTarget.value = '';
-    this.mercrediHoursEndTarget.value = '';
-    this.jeudiHoursStartTarget.value = '';
-    this.jeudiHoursEndTarget.value = '';
-    this.vendrediHoursStartTarget.value = '';
-    this.vendrediHoursEndTarget.value = '';
-    this.samediHoursStartTarget.value = '';
-    this.samediHoursEndTarget.value = '';
-  }
+    this.dailyHoursEndTargets.forEach((dailyHoursEndTarget) => {
+      dailyHoursEndTarget.value = '';
+    })
+
+    this.dailyHoursStartTargets.forEach((dailyHoursStartTarget) => {
+      dailyHoursStartTarget.value = '';
+    })
+  };
   
   clean_daily_lunch() {
-    var dailyLunchBreaks = document.getElementsByClassName('daily-lunch-break');
-    for (var i = 0; i < dailyLunchBreaks.length; i++) {
-      dailyLunchBreaks[i].value = '';
-    }
-  }
+    this.dailyLunchBreakTargets.forEach((dailyLunchBreakTarget) => {
+      dailyLunchBreakTarget.value = '';
+    })
+  };
 
   initialize_daily_hours() {
     var dailyHoursStart = document.getElementsByClassName('daily-hours-start');

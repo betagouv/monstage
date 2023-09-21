@@ -81,7 +81,7 @@ module InternshipOffersHelper
   end
 
   def select_weekly_start(internship_offer)
-    internship_offer.weekly_planning? ? internship_offer.weekly_hours.try(:first) || '9:00' : '--'
+    internship_offer.weekly_planning? ? internship_offer.weekly_hours.try(:first) || '09:00' : '--'
   end
 
   def select_weekly_end(internship_offer)
@@ -89,7 +89,7 @@ module InternshipOffersHelper
   end
 
   def select_daily_start(internship_offer, day)
-    internship_offer.daily_hours.blank? ? '' : internship_offer.daily_hours&.fetch(day, '9:00')
+    internship_offer.daily_hours.blank? ? '' : internship_offer.daily_hours&.fetch(day, '09:00')
   end
 
   def select_daily_end(internship_offer, day)

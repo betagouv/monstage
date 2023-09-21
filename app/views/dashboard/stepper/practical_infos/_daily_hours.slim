@@ -55,19 +55,18 @@ div.fr-my-2w data-controller="daily-hours"
                         {:include_blank => '--',
                          class: "fr-select daily-hours-start", 
                          disabled: disabled, 
-                         data: { target: "daily-hours.#{weekday}HoursStart" },
+                         data: { target: "daily-hours.dailyHoursStart" },
                          aria: { label: "Selectionner une heure de debut de stage pour le #{weekday.capitalize}" }, id: "#{form.object_name}_daily_hours_#{weekday}_start"}
           
         .col-1 style="display: flex;align-items: center;justify-content: center;"
           | à
         .col-5
-          h2 = select_daily_end(form.object, weekday)
           = select_tag :"#{form.object_name}[daily_hours][#{weekday}][]",
                         options_for_select(afternoon_hours_by_quarter, selected: select_daily_end(form.object, weekday)),
                         {:include_blank => '--', 
                          class: "fr-select daily-hours-end", 
                          disabled: disabled, 
-                         data: { target: "daily-hours.#{weekday}HoursEnd" },
+                         data: { target: "daily-hours.dailyHoursEnd" },
                          aria: { label:"Selectionner une heure de debut de fin pour le #{weekday.capitalize}" }, id: "#{form.object_name}_daily_hours_#{weekday}_end"}
           
       .row
@@ -80,6 +79,7 @@ div.fr-my-2w data-controller="daily-hours"
                 | Indiquez les horaires et qui est responsable de l'élève.
             = form.text_area :"daily_lunch_break[#{weekday}]",
                              value: form.object.daily_lunch_break[weekday],
-                             class: "form-control daily-lunch-break",
+                             class: "form-control",
                              placeholder: "12h -13h dans les locaux…",
+                             data: {target: "daily-hours.dailyLunchBreak"},
                              disabled: disabled
