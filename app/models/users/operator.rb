@@ -6,9 +6,6 @@ module Users
 
     belongs_to :operator, foreign_key: :operator_id,
                           class_name: '::Operator'
-    has_many :application_trackings,
-             class_name: 'Api::ApplicationTracking',
-             foreign_key: :user_operator_id
 
     before_create :set_api_token
 

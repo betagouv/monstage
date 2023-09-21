@@ -2,7 +2,6 @@ module Api
   class ApplicationTracking < ApplicationRecord
     belongs_to :internship_offer
     belongs_to :student, class_name: 'Users::Student', foreign_key: :student_id, optional: true
-    belongs_to :user_operator, class_name: 'Users::Operator', foreign_key: :user_operator_id
 
     validates :internship_offer_id,
               uniqueness: { scope: %i[internship_offer_id student_id ms3e_student_id remote_status] }

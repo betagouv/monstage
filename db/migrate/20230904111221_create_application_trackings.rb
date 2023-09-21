@@ -3,7 +3,6 @@ class CreateApplicationTrackings < ActiveRecord::Migration[7.0]
     create_table :application_trackings do |t|
       t.references :internship_offer, null: false
       t.references :student, null: true, foreign_key: { to_table: :users }
-      t.references :user_operator, null: false, foreign_key: { to_table: :users }
       t.datetime :application_submitted_at, null: true
       t.datetime :application_approved_at, null: true
       t.string :ms3e_student_id, limit: 150, null: true

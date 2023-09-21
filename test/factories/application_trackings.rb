@@ -2,7 +2,6 @@ FactoryBot.define do
   factory :application_tracking, class: "Api::ApplicationTracking" do
     internship_offer { create(:api_internship_offer)}
     student { create(:student) }
-    user_operator { create(:user_operator) }
     application_submitted_at {  }
     application_approved_at {  }
     ms3e_student_id {  }

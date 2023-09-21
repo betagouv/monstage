@@ -44,7 +44,6 @@ module Builders
       fetch_student(params: params) && {
         internship_offer_id: internship_offer.id,
         student_id: params[:student_id],
-        user_operator_id: user.id,
         application_submitted_at: params[:remote_status] == 'application_submitted' ? DateTime.now : nil,
         application_approved_at: params[:remote_status] == 'application_approved' ? DateTime.now : nil,
         ms3e_student_id: params[:ms3e_student_id],
