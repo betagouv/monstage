@@ -178,7 +178,7 @@ module Dashboard::InternshipOffers
         internship_application.employer_validate!
         internship_application.approve!
         assert_equal 0, internship_offer.reload.remaining_seats_count
-        assert internship_offer.drafted?
+        assert internship_offer.need_to_be_updated?
 
         sign_in(employer)
         patch republish_dashboard_internship_offer_path(
@@ -198,7 +198,7 @@ module Dashboard::InternshipOffers
         internship_offer = create(:weekly_internship_offer,
                                   employer: employer,
                                   weeks: [Week.current])
-        internship_offer.draft!
+        assert internship_offer.need_to_be_updated?
 
         sign_in(employer)
         patch republish_dashboard_internship_offer_path(

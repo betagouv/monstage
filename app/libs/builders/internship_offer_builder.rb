@@ -56,10 +56,10 @@ module Builders
         instance.reset_publish_states
       elsif instance.may_publish? && instance.republish
         instance.publish!
-      elsif instance.may_draft? && params[:published_at].blank?
-        instance.draft!
+      elsif instance.published_at.nil?
+        instance.unpublish! if instance.may_unpublish?
       end
-      instance.save!
+      instance.save! # this may set aasm_state to need_to_be_updated state
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => e
       callback.on_failure.try(:call, e.record)

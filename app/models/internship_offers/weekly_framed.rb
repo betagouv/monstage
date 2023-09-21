@@ -73,12 +73,12 @@ module InternshipOffers
                            .count
     end
 
-    def self.archive_older_internship_offers
+    def self.update_older_internship_offers
       to_be_unpublished = published.where('last_date < ?', Time.now.utc).to_a
       to_be_unpublished += published.where('remaining_seats_count < 1').to_a
       to_be_unpublished.uniq.each do |offer|
         print '.'
-        offer.draft!
+        offer.need_update!
       end
     end
   end

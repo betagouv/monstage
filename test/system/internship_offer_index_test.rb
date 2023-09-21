@@ -33,9 +33,14 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
     employer = create(:employer)
     internship_offer = nil
     travel_to Date.new(2021, 10, 1) do
-      internship_offer = create(:weekly_internship_offer, employer: employer, weeks: [Week.next], internship_offer_area_id: employer.current_area_id)
-      internship_offer.draft!
+      internship_offer = create(
+        :weekly_internship_offer,
+        employer: employer,
+        weeks: [Week.next],
+        internship_offer_area_id: employer.current_area_id
+      )
     end
+    internship_offer.update(title: 'new_title') # this triggers the need_update! callback
     travel_to Date.new(2022, 10, 8) do
       sign_in(employer)
       InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -55,7 +60,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
 
           # find('h3.fr-alert__title', text: 'Ajoutez des semaines aux précédentes')
 
-          find('label', text: 'Semaine 41 - du 11 octobre au 17 octobre 2021').click
+          find('label', text: 'Semaine 41 - du 10 octobre au 16 octobre 2022').click
         end
       end
     end
@@ -86,7 +91,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
             find(".label", text: "Publié")
           end
 
-          InternshipOffers::WeeklyFramed.archive_older_internship_offers
+          InternshipOffers::WeeklyFramed.update_older_internship_offers
 
           visit dashboard_internship_offers_path
 
@@ -121,7 +126,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
       InternshipOffer.stub :nearby, InternshipOffer.all do
         InternshipOffer.stub :by_weeks, InternshipOffer.all do
           assert internship_offer.published?
-          InternshipOffers::WeeklyFramed.archive_older_internship_offers
+          InternshipOffers::WeeklyFramed.update_older_internship_offers
           assert internship_offer.reload.published?
           visit dashboard_internship_offers_path
           within("#toggle_status_#{dom_id(internship_offer)}") do
@@ -131,7 +136,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
 
           find("h2.h4", text: "Les offres")
           sleep 0.05
-          assert internship_offer.reload.drafted?
+          assert internship_offer.reload.unpublished?
 
           within("#toggle_status_#{dom_id(internship_offer)}") do
             find(".label", text: "Masqué")
@@ -152,7 +157,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
         weeks: [within_2_weeks],
         internship_offer_area_id: employer.current_area_id
       )
-      internship_offer.draft!
+      internship_offer.need_update!
       sign_in(employer)
       InternshipOffer.stub :nearby, InternshipOffer.all do
         InternshipOffer.stub :by_weeks, InternshipOffer.all do
@@ -167,9 +172,9 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
           find("h1.h3.text-dark", text: internship_offer.title)
 
           within(".fr-container .fat-line-below .col-8.d-print-none") do
-            find("p.fr-badge.fr-badge--new", text: 'MASQUÉ')
+            find("p.fr-badge.fr-badge--warning", text: 'OFFRE MASQUÉE')
           end
-          assert internship_offer.reload.drafted?
+          assert internship_offer.reload.need_to_be_updated?
         end
       end
     end
@@ -180,7 +185,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
     internship_offer = nil
     travel_to Date.new(2021, 10, 1) do
       internship_offer = create(:weekly_internship_offer, employer: employer, weeks: [Week.next], internship_offer_area_id: employer.current_area_id)
-      internship_offer.draft!
+      internship_offer.need_update!
     end
     travel_to Date.new(2022, 10, 8) do
       sign_in(employer)
@@ -213,11 +218,20 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
     travel_to Date.new(2021, 10, 1) do
       within_2_weeks = Week.find_by(id: (Week.current.id + 2))
       within_1_year = Week.find_by(id: (Week.current.id + 54))
-      internship_offer = create(:weekly_internship_offer, max_candidates: 1, employer: employer, weeks: [within_2_weeks, within_1_year], internship_offer_area_id: employer.current_area_id)
-      create(:weekly_internship_application, :approved, internship_offer: internship_offer)
-      internship_offer.draft
+      internship_offer = create(
+        :weekly_internship_offer,
+        max_candidates: 1,
+        employer: employer,
+        weeks: [within_2_weeks, within_1_year],
+        internship_offer_area_id: employer.current_area_id
+      )
+      create(:weekly_internship_application,
+             :approved,
+             internship_offer: internship_offer
+      )
     end
     travel_to Date.new(2022, 9, 1) do
+      internship_offer.need_update! # due to cron job and max_candidates too low
       sign_in(employer)
       InternshipOffer.stub :nearby, InternshipOffer.all do
         InternshipOffer.stub :by_weeks, InternshipOffer.all do
@@ -233,8 +247,6 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
 
           find "h1.h2", text: "Modifier une offre de stage"
           find "span#alert-text", text: "Votre annonce n'est pas encore republiée, car il faut ajouter des places de stage"
-
-          # find('h3.fr-alert__title', text: 'Ajoutez des places pour ce stage')
         end
       end
     end

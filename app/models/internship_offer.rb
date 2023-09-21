@@ -45,7 +45,7 @@ class InternshipOffer < ApplicationRecord
 
    # Callbacks
   before_save :update_remaining_seats
-  after_save :draft_if_no_remaining_seats_anymore
+  after_save :check_need_to_be_updated!
 
   after_initialize :init
 
@@ -140,28 +140,52 @@ class InternshipOffer < ApplicationRecord
   aasm do
     state :drafted, initial: true
     state :published,
-          :removed
+          :removed,
+          :unpublished,
+          :need_to_be_updated,
+          :splitted
 
     event :publish do
-      transitions from: :drafted, to: :published, after: proc { |*_args|
+      transitions from: %i[drafted unpublished need_to_be_updated],
+                  to: :published, after: proc { |*_args|
         update!("published_at": Time.now.utc)
       }
     end
 
     event :remove do
-      transitions from: %i[published drafted], to: :removed, after: proc { |*_args|
+      transitions from: %i[published need_to_be_updated drafted unpublished],
+                  to: :removed, after: proc { |*_args|
         update!(published_at: nil)
       }
     end
 
-    event :draft do
-      transitions from: %i[published], to: :drafted, after: proc { |*_args|
+    event :unpublish do
+      transitions from: %i[published need_to_be_updated],
+                  to: :unpublished, after: proc { |*_args|
+        update!(published_at: nil)
+      }
+    end
+
+    event :split do
+      transitions from: %i[published need_to_be_updated drafted unpublished],
+                  to: :splitted, after: proc { |*_args|
+        # update!(published_at: nil) TODO
+      }
+    end
+
+    event :need_update do
+      transitions from: %i[published drafted unpublished need_to_be_updated],
+                  to: :need_to_be_updated, after: proc { |*_args|
         update!(published_at: nil)
       }
     end
   end
 
   # Methods
+
+  def shown_as_masked?
+    !published?
+  end
 
   def departement
     Department.lookup_by_zipcode(zipcode: zipcode)
@@ -174,6 +198,10 @@ class InternshipOffer < ApplicationRecord
 
   def from_api?
     permalink.present?
+  end
+
+  def has_weeks_in_the_future?
+    weeks.map { |w| w.week_date > Time.now}.any?
   end
 
   def reserved_to_school?
@@ -327,12 +355,20 @@ class InternshipOffer < ApplicationRecord
   def update_remaining_seats
     reserved_places = internship_offer_weeks&.sum(:blocked_applications_count)
     self.remaining_seats_count = max_candidates - reserved_places
-    self.published_at = nil if remaining_seats_count.zero?
+    self.published_at = nil if no_remaining_seat_anymore?
   end
 
-  def draft_if_no_remaining_seats_anymore
-    if remaining_seats_count.zero? && may_draft?
-      update_columns(aasm_state: 'drafted', published_at: nil)
+  def no_remaining_seat_anymore?
+    remaining_seats_count.zero?
+  end
+
+  def requires_updates?
+    may_need_update? && (!has_weeks_in_the_future? || no_remaining_seat_anymore?)
+  end
+
+  def check_need_to_be_updated!
+    if requires_updates?
+      update_columns(aasm_state: 'need_to_be_updated', published_at: nil)
     end
   end
 

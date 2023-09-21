@@ -27,7 +27,6 @@ def populate_internship_offers
     employer_name: Group.is_paqte.first.name,
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
-  InternshipOffer.last.draft!
   weeks = [].concat(Week.selectable_on_school_year[0..1], Week.selectable_on_school_year[3..5])
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
@@ -84,7 +83,6 @@ def populate_internship_offers
     employer_name: Group.is_public.last.name,
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
-  InternshipOffer.last.draft!
 
   InternshipOffers::WeeklyFramed.create!(
     max_candidates: 5,
@@ -166,7 +164,6 @@ def populate_internship_offers
     employer_name: 'Editegis',
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
-  InternshipOffer.last.draft!
   # 3eme generale API
   weeks =  Week.selectable_on_school_year
   area_id = Users::Operator.first.reload.internship_offer_areas.first.id
@@ -257,7 +254,6 @@ MULTI_LINE
     employer_name: 'Douanes Assistance Corp.',
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
-  InternshipOffer.last.draft!
   # 3eme generale multi-line
   multiline_description = <<-MULTI_LINE
 - Présentation des services de la succursale MetaBoutShop
@@ -319,7 +315,17 @@ MULTI_LINE
     employer_name: 'Oyonnax Corp.',
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
-  InternshipOffer.last.draft!
+
+  InternshipOffers::WeeklyFramed.all
+                                .to_a
+                                .select { |io| io.may_need_update?}
+                                &.first
+                                &.need_update!
+  InternshipOffers::WeeklyFramed.all
+                                .to_a
+                                .select { |io| io.may_unpublish?}
+                                &.last
+                                &.unpublish!
 end
 
 call_method_with_metrics_tracking([:populate_internship_offers])

@@ -9,7 +9,7 @@ div id="toggle_status_#{dom_id(internship_offer)}" name="toggle_status_#{dom_id(
       .label
         = status_label
       .toggle-swap
-        - if internship_offer.drafted?
+        - if internship_offer.shown_as_masked?
           = link_to internship_offer_path(internship_offer.to_param, origin: 'dashboard'),
                     class: '',
                     data: { turbo: false },

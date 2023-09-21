@@ -153,7 +153,7 @@ module InternshipOffers
 
         self.week_ids = original_week_ids - next_year_week_ids
         self.hidden_duplicate = true
-        self.draft!
+        self.split!
         save!
 
         internship_offer

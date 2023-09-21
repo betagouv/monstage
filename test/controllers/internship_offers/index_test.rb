@@ -469,19 +469,20 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index?latitude=?&longitude=? as student returns internship_offer 60km around this location' do
-    week = Week.find_by(year: 2019, number: 10)
-    school_at_paris = create(:school, :at_paris)
-    student = create(:student, school: school_at_paris)
-    internship_offer_at_paris = create(:weekly_internship_offer,
-                                       weeks: [week],
-                                       coordinates: Coordinates.paris)
-    internship_offer_at_bordeaux = create(:weekly_internship_offer,
-                                          weeks: [week],
-                                          coordinates: Coordinates.bordeaux)
+    travel_to(Date.new(2019, 3, 1)) do
+      week = Week.find_by(year: 2019, number: 10)
+      school_at_paris = create(:school, :at_paris)
+      student = create(:student, school: school_at_paris)
+      internship_offer_at_paris = create(:weekly_internship_offer,
+                                        weeks: [week],
+                                        coordinates: Coordinates.paris)
+      internship_offer_at_bordeaux = create(:weekly_internship_offer,
+                                            weeks: [week],
+                                            coordinates: Coordinates.bordeaux)
 
-    InternshipOffer.stub :by_weeks, InternshipOffer.all do
-      sign_in(student)
-      travel_to(Date.new(2019, 3, 1)) do
+      InternshipOffer.stub :by_weeks, InternshipOffer.all do
+        sign_in(student)
+      
         get internship_offers_path(latitude: Coordinates.bordeaux[:latitude],
                                    longitude: Coordinates.bordeaux[:longitude],
                                     format: :json)
@@ -511,19 +512,19 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as student not filtering by weeks shows all offers' do
-    week = Week.find_by(year: 2019, number: 10)
-    school = create(:school, weeks: [week])
-    student = create(:student, school: school,
-                               class_room: create(:class_room, school: school))
-    offer_overlaping_school_weeks = create(:weekly_internship_offer,
-                                           weeks: [week])
-    offer_not_overlaping_school_weeks = create(:weekly_internship_offer,
-                                               weeks: [Week.find_by(
-                                                 year: 2019, number: 11
-                                               )])
-    sign_in(student)
-    InternshipOffer.stub :nearby, InternshipOffer.all do
-      travel_to(Date.new(2019, 3, 1)) do
+    travel_to(Date.new(2019, 3, 1)) do
+      week = Week.find_by(year: 2019, number: 10)
+      school = create(:school, weeks: [week])
+      student = create(:student, school: school,
+                                class_room: create(:class_room, school: school))
+      offer_overlaping_school_weeks = create(:weekly_internship_offer,
+                                            weeks: [week])
+      offer_not_overlaping_school_weeks = create(:weekly_internship_offer,
+                                                weeks: [Week.find_by(
+                                                  year: 2019, number: 11
+                                                )])
+      sign_in(student)
+      InternshipOffer.stub :nearby, InternshipOffer.all do
         get internship_offers_path, params: { format: :json }
         assert_json_presence_of(json_response, offer_overlaping_school_weeks)
         assert_json_presence_of(json_response, offer_not_overlaping_school_weeks)
@@ -532,19 +533,21 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as student filtering by weeks shows all offers' do
-    week = Week.find_by(year: 2019, number: 10)
-    school = create(:school, weeks: [week])
-    student = create(:student, school: school,
-                               class_room: create(:class_room, school: school))
-    offer_overlaping_school_weeks = create(:weekly_internship_offer,
-                                           weeks: [week])
-    offer_not_overlaping_school_weeks = create(:weekly_internship_offer,
-                                               weeks: [Week.find_by(
-                                                 year: 2019, number: 11
-                                               )])
-    sign_in(student)
-    InternshipOffer.stub :nearby, InternshipOffer.all do
-      travel_to(Date.new(2019, 3, 1)) do
+    travel_to(Date.new(2019, 12, 1)) do
+      week = Week.find_by(year: 2020, number: 10)
+      school = create(:school, weeks: [week])
+      student = create(:student, school: school,
+                                class_room: create(:class_room, school: school))
+      offer_overlaping_school_weeks = create(:weekly_internship_offer,
+                                            weeks: [week])
+
+      refute offer_overlaping_school_weeks.shown_as_masked?
+      offer_not_overlaping_school_weeks = create(:weekly_internship_offer,
+                                                weeks: [Week.find_by(
+                                                  year: 2020, number: 11
+                                                )])
+      sign_in(student)
+      InternshipOffer.stub :nearby, InternshipOffer.all do
         get internship_offers_path(week_ids: school.week_ids, format: :json)
 
         assert_json_presence_of(json_response, offer_overlaping_school_weeks)
