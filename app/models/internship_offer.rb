@@ -45,7 +45,7 @@ class InternshipOffer < ApplicationRecord
 
    # Callbacks
   before_save :update_remaining_seats
-  after_save :check_need_to_be_updated!
+  after_save :check_need_to_be_edited!
 
   after_initialize :init
 
@@ -366,7 +366,7 @@ class InternshipOffer < ApplicationRecord
     may_need_update? && (!has_weeks_in_the_future? || no_remaining_seat_anymore?)
   end
 
-  def check_need_to_be_updated!
+  def check_need_to_be_edited!
     if requires_updates?
       update_columns(aasm_state: 'need_to_be_updated', published_at: nil)
     end
