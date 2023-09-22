@@ -1,47 +1,36 @@
 - disabled = defined?(disabled) ? disabled : !can?(:edit_weekly_hours, form.object)
 div.fr-my-2w data-controller="daily-hours"
   .fr-checkbox-group.fr-checkbox-group--sm.mb-1
-    - if disabled
-      = check_box_tag 'same_daily_planning',
-                      true,
-                      !form.object.daily_planning?,
-                      data: {action: "change->daily-hours#handleToggleWeeklyPlanning"},
-                      disabled: true
-      = label_tag 'same_daily_planning',
-                  'Les horaires sont les mêmes toute la semaine',
-                  class: 'fr-label'
-    - else
-      = check_box_tag 'same_daily_planning',
-                    true,
-                    !form.object.daily_planning?,
-                    data: {action: "change->daily-hours#handleToggleWeeklyPlanning"}
-      = label_tag 'same_daily_planning',
-                  'Les horaires sont les mêmes toute la semaine',
-                   class: 'fr-label'
+    = check_box_tag 'weekly_planning',
+                  true,
+                  !form.object.daily_planning?,
+                  data: {action: "change->daily-hours#handleToggleWeeklyPlanning"},
+                  disabled: disabled
+    = label_tag 'weekly_planning',
+                'Les horaires sont les mêmes toute la semaine',
+                 class: 'fr-label'
   #weekly-planning[class="mt-3 fr-my-2w #{'d-none' if form.object.daily_planning?}"]
     .row
       .col-5
-        - if disabled
-          = select_tag :"#{form.object_name}[weekly_hours][]",
-                        options_for_select(morning_hours_by_quarter, selected: select_weekly_start(form.object)),
-                        { :include_blank => '--', class: "fr-select", disabled: true, aria: { label: "Selectionner une heure de debut de stage pour tous les jours de la semaine" }, id: "#{form.object_name}_weekly_hours_start" }
-        - else
-          = select_tag :"#{form.object_name}[weekly_hours][]",
-                        options_for_select(morning_hours_by_quarter, selected: select_weekly_start(form.object)),
-                        { :include_blank => '--', class: "fr-select", aria: { label: "Selectionner une heure de debut de stage pour tous les jours de la semaine" }, id: "#{form.object_name}_weekly_hours_start" }
+        = select_tag :"#{form.object_name}[weekly_hours][]",
+                      options_for_select(morning_hours_by_quarter, selected: select_weekly_start(form.object)),
+                      { :include_blank => '--', 
+                      class: "fr-select", 
+                      disabled: disabled,
+                      data: { target: "daily-hours.weeklyHoursStart" },
+                      aria: { label: "Selectionner une heure de debut de stage pour tous les jours de la semaine" }, id: "#{form.object_name}_weekly_hours_start" }
 
       .col-1 style="display: flex;align-items: center;justify-content: center;"
         | à
       .col-5
-        / - hours = (52..70).map { |i| h = (i.to_f / 4).to_i; m = 15 * (i-(h * 4)); "#{format('%02d', h)}h#{format('%02d',m)}"}
-        - if disabled
-          = select_tag :"#{form.object_name}[weekly_hours][]",
-                        options_for_select(afternoon_hours_by_quarter, selected: select_weekly_end(form.object)),
-                        { :include_blank => '--', class: "fr-select", disabled: true, aria: { label: "Selectionner une heure de debut de stage pour tous les jours de la semaine" }, id: "#{form.object_name}_weekly_hours_end" }
-        - else
-          = select_tag :"#{form.object_name}[weekly_hours][]",
-                        options_for_select(afternoon_hours_by_quarter, selected: select_weekly_end(form.object)),
-                        { :include_blank => '--', class: "fr-select", aria: { label: "Selectionner une heure de debut de stage pour tous les jours de la semaine" }, id: "#{form.object_name}_weekly_hours_end" }
+        = select_tag :"#{form.object_name}[weekly_hours][]",
+                      options_for_select(afternoon_hours_by_quarter, selected: select_weekly_end(form.object)),
+                      { :include_blank => '--', 
+                      class: "fr-select", 
+                      disabled: disabled, 
+                      data: { target: "daily-hours.weeklyHoursEnd" },
+                      aria: { label: "Selectionner une heure de debut de stage pour tous les jours de la semaine" }, id: "#{form.object_name}_weekly_hours_end" }
+        
     .row.fr-my-2w
       .col-12.mt-2
         .form-group
@@ -51,7 +40,7 @@ div.fr-my-2w data-controller="daily-hours"
             small.form-text.text-muted
               | Indiquez ci-dessous les détails concernant les horaires, le lieu, si l'élève doit apporter son déjeuner et qui sera responsable de l'élève durant cette pause.
 
-          = form.text_area :weekly_lunch_break, class: "form-control", placeholder: "12h -13h dans les locaux…", disabled: disabled
+          = form.text_area :weekly_lunch_break, class: "form-control", placeholder: "12h -13h dans les locaux…", disabled: disabled, data: {target: "daily-hours.weeklyLunchBreak"}
 
   #daily-planning[class="mt-3 fr-my-2w #{'d-none' unless form.object.daily_planning?}"]
     - %w(lundi mardi mercredi jeudi vendredi samedi).each_with_index do |weekday, i|
@@ -60,25 +49,26 @@ div.fr-my-2w data-controller="daily-hours"
           .fr-label= weekday.capitalize
       .row
         .col-5
-          - if disabled
-            = select_tag :"#{form.object_name}[daily_hours][#{weekday}][]",
-                          options_for_select(morning_hours_by_quarter, selected: select_daily_start(form.object, weekday)),
-                          {:include_blank => '--', class: "fr-select", disabled: true, aria: { label: "Selectionner une heure de debut de stage pour le #{weekday.capitalize}" }, id: "#{form.object_name}_daily_hours_#{weekday}_start"}
-          - else
-            = select_tag :"#{form.object_name}[daily_hours][#{weekday}][]",
-                          options_for_select(morning_hours_by_quarter, selected: select_daily_start(form.object, weekday)),
-                          {:include_blank => '--', class: "fr-select", aria: { label: "Selectionner une heure de debut de stage pour le #{weekday.capitalize}" }, id: "#{form.object_name}_daily_hours_#{weekday}_start"}
+          
+          = select_tag :"#{form.object_name}[daily_hours][#{weekday}][]",
+                        options_for_select(morning_hours_by_quarter, selected: select_daily_start(form.object, weekday)),
+                        {:include_blank => '--',
+                         class: "fr-select daily-hours-start", 
+                         disabled: disabled, 
+                         data: { target: "daily-hours.dailyHoursStart" },
+                         aria: { label: "Selectionner une heure de debut de stage pour le #{weekday.capitalize}" }, id: "#{form.object_name}_daily_hours_#{weekday}_start"}
+          
         .col-1 style="display: flex;align-items: center;justify-content: center;"
           | à
         .col-5
-          - if disabled
-            = select_tag :"#{form.object_name}[daily_hours][#{weekday}][]",
-                          options_for_select(afternoon_hours_by_quarter, selected: select_daily_end(form.object, weekday)),
-                          {:include_blank => '--', class: "fr-select", disabled: true, aria: { label:"Selectionner une heure de debut de fin pour le #{weekday.capitalize}" }, id: "#{form.object_name}_daily_hours_#{weekday}_end"}
-          - else
-            = select_tag :"#{form.object_name}[daily_hours][#{weekday}][]",
-                          options_for_select(afternoon_hours_by_quarter, selected: select_daily_end(form.object, weekday)),
-                          {:include_blank => '--', class: "fr-select", aria: { label:"Selectionner une heure de debut de fin pour le #{weekday.capitalize}" }, id: "#{form.object_name}_daily_hours_#{weekday}_end"}
+          = select_tag :"#{form.object_name}[daily_hours][#{weekday}][]",
+                        options_for_select(afternoon_hours_by_quarter, selected: select_daily_end(form.object, weekday)),
+                        {:include_blank => '--', 
+                         class: "fr-select daily-hours-end", 
+                         disabled: disabled, 
+                         data: { target: "daily-hours.dailyHoursEnd" },
+                         aria: { label:"Selectionner une heure de debut de fin pour le #{weekday.capitalize}" }, id: "#{form.object_name}_daily_hours_#{weekday}_end"}
+          
       .row
         .col-12.mt-2.fr-my-2w
           .form-group
@@ -91,4 +81,5 @@ div.fr-my-2w data-controller="daily-hours"
                              value: form.object.daily_lunch_break[weekday],
                              class: "form-control",
                              placeholder: "12h -13h dans les locaux…",
+                             data: {target: "daily-hours.dailyLunchBreak"},
                              disabled: disabled
