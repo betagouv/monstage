@@ -134,7 +134,7 @@ class School < ApplicationRecord
       field :internship_offers
       field :weeks do
         pretty_value do
-          school = bindings[:object].weeks.map(&:short_select_text_method)
+          school = Presenters::WeekList.new(weeks: bindings[:object].weeks).to_range_as_str
         end
       end
       field :school_manager
@@ -154,7 +154,7 @@ class School < ApplicationRecord
       # Weeks are removed for now because it is not readable as an export
       field :weeks, :string do
         export_value do
-          bindings[:object].weeks.map(&:short_select_text_method)
+          bindings[:object].weeks.map(&:long_select_text_method)
         end
       end
     end
