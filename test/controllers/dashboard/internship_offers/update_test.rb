@@ -178,7 +178,7 @@ module Dashboard::InternshipOffers
         internship_application.employer_validate!
         internship_application.approve!
         assert_equal 0, internship_offer.reload.remaining_seats_count
-        internship_offer.update(published_at: nil)
+        assert internship_offer.need_to_be_updated?
 
         sign_in(employer)
         patch republish_dashboard_internship_offer_path(
@@ -198,7 +198,7 @@ module Dashboard::InternshipOffers
         internship_offer = create(:weekly_internship_offer,
                                   employer: employer,
                                   weeks: [Week.current])
-        internship_offer.update(published_at: nil)
+        assert internship_offer.need_to_be_updated?
 
         sign_in(employer)
         patch republish_dashboard_internship_offer_path(
@@ -206,7 +206,7 @@ module Dashboard::InternshipOffers
         )
         follow_redirect!
         assert_select(
-          "span#alert-text",
+          "[data-controller='flash'] span#alert-text",
           text: "Votre annonce n'est pas encore republiée, car il faut ajouter des semaines de stage"
         )
         refute internship_offer.reload.published?

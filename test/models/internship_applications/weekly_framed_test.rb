@@ -84,7 +84,7 @@ module InternshipApplications
       assert_equal "submitted", application.aasm_state
       assert_equal offer.max_candidates, offer.reload.remaining_seats_count
 
-      offer.unpublish! # avoids requires_update validation
+      offer.need_update! # avoids requires_update validation
       application.employer_validate!
       application.approve!
       assert_equal "approved", application.aasm_state

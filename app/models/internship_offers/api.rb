@@ -99,6 +99,11 @@ module InternshipOffers
       }
     end
 
+    def reset_publish_states
+      publish! if may_publish? && published_at.present?
+      unpublish! if may_unpublish? && published_at.nil?
+    end
+
     def as_json(options = {})
       super(options.merge(
         only: %i[title

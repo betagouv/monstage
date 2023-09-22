@@ -83,6 +83,7 @@ def populate_internship_offers
     employer_name: Group.is_public.last.name,
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
+
   InternshipOffers::WeeklyFramed.create!(
     max_candidates: 5,
     max_students_per_group: 5,
@@ -136,9 +137,6 @@ def populate_internship_offers
     max_students_per_group: 7,
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
-  io = InternshipOffer.last
-  io.published_at = nil
-  io.save
 
   # 3eme_generale-2019:
   weeks =  Week.weeks_of_school_year(school_year: SchoolYear::Base::YEAR_START)
@@ -317,6 +315,17 @@ MULTI_LINE
     employer_name: 'Oyonnax Corp.',
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
+
+  InternshipOffers::WeeklyFramed.all
+                                .to_a
+                                .select { |io| io.may_need_update?}
+                                &.first
+                                &.need_update!
+  InternshipOffers::WeeklyFramed.all
+                                .to_a
+                                .select { |io| io.may_unpublish?}
+                                &.last
+                                &.unpublish!
 end
 
 call_method_with_metrics_tracking([:populate_internship_offers])
