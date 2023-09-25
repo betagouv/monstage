@@ -125,9 +125,6 @@ class InternshipOffer < ApplicationRecord
     all # TODO : max_candidates specs for FreeDate required
   }
 
-  scope :unpublished, -> { where(published_at: nil) }
-  scope :published, -> { where.not(published_at: nil) }
-
   scope :weekly_framed, lambda {
     where(type: [InternshipOffers::WeeklyFramed.name,
                  InternshipOffers::Api.name])

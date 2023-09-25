@@ -225,8 +225,7 @@ class IndexTest < ActionDispatch::IntegrationTest
   test 'GET #index as student. ignores internship offers not published' do
     api_internship_offer         = create(:api_internship_offer)
     internship_offer_published   = create(:weekly_internship_offer)
-    internship_offer_unpublished = create(:weekly_internship_offer)
-    internship_offer_unpublished.update_column(:published_at, nil)
+    internship_offer_unpublished = create(:weekly_internship_offer,:unpublished)
     student = create(:student)
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -252,9 +251,9 @@ class IndexTest < ActionDispatch::IntegrationTest
 
   test 'GET #index as visitor does not show unpublished offers' do
     published_internship_offer = create(:weekly_internship_offer,
+                                        aasm_state: 'published',
                                         published_at: 2.days.ago)
-    not_published_internship_offer = create(:weekly_internship_offer)
-    not_published_internship_offer.update!(published_at: nil)
+    not_published_internship_offer = create(:weekly_internship_offer, :unpublished)
     get internship_offers_path, params: { format: :json }
     assert_json_presence_of(json_response, published_internship_offer)
     assert_json_absence_of(json_response, not_published_internship_offer)

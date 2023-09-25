@@ -1,4 +1,5 @@
 def populate_internship_offers
+  current_school_year = SchoolYear::Current.new.beginning_of_period
   # 3eme_generale: public sector
   weeks = Week.selectable_on_school_year
   InternshipOffers::WeeklyFramed.create!(
@@ -228,7 +229,7 @@ def populate_internship_offers
 - Présentation de la recette interrégionale (service de perception).
 - Immersion au sein d’un bureau de douane (gestion des procédures, déclarations en douane, dédouanement, contrôles des déclarations et des marchandises).
 MULTI_LINE
-  weeks = Week.weeks_of_school_year(school_year: SchoolYear::Base::YEAR_START)
+  weeks = Week.weeks_of_school_year(school_year: Date.today.year)
   InternshipOffers::WeeklyFramed.create!(
     max_candidates: 5,
     max_students_per_group: 5,
@@ -284,6 +285,21 @@ MULTI_LINE
     employer_name: 'MetaBoutShop',
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
+
+  InternshipOffers::WeeklyFramed.all
+                                .map(&:publish!)
+
+  InternshipOffers::WeeklyFramed.all
+                                .to_a
+                                .select { |io| io.may_need_update?}
+                                &.first
+                                &.need_update!
+  InternshipOffers::WeeklyFramed.all
+                                .to_a
+                                .select { |io| io.may_unpublish?}
+                                &.last
+                                &.unpublish!
+
   # 3eme generale multi-line
   multiline_description = <<-MULTI_LINE
 - Présentation des services de la direction régionale de la banque Acme Corp. (banque de dépôt).
@@ -315,17 +331,6 @@ MULTI_LINE
     employer_name: 'Oyonnax Corp.',
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
-
-  InternshipOffers::WeeklyFramed.all
-                                .to_a
-                                .select { |io| io.may_need_update?}
-                                &.first
-                                &.need_update!
-  InternshipOffers::WeeklyFramed.all
-                                .to_a
-                                .select { |io| io.may_unpublish?}
-                                &.last
-                                &.unpublish!
 end
 
 call_method_with_metrics_tracking([:populate_internship_offers])
