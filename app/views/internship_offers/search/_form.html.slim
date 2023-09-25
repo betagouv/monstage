@@ -37,13 +37,14 @@ div [class="test-search-container #{has_white_bg ? 'search-container py-2' : ''}
                  locals: { white_bg: has_white_bg}
 
       .pb-5
-      - if render_as_partial
-        .col-auto-md.fr-mr-2w data-search-popover-target="searchSubmitContainer"
+      - if render_as_partial || current_page?(eleves_path)
+        div[class="col-auto-md fr-mr-2w #{current_page?(eleves_path) ? 'text-center w-100' : 'mr-2'}"
+            data-search-popover-target="searchSubmitContainer"]
           = form.button class: 'fr-ml-2w fr-btn fr-icon-search-line fr-btn--icon-right',
                         name: nil,
                         id: 'test-desktop-submit-search' do
-            span.mr-2 = 'Rechercher'
-      - else render_as_partial
+            span = 'Rechercher'
+      - else
         .actions.d-flex.d-stick.d-md-none.p-3
           = form.button "Afficher les résultats",
                         class: 'fr-btn fr-icon-search-line fr-btn--icon-right',

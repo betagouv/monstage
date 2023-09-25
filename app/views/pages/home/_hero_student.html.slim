@@ -32,25 +32,19 @@ header.bg-cover-image-homepage.bg-student-hero-image.container-xl.px-0.fr-pb-3w
 
   / smart phone display
   .container-monstage.container-xl.homepage.px-0.d-block.d-sm-none.fr-mt-1w
-    .row.fr-my-4w.mx-0
+    .row.fr-mt-4w.mx-0
       .col-lg-12.col-md-12
-        .fr-h3.white.py-lg-3.py-md-2.py-sm-2.py-xs-1
+        .fr-h3.white.py-lg-3.py-md-2.py-sm-2.pt-xs-1
           |
             Pour les élèves de 3ème REP, REP+
           br
             |Trouvez ici un stage de qualité !
 
-    .white-container.search-bar.fr-mx-2w
+    .search-bar.fr-mx-2w.border.border-danger
       .modal-body.mt-3
         = render partial: "internship_offers/search/form",
-                locals: { render_as_partial: false,
-                          url: internship_offers_path,
-                          default_values: params,
-                          form_id: :mobile_internship_offers_index_search_form }
-    .row.d-md-none
-      .col-12.fr-my-2w
-        .text-center
-          = link_to internship_offers_path(current_user_or_visitor.default_search_options),
-                    class: 'fr-btn fr-icon-search-line fr-btn--icon-right bg-white fr-px-6w'  do
-            = "Rechercher un stage "
+                 locals: { render_as_partial: false,
+                           url: internship_offers_path,
+                           default_values: params,
+                           form_id: :mobile_internship_offers_index_search_form }
 
