@@ -2,6 +2,7 @@ def populate_internship_offers
   current_school_year = SchoolYear::Current.new.beginning_of_period
   # 3eme_generale: public sector
   weeks = Week.selectable_on_school_year
+  # 1
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
     siret: siret,
@@ -29,6 +30,7 @@ def populate_internship_offers
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
   weeks = [].concat(Week.selectable_on_school_year[0..1], Week.selectable_on_school_year[3..5])
+  # 2
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
     siret: siret,
@@ -58,6 +60,7 @@ def populate_internship_offers
 
     # 3eme generale public
   weeks =  Week.selectable_on_school_year
+  # 3
   InternshipOffers::WeeklyFramed.create!(
     max_candidates: 5,
     max_students_per_group: 5,
@@ -85,9 +88,10 @@ def populate_internship_offers
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
 
+  # 4
   InternshipOffers::WeeklyFramed.create!(
-    max_candidates: 5,
-    max_students_per_group: 5,
+    max_candidates: 6,
+    max_students_per_group: 6,
     employer: Users::Employer.first,
     siret: siret,
     weeks: weeks,
@@ -112,6 +116,7 @@ def populate_internship_offers
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
   # dépubliée
+  # 5
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
     siret: siret,
@@ -141,6 +146,7 @@ def populate_internship_offers
 
   # 3eme_generale-2019:
   weeks =  Week.weeks_of_school_year(school_year: SchoolYear::Base::YEAR_START)
+  # 6
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
     siret: siret,
@@ -168,6 +174,7 @@ def populate_internship_offers
   # 3eme generale API
   weeks =  Week.selectable_on_school_year
   area_id = Users::Operator.first.reload.internship_offer_areas.first.id
+  # api - 1
   InternshipOffers::Api.create!(
     employer: Users::Operator.first,
     siret: siret,
@@ -196,6 +203,7 @@ def populate_internship_offers
   )
   # 3eme generale API
   weeks = Week.of_previous_school_year
+  # api - 2
   InternshipOffers::Api.create!(
     employer: Users::Operator.first,
     siret: siret,
@@ -224,6 +232,7 @@ def populate_internship_offers
   )
 
   # 3eme generale multi-line
+  # 7
   multiline_description = <<-MULTI_LINE
 - Présentation des services de la direction régionale de Valenciennes (service contentieux, pôle action économique).
 - Présentation de la recette interrégionale (service de perception).
@@ -256,6 +265,7 @@ MULTI_LINE
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
   # 3eme generale multi-line
+  # 8
   multiline_description = <<-MULTI_LINE
 - Présentation des services de la succursale MetaBoutShop
 - Présentation des principes fondamentaux du métier.
@@ -301,6 +311,7 @@ MULTI_LINE
                                 &.unpublish!
 
   # 3eme generale multi-line
+  # 9
   multiline_description = <<-MULTI_LINE
 - Présentation des services de la direction régionale de la banque Acme Corp. (banque de dépôt).
 - Présentation des principes secondaires du métier.
