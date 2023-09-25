@@ -318,7 +318,7 @@ Quand l'élève postule sur le site partenaire de monstadetroisieme, le partenai
 
 **method** : POST
 
-*Paramètres d'url* :
+*Paramètres à fournir* :
 * **remote_id** *(string, required)* = l'identifiant de l'offre du point de vue du partenaire
 * **ms3e_student_id** *(string, optional)* = l'identifiant fourni initialement avec le lien (à retourner quand il a été fourni initialement)
 * **remote_status** *(enum, required)* où les valeurs possibles sont à prendre dans la liste suivante
