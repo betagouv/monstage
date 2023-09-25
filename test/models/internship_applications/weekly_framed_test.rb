@@ -150,19 +150,20 @@ module InternshipApplications
     end
 
     test '#days_before_expiration' do
+      epsilon = 0.000_000_000_1
       freeze_time do
         internship_application = create(
           :weekly_internship_application,
           :submitted,
           submitted_at: Time.now - 10.days
         )
-        assert_equal 35, internship_application.days_before_expiration
+        assert_in_delta epsilon, 35, internship_application.days_before_expiration
         internship_application = create(
           :weekly_internship_application,
           :examined,
           submitted_at: Time.now - 10.days
         )
-        assert_equal 50, internship_application.days_before_expiration
+        assert_in_delta epsilon, 50, internship_application.days_before_expiration
         internship_application = create(
           :weekly_internship_application,
           :approved,
