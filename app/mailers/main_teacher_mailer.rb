@@ -64,6 +64,6 @@ class MainTeacherMailer < ApplicationMailer
     subject = "Un de vos élèves a été accepté en stage"
     cc = nil
 
-    send_email(to: to, subject: subject, cc: cc )
+    send_email( to: to, subject: subject, cc: cc )
   end
 end
