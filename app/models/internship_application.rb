@@ -257,14 +257,6 @@ class InternshipApplication < ApplicationRecord
     end
   end
 
-  def days_before_expiration
-    return nil unless aasm_state.in?(%w[submitted read_by_employer examined])
-
-    delay = submitted_at + EXPIRATION_DURATION - DateTime.now
-    delay += self.examined_at.nil? ? 0 : EXTENDED_DURATION
-    [0, delay.to_f / 3_600 / 24].max
-  end
-
   def student_approval_notifications
     main_teacher = student.main_teacher
     arg_hash = {
