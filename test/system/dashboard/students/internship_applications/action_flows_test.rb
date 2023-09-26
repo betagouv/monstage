@@ -95,16 +95,16 @@ module Dashboard
       end
 
       test 'student can draft, submit, and cancel(by_student) internship_applications' do
-        weeks = [Week.find_by(number: 1, year: 2020)]
-        school = create(:school, weeks: weeks)
-        student = create(:student,
-                        school: school,
-                        class_room: create( :class_room,
-                                            school: school)
-                        )
-        internship_offer = create(:weekly_internship_offer, weeks: weeks)
+        travel_to Date.new(2019,12,1) do
+          weeks = [Week.find_by(number: 1, year: 2020)]
+          school = create(:school, weeks: weeks)
+          student = create(:student,
+                          school: school,
+                          class_room: create( :class_room,
+                                              school: school)
+                          )
+          internship_offer = create(:weekly_internship_offer, weeks: weeks)
 
-        travel_to(weeks.first.week_date) do
           sign_in(student)
           visit internship_offer_path(internship_offer)
 
@@ -370,7 +370,9 @@ module Dashboard
           click_button "Choisir ce stage"
           click_button "Confirmer"
           assert_equal "approved", internship_application.reload.aasm_state
-          click_link "Connexion" # demonstrates user is not logged in
+          within('.fr-header__tools-links') do
+            click_link "Connexion" # demonstrates user is not logged in
+          end
         end
       end
 

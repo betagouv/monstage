@@ -104,7 +104,7 @@ module Api
 
     test 'POST #create as operator works to internship_offers' do
       operator = create(:user_operator, api_token: SecureRandom.uuid)
-      week_instances = [weeks(:week_2019_1), weeks(:week_2019_2)]
+      week_instances = Week.selectable_from_now_until_end_of_school_year.last(2)
       sector = create(:sector, uuid: SecureRandom.uuid)
       title = 'title'
       description = 'description'

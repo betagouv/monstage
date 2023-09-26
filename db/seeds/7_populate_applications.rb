@@ -162,7 +162,7 @@ def populate_applications
     student: students[5],
     motivation: 'Très moyennement motivé pour ce stage, je vous préviens',
     internship_offer: offers.fourth,
-    week: offers[3].internship_offer_weeks.last(2).first.week
+    week: offers[6].internship_offer_weeks.last(4).first.week
   )
   #-----------------
   # 7th student [1 approved]
