@@ -169,7 +169,7 @@ task :import_offers_in_4_steps_with_employers_already_created, [:employer_email,
     coordinates = Geocoder.search(address).first.try(:coordinates)
     coordinates ||= Geocoder.search("#{zipcode} #{city}").first.try(:coordinates)
 
-    if address && coordinates 
+    if address.present? && coordinates 
       # Step 1
       organisation = Organisation.new(
         employer_name: employer_name,
