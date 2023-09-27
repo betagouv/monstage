@@ -233,10 +233,12 @@ task :import_offers_in_4_steps_with_employers_already_created, [:employer_email,
                 weeks: weeks, 
                 weekly_hours: ["9:00", "17:00"],
                 coordinates: {latitude: coordinates[0], longitude: coordinates[1]},
-                employer: employer
+                employer: employer,
+                internship_offer_area_id: employer.current_area_id
               )
       
               if offer.save
+                offer.publish!
                 puts "offer created : ##{offer.id}"
                 created_count += 1
               else
