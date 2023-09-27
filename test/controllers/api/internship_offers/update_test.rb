@@ -153,7 +153,7 @@ module Api
       )
       assert_response :success
       assert_nil @internship_offer.reload.published_at
-      assert_equal false, @internship_offer.published?
+      refute @internship_offer.published?
 
       new_publication_date = Time.now.utc.iso8601(0)
       patch api_internship_offer_path(
