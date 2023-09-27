@@ -46,9 +46,9 @@ class StudentMailerPreview < ActionMailer::Preview
   end
 
   def internship_application_validated_by_employer_reminder_email
-    internship_application = InternshipApplication.validated_by_employer.first
+    internship_applications = InternshipApplication.validated_by_employer.to_a.compact
     StudentMailer.internship_application_validated_by_employer_reminder_email(
-      applications_to_notify: [internship_application]
+      applications_to_notify: internship_applications
     )
   end
   

@@ -99,7 +99,7 @@ module StepperProxy
     end
 
     def check_for_missing_seats
-      if remaining_seats_count.zero?
+      if no_remaining_seat_anymore?
         errors.add(:max_candidates, 'Augmentez Le nombre de places disponibles pour accueillir des élèves')
       end
     end
@@ -114,7 +114,7 @@ module StepperProxy
     def requires_update_at_toggle_time?
       return false if published?
 
-      missing_weeks_info? || remaining_seats_count.zero?
+      missing_weeks_info? || no_remaining_seat_anymore?
     end
 
     def user_update?
