@@ -19,11 +19,6 @@ module Triggers
         :validated_by_employer,
         validated_by_employer_at: 1.day.ago,
         student: @student)
-      internship_application = create(
-        :weekly_internship_application,
-        :validated_by_employer,
-        validated_by_employer_at: 3.day.ago,
-        student: @student)
       assert_no_enqueued_jobs do
         @reminder_service.enqueue_all
       end
@@ -33,12 +28,10 @@ module Triggers
       internship_application = create(
         :weekly_internship_application,
         :submitted,
-        validated_by_employer_at: 2.day.ago,
         student: @student)
       internship_application = create(
         :weekly_internship_application,
         :approved,
-        validated_by_employer_at: 2.day.ago,
         student: @student)
       assert_no_enqueued_jobs do
         @reminder_service.enqueue_all
@@ -47,11 +40,24 @@ module Triggers
 
     test '.enqueue_all do queue job ' \
          'when internship_application validated_by_employer ' \
-         'is exactly 2 days old' do
+         'is 2 days old or more' do
       internship_application = create(
         :weekly_internship_application,
         :validated_by_employer,
-        validated_by_employer_at: 2.day.ago,
+        validated_by_employer_at: 2.day.ago + 2.hours,
+        student: @student)
+      assert_enqueued_jobs 1 do
+        @reminder_service.enqueue_all
+      end
+    end
+
+    test '.enqueue_all do queue job ' \
+         'when internship_application validated_by_employer ' \
+         'is 3 days old or more' do
+      internship_application = create(
+        :weekly_internship_application,
+        :validated_by_employer,
+        validated_by_employer_at: 4.days.ago - 2.hours,
         student: @student)
       assert_enqueued_jobs 1 do
         @reminder_service.enqueue_all

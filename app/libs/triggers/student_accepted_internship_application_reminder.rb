@@ -16,7 +16,7 @@ module Triggers
     def pending_validated_applications(student)
       student.internship_applications
              .where(aasm_state: :validated_by_employer)
-             .where('DATE(validated_by_employer_at) = ?',REMINDER_THRESHOLD.to_date)
+             .where('DATE(validated_by_employer_at) <= ?', REMINDER_THRESHOLD.to_date)
              .to_a
     end
 

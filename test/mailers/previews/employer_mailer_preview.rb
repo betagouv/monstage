@@ -21,9 +21,9 @@ class EmployerMailerPreview < ActionMailer::Preview
                                     .employer
     EmployerMailer.internship_applications_reminder_email(
       employer: employer,
-      remindable_application_ids: employer.internship_applications,
-      expirable_application_ids: employer.internship_applications
+      remindable_application_ids: employer.internship_applications
     )
+    # expirable_application_ids: employer.internship_applications
   end
 
   def internship_application_canceled_by_student_email

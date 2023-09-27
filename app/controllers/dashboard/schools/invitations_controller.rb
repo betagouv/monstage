@@ -60,7 +60,7 @@ module Dashboard
 
       def invite_staff(invitation:, from:)
         params = { from: from, invitation: invitation }
-        InvitationMailer.staff_invitation(params).deliver_later
+        InvitationMailer.staff_invitation(**params).deliver_later
       end
 
       private

@@ -12,24 +12,24 @@ module Api
         'Authorization': "Bearer #{@token}",
         'Content-Type': 'application/json',
         'Accept': 'application/json'
-      }     
+      }
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       request = Net::HTTP::Get.new(uri, headers)
-      
+
       http.request(request)
     end
 
     def self.search_by_name(name:)
-      uri = URI("#{API_ENTREPRISE_ENDPOINT}?q=#{URI.encode(name)}")
+      uri = URI::Parser.new.parse("#{API_ENTREPRISE_ENDPOINT}?q=#{CGI.escape(name)}")
       headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
-      }     
+      }
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       request = Net::HTTP::Get.new(uri, headers)
-      
+
       http.request(request)
     end
 
@@ -37,7 +37,7 @@ module Api
       @token = Rails.cache.read 'sirene_token'
       self.fetch_new_token unless @token
     end
-      
+
     def self.fetch_new_token
       uri = URI.parse("https://api.insee.fr/token")
       request = Net::HTTP::Post.new(uri)
@@ -60,5 +60,5 @@ module Api
     end
   end
 
-  
+
 end
