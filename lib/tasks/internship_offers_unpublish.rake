@@ -4,7 +4,7 @@ task internship_offers_unpublish: :environment do
   Rails.logger.info("Cron runned at #{Time.now.utc}(UTC), internship_offers_unpublish")
   Rails.logger.info("----------------------------------------")
   ActiveRecord::Base.transaction do
-    InternshipOffers::WeeklyFramed.archive_older_internship_offers
+    InternshipOffers::WeeklyFramed.update_older_internship_offers
     puts ' Done !'
   end
 end

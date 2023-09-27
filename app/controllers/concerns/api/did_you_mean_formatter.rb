@@ -7,7 +7,7 @@ module Api
     included do
       # tried with an around_action : but ensure was run before rescued_from
       before_action { DidYouMean.formatter = DidYouMean::ApiNullFormatter.new }
-      after_action { DidYouMean.formatter = DidYouMean::PlainFormatter.new }
+      # after_action { DidYouMean.formatter = DidYouMean::PlainFormatter.new }
     end
   end
 end

@@ -28,6 +28,21 @@ FactoryBot.define do
     organisation { create(:organisation, employer: employer) }
     hidden_duplicate { false }
 
+    trait :published do
+      published_at { Time.now }
+      aasm_state { 'published' }
+    end
+
+    trait :draft do
+      published_at { nil }
+      aasm_state { 'drafted' }
+    end
+
+    trait :unpublished do
+      published_at { nil }
+      aasm_state { 'unpublished' }
+    end
+
     trait :weekly_internship_offer do
       weeks { [Week.selectable_from_now_until_end_of_school_year.first]}
       description { 'Lorem ipsum dolor weekly_internship_offer' }
