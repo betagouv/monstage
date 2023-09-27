@@ -150,7 +150,7 @@ task :import_offers_in_4_steps_with_employers_already_created, [:employer_email,
   
   weeks = Week.selectable_from_now_until_end_of_school_year
   created_count = 0
-  errors_count = 0
+  errors = []
   employer = Users::Employer.where(email: args[:employer_email]).first
   csv_data =  URI.open(args[:csv_uri]).read
   
@@ -242,32 +242,32 @@ task :import_offers_in_4_steps_with_employers_already_created, [:employer_email,
               else
                 puts "ERROR : "
                 p offer.errors.messages
-                errors_count += 1
+                errors << title
               end
             else
               puts "ERROR practical_info : "
               p practical_info.errors.messages
-              errors_count += 1
+              errors << title
             end
           else
             puts "ERROR hosting_info : "
             p hosting_info.errors.messages
-            errors_count += 1
+            errors << title
           end
         else
           puts "ERROR internship_offer_info : "
           p internship_offer_info.errors.messages
-          errors_count += 1
+          errors << title
         end
       else
         puts "ERROR organisation : "
         p organisation.errors.messages
-        errors_count += 1
+        errors << title
       end
 
     else
       puts "ERROR : address or employer not found : #{address}"
-      errors_count += 1
+      errors << title
     end
     puts "---------"
   end
@@ -275,6 +275,6 @@ task :import_offers_in_4_steps_with_employers_already_created, [:employer_email,
   puts "---------"
   puts "---END---"
   puts "---------"
-  puts "#{errors_count} errors."
+  puts "#{errors.count} errors. : #{errors.join(', ')}"
   puts "#{created_count} offers created !"
 end
