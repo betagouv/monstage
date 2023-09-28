@@ -403,6 +403,21 @@ class InternshipApplication < ApplicationRecord
     UrlShortener.short_url(target)
   end
 
+  def sgid_short_url
+    sgid = student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY).to_s
+
+    url = Rails.application
+        .routes
+        .url_helpers
+        .dashboard_students_internship_application_url(
+          student.id,
+          id,
+          sgid: sgid,
+          host: ENV['HOST'])
+    
+    UrlShortener.short_url(url)
+  end
+
   # Used for prettier links in rails_admin
   def title
     "Candidature de " + student_name
