@@ -29,5 +29,6 @@ class AcademyTest < ActiveSupport::TestCase
   test '.get_email_domain' do
     assert_equal 'ac-aix-marseille.fr', Academy.get_email_domain('Académie d\'Aix-Marseille')
     assert_equal 'ac-guyane.fr', Academy.get_email_domain('Académie de la Guyane')
+    assert_equal 'ac-normandie.fr', Academy.get_email_domain('Académie de Normandie')
   end
 end
