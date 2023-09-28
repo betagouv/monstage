@@ -1,16 +1,39 @@
 
-.modal id="notice-school-manager-empty-weeks" tabindex="-1" role="dialog" data-controller='dashboard-schools-modal'
-  .modal-dialog.modal-dialog-centered role="document"
-    .modal-content
-      .modal-body.modal-open
-        .row.pb-4
-          .col-12.align-right.text-right.test-internship-dates-request
-            button type="button" class="close" data-dismiss="modal" aria-label="Close" data-action="click->dashboard-schools-modal#closeNotice"
-              span aria-hidden="true" &times;
-        .row
-          .col-6.text-center
-            = image_tag asset_pack_path("media/images/homepage/explications.svg"), alt: 'horloge', height: '150px'
-          .col-6
-            p Veuillez renseigner vos dates de stage afin que vos élèves puissent commencer à postuler.
-            = link_to "Renseigner maintenant", edit_dashboard_school_path(school.id), class: "fr-btn", style: "border-radius: 0.5rem", data: { "action": "click->dashboard-schools-modal#closeNotice" }
-      .modal-footer.actions
+button.fr-btn.d-none[data-fr-opened="#{!current_user.school.has_weeks_on_current_year?}" aria-controls="notice-school-manager-empty-weeks"]
+  |  Modal avec zone d'action
+dialog#notice-school-manager-empty-weeks.fr-modal[
+  aria-labelledby="notice-school-manager-empty-weeks-title"
+  role="dialog"]
+  .fr-container.fr-container--fluid.fr-container-md
+    .fr-grid-row.fr-grid-row--center
+      .fr-col-12.fr-col-md-8.fr-col-lg-8
+        .fr-modal__body data-controller='select-weeks'
+          = form_with model: school,
+              url: dashboard_school_path(school),
+              scope: :school,
+              data: {turbo: false} do |form|
+            .fr-modal__header
+              button.fr-link--close.fr-link[
+                aria-controls="notice-school-manager-empty-weeks"
+                data-action='select-weeks#unBubbleUp']
+                | Fermer
+            .fr-modal__content
+              h1#notice-school-manager-empty-weeks-title.fr-modal__title
+                span.fr-fi-arrow-right-line.fr-fi--lg
+                | Renseignez les dates de stage de votre établissement
+
+              p
+                | Afin de permettre à vos élèves d'effectuer leurs recherches de stage, vous devez renseigner les semaines de stage auxquelles ils peuvent postuler.
+              p 
+                = render partial: "inputs/weeks_checkbox_inputs",
+                        locals: {current_weeks: Week.selectable_on_school_year,
+                                  size: 'full-size',
+                                  form: form,
+                                  label: "",
+                                  render_employer_components: false }
+            .fr-modal__footer
+              ul.fr-btns-group.fr-btns-group--right.fr-btns-group--inline-reverse.fr-btns-group--inline-lg
+                li
+                  = form.submit 'Enregistrer les dates',
+                                class: 'fr-btn',
+                                data: {:'select-weeks-target' => 'submitButton'}

@@ -23,7 +23,8 @@ export default class extends Controller {
     'weekCheckboxes',
     'hint',
     'inputWeekLegend',
-    'legendContainer'
+    'legendContainer',
+    'submitButton',
   ];
   static values = {
     skipValidation: Boolean
@@ -37,12 +38,22 @@ export default class extends Controller {
     this.onCoordinatesChangedRef = this.fetchSchoolsNearby.bind(this);
     this.onSubmitRef = this.handleSubmit.bind(this);
     this.onApiSchoolsNearbySuccess = this.showSchoolDensityPerWeek.bind(this);
-
     this.attachEventListeners();
+  }
+
+  weekCheckboxesTargetConnected() {
+    this.weekCheckboxesTargets.forEach((el) => {
+      el.addEventListener('change', this.handleCheckboxesChanges.bind(this));
+    });
+    this.handleCheckboxesChanges();
   }
 
   disconnect() {
     this.detachEventListeners();
+  }
+
+  unBubbleUp(event) {
+    event.preventDefault();
   }
 
   attachEventListeners() {
@@ -59,6 +70,13 @@ export default class extends Controller {
     fetch(endpoints.apiSchoolsNearby(event.detail), { method: 'POST' })
       .then((response) => response.json())
       .then(this.onApiSchoolsNearbySuccess);
+  }
+  handleCheckboxesChanges() {
+    if (!this.hasAtLeastOneCheckbox()) {
+      this.onAtLeastOneWeekSelected();
+    } else {
+      this.onNoWeekSelected();
+    }
   }
 
   showSchoolDensityPerWeek(schools) {
@@ -173,6 +191,7 @@ export default class extends Controller {
   onNoWeekSelected() {
     const $hint = $(this.hintTarget);
     const $checkboxesContainer = $(this.checkboxesContainerTarget);
+    this.submitButtonTarget.disabled = true;
 
     showElement($hint);
     $checkboxesContainer.addClass('is-invalid');
@@ -186,6 +205,7 @@ export default class extends Controller {
   onAtLeastOneWeekSelected() {
     const $hint = $(this.hintTarget);
     const $checkboxesContainer = $(this.checkboxesContainerTarget);
+    this.submitButtonTarget.disabled = false;
 
     hideElement($hint);
     $checkboxesContainer.removeClass('is-invalid');

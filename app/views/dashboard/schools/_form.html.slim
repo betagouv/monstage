@@ -1,48 +1,52 @@
-= form_with model: @school,
-            url: dashboard_school_path(@school),
-            scope: :school,
-            data: {turbo: false} do |f|
-  = render "layouts/form_errors", resource: @school, resource_name: :school
+div data-controller='select-weeks'
+  = form_with model: @school,
+              url: dashboard_school_path(@school),
+              scope: :school,
+              data: {turbo: false} do |f|
+    = render "layouts/form_errors", resource: @school, resource_name: :school
 
-  - if current_user.is_a?(Users::God)
-    fieldset
-      legend= "Établissement (#{@school.kind})"
+    - if current_user.is_a?(Users::God)
+      fieldset
+        legend= "Établissement (#{@school.kind})"
 
-      .form-group
-        = f.label :name, class: 'fr-label' do
-          = "Nom de l'établissement"
-          = f.rg2a_required_content_tag
+        .form-group
+          = f.label :name, class: 'fr-label' do
+            = "Nom de l'établissement"
+            = f.rg2a_required_content_tag
 
-        = f.text_field :name, class: "fr-input col-lg-6", required:true
+          = f.text_field :name, class: "fr-input col-lg-6", required:true
 
-      .form-group
-         .fr-checkbox-group.fr-checkbox-group--sm
-          = f.check_box :visible, class: 'custom-control-input'
-          = f.label :visible, class: 'custom-control-label fr-label' do
-            = " Actif (accessible aux utilisateurs)"
-    fieldset
-      legend= "Localisation"
+        .form-group
+          .fr-checkbox-group.fr-checkbox-group--sm
+            = f.check_box :visible, class: 'custom-control-input'
+            = f.label :visible, class: 'custom-control-label fr-label' do
+              = " Actif (accessible aux utilisateurs)"
+      fieldset
+        legend= "Localisation"
 
-      = react_component("AddressInput", props: { resourceName: :school,
-                                                 currentStreet: @school.street,
-                                                 currentCity: @school.city,
-                                                 currentZipcode: @school.zipcode,
-                                                 currentLatitude: @school.coordinates.try(:lat).try(:to_f),
-                                                 currentLongitude: @school.coordinates.try(:lng).try(:to_f),
-                                                 currentFullAddress: @school.formatted_autocomplete_address})
-
-
-  - else
-    fieldset
-      legend.h3.dark.mb-1= "Semaines de stage"
-      = render partial: "inputs/weeks_checkbox_inputs",
-               locals: {current_weeks: @available_weeks,
-                        form: f,
-                        label: "uniquement valable pour les classes de 3e",
-                        render_employer_components: false }
+        = react_component("AddressInput", props: { resourceName: :school,
+                                                  currentStreet: @school.street,
+                                                  currentCity: @school.city,
+                                                  currentZipcode: @school.zipcode,
+                                                  currentLatitude: @school.coordinates.try(:lat).try(:to_f),
+                                                  currentLongitude: @school.coordinates.try(:lng).try(:to_f),
+                                                  currentFullAddress: @school.formatted_autocomplete_address})
 
 
-  .actions.d-flex.d-sm-block= f.submit 'Enregistrer les modifications', class: 'fr-btn'
-    .actions= link_to dashboard_school_class_rooms_path(@school), class: 'fr-btn btn-link' do
-      .fas.fa-chevron-left
-      span.ml-1 Retour
+    - else
+      fieldset
+        legend.h3.dark.mb-1= "Semaines de stage"
+        = render partial: "inputs/weeks_checkbox_inputs",
+                locals: { current_weeks: @available_weeks,
+                          size: 'half-size',
+                          form: f,
+                          label: "uniquement valable pour les classes de 3e",
+                          render_employer_components: false }
+
+
+    .actions.d-flex.d-sm-block= f.submit 'Enregistrer les modifications',
+                                        class: 'fr-btn',
+                                        data: {:'select-weeks-target' => 'submitButton'}
+      .actions= link_to dashboard_school_class_rooms_path(@school), class: 'fr-btn btn-link' do
+        .fas.fa-chevron-left
+        span.ml-1 Retour

@@ -1,7 +1,6 @@
 - preselect_all = preselect_all_weeks?(form.object)
 
-div [data-controller="select-weeks"
-     data-internship-offer-infos-target='weeksContainer'
+div [data-internship-offer-infos-target='weeksContainer'
      data-select-weeks-skip-validation-value="false"]
   .form-group
     - if label.present?
@@ -34,7 +33,7 @@ div [data-controller="select-weeks"
 
     div data-select-weeks-target="checkboxesContainer" class="#{preselect_all ? 'd-none' : ''}"
       .row
-        .col-lg-6
+        div class="col-lg-#{size == 'half-size' ? "6" : "12"}"
           .custom-control-checkbox-list.p-4
             - current_weeks.map do |week|
               .fr-checkbox-group.fr-checkbox-group--sm.position-relative.pr-3
@@ -44,19 +43,22 @@ div [data-controller="select-weeks"
                 - # also add an id for hidden field for two reason, avoid conflict, testing
                 - hidden_id = "#{form.object_name}_week_ids_#{week.id}_hidden"
 
-                = form.check_box :week_ids, { multiple: true,
-                                              id: checkbox_id,
-                                              class: '',
-                                              data: {:"select-weeks-target" => 'weekCheckboxes',
-                                                    action: 'change->select-weeks#handleCheckboxesChanges'} }.merge(preselect_all ? {checked: true} : {}),
-                                              week.id,
-                                              false
-
+                = form.check_box :week_ids,
+                                 { multiple: true,
+                                   data: {:"select-weeks-target" => 'weekCheckboxes',
+                                           action: 'change->select-weeks#handleCheckboxesChanges'},
+                                   id: checkbox_id,
+                                   class: ''}.merge(preselect_all ? {checked: true} : {}),
+                                 week.id,
+                                 false
 
                 = form.label :"week_id", for: checkbox_id, class: 'custom-control-label fr-label' do
-                  = week.select_text_method
+                  .d-block.fr-mb-2w
+                    = DateRange.new(weeks:[week]).boundaries_as_string.gsub('du', 'Du')
+                    br
+                    span.text-muted = "Semaine #{week.number}"
 
-                div.position-absolute.badge-week-density.rounded.d-none [
+                div.position-absolute.badge-week-density.rounded [
                   data-select-weeks-target='inputWeekLegend'
                   data-week-id="#{week.id}"]
                   | ?
@@ -72,4 +74,5 @@ div [data-controller="select-weeks"
                 .col-4.badge-legend.rounded
                 .col-4 Forte
 
-    .form-text.blue-france.d-none data-select-weeks-target="hint" Veuillez saisir au moins une semaine de stage
+    .form-text.fr-mt-1w.blue-france.d-none data-select-weeks-target="hint"
+      |Veuillez saisir au moins une semaine de stage

@@ -60,8 +60,8 @@ module Dashboard
         sign_in(school_manager)
         get school_manager.custom_dashboard_path
 
-        assert_select '.modal-body p',
-                      text: 'Veuillez renseigner vos dates de stage afin que vos élèves puissent commencer à postuler.'
+        assert_select 'dialog#notice-school-manager-empty-weeks p',
+                      text: "Afin de permettre à vos élèves d'effectuer leurs recherches de stage, vous devez renseigner les semaines de stage auxquelles ils peuvent postuler."
       end
 
       test 'GET class_rooms#index contains key navigations links to manage school classroom' do
