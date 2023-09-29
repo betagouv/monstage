@@ -22,17 +22,6 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
     end
   end
 
-  # test 'can edit organisation' do
-  #   employer = create(:employer)
-  #   organisation = create(:organisation)
-  #   sign_in(employer)
-  #   visit edit_dashboard_organisation_path(organisation)
-  #   fill_in 'Nom de l’entreprise proposant l’offre', with: 'New name'
-
-  #   click_on "Enregistrer et publier l'offre"
-  #   assert_equal 'New name', organisation.reload.title
-  # end
-
   test 'create organisation fails gracefuly' do
     sector = create(:sector)
     employer = create(:employer)

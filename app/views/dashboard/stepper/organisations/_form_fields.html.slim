@@ -66,12 +66,15 @@
           div [class="form-group form-group-select-group fr-my-2w #{resource.is_public.nil? ? 'd-none' : ''}"
                data-organisation-form-target="groupBlock"]
             - if current_user.ministry_statistician?
-              = form.label :group_id , class: 'fr-label', for: 'group_id' do
-                = "Ministère associé"
-              = form.select :group_id,
-                            options_for_select(current_user.presenter.ministry_groups_select),
-                            { include_blank: false},
-                            {class: 'fr-select'}
+              - if current_user.groups.count > 1
+                = form.label :group_id , class: 'fr-label', for: 'group_id' do
+                  = "Ministère associé"
+                = form.select :group_id,
+                              options_for_select(current_user.presenter.ministry_groups_select),
+                              { include_blank: false},
+                              {class: 'fr-select'}
+              - else
+                = form.hidden_field :group_id, value: current_user.groups.first.id
             - else
               = form.label :group_id,
                           "Groupe ou Institution de tutelle (optionnel)",
