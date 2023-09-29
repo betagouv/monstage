@@ -144,7 +144,7 @@ export default function SirenInput({
                     htmlFor: `${resourceName}_siren`,
                   })}
                 >
-                  Rechercher votre société dans l’annuaire des entreprises {railsEnv === 'development' ? '(dev only : 90943224700015)' : ''}
+                  Rechercher votre société/administration dans l’annuaire des entreprises {railsEnv === 'development' ? '(dev only : 90943224700015)' : ''}
                 </label>
                 <div className="input-group input-siren">
                   <input
