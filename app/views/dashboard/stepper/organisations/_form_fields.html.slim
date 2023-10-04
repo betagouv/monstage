@@ -3,40 +3,52 @@
     .row
       .col-md-6.order-md-1.order-2
         fieldset  aria-labelledby="organisation-name-legend"
-          legend.fr-text--lg.font-weight-bold.fr-my-2w L'entreprise
+          legend.fr-text--lg.font-weight-bold.fr-my-2w
+            = current_user.ministry_statistician? ? "Votre administration" : "L'entreprise"
           /  L'entreprise
           = form.hidden_field :manual_enter, value: false
           = form.hidden_field :employer_id, value: current_user.id
           - if resource.id
             = form.hidden_field :id, value: resource.id
 
-          - if current_user.ministry_statistician?
-            = render partial: "dashboard/stepper/organisations/form_ministry_statistician_specifics", locals: { form: form, resource: resource, submit_button: submit_button }
-          - else
-            = react_component("SirenInput",
+          = react_component("SirenInput",
+                            props: { resourceName: form.object_name,
+                                     presentationLabel: "L'administration",
+                                     currentSiren: resource.siret,
+                                     railsEnv: Rails.env })
+
+          #manual-input class=('d-none bloc-manual' if request.fullpath.include?('organisations/nouveau'))
+            .form-group.fr-my-2w
+              - raison = current_user.ministry_statistician? ? "Nom de l’institution" : "Nom de l’entreprise proposant l’offre"
+              = form.label :employer_name, raison
+
+              = form.text_field :employer_name,
+                                class: 'fr-input',
+                                placeholder: raison,
+                                required: true,
+                                data: { "organisation-form-target": "organisationName", 'target': 'organisation-form.requiredField'}
+            .form-group.fr-my-2w
+              = form.label :siret, "SIRET"
+
+              = form.text_field :siret,
+                                class: 'fr-input',
+                                placeholder: 'Mon code SIRET',
+                                required: true,
+                                data: { "organisation-form-target": "organisationSiret", 'target': 'organisation-form.requiredField' }
+
+            = react_component("FullAddressInput",
                               props: { resourceName: form.object_name,
-                                      currentSiren: resource.siret,
-                                      railsEnv: Rails.env })
+                                       currentStreet: resource.street,
+                                       currentCity: resource.city,
+                                       currentZipcode: resource.zipcode,
+                                       currentLatitude: resource.coordinates.try(:lat).try(:to_f),
+                                       currentLongitude: resource.coordinates.try(:lon).try(:to_f),
+                                       currentFullAddress: resource.formatted_autocomplete_address})
 
-            #manual-input class=('d-none bloc-manual' if request.fullpath.include?('organisations/nouveau'))
-              .form-group.fr-my-2w
-                = form.label :employer_name, "Nom de l’entreprise proposant l’offre"
-
-                = form.text_field :employer_name, class: 'fr-input', placeholder: 'MaSociété', required: true, data: { "organisation-form-target": "organisationName", 'target': 'organisation-form.requiredField'}
-              .form-group.fr-my-2w
-                = form.label :siret, "SIRET"
-
-                = form.text_field :siret, class: 'fr-input', placeholder: 'Mon code SIRET', required: true, data: { "organisation-form-target": "organisationSiret", 'target': 'organisation-form.requiredField' }
-              
-              = react_component("FullAddressInput", props: { resourceName: form.object_name,
-                                      currentStreet: resource.street,
-                                      currentCity: resource.city,
-                                      currentZipcode: resource.zipcode,
-                                      currentLatitude: resource.coordinates.try(:lat).try(:to_f),
-                                      currentLongitude: resource.coordinates.try(:lon).try(:to_f),
-                                      currentFullAddress: resource.formatted_autocomplete_address})
-
-          .bloc-tooggle class=('d-none' if request.fullpath.include?('organisations/nouveau'))
+        .bloc-tooggle class=('d-none' if request.fullpath.include?('organisations/nouveau'))
+          - if current_user.ministry_statistician?
+            = form.hidden_field :is_public, value: true
+          - else
             fieldset.fr-fieldset.fr-my-2w#radio-hint aria-labelledby="radio-hint-legend radio-hint-messages"
               legend.label
                 | Secteur
@@ -48,43 +60,64 @@
                 div.fr-radio-group
                   = form.radio_button :is_public, false, class: '', required: true, data: { action: 'change->organisation-form#handleClickIsPublic', 'target': 'organisation-form.requiredField' }
                   = form.label :is_public_false, 'Privé', class: 'fr-label'
-              
+
               div.fr-messages-group#radio-hint-messages aria-live="assertive"
 
-            div class="form-group form-group-select-group fr-my-2w #{resource.is_public.nil? ? 'd-none' : ''}" data-organisation-form-target="groupBlock"
+          div [class="form-group form-group-select-group fr-my-2w #{resource.is_public.nil? ? 'd-none' : ''}"
+               data-organisation-form-target="groupBlock"]
+            - if current_user.ministry_statistician?
+              - if current_user.groups.count > 1
+                = form.label :group_id , class: 'fr-label', for: 'group_id' do
+                  = "Ministère associé"
+                = form.select :group_id,
+                              options_for_select(current_user.presenter.ministry_groups_select),
+                              { include_blank: false},
+                              {class: 'fr-select'}
+              - else
+                = form.hidden_field :group_id, value: current_user.groups.first.id
+            - else
               = form.label :group_id,
                           "Groupe ou Institution de tutelle (optionnel)",
                           data: {:"organisation-form-target" => 'groupLabel'},
                           class: 'fr-label'
+
               = form.select :group_id,
-                            options_for_select(options_for_groups,
-                            resource.group.try(:id)),
+                            options_for_select(options_for_groups, resource.group.try(:id)), 
                             { prompt: '-- Indépendant --' },
                             class: "fr-select",
                             data: {:"organisation-form-target" => 'selectGroupName'}
-    
-    .row.bloc-tooggle class="#{'d-none' unless request.path_info.include?('modification')}"
-      .col-md-6
-        fieldset aria-labelledby="presentation"
-          legend Présentation de l'entreprise
-        .form-group.fr-my-2w data-controller='maxlength-input' data-maxlength-input-limit-value="#{InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT}"
-          #label_organisation_description_rich_text.label.fr-label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{form.object_name}_employer_description_rich_text" data-controller="rich-text-label"
-            | Description de l'entreprise (optionnel)
-          = form.rich_text_area :employer_description_rich_text, class: "fr-input col-12 col-lg-12", required: true, data: { :"maxlength-input-target" => 'trixElement' }, aria: {labelledby: 'label_organisation_description_rich_text'}, rows: 5
-          small.form-text data-maxlength-input-target="trixElementCharCount"
-      
-        .form-group.fr-my-2w
-          = form.label :employer_website, class: 'fr-label' do
-            = 'Site web (optionnel)'
-            small.form-text.text-muted Afin que l’élève puisse en apprendre plus sur son futur stage
-          = form.url_field :employer_website, class: 'fr-input', placeholder: "https://"
-        
-      .col-md-6
-        .fr-alert.fr-alert--info
-          h3.fr-alert__title Conseil
-          p La présentation de l’entreprise est un des éléments déterminant dans le choix du stage. Utilisez un vocabulaire simple, facile à comprendre. N’hésitez pas à ajouter des détails sur les principales activités de l’entreprise.
-    - if submit_button
-      .fr-mt-3w
-        = link_to 'Annuler', dashboard_internship_offers_path, class: 'fr-btn fr-btn--secondary fr-mr-3w'
-        = button_tag :submit, class: 'fr-btn', 'data-target': "organisation-form.submitButton" do
-          = "Suivant "
+
+  .row.bloc-tooggle class="#{'d-none' unless request.path_info.include?('modification')}"
+    .col-md-6
+      fieldset aria-labelledby="presentation"
+        legend Présentation de l'entreprise
+      .form-group.fr-my-2w data-controller='maxlength-input' data-maxlength-input-limit-value="#{InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT}"
+        #label_organisation_description_rich_text.label.fr-label [data-rich-text-label-enable-value=true
+                                                                  data-rich-text-label-for-value="#{form.object_name} employer_description_rich_text"
+                                                                  data-controller="rich-text-label"]
+          | Description de l'entreprise (optionnel)
+        = form.rich_text_area :employer_description_rich_text,
+                              class: "fr-input col-12 col-lg-12",
+                              required: true,
+                              data: { :"maxlength-input-target" => 'trixElement' },
+                              aria: {labelledby: 'label_organisation_description_rich_text'},
+                              rows: 5
+        .fr-alert.fr-alert--error.fr-alert--sm.d-none.fr-mt-1w data-maxlength-input-target="maxLengthMessage"
+          |La description est trop longue
+        small.form-text data-maxlength-input-target="trixElementCharCount"
+
+      .form-group.fr-my-2w
+        = form.label :employer_website, class: 'fr-label' do
+          = 'Site web (optionnel)'
+          small.form-text.text-muted Afin que l’élève puisse en apprendre plus sur son futur stage
+        = form.url_field :employer_website, class: 'fr-input', placeholder: "https://"
+
+    .col-md-6
+      .fr-alert.fr-alert--info
+        h3.fr-alert__title Conseil
+        p La présentation de l’entreprise est un des éléments déterminant dans le choix du stage. Utilisez un vocabulaire simple, facile à comprendre. N’hésitez pas à ajouter des détails sur les principales activités de l’entreprise.
+  - if submit_button
+    .fr-mt-3w
+      = link_to 'Annuler', dashboard_internship_offers_path, class: 'fr-btn fr-btn--secondary fr-mr-3w'
+      = button_tag :submit, class: 'fr-btn', 'data-target': "organisation-form.submitButton" do
+        = "Suivant "

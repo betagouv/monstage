@@ -85,7 +85,7 @@ module Users
         user = create(role_change_notifier, school: school_1)
         user.school = school_2
 
-        mock_mail = MiniTest::Mock.new
+        mock_mail = Minitest::Mock.new
         mock_mail.expect(:deliver_later, true)
         SchoolManagerMailer.stub :new_member, mock_mail do
           user.save!

@@ -18,6 +18,7 @@ module Users
     has_many :groups,
               -> { where is_public: true },
               through: :user_groups
+    has_many :organisations
 
     def ministry_email_whitelist
       EmailWhitelists::Ministry.find_by(email: email)

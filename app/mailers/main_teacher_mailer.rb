@@ -43,7 +43,7 @@ class MainTeacherMailer < ApplicationMailer
     subject = "Un de vos élèves a été accepté à un stage"
     cc = nil
 
-    send_email({ to: to, subject: subject, cc: cc })
+    send_email(to: to, subject: subject, cc: cc)
   end
 
   def internship_application_validated_by_employer_email(internship_application)
@@ -64,6 +64,6 @@ class MainTeacherMailer < ApplicationMailer
     subject = "Un de vos élèves a été accepté en stage"
     cc = nil
 
-    send_email({ to: to, subject: subject, cc: cc })
+    send_email( to: to, subject: subject, cc: cc )
   end
 end

@@ -24,6 +24,7 @@ module Finders
                      .published
                      .with_seats
                      .in_the_future
+                     .includes([:sector])
     end
 
     def school_management_query

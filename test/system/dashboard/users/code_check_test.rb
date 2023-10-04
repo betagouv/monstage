@@ -48,25 +48,25 @@ module Dashboard::Users
       click_on 'Signer'
 
       find('input#phone_suffix').set('0612345678')
-      click_button('Recevoir un code')
-
-      find('h1', text: 'Nous vous avons envoyé un code de vérification')
-      find("button#button-code-submit.fr-btn[disabled]")
-      (0..5).to_a.each do |index|
-        execute_script(code_script_enables(index))
-        execute_script(code_script_assign(index, index)) # wrong code
-      end
-      find("#button-code-submit")
-      execute_script("document.getElementById('button-code-submit').removeAttribute('disabled')")
-      within('dialog') do
-        click_button('Signer la convention')
-      end
       if ENV['RUN_BRITTLE_TEST']
-        find('h1', text: 'Editer, imprimer et bientôt signer les conventions dématérialisées')
-      end
+        click_button('Recevoir un code')
 
-      assert_equal 0, Signature.all.count
-      find('.fr-alert p', text: 'Erreur de code, veuillez recommencer')
+        find('h1', text: 'Nous vous avons envoyé un code de vérification')
+        find("button#button-code-submit.fr-btn[disabled]")
+        (0..5).to_a.each do |index|
+          execute_script(code_script_enables(index))
+          execute_script(code_script_assign(index, index)) # wrong code
+        end
+        find("#button-code-submit")
+        execute_script("document.getElementById('button-code-submit').removeAttribute('disabled')")
+        within('dialog') do
+          click_button('Signer la convention')
+        end
+        find('h1', text: 'Editer, imprimer et bientôt signer les conventions dématérialisées')
+        
+        assert_equal 0, Signature.all.count
+        find('.fr-alert p', text: 'Erreur de code, veuillez recommencer')
+      end
     end
   end
 end

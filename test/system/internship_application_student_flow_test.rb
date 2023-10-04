@@ -65,11 +65,11 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   test 'student with no class_room can submit an application when school has not choosen week' do
     # Pay attention when merging this very test: it's here to stay
     weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
+    travel_to(Date.new(2019, 9, 1)) do
     internship_offer = create(:weekly_internship_offer, weeks: weeks)
     school           = create(:school,:with_school_manager, weeks: [])
     student          = create(:student, school: school)
     assert_equal 1, internship_offer.remaining_seats_count
-    travel_to(Date.new(2019, 9, 1)) do
       sign_in(student)
       visit internship_offer_path(internship_offer)
 

@@ -23,7 +23,7 @@ module Dashboard
         click_on 'Candidatures'
         internship_applications.each do |_aasm_state, internship_application|
           badge = internship_application.presenter(student).human_state
-          find('.h5.internship-offer-title', text: internship_application.internship_offer.title)
+          find('.internship-application-status .h5.internship-offer-title', text: internship_application.internship_offer.title)
           find("a#show_link_#{internship_application.id}", text: badge[:actions].first[:label]).click
           find('a span.fr-icon-arrow-left-line', text:'toutes mes candidatures').click
         end
@@ -95,16 +95,16 @@ module Dashboard
       end
 
       test 'student can draft, submit, and cancel(by_student) internship_applications' do
-        weeks = [Week.find_by(number: 1, year: 2020)]
-        school = create(:school, weeks: weeks)
-        student = create(:student,
-                        school: school,
-                        class_room: create( :class_room,
-                                            school: school)
-                        )
-        internship_offer = create(:weekly_internship_offer, weeks: weeks)
+        travel_to Date.new(2019,12,1) do
+          weeks = [Week.find_by(number: 1, year: 2020)]
+          school = create(:school, weeks: weeks)
+          student = create(:student,
+                          school: school,
+                          class_room: create( :class_room,
+                                              school: school)
+                          )
+          internship_offer = create(:weekly_internship_offer, weeks: weeks)
 
-        travel_to(weeks.first.week_date) do
           sign_in(student)
           visit internship_offer_path(internship_offer)
 
@@ -370,7 +370,9 @@ module Dashboard
           click_button "Choisir ce stage"
           click_button "Confirmer"
           assert_equal "approved", internship_application.reload.aasm_state
-          click_link "Connexion" # demonstrates user is not logged in
+          within('.fr-header__tools-links') do
+            click_link "Connexion" # demonstrates user is not logged in
+          end
         end
       end
 

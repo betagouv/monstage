@@ -144,7 +144,7 @@ export default function SirenInput({
                     htmlFor: `${resourceName}_siren`,
                   })}
                 >
-                  Rechercher votre société dans l’annuaire des entreprises {railsEnv === 'development' ? '(dev only : 90943224700015)' : ''}
+                  Rechercher votre société/administration dans l’annuaire des entreprises {railsEnv === 'development' ? '(dev only : 90943224700015)' : ''}
                 </label>
                 <div className="input-group input-siren">
                   <input
@@ -159,7 +159,7 @@ export default function SirenInput({
                   />
                 </div>
                 <div className='mt-2 d-flex align-items-center'>
-                  <small><span class="fr-icon-info-fill text-blue-info" aria-hidden="true"></span></small>
+                  <small><span className="fr-icon-info-fill text-blue-info" aria-hidden="true"></span></small>
                   <small className="text-blue-info fr-mx-1w">Société introuvable ?</small>
                   <a href='#manual-input' className='pl-2 small text-blue-info' onClick={openManual}>Ajouter une société manuellement</a>
                 </div>
@@ -207,7 +207,7 @@ export default function SirenInput({
               { 
                 selectedCompany && (
                   <div className='mt-2 d-flex'>
-                    <div class="fr-highlight">
+                    <div className="fr-highlight">
                       <p className='fr-my-0'>{selectedCompany.name}</p>
                       <p className='fr-my-0'>{selectedCompany.street}</p>
                       <p className='fr-my-0'>{selectedCompany.city}, {selectedCompany.zipcode}</p>

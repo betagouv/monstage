@@ -29,6 +29,7 @@
           - @invitations.each do |invitation|
             = render partial: "dashboard/schools/users/invited_school_employee",
                     locals: { invitation: invitation }
-          = render partial: "dashboard/schools/users/school_employee",
-                  collection: @collection
+          - unless @school_employee_collection.empty?
+            = render partial: "dashboard/schools/users/school_employee",
+                     collection: @school_employee_collection
 

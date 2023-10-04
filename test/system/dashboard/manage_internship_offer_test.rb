@@ -29,11 +29,11 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     end
   end
 
-  test 'Employer can edit an un published internship offer and have it published' do
+  test 'Employer can edit an unpublished internship offer and have it published' do
     travel_to(Date.new(2019, 3, 1)) do
       employer = create(:employer)
       internship_offer = create(:weekly_internship_offer, employer: employer)
-      internship_offer.update(published_at: nil)
+      internship_offer.unpublish!
       refute internship_offer.published?
 
       sign_in(employer)
@@ -157,7 +157,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       find(".test-edit-button").click
       find('h1', text: "Modifier une offre")
       click_button('Publier l\'offre')
-      find(".fr-alert.fr-alert--error", text: "Vous devez sélectionner au moins une semaine dans le futur")
+      find(".form-text", text: "Veuillez saisir au moins une semaine de stage")
 
       within(".custom-control-checkbox-list") do
         find("label[for='internship_offer_week_ids_142_checkbox']").click

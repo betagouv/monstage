@@ -76,16 +76,8 @@ module StepperProxy
     end
 
     def available_weeks_when_editing
-      raise 'Wrong !!' unless persisted? && respond_to?(:weeks) # temporary
       return nil unless persisted? && respond_to?(:weeks)
-
-
-      school_year = SchoolYear::Floating.new(date: weeks.first.week_date)
-
-      [Week.selectable_on_specific_school_year(school_year: school_year),
-       Week.selectable_on_school_year_when_editing].map(&:to_a)
-                                                   .flatten
-                                                   .uniq
+      Week.selectable_from_now_until_end_of_school_year
     end
 
     def weeks_class
@@ -107,7 +99,7 @@ module StepperProxy
     end
 
     def check_for_missing_seats
-      if remaining_seats_count.zero?
+      if no_remaining_seat_anymore?
         errors.add(:max_candidates, 'Augmentez Le nombre de places disponibles pour accueillir des élèves')
       end
     end
@@ -122,7 +114,7 @@ module StepperProxy
     def requires_update_at_toggle_time?
       return false if published?
 
-      missing_weeks_info? || remaining_seats_count.zero?
+      missing_weeks_info? || no_remaining_seat_anymore?
     end
 
     def user_update?

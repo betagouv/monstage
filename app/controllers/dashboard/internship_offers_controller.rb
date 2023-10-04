@@ -46,16 +46,16 @@ module Dashboard
       authorize! :update, @internship_offer
       @republish = params[:republish].present?
       @republish = true
-      @available_weeks = @internship_offer.available_weeks_when_editing
+      @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
 
     def republish
       anchor = "max_candidates_fields"
       warning = "Votre annonce n'est pas encore republiée, car il faut ajouter des places et des semaines de stage"
 
-      if (@internship_offer.remaining_seats_count.zero?) && !@internship_offer.missing_weeks_info?
+      if @internship_offer.remaining_seats_count.zero? && @internship_offer.has_weeks_in_the_future?
         warning = "Votre annonce n'est pas encore republiée, car il faut ajouter des places de stage"
-      elsif (@internship_offer.remaining_seats_count > 0) && @internship_offer.missing_weeks_info?
+      elsif (@internship_offer.remaining_seats_count > 0) && !@internship_offer.has_weeks_in_the_future?
         anchor = "weeks_container"
         warning = "Votre annonce n'est pas encore republiée, car il faut ajouter des semaines de stage"
       end
@@ -113,10 +113,15 @@ module Dashboard
     def publish
       @internship_offer = InternshipOffer.find(params[:id])
       authorize! :publish, @internship_offer
-      # TO DO Clean
-      @internship_offer.publish!
-      @internship_offer.update(aasm_state: 'published')
-      redirect_to internship_offer_path(@internship_offer), flash: { success: 'Votre annonce a bien été publiée' }
+      if @internship_offer.requires_updates?
+        republish
+      else
+        # TO DO Clean
+        @internship_offer.publish!
+        @internship_offer.update(aasm_state: 'published')
+        redirect_to internship_offer_path(@internship_offer),
+                    flash: { success: 'Votre annonce a bien été publiée' }
+      end
     end
 
     def remove # Back to step 4

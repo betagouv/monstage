@@ -309,7 +309,7 @@ module Dashboard::InternshipOffers
                     count: 1
     end
 
-    test 'GET #index as Operator works with geolocation params' do
+    test 'GET #index as Operator works with geolocalisation params' do
       user_operator = create(:user_operator)
       internship_offer_at_paris = create(:weekly_internship_offer,
                                          employer: user_operator,
@@ -336,9 +336,8 @@ module Dashboard::InternshipOffers
       # Check sorting links on column header, like ... on title column
       sort_params = { order: :title, direction: :desc }
       ordonencer_params = sort_params.merge(location_params_forwarded_to_sort_links)
-      assert_select "a.fr-raw-link[href='#{dashboard_internship_offers_path(ordonencer_params)}']",
-                    1,
-                    'ordonencer links should contain geo filters'
+      assert_select ".sort-links a.fr-raw-link[href='#{dashboard_internship_offers_path(ordonencer_params)}']",
+                    count: 1
     end
   end
 end

@@ -31,7 +31,7 @@ module Builders
       yield callback if block_given?
       authorize :create, model
       preprocess_organisation(params)
-      create_params = preprocess_api_params(params, fallback_weeks: true)
+      create_params = preprocess_api_params(params, **{fallback_weeks: true})
       internship_offer = model.create!(create_params)
       internship_offer.update(
         aasm_state: 'published',
@@ -50,10 +50,16 @@ module Builders
     def update(instance:, params:)
       yield callback if block_given?
       authorize :update, instance
-      instance.publish! if instance.republish
       instance.attributes = preprocess_api_params(params, fallback_weeks: false)
       instance = deal_with_max_candidates_change(params: params, instance: instance)
-      instance.save!
+      if from_api?
+        instance.reset_publish_states
+      elsif instance.may_publish? && instance.republish
+        instance.publish!
+      elsif instance.published_at.nil?
+        instance.unpublish! if instance.may_unpublish?
+      end
+      instance.save! # this may set aasm_state to need_to_be_updated state
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => e
       callback.on_failure.try(:call, e.record)
@@ -88,7 +94,7 @@ module Builders
                user: user,
                fallback_weeks: fallback_weeks }
 
-      Dto::ApiParamsAdapter.new(opts)
+      Dto::ApiParamsAdapter.new(**opts)
                            .sanitize
     end
 

@@ -1,0 +1,7 @@
+{ "defaults" : {
+    "useIncognitoBrowserContext": false,
+    "concurrency": 1,
+    "timeout": 10000,
+    "chromeLaunchConfig": { "args": [ "--no-sandbox" ] }
+  }
+}

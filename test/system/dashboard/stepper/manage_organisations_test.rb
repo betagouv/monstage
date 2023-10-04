@@ -22,17 +22,6 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
     end
   end
 
-  # test 'can edit organisation' do
-  #   employer = create(:employer)
-  #   organisation = create(:organisation)
-  #   sign_in(employer)
-  #   visit edit_dashboard_organisation_path(organisation)
-  #   fill_in 'Nom de l’entreprise proposant l’offre', with: 'New name'
-
-  #   click_on "Enregistrer et publier l'offre"
-  #   assert_equal 'New name', organisation.reload.title
-  # end
-
   test 'create organisation fails gracefuly' do
     sector = create(:sector)
     employer = create(:employer)
@@ -44,7 +33,6 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
       fill_in_organisation_form(is_public: true, group: group)
       as = 'a' * (InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT + 2)
       find('#organisation_employer_description_rich_text', visible: false).set(as)
-      click_on "Suivant"
       find('.fr-alert.fr-alert--error')
     end
   end
