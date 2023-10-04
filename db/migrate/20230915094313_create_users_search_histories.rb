@@ -1,6 +1,6 @@
-class CreateUsersSearshes < ActiveRecord::Migration[7.0]
+class CreateUsersSearchHistories < ActiveRecord::Migration[7.0]
   def change
-    create_table :users_searshes do |t|
+    create_table :users_search_histories do |t|
       t.references :user, null: false, foreign_key: true
       t.string :keywords
       t.float :latitude

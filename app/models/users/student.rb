@@ -144,5 +144,18 @@ module Users
     def has_already_approved_an_application?
       internship_applications.approved.any?
     end
+
+    def log_search_history(search_params)
+      search_history = UsersSearchHistory.new(
+        keywords: search_params[:keyword],
+        latitude: search_params[:latitude],
+        longitude: search_params[:longitude],
+        city: search_params[:city],
+        radius: search_params[:radius],
+        results_count: search_params[:results_count],
+        user: self
+      )
+      search_history.save
+    end
   end
 end

@@ -372,4 +372,16 @@ class InternshipOffer < ApplicationRecord
   def approved_applications_current_school_year
     internship_applications.approved.current_school_year
   end
+
+  def log_view(user)  
+    history = UsersInternshipOffersHistory.find_or_initialize_by(internship_offer: self, user: user)
+    history.views += 1
+    history.save
+  end
+  
+  def log_apply(user)
+    history = UsersInternshipOffersHistory.find_or_initialize_by(internship_offer: self, user: user)
+    history.application_clicks += 1
+    history.save
+  end
 end

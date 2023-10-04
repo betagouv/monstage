@@ -1422,6 +1422,39 @@ ALTER SEQUENCE public.sectors_id_seq OWNED BY public.sectors.id;
 
 
 --
+-- Name: sgid_mappings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sgid_mappings (
+    id bigint NOT NULL,
+    internship_application_id bigint NOT NULL,
+    sgid text,
+    short_sgid character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: sgid_mappings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sgid_mappings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sgid_mappings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sgid_mappings_id_seq OWNED BY public.sgid_mappings.id;
+
+
+--
 -- Name: signatures; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1670,6 +1703,77 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: users_internship_offers_histories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.users_internship_offers_histories (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    internship_offer_id bigint NOT NULL,
+    application_clicks integer DEFAULT 0,
+    views integer DEFAULT 0,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: users_internship_offers_histories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.users_internship_offers_histories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: users_internship_offers_histories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.users_internship_offers_histories_id_seq OWNED BY public.users_internship_offers_histories.id;
+
+
+--
+-- Name: users_search_histories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.users_search_histories (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    keywords character varying,
+    latitude double precision,
+    longitude double precision,
+    city character varying,
+    radius integer,
+    results_count integer DEFAULT 0,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: users_search_histories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.users_search_histories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: users_search_histories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.users_search_histories_id_seq OWNED BY public.users_search_histories.id;
+
+
+--
 -- Name: weeks; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1912,6 +2016,13 @@ ALTER TABLE ONLY public.sectors ALTER COLUMN id SET DEFAULT nextval('public.sect
 
 
 --
+-- Name: sgid_mappings id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sgid_mappings ALTER COLUMN id SET DEFAULT nextval('public.sgid_mappings_id_seq'::regclass);
+
+
+--
 -- Name: signatures id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1951,6 +2062,20 @@ ALTER TABLE ONLY public.user_groups ALTER COLUMN id SET DEFAULT nextval('public.
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Name: users_internship_offers_histories id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users_internship_offers_histories ALTER COLUMN id SET DEFAULT nextval('public.users_internship_offers_histories_id_seq'::regclass);
+
+
+--
+-- Name: users_search_histories id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users_search_histories ALTER COLUMN id SET DEFAULT nextval('public.users_search_histories_id_seq'::regclass);
 
 
 --
@@ -2217,6 +2342,14 @@ ALTER TABLE ONLY public.sectors
 
 
 --
+-- Name: sgid_mappings sgid_mappings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sgid_mappings
+    ADD CONSTRAINT sgid_mappings_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: signatures signatures_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2257,11 +2390,27 @@ ALTER TABLE ONLY public.user_groups
 
 
 --
+-- Name: users_internship_offers_histories users_internship_offers_histories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users_internship_offers_histories
+    ADD CONSTRAINT users_internship_offers_histories_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_search_histories users_search_histories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users_search_histories
+    ADD CONSTRAINT users_search_histories_pkey PRIMARY KEY (id);
 
 
 --
@@ -2721,6 +2870,13 @@ CREATE INDEX index_schools_on_coordinates ON public.schools USING gist (coordina
 
 
 --
+-- Name: index_sgid_mappings_on_internship_application_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sgid_mappings_on_internship_application_id ON public.sgid_mappings USING btree (internship_application_id);
+
+
+--
 -- Name: index_signatures_on_internship_agreement_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2760,6 +2916,20 @@ CREATE INDEX index_user_groups_on_group_id ON public.user_groups USING btree (gr
 --
 
 CREATE INDEX index_user_groups_on_user_id ON public.user_groups USING btree (user_id);
+
+
+--
+-- Name: index_users_internship_offers_histories_on_internship_offer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_internship_offers_histories_on_internship_offer_id ON public.users_internship_offers_histories USING btree (internship_offer_id);
+
+
+--
+-- Name: index_users_internship_offers_histories_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_internship_offers_histories_on_user_id ON public.users_internship_offers_histories USING btree (user_id);
 
 
 --
@@ -2823,6 +2993,13 @@ CREATE INDEX index_users_on_role ON public.users USING btree (role);
 --
 
 CREATE INDEX index_users_on_school_id ON public.users USING btree (school_id);
+
+
+--
+-- Name: index_users_search_histories_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_search_histories_on_user_id ON public.users_search_histories USING btree (user_id);
 
 
 --
@@ -2931,6 +3108,14 @@ ALTER TABLE ONLY public.team_member_invitations
 
 
 --
+-- Name: users_internship_offers_histories fk_rails_24c68739d8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users_internship_offers_histories
+    ADD CONSTRAINT fk_rails_24c68739d8 FOREIGN KEY (internship_offer_id) REFERENCES public.internship_offers(id);
+
+
+--
 -- Name: internship_applications fk_rails_32ed157946; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3035,6 +3220,14 @@ ALTER TABLE ONLY public.internship_offers
 
 
 --
+-- Name: sgid_mappings fk_rails_7a08ac1182; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sgid_mappings
+    ADD CONSTRAINT fk_rails_7a08ac1182 FOREIGN KEY (internship_application_id) REFERENCES public.internship_applications(id);
+
+
+--
 -- Name: users fk_rails_804d743d22; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3056,6 +3249,14 @@ ALTER TABLE ONLY public.internship_offers
 
 ALTER TABLE ONLY public.email_whitelists
     ADD CONSTRAINT fk_rails_8fe0f00dcd FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: users_search_histories fk_rails_9338fd3660; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users_search_histories
+    ADD CONSTRAINT fk_rails_9338fd3660 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -3144,6 +3345,14 @@ ALTER TABLE ONLY public.active_storage_attachments
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT fk_rails_d23d91f0e6 FOREIGN KEY (class_room_id) REFERENCES public.class_rooms(id);
+
+
+--
+-- Name: users_internship_offers_histories fk_rails_da8186a772; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users_internship_offers_histories
+    ADD CONSTRAINT fk_rails_da8186a772 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -3492,6 +3701,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230724113109'),
 ('20230816221101'),
 ('20230818072958'),
-('20230828084430');
+('20230828084430'),
+('20230915094313'),
+('20230915131604');
 
 

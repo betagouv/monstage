@@ -4,6 +4,7 @@ class CreateUsersInternshipOffersHistory < ActiveRecord::Migration[7.0]
       t.references :user, null: false, foreign_key: true
       t.references :internship_offer, null: false, foreign_key: true
       t.integer :application_clicks, default: 0
+      t.integer :views, default: 0
 
       t.timestamps
     end
