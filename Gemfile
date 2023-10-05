@@ -35,7 +35,7 @@ gem 'caxlsx_rails'
 gem "split", require: "split/dashboard"
 
 # background jobs
-gem 'sidekiq', '~> 6.5', '>= 6.1.2'
+gem 'sidekiq', '~> 6.5'
 gem 'redis-namespace' # plug redis queues on same instance for prod/staging
 # Use Redis for Action Cable
 gem "redis", "~> 4.0"

@@ -434,7 +434,7 @@ GEM
       sentry-ruby (~> 5.10.0)
     sentry-ruby (5.10.0)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-    sidekiq (6.5.9)
+    sidekiq (6.5.10)
       connection_pool (>= 2.2.5, < 3)
       rack (~> 2.0)
       redis (>= 4.5.0, < 5)
@@ -567,7 +567,7 @@ DEPENDENCIES
   selenium-webdriver
   sentry-rails
   sentry-ruby
-  sidekiq (~> 6.5, >= 6.1.2)
+  sidekiq (~> 6.5)
   slim-rails
   split
   spring (= 3.0.0)
