@@ -27,7 +27,7 @@ namespace :retrofit do
         if internship_application.type == "InternshipApplications::WeeklyFramed"
           internship_application.create_agreement
           if main_teacher.present?
-            MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
+            MainTeacherMailer.internship_application_approved_with_agreement_email(**arg_hash)
                              .deliver_later
           end
         end

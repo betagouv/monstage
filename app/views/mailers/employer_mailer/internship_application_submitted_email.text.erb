@@ -5,5 +5,5 @@
 <% if @internship_application.student.handicap.present? %>
 <%= "Besoin d'aménagement pour l'élève #{@internship_application.student.handicap}" %>
 <% end %>
-Pour répondre, cliquez sur lien suivant <%= dashboard_internship_offer_internship_applications_url(@internship_application.internship_offer) %>
+Pour répondre, cliquez sur lien suivant <%= dashboard_internship_offer_internship_application_url(internship_offer_id: @internship_application.internship_offer.id, id: @internship_application.id) %>
 
