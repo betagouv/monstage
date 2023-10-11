@@ -38,6 +38,7 @@ class InternshipOffer < ApplicationRecord
   belongs_to :internship_offer_area, optional: true, touch: true
   has_many :favorites
   has_many :users, through: :favorites
+  has_many :users_internship_offers_histories, dependent: :destroy
 
   accepts_nested_attributes_for :organisation, allow_destroy: true
 

@@ -36,7 +36,7 @@ class InternshipOffersController < ApplicationController
           seats: calculate_seats,
           isSuggestion: @is_suggestion
         }
-        current_user.log_search_history(@params.merge({results_count: data[:seats]})) if current_user && current_user.student?
+        current_user.log_search_history(@params.merge({results_count: data[:seats]})) if current_user&.student?
         render json: data, status: 200
       end
     end
