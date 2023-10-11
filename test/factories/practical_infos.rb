@@ -4,7 +4,6 @@ FactoryBot.define do
     zipcode { '75001' }
     city { 'Paris' }
     coordinates { Coordinates.paris }
-    siret { FFaker::CompanyFR.siret }
     employer { create(:employer) }
     weekly_lunch_break { '12:00-13:00' }
     weekly_hours { [] }
