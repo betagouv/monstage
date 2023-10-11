@@ -54,10 +54,11 @@ module Presenters
         }
       when "read_by_employer"
         label = reader.student? || reader.school_management? ? "Sans réponse de l'entreprise" : 'Lue'
+        badge = reader.student? ? 'info' : 'warning'
         action_label = reader.student? || reader.school_management? ? 'Voir' : 'Répondre'
         action_level = reader.student? ? 'tertiary' : 'primary'
         { label: label,
-          badge: 'info',
+          badge: badge,
           actions: [ { label: action_label,
                       path: internship_application_path,
                       level: action_level
