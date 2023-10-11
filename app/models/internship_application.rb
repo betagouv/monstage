@@ -115,7 +115,7 @@ class InternshipApplication < ApplicationRecord
     where(applications[:aasm_state].in(['approved', 'signed']))
   }
 
-  scope :pending, lambda {
+  scope :pending_for_employers, lambda {
     applications = InternshipApplication.arel_table
     where(applications[:aasm_state].in(['submitted', 'read_by_employer']))
   }

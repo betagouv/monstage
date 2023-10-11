@@ -7,10 +7,10 @@ module Triggered
     def perform(employer)
       internship_applications = employer.internship_applications
 
-      pending_application_ids = internship_applications.pending.pluck(:id)
+      pending_application_ids = internship_applications.pending_for_employers.pluck(:id)
       examined_application_ids = internship_applications.examined.pluck(:id)
 
-      if !pending_application_ids.empty? || !examined_application_ids.empty?
+      if pending_application_ids.present? || !examined_application_ids.present?
         notify(employer: employer,
                 pending_application_ids: pending_application_ids,
                 examined_application_ids: examined_application_ids)
