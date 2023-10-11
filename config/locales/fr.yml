@@ -123,6 +123,10 @@ fr:
         is_paqte: Paqte
         name: Nom
         updated_at: Mis à jour le
+      convention:
+        activity_scope_rich_text: Objectifs du stage
+        weekly_planning: Planning hebdomadaire
+        same_daily_planning: Horaires quotidiens
       school:
         name: Nom
         kind: Type
