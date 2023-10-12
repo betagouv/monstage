@@ -2,7 +2,6 @@
 
 module Users
   class MinistryStatistician < Statistician
-    include Signatorable
     # include Statisticianable
     
     METABASE_DASHBOARD_ID = 10
@@ -71,23 +70,19 @@ module Users
       end
 
       edit do
-        field :first_name do
-          label 'Prénom'
+        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
+        field :groups do
+          label 'Ministère'
+          pretty_value do
+            bindings[:object]&.groups.map(&:name)
+          end
         end
-        field :last_name do
-          label 'Nom'
-        end
-        field :email do
-          label 'Email'
-        end
-        # field :group_id do
-        #   label 'Ministère'
-        #   pretty_value do
-        #     bindings[:object]&.group&.name
-        #   end
-        # end
         field :statistician_validation do
           label 'Validation'
+        end
+        field :agreement_signatorable do
+          label 'Signataire des conventions'
+          help 'Si le V est coché en vert, le signataire doit signer TOUTES les conventions'
         end
         
       end
