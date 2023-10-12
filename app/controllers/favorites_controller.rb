@@ -6,7 +6,7 @@ class FavoritesController < ApplicationController
 
   def create
     favorite = Favorite.where(user_id: current_user.id, internship_offer_id: @internship_offer.id)&.first
-    favorite = Favorite.new(internship_offer: @internship_offer, user: current_user) if favorite.nil?
+    favorite ||= Favorite.new(internship_offer: @internship_offer, user: current_user)
     if favorite.save
       render json: format_internship_offer(@internship_offer), status: 200
     else
