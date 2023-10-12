@@ -30,15 +30,15 @@ export default class extends Controller {
   }
 
   clean_daily_hours() {
-    this.dailyHoursEndTargets.forEach((dailyHoursEndTarget) => {
-      dailyHoursEndTarget.value = '';
-    })
-
     this.dailyHoursStartTargets.forEach((dailyHoursStartTarget) => {
       dailyHoursStartTarget.value = '';
     })
+
+    this.dailyHoursEndTargets.forEach((dailyHoursEndTarget) => {
+      dailyHoursEndTarget.value = '';
+    })
   };
-  
+
   clean_daily_lunch() {
     this.dailyLunchBreakTargets.forEach((dailyLunchBreakTarget) => {
       dailyLunchBreakTarget.value = '';

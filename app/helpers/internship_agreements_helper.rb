@@ -21,7 +21,7 @@ module InternshipAgreementsHelper
 
   def afternoon_hours_by_quarter
     # 72 => 18:00
-    hours_maker(range: (52..72).to_a)
+    hours_maker(range: (46..72).to_a)
   end
 
   def hours_maker(range: )

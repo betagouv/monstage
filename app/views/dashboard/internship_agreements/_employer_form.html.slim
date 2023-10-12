@@ -1,6 +1,7 @@
 = form_with model: @internship_agreement,
             url: dashboard_internship_agreement_path(@internship_agreement),
             class: 'form-offset-header',
+            method: (@internship_agreement.persisted? ? :patch : :post),
             data: { controller: 'internship-agreement-form', turbo: false} do |form|
   - employer_like = current_user.employer_like?
   .row
