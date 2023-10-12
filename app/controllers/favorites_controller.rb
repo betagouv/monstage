@@ -3,9 +3,10 @@
 class FavoritesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_internship_offer, only: [:create, :destroy]
-  
+
   def create
-    favorite = Favorite.new(internship_offer: @internship_offer, user: current_user)
+    favorite = Favorite.where(user_id: current_user.id, internship_offer_id: @internship_offer.id)&.first
+    favorite = Favorite.new(internship_offer: @internship_offer, user: current_user) if favorite.nil?
     if favorite.save
       render json: format_internship_offer(@internship_offer), status: 200
     else
@@ -13,7 +14,7 @@ class FavoritesController < ApplicationController
       render json: 'Erreur', status: 500
     end
   end
-  
+
   def destroy
     Favorite.where(internship_offer_id: @internship_offer.id, user_id: current_user.id).first.destroy
     render json: format_internship_offer(@internship_offer), status: 200
@@ -22,9 +23,9 @@ class FavoritesController < ApplicationController
   def index
     @internship_offers = format_internship_offers(current_user.internship_offers)
   end
-  
+
   private
-  
+
   def set_internship_offer
     @internship_offer = InternshipOffer.find(params[:internship_offer_id] || params[:id])
   end
@@ -32,7 +33,7 @@ class FavoritesController < ApplicationController
   def format_internship_offers(internship_offers)
     internship_offers.map { |internship_offer| format_internship_offer(internship_offer) }
   end
-  
+
   def format_internship_offer(internship_offer)
     {
       id: internship_offer.id,
