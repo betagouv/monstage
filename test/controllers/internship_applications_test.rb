@@ -20,6 +20,16 @@ class InternshipApplicationsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'GET edit_transfer when logged in as statistician it renders the page' do
+    employer = create(:statistician)
+    internship_offer = create(:weekly_internship_offer, employer: employer)
+    internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+    sign_in(employer)
+
+    get edit_transfer_internship_offer_internship_application_path(internship_offer, internship_application)
+    assert_response :success
+  end
+
   test 'POST transfer when logged in it sends emails to targets' do
     employer = create(:employer)
     internship_offer = create(:weekly_internship_offer, employer: employer)

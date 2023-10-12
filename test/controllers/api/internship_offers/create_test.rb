@@ -537,5 +537,54 @@ module Api
         assert_equal 'N/A', internship_offer.street
       end
     end
+
+    test 'POST #create as operator with not enough weeks does not fail' do
+      operator = create(:user_operator, api_token: SecureRandom.uuid)
+      week_instances = [weeks(:week_2019_1), weeks(:week_2019_2)]
+      week_params = [
+        "#{week_instances.first.year}-W#{week_instances.first.number}",
+        "#{week_instances.last.year}-W#{week_instances.last.number}"
+      ]
+      sector = create(:sector, uuid: SecureRandom.uuid)
+      geocoder_response = {
+        status: 200,
+        body: [{ "error": "wrong address" }].to_json
+      }
+      stub_request(:get, "https://nominatim.openstreetmap.org/reverse?accept-language=en&addressdetails=1&format=json&lat=148&lon=14").to_return(geocoder_response)
+
+
+      travel_to(Date.new(2018, 3, 1)) do
+        assert_difference('InternshipOffer.count', 1) do
+          post api_internship_offers_path(
+            params: {
+              token: "Bearer #{operator.api_token}",
+              internship_offer: {
+                title: 'title',
+                description: 'description',
+                employer_name: 'Ministere',
+                employer_description: 'employer_description',
+                employer_website: 'http://employer_website.com',
+                siret: FFaker::CompanyFR.siret,
+                coordinates: { latitude: 148, longitude: 14 },
+                zipcode: '75007',
+                weeks: week_params, # 2 weeks
+                city: 'Paris',
+                sector_uuid: sector.uuid,
+                remote_id: 'remote_id',
+                permalink: 'http://google.fr/permalink',
+                max_candidates: 3,
+                max_students_per_group: 1
+              }
+            }
+          )
+        end
+
+        assert_response :created
+        internship_offer = InternshipOffers::Api.first
+        assert_equal 2, internship_offer.weeks.count
+        assert_equal 3, internship_offer.remaining_seats_count
+        assert_equal 1, internship_offer.max_students_per_group
+      end
+    end
   end
 end
