@@ -96,10 +96,10 @@ module Dashboard::Stepper
 
       # recopy organisation
       assert_equal organisation.employer_name, created_internship_offer.employer_name
-      assert_equal organisation.street, created_internship_offer.street
-      assert_equal organisation.zipcode, created_internship_offer.zipcode
-      assert_equal organisation.city, created_internship_offer.city
-      assert_equal organisation.coordinates, created_internship_offer.coordinates
+      assert_equal organisation.street, created_internship_offer.organisation.street
+      assert_equal organisation.zipcode, created_internship_offer.organisation.zipcode
+      assert_equal organisation.city, created_internship_offer.organisation.city
+      assert_equal organisation.coordinates, created_internship_offer.organisation.coordinates
       assert_equal organisation.is_public, created_internship_offer.is_public
       assert_equal organisation.group_id, created_internship_offer.group_id
       assert_equal organisation.employer_website, created_internship_offer.employer_website
@@ -122,6 +122,10 @@ module Dashboard::Stepper
       assert_equal(created_practical_info.daily_hours,
                    created_internship_offer.daily_hours,
                    'daily_hours not copied')
+      assert_equal created_practical_info.street, created_internship_offer.street
+      assert_equal created_practical_info.zipcode, created_internship_offer.zipcode
+      assert_equal created_practical_info.city, created_internship_offer.city
+      assert_equal created_practical_info.coordinates, created_internship_offer.coordinates
     end
 
     test 'POST #create as employer with missing params' do
