@@ -47,6 +47,15 @@ module Dashboard
         assert_redirected_to root_path
       end
 
+      test 'GET users#index as Teacher when no schoolmanager works' do
+        school = create(:school)
+        teacher = create(:teacher, school: school)
+        sign_in(teacher)
+
+        get dashboard_school_users_path(school)
+        assert_response :success
+      end
+
       test 'GET users#index as SchoolManagement works' do
         school = create(:school, :with_school_manager)
         sign_in(school.school_manager)

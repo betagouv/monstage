@@ -65,6 +65,15 @@ module PrettyConsole
     )
   end
 
+  def announce_task(task)
+    puts_with_green_background "Starting task : #{task.name}"
+    start_time = Time.now
+    yield
+    end_time = Time.now
+    puts ''
+    say_in_green "Task completed. Took #{(end_time - start_time).to_s } seconds"
+  end
+
   def self.enhance_str(str)
     "=====> #{str} <====="
   end

@@ -1,6 +1,5 @@
 import { Controller } from 'stimulus';
 import $ from 'jquery';
-import { showElement, hideElement } from '../utils/dom';
 
 export default class extends Controller {
   static targets = [
@@ -14,18 +13,15 @@ export default class extends Controller {
   checkForm() {
     const requiredFields = this.requiredFieldTargets;
     const submitButton = this.submitButtonTarget;
+    submitButton.disabled = false;
 
-    requiredFields.forEach(field => {
-      field.addEventListener('input', () => {
-        for (const requiredField of requiredFields) {
-          if (requiredField.value === '') {
-            submitButton.disabled = true;
-            return;
-          }
-        }
-        submitButton.disabled = false;
-      });
-    });
+    for (var requiredField of requiredFields) {      
+      if (requiredField.value === '') {
+        submitButton.disabled = true;
+        return;
+      }
+    }
+    
   }
 
   connect() {

@@ -32,6 +32,9 @@ module RailsAdminInternshipOfferable
         field :internship_offer_area do
           label "Espace"
         end
+        field  :organisation do
+          label "Groupe ou institution"
+        end
       end
 
       edit do

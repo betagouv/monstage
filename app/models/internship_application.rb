@@ -257,14 +257,6 @@ class InternshipApplication < ApplicationRecord
     end
   end
 
-  def days_before_expiration
-    return nil unless aasm_state.in?(%w[submitted read_by_employer examined])
-
-    delay = submitted_at + EXPIRATION_DURATION - DateTime.now
-    delay += self.examined_at.nil? ? 0 : EXTENDED_DURATION
-    [0, delay.to_f / 3_600 / 24].max
-  end
-
   def student_approval_notifications
     main_teacher = student.main_teacher
     arg_hash = {
@@ -276,12 +268,12 @@ class InternshipApplication < ApplicationRecord
       create_agreement if employer.agreement_signatorable?
       if main_teacher.present?
         deliver_later_with_additional_delay do
-          MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
+          MainTeacherMailer.internship_application_approved_with_agreement_email(**arg_hash)
         end
       end
     elsif main_teacher.present?
       deliver_later_with_additional_delay do
-        MainTeacherMailer.internship_application_approved_with_no_agreement_email(arg_hash)
+        MainTeacherMailer.internship_application_approved_with_no_agreement_email(**arg_hash)
       end
     end
   end
