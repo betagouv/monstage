@@ -221,7 +221,7 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :cancel_by_employer do
-      transitions from: %i[drafted read_by_employer drafted submitted examined approved validated_by_employer],
+      transitions from: %i[read_by_employer drafted submitted examined approved validated_by_employer],
                   to: :canceled_by_employer,
                   after: proc { |*_args|
                            update!("canceled_at": Time.now.utc)

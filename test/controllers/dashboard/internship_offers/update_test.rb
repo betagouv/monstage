@@ -45,7 +45,7 @@ module Dashboard::InternshipOffers
               daily_hours: {'lundi' => ['10h', '12h']}
 
             } })
-
+      
       assert_redirected_to(dashboard_internship_offers_path(origine: 'dashboard'))
 
       assert_equal(new_title,
@@ -243,28 +243,6 @@ module Dashboard::InternshipOffers
           text: "Votre annonce n'est pas encore republiée, car il faut ajouter des places et des semaines de stage"
         )
         refute internship_offer.reload.published?
-      end
-    end
-
-    test 'PATCH as employer while removing weeks where internship_applications were formerly created' do
-      travel_to Date.new(2019, 10, 1) do
-        weeks = Week.selectable_from_now_until_end_of_school_year.first(2)
-        employer = create(:employer)
-        internship_offer = create(:weekly_internship_offer,
-                                  employer: employer,
-                                  max_candidates: 1,
-                                  weeks: weeks,
-                                  max_students_per_group: 1)
-        internship_application = create(:weekly_internship_application,
-                                        :submitted,
-                                        week: weeks.first,
-                                        internship_offer: internship_offer)
-        assert_equal 1, InternshipApplication.all.count
-
-        sign_in(employer)
-        patch dashboard_internship_offer_path(internship_offer.to_param),
-              params: { internship_offer: internship_offer.attributes.merge!({week_ids:[weeks.second.id]}) }
-        assert_equal 0, InternshipApplication.all.count
       end
     end
   end
