@@ -62,10 +62,10 @@ module Dashboard
       school_manager = create(:school_manager, school: school)
 
       sign_in(school_manager)
-      get edit_dashboard_school_path(school.to_param)
+      get dashboard_school_class_rooms_path(school.to_param)
 
       assert_select 'dialog#notice-school-manager-empty-weeks p',
-                      text: "Afin de permettre à vos élèves d'effectuer leurs recherches de stage, vous devez renseigner les semaines de stage auxquelles ils peuvent postuler."
+                    text: "Afin de permettre à vos élèves d'effectuer leurs recherches de stage, vous devez renseigner les semaines de stage auxquelles ils peuvent postuler."
     end
 
     test 'GET edit as God works' do

@@ -50,9 +50,9 @@ module Users
     end
 
     def custom_dashboard_paths
-      [
-        after_sign_in_path
-      ]
+      array = school.present? ? [ url_helpers.dashboard_school_class_rooms_path(school)] : []
+      array <<  after_sign_in_path
+      array
     rescue ActionController::UrlGenerationError
       []
     end

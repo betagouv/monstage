@@ -48,7 +48,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     end
   end
 
-  test 'Employer can see which week is choosen by nearby schools on edit' do
+  test 'Employer can see which week is chosen by nearby schools on edit' do
     employer = create(:employer)
     sign_in(employer)
     travel_to(Date.new(2019, 3, 1)) do
@@ -140,7 +140,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   test "Employer can edit internship offer when it's missing weeks" do
     employer = create(:employer)
     current_internship_offer = nil
-    travel_to(Date.new(2019, 10,1)) do
+    travel_to(Date.new(2019, 10, 1)) do
       older_weeks = [Week.selectable_from_now_until_end_of_school_year.first]
       current_internship_offer = create(
         :weekly_internship_offer,
@@ -157,7 +157,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       find(".test-edit-button").click
       find('h1', text: "Modifier une offre")
       click_button('Publier l\'offre')
-      find(".form-text", text: "Veuillez saisir au moins une semaine de stage")
+      find(".form-text", text: "Veuillez saisir au moins une semaine de stage", visible: false)
 
       within(".custom-control-checkbox-list") do
         find("label[for='internship_offer_week_ids_142_checkbox']").click

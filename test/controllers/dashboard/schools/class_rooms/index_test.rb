@@ -59,6 +59,7 @@ module Dashboard
 
         sign_in(school_manager)
         get school_manager.custom_dashboard_path
+        follow_redirect!
 
         assert_select 'dialog#notice-school-manager-empty-weeks p',
                       text: "Afin de permettre à vos élèves d'effectuer leurs recherches de stage, vous devez renseigner les semaines de stage auxquelles ils peuvent postuler."

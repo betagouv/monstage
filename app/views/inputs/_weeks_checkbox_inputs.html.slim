@@ -58,10 +58,11 @@ div [data-internship-offer-infos-target='weeksContainer'
                     br
                     span.text-muted = "Semaine #{week.number}"
 
-                div.position-absolute.badge-week-density.rounded [
+                div.position-absolute.badge-week-density.rounded.d-none [
                   data-select-weeks-target='inputWeekLegend'
                   data-week-id="#{week.id}"]
                   | ?
+      div data-select-weeks-target='submitButton'
 
       - if render_employer_components
         .custom-control-checkbox-legend data-select-weeks-target="legendContainer" data-test='select-week-legend'
