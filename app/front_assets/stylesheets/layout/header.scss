@@ -17,20 +17,24 @@
 }
 
 .custom-navbar{
-  .nav-link{
-    color: $gray-600;
+  .fr-link, .nav-link{
     text-decoration: none;
-    border-bottom: 2px solid transparent;
-
-    &:hover,
-    &:active,
-    &.active{
-      color: $blue;
-    }
-    &:active, &.active{
-      border-bottom-color: $blue;
-      font-weight: bold;
-    }
+      border-bottom: 2px solid transparent;
+    
+      &:hover,
+      &:active,
+      &.active {
+        color: $blue;
+      }
+    
+      &:active,
+      &.active {
+        border-bottom-color: $blue;
+        font-weight: bold;
+      }
+  }
+  .nav-link {
+    color: $gray-600;
   }
 }
 
