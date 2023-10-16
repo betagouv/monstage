@@ -79,7 +79,7 @@ module Dashboard
     def index
       authorize! :index, InternshipAgreement
       if current_user.employer_like?
-        @internship_offers      = current_user.internship_offers
+        @internship_offers = current_user.internship_offers
       end
       @internship_agreements = current_user.internship_agreements
                                            .filtering_discarded_students
@@ -105,10 +105,11 @@ module Dashboard
             .permit(
               :internship_application_id,
               :student_school,
+              :school_representative_email,
               :school_representative_full_name,
+              :school_representative_function,
               :school_representative_phone,
               :school_representative_role,
-              :school_representative_function,
               :school_delegation_to_sign_delivered_at,
               :student_full_name,
               :student_class_room,
@@ -146,7 +147,7 @@ module Dashboard
               :tutor_role,
               :tutor_email,
               weekly_hours:[],
-              new_daily_hours:{},
+              daily_hours:{},
               daily_lunch_break: {}
               )
     end

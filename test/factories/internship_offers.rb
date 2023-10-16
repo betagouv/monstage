@@ -3,6 +3,12 @@
 FactoryBot.define do
   factory :internship_offer, aliases: %i[with_public_group_internship_offer] do
     # TODO use transient to set the distinction between weekly and api offers
+    employer { create(:employer) }
+    organisation { create(:organisation, employer: employer) }
+    internship_offer_info { create(:weekly_internship_offer_info, employer: employer) }
+    hosting_info { create(:hosting_info, employer: employer) }
+    practical_info { create(:practical_info, employer: employer) }
+
     sequence(:title) { |n| "Stage de 3è - #{n}" }
     description { 'Lorem ipsum dolor' }
     max_candidates { 1 }
@@ -15,7 +21,6 @@ FactoryBot.define do
     tutor_role { 'comptable' }
     is_public { true }
     group { create(:group, is_public: true) }
-    employer { create(:employer) }
     internship_offer_area { create(:area, employer_id: employer.id, employer_type: 'User') }
     employer_description { 'on envoie du parpaing' }
     street { '1 rue du poulet' }
@@ -25,7 +30,6 @@ FactoryBot.define do
     coordinates { Coordinates.paris }
     siret { '11122233300000' }
     aasm_state { 'published' }
-    organisation { create(:organisation, employer: employer) }
     hidden_duplicate { false }
 
     trait :published do

@@ -18,7 +18,8 @@ module StepperProxy
                                 less_than_or_equal_to: :max_candidates ,
                                 message: "Le nombre maximal d'élèves par groupe ne peut pas dépasser le nombre maximal d'élèves attendus dans l'année" }
 
-      validate :enough_weeks
+      validate :enough_weeks,
+               unless: Proc.new { |a| a.class.name == 'InternshipOffers::Api' }
 
       # Relations
       belongs_to :school, optional: true # reserved to school

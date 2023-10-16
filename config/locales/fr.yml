@@ -123,6 +123,10 @@ fr:
         is_paqte: Paqte
         name: Nom
         updated_at: Mis à jour le
+      convention:
+        activity_scope_rich_text: Objectifs du stage
+        weekly_planning: Planning hebdomadaire
+        same_daily_planning: Horaires quotidiens
       school:
         name: Nom
         kind: Type
@@ -217,6 +221,7 @@ fr:
         legal_terms_rich_text: Conditions complémentaires
         student_school: Établissement de l'élève
         doc_date: Date du document
+        weekly_planning: Planning hebdomadaire
         aasm_state:
           one: Statut
           draft: brouillon

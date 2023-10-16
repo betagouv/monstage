@@ -1,6 +1,6 @@
 - klass = resource.class.to_s.split("s::").first
 
-div [data-controller='internship-offer-infos' data-action="input->internship-offer-infos#checkForm" data-internship-offer-infos-base-type-value="#{klass}"]
+div [data-controller='internship-offer-infos'  data-internship-offer-infos-base-type-value="#{klass}"]
   .row
     .col-md-6
       - if @republish
@@ -16,7 +16,7 @@ div [data-controller='internship-offer-infos' data-action="input->internship-off
                         options_from_collection_for_select(Sector.all.order(:name), :id, :name, resource.sector_id),
                         { prompt: sectors_options_for_default },
                         class: "fr-select",
-                        data: { 'internship-offer-infos-target': 'requiredField' },
+                        data: { 'internship-offer-infos-target': 'requiredField', action: 'input->internship-offer-infos#checkForm' },
                         required: true
 
         .form-group.fr-my-2w
@@ -28,7 +28,7 @@ div [data-controller='internship-offer-infos' data-action="input->internship-off
           = form.text_field :title,
                             class: "fr-input",
                             placeholder: "Animateur sportif, Métiers de l’hôtellerie…",
-                            data: { 'internship-offer-infos-target': 'requiredField' },
+                            data: { 'internship-offer-infos-target': 'requiredField', action: 'input->internship-offer-infos#checkForm' },
                             required: true
 
   .row
@@ -44,7 +44,7 @@ div [data-controller='internship-offer-infos' data-action="input->internship-off
                                 class: "fr-input col-lg-12",
                                 required: true,
                                 rows: 5,
-                                data: { :"maxlength-input-target" => 'trixElement', 'internship-offer-infos-target': 'requiredField' },
+                                data: { :"maxlength-input-target" => 'trixElement', 'internship-offer-infos-target': 'requiredField', action: 'trix-change->internship-offer-infos#checkForm' },
                                 aria: { labelledby: 'label_internship_offer_info_description_rich_text' }
           .fr-alert.fr-alert--error.fr-alert--sm.d-none.fr-mt-1w data-maxlength-input-target="maxLengthMessage"
             |La description de l'activité est trop longue
@@ -60,5 +60,5 @@ div [data-controller='internship-offer-infos' data-action="input->internship-off
         .fr-my-2w
           = link_to 'Précédent', edit_dashboard_stepper_organisation_path(params[:organisation_id]),
                       class: 'fr-btn fr-mr-2w fr-btn--secondary'
-          = button_tag :submit, class: 'fr-btn', disabled: true, data: { 'internship-offer-infos-target': 'submitButton' } do
+          = button_tag :submit, class: 'fr-btn', disabled: false, data: { 'internship-offer-infos-target': 'submitButton' } do
                   = "Suivant "

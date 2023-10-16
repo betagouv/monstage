@@ -1,5 +1,5 @@
 module OrganisationFormFiller
-  def fill_in_organisation_form(is_public:, group:)
+  def fill_in_organisation_form(group:, is_public: false)
     stub_request(:post, "https://api.insee.fr/token").
       with(
         body: {"grant_type"=>"client_credentials"},
@@ -33,7 +33,7 @@ module OrganisationFormFiller
         }).
       to_return(status: 200, body: body, headers: {})
 
-    fill_in "Rechercher votre société dans l’annuaire des entreprises", with: '90943224700015'
+    fill_in "Rechercher votre société/administration dans l’annuaire des entreprises", with: '90943224700015'
     find("div.search-in-sirene ul[role='listbox'] li[role='option']").click
     find('label', text: 'Public').click if is_public  # Default is private
     select group.name, from: 'organisation_group_id' if group
