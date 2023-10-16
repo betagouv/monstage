@@ -5,7 +5,7 @@ div data-controller='select-weeks'
               data: {turbo: false} do |f|
     = render "layouts/form_errors", resource: @school, resource_name: :school
 
-    - if current_user.is_a?(Users::God)
+    - if current_user.god?
       fieldset
         legend= "Établissement (#{@school.kind})"
 

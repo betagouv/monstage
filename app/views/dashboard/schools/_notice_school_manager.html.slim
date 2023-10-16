@@ -26,7 +26,7 @@ dialog#notice-school-manager-empty-weeks.fr-modal[
                 | Afin de permettre à vos élèves d'effectuer leurs recherches de stage, vous devez renseigner les semaines de stage auxquelles ils peuvent postuler.
               p 
                 = render partial: "inputs/weeks_checkbox_inputs",
-                        locals: {current_weeks: Week.selectable_on_school_year,
+                        locals: { current_weeks: Week.selectable_on_school_year,
                                   size: 'full-size',
                                   form: form,
                                   label: "",
