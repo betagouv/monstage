@@ -28,13 +28,13 @@ div [class="test-search-container #{has_white_bg ? 'search-container py-2' : ''}
                                    whiteBg: has_white_bg } )
 
       = render partial: "internship_offers/search/weeks",
-               locals: {f: form,
-                        render_as_partial: render_as_partial,
-                        default_values: default_values,
-                        white_bg: has_white_bg}
+               locals: { f: form,
+                         render_as_partial: render_as_partial,
+                         default_values: default_values,
+                         white_bg: has_white_bg }
       - if params[:filter].in? ['past','unpublished']
         = render partial: "dashboard/internship_offers/school_years_filter",
-                 locals: { white_bg: has_white_bg}
+                 locals: { white_bg: has_white_bg }
 
       .pb-5
       - if render_as_partial || current_page?(eleves_path)
