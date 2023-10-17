@@ -2,7 +2,7 @@
 
 module Users
   class Statistician < User
-   
+    include Signatorable
     include Teamable
     has_many :internship_offers, as: :employer,
              dependent: :destroy
@@ -85,14 +85,6 @@ module Users
 
       show do
         fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
-      end
-
-      edit do
-        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
-        field :agreement_signatorable do
-          label 'Signataire des conventions'
-          help 'Si le V est coché en vert, le signataire doit signer TOUTES les conventions'
-        end
       end
 
       export do
