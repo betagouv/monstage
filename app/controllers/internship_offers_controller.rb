@@ -24,7 +24,7 @@ class InternshipOffersController < ApplicationController
       end
       format.json do
         @internship_offers_all_without_page = finder.all_without_page
-        @internship_offers = finder.all.includes([:sector]).order(id: :desc)
+        @internship_offers = finder.all.order(id: :desc)
         @is_suggestion = @internship_offers.to_a.count === 0
         @internship_offers = alternative_internship_offers if @internship_offers.to_a.count == 0
 
