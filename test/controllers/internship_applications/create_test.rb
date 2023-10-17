@@ -22,7 +22,6 @@ module InternshipApplications
           type: InternshipApplications::WeeklyFramed.name,
           student_attributes: {
             phone: '+330656565400',
-            resume_educational_background: 'resume_educational_background',
             resume_other: 'resume_other',
             resume_languages: 'resume_languages'
           }
@@ -44,7 +43,6 @@ module InternshipApplications
 
       student = student.reload
       assert_equal '+330656565400', student.phone
-      assert_equal 'resume_educational_background', student.resume_educational_background.to_plain_text
       assert_equal 'resume_other', student.resume_other.to_plain_text
       assert_equal 'resume_languages', student.resume_languages.to_plain_text
     end
@@ -65,7 +63,6 @@ module InternshipApplications
           type: InternshipApplications::WeeklyFramed.name,
           student_attributes: {
             phone: '+330656565400',
-            resume_educational_background: 'resume_educational_background',
             resume_other: 'resume_other',
             resume_languages: 'resume_languages'
           }
@@ -87,7 +84,6 @@ module InternshipApplications
 
       student = student.reload
       assert_equal '+330656565400', student.phone
-      assert_equal 'resume_educational_background', student.resume_educational_background.to_plain_text
       assert_equal 'resume_other', student.resume_other.to_plain_text
       assert_equal 'resume_languages', student.resume_languages.to_plain_text
     end
@@ -109,7 +105,6 @@ module InternshipApplications
           type: InternshipApplications::WeeklyFramed.name,
           student_attributes: {
             phone: '+330656565400',
-            resume_educational_background: 'resume_educational_background',
             resume_other: 'resume_other',
             resume_languages: 'resume_languages'
           }
@@ -131,7 +126,6 @@ module InternshipApplications
 
       student = student.reload
       assert_equal '+330656565400', student.phone
-      assert_equal 'resume_educational_background', student.resume_educational_background.to_plain_text
       assert_equal 'resume_other', student.resume_other.to_plain_text
       assert_equal 'resume_languages', student.resume_languages.to_plain_text
     end
