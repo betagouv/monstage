@@ -8,7 +8,7 @@ module InternshipOffers
     after_initialize :init
     before_create :reverse_academy_by_zipcode
 
-    attr_accessor :republish
+    attr_accessor :republish, :skip_enough_weeks_validation
 
     validates :street,
               :city,
@@ -24,6 +24,9 @@ module InternshipOffers
                               greater_than: 0,
                               less_than_or_equal_to: :max_candidates,
                               message: "Le nombre maximal d'élèves par groupe ne peut pas dépasser le nombre maximal d'élèves attendus dans l'année" }
+    
+    validate :enough_weeks, unless: :skip_enough_weeks_validation
+
     after_initialize :init
     before_create :reverse_academy_by_zipcode
 
@@ -65,6 +68,10 @@ module InternshipOffers
 
     def visible
       published? ? "oui" : "non"
+    end
+
+    def skip_enough_weeks_validation
+      @skip_enough_weeks_validation ||= false
     end
 
     def supplied_applications
