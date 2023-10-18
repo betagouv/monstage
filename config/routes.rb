@@ -2,6 +2,7 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  # ------------------ SCOPE START ------------------
   scope(path_names: { new: 'nouveau', edit: 'modification' }) do
     authenticate :user, lambda { |u| u.is_a?(Users::God) } do
       mount Sidekiq::Web => '/sidekiq'

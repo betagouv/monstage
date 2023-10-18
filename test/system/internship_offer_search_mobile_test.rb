@@ -30,7 +30,7 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
     internship_offer_at_bordeaux = create(:weekly_internship_offer,
                                           coordinates: Coordinates.bordeaux)
 
-    visit search_internship_offers_path
+    visit eleves_path
     fill_in_city_or_zipcode(with: 'Pari', expect: 'Paris')
     submit_form
 
@@ -51,7 +51,7 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
     internship_offer_at_bordeaux = create(:weekly_internship_offer,
                                           coordinates: Coordinates.bordeaux)
 
-    visit search_internship_offers_path
+    visit eleves_path
     fill_in_city_or_zipcode(with: '75012', expect: 'Paris')
 
     submit_form
@@ -97,7 +97,7 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
                                          weeks: [searched_week])
       not_searched_internship_offer = create(:weekly_internship_offer,
                                              weeks: [not_searched_week])
-      visit search_internship_offers_path
+      visit eleves_path
 
       fill_in_week(week: searched_week, open_popover: false)
       submit_form
