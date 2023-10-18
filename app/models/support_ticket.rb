@@ -1,7 +1,5 @@
-require "sti_preload"
  
 class SupportTicket
-  include StiPreload
   include ActiveModel::Model
 
   attr_accessor :user_id,
