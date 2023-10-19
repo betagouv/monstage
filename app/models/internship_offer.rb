@@ -38,6 +38,7 @@ class InternshipOffer < ApplicationRecord
   belongs_to :internship_offer_area, optional: true, touch: true
   has_many :favorites
   has_many :users, through: :favorites
+  has_many :users_internship_offers_histories, dependent: :destroy
 
   accepts_nested_attributes_for :organisation, allow_destroy: true
 
@@ -371,5 +372,17 @@ class InternshipOffer < ApplicationRecord
 
   def approved_applications_current_school_year
     internship_applications.approved.current_school_year
+  end
+
+  def log_view(user)  
+    history = UsersInternshipOffersHistory.find_or_initialize_by(internship_offer: self, user: user)
+    history.views += 1
+    history.save
+  end
+  
+  def log_apply(user)
+    history = UsersInternshipOffersHistory.find_or_initialize_by(internship_offer: self, user: user)
+    history.application_clicks += 1
+    history.save
   end
 end
