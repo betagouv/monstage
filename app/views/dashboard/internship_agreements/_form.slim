@@ -149,7 +149,7 @@ tbody.internship-agreement
             .fr-label
                = "Horaires journaliers de l’élève"
                = form.rg2a_required_content_tag
-            = render partial: "dashboard/stepper/hosting_infos/daily_hours", locals: { form: form }
+            = render partial: "dashboard/stepper/practical_infos/daily_hours", locals: { form: form }
         .col-3.offset-2
           div class="tool-note #{can?(:edit_daily_hours, InternshipAgreement) ? 'active' : 'inactive'}"
             .title = "Note destinée à l'entreprise"

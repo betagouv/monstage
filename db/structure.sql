@@ -693,8 +693,7 @@ CREATE TABLE public.internship_agreements (
     school_manager_accept_terms boolean DEFAULT false,
     employer_accept_terms boolean DEFAULT false,
     weekly_hours text[] DEFAULT '{}'::text[],
-    daily_hours text[] DEFAULT '{}'::text[],
-    new_daily_hours jsonb DEFAULT '{}'::jsonb,
+    daily_hours jsonb DEFAULT '{}'::jsonb,
     main_teacher_accept_terms boolean DEFAULT false,
     school_delegation_to_sign_delivered_at date,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
@@ -3703,6 +3702,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230818072958'),
 ('20230828084430'),
 ('20230915094313'),
-('20230915131604');
+('20230915131604'),
+('20231011094938');
 
 

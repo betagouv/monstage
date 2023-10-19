@@ -56,9 +56,10 @@ module Builders
         instance.reset_publish_states
       elsif instance.may_publish? && instance.republish
         instance.publish!
-      elsif instance.published_at.nil?
-        instance.unpublish! if instance.may_unpublish?
+      elsif instance.published_at.nil? && instance.may_unpublish?
+        instance.unpublish!
       end
+      deal_with_former_applications(instance: instance)
       instance.save! # this may set aasm_state to need_to_be_updated state
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => e
@@ -102,10 +103,6 @@ module Builders
       {
         employer_name: organisation.employer_name,
         employer_website: organisation.employer_website,
-        coordinates: organisation.coordinates,
-        street: organisation.street,
-        zipcode: organisation.zipcode,
-        city: organisation.city,
         employer_description_rich_text: organisation.employer_description,
         is_public: organisation.is_public,
         group_id: organisation.group_id,
@@ -140,6 +137,10 @@ module Builders
         daily_hours: practical_info.daily_hours,
         daily_lunch_break: practical_info.daily_lunch_break,
         weekly_lunch_break: practical_info.weekly_lunch_break,
+        street: practical_info.street,
+        zipcode: practical_info.zipcode,
+        city: practical_info.city,
+        coordinates: practical_info.coordinates,
       }
     end
 
@@ -197,6 +198,22 @@ module Builders
         .map { |error| error[:error] }
         .include?(:taken)
     end
-  end
 
+    def deal_with_former_applications(instance: )
+      previous_week_ids_with_applications(instance: instance).each do |week_id|
+        next if instance.week_ids.include?(week_id)
+
+        instance.internship_applications
+                .where(week_id: week_id)
+                .each do |application|
+          application.cancel_by_employer!
+          application.destroy! # TBD: should we destroy or keep them?
+        end
+      end
+    end
+
+    def previous_week_ids_with_applications(instance:)
+      instance.internship_applications.map(&:week_id).uniq
+    end
+  end
 end

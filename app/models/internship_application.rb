@@ -221,7 +221,7 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :cancel_by_employer do
-      transitions from: %i[read_by_employer drafted submitted examined approved validated_by_employer],
+      transitions from: %i[drafted read_by_employer drafted submitted examined approved validated_by_employer],
                   to: :canceled_by_employer,
                   after: proc { |*_args|
                            update!("canceled_at": Time.now.utc)
@@ -268,12 +268,12 @@ class InternshipApplication < ApplicationRecord
       create_agreement if employer.agreement_signatorable?
       if main_teacher.present?
         deliver_later_with_additional_delay do
-          MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
+          MainTeacherMailer.internship_application_approved_with_agreement_email(**arg_hash)
         end
       end
     elsif main_teacher.present?
       deliver_later_with_additional_delay do
-        MainTeacherMailer.internship_application_approved_with_no_agreement_email(arg_hash)
+        MainTeacherMailer.internship_application_approved_with_no_agreement_email(**arg_hash)
       end
     end
   end
@@ -401,6 +401,21 @@ class InternshipApplication < ApplicationRecord
                     Rails.configuration.action_mailer.default_url_options
                   )
     UrlShortener.short_url(target)
+  end
+
+  def sgid_short_url
+    sgid = student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY).to_s
+
+    url = Rails.application
+        .routes
+        .url_helpers
+        .dashboard_students_internship_application_url(
+          student.id,
+          id,
+          sgid: sgid,
+          host: ENV['HOST'])
+    
+    UrlShortener.short_url(url)
   end
 
   # Used for prettier links in rails_admin

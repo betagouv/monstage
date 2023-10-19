@@ -1,11 +1,12 @@
-= render layout: 'layouts/dashboards_with_menu' do
-  - # School managers and Employers do not have the same tabs  i.e. layout
-  - if current_user.school_management?
-    = render partial: 'dashboard/internship_agreements/index_school_manager',
+- # School managers and Employers do not have the same tabs  i.e. layout
+- if current_user.school_management?
+  = render 'layouts/breadcrumb', links: [ ['', current_user.dashboard_name] ]
+  = render partial: 'dashboard/internship_agreements/index_school_manager',
             layout: 'dashboard/schools/common_head',
             locals: { school: @school,
                       internship_agreements: @internship_agreements }
-  - if current_user.employer_like?
+- if current_user.employer_like?
+  = render layout: 'layouts/dashboards_with_menu' do
     = render partial: 'dashboard/internship_agreements/index_employer',
             locals: { school: @school,
                       internship_agreements: @internship_agreements}
