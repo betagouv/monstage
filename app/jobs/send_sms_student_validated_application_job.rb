@@ -11,7 +11,7 @@ class SendSmsStudentValidatedApplicationJob < ApplicationJob
     if phone.gsub(' ', '').size == 10
       phone = "+33#{phone[1..-1]}"
 
-      message = "Votre candidature pour le stage de #{internship_application.internship_offer.title} a été acceptée. Vous pouvez maintenant la confirmer sur MonStageDeTroisieme.fr : #{url}"
+      message = "Votre candidature pour le stage de #{internship_application.internship_offer.title} a été acceptée. Vous pouvez maintenant la confirmer sur MonStageDeTroisieme : #{url}"
 
       client = OVH::REST.new(
         ENV['OVH_APPLICATION_KEY'],
