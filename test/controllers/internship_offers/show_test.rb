@@ -41,6 +41,16 @@ module InternshipOffers
       end
     end
 
+    test 'GET #show as Student does increments view_count history' do
+      internship_offer = create(:weekly_internship_offer)
+      sign_in(create(:student))
+      assert_changes -> { UsersInternshipOffersHistory.count },
+                     from: 0,
+                     to: 1 do
+        get internship_offer_path(internship_offer)
+      end
+    end
+
     test 'GET #show with applications from other students reduces the number of available weeks' do
       travel_to(Date.new(2020, 1, 1)) do
         offer = create(
