@@ -9,7 +9,7 @@ class SendSmsStudentValidatedApplicationJob < ApplicationJob
     phone = internship_application.student_phone
 
     if phone.gsub(' ', '').size == 10
-      phone = "+33#{phone[1..-1]}"
+      phone = "+33#{phone[1..-1]}" 
 
       message = "Votre candidature pour le stage de #{internship_application.internship_offer.title} a été acceptée. Vous pouvez maintenant la confirmer sur MonStageDeTroisieme : #{url}"
 
