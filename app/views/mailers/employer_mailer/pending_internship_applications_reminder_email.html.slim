@@ -1,0 +1,27 @@
+- content_for :title, "Des candidatures attendent votre réponse !"
+
+p style=p_styles
+  | Vous avez reçu des candidatures sur la plateforme Monstagedetroisième. Vous pouvez les visualiser en un clic, et donner directement votre réponse dans votre espace en ligne.
+
+- if @pending_application_ids.size.positive?
+  - count = @pending_application_ids.size
+  table style="text-align:center; background-color: #E3E3FD; border: 1px solid #dee2e6; border-collapse: collapse; width: 100%; margin-bottom: 20px;color: #000091"
+    tr
+      td style="padding:10px;text-align: left;font-size: 17px; color : #000091; font-weight: bold;width: 70%;"
+        | Nombre de candidatures en attente de réponse
+      td style="padding:10px; color: #000091; font-size: 57px; font-weight: bold;text-align: right;"
+        = count
+
+- if @examined_application_ids.size.positive?
+  - count = @examined_application_ids.size
+  table style="text-align:center; background-color: #E3E3FD; border: 1px solid #dee2e6; border-collapse: collapse; width: 100%; margin-bottom: 20px;color: #000091"
+    tr
+      td style="padding:10px;text-align: left;font-size: 17px; color : #000091; font-weight: bold;width: 70%;"
+        | Nombre de candidatures à l'étude en attente de confirmation
+      td style="padding:10px; color: #000091; font-size: 57px; font-weight: bold;text-align: right;"
+        = count
+
+p style=p_styles
+  | Nos jeunes élèves n'attendent que vous. Ne tardez pas à leur répondre !
+
+= render(partial: "mailers/blue_call_to_action", locals: {href: @url, label:"Répondre aux candidatures"})
