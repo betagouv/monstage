@@ -1,38 +1,16 @@
 div id="toggle_status_#{dom_id(internship_offer)}" name="toggle_status_#{dom_id(internship_offer)}"
   - published = internship_offer.published?
-  - no_updates_mandatory = !internship_offer.requires_update_at_toggle_time?
+  - updates_mandatory = internship_offer.requires_update_at_toggle_time?
   - toggled_published_at = published ? 'nil' : Time.zone.now
   - status_label = published ? 'Publié' : 'Masqué'
   - id = "toggle-#{internship_offer.id}"
-  - if no_updates_mandatory
-    .toggle-block.text-left
-      .label
-        = status_label
-      .toggle-swap
-        - if internship_offer.shown_as_masked?
-          = link_to internship_offer_path(internship_offer.to_param, origin: 'dashboard'),
-                    class: '',
-                    data: { turbo: false },
-                    title: 'Publier / Masquer' do
-            = render 'toggle_publish_element',
-                      published: published,
-                      id: id,
-                      submit: false
-        - else
-          = link_to dashboard_internship_offer_path(internship_offer.id, internship_offer: { published_at: nil }),
-                    class: '',
-                    data: { turbo: true },
-                    title: 'Publier / Masquer',
-                    method: :patch do
-            = render 'toggle_publish_element',
-                      published: published,
-                      id: id,
-                      submit: false
-  - else
+
+  - if updates_mandatory
+   
     = form_with(model: internship_offer,
                 url: republish_dashboard_internship_offer_path(internship_offer.to_param),
                 method: :patch,
-                data: {turbo: false}) do |f|
+                data: {turbo: false, :'toggle-activate-target' => 'form'}) do |f|
       = f.hidden_field :published_at, value: toggled_published_at
       div class="toggle-block text-left" id="form_toggle_status_#{dom_id(internship_offer)}"
         .label
@@ -42,4 +20,27 @@ div id="toggle_status_#{dom_id(internship_offer)}" name="toggle_status_#{dom_id(
                     published: published,
                     id: id,
                     submit: true
+  - else
+    .toggle-block.text-left.d-flex
+      .label = status_label
+      .toggle-swap data-controller='toggle-activate'
+        - if internship_offer.shown_as_masked? && internship_offer.drafted?
+          = link_to internship_offer_path(internship_offer.to_param, origin: 'dashboard'),
+                    class: '',
+                    data: { turbo: false },
+                    title: 'Publier / Masquer' do
+            = render 'toggle_publish_element',
+                      published: published,
+                      id: id,
+                      submit: false
+        - else
+          = link_to dashboard_internship_offer_path(internship_offer.id, internship_offer: { published_at: toggled_published_at }),
+                    class: '',
+                    data: { turbo: true },
+                    title: 'Publier / Masquer',
+                    method: :patch do
+            = render 'toggle_publish_element',
+                      published: published,
+                      id: id,
+                      submit: false
 

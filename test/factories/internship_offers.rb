@@ -95,7 +95,7 @@ FactoryBot.define do
                                    class: 'InternshipOffers::Api',
                                    parent: :weekly_internship_offer
 
-    factory :weekly_internship_offer, traits: [:weekly_internship_offer],
+    factory :weekly_internship_offer, traits: [:weekly_internship_offer,  :published],
                                       class: 'InternshipOffers::WeeklyFramed',
                                       parent: :internship_offer
     factory :last_year_weekly_internship_offer, traits: [:last_year_weekly_internship_offer],

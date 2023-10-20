@@ -1,12 +1,15 @@
+/ to be cleaned up
 = turbo_stream.replace "pub_frag_#{dom_id(@internship_offer)}" do
   = render partial: "dashboard/internship_offers/#{@internship_offer.published? ? 'unpublish_form' : 'publish_form'}",
            locals: { internship_offer: @internship_offer }
 
+/ used in internship_offer detail page to show status of the offer
 = turbo_stream.replace "pub_status_#{dom_id(@internship_offer)}" do
   = render partial: "dashboard/internship_offers/publish_status",
            locals: { internship_offer: @internship_offer }
-
+/ in employer's internship offers list (table)
 = turbo_stream.replace "toggle_status_#{dom_id(@internship_offer)}" do
   = render partial: "dashboard/internship_offers/toggle_publish_form",
-           locals: { internship_offer: @internship_offer }
+           locals: { internship_offer: @internship_offer,
+                     published: @internship_offer.published? }
   

@@ -206,7 +206,7 @@ module Builders
         instance.internship_applications
                 .where(week_id: week_id)
                 .each do |application|
-          application.cancel_by_employer!
+          application.cancel_by_employer! if application.may_cancel_by_employer?
           application.destroy! # TBD: should we destroy or keep them?
         end
       end
