@@ -12,16 +12,11 @@ module InternshipAgreementsHelper
     return true
   end
 
-  def morning_hours_by_quarter
+  def hours_by_quarter
     # 32 => 08:00
     # 33 => 08:15
-    # 48 => 12:00
-    hours_maker(range: (32..48).to_a)
-  end
-
-  def afternoon_hours_by_quarter
     # 72 => 18:00
-    hours_maker(range: (46..72).to_a)
+    hours_maker(range: (32..72).to_a)
   end
 
   def hours_maker(range: )

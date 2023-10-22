@@ -716,7 +716,8 @@ CREATE TABLE public.internship_agreements (
     student_legal_representative_2_phone character varying(20),
     school_representative_role character varying(60),
     school_representative_email character varying(100),
-    discarded_at timestamp(6) without time zone
+    discarded_at timestamp(6) without time zone,
+    lunch_break text
 );
 
 
@@ -1081,7 +1082,8 @@ CREATE TABLE public.internship_offers (
     daily_hours jsonb,
     hosting_info_id bigint,
     practical_info_id bigint,
-    internship_offer_area_id bigint
+    internship_offer_area_id bigint,
+    lunch_break text
 );
 
 
@@ -1281,7 +1283,8 @@ CREATE TABLE public.practical_infos (
     weekly_hours text[] DEFAULT '{}'::text[],
     weekly_lunch_break text,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    lunch_break text
 );
 
 
@@ -3703,6 +3706,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230828084430'),
 ('20230915094313'),
 ('20230915131604'),
-('20231011094938');
+('20231003101628'),
+('20231011094938'),
+('20231019200634');
 
 

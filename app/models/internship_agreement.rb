@@ -213,11 +213,11 @@ class InternshipAgreement < ApplicationRecord
   end
 
   def weekly_planning?
-    weekly_hours.any?(&:present?) || weekly_lunch_break.present?
+    weekly_hours.any?(&:present?)
   end
 
   def valid_weekly_planning?
-    weekly_hours.any?(&:present?) && weekly_lunch_break.present?
+    weekly_hours.any?(&:present?)
   end
 
   def daily_planning?
