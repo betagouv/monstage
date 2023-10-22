@@ -2,12 +2,13 @@ import { Controller } from 'stimulus';
 
 export default class extends Controller {
   static targets = [
-    'checkToggle', 'form'
+    'checkToggle'
   ];
+  
   toggle(e) {
     e.preventDefault();
-    e.stopPropagation();
-    // this.formTarget.submit();
-    this.checkToggleTarget.closest('form').submit();
+    if (e.params['type'] == 'form') {
+      this.checkToggleTarget.closest('form').submit();
+    }
   }
 }

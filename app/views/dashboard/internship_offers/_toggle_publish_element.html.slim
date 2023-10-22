@@ -2,9 +2,7 @@
               class: 'fr-toggle__input',
               :'aria-describedby' => "#{id}-hint-text",
               title: 'Publier / Masquer' }
-- if submit
-  - options.merge!({data: { action: 'change->toggle-activate#toggle',
-                    :'toggle-activate-target' => 'checkToggle' }})
+
 .fr-toggle
   = check_box_tag 'toggle_publish',
                   published,

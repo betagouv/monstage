@@ -157,11 +157,11 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
         weeks: [within_2_weeks],
         internship_offer_area_id: employer.current_area_id
       )
-      internship_offer.need_update!
+      internship_offer.update_columns(published_at: nil, updated_at: Time.now - 1.day, aasm_state: 'drafted')
+      assert_equal 'drafted', internship_offer.aasm_state
       sign_in(employer)
       InternshipOffer.stub :nearby, InternshipOffer.all do
         InternshipOffer.stub :by_weeks, InternshipOffer.all do
-          refute internship_offer.published?
           visit dashboard_internship_offers_path
           within("#toggle_status_#{dom_id(internship_offer)}") do
             find(".label", text: "Masqué")
@@ -174,7 +174,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
           within(".fr-container .fat-line-below .col-8.d-print-none") do
             find("p.fr-badge.fr-badge--warning", text: 'OFFRE MASQUÉE')
           end
-          assert internship_offer.reload.need_to_be_updated?
+          assert_equal 'drafted', internship_offer.aasm_state
         end
       end
     end

@@ -52,15 +52,16 @@ module Builders
       authorize :update, instance
       instance.attributes = preprocess_api_params(params, fallback_weeks: false)
       instance = deal_with_max_candidates_change(params: params, instance: instance)
-      if from_api?
-        instance.reset_publish_states
-      elsif instance.may_publish? && instance.republish
-        instance.publish!
-      elsif instance.published_at.nil? && instance.may_unpublish?
-        instance.unpublish!
-      end
+      instance.reset_publish_states if from_api?
       deal_with_former_applications(instance: instance)
+
       instance.save! # this may set aasm_state to need_to_be_updated state
+      byebug
+      if instance.may_publish? && instance.republish
+        instance.publish!
+      elsif instance.aasm_state.in?(['drafted', 'unpublished', 'need_to_be_updated', 'removed'])
+        instance.update(published_at: nil)
+      end
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => e
       callback.on_failure.try(:call, e.record)
