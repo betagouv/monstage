@@ -56,7 +56,6 @@ module Builders
       deal_with_former_applications(instance: instance)
 
       instance.save! # this may set aasm_state to need_to_be_updated state
-      byebug
       if instance.may_publish? && instance.republish
         instance.publish!
       elsif instance.aasm_state.in?(['drafted', 'unpublished', 'need_to_be_updated', 'removed'])

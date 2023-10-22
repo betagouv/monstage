@@ -116,9 +116,7 @@ module Dashboard
       if @internship_offer.requires_updates?
         republish
       else
-        # TO DO Clean
         @internship_offer.publish!
-        @internship_offer.update(aasm_state: 'published') #TODO remove this line
         redirect_to internship_offer_path(@internship_offer),
                     flash: { success: 'Votre annonce a bien été publiée' }
       end
