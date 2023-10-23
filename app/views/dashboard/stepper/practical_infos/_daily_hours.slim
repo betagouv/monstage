@@ -42,7 +42,7 @@ div.fr-my-2w data-controller="daily-hours"
           | de
         .col-3
           = select_tag :"#{form.object_name}[daily_hours][#{weekday}][]",
-                        options_for_select(hours_by_quarter, selected: form.object.daily_hours[weekday]&.first),
+                        options_for_select(hours_by_quarter, selected: form.object.daily_hours&.dig(weekday)&.first),
                         {:include_blank => '--',
                          class: "fr-select daily-hours-start",
                          disabled: disabled,
@@ -53,7 +53,7 @@ div.fr-my-2w data-controller="daily-hours"
           | à
         .col-3
           = select_tag :"#{form.object_name}[daily_hours][#{weekday}][]",
-                        options_for_select(hours_by_quarter, selected: form.object.daily_hours[weekday]&.last),
+                        options_for_select(hours_by_quarter, selected: form.object.daily_hours&.dig(weekday)&.last),
                         {:include_blank => '--',
                          class: "fr-select daily-hours-end",
                          data: { :'daily-hours-target' => "dailyHoursEnd", i: i, action: "change->daily-hours#dailyHoursEndChange" },
