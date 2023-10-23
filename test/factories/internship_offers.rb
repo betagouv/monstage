@@ -31,6 +31,17 @@ FactoryBot.define do
     siret { '11122233300000' }
     aasm_state { 'published' }
     hidden_duplicate { false }
+    daily_hours do
+      {
+        'lundi' => ['09:00', '17:00'],
+        'mardi' => ['09:00', '17:00'],
+        'mercredi' => ['09:00', '17:00'],
+        'jeudi' => ['09:00', '17:00'],
+        'vendredi' => ['09:00', '17:00']
+      } 
+    end
+    weekly_hours { [] }
+    lunch_break { "12:00-13:00" }
 
     trait :published do
       published_at { Time.now }
