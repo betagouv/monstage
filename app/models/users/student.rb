@@ -104,6 +104,17 @@ module Users
     #     .map(&:expire!)
     # end
 
+    def school_and_offer_common_weeks(internship_offer)
+      return [] unless school.has_weeks_on_current_year?
+
+      InternshipOfferWeek.applicable(
+          school: school,
+          internship_offer: internship_offer
+        ).map(&:week)
+         .uniq
+         .sort_by(&:id) & internship_offer.weeks
+    end
+
     def main_teacher
       return nil if try(:class_room).nil?
 

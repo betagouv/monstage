@@ -283,16 +283,18 @@ module InternshipOffers
       current = create(:weekly_internship_offer, title: 'current')
       next_in_page = create(:weekly_internship_offer, title: 'next')
       next_out = create(:weekly_internship_offer, title: 'next_out')
-      student = create(:student, school: create(:school))
+      student = create(:student, school: create(:school, :with_weeks))
 
       InternshipOffer.stub :nearby, InternshipOffer.all do
         InternshipOffer.stub :by_weeks, InternshipOffer.all do
+          # Users::Student.stub :school_and_offer_common_weeks, InternshipOffer.all do
           sign_in(student)
           get internship_offer_path(current)
 
           assert_response :success
           assert_select 'a[href=?]', internship_offer_path(previous_in_page)
           assert_select 'a[href=?]', internship_offer_path(next_in_page)
+          # end
         end
       end
     end
