@@ -16,16 +16,23 @@
               button.fr-btn--close.fr-btn data-dismiss="modal"  Fermer
             .fr-modal__content
               h1#fr-modal-2-title.fr-modal__title
-                span.fr-icon-arrow-right-line.fr-icon--lg aria-hidden="true"
-                = "#{modal_opener_label} la candidature"
+                span aria-hidden="true" Confirmation
               - unless message.blank?
-                .px-4.py-0
+                .py-0
                   p == message
               - unless subtitle.blank?
-                .px-4.pb-2.h6.text-dark
+                .pb-2.h6.text-dark
                   = subtitle
+              - if defined?(info_notice_info)
+                .fr-alert.fr-alert--info
+                  h3.fr-alert__title = info_notice_title
+                  p = info_notice_message
               - if rich_text
-                .modal-body.px-4.py-0
+                / # label
+                - if defined?(input_title)
+                  .fr-label.fr-py-1w
+                    = input_title
+                .py-0
                   = f.rich_text_area aasm_notifier.assigned_rich_text_attribute,
                                      required: true,
                                      class: 'fr-input col-12 motivation-text',
