@@ -27,33 +27,64 @@ export default class extends Controller {
 
   weeklyStartChange() {
     const start = this.getIFromTime(this.weeklyHoursStartTarget.value);
-
-    Array.from(this.weeklyHoursEndTarget.options).forEach(opt => {
-      if (this.getIFromTime(opt.value) < start + 4) {
-        opt.disabled = true;
-      }
-    });
-
-    this.weeklyHoursEndTarget.disabled = false;
-    this.weeklyHoursEndTarget.value = '';
+    
+    if (start) {      
+      Array.from(this.weeklyHoursEndTarget.options).forEach(opt => {
+        if (this.getIFromTime(opt.value) < start + 4) {
+          opt.disabled = true;
+        }
+      });
+      this.weeklyHoursEndTarget.disabled = false;
+    } else {
+      this.weeklyHoursEndTarget.disabled = false;
+      this.enableAllOptions(this.weeklyHoursEndTarget);
+    }
   }
+
+  weeklyEndChange() {
+    const end = this.getIFromTime(this.weeklyHoursEndTarget.value);
+
+    if (end) {  
+      Array.from(this.weeklyHoursStartTarget.options).forEach(opt => {
+        if (this.getIFromTime(opt.value) > end - 4) {
+          opt.disabled = true;
+        }
+      });
+      this.weeklyHoursStartTarget.disabled = false;
+    } else {
+        this.weeklyHoursStartTarget.disabled = false;
+        this.enableAllOptions(this.weeklyHoursStartTarget);
+    } 
+  }
+
 
   dailyHoursStartChange(event) {
     const i = event.target.dataset.i
     const start = this.getIFromTime(this.dailyHoursStartTargets[i].value);
 
-    let dailyHoursEnd = document.getElementsByClassName('daily-hours-end')[i];
-    this.disableOptionBeforeStart(dailyHoursEnd, start);
-    dailyHoursEnd.disabled = false;
+    if (start) {
+      let dailyHoursEnd = document.getElementsByClassName('daily-hours-end')[i];
+      this.disableOptionBeforeStart(dailyHoursEnd, start);
+      dailyHoursEnd.disabled = false;
+    } else {
+      this.dailyHoursEndTargets[i].disabled = false;
+      this.enableAllOptions(this.dailyHoursEndTargets[i]);
+    }
   }
 
   dailyHoursEndChange(event) {
     const i = event.target.dataset.i;
     const end = this.getIFromTime(this.dailyHoursEndTargets[i].value);
 
-    const dailyHoursStart = document.getElementsByClassName('daily-hours-start')[i];
-    this.disableOptionAfterEnd(dailyHoursStart, end);
-    dailyHoursStart.disabled = false;
+    // if end not Nan
+    if (end) {
+      const dailyHoursStart = document.getElementsByClassName('daily-hours-start')[i];
+      this.disableOptionAfterEnd(dailyHoursStart, end);
+      dailyHoursStart.disabled = false;
+    } else {
+      this.dailyHoursStartTargets[i].disabled = false;
+      this.enableAllOptions(this.dailyHoursStartTargets[i]);
+    }
   }
 
   disableOptionBeforeStart(element, start) {
@@ -69,6 +100,12 @@ export default class extends Controller {
       if (this.getIFromTime(opt.value) > end - 4) {
         opt.disabled = true;
       }
+    });
+  }
+
+  enableAllOptions(element) {
+    Array.from(element.options).forEach(opt => {
+      opt.disabled = false;
     });
   }
 

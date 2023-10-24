@@ -28,7 +28,7 @@ div.fr-my-2w data-controller="daily-hours"
                       { :include_blank => '--',
                       class: "fr-select",
                       disabled: !select_weekly_end(form.object),
-                      data: { :'daily-hours-target' => "weeklyHoursEnd" },
+                      data: { :'daily-hours-target' => "weeklyHoursEnd", action: "change->daily-hours#weeklyEndChange" },
                       aria: { label: "Selectionner une heure de debut de stage pour tous les jours de la semaine" }, id: "#{form.object_name}_weekly_hours_end" }
 
 
