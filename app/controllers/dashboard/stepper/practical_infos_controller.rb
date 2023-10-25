@@ -99,10 +99,9 @@ module Dashboard::Stepper
               :city,
               :siret,
               :employer_id,
-              :weekly_lunch_break,
+              :lunch_break,
               weekly_hours: [],
               daily_hours: {},
-              daily_lunch_break: {},
               coordinates: {}
               )
     end
