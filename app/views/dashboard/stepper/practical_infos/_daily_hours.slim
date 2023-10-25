@@ -13,7 +13,7 @@ div.fr-my-2w data-controller="daily-hours"
     .row
       .col-5
         = select_tag :"#{form.object_name}[weekly_hours][]",
-                      options_for_select(hours_by_quarter),
+                      options_for_select(hours_by_quarter, selected: form.object.weekly_hours&.first),
                       { :include_blank => '--',
                       class: "fr-select",
                       disabled: disabled,
@@ -24,7 +24,7 @@ div.fr-my-2w data-controller="daily-hours"
         | à
       .col-5
         = select_tag :"#{form.object_name}[weekly_hours][]",
-                      options_for_select(hours_by_quarter),
+                      options_for_select(hours_by_quarter, selected: form.object.weekly_hours&.last),
                       { :include_blank => '--',
                       class: "fr-select",
                       disabled: !select_weekly_end(form.object),

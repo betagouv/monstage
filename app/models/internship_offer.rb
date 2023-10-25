@@ -337,7 +337,8 @@ class InternshipOffer < ApplicationRecord
   end
 
   def daily_planning?
-    new_daily_hours.except('samedi').values.flatten.any? { |v| !v.blank? }
+    return false if daily_hours.blank?
+    daily_hours.except('samedi').values.flatten.any? { |v| !v.blank? }
   end
 
   def presenter
