@@ -280,7 +280,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     class_room_1 = create(:class_room, name: '3e A', school: school_1)
     create(:class_room, name: '3e B', school: school_2)
     existing_phone = '+330600110011'
-    birth_date = 14.years.ago
+    birth_date = Date.new(2009, 1, 1)
     student = create(:student, phone: existing_phone)
 
     # go to signup as student STEP 1
