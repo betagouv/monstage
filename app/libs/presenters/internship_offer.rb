@@ -35,29 +35,24 @@ module Presenters
 
     def internship_weekly_description
       hours = internship_offer.weekly_hours
-      lunch_break = internship_offer.weekly_lunch_break
       daily_schedule = [ "#{hours[0]} à #{hours[1]}".gsub!(':', 'h') ]
 
       content_tag(:div,
         content_tag(:div, "#{daily_schedule.join(', ')}", class: 'fr-tag fr-icon-calendar-fill fr-tag--icon-left'),
         class: 'fr-mb-2w'
-       ) +
-      content_tag(:div, "Pause déjeuner : #{lunch_break}", class: 'fr-mb-3w') if lunch_break.present?
+       )
     end
 
     def internship_daily_description
-      hours = internship_offer.weekly_hours
       %w(lundi mardi mercredi jeudi vendredi).map do |day|
-        internship_offer.daily_hours&.[](day) || []
-        lunch_break = internship_offer.daily_lunch_break[day]
+        hours = internship_offer.daily_hours&.[](day) || []
         next if hours.blank? || hours.size != 2
         daily_schedule = [ "de #{hours[0]} à #{hours[1]}".gsub!(':', 'h') ]
 
         content_tag(:div,
           content_tag(:div, "#{day.capitalize} : #{daily_schedule.join(', ')}", class: 'fr-tag fr-icon-calendar-fill fr-tag--icon-left'),
           class: 'fr-mb-2w'
-         ) +
-        content_tag(:div, "Pause déjeuner : #{lunch_break}", class: 'fr-mb-3w') if lunch_break.present?
+         )
       end.join.html_safe
     end
 

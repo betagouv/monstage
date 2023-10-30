@@ -130,7 +130,6 @@ module Dashboard
               :employer_event,
               :school_manager_event,
               :main_teacher_accept_terms,
-              :weekly_lunch_break,
               :student_refering_teacher_full_name,
               :student_refering_teacher_email,
               :student_refering_teacher_phone,
@@ -146,9 +145,9 @@ module Dashboard
               :tutor_full_name,
               :tutor_role,
               :tutor_email,
+              :lunch_break,
               weekly_hours:[],
               daily_hours:{},
-              daily_lunch_break: {}
               )
     end
 

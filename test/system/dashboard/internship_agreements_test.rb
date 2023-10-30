@@ -87,19 +87,15 @@ module Dashboard
       find('label', text: 'Les horaires sont les mêmes toute la semaine').click
       select('08:00', from:'internship_agreement_daily_hours_lundi_start')
       select('16:00', from:'internship_agreement_daily_hours_lundi_end')
-      text_area = first(:css,"textarea[name='internship_agreement[daily_lunch_break[lundi]]']").native.send_keys('un repas à la cantine bien chaud')
       select('08:00', from:'internship_agreement_daily_hours_mardi_start')
       select('16:00', from:'internship_agreement_daily_hours_mardi_end')
-      text_area = first(:css,"textarea[name='internship_agreement[daily_lunch_break[mardi]]']").native.send_keys('un repas à la cantine bien chaud')
       select('08:00', from:'internship_agreement_daily_hours_mercredi_start')
       select('16:00', from:'internship_agreement_daily_hours_mercredi_end')
-      text_area = first(:css,"textarea[name='internship_agreement[daily_lunch_break[mercredi]]']").native.send_keys('un repas à la cantine bien chaud')
       select('08:00', from:'internship_agreement_daily_hours_jeudi_start')
       select('16:00', from:'internship_agreement_daily_hours_jeudi_end')
-      text_area = first(:css,"textarea[name='internship_agreement[daily_lunch_break[jeudi]]']").native.send_keys('un repas à la cantine bien chaud')
       select('08:00', from:'internship_agreement_daily_hours_vendredi_start')
       select('16:00', from:'internship_agreement_daily_hours_vendredi_end')
-      text_area = first(:css,"textarea[name='internship_agreement[daily_lunch_break[vendredi]]']").native.send_keys('un repas à la cantine bien chaud')
+      text_area = first(:css,"textarea[name='internship_agreement[lunch_break]']").native.send_keys('un repas à la cantine bien chaud')
       # samedi is avoided on purpose
       click_button('Envoyer la convention')
       find("button[data-action='click->internship-agreement-form#completeByEmployer']", text: "Envoyer la convention")
@@ -114,44 +110,8 @@ module Dashboard
         "mardi" => ["08:00","16:00"],
         "mercredi" => ["08:00","16:00"],
         "jeudi" => ["08:00","16:00"],
-        "vendredi" => ["08:00","16:00"],
-        "samedi" => ["", ""]}
+        "vendredi" => ["08:00","16:00"]}
       assert_equal expected_days_hours, internship_agreement.reload.daily_hours
-    end
-
-    test 'employer reads internship agreement table with incorrect indications for lunchs in a daily basis' do
-      internship_agreement = create(:internship_agreement, aasm_state: :started_by_employer)
-      sign_in(internship_agreement.employer)
-      visit dashboard_internship_agreements_path
-      within('td[data-head="Statut"]') do
-        find('div.actions', text: "Votre convention est remplie, mais elle n'est pas envoyée au chef d'établissement.")
-      end
-      find('a.button-component-cta-button', text: 'Valider ma convention').click
-      find("input[name='internship_agreement[organisation_representative_full_name]']")
-      fill_in "Fonction du représentant de l'entreprise", with: 'CEO'
-      fill_in "Email du tuteur", with: 'tuteur@free.fr'
-      find('label', text: 'Les horaires sont les mêmes toute la semaine').click
-      select('08:00', from:'internship_agreement_daily_hours_lundi_start')
-      select('16:00', from:'internship_agreement_daily_hours_lundi_end')
-      text_area = first(:css,"textarea[name='internship_agreement[daily_lunch_break[lundi]]']").native.send_keys('un repas à la cantine bien chaud')
-      select('08:00', from:'internship_agreement_daily_hours_mardi_start')
-      select('16:00', from:'internship_agreement_daily_hours_mardi_end')
-      text_area = first(:css,"textarea[name='internship_agreement[daily_lunch_break[mardi]]']").native.send_keys('un repas à la cantine bien chaud')
-      select('08:00', from:'internship_agreement_daily_hours_mercredi_start')
-      select('16:00', from:'internship_agreement_daily_hours_mercredi_end')
-      text_area = first(:css,"textarea[name='internship_agreement[daily_lunch_break[mercredi]]']").native.send_keys('un repas à la cantine bien chaud')
-      select('08:00', from:'internship_agreement_daily_hours_jeudi_start')
-      select('16:00', from:'internship_agreement_daily_hours_jeudi_end')
-      text_area = first(:css,"textarea[name='internship_agreement[daily_lunch_break[jeudi]]']").native.send_keys('un repas à la cantine bien chaud')
-      select('08:00', from:'internship_agreement_daily_hours_vendredi_start')
-      select('16:00', from:'internship_agreement_daily_hours_vendredi_end')
-      # Missing lunch break indications on friday
-      # samedi is avoided on purpose
-      click_button('Envoyer la convention')
-      find("button[data-action='click->internship-agreement-form#completeByEmployer']", text: "Envoyer la convention")
-      find("button[data-action='click->internship-agreement-form#completeByEmployer']", text: "Envoyer la convention").click
-      alert_text = all(".fr-alert.fr-alert--error").first.text
-      assert_equal alert_text, "Planning hebdomadaire : Veuillez compléter les horaires et repas de la semaine de stage"
     end
 
     test 'employer reads internship agreement table with missing indications / daily hours - status: started_by_employer' do
@@ -168,17 +128,13 @@ module Dashboard
       find('label', text: 'Les horaires sont les mêmes toute la semaine').click
       select('08:00', from:'internship_agreement_daily_hours_lundi_start')
       select('16:00', from:'internship_agreement_daily_hours_lundi_end')
-      text_area = first(:css,"textarea[name='internship_agreement[daily_lunch_break[lundi]]']").native.send_keys('un repas à la cantine bien chaud')
       select('08:00', from:'internship_agreement_daily_hours_mardi_start')
       select('16:00', from:'internship_agreement_daily_hours_mardi_end')
-      text_area = first(:css,"textarea[name='internship_agreement[daily_lunch_break[mardi]]']").native.send_keys('un repas à la cantine bien chaud')
       select('08:00', from:'internship_agreement_daily_hours_mercredi_start')
       select('16:00', from:'internship_agreement_daily_hours_mercredi_end')
-      text_area = first(:css,"textarea[name='internship_agreement[daily_lunch_break[mercredi]]']").native.send_keys('un repas à la cantine bien chaud')
       select('08:00', from:'internship_agreement_daily_hours_jeudi_start')
       select('16:00', from:'internship_agreement_daily_hours_jeudi_end')
-      text_area = first(:css,"textarea[name='internship_agreement[daily_lunch_break[jeudi]]']").native.send_keys('un repas à la cantine bien chaud')
-      text_area = first(:css,"textarea[name='internship_agreement[daily_lunch_break[vendredi]]']").native.send_keys('un repas à la cantine bien chaud')
+      text_area = first(:css,"textarea[name='internship_agreement[lunch_break]']").native.send_keys('un repas à la cantine bien chaud')
       # Missing lunch break indications on friday
       # samedi is avoided on purpose
       click_button('Envoyer la convention')

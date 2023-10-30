@@ -217,8 +217,8 @@ module Dashboard
                     :is_public, :group_id, :published_at, :republish, :type,
                     :employer_id, :employer_type, :school_id, :verb, :user_update,
                     :employer_description_rich_text, :siret, :employer_manual_enter,
-                    :weekly_lunch_break, :aasm_state, coordinates: {}, week_ids: [],
-                    daily_hours: {}, daily_lunch_break: {}, weekly_hours:[],
+                    :lunch_break, :aasm_state, coordinates: {}, week_ids: [],
+                    daily_hours: {}, weekly_hours:[],
                     organisation_attributes: [
                       :id,
                       :employer_name,

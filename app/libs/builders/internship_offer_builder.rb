@@ -135,8 +135,7 @@ module Builders
       {
         weekly_hours: practical_info.weekly_hours,
         daily_hours: practical_info.daily_hours,
-        daily_lunch_break: practical_info.daily_lunch_break,
-        weekly_lunch_break: practical_info.weekly_lunch_break,
+        lunch_break: practical_info.lunch_break,
         street: practical_info.street,
         zipcode: practical_info.zipcode,
         city: practical_info.city,
