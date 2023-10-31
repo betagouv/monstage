@@ -21,7 +21,8 @@ h3.h1 Foire aux questions
           h3.fr-card__title.fr-mb-2w
             = link_to "Quel est le délai pour répondre à la candidature d'un élève ?", '#'
           p.fr-card__desc
-            | Dans l’idéal, un délai de 15 jours est préconisé. Les candidatures des élèves expirent après 15 jours sans réponse de votre part
+            = "Dans l’idéal, un délai de 10 jours est préconisé. Les candidatures des élèves expirent " \
+              "après #{InternshipApplication::EXPIRATION_DURATION} jours sans réponse de votre part"
       .fr-card__header.fr-my-4w
         ul.fr-badges-group.fr-p-4w
           li
