@@ -22,7 +22,6 @@ class ManagePracticalInfosTest < ApplicationSystemTestCase
     assert_equal '1 rue du poulet', PracticalInfo.last.street
     assert_equal '75001', PracticalInfo.last.zipcode
     assert_equal 'Paris', PracticalInfo.last.city
-    byebug
     assert_equal ["08:00", "16:30"], PracticalInfo.last.weekly_hours
     click_on "Publier"
     assert_equal 1, InternshipOffer.count
