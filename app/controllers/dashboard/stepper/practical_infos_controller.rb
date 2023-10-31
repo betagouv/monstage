@@ -9,7 +9,7 @@ module Dashboard::Stepper
     # render step 4
     def new
       authorize! :create, PracticalInfo
-      
+
       @organisation = Organisation.find(params[:organisation_id])
       @practical_info = PracticalInfo.new(
         street: @organisation.street,
@@ -18,9 +18,9 @@ module Dashboard::Stepper
         coordinates: {
           latitude: @organisation.coordinates&.latitude,
           longitude: @organisation.coordinates&.longitude
-        }
+        },
+        contact_phone: current_user.try(:phone)
       )
-      
       @hosting_info = HostingInfo.find(params[:hosting_info_id])
       @internship_offer_info = InternshipOfferInfo.find(params[:internship_offer_info_id])
     end
@@ -53,7 +53,7 @@ module Dashboard::Stepper
           longitude: @organisation.coordinates&.longitude
         }
       )
-      
+
       @hosting_info = HostingInfo.find(params[:hosting_info_id])
       @internship_offer_info = InternshipOfferInfo.find(params[:internship_offer_info_id])
       render :new, status: :bad_request
@@ -100,6 +100,7 @@ module Dashboard::Stepper
               :siret,
               :employer_id,
               :lunch_break,
+              :contact_phone,
               weekly_hours: [],
               daily_hours: {},
               coordinates: {}

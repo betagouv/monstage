@@ -32,7 +32,6 @@ module Dashboard::InternshipOffers
                         'employer_description_rich_text' => '<div>hop+employer_description</div>',
                         'employer_id' => internship_offer.employer_id,
                         'employer_type' => 'Users::Employer')
-
         assert_difference('InternshipOffer.count', 1) do
           post(dashboard_internship_offers_path, params: { internship_offer: params })
         end

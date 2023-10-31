@@ -372,6 +372,8 @@ fr:
         contact_phone: Téléphone du contact
         organisation:
           group: Groupe ou institution de tutelle
+      internship_offers/weekly_framed:
+        contact_phone: Numéro de téléphone du dépositaire
 
       internship_application:
         student: Élève
@@ -534,6 +536,10 @@ fr:
 
             employer:
               required: Veuillez choisir un compte responsable de l'offre
+        internship_offers/weekly_framed:
+          attributes:
+            contact_phone:
+              blank: "Veuillez saisir un numéro de téléphone"
 
         internship_offers/api:
           attributes:
