@@ -41,6 +41,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
       )
     end
     internship_offer.update(title: 'new_title') # this triggers the need_update! callback
+    assert_equal 'need_to_be_updated', internship_offer.aasm_state
     travel_to Date.new(2022, 10, 8) do
       sign_in(employer)
       InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -66,7 +67,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
     end
   end
 
-  test 'navigation & interaction works for employer' do
+  test 'cron set aasm_state to need_to_be_updated when necessary' do
     employer = create(:employer)
     old_internship_offer = nil
     travel_to Date.new(2020, 10, 1) do

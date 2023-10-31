@@ -83,7 +83,7 @@ module Dashboard::InternshipOffers
       internship_offer.unpublish!
       refute internship_offer.published?
       assert_equal 'unpublished', internship_offer.aasm_state
-      assert_equal nil, internship_offer.published_at
+      assert_nil internship_offer.published_at
 
 
       sign_in(employer)

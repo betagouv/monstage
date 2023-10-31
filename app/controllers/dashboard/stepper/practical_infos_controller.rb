@@ -9,7 +9,7 @@ module Dashboard::Stepper
     # render step 4
     def new
       authorize! :create, PracticalInfo
-      
+
       @organisation = Organisation.find(params[:organisation_id])
       @practical_info = PracticalInfo.new(
         street: @organisation.street,
@@ -20,7 +20,7 @@ module Dashboard::Stepper
           longitude: @organisation.coordinates&.longitude
         }
       )
-      
+
       @hosting_info = HostingInfo.find(params[:hosting_info_id])
       @internship_offer_info = InternshipOfferInfo.find(params[:internship_offer_info_id])
     end
@@ -35,7 +35,7 @@ module Dashboard::Stepper
       @practical_info.save!
       internship_offer_builder.create_from_stepper(**builder_params) do |on|
         on.success do |created_internship_offer|
-          redirect_to(internship_offer_path(created_internship_offer, origine: 'dashboard'),
+          redirect_to(internship_offer_path(created_internship_offer, origine: 'dashboard', stepper: true),
                       flash: { success: 'Votre offre de stage est prête à être publiée.' })
         end
         on.failure do |failed_internship_offer|
@@ -53,7 +53,7 @@ module Dashboard::Stepper
           longitude: @organisation.coordinates&.longitude
         }
       )
-      
+
       @hosting_info = HostingInfo.find(params[:hosting_info_id])
       @internship_offer_info = InternshipOfferInfo.find(params[:internship_offer_info_id])
       render :new, status: :bad_request

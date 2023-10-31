@@ -27,7 +27,7 @@ module Dashboard
                               "L'offre de stage a été dupliquée en tenant compte" \
                               ' de vos éventuelles modifications.'
                             end
-          redirect_to(internship_offer_path(created_internship_offer),
+          redirect_to(internship_offer_path(created_internship_offer, stepper: true),
                       flash: { success: success_message })
         end
         on.failure do |failed_internship_offer|
@@ -117,7 +117,7 @@ module Dashboard
         republish
       else
         @internship_offer.publish!
-        redirect_to internship_offer_path(@internship_offer),
+        redirect_to dashboard_internship_offers_path(origine: 'dashboard'),
                     flash: { success: 'Votre annonce a bien été publiée' }
       end
     end
