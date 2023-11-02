@@ -62,5 +62,36 @@ module Dashboard::InternshipOffers
       find('button#tabpanel-received[aria-controls="tabpanel-received-panel"]',  text: 'Reçues').click
       find('td.text-center[colspan="5"]', text: "Aucune candidature reçue")
     end
+
+    test 'employer can unpublish an internship_offer from index page' do
+      employer, internship_offer = create_employer_and_offer
+      assert internship_offer.published?
+      assert_equal 'published', internship_offer.aasm_state
+      refute_equal nil, internship_offer.published_at
+
+
+      sign_in(employer)
+      visit dashboard_internship_offers_path
+      find("td #toggle_status_internship_offers_weekly_framed_#{internship_offer.id}")
+      find("td #toggle_status_internship_offers_weekly_framed_#{internship_offer.id}").click
+      find("td #toggle_status_internship_offers_weekly_framed_#{internship_offer.id} .label", text: 'Masqué')
+      refute internship_offer.reload.published?
+    end
+
+    test 'employer can publish an internship_offer from index page' do
+      employer, internship_offer = create_employer_and_offer
+      internship_offer.unpublish!
+      refute internship_offer.published?
+      assert_equal 'unpublished', internship_offer.aasm_state
+      assert_nil internship_offer.published_at
+
+
+      sign_in(employer)
+      visit dashboard_internship_offers_path
+      find("td #toggle_status_internship_offers_weekly_framed_#{internship_offer.id}")
+      find("td #toggle_status_internship_offers_weekly_framed_#{internship_offer.id}").click
+      find("td #toggle_status_internship_offers_weekly_framed_#{internship_offer.id} .label", text: 'Publié')
+      assert internship_offer.reload.published?
+    end
   end
 end
