@@ -21,7 +21,7 @@
                       publish_dashboard_internship_offer_path(@internship_offer),
                       data: { turbo: false },
                       class: 'fr-btn',
-                      disabled: !@internship_offer.requires_updates?
+                      disabled: @internship_offer.requires_updates?
         - else
           - if can?(:update, @internship_offer)
             .fr-mx-1w data-turbo="false"
