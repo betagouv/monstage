@@ -121,7 +121,6 @@ class InternshipApplicationsController < ApplicationController
             student_attributes: %i[
               email
               phone
-              resume_educational_background
               resume_other
               resume_languages
             ]
@@ -141,7 +140,6 @@ class InternshipApplicationsController < ApplicationController
             student_attributes: %i[
               email
               phone
-              resume_educational_background
               resume_other
               resume_languages
             ]

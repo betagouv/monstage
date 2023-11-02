@@ -40,7 +40,6 @@ module InternshipApplications
                                  phone: '+330665656565',
                                  email: 'student@edu.school',
                                  birth_date: 14.years.ago,
-                                 resume_educational_background: 'resume_educational_background',
                                  resume_other: 'resume_other',
                                  resume_languages: 'resume_languages')
       internship_application = create(:weekly_internship_application, :submitted, student: student)
@@ -57,7 +56,6 @@ module InternshipApplications
       assert_select '.student-age', "#{student.age} ans"
       assert_select '.student-email', internship_application.student_email
       assert_select '.student-phone', internship_application.student_phone
-      assert_select '.reboot-trix-content', student.resume_educational_background.to_plain_text
       assert_select '.reboot-trix-content', student.resume_other.to_plain_text
       assert_select '.reboot-trix-content', student.resume_languages.to_plain_text
     end
@@ -68,7 +66,6 @@ module InternshipApplications
                                  phone: '+330665656565',
                                  email: 'student@edu.school',
                                  birth_date: 14.years.ago,
-                                 resume_educational_background: 'resume_educational_background',
                                  resume_other: 'resume_other',
                                  resume_languages: 'resume_languages')
       internship_application = create(:weekly_internship_application, :submitted, student: student)
