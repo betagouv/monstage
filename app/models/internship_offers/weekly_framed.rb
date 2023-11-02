@@ -26,6 +26,7 @@ module InternshipOffers
                               message: "Le nombre maximal d'élèves par groupe ne peut pas dépasser le nombre maximal d'élèves attendus dans l'année" }
     
     validate :enough_weeks, unless: :skip_enough_weeks_validation
+    validate :schedules_check
 
     after_initialize :init
     before_create :reverse_academy_by_zipcode
@@ -87,6 +88,21 @@ module InternshipOffers
         print '.'
         offer.need_update!
       end
+    end
+
+    def schedules_check
+      unless schedules_ok?
+        errors.add(:weekly_hours, :blank) if weekly_hours.blank?
+        errors.add(:daily_hours, :blank) if daily_hours.blank?
+      end
+    end
+
+    def schedules_ok?
+      weekly_hours_compacted = weekly_hours&.reject(&:blank?)
+      daily_hours_compacted  = daily_hours&.reject { |_, v| v.first.blank? || v.second.blank? }
+      return false if weekly_hours_compacted&.empty? && daily_hours_compacted&.empty?
+
+      true
     end
   end
 end
