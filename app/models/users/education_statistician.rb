@@ -2,7 +2,6 @@
 
 module Users
   class EducationStatistician < Statistician
-    include Signatorable
     include StatisticianDepartmentable
 
     # TODO remove relation
@@ -41,14 +40,16 @@ module Users
       end
       
       edit do
-        field :first_name
-        field :last_name
-        field :email
+        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
         field :department do
           label 'Département'
         end
         field :statistician_validation do
           label 'Validation'
+        end
+        field :agreement_signatorable do
+          label 'Signataire des conventions'
+          help 'Si le V est coché en vert, le signataire doit signer TOUTES les conventions'
         end
       end
 

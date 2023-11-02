@@ -15,8 +15,8 @@ module ApplicationTransitable
           redirect_to root_path,
                       flash: { success: update_flash_message }
         else
-          redirect_to current_user.custom_candidatures_path(extra_parameter),
-                      flash: { success: update_flash_message }
+          redirect_path = current_user ? current_user.custom_candidatures_path(extra_parameter) : root_path
+          redirect_to redirect_path, flash: { success: update_flash_message }
         end
       else
         redirect_back fallback_location: current_user.custom_dashboard_path,

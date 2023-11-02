@@ -14,10 +14,19 @@ class InternshipOfferWeek < ApplicationRecord
   delegate :max_students_per_group, to: :internship_offer
 
   # responsability by the week , check student_max_group_size
-  scope :applicable, lambda { |user:, internship_offer:|
-    by_weeks(weeks: user.school.weeks)
+  scope :applicable, lambda { |school:, internship_offer:|
+    by_weeks(weeks: school.weeks)
       .ignore_max_candidates_reached(max_students_per_group: internship_offer.max_students_per_group)
       .after_current_week
       .includes(:week)
   }
+
+  def self.free_weeks_on_school_year(internship_offer: )
+    week_ids = self.joins(:internship_offer)
+                   .where(internship_offer: internship_offer)
+                   .where.not(blocked_applications_count: internship_offer.max_students_per_group)
+                   .where(week_id: Week.selectable_on_school_year.ids.to_a)
+                   .pluck(:week_id)
+    Week.where(id: week_ids)
+  end
 end

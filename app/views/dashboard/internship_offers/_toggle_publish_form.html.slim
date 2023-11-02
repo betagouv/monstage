@@ -1,25 +1,46 @@
-div id="toggle_status_#{dom_id(internship_offer)}" name="toggle_status_#{dom_id(internship_offer)}"
+div id="toggle_status_#{dom_id(internship_offer)}" name="toggle_status_#{dom_id(internship_offer)}" data-controller='toggle-activate'
   - published = internship_offer.published?
-  - no_updates_mandatory = !internship_offer.requires_update_at_toggle_time?
+  - updates_mandatory = internship_offer.requires_update_at_toggle_time?
   - toggled_published_at = published ? 'nil' : Time.zone.now
+  - toggled_aasm_state   = published ? :unpublished : :published
   - status_label = published ? 'Publié' : 'Masqué'
   - id = "toggle-#{internship_offer.id}"
-  - if no_updates_mandatory
-    .toggle-block.text-left
-      .label
-        = status_label
+
+  - if updates_mandatory
+    / - byebug
+    = form_with(model: internship_offer,
+                url: republish_dashboard_internship_offer_path(internship_offer.to_param),
+                method: :patch,
+                data: {turbo: false, :'toggle-activate-target' => 'checkToggle'}) do |f|
+      = f.hidden_field :published_at, value: toggled_published_at
+      div [class="toggle-block text-left"
+           id="form_toggle_status_#{dom_id(internship_offer)}"
+           data-action='change->toggle-activate#toggle'
+           data-toggle-activate-type-param='form']
+        .label
+          = status_label
+        .toggle-swap
+          = render 'toggle_publish_element',
+                    published: published,
+                    id: id,
+                    submit: true
+  - else
+    .toggle-block.text-left.d-flex data-action='change->toggle-activate#toggle' data-toggle-activate-type-param='alink'
+      .label = status_label
       .toggle-swap
-        - if internship_offer.shown_as_masked?
+        - if internship_offer.shown_as_masked? && internship_offer.drafted?
+          / - byebug
           = link_to internship_offer_path(internship_offer.to_param, origin: 'dashboard'),
                     class: '',
-                    data: { turbo: false },
+                    data: { turbo: false, :'toggle-activate-target' => 'checkToggle', :'toggle-activate-type-param' => 'link' },
                     title: 'Publier / Masquer' do
             = render 'toggle_publish_element',
                       published: published,
                       id: id,
                       submit: false
         - else
-          = link_to dashboard_internship_offer_path(internship_offer.id, internship_offer: { published_at: nil }),
+          / - byebug
+          = link_to dashboard_internship_offer_path(internship_offer.id, internship_offer: { aasm_state: toggled_aasm_state, published_at: toggled_published_at }),
                     class: '',
                     data: { turbo: true },
                     title: 'Publier / Masquer',
@@ -28,18 +49,5 @@ div id="toggle_status_#{dom_id(internship_offer)}" name="toggle_status_#{dom_id(
                       published: published,
                       id: id,
                       submit: false
-  - else
-    = form_with(model: internship_offer,
-                url: republish_dashboard_internship_offer_path(internship_offer.to_param),
-                method: :patch,
-                data: {turbo: false}) do |f|
-      = f.hidden_field :published_at, value: toggled_published_at
-      div class="toggle-block text-left" id="form_toggle_status_#{dom_id(internship_offer)}"
-        .label
-          = status_label
-        .toggle-swap
-          = render 'toggle_publish_element',
-                    published: published,
-                    id: id,
-                    submit: true
+
 

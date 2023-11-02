@@ -29,6 +29,25 @@ class EducationStatisticianRegistrationsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'POST #create succedes with ok params' do
+    email = 'jean@ac-paris.fr'
+    assert_difference('Users::EducationStatistician.count', 1) do
+      post user_registration_path(params: { user: { email: email,
+                                                    first_name: 'Jean',
+                                                    last_name: 'Ref',
+                                                    password: 'okokok',
+                                                    department: '75',
+                                                    type: 'Users::EducationStatistician',
+                                                    accept_terms: '1' } })
+    end
+    statistician = Users::EducationStatistician.find_by(email: email)
+    assert statistician
+    assert_equal '75', statistician.department
+    assert_equal 'Jean', statistician.first_name
+    assert_equal 'Ref', statistician.last_name
+    assert statistician.current_area
+  end
+
   test 'when agreement_signatorable goes from false to true a job is launched' do
     education_statistician = create(:education_statistician)
     refute education_statistician.agreement_signatorable

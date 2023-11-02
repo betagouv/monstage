@@ -10,7 +10,8 @@ module InternshipApplicationCountersHooks
       update_internship_offer_week_counters
       internship_offer.update!(
         internship_offer_counters_attributes.merge(
-          blocked_weeks_count: blocked_weeks_count
+          blocked_weeks_count: blocked_weeks_count,
+          skip_enough_weeks_validation: true
         )
       )
       update_favorites

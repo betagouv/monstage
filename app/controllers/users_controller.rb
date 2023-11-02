@@ -79,6 +79,7 @@ class UsersController < ApplicationController
                                  :resume_languages,
                                  :password,
                                  :role,
+                                 :employer_role,
                                  banners: {})
   end
 

@@ -41,6 +41,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
       )
     end
     internship_offer.update(title: 'new_title') # this triggers the need_update! callback
+    assert_equal 'need_to_be_updated', internship_offer.aasm_state
     travel_to Date.new(2022, 10, 8) do
       sign_in(employer)
       InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -66,7 +67,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
     end
   end
 
-  test 'navigation & interaction works for employer' do
+  test 'cron set aasm_state to need_to_be_updated when necessary' do
     employer = create(:employer)
     old_internship_offer = nil
     travel_to Date.new(2020, 10, 1) do
@@ -118,7 +119,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
     end
   end
 
-  test 'unpublish navigation' do
+  test 'unpublish navigation and republish after' do
     travel_to Date.new(2021, 10, 1) do
       employer = create(:employer)
       internship_offer = create(:weekly_internship_offer, employer: employer, weeks: [Week.next], internship_offer_area_id: employer.current_area_id)
@@ -141,7 +142,19 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
           within("#toggle_status_#{dom_id(internship_offer)}") do
             find(".label", text: "Masqué")
           end
-          refute internship_offer.reload.published?
+          assert internship_offer.reload.unpublished?
+          assert_nil internship_offer.published_at
+
+          # ----------------------------
+          # republish
+          # ----------------------------
+          within("#toggle_status_#{dom_id(internship_offer)}") do
+            find("a[rel='nofollow'][data-method='patch']").click # this republishes the internship_offer
+          end 
+          find("h2.h4", text: "Les offres")
+          sleep 0.05
+          assert internship_offer.reload.published?
+          refute internship_offer.published_at.nil?
         end
       end
     end
@@ -157,11 +170,11 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
         weeks: [within_2_weeks],
         internship_offer_area_id: employer.current_area_id
       )
-      internship_offer.need_update!
+      internship_offer.update_columns(published_at: nil, updated_at: Time.now - 1.day, aasm_state: 'drafted')
+      assert_equal 'drafted', internship_offer.aasm_state
       sign_in(employer)
       InternshipOffer.stub :nearby, InternshipOffer.all do
         InternshipOffer.stub :by_weeks, InternshipOffer.all do
-          refute internship_offer.published?
           visit dashboard_internship_offers_path
           within("#toggle_status_#{dom_id(internship_offer)}") do
             find(".label", text: "Masqué")
@@ -174,7 +187,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
           within(".fr-container .fat-line-below .col-8.d-print-none") do
             find("p.fr-badge.fr-badge--warning", text: 'OFFRE MASQUÉE')
           end
-          assert internship_offer.reload.need_to_be_updated?
+          assert_equal 'drafted', internship_offer.aasm_state
         end
       end
     end
