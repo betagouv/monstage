@@ -48,19 +48,21 @@ module Builders
     end
 
     def update(instance:, params:)
+      # byebug
       yield callback if block_given?
       authorize :update, instance
       instance.attributes = preprocess_api_params(params, fallback_weeks: false)
       instance = deal_with_max_candidates_change(params: params, instance: instance)
-      instance.reset_publish_states if from_api?
-      deal_with_former_applications(instance: instance)
-
-      instance.save! # this may set aasm_state to need_to_be_updated state
-      if instance.may_publish? && instance.republish
+      if from_api?
+        instance.reset_publish_states
+      elsif instance.may_publish? && instance.republish
         instance.publish!
-      elsif instance.aasm_state.in?(['drafted', 'unpublished', 'need_to_be_updated', 'removed'])
-        instance.update(published_at: nil)
+      # elsif instance.aasm_state.in?(['drafted', 'unpublished', 'need_to_be_updated', 'removed'])
+      elsif instance.published_at.nil? && instance.may_unpublish?
+        instance.unpublish!
       end
+      instance.save! # this may set aasm_state to need_to_be_updated state
+      deal_with_former_applications(instance: instance)
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => e
       callback.on_failure.try(:call, e.record)

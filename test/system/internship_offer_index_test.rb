@@ -119,7 +119,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
     end
   end
 
-  test 'unpublish navigation' do
+  test 'unpublish navigation and republish after' do
     travel_to Date.new(2021, 10, 1) do
       employer = create(:employer)
       internship_offer = create(:weekly_internship_offer, employer: employer, weeks: [Week.next], internship_offer_area_id: employer.current_area_id)
@@ -137,12 +137,29 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
 
           find("h2.h4", text: "Les offres")
           sleep 0.05
+          puts '================'
+          puts "internship_offer.reload.aasm_state : #{internship_offer.reload.aasm_state}"
+          puts '================'
+          puts ''
           assert internship_offer.reload.unpublished?
 
           within("#toggle_status_#{dom_id(internship_offer)}") do
             find(".label", text: "Masqué")
           end
-          refute internship_offer.reload.published?
+          assert internship_offer.reload.unpublished?
+          assert_nil internship_offer.published_at
+
+          # ----------------------------
+          # republish
+          # ----------------------------
+          # byebug
+          within("#toggle_status_#{dom_id(internship_offer)}") do
+            find("a[rel='nofollow'][data-method='patch']").click # this republishes the internship_offer
+          end 
+          find("h2.h4", text: "Les offres")
+          sleep 0.05
+          assert internship_offer.reload.published?
+          refute internship_offer.published_at.nil?
         end
       end
     end
