@@ -84,7 +84,9 @@ module Dashboard
       find("input[name='internship_agreement[organisation_representative_full_name]']")
       fill_in "Fonction du représentant de l'entreprise", with: 'CEO'
       fill_in "Email du tuteur", with: 'tuteur@free.fr'
-      find('label', text: 'Les horaires sont les mêmes toute la semaine').click
+      find('label', text: 'Les horaires sont les mêmes toute la semaine')
+      execute_script("document.getElementById('weekly_planning').checked = false;")
+      execute_script("document.getElementById('daily-planning-container').classList.remove('d-none');")
       select('08:00', from:'internship_agreement_daily_hours_lundi_start')
       select('16:00', from:'internship_agreement_daily_hours_lundi_end')
       select('08:00', from:'internship_agreement_daily_hours_mardi_start')
@@ -115,7 +117,7 @@ module Dashboard
     end
 
     test 'employer reads internship agreement table with missing indications / daily hours - status: started_by_employer' do
-      internship_agreement = create(:internship_agreement, aasm_state: :started_by_employer)
+      internship_agreement = create(:internship_agreement, aasm_state: :started_by_employer, weekly_hours: [])
       sign_in(internship_agreement.employer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
@@ -125,7 +127,9 @@ module Dashboard
       find("input[name='internship_agreement[organisation_representative_full_name]']")
       fill_in "Fonction du représentant de l'entreprise", with: 'CEO'
       fill_in "Email du tuteur", with: 'tuteur@free.fr'
-      find('label', text: 'Les horaires sont les mêmes toute la semaine').click
+      # find('label', text: 'Les horaires sont les mêmes toute la semaine').click
+      execute_script("document.getElementById('weekly_planning').checked = false;")
+      execute_script("document.getElementById('daily-planning-container').classList.remove('d-none');")
       select('08:00', from:'internship_agreement_daily_hours_lundi_start')
       select('16:00', from:'internship_agreement_daily_hours_lundi_end')
       select('08:00', from:'internship_agreement_daily_hours_mardi_start')
