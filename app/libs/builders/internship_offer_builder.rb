@@ -48,7 +48,6 @@ module Builders
     end
 
     def update(instance:, params:)
-      # byebug
       yield callback if block_given?
       authorize :update, instance
       instance.attributes = preprocess_api_params(params, fallback_weeks: false)
@@ -57,7 +56,6 @@ module Builders
         instance.reset_publish_states
       elsif instance.may_publish? && instance.republish
         instance.publish!
-      # elsif instance.aasm_state.in?(['drafted', 'unpublished', 'need_to_be_updated', 'removed'])
       elsif instance.published_at.nil? && instance.may_unpublish?
         instance.unpublish!
       end

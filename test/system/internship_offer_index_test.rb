@@ -137,10 +137,6 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
 
           find("h2.h4", text: "Les offres")
           sleep 0.05
-          puts '================'
-          puts "internship_offer.reload.aasm_state : #{internship_offer.reload.aasm_state}"
-          puts '================'
-          puts ''
           assert internship_offer.reload.unpublished?
 
           within("#toggle_status_#{dom_id(internship_offer)}") do
@@ -152,7 +148,6 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
           # ----------------------------
           # republish
           # ----------------------------
-          # byebug
           within("#toggle_status_#{dom_id(internship_offer)}") do
             find("a[rel='nofollow'][data-method='patch']").click # this republishes the internship_offer
           end 
