@@ -52,7 +52,7 @@ module Triggered
          'when internship_applications is pending for more than 45 days' do
       internship_application = create(:weekly_internship_application, :submitted,
                                       submitted_at: (InternshipApplication::EXPIRATION_DURATION + 1.day).ago,
-                                      pending_reminder_sent_at: 13.days.ago,
+                                      pending_reminder_sent_at: 7.days.ago,
                                       internship_offer: @internship_offer)
 
       freeze_time do

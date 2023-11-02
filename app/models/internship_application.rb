@@ -6,7 +6,7 @@ class InternshipApplication < ApplicationRecord
   include StiPreload
   include AASM
   PAGE_SIZE = 10
-  EXPIRATION_DURATION = 45.days
+  EXPIRATION_DURATION = 15.days
   EXTENDED_DURATION = 15.days
   MAGIC_LINK_EXPIRATION_DELAY = 50.days
 
