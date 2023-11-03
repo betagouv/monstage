@@ -10,6 +10,7 @@ module StepperProxy
       # Validations
       validates :contact_phone,
                 presence: true,
+                unless: :from_api?,
                 length: { minimum: 10 }
       validates :contact_phone,
                 unless: :from_api?,
