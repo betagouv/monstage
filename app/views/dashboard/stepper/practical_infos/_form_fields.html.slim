@@ -7,9 +7,9 @@ div data-controller='practical-info-form' data-action="input->practical-info-for
         = render partial: 'inputs/dsfr_input_field',
                  locals: { f: form,
                            object: resource,
-                           label: 'Numéro de téléphone du dépositaire',
+                           label: 'Votre numéro de téléphone de correspondance',
                            field: :contact_phone,
-                           hint: 'Ce numéro ne sera pas communiqué aux candidats',
+                           hint: 'Ce numéro ne sera pas partagé avec les élèves et sera utilisé éventuellement et uniquement par les équipes internes de monstagedetroisieme pour vous contacter au sujet de votre offre.',
                            required: true }
       fieldset.fr-mt-11v
         legend.fr-text--lg.font-weight-bold.fr-my-2w Adresse du stage

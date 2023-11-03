@@ -1,6 +1,6 @@
 module PracticalInfoFormFiller
   def fill_in_practical_infos_form
-    fill_in 'Numéro de téléphone du dépositaire', with: '+330623665555'
+    fill_in 'Votre numéro de téléphone de correspondance', with: '+330623665555'
     fill_in 'Adresse', with: '1 rue du poulet 75001 Paris'
     within("#practical_info_weekly_hours_start") do
       select('08:00')

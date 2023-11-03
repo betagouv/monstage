@@ -44,7 +44,7 @@ class ManagePracticalInfosTest < ApplicationSystemTestCase
     find('span', text: 'Étape 4 sur 5')
     find('h2', text: 'Informations pratiques')
     fill_in_practical_infos_form
-    fill_in 'Numéro de téléphone du dépositaire', with: '+330f623665555' # bad phone number
+    fill_in 'Votre numéro de téléphone de correspondance', with: '+330f623665555' # bad phone number
     click_on "Suivant"
     assert_equal 0, PracticalInfo.count
     assert_equal 0, InternshipOffer.count
@@ -53,6 +53,6 @@ class ManagePracticalInfosTest < ApplicationSystemTestCase
       find "legend", text: "Adresse du stage"
     end
     find "p#text-input-error-desc-error-contact_phone",
-         text: "Numéro de téléphone du dépositaire : le numéro de téléphone doit contenir des caractères chiffrés uniquement"
+         text: "Votre numéro de téléphone de correspondance : le numéro de téléphone doit contenir des caractères chiffrés uniquement"
   end
 end
