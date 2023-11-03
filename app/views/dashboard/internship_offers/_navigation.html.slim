@@ -3,7 +3,7 @@
     - if @internship_offer.shown_as_masked?
       p.fr-badge.fr-badge--warning Offre Masquée
       h1 Récapitulatif de l'offre
-    - else 
+    - else
       ul.nav.navbar.px-0
         = render partial: "dashboard/internship_offers/publish_status",
                     locals: { internship_offer: @internship_offer }
@@ -26,4 +26,4 @@
             - if can?(:renew, @internship_offer) || can?(:duplicate, @internship_offer)
               .fr-mx-1w
                 = link_to '', new_dashboard_internship_offer_path(duplicate_id: @internship_offer.to_param), class: 'fr-btn fr-icon-file-add-line fr-btn--icon fr-btn--secondary test-duplicate-button'
-          
+

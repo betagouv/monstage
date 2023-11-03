@@ -14,7 +14,6 @@ module InternshipOffers
               :city,
               presence: true
 
-
     validates :max_candidates,
               numericality: { only_integer: true,
                               greater_than: 0,
@@ -27,9 +26,6 @@ module InternshipOffers
     
     validate :enough_weeks, unless: :skip_enough_weeks_validation
 
-    validates :contact_phone,
-              presence: true,
-              length: { minimum: 10 }
 
     after_initialize :init
     before_create :reverse_academy_by_zipcode

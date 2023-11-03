@@ -127,6 +127,8 @@ fr:
         activity_scope_rich_text: Objectifs du stage
         weekly_planning: Planning hebdomadaire
         same_daily_planning: Horaires quotidiens
+      practical_info:
+        contact_phone: Numéro de téléphone du dépositaire
       school:
         name: Nom
         kind: Type
@@ -494,6 +496,7 @@ fr:
         partner:
           attributes: &partner_errors
             target_count: Objectif annuel
+
         internship_offer_info:
           attributes: &internship_offer_info_errors
             title:
