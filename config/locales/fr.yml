@@ -127,6 +127,8 @@ fr:
         activity_scope_rich_text: Objectifs du stage
         weekly_planning: Planning hebdomadaire
         same_daily_planning: Horaires quotidiens
+      practical_info:
+        contact_phone: Votre numéro de téléphone de correspondance
       school:
         name: Nom
         kind: Type
@@ -372,6 +374,8 @@ fr:
         contact_phone: Téléphone du contact
         organisation:
           group: Groupe ou institution de tutelle
+      internship_offers/weekly_framed:
+        contact_phone: Votre numéro de téléphone de correspondance
 
       internship_application:
         student: Élève
@@ -492,6 +496,7 @@ fr:
         partner:
           attributes: &partner_errors
             target_count: Objectif annuel
+
         internship_offer_info:
           attributes: &internship_offer_info_errors
             title:
@@ -534,6 +539,10 @@ fr:
 
             employer:
               required: Veuillez choisir un compte responsable de l'offre
+        internship_offers/weekly_framed:
+          attributes:
+            contact_phone:
+              blank: "Veuillez saisir un numéro de téléphone"
 
         internship_offers/api:
           attributes:

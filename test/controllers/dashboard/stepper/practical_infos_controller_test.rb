@@ -44,7 +44,7 @@ module Dashboard::Stepper
     # Create PracticalInfo
     #
     test 'POST create redirects to new tutor' do
-      employer = create(:employer)
+      employer = create(:employer, phone: '+330623456789')
       sign_in(employer)
       organisation = create(:organisation, employer: employer)
       internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
@@ -64,6 +64,7 @@ module Dashboard::Stepper
                 zipcode: '75001',
                 city: 'Paris',
                 coordinates: { latitude: 1, longitude: 1 },
+                contact_phone: '+330623456789',
                 daily_hours: {
                   "lundi" => ['08:00', '15:00'],
                   "mardi" => ['08:00', '13:00'],

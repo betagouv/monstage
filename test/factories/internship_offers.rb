@@ -11,6 +11,7 @@ FactoryBot.define do
 
     sequence(:title) { |n| "Stage de 3è - #{n}" }
     description { 'Lorem ipsum dolor' }
+    contact_phone { '+330612345678' }
     max_candidates { 1 }
     max_students_per_group { 1 }
     blocked_weeks_count { 0 }
@@ -38,7 +39,7 @@ FactoryBot.define do
         'mercredi' => ['09:00', '17:00'],
         'jeudi' => ['09:00', '17:00'],
         'vendredi' => ['09:00', '17:00']
-      } 
+      }
     end
     weekly_hours { [] }
     lunch_break { "12:00-13:00" }

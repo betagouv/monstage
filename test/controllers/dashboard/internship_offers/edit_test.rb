@@ -65,7 +65,7 @@ module Dashboard::InternshipOffers
       employer = create(:employer)
       sign_in(employer)
       weeks = Week.selectable_on_school_year[0..1]
-      internship_offer = create(:weekly_internship_offer, employer: employer,weeks: weeks)
+      internship_offer = create(:weekly_internship_offer, employer: employer,weeks: weeks, internship_offer_area: employer.current_area)
       internship_application = create(:weekly_internship_application,
                                       :submitted,
                                       internship_offer: internship_offer,

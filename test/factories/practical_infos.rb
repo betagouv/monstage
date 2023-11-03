@@ -6,7 +6,8 @@ FactoryBot.define do
     coordinates { Coordinates.paris }
     employer { create(:employer) }
     weekly_hours { [] }
-    daily_hours { 
+    contact_phone { '0123456789' }
+    daily_hours {
       {
         'lundi' => ['09:00', '17:00'],
         'mardi' => ['09:00', '17:00'],

@@ -249,7 +249,7 @@ class InternshipOffer < ApplicationRecord
                     employer_name street zipcode city department region academy
                     is_public group school_id coordinates first_date last_date
                     siret employer_manual_enter internship_offer_area_id
-                    internship_offer_info_id organisation_id tutor_id
+                    contact_phone internship_offer_info_id organisation_id tutor_id
                     weekly_hours daily_hours lunch_break]
 
     internship_offer = generate_offer_from_attributes(white_list)
