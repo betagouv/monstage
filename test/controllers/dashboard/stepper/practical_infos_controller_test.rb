@@ -66,12 +66,11 @@ module Dashboard::Stepper
                 coordinates: { latitude: 1, longitude: 1 },
                 contact_phone: '+330623456789',
                 daily_hours: {
-                  "lundi" => ['07:00', '12:00'],
+                  "lundi" => ['08:00', '15:00'],
                   "mardi" => ['08:00', '13:00'],
                   "mercredi" => ['09:00', '14:00'],
                   "jeudi" => ['10:00', '15:00'],
-                  "vendredi" => ['11:00', '16:00'],
-                  "samedi" => ['--', '--']
+                  "vendredi" => ['11:00', '16:00']
                 }
               },
             })
@@ -85,15 +84,13 @@ module Dashboard::Stepper
       assert_equal 'Paris', created_practical_info.city
       assert_equal 1, created_practical_info.coordinates.latitude
       assert_equal 1, created_practical_info.coordinates.longitude
-
-      assert_equal ['07:00', '12:00'], created_practical_info.daily_hours["lundi"]
+      assert_equal ['08:00', '15:00'], created_practical_info.daily_hours["lundi"]
       assert_equal ['08:00', '13:00'], created_practical_info.daily_hours["mardi"]
       assert_equal ['09:00', '14:00'], created_practical_info.daily_hours["mercredi"]
       assert_equal ['10:00', '15:00'], created_practical_info.daily_hours["jeudi"]
       assert_equal ['11:00', '16:00'], created_practical_info.daily_hours["vendredi"]
-      assert_equal ['--', '--'], created_practical_info.daily_hours["samedi"]
       
-      assert_redirected_to internship_offer_path(created_internship_offer, origine: 'dashboard')
+      assert_redirected_to internship_offer_path(created_internship_offer, origine: 'dashboard', stepper: true)
 
       # recopy organisation
       assert_equal organisation.employer_name, created_internship_offer.employer_name

@@ -35,7 +35,7 @@ module Dashboard::Stepper
       @practical_info.save!
       internship_offer_builder.create_from_stepper(**builder_params) do |on|
         on.success do |created_internship_offer|
-          redirect_to(internship_offer_path(created_internship_offer, origine: 'dashboard'),
+          redirect_to(internship_offer_path(created_internship_offer, origine: 'dashboard', stepper: true),
                       flash: { success: 'Votre offre de stage est prête à être publiée.' })
         end
         on.failure do |failed_internship_offer|

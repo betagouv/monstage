@@ -22,7 +22,7 @@ class UserTest < ActiveSupport::TestCase
     class_room = create(:class_room, school: school)
     student = create(:student, email: 'test@test.com', first_name: 'Toto', last_name: 'Tata',
                                current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1', birth_date: '01/01/2000',
-                               gender: 'm', class_room_id: class_room.id, resume_educational_background: 'Zer',
+                               gender: 'm', class_room_id: class_room.id,
                                resume_other: 'chocolat', resume_languages: 'FR', phone: '+330600110011',
                                handicap: 'malvoyant')
     internship_application = create(
@@ -54,7 +54,6 @@ class UserTest < ActiveSupport::TestCase
 
     assert_equal 'm', student.gender
     assert_nil student.class_room_id
-    assert_not_equal 'Zer', student.resume_educational_background
     assert_not_equal 'chocolat', student.resume_other
     assert_not_equal 'chocolat', student.resume_languages
     assert_not_equal 'malvoyant', student.handicap
@@ -67,7 +66,7 @@ class UserTest < ActiveSupport::TestCase
     class_room = create(:class_room, school: school)
     student = create(:student, email: '', first_name: 'Toto', last_name: 'Tata',
                                current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1', birth_date: '01/01/2000',
-                               gender: 'm', class_room_id: class_room.id, resume_educational_background: 'Zer',
+                               gender: 'm', class_room_id: class_room.id,
                                resume_other: 'chocolat', resume_languages: 'FR', phone: '+330600110011',
                                handicap: 'malvoyant')
 
@@ -84,7 +83,6 @@ class UserTest < ActiveSupport::TestCase
     assert_not_equal '127.0.0.1', student.current_sign_in_ip
     assert_not_equal '127.0.0.1', student.last_sign_in_ip
     assert_not_equal '01/01/2000', student.birth_date
-    assert_not_equal 'Zer', student.resume_educational_background
     assert_not_equal 'chocolat', student.resume_other
     assert_not_equal 'chocolat', student.resume_languages
     assert_not_equal 'malvoyant', student.handicap
@@ -97,7 +95,7 @@ class UserTest < ActiveSupport::TestCase
     class_room = create(:class_room, school: school)
     student = create(:student, email: 'test@test.com', first_name: 'Toto', last_name: 'Tata',
                                current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1', birth_date: '01/01/2000',
-                               gender: 'm', class_room_id: class_room.id, resume_educational_background: 'Zer',
+                               gender: 'm', class_room_id: class_room.id,
                                resume_other: 'chocolat', resume_languages: 'FR', phone: '+330600110011',
                                handicap: 'malvoyant')
 
