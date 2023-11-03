@@ -14,7 +14,6 @@ module InternshipOffers
               :city,
               presence: true
 
-
     validates :max_candidates,
               numericality: { only_integer: true,
                               greater_than: 0,

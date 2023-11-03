@@ -140,6 +140,7 @@ module Builders
         zipcode: practical_info.zipcode,
         city: practical_info.city,
         coordinates: practical_info.coordinates,
+        contact_phone: practical_info.contact_phone,
       }
     end
 

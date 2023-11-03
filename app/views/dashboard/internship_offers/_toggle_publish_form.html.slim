@@ -7,7 +7,6 @@ div id="toggle_status_#{dom_id(internship_offer)}" name="toggle_status_#{dom_id(
   - id = "toggle-#{internship_offer.id}"
 
   - if updates_mandatory
-    / - byebug
     = form_with(model: internship_offer,
                 url: republish_dashboard_internship_offer_path(internship_offer.to_param),
                 method: :patch,
@@ -29,7 +28,6 @@ div id="toggle_status_#{dom_id(internship_offer)}" name="toggle_status_#{dom_id(
       .label = status_label
       .toggle-swap
         - if internship_offer.shown_as_masked? && internship_offer.drafted?
-          / - byebug
           = link_to internship_offer_path(internship_offer.to_param, origin: 'dashboard'),
                     class: '',
                     data: { turbo: false, :'toggle-activate-target' => 'checkToggle', :'toggle-activate-type-param' => 'link' },
@@ -39,7 +37,6 @@ div id="toggle_status_#{dom_id(internship_offer)}" name="toggle_status_#{dom_id(
                       id: id,
                       submit: false
         - else
-          / - byebug
           = link_to dashboard_internship_offer_path(internship_offer.id, internship_offer: { aasm_state: toggled_aasm_state, published_at: toggled_published_at }),
                     class: '',
                     data: { turbo: true },

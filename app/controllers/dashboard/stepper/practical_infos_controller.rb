@@ -18,9 +18,9 @@ module Dashboard::Stepper
         coordinates: {
           latitude: @organisation.coordinates&.latitude,
           longitude: @organisation.coordinates&.longitude
-        }
+        },
+        contact_phone: current_user.try(:phone)
       )
-
       @hosting_info = HostingInfo.find(params[:hosting_info_id])
       @internship_offer_info = InternshipOfferInfo.find(params[:internship_offer_info_id])
     end
@@ -45,6 +45,10 @@ module Dashboard::Stepper
     rescue ActiveRecord::RecordInvalid
       @organisation = Organisation.find(params[:organisation_id])
       @practical_info = PracticalInfo.new(
+        contact_phone: @practical_info.contact_phone,
+        lunch_break: @practical_info.lunch_break,
+        weekly_hours: @practical_info.weekly_hours,
+        daily_hours: @practical_info.daily_hours,
         street: @organisation.street,
         zipcode: @organisation.zipcode,
         city: @organisation.city,
@@ -53,7 +57,8 @@ module Dashboard::Stepper
           longitude: @organisation.coordinates&.longitude
         }
       )
-
+      @practical_info.employer = current_user
+      @practical_info.valid?
       @hosting_info = HostingInfo.find(params[:hosting_info_id])
       @internship_offer_info = InternshipOfferInfo.find(params[:internship_offer_info_id])
       render :new, status: :bad_request
@@ -100,6 +105,7 @@ module Dashboard::Stepper
               :siret,
               :employer_id,
               :lunch_break,
+              :contact_phone,
               weekly_hours: [],
               daily_hours: {},
               coordinates: {}
