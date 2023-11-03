@@ -27,7 +27,6 @@ module InternshipOffers
     validate :enough_weeks, unless: :skip_enough_weeks_validation
     validate :schedules_check
 
-
     after_initialize :init
     before_create :reverse_academy_by_zipcode
 
