@@ -37,6 +37,7 @@ Rails.application.routes.draw do
     end
 
     resources :identities, path: 'identites', only: %i[new create]
+    resources :url_shrinkers, path: 'raccourcisseur', only: %i[open]
     resources :schools, path: 'ecoles',only: %i[new create ]
 
     resources :internship_offer_keywords, only: [] do
@@ -175,6 +176,7 @@ Rails.application.routes.draw do
   get '/professionnels', to: 'pages#pro_landing'
   get '/equipe-pedagogique', to: 'pages#school_management_landing'
   get '/referents', to: 'pages#statistician_landing'
+  get '/link_shrinkers/:url_token', to: 'url_shrinkers#open'
 
   # Redirects
   get '/dashboard/internship_offers/:id', to: redirect('/internship_offers/%{id}', status: 302)

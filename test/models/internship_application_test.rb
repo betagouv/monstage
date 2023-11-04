@@ -332,20 +332,18 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'transition from rejected to validated_by_employer does not send email to student w/o email' do
-    InternshipApplication.stub_any_instance(:short_target_url, "http://bitly/short") do
-      student = create(:student, phone: '+330611223944', email: nil )
-      internship_application = create(:weekly_internship_application, :rejected, student: student)
-      freeze_time do
-        assert_changes -> { internship_application.reload.validated_by_employer_at },
-                      from: nil,
-                      to: Time.now.utc do
-          mock_mail = Minitest::Mock.new
-          mock_mail.expect(:deliver_later, true, [{wait: 1.second}])
-          StudentMailer.stub :internship_application_approved_email, mock_mail do
-            internship_application.employer_validate!
-          end
-          assert_raises(MockExpectationError) { mock_mail.verify }
+    student = create(:student, phone: '+330611223944', email: nil )
+    internship_application = create(:weekly_internship_application, :rejected, student: student)
+    freeze_time do
+      assert_changes -> { internship_application.reload.validated_by_employer_at },
+                    from: nil,
+                    to: Time.now.utc do
+        mock_mail = Minitest::Mock.new
+        mock_mail.expect(:deliver_later, true, [{wait: 1.second}])
+        StudentMailer.stub :internship_application_approved_email, mock_mail do
+          internship_application.employer_validate!
         end
+        assert_raises(MockExpectationError) { mock_mail.verify }
       end
     end
   end
@@ -399,9 +397,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   test "#after_employer_validation_notifications when student registered by phone" do
     student = create(:student,:registered_with_phone)
     internship_application = create(:weekly_internship_application, student: student)
-    InternshipApplication.stub_any_instance(:short_target_url, "http://bitly/short") do
-      assert internship_application.after_employer_validation_notifications.is_a?(SendSmsJob)
-    end
+    assert internship_application.after_employer_validation_notifications.is_a?(SendSmsJob)
   end
 
   test "#after_employer_validation_notifications when student registered by email" do
