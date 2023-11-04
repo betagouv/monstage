@@ -126,10 +126,6 @@ module Builders
     def sanitize(params)
       params.delete(:employer_event)
       params.delete(:school_manager_event)
-      puts '================'
-      puts "params : #{params}"
-      puts '================'
-      puts ''
       params
     end
   end
