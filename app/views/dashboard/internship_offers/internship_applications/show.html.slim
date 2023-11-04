@@ -16,7 +16,8 @@
 
       = render "dashboard/internship_offers/internship_applications/internship_application_header",
                 internship_application: @internship_application,
-                presenter: presenter
+                presenter: presenter,
+                sgid: nil
 
     / following avoids modal dialog to be opened within a sticky HTML node that hides modal content
     - aasm_notifier = @internship_application.internship_application_aasm_message_builder(aasm_target: :cancel_by_student!)
