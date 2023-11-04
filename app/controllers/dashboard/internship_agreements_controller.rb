@@ -146,6 +146,7 @@ module Dashboard
               :tutor_role,
               :tutor_email,
               :lunch_break,
+              :weekly_lunch_break,
               weekly_hours:[],
               daily_hours:{},
               )
