@@ -230,11 +230,10 @@ class InternshipAgreement < ApplicationRecord
     # sample data :
     # {"jeudi"=>["11:45", "16:00"], "lundi"=>["11:45", "15:45"], "mardi"=>["12:00", "16:00"], "samedi"=>["", ""], "mercredi"=>["12:00", "16:00"], "vendredi"=>["", ""]}
     # {"jeudi"=>"a good meal", "lundi"=>"a good meal", "mardi"=>"a good meal", "samedi"=>"a good meal "mercredi"=>"a good meal", "vendredi"=>"a good meal"}
-    daily_hours.except('samedi').values.all? do |v|
+    daily_hours_ok = daily_hours.except('samedi').values.all? do |v|
       v.first.present? && v.second.present?
-    end && daily_lunch_break.present? && daily_lunch_break.except('samedi').values.all? do |v|
-             v.present?
-           end
+    end
+    daily_hours_ok && weekly_lunch_break.present?
   end
 
   def roles_not_signed_yet
