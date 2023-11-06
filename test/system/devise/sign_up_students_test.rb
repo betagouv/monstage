@@ -55,6 +55,10 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       click_on "Valider"
     end
+    # students are confirmed by default and redirected to search page after signup
+    assert Users::Student.last.confirmed?
+    find("h2 .strong", text: "0 Offre de stage")
+    assert_select '#alert-text', count: 0
   end
 
   test 'select other class room' do

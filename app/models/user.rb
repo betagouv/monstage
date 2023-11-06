@@ -254,6 +254,10 @@ class User < ApplicationRecord
   def pending_invitation_to_a_team ; [] end
   def team_members ; User.none end
 
+  def just_created?
+    created_at > 3.seconds.ago
+  end
+
   def presenter
     Presenters::User.new(self)
   end
