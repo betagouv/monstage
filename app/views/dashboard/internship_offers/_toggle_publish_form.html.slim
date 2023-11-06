@@ -28,9 +28,9 @@ div id="toggle_status_#{dom_id(internship_offer)}" name="toggle_status_#{dom_id(
       .label = status_label
       .toggle-swap
         - if internship_offer.shown_as_masked? && internship_offer.drafted?
-          = link_to internship_offer_path(internship_offer.to_param, origin: 'dashboard'),
+          = link_to internship_offer_path(internship_offer.to_param, origin: 'dashboard', internship_offer: { aasm_state: toggled_aasm_state, published_at: toggled_published_at }),
                     class: '',
-                    data: { turbo: false, :'toggle-activate-target' => 'checkToggle', :'toggle-activate-type-param' => 'link' },
+                    data: { :'toggle-activate-target' => 'checkToggle', :'toggle-activate-type-param' => 'link' },
                     title: 'Publier / Masquer' do
             = render 'toggle_publish_element',
                       published: published,
