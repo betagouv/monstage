@@ -48,6 +48,8 @@ export default class extends Controller {
       Array.from(this.weeklyHoursStartTarget.options).forEach(opt => {
         if (this.getIFromTime(opt.value) > end - 4) {
           opt.disabled = true;
+        } else {
+          opt.disabled = false;
         }
       });
       this.weeklyHoursStartTarget.disabled = false;
@@ -91,6 +93,8 @@ export default class extends Controller {
     Array.from(element.options).forEach(opt => {
       if (this.getIFromTime(opt.value) < start + 4) {
         opt.disabled = true;
+      } else {
+        opt.disabled = false;
       }
     });
   }
