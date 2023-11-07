@@ -113,4 +113,21 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     
     assert_redirected_to dashboard_internship_offers_path
   end
+
+  test 'GET #index as Student with a pending internship_application' do
+      student = create(:student, password: 'okokok')
+      internship_offer = create(:weekly_internship_offer)
+      internship_application = create(:weekly_internship_application, :validated_by_employer,
+            student: student,
+            internship_offer: internship_offer)
+
+      post user_session_path(params: { user: { channel: 'email',
+                                               email: student.email,
+                                               password: 'okokok' } })
+      
+                                               follow_redirect!
+      assert_response :success
+      assert response.body.include? 'Une de vos candidatures a été acceptée'
+      assert_select 'a[href=?]', dashboard_students_internship_application_path(student_id: student.id, id: internship_application.id), 1
+    end
 end

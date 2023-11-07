@@ -94,6 +94,10 @@ module Users
       school_manager&.email
     end
 
+    def needs_to_see_modal?
+      internship_applications.validated_by_employer.any?
+    end
+
     # Not used but certainly useful in the next future (today 2023-04-21)
     # def expire_application_on_week(week:, keep_internship_application_id:)
     #   internship_applications

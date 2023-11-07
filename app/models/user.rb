@@ -239,6 +239,7 @@ class User < ApplicationRecord
   def has_already_approved_an_application? ; false end
   def can_sign?(internship_agreement); false end
   def email_required? ; false end
+  def needs_to_see_modal? ; false end
 
   def fetch_current_area_notification; nil end
   def create_signature_phone_token ; nil end
