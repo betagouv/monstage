@@ -77,7 +77,7 @@ module Users
         resource.groups << Group.find(params[:user][:group_id]) if params[:user][:group_id].present?
         @current_ability = Ability.new(resource)
       end
-      resource.try(:initializing_current_area) if resource.persisted?
+      resource.try(:initializing_current_area)
       resource.skip_confirmation! && resource.save if resource.student?
       flash.delete(:notice) if params.dig(:user, :statistician_type).present?
     end
