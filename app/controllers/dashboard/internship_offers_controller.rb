@@ -27,7 +27,7 @@ module Dashboard
                               "L'offre de stage a été dupliquée en tenant compte" \
                               ' de vos éventuelles modifications.'
                             end
-          redirect_to(internship_offer_path(created_internship_offer),
+          redirect_to(internship_offer_path(created_internship_offer, stepper: true),
                       flash: { success: success_message })
         end
         on.failure do |failed_internship_offer|
@@ -116,10 +116,8 @@ module Dashboard
       if @internship_offer.requires_updates?
         republish
       else
-        # TO DO Clean
         @internship_offer.publish!
-        @internship_offer.update(aasm_state: 'published')
-        redirect_to internship_offer_path(@internship_offer),
+        redirect_to dashboard_internship_offers_path(origine: 'dashboard'),
                     flash: { success: 'Votre annonce a bien été publiée' }
       end
     end
@@ -219,7 +217,7 @@ module Dashboard
                     :is_public, :group_id, :published_at, :republish, :type,
                     :employer_id, :employer_type, :school_id, :verb, :user_update,
                     :employer_description_rich_text, :siret, :employer_manual_enter,
-                    :lunch_break, coordinates: {}, week_ids: [],
+                    :contact_phone, :lunch_break, :aasm_state, coordinates: {}, week_ids: [],
                     daily_hours: {}, weekly_hours:[],
                     organisation_attributes: [
                       :id,

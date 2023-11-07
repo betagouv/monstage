@@ -77,7 +77,6 @@ module Dashboard
                          rich_text_canceled_by_employer_message ]
         student_includings = %i[ school
                                  rich_text_resume_languages
-                                 rich_text_resume_educational_background
                                  rich_text_resume_languages
                                  rich_text_resume_other ]
         internship_applications = InternshipApplications::WeeklyFramed.includes(*includings)

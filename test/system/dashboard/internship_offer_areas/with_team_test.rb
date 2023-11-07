@@ -80,7 +80,7 @@ class WithTeamTest < ApplicationSystemTestCase
     find("button[aria-controls='fr-modal-area-destroy-dialog-#{employer_2.current_area_id}']").click
     find('input[type="submit"]').click
     find('h1', text: 'Nouvel espace')
-    find 'tbody tr td.area-name a', count: 1
+    find 'tbody tr td.area-name a'
     assert_equal 1, InternshipOfferArea.all.count
     assert_equal 2, AreaNotification.all.count
   end

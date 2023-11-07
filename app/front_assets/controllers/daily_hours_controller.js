@@ -9,26 +9,26 @@ export default class extends Controller {
     'dailyHoursEnd',
   ];
 
-  handleToggleWeeklyPlanning(){
-    if($('#weekly_planning').is(":checked")){
+  handleToggleWeeklyPlanning() {
+    if ($('#weekly_planning').is(":checked")) {
       this.clean_daily_hours()
-      $("#daily-planning").addClass('d-none')
-      $("#daily-planning").hide()
+      $("#daily-planning-container").addClass('d-none')
+      $("#daily-planning-container").hide()
       $("#weekly-planning").removeClass('d-none')
       $("#weekly-planning").slideDown()
     } else {
       this.clean_weekly_hours()
       $("#weekly-planning").addClass('d-none')
       $("#weekly-planning").hide()
-      $("#daily-planning").removeClass('d-none')
-      $("#daily-planning").slideDown()
+      $("#daily-planning-container").removeClass('d-none')
+      $("#daily-planning-container").slideDown()
     }
   }
 
   weeklyStartChange() {
     const start = this.getIFromTime(this.weeklyHoursStartTarget.value);
-    
-    if (start) {      
+
+    if (start) {
       Array.from(this.weeklyHoursEndTarget.options).forEach(opt => {
         if (this.getIFromTime(opt.value) < start + 4) {
           opt.disabled = true;
@@ -44,17 +44,19 @@ export default class extends Controller {
   weeklyEndChange() {
     const end = this.getIFromTime(this.weeklyHoursEndTarget.value);
 
-    if (end) {  
+    if (end) {
       Array.from(this.weeklyHoursStartTarget.options).forEach(opt => {
         if (this.getIFromTime(opt.value) > end - 4) {
           opt.disabled = true;
+        } else {
+          opt.disabled = false;
         }
       });
       this.weeklyHoursStartTarget.disabled = false;
     } else {
         this.weeklyHoursStartTarget.disabled = false;
         this.enableAllOptions(this.weeklyHoursStartTarget);
-    } 
+    }
   }
 
 
@@ -91,6 +93,8 @@ export default class extends Controller {
     Array.from(element.options).forEach(opt => {
       if (this.getIFromTime(opt.value) < start + 4) {
         opt.disabled = true;
+      } else {
+        opt.disabled = false;
       }
     });
   }
