@@ -3,8 +3,15 @@
 FactoryBot.define do
   factory :internship_offer, aliases: %i[with_public_group_internship_offer] do
     # TODO use transient to set the distinction between weekly and api offers
+    employer { create(:employer) }
+    organisation { create(:organisation, employer: employer) }
+    internship_offer_info { create(:weekly_internship_offer_info, employer: employer) }
+    hosting_info { create(:hosting_info, employer: employer) }
+    practical_info { create(:practical_info, employer: employer) }
+
     sequence(:title) { |n| "Stage de 3è - #{n}" }
     description { 'Lorem ipsum dolor' }
+    contact_phone { '+330612345678' }
     max_candidates { 1 }
     max_students_per_group { 1 }
     blocked_weeks_count { 0 }
@@ -15,7 +22,6 @@ FactoryBot.define do
     tutor_role { 'comptable' }
     is_public { true }
     group { create(:group, is_public: true) }
-    employer { create(:employer) }
     internship_offer_area { create(:area, employer_id: employer.id, employer_type: 'User') }
     employer_description { 'on envoie du parpaing' }
     street { '1 rue du poulet' }
@@ -25,8 +31,18 @@ FactoryBot.define do
     coordinates { Coordinates.paris }
     siret { '11122233300000' }
     aasm_state { 'published' }
-    organisation { create(:organisation, employer: employer) }
     hidden_duplicate { false }
+    daily_hours do
+      {
+        'lundi' => ['09:00', '17:00'],
+        'mardi' => ['09:00', '17:00'],
+        'mercredi' => ['09:00', '17:00'],
+        'jeudi' => ['09:00', '17:00'],
+        'vendredi' => ['09:00', '17:00']
+      }
+    end
+    weekly_hours { [] }
+    lunch_break { "12:00-13:00" }
 
     trait :published do
       published_at { Time.now }
@@ -91,7 +107,7 @@ FactoryBot.define do
                                    class: 'InternshipOffers::Api',
                                    parent: :weekly_internship_offer
 
-    factory :weekly_internship_offer, traits: [:weekly_internship_offer],
+    factory :weekly_internship_offer, traits: [:weekly_internship_offer,  :published],
                                       class: 'InternshipOffers::WeeklyFramed',
                                       parent: :internship_offer
     factory :last_year_weekly_internship_offer, traits: [:last_year_weekly_internship_offer],

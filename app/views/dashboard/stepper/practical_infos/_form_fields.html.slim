@@ -2,9 +2,17 @@
 div data-controller='practical-info-form' data-action="input->practical-info-form#checkForm"
   .row
     .col-md-6
-      fieldset 
+      fieldset
+        legend.fr-text--lg.font-weight-bold.fr-my-2w Contact du dépositaire
+        = render partial: 'inputs/dsfr_input_field',
+                 locals: { f: form,
+                           object: resource,
+                           label: 'Votre numéro de téléphone de correspondance',
+                           field: :contact_phone,
+                           hint: 'Ce numéro ne sera pas partagé avec les élèves et sera utilisé éventuellement et uniquement par les équipes internes de monstagedetroisieme pour vous contacter au sujet de votre offre.',
+                           required: true }
+      fieldset.fr-mt-11v
         legend.fr-text--lg.font-weight-bold.fr-my-2w Adresse du stage
-        / = form.hidden_field :manual_enter, value: false
 
         = react_component("FullAddressInput", props: { resourceName: form.object_name,
                                 labelName: 'Adresse',
@@ -16,7 +24,7 @@ div data-controller='practical-info-form' data-action="input->practical-info-for
                                 currentFullAddress: resource.formatted_autocomplete_address})
         .form-group
           = render partial: "dashboard/stepper/practical_infos/daily_hours",
-                  locals: { form: form, disabled: false }
+                   locals: { form: form, disabled: false }
 
         - if submit_button
           .fr-mt-3w
@@ -28,4 +36,3 @@ div data-controller='practical-info-form' data-action="input->practical-info-for
                          disabled: false,
                          data: {:'practical-info-form-target' => 'submitButton'} do
               = "Suivant "
-   

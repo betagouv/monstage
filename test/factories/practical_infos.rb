@@ -4,11 +4,18 @@ FactoryBot.define do
     zipcode { '75001' }
     city { 'Paris' }
     coordinates { Coordinates.paris }
-    siret { FFaker::CompanyFR.siret }
     employer { create(:employer) }
-    weekly_lunch_break { '12:00-13:00' }
     weekly_hours { [] }
-    daily_hours { [] }
-    daily_lunch_break { '12:00-13:00' }
+    contact_phone { '0123456789' }
+    daily_hours {
+      {
+        'lundi' => ['09:00', '17:00'],
+        'mardi' => ['09:00', '17:00'],
+        'mercredi' => ['09:00', '17:00'],
+        'jeudi' => ['09:00', '17:00'],
+        'vendredi' => ['09:00', '17:00']
+      }
+    }
+    lunch_break { '12:00-13:00' }
   end
 end

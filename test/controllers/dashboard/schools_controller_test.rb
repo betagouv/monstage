@@ -127,5 +127,18 @@ module Dashboard
       patch(dashboard_school_path(school.to_param), params: {})
       assert_response :unprocessable_entity
     end
+
+    test 'PATCH update as God update school agrement_conditions_rich_text' do
+      school = create(:school)
+      sign_in(create(:god))
+      patch(dashboard_school_path(school.to_param),
+            params: {
+              school: {
+                agreement_conditions_rich_text: 'new text'
+              }
+            })
+      assert_redirected_to dashboard_schools_path(anchor: "school_#{school.id}")
+      assert_equal 'new text', school.reload.agreement_conditions_rich_text.body.to_plain_text
+    end
   end
 end

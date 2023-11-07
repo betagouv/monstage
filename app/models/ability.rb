@@ -205,9 +205,6 @@ class Ability
     as_employers_signatory_abilities(user: user)
     as_account_user(user: user)
     can %i[sign_with_sms choose_function subscribe_to_webinar] , User
-    can :transfer, InternshipApplication do |internship_application|
-      internship_application.internship_offer.employer_id == user.id
-    end
     can :see_minister_video, User
   end
 
@@ -238,6 +235,9 @@ class Ability
     can %i[update edit], Organisation , employer_id: user.team_members_ids
     can %i[create], Tutor
     can %i[index update], InternshipApplication
+    can :transfer, InternshipApplication do |internship_application|
+      internship_application.internship_offer.employer_id == user.id
+    end
   end
 
   def as_employers_signatory_abilities(user:)
@@ -522,7 +522,9 @@ class Ability
   end
 
   def student_can_apply?(internship_offer:, student:)
+    return true if student.class_room.nil? || student.school.nil? || student.school.weeks.empty?
     return false if student.has_already_approved_an_application?
+    return false if student.school_and_offer_common_weeks(internship_offer).empty?
 
     offer_is_reserved_to_another_school = internship_offer.reserved_to_school? && (internship_offer.school_id != student.school_id)
     !offer_is_reserved_to_another_school

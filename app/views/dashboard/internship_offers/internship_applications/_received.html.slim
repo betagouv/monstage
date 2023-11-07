@@ -35,15 +35,17 @@
             td.col-status
               p class="fr-mt-1w fr-badge fr-badge--sm fr-badge--#{prez.human_state[:badge]} fr-badge--no-icon"
                 = prez.human_state[:label]
-            td.text-center data-controller="toggle-activate" style="width: 100px;"
+            td.text-center style="width: 100px;" data-controller="toggle-activate"
               = form_with( model: internship_application,
                             url: set_to_read_dashboard_internship_offer_internship_application_path(prez.internship_offer, internship_application),
                             scope: :internship_application,
+                            data: { turbo: false },
                             method: :PATCH) do |f|
                 = link_to "#",
                           title: "Répondre à la candidature",
                           data: { :'toggle-activate-target' => 'checkToggle',
-                                  action: 'click->toggle-activate#toggle' },
+                                  action: 'click->toggle-activate#toggle',
+                                  :'toggle-activate-type-param' => 'form' },
                           class: 'fr-raw-link fr-text--sm d-flex' do
                   span.fr-icon-mail-line.fr-icon--sm.fr-mr-1v aria-hidden="true"
                   |Répondre

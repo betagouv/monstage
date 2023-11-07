@@ -84,10 +84,10 @@ module Builders
         tutor_role: internship_offer.try(:tutor_role),
         tutor_email: internship_offer.try(:tutor_email),
         activity_preparation_rich_text: internship_offer.description_rich_text.body,
-        new_daily_hours: internship_offer.new_daily_hours,
+        daily_hours: internship_offer.daily_hours,
         weekly_hours: internship_offer.weekly_hours,
-        daily_lunch_break: internship_offer.daily_lunch_break,
-        weekly_lunch_break: internship_offer.weekly_lunch_break,
+        lunch_break: internship_offer.lunch_break,
+        weekly_lunch_break: internship_offer&.weekly_lunch_break
       }
     end
 

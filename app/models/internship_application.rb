@@ -6,7 +6,7 @@ class InternshipApplication < ApplicationRecord
   include StiPreload
   include AASM
   PAGE_SIZE = 10
-  EXPIRATION_DURATION = 45.days
+  EXPIRATION_DURATION = 15.days
   EXTENDED_DURATION = 15.days
   MAGIC_LINK_EXPIRATION_DELAY = 50.days
 
@@ -115,6 +115,11 @@ class InternshipApplication < ApplicationRecord
     where(applications[:aasm_state].in(['approved', 'signed']))
   }
 
+  scope :pending_for_employers, lambda {
+    applications = InternshipApplication.arel_table
+    where(applications[:aasm_state].in(['submitted', 'read_by_employer']))
+  }
+
   scope :current_school_year, lambda {
     where(created_at: SchoolYear::Current.new.beginning_of_period..SchoolYear::Current.new.end_of_period)
   }
@@ -221,7 +226,7 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :cancel_by_employer do
-      transitions from: %i[read_by_employer drafted submitted examined approved validated_by_employer],
+      transitions from: %i[drafted read_by_employer drafted submitted examined approved validated_by_employer],
                   to: :canceled_by_employer,
                   after: proc { |*_args|
                            update!("canceled_at": Time.now.utc)
@@ -401,6 +406,21 @@ class InternshipApplication < ApplicationRecord
                     Rails.configuration.action_mailer.default_url_options
                   )
     UrlShortener.short_url(target)
+  end
+
+  def sgid_short_url
+    sgid = student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY).to_s
+
+    url = Rails.application
+        .routes
+        .url_helpers
+        .dashboard_students_internship_application_url(
+          student.id,
+          id,
+          sgid: sgid,
+          host: ENV['HOST'])
+    
+    UrlShortener.short_url(url)
   end
 
   # Used for prettier links in rails_admin

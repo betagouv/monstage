@@ -56,6 +56,9 @@ Rails.application.routes.draw do
           get :completed
         end
       end
+      member do
+        post :apply_count
+      end
     end
     resources :favorites, only: %i[create destroy index]
 

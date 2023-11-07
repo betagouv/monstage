@@ -18,7 +18,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
         visit new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
         fill_in_internship_offer_info_form(sector: sector)
         page.assert_no_selector('span.number', text: '1')
-        find('span', text: 'Étape 2 sur 4')
+        find('span', text: 'Étape 2 sur 5')
         click_on "Suivant"
         find('h2', text: 'Accueil des élèves')
       end
@@ -55,9 +55,9 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
         visit new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
         fill_in_internship_offer_info_form(sector: sector)
         page.assert_no_selector('span.number', text: '1')
-        find('span', text: 'Étape 2 sur 4')
+        find('span', text: 'Étape 2 sur 5')
         click_on "Suivant"
-        find('span', text: 'Étape 3 sur 4')
+        find('span', text: 'Étape 3 sur 5')
       end
     end
   end
