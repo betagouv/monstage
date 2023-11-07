@@ -15,6 +15,7 @@ module Dashboard
           whole += @school.send(role).kept
         }
         @school_employee_collection += [@school.school_manager]
+        @school_employee_collection.compact!
 
         @invitations = Invitation.for_people_with_no_account_in(school_id: @school.id)
                                  .order(created_at: :desc)

@@ -24,7 +24,7 @@ class InternshipOffersController < ApplicationController
       end
       format.json do
         @internship_offers_all_without_page = finder.all_without_page
-        @internship_offers = finder.all.includes([:sector]).order(id: :desc)
+        @internship_offers = finder.all.order(id: :desc)
         @is_suggestion = @internship_offers.to_a.count === 0
         @internship_offers = alternative_internship_offers if @internship_offers.to_a.count == 0
 
@@ -36,6 +36,7 @@ class InternshipOffersController < ApplicationController
           seats: calculate_seats,
           isSuggestion: @is_suggestion
         }
+        current_user.log_search_history(@params.merge({results_count: data[:seats]})) if current_user&.student?
         render json: data, status: 200
       end
     end
@@ -50,9 +51,15 @@ class InternshipOffersController < ApplicationController
       @internship_application = @internship_offer.internship_applications
                                                  .where(user_id: current_user_id)
                                                  .first
+      @internship_offer.log_view(current_user)
     end
     @internship_application ||= @internship_offer.internship_applications
                                                  .build(user_id: current_user_id)
+  end
+
+  def apply_count
+    @internship_offer = InternshipOffer.find(params[:id])
+    @internship_offer.log_apply(current_user)
   end
 
   private

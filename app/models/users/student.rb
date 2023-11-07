@@ -104,6 +104,17 @@ module Users
     #     .map(&:expire!)
     # end
 
+    def school_and_offer_common_weeks(internship_offer)
+      return [] unless school.has_weeks_on_current_year?
+
+      InternshipOfferWeek.applicable(
+          school: school,
+          internship_offer: internship_offer
+        ).map(&:week)
+         .uniq
+         .sort_by(&:id) & internship_offer.weeks
+    end
+
     def main_teacher
       return nil if try(:class_room).nil?
 
@@ -143,6 +154,19 @@ module Users
 
     def has_already_approved_an_application?
       internship_applications.approved.any?
+    end
+
+    def log_search_history(search_params)
+      search_history = UsersSearchHistory.new(
+        keywords: search_params[:keyword],
+        latitude: search_params[:latitude],
+        longitude: search_params[:longitude],
+        city: search_params[:city],
+        radius: search_params[:radius],
+        results_count: search_params[:results_count],
+        user: self
+      )
+      search_history.save
     end
   end
 end

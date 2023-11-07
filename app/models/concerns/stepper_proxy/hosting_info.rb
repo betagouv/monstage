@@ -18,7 +18,6 @@ module StepperProxy
                                 less_than_or_equal_to: :max_candidates ,
                                 message: "Le nombre maximal d'élèves par groupe ne peut pas dépasser le nombre maximal d'élèves attendus dans l'année" }
 
-      validate :enough_weeks
 
       # Relations
       belongs_to :school, optional: true # reserved to school
@@ -35,7 +34,7 @@ module StepperProxy
       def enough_weeks
         weeks = self.try(:internship_offer_weeks) || self.try(:hosting_info_weeks) || []
         return if weeks.size.zero?
-        return if (max_candidates / max_students_per_group - weeks.size) <= 0
+        return if max_candidates / max_students_per_group <= weeks.size
 
         error_message = 'Le nombre maximal d\'élèves est trop important par ' \
                         'rapport au nombre de semaines de stage choisi. Ajoutez des ' \

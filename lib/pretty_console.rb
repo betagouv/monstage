@@ -71,7 +71,7 @@ module PrettyConsole
     yield
     end_time = Time.now
     puts ''
-    say_in_green "Task completed. Took #{(end_time - start_time).to_s } seconds"
+    puts_in_blue "------ Task completed. Took #{(end_time - start_time).to_s } seconds"
   end
 
   def self.enhance_str(str)

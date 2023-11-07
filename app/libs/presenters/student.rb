@@ -1,6 +1,6 @@
 module Presenters
   class Student < User
-
+    delegate :school, to: :user
     def name
       return anonymized_message if student.anonymized?
 
@@ -10,18 +10,17 @@ module Presenters
     def school_name
       return anonymized_message if student.anonymized?
 
-      student.school.name
+      school.name
     end
 
     def formal_school_name
-      school = student.school
       "#{school.name} à #{school.city} (Code U.A.I: #{school.code_uai})"
     end
 
     def school_city
       return anonymized_message if student.anonymized?
 
-      student.school.city
+      school.city
     end
 
     def age
@@ -51,7 +50,7 @@ module Presenters
     def student
       user
     end
-
+    
     def sing_feminine(word)
       return "#{word}e" if user.gender == 'f'
 
@@ -63,13 +62,8 @@ module Presenters
     end
 
     def applicable_weeks(internship_offer)
-      if user.school.has_weeks_on_current_year?
-        InternshipOfferWeek.applicable(
-          user: user,
-          internship_offer: internship_offer
-        ).map(&:week)
-         .uniq
-         .sort_by(&:id) & internship_offer.weeks
+      if school.has_weeks_on_current_year?
+        user.school_and_offer_common_weeks(internship_offer)
       else
         internship_offer.weeks.in_the_future
       end

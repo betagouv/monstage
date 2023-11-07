@@ -75,11 +75,11 @@ class UsersController < ApplicationController
                                  :phone_suffix,
                                  :department,
                                  :class_room_id,
-                                 :resume_educational_background,
                                  :resume_other,
                                  :resume_languages,
                                  :password,
                                  :role,
+                                 :employer_role,
                                  banners: {})
   end
 

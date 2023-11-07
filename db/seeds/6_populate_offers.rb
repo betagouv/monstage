@@ -5,6 +5,7 @@ def populate_internship_offers
   # 1
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
+    contact_phone: '+33637607756',
     siret: siret,
     max_candidates: 5,
     max_students_per_group: 5,
@@ -33,6 +34,7 @@ def populate_internship_offers
   # 2
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
+    contact_phone: '+33637607756',
     siret: siret,
     max_candidates: 5,
     max_students_per_group: 5,
@@ -65,6 +67,7 @@ def populate_internship_offers
     max_candidates: 5,
     max_students_per_group: 5,
     employer: Users::Employer.first,
+    contact_phone: '+33637607756',
     siret: siret,
     weeks: weeks,
     first_date: weeks.first.beginning_of_week,
@@ -93,6 +96,7 @@ def populate_internship_offers
     max_candidates: 6,
     max_students_per_group: 6,
     employer: Users::Employer.first,
+    contact_phone: '+33637607756',
     siret: siret,
     weeks: weeks,
     first_date: weeks.first.beginning_of_week,
@@ -119,6 +123,7 @@ def populate_internship_offers
   # 5
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
+    contact_phone: '+33637607756',
     siret: siret,
     weeks: weeks,
     first_date: weeks.first.beginning_of_week,
@@ -149,6 +154,7 @@ def populate_internship_offers
   # 6
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
+    contact_phone: '+33637607756',
     siret: siret,
     weeks: weeks,
     first_date: weeks.first.beginning_of_week,
@@ -177,6 +183,7 @@ def populate_internship_offers
   # api - 1
   InternshipOffers::Api.create!(
     employer: Users::Operator.first,
+    contact_phone: '+33637607756',
     siret: siret,
     weeks: weeks,
     first_date: weeks.first.beginning_of_week,
@@ -206,6 +213,7 @@ def populate_internship_offers
   # api - 2
   InternshipOffers::Api.create!(
     employer: Users::Operator.first,
+    contact_phone: '+33637607756',
     siret: siret,
     weeks: weeks,
     first_date: weeks.first.beginning_of_week,
@@ -243,6 +251,7 @@ MULTI_LINE
     max_candidates: 5,
     max_students_per_group: 5,
     employer: Users::Employer.first,
+    contact_phone: '+33637607756',
     weeks: weeks,
     first_date: weeks.first.beginning_of_week,
     last_date: weeks.last.beginning_of_week,
@@ -273,6 +282,7 @@ MULTI_LINE
 MULTI_LINE
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
+    contact_phone: '+33637607756',
     max_candidates: 5,
     max_students_per_group: 5,
     weeks: weeks,
@@ -322,6 +332,7 @@ MULTI_LINE
     max_candidates: 5,
     max_students_per_group: 5,
     employer: Users::Employer.first,
+    contact_phone: '+33637607756',
     weeks: weeks,
     first_date: weeks.first.beginning_of_week,
     last_date: weeks.last.beginning_of_week,

@@ -2,7 +2,7 @@ Votre candidature est en cours de traitement
 
 <%= "L'#{@prez_offer.entreprise} #{@internship_offer.employer_name} a bien pris " \
     "en compte votre candidature et l'a transmise en interne pour étude." %>
-L'entreprise a un délai de 45 jours pour vous répondre, ensuite la candidature sera annulée.
+<%= "L'entreprise a un délai de #{InternshipApplication::EXPIRATION_DURATION} jours pour vous répondre, ensuite la candidature sera annulée." %>
 
 <%= @internship_application&.examined_message&.body&.html_safe %>
 

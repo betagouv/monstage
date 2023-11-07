@@ -4,5 +4,5 @@
     "0 7 * * * $ROOT/clevercloud/crons/internship_application_reminders.sh",
     "0 8 * * 1 $ROOT/clevercloud/crons/kpi_mailing.sh",
     "0 9 * * * $ROOT/clevercloud/crons/students_internship_application_reminders.sh",
-    "*/10 * * * * $ROOT/clevercloud/crons/sync_production_databases.sh"
+    "0 8 * * 1,4 $ROOT/clevercloud/crons/employers_internship_application_reminders.sh"
   ]
