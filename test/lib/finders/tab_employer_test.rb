@@ -3,6 +3,7 @@
 require 'test_helper'
 
 module Finders
+  include TeamAndAreasHelper
   class TabEmployerTest < ActiveSupport::TestCase
     test 'pending_agreements_count only draft agreements' do
       employer = create(:employer)
@@ -15,25 +16,26 @@ module Finders
       assert_equal 1, employer_tab.pending_agreements_count
     end
 
-    test '.pending_internship_offers_actions' do
-      employer     = create(:employer)
-      status_count = InternshipApplication.aasm.states.count
-      1.times do 
-        InternshipApplication.aasm.states.each do |state|
-          student = create(:student)
-          wio = create(:weekly_internship_offer, employer: employer)
-          create(
-            :weekly_internship_application,
-            aasm_state: state.name.to_sym,
-            internship_offer: wio,
-            student: student
-          )
-        end
+    test '.pending_internship_applications_actions_count' do
+      employer = create(:employer)
+      InternshipApplication.aasm.states.each do |state|
+        student = create(:student)
+        wio = create(:weekly_internship_offer,
+                     employer: employer,
+                     internship_offer_area: employer.current_area)
+        create(
+          :weekly_internship_application,
+          aasm_state: state.name.to_sym,
+          internship_offer: wio,
+          student: student
+        )
       end
-      internship_offers = InternshipOffer.all.to_a
       tab_value = TabEmployer.new(user: employer)
-                             .pending_internship_offers_actions(internship_offers)
-      assert_equal 3, tab_value # 1 for :read, 1 for :submitted, 1 for :examined
+                             .pending_internship_applications_actions_count
+      # 1 for :read_by_employer,
+      # 1 for :submitted,
+      # 1 for :examined
+      assert_equal 3, tab_value
     end
 
     test '.pending_agreements_actions_count with 1 signature by employer' do
