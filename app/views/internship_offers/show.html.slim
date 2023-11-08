@@ -37,9 +37,10 @@ div.fr-container.d-flex.fr-mt-2w
           .fr-mr-2w
             button.fr-mr-1w.fr-btn.fr-icon-delete-line.fr-btn--icon.fr-btn--secondary.test-discard-button data-fr-opened="false" aria-controls="discard-internship-offer-modal"
       - if can?(:update, @internship_offer)
-        = link_to 'Modifier',
-                  edit_dashboard_stepper_practical_info_path(@internship_offer.practical_info.id, hosting_info_id: @internship_offer.hosting_info_id, organisation_id: @internship_offer.organisation_id, internship_offer_info_id: @internship_offer.internship_offer_info_id),
-                  class: 'fr-btn fr-mr-1w fr-btn--secondary'
+        - url = edit_dashboard_internship_offer_path(@internship_offer)
+        - if @internship_offer.practical_info_id
+          - url = edit_dashboard_stepper_practical_info_path(@internship_offer.practical_info_id, hosting_info_id: @internship_offer.hosting_info_id, organisation_id: @internship_offer.organisation_id, internship_offer_info_id: @internship_offer.internship_offer_info_id)
+        = link_to 'Modifier', url, class: 'fr-btn fr-mr-1w fr-btn--secondary'
       = button_to 'Publier',
                   publish_dashboard_internship_offer_path(@internship_offer),
                   data: { turbo: false },
