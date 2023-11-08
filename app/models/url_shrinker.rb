@@ -13,6 +13,14 @@ class UrlShrinker < ApplicationRecord
     )
   end
 
+  def self.short_url(url:, user_id:)
+    url_shrinker = add(url: url, user_id: user_id)
+    Rails.application
+         .routes
+         .url_helpers
+         .open_url_shrinker_url(id: url_shrinker.url_token, **Rails.configuration.action_mailer.default_url_options )
+  end
+
   def self.remove(id:)
     UrlShrinker.find(id).destroy
   end

@@ -37,7 +37,9 @@ Rails.application.routes.draw do
     end
 
     resources :identities, path: 'identites', only: %i[new create]
-    resources :url_shrinkers, path: 'raccourcisseur', only: %i[open]
+    resources :url_shrinkers, path: 'court', only: %i[show] do
+      get :open, on: :member
+    end
     resources :schools, path: 'ecoles',only: %i[new create ]
 
     resources :internship_offer_keywords, only: [] do

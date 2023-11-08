@@ -1,7 +1,10 @@
 require "test_helper"
 
 class UrlShrinkerTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "#short_url" do
+    target_url = "https://www.google.com"
+    user = create(:employer)
+    short_url = UrlShrinker.short_url(url: target_url, user_id: user.id)
+    assert_equal "http://example.com/court/#{UrlShrinker.last.url_token}/open", short_url
+  end
 end

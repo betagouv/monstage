@@ -405,7 +405,7 @@ class InternshipApplication < ApplicationRecord
                     application.id,
                     Rails.configuration.action_mailer.default_url_options
                   )
-    UrlShortener.short_url(target, application.student.id)
+    UrlShrinker.short_url(target, application.student.id)
   end
 
   def sgid_short_url
@@ -420,7 +420,7 @@ class InternshipApplication < ApplicationRecord
           sgid: sgid,
           host: ENV['HOST'])
     
-    UrlShortener.short_url(url, user_id: student.id)
+    UrlShrinker.short_url(url: url, user_id: student.id)
   end
 
   # Used for prettier links in rails_admin
