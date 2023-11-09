@@ -135,8 +135,8 @@ def populate_applications
     validated_by_employer_at: 20.days.ago,
     student: students.fourth,
     motivation: 'Très motivé pour ce stage, je vous préviens',
-    internship_offer: offers[0],
-    week: offers[0].internship_offer_weeks.last(2).first.week
+    internship_offer: offers[5],
+    week: offers[5].internship_offer_weeks.last(2).first.week
   )
   #-----------------
   # 5th student [1 approved]

@@ -16,7 +16,9 @@ class FavoritesController < ApplicationController
   end
 
   def destroy
-    Favorite.where(internship_offer_id: @internship_offer.id, user_id: current_user.id).first.destroy
+    Favorite.where(internship_offer_id: @internship_offer.id, user_id: current_user.id)
+           &.first
+           &.destroy
     render json: format_internship_offer(@internship_offer), status: 200
   end
 

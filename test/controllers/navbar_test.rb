@@ -99,7 +99,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     assert_select('li a.fr-link.text-decoration-none.active', text: student.dashboard_name, count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Accueil', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Recherche', count: 1)
-    assert_select("li a.fr-link.mr-4", text: 'Candidatures', count: 1)
+    assert_select("li a.fr-link.mr-4", text: 'Candidatures / Réponses', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Espaces', count: 0)
     assert_select("li a.fr-link.mr-4", text: 'équipe'.capitalize, count: 0)

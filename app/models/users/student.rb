@@ -83,7 +83,7 @@ module Users
     end
 
     def dashboard_name
-      'Candidatures'
+      'Candidatures / Réponses'
     end
 
     def default_account_section
@@ -92,6 +92,10 @@ module Users
 
     def school_manager_email
       school_manager&.email
+    end
+
+    def needs_to_see_modal?
+      internship_applications.validated_by_employer.any?
     end
 
     # Not used but certainly useful in the next future (today 2023-04-21)
