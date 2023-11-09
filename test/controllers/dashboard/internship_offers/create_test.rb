@@ -32,7 +32,6 @@ module Dashboard::InternshipOffers
                         'employer_description_rich_text' => '<div>hop+employer_description</div>',
                         'employer_id' => internship_offer.employer_id,
                         'employer_type' => 'Users::Employer')
-
         assert_difference('InternshipOffer.count', 1) do
           post(dashboard_internship_offers_path, params: { internship_offer: params })
         end
@@ -44,7 +43,7 @@ module Dashboard::InternshipOffers
         assert_equal weeks.size, created_internship_offer.internship_offer_weeks_count
         assert_equal params['max_candidates'], created_internship_offer.max_candidates
         assert_equal params['max_candidates'], created_internship_offer.remaining_seats_count
-        assert_redirected_to internship_offer_path(created_internship_offer)
+        assert_redirected_to internship_offer_path(created_internship_offer, stepper: true)
       end
     end
 
@@ -76,7 +75,7 @@ module Dashboard::InternshipOffers
         assert_equal weeks.map(&:id), created_internship_offer.week_ids
         assert_equal weeks.size, created_internship_offer.internship_offer_weeks_count
         assert_equal params['max_candidates'], created_internship_offer.max_candidates
-        assert_redirected_to internship_offer_path(created_internship_offer)
+        assert_redirected_to internship_offer_path(created_internship_offer, stepper: true)
       end
     end
 

@@ -1,13 +1,4 @@
 .row
-  fieldset class="#{disabled ? 'opacity-05' : ''} col-12 mb-4" aria-labelledby="parcours_scolaire"
-    / legend.h3 Mon Parcours
-    .form-group
-      #parcours_scolaire.fr-label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{sanitize_to_id(form.object_name)}_resume_educational_background" data-controller="rich-text-label"
-        = 'Parcours Scolaire'
-        small.form-text.text-muted Classes suivies jusqu'à maintenant
-
-      = form.rich_text_area :resume_educational_background, class: 'fr-input col-12', disabled: disabled,  rows: 5
-
   fieldset class="#{disabled ? 'opacity-05' : ''} col-12 mb-4" aria-labelledby="activities"
     / legend.h3 Autre
     .row

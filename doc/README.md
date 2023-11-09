@@ -148,6 +148,11 @@ L'API attend en paramètre obligatoire un secteur d'activité associé à une of
 * *Artisanat d'art*: **1ce60ecc-273d-4c73-9b1a-2f5ee14e1bc6**
 * *Arts du spectacle*: **055b7580-c979-480f-a026-e94c8b8dc46e**
 * *Culture et patrimoine*: **c76e6364-7257-473c-89aa-c951141810ce**
+* *Administration publique*: **f329c1e8-30db-48b4-babb-52e2c90d7287**
+* *Conseil*: **9bb7b34c-caaf-413f-8c67-6f7a65ec6d56**
+* *Industrie, ingénierie industrielle*: **14d24150-86cd-4b66-95f0-7f94cf56b5cb**
+* *Immobilier, transactions immobilières*: **de7930b7-104f-44df-8e49-08eca31ec9e6**
+* *Services postaux*: **156f75da-37ee-41f8-ade4-94ea23acf715**
 
 Exemple de ce que nous attendons donc un uuid dans nos API :
 
