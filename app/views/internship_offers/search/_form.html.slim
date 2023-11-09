@@ -48,18 +48,19 @@ div [class="test-search-container #{has_white_bg ? 'search-container py-2' : ''}
         / mobile
         div[class="d-block d-sm-none w-100"
             data-search-popover-target="searchSubmitContainer"]
-          ul.fr-btns-group.w-100.fr-mr-n1w.fr-ml-1v
+          ul.fr-btns-group.w-100
             li.w-100
               = form.button class: 'fr-btn',
                             name: nil,
                             id: 'test-mobile-submit-search' do
                 span = 'Rechercher'
       - else
-        .actions.d-stick.d-md-none.p-3.text-center data-search-popover-target="searchSubmitContainer"
+        .actions.d-md-none.w-100.text-centers.fr-ml-3v.fr-mt-6w data-search-popover-target="searchSubmitContainer"
           = form.button "Afficher les résultats",
                         class: 'fr-btn fr-icon-search-line fr-btn--icon-right',
+                        style: "width: 94%; padding: 0 15% 0 27% ",
                         id: 'test-mobile-submit-search' do
-            span.mr-2 = "Trouver un stage "
+            span.mr-2 = "Trouver un stage"
     .row
       .col.mb-2
 
