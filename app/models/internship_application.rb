@@ -405,7 +405,7 @@ class InternshipApplication < ApplicationRecord
                     application.id,
                     Rails.configuration.action_mailer.default_url_options
                   )
-    UrlShrinker.short_url(target, application.student.id)
+    UrlShrinker.short_url(url: target, user_id: application.student.id)
   end
 
   def sgid_short_url
