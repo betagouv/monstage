@@ -1,18 +1,6 @@
 class UrlShrinker < ApplicationRecord
   belongs_to :user
 
-  def self.add(url:, user_id:)
-    url_token = generate_url_token
-    while(url_token_exists?(url_token: url_token)) do
-      url_token = generate_url_token
-    end
-    UrlShrinker.create!(
-      original_url: url,
-      user_id: user_id,
-      url_token: url_token
-    )
-  end
-
   def self.short_url(url:, user_id:)
     url_shrinker = add(url: url, user_id: user_id)
     Rails.application
@@ -36,6 +24,18 @@ class UrlShrinker < ApplicationRecord
 
 
   private
+
+  def self.add(url:, user_id:)
+    url_token = generate_url_token
+    while(url_token_exists?(url_token: url_token)) do
+      url_token = generate_url_token
+    end
+    UrlShrinker.create!(
+      original_url: url,
+      user_id: user_id,
+      url_token: url_token
+    )
+  end
 
   def self.generate_url_token
     SecureRandom.base64(8)

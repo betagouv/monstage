@@ -419,7 +419,7 @@ class InternshipApplication < ApplicationRecord
           id,
           sgid: sgid,
           host: ENV['HOST'])
-    
+
     UrlShrinker.short_url(url: url, user_id: student.id)
   end
 
