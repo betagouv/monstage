@@ -1,7 +1,7 @@
 .row.fr-py-4w.fr-mb-2w.fat-line-below
   .col-8.d-print-none
-    - if @internship_offer.shown_as_masked?
-      p.fr-badge.fr-badge--warning Offre Masquée
+    - if @internship_offer.drafted?
+      p.fr-badge.fr-badge--new Brouillon
       h1 Récapitulatif de l'offre
     - else
       ul.nav.navbar.px-0
