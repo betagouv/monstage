@@ -47,5 +47,8 @@
                                   action: 'click->toggle-activate#toggle',
                                   :'toggle-activate-type-param' => 'form' },
                           class: 'fr-raw-link fr-text--sm d-flex' do
-                  span.fr-icon-mail-line.fr-icon--sm.fr-mr-1v aria-hidden="true"
-                  |Répondre
+                  - if internship_application.expired?
+                    | Voir 
+                  - else
+                    span.fr-icon-mail-line.fr-icon--sm.fr-mr-1v aria-hidden="true"
+                    |Répondre

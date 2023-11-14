@@ -2,6 +2,7 @@
 div [data-controller="select-weeks"
      data-hosting-infos-target='weeksContainer'
      data-select-weeks-skip-validation-value="false"]
+  div data-select-weeks-target='submitButton'
   .row
     .col-md-12
       .form-group
@@ -28,7 +29,7 @@ div [data-controller="select-weeks"
                             !preselect_all,
                             { disabled: allow_select_all,
                               data: { "internship-offer-infos-target": "specificWeeks",
-                                      action: "change->select-weeks#showSpecificWeeks"}}
+                                      action: "change->select-weeks#showSpecificWeeks" }}
             = label_tag 'specific_weeks', class: 'fr-label' do
               | Semaines spécifiques
 
