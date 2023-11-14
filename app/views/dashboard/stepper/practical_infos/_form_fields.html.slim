@@ -31,5 +31,8 @@ div data-controller='practical-info-form' data-action="input->practical-info-for
             = link_to 'Précédent',
                       edit_dashboard_stepper_hosting_info_path(params[:hosting_info_id], organisation_id: params[:organisation_id], internship_offer_info_id: params[:internship_offer_info_id]),
                       class: 'fr-btn fr-mr-2w fr-btn--secondary'
-            = button_tag :submit, class: 'fr-btn', disabled: false, 'data-target': "practical-info-form.submitButton" do
+            = button_tag :submit,
+                         class: 'fr-btn',
+                         disabled: false,
+                         data: {:'practical-info-form-target' => 'submitButton'} do
               = "Suivant "

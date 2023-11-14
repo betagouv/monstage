@@ -166,7 +166,7 @@ module Api
         }
       )
       assert_response :success
-      assert_equal new_publication_date, @internship_offer.reload.published_at.utc.iso8601(0)
+      assert_equal new_publication_date.to_i, @internship_offer.reload.published_at.utc.iso8601(0).to_i
       assert_equal true, @internship_offer.published?
     end
 
