@@ -17,25 +17,25 @@ module Dashboard
     end
 
     test 'teacher can edit and update school weeks' do
-      now = Date.today
-      unless (now.month == 5 && now.day > 25) || (now.month == 6 && now.day < 7)
-        school = create(:school, :with_weeks, :with_school_manager)
-        teacher = create(:teacher, school: school)
+      travel_to Date.new(2019, 9, 26) do
+        now = Date.today
+        unless (now.month == 5 && now.day > 25) || (now.month == 6 && now.day < 7)
+          school = create(:school, :with_weeks, :with_school_manager)
+          teacher = create(:teacher, school: school)
 
-        sign_in(teacher)
-        # new_class_room_name = 'wonder class_room'
-        visit edit_dashboard_school_path(school)
-        last_week_label = Week.selectable_on_school_year
-                              .last
-                              .select_text_method
+          sign_in(teacher)
+          # new_class_room_name = 'wonder class_room'
+          visit edit_dashboard_school_path(school)
+          last_week_label = "Du 25 au 29 mai 2020"
 
-        within('div[data-select-weeks-target="checkboxesContainer"]') do
-          find('label', text: last_week_label).click
+          find('label', text:last_week_label).click
+          click_button('Enregistrer les modifications')
+          find("div[id='alert-success']")
+          refute_equal last_week_label, school.weeks.last.select_text_method
+          assert_equal last_week_label, DateRange.new(weeks: [school.reload.weeks.last])
+                                                 .boundaries_as_string
+                                                 .gsub('du ', 'Du ')
         end
-        click_button('Enregistrer les modifications')
-        find("div[id='alert-success']")
-        refute_equal last_week_label, school.weeks.last.select_text_method
-        assert_equal last_week_label, school.reload.weeks.last.select_text_method
       end
     end
   end

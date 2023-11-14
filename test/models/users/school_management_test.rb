@@ -57,7 +57,7 @@ module Users
     test 'school_managemennt.after_sign_in_path with school but no weeks redirects to account_path' do
       school_manager = create(:school_manager, school: create(:school, weeks: []))
       assert_equal(school_manager.after_sign_in_path,
-                   @url_helpers.edit_dashboard_school_path(school_manager.school))
+                   @url_helpers.dashboard_school_path(school_manager.school))
     end
 
     test 'school_manager.after_sign_in_path with school and weeks redirects to dashboard_school_path' do
@@ -68,11 +68,13 @@ module Users
     end
 
     test 'teacher.after_sign_in_path with school redirects to dashboard_school_class_room_path when class_room exists' do
-      school = create(:school, weeks: [Week.find_by(number: 1, year: 2020)])
-      class_room = create(:class_room, school: school)
-      school_manager = create(:school_manager, school: school, class_room: class_room)
-      redirect_to = @url_helpers.dashboard_school_class_room_students_path(school, class_room)
-      assert_equal(redirect_to, school_manager.after_sign_in_path)
+      travel_to Date.new(2019, 9, 1) do
+        school = create(:school, weeks: [Week.find_by(number: 1, year: 2020)])
+        class_room = create(:class_room, school: school)
+        school_manager = create(:school_manager, school: school, class_room: class_room)
+        redirect_to = @url_helpers.dashboard_school_class_room_students_path(school, class_room)
+        assert_equal(redirect_to, school_manager.after_sign_in_path)
+      end
     end
 
     test 'change school notify new school_manager' do
@@ -95,10 +97,12 @@ module Users
     end
 
     test '#custom_dashboard_path as main_teacher' do
-      school = create(:school, :with_school_manager, weeks: [Week.find_by(number: 1, year: 2020)])
-      class_room = create(:class_room, school: school)
-      main_teacher = create(:main_teacher, school: school, class_room: class_room)
-      assert_equal @url_helpers.dashboard_school_class_room_students_path(school, class_room), main_teacher.custom_dashboard_path
+      travel_to Date.new(2019, 9, 1) do
+        school = create(:school, :with_school_manager, weeks: [Week.find_by(number: 1, year: 2020)])
+        class_room = create(:class_room, school: school)
+        main_teacher = create(:main_teacher, school: school, class_room: class_room)
+        assert_equal @url_helpers.dashboard_school_class_room_students_path(school, class_room), main_teacher.custom_dashboard_path
+      end
     end
   end
 end

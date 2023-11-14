@@ -4,6 +4,4 @@
   #weeks-panel.fr-tabs__panel aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0"
     = render "form"
 
-- if current_user.is_a?(Users::SchoolManagement) && !current_user.school.has_weeks_on_current_year?
-  = render partial: 'dashboard/schools/notice_school_manager',
-            locals: { school: current_user.school }
+

@@ -27,7 +27,7 @@ div.fr-my-2w data-controller="daily-hours"
                       options_for_select(hours_by_quarter, selected: form.object.weekly_hours&.last),
                       { :include_blank => '--',
                       class: "fr-select",
-                      disabled: !select_weekly_end(form.object),
+                      disabled: disabled || !select_weekly_end(form.object),
                       data: { :'daily-hours-target' => "weeklyHoursEnd", action: "change->daily-hours#weeklyEndChange" },
                       aria: { label: "Selectionner une heure de debut de stage pour tous les jours de la semaine" }, id: "#{form.object_name}_weekly_hours_end" }
 
@@ -56,6 +56,7 @@ div.fr-my-2w data-controller="daily-hours"
                         options_for_select(hours_by_quarter, selected: form.object.daily_hours&.dig(weekday)&.last),
                         {:include_blank => '--',
                          class: "fr-select daily-hours-end",
+                         disabled: disabled,
                          data: { :'daily-hours-target' => "dailyHoursEnd", i: i, action: "change->daily-hours#dailyHoursEndChange" },
                          aria: { label:"Selectionner une heure de debut de fin pour le #{weekday.capitalize}" }, id: "#{form.object_name}_daily_hours_#{weekday}_end"}
 

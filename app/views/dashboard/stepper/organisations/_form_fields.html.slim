@@ -82,7 +82,7 @@
                           class: 'fr-label'
 
               = form.select :group_id,
-                            options_for_select(options_for_groups, resource.group.try(:id)), 
+                            options_for_select(options_for_groups, resource.group.try(:id)),
                             { prompt: '-- Indépendant --' },
                             class: "fr-select",
                             data: {:"organisation-form-target" => 'selectGroupName'}
@@ -119,5 +119,7 @@
   - if submit_button
     .fr-mt-3w
       = link_to 'Annuler', dashboard_internship_offers_path, class: 'fr-btn fr-btn--secondary fr-mr-3w'
-      = button_tag :submit, class: 'fr-btn', 'data-target': "organisation-form.submitButton" do
+      = button_tag :submit,
+                   class: 'fr-btn',
+                   data: {:'organisation-form-target' => "submitButton"} do
         = "Suivant "
