@@ -522,7 +522,7 @@ class Ability
   end
 
   def student_can_apply?(internship_offer:, student:)
-    return true if student.class_room.nil? || student.school.nil? || student.school.weeks.empty?
+    return true if student.class_room.nil? || student.school.nil? || !student.school.has_weeks_on_current_year?
     return false if student.has_already_approved_an_application?
     return false if student.school_and_offer_common_weeks(internship_offer).empty?
 
