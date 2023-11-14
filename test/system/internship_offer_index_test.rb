@@ -185,7 +185,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
           find("h1.h3.text-dark", text: internship_offer.title)
 
           within(".fr-container .fat-line-below .col-8.d-print-none") do
-            find("p.fr-badge.fr-badge--warning", text: 'OFFRE MASQUÉE')
+            find("p.fr-badge.fr-badge--new", text: 'BROUILLON')
           end
           assert_equal 'drafted', internship_offer.aasm_state
         end
