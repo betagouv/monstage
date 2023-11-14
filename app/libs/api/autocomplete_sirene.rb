@@ -21,6 +21,7 @@ module Api
     end
 
     def self.search_by_name(name:)
+      return  nil unless name.present?
       uri = URI::Parser.new.parse("#{API_ENTREPRISE_ENDPOINT}?q=#{CGI.escape(name)}")
       headers = {
         'Content-Type': 'application/json',
