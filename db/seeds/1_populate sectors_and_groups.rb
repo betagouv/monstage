@@ -30,6 +30,7 @@ def populate_sectors
     "Commerce et distribution" => "ae267ff2-76d5-460a-9a41-3b820c392149",
     "Marketing, publicité" => "811621f0-e2d1-4c32-a406-5b45979d7c6d",
     "Médical" => "1aae3b41-1394-4109-83cf-17214e1aefdd",
+    "Métiers d'art" => "82738129-au8h-8297-827h-oaieurjeh872",
     "Paramédical" => "89946839-8e18-4087-b48d-e6ee5f7d8480",
     "Social" => "d5a7ec0f-5f9c-44cb-add0-66465b4e7d3c",
     "Sport" => "01d06ada-55be-4ebf-8ad2-2666e7a7f521",
