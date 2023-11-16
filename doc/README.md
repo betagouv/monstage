@@ -130,6 +130,7 @@ L'API attend en paramètre obligatoire un secteur d'activité associé à une of
 * *Industrie chimique*: **4974df57-0111-492d-ab60-3bfdad10733d**
 * *Maintenance*: **0f51b2d6-91da-4543-a0aa-d49a7be3d249**
 * *Mécanique*: **4ee8bd54-7b5b-4ae9-9603-78f303d5aea8**
+* *Métiers d'art*: **82738129-au8h-8297-827h-oaieurjeh872**
 * *Verre, béton, céramique*: **463578f1-b371-4466-a13f-b0e99f783391**
 * *Informatique et réseaux*: **bfd92448-5eae-4d99-ae2c-67fffc8fec69**
 * *Jeu vidéo*: **be4bab4d-09ed-4205-bca1-1047da0500f8**
