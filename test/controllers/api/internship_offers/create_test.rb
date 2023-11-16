@@ -178,6 +178,78 @@ module Api
       assert_equal JSON.parse(internship_offer.to_json), json_response
     end
 
+    test 'POST #create as operator works to internship_offers with duplicate remote_id' do
+      operator_1 = create(:user_operator, api_token: SecureRandom.uuid)
+      operator_2 = create(:user_operator, api_token: SecureRandom.uuid)
+
+      week_instances = Week.selectable_from_now_until_end_of_school_year.last(2)
+      sector = create(:sector, uuid: SecureRandom.uuid)
+      title = 'title'
+      description = 'description'
+      employer_name = 'employer_name'
+      employer_description = 'employer_description'
+      employer_website = 'http://google.fr'
+      coordinates = { latitude: 1, longitude: 1 }
+      street = "Avenue de l'opéra"
+      zipcode = '75002'
+      city = 'Paris'
+      siret = FFaker::CompanyFR.siret
+      sector_uuid = sector.uuid
+      week_params = [
+        "#{week_instances.first.year}-W#{week_instances.first.number}",
+        "#{week_instances.last.year}-W#{week_instances.last.number}"
+      ]
+      remote_id = 'test'
+      permalink = 'https://www.google.fr'
+
+      params_1 = { 
+        token: "Bearer #{operator_1.api_token}",
+        internship_offer: {
+          title: title,
+          description: description,
+          employer_name: employer_name,
+          employer_description: employer_description,
+          employer_website: employer_website,
+          siret: siret,
+          'coordinates' => coordinates,
+          street: street,
+          zipcode: zipcode,
+          city: city,
+          sector_uuid: sector_uuid,
+          weeks: week_params,
+          remote_id: remote_id,
+          permalink: permalink,
+          max_candidates: 2,
+          is_public: true
+        }
+      }
+      
+      assert_difference('InternshipOffer.count', 1) do
+        documents_as(endpoint: :'internship_offers/create', state: :created) do
+          post api_internship_offers_path(
+            params: params_1
+            )
+        end
+        assert_response :created
+      end
+      
+      internship_offer = InternshipOffers::Api.last
+      assert_equal remote_id, internship_offer.remote_id
+      
+      params_2 = params_1
+      params_2[:token] = "Bearer #{operator_2.api_token}"
+      
+      assert_difference('InternshipOffer.count', 1) do
+        documents_as(endpoint: :'internship_offers/create', state: :created) do
+          post api_internship_offers_path(
+            params: params_2
+          )
+        end
+        
+        assert_response :created
+      end
+    end
+
     test 'POST #create when missing coordinates works to create internship_offers' do
       operator = create(:user_operator, api_token: SecureRandom.uuid)
       week_instances = [weeks(:week_2019_1), weeks(:week_2019_2)]
