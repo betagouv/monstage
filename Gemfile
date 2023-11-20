@@ -94,6 +94,8 @@ group :development do
   gem "activerecord-explain-analyze"
   gem "jupyter_on_rails"
   gem "ffi-rzmq"
+  gem "httparty"
+  gem "watir"
 end
 
 
