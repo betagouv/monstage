@@ -7,8 +7,8 @@ p style=p_styles
 p style=p_styles
   = "L'#{@prez_offer.entreprise}  a bien pris " \
     "en compte votre candidature et l'a transmise en interne pour étude. " \
-    "L'entreprise a un délai de #{InternshipApplication::EXPIRATION_DURATION} jours pour vous répondre, ensuite la " \
-    "candidature sera annulée."
+    "L'entreprise a un délai de #{InternshipApplication::EXPIRATION_DURATION/24/3600} jours pour vous répondre, " \
+    "ensuite la candidature sera annulée."
 p style=p_styles
   | Elle vous transmet le message suivant :
 
