@@ -6,7 +6,7 @@ class UrlShrinker < ApplicationRecord
     Rails.application
          .routes
          .url_helpers
-         .open_url_shrinker_url(id: url_shrinker.url_token, **Rails.configuration.action_mailer.default_url_options )
+         .o_url_shrinker_url(id: url_shrinker.url_token, **Rails.configuration.action_mailer.default_url_options )
   end
 
   def self.remove(id:)
@@ -38,7 +38,7 @@ class UrlShrinker < ApplicationRecord
   end
 
   def self.generate_url_token
-    SecureRandom.base64(8)
+    SecureRandom.base36(5)
   end
 
   def self.url_token_exists?(url_token:)

@@ -10,6 +10,7 @@ class UrlShrinkersController < ApplicationController
       redirect_to root_url, alert: "Le lien est périmé"
     end
   end
+  alias :o :open
 
   private
 
