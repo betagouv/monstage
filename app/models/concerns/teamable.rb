@@ -30,8 +30,8 @@ module Teamable
              foreign_key: 'employer_id'
 
     has_many :kept_internship_offers,
-             -> { merge(InternshipOffer.kept) },
-             class_name: 'InternshipOffer',
+             -> { merge(InternshipOffers::WeeklyFramed.kept) },
+             class_name: 'InternshipOffers::WeeklyFramed',
              foreign_key: 'employer_id'
 
     has_many :internship_applications, through: :kept_internship_offers

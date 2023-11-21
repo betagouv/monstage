@@ -2,9 +2,12 @@
           internship_application: internship_application,
           aasm_target: :examine!,
           modal_opener_label: 'Etudier',
-          subtitle: "Motivez la mise à l'étude de cette candidature.",
-          message: "Examiner une candidature ralonge votre délai d'examen de 2 semaines, " \
-                   "et déclenche l'envoi d'un email à l'élève l'en informant.",
+          subtitle: nil,
+          message: "En cliquant sur “Étudier”, vous confirmez que vous allez étudier " \
+                   "la candidature de cet élève et lui donner dans les 15 prochains jours.",
           rich_text: true,
+          input_title: 'Message personnalisé',
+          info_notice_title: "L’élève n’a pas vos coordonnées",
+          info_notice_message: "Si vous attendez une réponse de l’élève, transmettez-lui votre adresse email ou votre numéro de téléphone.",
           modal_id: "examine-internship-application-#{internship_application.id}",
           fa_icon: "fr-icon-settings-5-line"

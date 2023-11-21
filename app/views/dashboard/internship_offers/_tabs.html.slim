@@ -14,7 +14,7 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
         .my-auto
           = "Publiées "
           / - if is_active
-            / - pending_internship_applications_count = badge_counter.pending_internship_offers_actions(internship_offers)
+            / - pending_internship_applications_count = badge_counter.pending_internship_applications_actions_count
             / - if pending_internship_applications_count.positive?
             /   p.fr-badge.fr-badge--new.fr-badge--no-icon.fr-mb-0
             /     = pending_internship_applications_count

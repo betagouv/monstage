@@ -3,7 +3,7 @@
 
 = render 'layouts/breadcrumb',
          links: [[back_to_internship_offers_from_internship_offer_path(current_user, request.original_url), 'Recherche de stage'], [internship_offer_path(@internship_offer), @internship_offer.title]]
-- if params[:stepper] == 'true'
+- if @internship_offer.drafted?
   = render "dashboard/stepper/steps", { current_step_number: 5,
                                         total_steps: 5,
                                         current_step_title: "Valider le récapitulatif de l'offre",

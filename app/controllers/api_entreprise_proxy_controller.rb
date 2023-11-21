@@ -4,6 +4,7 @@
 # not the neciest solution, but safest
 class ApiEntrepriseProxyController < ApplicationController
   def search
+    return render json: {error: 'missing name param'}, status: 400 unless params[:name]
     response = Api::AutocompleteSirene.search_by_name(name: params[:name])
     render json: clean_response(response.body), status: response.code
   end

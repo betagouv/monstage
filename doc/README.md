@@ -130,6 +130,7 @@ L'API attend en paramètre obligatoire un secteur d'activité associé à une of
 * *Industrie chimique*: **4974df57-0111-492d-ab60-3bfdad10733d**
 * *Maintenance*: **0f51b2d6-91da-4543-a0aa-d49a7be3d249**
 * *Mécanique*: **4ee8bd54-7b5b-4ae9-9603-78f303d5aea8**
+* *Métiers d'art*: **82738129-au8h-8297-827h-oaieurjeh872**
 * *Verre, béton, céramique*: **463578f1-b371-4466-a13f-b0e99f783391**
 * *Informatique et réseaux*: **bfd92448-5eae-4d99-ae2c-67fffc8fec69**
 * *Jeu vidéo*: **be4bab4d-09ed-4205-bca1-1047da0500f8**
@@ -265,40 +266,6 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 - 404, Not Found. Aucune offre n'a été trouvée avec le ```remote_id``` spécifié
 - 422, Unprocessable Entity. Aucun paramètre n'a été spécifié pour la modification
 
-### <a name="ref-index-internship-offer"></a>
-## Recherche d'une offre
-
-
-**url** : ```#{baseURL}/internship_offers```
-
-**method** : GET
-
-**/!\ Endpoint ouvert sur demande**
-
-*Paramètres d'url* :
-
-* **keyword** *(string)*
-* **internship_offer.coordinates** *(object/geography)* : { "latitude" : 1.0, "longitude" : 1.0 }
-* **radius** *(integer, en mètres)*
-
-
-### Exemple curl
-
-``` bash
-curl -H "Authorization: Bearer $API_TOKEN" \
-     -H "Accept: application/json" \
-     -H "Content-type: application/json" \
-     -X GET \
-     -d '{"keyword":"Avocat"}' \
-     -vvv \
-     $ENV/api/internship_offers
-```
-
-### Erreurs
-
-- 401, wrong api token
-- 401, access denied
-
 ### <a name="ref-destroy-internship-offer"></a>
 ## Suppression d'une offre
 **url** : ```#{baseURL}/internship_offers/#{remote_id}```
@@ -364,6 +331,3 @@ MONSTAGEDETROISIEME_TOKEN=foobarbaz
 ## Suppression d'une offre
 * exemple d'appel à l'api : ```./requests/internship_offers/destroy.sh```
 * exemple de reponse, cf: ./output/internship_offers/destroy/*
-
-## Recherche d'une offre
-* exemple de reponse, cf: ./output/internship_offers/index/success.json
