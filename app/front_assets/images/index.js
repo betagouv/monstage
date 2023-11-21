@@ -131,6 +131,7 @@ import './documents_utiles/RienNeSertDeCourirPageBD.jpg';
 import './documents_utiles/MS3_Programme-a-remplir.jpg';
 import './documents_utiles/USEA-Carnet-Stage-Education.jpg';
 import './documents_utiles/USEA-Cherchez-la-chercheuse.jpg';
+import './documents_utiles/carnet-de-stage-pro.jpg';
 import './documents_utiles/versLinfini.jpg';
 import './documents_utiles/eleves.jpg';
 import './documents_utiles/equipe-pedago.jpg';
