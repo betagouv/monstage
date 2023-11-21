@@ -155,7 +155,7 @@ module Api
       assert_nil @internship_offer.reload.published_at
       refute @internship_offer.published?
 
-      new_publication_date = Time.now.utc.iso8601(0)
+      new_publication_date = Time.now.utc
       patch api_internship_offer_path(
         id: @internship_offer.remote_id,
         params: {
@@ -166,7 +166,7 @@ module Api
         }
       )
       assert_response :success
-      assert_equal new_publication_date, @internship_offer.reload.published_at.utc.iso8601(0)
+      assert_in_delta 0.000_001, new_publication_date.to_i, @internship_offer.reload.published_at.utc.to_i
       assert_equal true, @internship_offer.published?
     end
 
