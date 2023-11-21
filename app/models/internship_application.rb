@@ -294,7 +294,7 @@ class InternshipApplication < ApplicationRecord
   end
 
   def self.pending_states
-    received_states + %w[validated_by_employer]
+    received_states + %w[validated_by_employer] - %w[expired]
   end
 
   def self.rejected_states

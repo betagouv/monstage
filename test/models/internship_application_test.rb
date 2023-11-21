@@ -430,4 +430,9 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     area_notification.update_column(:notify, false)
     assert_equal [employer_2.email], internship_application.filter_notified_emails
   end
+
+  test '.pending_states' do
+    assert_equal %w[submitted read_by_employer examined validated_by_employer],
+                 InternshipApplication.pending_states
+  end
 end
