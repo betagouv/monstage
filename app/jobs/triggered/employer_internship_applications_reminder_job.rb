@@ -4,7 +4,7 @@ module Triggered
   class EmployerInternshipApplicationsReminderJob < ApplicationJob
     queue_as :batches
 
-    def perform(employer)
+    def perform(employer)      
       internship_applications = employer.internship_applications
 
       pending_application_ids = internship_applications.pending_for_employers.pluck(:id)
