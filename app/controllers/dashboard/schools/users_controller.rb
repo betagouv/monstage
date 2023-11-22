@@ -17,7 +17,10 @@ module Dashboard
         @school_employee_collection += [@school.school_manager]
         @school_employee_collection.compact!
 
+        school_employees = current_user.school.users
+
         @invitations = Invitation.for_people_with_no_account_in(school_id: @school.id)
+                                 .invited_by(user_id: school_employees.pluck(:id))
                                  .order(created_at: :desc)
       end
 
