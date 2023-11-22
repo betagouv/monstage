@@ -33,6 +33,7 @@ gem "react_on_rails"
 gem 'webpacker'
 gem 'caxlsx_rails'
 gem "split", require: "split/dashboard"
+gem "browser"
 
 # background jobs
 gem 'sidekiq', '~> 6.5', '>= 6.1.2'
