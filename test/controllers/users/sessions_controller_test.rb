@@ -53,17 +53,6 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_select '#alert-warning #alert-text', text: 'Un message d’activation vous a été envoyé par courrier électronique. Veuillez suivre les instructions qu’il contient.', count: 1
   end
 
-  test 'POST session not confirmed by phone redirect to confirmation token page' do
-    pwd = 'okokok'
-    student = create(:student, password: pwd, phone: '+330611223344', confirmed_at: nil)
-    post user_session_path(params: { user: { channel: 'phone',
-                                             phone: student.phone,
-                                             password: pwd } })
-    assert_response :found
-    follow_redirect!
-    assert_select 'h1', 'Encore une petite étape...'
-  end
-
   test 'POST session with phone' do
     pwd = 'okokok'
     phone = '+330637607756'

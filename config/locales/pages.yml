@@ -159,8 +159,6 @@ fr:
     registrations:
       choose_profile:
         page_title: "Création de compte"
-      confirmation_phone_standby:
-        page_title: "Inscription en attente de confirmation SMS"
       confirmation_standby:
         page_title: "Inscription en attente de confirmation"
       create:

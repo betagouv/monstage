@@ -55,7 +55,7 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
           }
         }
       )
-      assert_redirected_to users_registrations_standby_path(id: User.last.id)
+      assert_redirected_to internship_offers_path
     end
     created_student = Users::Student.first
     assert_equal school, created_student.school
@@ -137,7 +137,7 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
           }
         }
       )
-      assert_redirected_to users_registrations_standby_path(id: User.last.id)
+      assert_redirected_to internship_offers_path
     end
     created_student = Users::Student.first
     assert_equal identity.school_id, created_student.school.id

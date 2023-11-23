@@ -90,7 +90,6 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     offer = create(:weekly_internship_offer)
 
     visit internship_offer_path(offer)
-    # click_link '
     first(:link, 'Postuler').click
     find('a.fr-btn--secondary', text: "Créer un compte").click
 
@@ -112,7 +111,6 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     assert_difference('Users::Student.count', 1) do
       fill_in 'Adresse électronique', with: email, wait: 4
       fill_in 'Créer un mot de passe', with: password, wait: 4
-
       sleep 0.2
       find("input[type='submit']").click
     end
@@ -120,37 +118,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     created_student = Users::Student.find_by(email: email)
 
     # confirmation mail under the hood
-    created_student.confirm
-    created_student.reload
     assert created_student.confirmed?
-    # assert_equal offer.id, created_student.targeted_offer_id
-
-    # visit login mail from confirmation mail
-    visit new_user_session_path
-    # find('label', text: 'Email').click
-    sleep 0.2
-    find("input[type='submit']").click
-
-    created_student = Users::Student.find_by(email: email)
-
-    # confirmation mail under the hood
-    created_student.confirm
-    created_student.reload
-    assert created_student.confirmed?
-    # assert_equal offer.id, created_student.targeted_offer_id
-
-    # visit login mail from confirmation mail
-    visit new_user_session_path
-    # find('label', text: 'Email').click
-    sleep 0.2
-    find("input[name='user[email]']").fill_in with: created_student.email
-    find("input[name='user[password]']").fill_in with: password
-    find("input[type='submit']").click
-    # redirected page is a show of targeted internship_offer
-    assert_equal "/offres-de-stage/#{offer.id}/candidatures/nouveau", current_path
-    # targeted offer id at student's level is now empty
-    assert_nil created_student.reload.targeted_offer_id,
-              'targeted offer should have been reset'
   end
 
   test 'Student with account and former internship offer visit lands on offer page after login' do

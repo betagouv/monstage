@@ -18,7 +18,7 @@ class User < ApplicationRecord
   include DelayedDeviseEmailSender
 
   before_validation :concatenate_and_clean
-  after_create :send_sms_token
+  # after_create :send_sms_token
 
   # school_managements includes different roles
   # Everyone should register with ac-xxx.fr email
@@ -255,7 +255,7 @@ class User < ApplicationRecord
   def team_members ; User.none end
 
   def just_created?
-    created_at > 3.seconds.ago
+    self.created_at > 3.seconds.ago
   end
 
   def presenter
