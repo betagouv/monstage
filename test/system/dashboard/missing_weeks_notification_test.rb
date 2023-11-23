@@ -40,19 +40,14 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
         # Back to interfaces /!\ works alone
         sign_in(school_manager)
         visit edit_dashboard_school_path(school)
-        click_link('Renseigner maintenant')
-        find("label[for='school_week_ids_1_checkbox']").click
-        find('input[type="submit"]').click
+        find("label", text: "Du 21 au 25 janvier 2019").click
+        click_button('Enregistrer les modifications')
         find "#alert-text", text: school_message
         sign_out(school_manager)
 
         sign_in(student)
         visit internship_offers_path
-        # assert_presence_of(internship_offer: internship_offer)
         page.has_no_content?(message_no_week)
-        # click_link("Voir l'annonce")
-        # click_on 'Postuler'
-        # page.has_no_content?(explanation)
       end
     end
   end

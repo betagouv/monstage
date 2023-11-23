@@ -7,6 +7,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   include ThirdPartyTestHelpers
 
   test 'student not in class room can not ask for week' do
+    weeks = Week.selectable_from_now_until_end_of_school_year.to_a.first(2)
     school = create(:school, weeks: [])
     student = create(:student, school: school, class_room: create(:class_room, school: school))
     internship_offer = create(:weekly_internship_offer, weeks: weeks)
@@ -18,6 +19,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   end
 
   test 'student can submit application when school has not choosen any week yet' do
+    weeks = Week.selectable_from_now_until_end_of_school_year.to_a.first(2)
     school = create(:school, weeks: [])
     student = create(:student, school: school, class_room: create(:class_room, school: school))
     internship_offer = create(:weekly_internship_offer, weeks: weeks)

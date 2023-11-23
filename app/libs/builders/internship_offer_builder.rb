@@ -59,8 +59,8 @@ module Builders
       elsif instance.published_at.nil? && instance.may_unpublish?
         instance.unpublish!
       end
-      deal_with_former_applications(instance: instance)
       instance.save! # this may set aasm_state to need_to_be_updated state
+      deal_with_former_applications(instance: instance)
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => e
       callback.on_failure.try(:call, e.record)
@@ -135,12 +135,12 @@ module Builders
       {
         weekly_hours: practical_info.weekly_hours,
         daily_hours: practical_info.daily_hours,
-        daily_lunch_break: practical_info.daily_lunch_break,
-        weekly_lunch_break: practical_info.weekly_lunch_break,
+        lunch_break: practical_info.lunch_break,
         street: practical_info.street,
         zipcode: practical_info.zipcode,
         city: practical_info.city,
         coordinates: practical_info.coordinates,
+        contact_phone: practical_info.contact_phone,
       }
     end
 
@@ -206,7 +206,7 @@ module Builders
         instance.internship_applications
                 .where(week_id: week_id)
                 .each do |application|
-          application.cancel_by_employer!
+          application.cancel_by_employer! if application.may_cancel_by_employer?
           application.destroy! # TBD: should we destroy or keep them?
         end
       end

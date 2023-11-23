@@ -146,7 +146,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     patch(account_path, params: {
             user: {
-              resume_educational_background: 'background',
               resume_other: 'other',
               resume_languages: 'languages',
               phone: '+330665656540'
@@ -155,7 +154,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to account_path
     student.reload
-    assert_equal 'background', student.resume_educational_background.to_plain_text
     assert_equal 'other', student.resume_other.to_plain_text
     assert_equal 'languages', student.resume_languages.to_plain_text
     assert_equal '+330665656540', student.phone

@@ -36,6 +36,7 @@ class InternshipOffer < ApplicationRecord
   belongs_to :internship_offer_area, optional: true, touch: true
   has_many :favorites
   has_many :users, through: :favorites
+  has_many :users_internship_offers_histories, dependent: :destroy
 
   accepts_nested_attributes_for :organisation, allow_destroy: true
 
@@ -246,8 +247,8 @@ class InternshipOffer < ApplicationRecord
                     employer_name street zipcode city department region academy
                     is_public group school_id coordinates first_date last_date
                     siret employer_manual_enter internship_offer_area_id
-                    internship_offer_info_id organisation_id tutor_id
-                    weekly_hours daily_hours]
+                    contact_phone internship_offer_info_id organisation_id tutor_id
+                    weekly_hours daily_hours lunch_break]
 
     internship_offer = generate_offer_from_attributes(white_list)
     organisation = self.organisation.dup
@@ -334,7 +335,8 @@ class InternshipOffer < ApplicationRecord
   end
 
   def daily_planning?
-    new_daily_hours.except('samedi').values.flatten.any? { |v| !v.blank? }
+    return false if daily_hours.blank?
+    daily_hours.except('samedi').values.flatten.any? { |v| !v.blank? }
   end
 
   def presenter
@@ -369,5 +371,17 @@ class InternshipOffer < ApplicationRecord
 
   def approved_applications_current_school_year
     internship_applications.approved.current_school_year
+  end
+
+  def log_view(user)  
+    history = UsersInternshipOffersHistory.find_or_initialize_by(internship_offer: self, user: user)
+    history.views += 1
+    history.save
+  end
+  
+  def log_apply(user)
+    history = UsersInternshipOffersHistory.find_or_initialize_by(internship_offer: self, user: user)
+    history.application_clicks += 1
+    history.save
   end
 end

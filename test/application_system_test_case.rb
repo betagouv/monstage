@@ -39,6 +39,10 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
                                                                   fixtures
                                                                   files
                                                                   api-address-paris-13.json])))
+
+
+    stub_request(:any, /recherche-entreprises.api.gouv.fr/)
+      .to_return(status: 200, body: "")
   end
 
   def after_teardown

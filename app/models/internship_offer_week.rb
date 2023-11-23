@@ -14,8 +14,8 @@ class InternshipOfferWeek < ApplicationRecord
   delegate :max_students_per_group, to: :internship_offer
 
   # responsability by the week , check student_max_group_size
-  scope :applicable, lambda { |user:, internship_offer:|
-    by_weeks(weeks: user.school.weeks)
+  scope :applicable, lambda { |school:, internship_offer:|
+    by_weeks(weeks: school.weeks)
       .ignore_max_candidates_reached(max_students_per_group: internship_offer.max_students_per_group)
       .after_current_week
       .includes(:week)

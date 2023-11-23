@@ -12,7 +12,7 @@ module Dashboard
                           .map(&:pluralize)
                           .map(&:to_sym)
         @school_employee_collection = roles.inject([]) {|whole, role|
-          whole += School.last.send(role).kept
+          whole += @school.send(role).kept
         }
         @school_employee_collection += [@school.school_manager]
         @school_employee_collection.compact!

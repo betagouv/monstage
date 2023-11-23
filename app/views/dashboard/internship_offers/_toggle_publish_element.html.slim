@@ -1,20 +1,16 @@
-.fr-toggle data-controller='toggle-activate'
-  - options = { id: "axe-#{id}",
-                class: 'fr-toggle__input',
-                :'aria-describedby' => "#{id}-hint-text",
-                title: 'Publier / Masquer' }
-  - if submit
-    - options.merge!({data: { action: 'change->toggle-activate#toggle',
-                      :'toggle-activate-target' => 'checkToggle' }})
+- options = { id: "axe-#{id}",
+              class: 'fr-toggle__input',
+              :'aria-describedby' => "#{id}-hint-text",
+              title: 'Publier / Masquer' }
+
+.fr-toggle
   = check_box_tag 'toggle_publish',
-                   published,
-                   published,
-                   options
-  = label_tag id,
-              '',
-              class: "fr-toggle__label"
+                  published,
+                  published,
+                  options
+  = label_tag id, '', class: "fr-toggle__label"
   = image_submit_tag(asset_pack_path('media/images/active_pin.svg'),
-                     class: 'd-none',
-                     name: 'toggle_publish',
-                     id: "toggle-image-submit-#{id}",
-                     alt: 'Publier / Masquer')
+                      class: 'd-none',
+                      name: 'toggle_publish',
+                      id: "toggle-image-submit-#{id}",
+                      alt: 'Publier / Masquer')

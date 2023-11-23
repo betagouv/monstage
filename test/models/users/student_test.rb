@@ -55,5 +55,28 @@ module Users
       student        = create(:student, class_room: class_room, school: school_with_school_manager)
       assert_equal main_teacher.id, student.main_teacher.id
     end
+
+    test "#school_and_offer_common_weeks when school has weeks" do
+      travel_to Date.new(2020, 9, 1) do
+        school_with_weeks = create(:school, :with_school_manager, weeks: Week.selectable_on_school_year.first(2))
+        student = create(:student, school: school_with_weeks)
+        assert_equal 2, student.school.weeks.count
+        internship_offer = create(:weekly_internship_offer, weeks: [Week.selectable_on_school_year.first])
+        misfitting_offer = create(:weekly_internship_offer, weeks: [Week.selectable_on_school_year.first(3).last])
+
+        assert_equal [school_with_weeks.weeks.first], student.school_and_offer_common_weeks(internship_offer)
+        assert_equal [], student.school_and_offer_common_weeks(misfitting_offer)
+      end
+    end
+
+    test "#school_and_offer_common_weeks when school has no week" do
+      travel_to Date.new(2020, 9, 1) do
+        school_without_weeks = create(:school)
+        student = create(:student, school: school_without_weeks)
+        internship_offer = create(:weekly_internship_offer, weeks: [Week.selectable_on_school_year.first])
+        
+        assert  student.school_and_offer_common_weeks(internship_offer).empty?
+      end
+    end
   end
 end

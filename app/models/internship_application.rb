@@ -4,7 +4,7 @@
 class InternshipApplication < ApplicationRecord
   include AASM
   PAGE_SIZE = 10
-  EXPIRATION_DURATION = 45.days
+  EXPIRATION_DURATION = 15.days
   EXTENDED_DURATION = 15.days
   MAGIC_LINK_EXPIRATION_DELAY = 50.days
 
@@ -111,6 +111,11 @@ class InternshipApplication < ApplicationRecord
   scope :approved_or_signed, lambda {
     applications = InternshipApplication.arel_table
     where(applications[:aasm_state].in(['approved', 'signed']))
+  }
+
+  scope :pending_for_employers, lambda {
+    applications = InternshipApplication.arel_table
+    where(applications[:aasm_state].in(['submitted', 'read_by_employer']))
   }
 
   scope :current_school_year, lambda {
@@ -287,7 +292,7 @@ class InternshipApplication < ApplicationRecord
   end
 
   def self.pending_states
-    received_states + %w[validated_by_employer]
+    received_states + %w[validated_by_employer] - %w[expired]
   end
 
   def self.rejected_states

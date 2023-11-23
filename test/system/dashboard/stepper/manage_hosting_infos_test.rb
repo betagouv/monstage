@@ -18,7 +18,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
     assert_difference 'HostingInfo.count' do
       travel_to(Date.new(2019, 3, 1)) do
         visit new_dashboard_stepper_hosting_info_path(organisation_id: organisation.id, internship_offer_info_id: internship_offer_info.id)
-        find('span', text: 'Étape 3 sur 4')
+        find('span', text: 'Étape 3 sur 5')
         # Individual internship
         find('label[for="internship_type_true"]').click
         fill_in("hosting_info_max_candidates", with: 1)
@@ -27,7 +27,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
         all('.autocomplete-school-results .list-group-item-action').first.click
         select(school_name, from: 'Collège')
         click_on "Suivant"
-        find('span', text: 'Étape 4 sur 4')
+        find('span', text: 'Étape 4 sur 5')
         find('h2', text: 'Informations pratiques')
       end
     end

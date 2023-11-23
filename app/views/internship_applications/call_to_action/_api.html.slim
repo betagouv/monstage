@@ -1,7 +1,7 @@
-.actions.d-flex.d-sm-block.mb-0.justify-content-center
+.actions.d-flex.d-sm-block.mb-0.justify-content-center data-controller="internship-offer"
   .mb-1.text-muted.small.d-none.d-sm-block
     = "Offre publiée par #{operator_name(internship_offer)}"
-  - if current_user.nil? || current_user.student?
+  - if current_user.nil?
     .actions.d-flex.text-center
       = link_to internship_offer.permalink,
                 class: 'fr-btn',
@@ -9,3 +9,13 @@
                 rel: "external noopener noreferrer",
                 title: "Je postule sur #{operator_name(internship_offer)} (nouvelle fenêtre)" do
         = "Postuler sur #{operator_name(internship_offer)}"
+  - elsif current_user.student?
+    .actions.d-flex.text-center
+      = link_to internship_offer.permalink,
+                class: 'fr-btn',
+                target: "_blank",
+                rel: "external noopener noreferrer",
+                title: "Je postule sur #{operator_name(internship_offer)} (nouvelle fenêtre)",
+                data: { action: 'click->internship-offer#applyCount', target: 'internship-offer.applyButton', internshipOfferId: internship_offer.id, userId: current_user.id, turbo: false } do
+        = "Postuler sur #{operator_name(internship_offer)}"
+  

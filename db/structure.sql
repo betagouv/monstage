@@ -716,7 +716,8 @@ CREATE TABLE public.internship_agreements (
     student_legal_representative_2_phone character varying(20),
     school_representative_role character varying(60),
     school_representative_email character varying(100),
-    discarded_at timestamp(6) without time zone
+    discarded_at timestamp(6) without time zone,
+    lunch_break text
 );
 
 
@@ -1081,7 +1082,9 @@ CREATE TABLE public.internship_offers (
     daily_hours jsonb,
     hosting_info_id bigint,
     practical_info_id bigint,
-    internship_offer_area_id bigint
+    internship_offer_area_id bigint,
+    lunch_break text,
+    contact_phone character varying(20)
 );
 
 
@@ -1281,7 +1284,9 @@ CREATE TABLE public.practical_infos (
     weekly_hours text[] DEFAULT '{}'::text[],
     weekly_lunch_break text,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    lunch_break text,
+    contact_phone character varying(20)
 );
 
 
@@ -1669,6 +1674,77 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: users_internship_offers_histories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.users_internship_offers_histories (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    internship_offer_id bigint NOT NULL,
+    application_clicks integer DEFAULT 0,
+    views integer DEFAULT 0,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: users_internship_offers_histories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.users_internship_offers_histories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: users_internship_offers_histories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.users_internship_offers_histories_id_seq OWNED BY public.users_internship_offers_histories.id;
+
+
+--
+-- Name: users_search_histories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.users_search_histories (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    keywords character varying(255),
+    latitude double precision,
+    longitude double precision,
+    city character varying,
+    radius integer,
+    results_count integer DEFAULT 0,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: users_search_histories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.users_search_histories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: users_search_histories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.users_search_histories_id_seq OWNED BY public.users_search_histories.id;
+
+
+--
 -- Name: weeks; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1950,6 +2026,20 @@ ALTER TABLE ONLY public.user_groups ALTER COLUMN id SET DEFAULT nextval('public.
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Name: users_internship_offers_histories id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users_internship_offers_histories ALTER COLUMN id SET DEFAULT nextval('public.users_internship_offers_histories_id_seq'::regclass);
+
+
+--
+-- Name: users_search_histories id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users_search_histories ALTER COLUMN id SET DEFAULT nextval('public.users_search_histories_id_seq'::regclass);
 
 
 --
@@ -2256,11 +2346,27 @@ ALTER TABLE ONLY public.user_groups
 
 
 --
+-- Name: users_internship_offers_histories users_internship_offers_histories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users_internship_offers_histories
+    ADD CONSTRAINT users_internship_offers_histories_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_search_histories users_search_histories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users_search_histories
+    ADD CONSTRAINT users_search_histories_pkey PRIMARY KEY (id);
 
 
 --
@@ -2762,6 +2868,20 @@ CREATE INDEX index_user_groups_on_user_id ON public.user_groups USING btree (use
 
 
 --
+-- Name: index_users_internship_offers_histories_on_internship_offer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_internship_offers_histories_on_internship_offer_id ON public.users_internship_offers_histories USING btree (internship_offer_id);
+
+
+--
+-- Name: index_users_internship_offers_histories_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_internship_offers_histories_on_user_id ON public.users_internship_offers_histories USING btree (user_id);
+
+
+--
 -- Name: index_users_on_api_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2822,6 +2942,13 @@ CREATE INDEX index_users_on_role ON public.users USING btree (role);
 --
 
 CREATE INDEX index_users_on_school_id ON public.users USING btree (school_id);
+
+
+--
+-- Name: index_users_search_histories_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_search_histories_on_user_id ON public.users_search_histories USING btree (user_id);
 
 
 --
@@ -2927,6 +3054,14 @@ ALTER TABLE ONLY public.area_notifications
 
 ALTER TABLE ONLY public.team_member_invitations
     ADD CONSTRAINT fk_rails_21c6860154 FOREIGN KEY (member_id) REFERENCES public.users(id);
+
+
+--
+-- Name: users_internship_offers_histories fk_rails_24c68739d8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users_internship_offers_histories
+    ADD CONSTRAINT fk_rails_24c68739d8 FOREIGN KEY (internship_offer_id) REFERENCES public.internship_offers(id);
 
 
 --
@@ -3058,6 +3193,14 @@ ALTER TABLE ONLY public.email_whitelists
 
 
 --
+-- Name: users_search_histories fk_rails_9338fd3660; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users_search_histories
+    ADD CONSTRAINT fk_rails_9338fd3660 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: internship_applications fk_rails_93579c3ede; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3143,6 +3286,14 @@ ALTER TABLE ONLY public.active_storage_attachments
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT fk_rails_d23d91f0e6 FOREIGN KEY (class_room_id) REFERENCES public.class_rooms(id);
+
+
+--
+-- Name: users_internship_offers_histories fk_rails_da8186a772; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users_internship_offers_histories
+    ADD CONSTRAINT fk_rails_da8186a772 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -3492,6 +3643,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230816221101'),
 ('20230818072958'),
 ('20230828084430'),
-('20231011094938');
+('20230915094313'),
+('20230915131604'),
+('20231011094938'),
+('20231019200634'),
+('20231030141148');
 
 
