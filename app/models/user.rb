@@ -256,7 +256,7 @@ class User < ApplicationRecord
   def team_members ; User.none end
 
   def just_created?
-    self.created_at > 3.seconds.ago
+    self.created_at < Time.now  + 3.seconds
   end
 
   def presenter
