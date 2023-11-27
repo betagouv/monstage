@@ -1,5 +1,10 @@
 = render layout: 'layouts/dashboards_with_menu' do
   - selected_tab = params[:tab] || 'received!'
+  - if current_user.employer_like?
+    .d-flex
+      .fr-alert.fr-alert--warning
+        h3.text-dark Délai de réponse aux élèves
+        p Le délai de traitement des candidatures des élèves a été réduit à 15 jours . Au delà de ce délai, la candidature sera annulée et vous ne pourrez plus y répondre.
   .d-flex.justify-content-between
     h2.h4.fr-mr-2w.fr-mt-7w.text-dark Les candidatures
     .menu-ladder
