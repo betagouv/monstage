@@ -67,10 +67,10 @@ FactoryBot.define do
 
     trait :api_internship_offer do
       weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
-      employer { create(:user_operator) }
       permalink { 'https://google.fr' }
       description { 'Lorem ipsum dolor api' }
       sequence(:remote_id) { |n| n }
+      internship_offer_area { employer.current_area }
     end
 
     trait :last_year_weekly_internship_offer do
