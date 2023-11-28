@@ -5,20 +5,20 @@
   p style=p_styles
     | Vous êtes maintenant 
     = @resource.presenter.genred('prêt')
-    = " à trouver votre stage de troisieme."
+    = " à trouver votre stage de troisième."
     br /
     | Pour commencer, cliquez sur le bouton ci-dessous.
 
   = render( partial: "mailers/blue_call_to_action",
             locals: {href: "#{ENV['HOST']}#{@resource.after_sign_in_path}", label:"Trouver un stage"})
   p style=p_styles
-    | Si vous avez des questions ou rencontrez des problèmes, n'hésitez pas àn ous contacter via le chat en direct sur notre site web ou par e-mail à support@monstagedetroisieme.fr
+    | Si vous avez des questions ou rencontrez des problèmes, n'hésitez pas à nous contacter via le chat en direct sur notre site web ou par e-mail à support@monstagedetroisieme.fr
 - else
   p style=head_styles
     | Plus qu'une étape...
   p style=p_styles
     | Bienvenue
-    = " #{@resource.presenter.formal_name}, "
+    = " #{@resource.presenter.formal_name} "
     br /
     | Votre compte a bien été enregistré !
     br /

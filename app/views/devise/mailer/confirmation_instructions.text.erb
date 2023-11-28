@@ -1,9 +1,9 @@
 <% if @resource.student? %>
   <%= "#{@resource.presenter.formal_name}, "%>
 
-  Bienvenue Monstagedetroisieme.fr !
+  Bienvenue à Monstagedetroisieme.fr !
 
-  Vous êtes maintenant <%=@resource.presenter.genred('prêt')%> à trouver votre stage de troisieme.
+  Vous êtes maintenant <%=@resource.presenter.genred('prêt')%> à trouver votre stage de troisième.
   Pour commencer, cliquez sur le lien ci-après pour faire une recherche de stage :
 
   <%="#{ENV['HOST']}#{@resource.after_sign_in_path}" %>
