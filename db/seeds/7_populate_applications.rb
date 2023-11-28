@@ -161,7 +161,7 @@ def populate_applications
     approved_at: 20.days.ago,
     student: students[5],
     motivation: 'Très moyennement motivé pour ce stage, je vous préviens',
-    internship_offer: offers.fourth,
+    internship_offer: offers[6],
     week: offers[6].internship_offer_weeks.last(4).first.week
   )
   #-----------------
