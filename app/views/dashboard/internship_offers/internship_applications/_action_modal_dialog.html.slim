@@ -23,7 +23,7 @@
               - unless subtitle.blank?
                 .pb-2.h6.text-dark
                   = subtitle
-              - if defined?(info_notice_title)
+              - if defined?(info_notice_title) && info_notice_title.present?
                 .fr-alert.fr-alert--info
                   h3.fr-alert__title = info_notice_title
                   p = info_notice_message

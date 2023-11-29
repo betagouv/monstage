@@ -265,20 +265,6 @@ cat infra/dev/ssh/config >> ~/.ssh/config
 
 ### hotfix
 
-Si la PR n'est pas encore fusionnée avec quoi que ce soit :
-
-
-* git checkout master
-* git pull
-* git merge <branch_name (PR)>
-* git push
-* Release on production with ```./infra/production/deploy.sh```
-* git checkout staging
-* git merge master
-* git push
-
-Sinon
-
 * git checkout master
 * git pull
 * git cherry-pick <commit_nr Hotfix-PR-branch> (* : as many commits as necessary)

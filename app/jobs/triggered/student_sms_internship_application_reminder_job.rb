@@ -18,7 +18,7 @@ module Triggered
           host: ENV['HOST']
         )
 
-        url = UrlShrinker.short_url(url: url, user_id: student.id)
+        url = internship_application.short_target_url(internship_application)
 
         notify(student: student, application_id: internship_application.id, url: url, phone: phone)
       else
