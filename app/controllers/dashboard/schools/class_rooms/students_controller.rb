@@ -47,7 +47,6 @@ module Dashboard
           :phone,
           :birth_date,
           :gender,
-          :handicap,
           :class_room_id,
           :school_id
         )

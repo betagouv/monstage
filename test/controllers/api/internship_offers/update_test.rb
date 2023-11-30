@@ -126,7 +126,8 @@ module Api
               weeks: week_params,
               max_candidates: 2,
               published_at: nil,
-              is_public: true
+              is_public: true,
+              handicap_accessible: true
             }
           }
         )
@@ -139,6 +140,7 @@ module Api
       assert_equal 2, @internship_offer.max_candidates
       assert_equal JSON.parse(@internship_offer.to_json), json_response
       assert @internship_offer.reload.is_public
+      assert @internship_offer.reload.handicap_accessible
     end
 
     test 'PATCH #update as operator unpublish/republish internship_offers' do
