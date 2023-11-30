@@ -88,8 +88,8 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.text premises_organisation_name_text
     # TODO clarify this difference between premises_organisation_name_text & organisation_name_text
     @pdf.move_down 10
-    organisation_name_text = "Raison sociale : #{enc internship_offer.employer_name}"
-    @pdf.text enc organisation_name_text
+    organisation_name_text = "Raison sociale : #{internship_offer.employer_name}"
+    @pdf.text organisation_name_text
     @pdf.move_down 2
     @pdf.text "Domaine d'activité : #{internship_offer.sector.name}"
     @pdf.move_down 2
@@ -100,8 +100,8 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.text "Adresse : #{internship_offer.street}, " \
               "#{internship_offer.zipcode} #{internship_offer.city}"
     @pdf.move_down 10
-    @pdf.text "Représenté(e) par (nom et prénom) : " \
-              "#{enc @internship_agreement.organisation_representative_full_name} "
+    @pdf.text enc "Représenté(e) par (nom et prénom) : " \
+              "#{@internship_agreement.organisation_representative_full_name} "
     @pdf.move_down 2
     @pdf.text "Fonction : #{enc @internship_agreement.organisation_representative_role} "
     @pdf.move_down 2
@@ -110,7 +110,7 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.text "Téléphone : #{internship_offer.employer.phone} "
     @pdf.move_down 10
     @pdf.text "Référent en charge de l’élève au sein de la structure d’accueil" \
-              " (nom et prénom) : #{enc @internship_agreement.tutor_full_name} "
+              " (nom et prénom) : #{@internship_agreement.tutor_full_name} "
     @pdf.move_down 2
     @pdf.text "Fonction : #{enc @internship_agreement.tutor_role} "
     @pdf.move_down 2
@@ -127,15 +127,15 @@ class GenerateInternshipAgreement < Prawn::Document
 
     @pdf.text "Nom de l'établissement : #{student.school.name} "
     @pdf.move_down 2
-    @pdf.text "Adresse : #{enc student.school.presenter.address} "
+    @pdf.text "Adresse : #{student.school.presenter.address} "
     @pdf.move_down 10
-    @pdf.text "Représenté par  : #{enc @internship_agreement.school_representative_full_name} "
+    @pdf.text enc "Représenté par  : #{@internship_agreement.school_representative_full_name} "
     @pdf.move_down 2
-    @pdf.text "Fonction  : #{enc @internship_agreement.school_representative_role} "
+    @pdf.text enc "Fonction  : #{@internship_agreement.school_representative_role} "
     @pdf.move_down 2
-    @pdf.text "Courriel  : #{enc dotting student.school.school_manager.email} "
+    @pdf.text "Courriel  : #{dotting student.school.school_manager.email} "
     @pdf.move_down 2
-    @pdf.text "N° de téléphone  : #{enc dotting(student.school.school_manager&.phone)} "
+    @pdf.text "N° de téléphone  : #{dotting student.school.school_manager&.phone} "
 
     @pdf.move_down 20
   end
@@ -149,7 +149,7 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.move_down 2
     @pdf.text "Date de naissance : #{student.presenter.birth_date} "
     @pdf.move_down 2
-    @pdf.text "Adresse personnelle : #{enc dotting(@internship_agreement.student_address, 75)}"
+    @pdf.text enc "Adresse personnelle : #{dotting(@internship_agreement.student_address, 75)}"
     @pdf.move_down 2
     @pdf.text "Courriel : #{student.email} "
     @pdf.move_down 2
@@ -158,18 +158,18 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.text "Classe : #{dotting student&.class_room&.name}"
     @pdf.move_down 10
     @pdf.text "Représentant légal (ou personne responsable) n°1 (nom et prénom) :" \
-              "#{enc @internship_agreement.student_legal_representative_full_name} "
+              "#{@internship_agreement.student_legal_representative_full_name} "
     @pdf.move_down 2
     @pdf.text "Courriel : #{@internship_agreement.student_legal_representative_email} "
     @pdf.move_down 2
-    @pdf.text "Téléphone : #{enc @internship_agreement.student_legal_representative_phone} "
+    @pdf.text "Téléphone : #{@internship_agreement.student_legal_representative_phone} "
     @pdf.move_down 10
     @pdf.text "Le cas échéant, représentant légal n°2 (nom et prénom) : " \
-              "#{enc dotting(@internship_agreement.student_legal_representative_2_full_name,  70)} "
+              "#{dotting(@internship_agreement.student_legal_representative_2_full_name,  70)} "
     @pdf.move_down 7
     @pdf.text "Courriel : #{dotting(@internship_agreement.student_legal_representative_2_email,  70)} "
     @pdf.move_down 7
-    @pdf.text "Téléphone : #{enc dotting(@internship_agreement.student_legal_representative_2_phone,  70)} "
+    @pdf.text "Téléphone : #{dotting(@internship_agreement.student_legal_representative_2_phone,  70)} "
 
     @pdf.move_down 20
 
