@@ -135,7 +135,7 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.move_down 2
     @pdf.text "Courriel  : #{dotting student.school.school_manager.email} "
     @pdf.move_down 2
-    @pdf.text "N° de téléphone  : #{dotting student.school.school_manager&.phone} "
+    @pdf.text "N° de téléphone  : #{dotting @internship_agreement.school_representative_phone} "
 
     @pdf.move_down 20
   end
