@@ -5,6 +5,7 @@ require 'sti_preload'
 class InternshipApplication < ApplicationRecord
   include StiPreload
   include AASM
+  include Rails.application.routes.url_helpers
   PAGE_SIZE = 10
   EXPIRATION_DURATION = 15.days
   EXTENDED_DURATION = 15.days
@@ -322,8 +323,8 @@ class InternshipApplication < ApplicationRecord
     end
     if student.phone.present? && !Rails.env.development?
       sms_message = "Monstagedetroisieme.fr : Votre candidature a " \
-                    "été acceptée ! Consultez-la ici : #{short_target_url(self)}"
-      SendSmsJob.perform_later(
+                    "été acceptée ! Consultez-la ici : #{short_target_url}"
+      SendSmsStudentValidatedApplicationJob.perform_later(
         user: student,
         message: sms_message
       )
@@ -396,31 +397,25 @@ class InternshipApplication < ApplicationRecord
     self.save
   end
 
-  def short_target_url(application)
-    target = Rails.application
-                  .routes
-                  .url_helpers
-                  .dashboard_students_internship_application_url(
-                    application.student.id,
-                    application.id,
-                    Rails.configuration.action_mailer.default_url_options
-                  )
-    UrlShrinker.short_url(url: target, user_id: application.student.id)
+  def short_target_url(sgid = nil)
+    options = Rails.configuration.action_mailer.default_url_options
+    options.merge!(sgid: sgid) if sgid
+    target = dashboard_students_internship_application_url(
+               student.id,
+               id,
+               **options
+             )
+
+    Rails.logger.info("**************************")
+    Rails.logger.info "sgid_short_url target : #{target}"
+    Rails.logger.info("**************************")
+
+    UrlShrinker.short_url(url: target, user_id: student.id)
   end
 
   def sgid_short_url
     sgid = student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY).to_s
-
-    url = Rails.application
-        .routes
-        .url_helpers
-        .dashboard_students_internship_application_url(
-          student.id,
-          id,
-          sgid: sgid,
-          host: ENV['HOST'])
-
-    UrlShrinker.short_url(url: url, user_id: student.id)
+    short_target_url(sgid)
   end
 
   # Used for prettier links in rails_admin
