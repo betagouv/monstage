@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
+require 'sti_preload'
 class PracticalInfo < ApplicationRecord
   include StepperProxy::PracticalInfo
+  include StiPreload
 
   # for ACL
   belongs_to :employer, class_name: 'User'

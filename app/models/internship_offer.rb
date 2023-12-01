@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "sti_preload"
 class InternshipOffer < ApplicationRecord
   PAGE_SIZE = 30
   EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
@@ -7,6 +8,7 @@ class InternshipOffer < ApplicationRecord
   TITLE_MAX_CHAR_COUNT = 150
   DESCRIPTION_MAX_CHAR_COUNT= 500
 
+  include StiPreload #TODO : remove this
   include AASM
 
   # queries

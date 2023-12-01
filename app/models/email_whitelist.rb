@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
+require "sti_preload"
 
 class EmailWhitelist < ApplicationRecord
+  include StiPreload
   before_validation :email_downcase
   after_create :notify_account_ready,  if: :user_does_not_exist?
   after_destroy :discard_user

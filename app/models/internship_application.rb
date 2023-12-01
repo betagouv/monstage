@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 # application from student to internship_offer ; linked with weeks
+require 'sti_preload'
 class InternshipApplication < ApplicationRecord
+  include StiPreload
   include AASM
   PAGE_SIZE = 10
   EXPIRATION_DURATION = 15.days

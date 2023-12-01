@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
+require 'sti_preload'
 class User < ApplicationRecord
 
+  include StiPreload
   include Discard::Model
   include UserAdmin
   include ActiveModel::Dirty

@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
+require 'sti_preload'
 class HostingInfo < ApplicationRecord
   include StepperProxy::HostingInfo
+  include StiPreload
 
   # for ACL
   belongs_to :employer, class_name: 'User'
