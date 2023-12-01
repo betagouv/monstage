@@ -299,7 +299,7 @@ class InternshipApplication < ApplicationRecord
   end
 
   def self.rejected_states
-    %w[rejected canceled_by_employer canceled_by_student]
+    %w[rejected canceled_by_employer canceled_by_student canceled_by_student_confirmation]
   end
 
   def self.approved_states
