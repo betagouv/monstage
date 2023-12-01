@@ -1,10 +1,10 @@
 - if @resource.student?
   p style=head_styles
     |Bienvenue sur Monstagedetroisieme.fr
-    = " #{@resource.presenter.formal_name}, "
+    = " #{@resource.presenter.formal_name}"
   p style=p_styles
     | Vous êtes maintenant 
-    = @resource.presenter.genred('prêt')
+    = @resource.presenter.genred(' prêt')
     = " à trouver votre stage de troisième."
     br /
     | Pour commencer, cliquez sur le bouton ci-dessous.
