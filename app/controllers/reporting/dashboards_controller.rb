@@ -6,6 +6,7 @@ module Reporting
     def index
       authorize! :index, Acl::Reporting.new(user: current_user, params: params)
       authorize! :see_reporting_dashboard, current_user
+      clean_params
       @iframe = metabase_iframe if can?(:see_dashboard_department_summary, current_user) || can?(:see_ministry_dashboard, current_user)
       @last_db_update = last_db_update
 
@@ -56,6 +57,10 @@ module Reporting
       minutes = now.min % 10
       seconds = now.sec
       (now - minutes.minutes - seconds.seconds).strftime("%d/%m/%Y à %H:%M")
+    end
+
+    def clean_params
+      params.delete(:department) if params[:department].blank?
     end
   end
 end
