@@ -21,14 +21,14 @@ module Dashboard
       def show
         if params[:sgid].present? && magic_fetch_student&.student? && magic_fetch_student.id == @current_student.id
           @internship_application.update(magic_link_tracker: 1)
-          @internship_application_sgid= @internship_application.to_sgid(expires_in: 20.seconds).to_s
-          render 'dashboard/students/internship_applications/_making_decisions' and return
+          @internship_application_sgid= @internship_application.to_sgid(expires_in: 20.minutes).to_s
+          render 'dashboard/students/internship_applications/making_decisions' and return
         elsif params[:sgid].present?
           @internship_application.update(magic_link_tracker: 2)
           redirect_to(dashboard_students_internship_application_path(
                         student_id: @current_student.id,
-                        id: @internship_application.id
-          )) and return
+                        id: @internship_application.id)
+          ) and return
         else
            authenticate_user!
         end

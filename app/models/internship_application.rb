@@ -9,7 +9,7 @@ class InternshipApplication < ApplicationRecord
   PAGE_SIZE = 10
   EXPIRATION_DURATION = 15.days
   EXTENDED_DURATION = 15.days
-  MAGIC_LINK_EXPIRATION_DELAY = 50.days
+  MAGIC_LINK_EXPIRATION_DELAY = 5.days
 
   attr_accessor :sgid
 
@@ -187,7 +187,9 @@ class InternshipApplication < ApplicationRecord
       transitions from: %i[read_by_employer submitted examined cancel_by_employer rejected],
                   to: :validated_by_employer,
                   after: proc { |*_args|
-                    update!("validated_by_employer_at": Time.now.utc)
+                    update!("validated_by_employer_at": Time.now.utc, aasm_state: :validated_by_employer)
+                    self.reload
+                    raise 'boom' unless self.validated_by_employer?
                     after_employer_validation_notifications
                   }
     end
@@ -311,24 +313,17 @@ class InternshipApplication < ApplicationRecord
   end
 
   def after_employer_validation_notifications
-    if type == "InternshipApplications::WeeklyFramed" && student.main_teacher.present?
-      deliver_later_with_additional_delay do
-        MainTeacherMailer.internship_application_validated_by_employer_email(self)
-      end
-    end
-    if student.email.present?
-      deliver_later_with_additional_delay do
-        StudentMailer.internship_application_validated_by_employer_email(internship_application: self)
-      end
-    end
-    if student.phone.present? && !Rails.env.development?
-      sms_message = "Monstagedetroisieme.fr : Votre candidature a " \
-                    "été acceptée ! Consultez-la ici : #{short_target_url}"
-      SendSmsStudentValidatedApplicationJob.perform_later(
-        user: student,
-        message: sms_message
-      )
-    end
+    # if type == "InternshipApplications::WeeklyFramed" && student.main_teacher.present?
+    #   deliver_later_with_additional_delay do
+    #     MainTeacherMailer.internship_application_validated_by_employer_email(self)
+    #   end
+    # end
+    # if student.email.present?
+    #   deliver_later_with_additional_delay do
+    #     StudentMailer.internship_application_validated_by_employer_email(internship_application: self)
+    #   end
+    # end
+    SendSmsStudentValidatedApplicationJob.perform_later(internship_application_id: id)
   end
 
   def generate_token
@@ -399,22 +394,37 @@ class InternshipApplication < ApplicationRecord
 
   def short_target_url(sgid = nil)
     options = Rails.configuration.action_mailer.default_url_options
-    options.merge!(sgid: sgid) if sgid
     target = dashboard_students_internship_application_url(
-               student.id,
-               id,
-               **options
+                student_id: student.id,
+                id: id,
+                **options
              )
+    if sgid
+      target = "#{target}?sgid=#{sgid}&student_id=#{student.id}"
+    else 
+      target = "#{target}?student_id=#{student.id}"
+    end
 
-    Rails.logger.info("**************************")
-    Rails.logger.info "sgid_short_url target : #{target}"
-    Rails.logger.info("**************************")
-
-    UrlShrinker.short_url(url: target, user_id: student.id)
+    puts '================'
+    puts "id : #{id}"
+    puts "target : #{target}"
+    puts '================'
+    puts ''
+    
+    shrinked_url = UrlShrinker.short_url(url: target, user_id: student.id)
+    puts '================'
+    puts "shrinked_url : #{shrinked_url}"
+    puts '================'
+    puts ''
+    shrinked_url
   end
 
   def sgid_short_url
     sgid = student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY).to_s
+    puts '================'
+    puts "sgid : #{sgid}"
+    puts '================'
+    puts ''
     short_target_url(sgid)
   end
 
