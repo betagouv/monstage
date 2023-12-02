@@ -313,16 +313,16 @@ class InternshipApplication < ApplicationRecord
   end
 
   def after_employer_validation_notifications
-    # if type == "InternshipApplications::WeeklyFramed" && student.main_teacher.present?
-    #   deliver_later_with_additional_delay do
-    #     MainTeacherMailer.internship_application_validated_by_employer_email(self)
-    #   end
-    # end
-    # if student.email.present?
-    #   deliver_later_with_additional_delay do
-    #     StudentMailer.internship_application_validated_by_employer_email(internship_application: self)
-    #   end
-    # end
+    if type == "InternshipApplications::WeeklyFramed" && student.main_teacher.present?
+      deliver_later_with_additional_delay do
+        MainTeacherMailer.internship_application_validated_by_employer_email(self)
+      end
+    end
+    if student.email.present?
+      deliver_later_with_additional_delay do
+        StudentMailer.internship_application_validated_by_employer_email(internship_application: self)
+      end
+    end
     SendSmsStudentValidatedApplicationJob.perform_later(internship_application_id: id)
   end
 
@@ -399,32 +399,13 @@ class InternshipApplication < ApplicationRecord
                 id: id,
                 **options
              )
-    if sgid
-      target = "#{target}?sgid=#{sgid}&student_id=#{student.id}"
-    else 
-      target = "#{target}?student_id=#{student.id}"
-    end
-
-    puts '================'
-    puts "id : #{id}"
-    puts "target : #{target}"
-    puts '================'
-    puts ''
-    
-    shrinked_url = UrlShrinker.short_url(url: target, user_id: student.id)
-    puts '================'
-    puts "shrinked_url : #{shrinked_url}"
-    puts '================'
-    puts ''
-    shrinked_url
+    target = "#{target}?student_id=#{student.id}"
+    target = "#{target}&sgid=#{sgid}" if sgid
+    UrlShrinker.short_url(url: target, user_id: student.id)
   end
 
   def sgid_short_url
     sgid = student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY).to_s
-    puts '================'
-    puts "sgid : #{sgid}"
-    puts '================'
-    puts ''
     short_target_url(sgid)
   end
 
