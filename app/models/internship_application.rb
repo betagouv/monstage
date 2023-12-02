@@ -189,7 +189,6 @@ class InternshipApplication < ApplicationRecord
                   after: proc { |*_args|
                     update!("validated_by_employer_at": Time.now.utc, aasm_state: :validated_by_employer)
                     self.reload
-                    raise 'boom' unless self.validated_by_employer?
                     after_employer_validation_notifications
                   }
     end
