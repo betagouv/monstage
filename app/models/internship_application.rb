@@ -189,7 +189,8 @@ class InternshipApplication < ApplicationRecord
                   after: proc { |*_args|
                     update!("validated_by_employer_at": Time.now.utc)
                     after_employer_validation_notifications
-                  }
+                    CancelValidatedInternshipApplicationJob.set(wait: 15.days).perform_later(internship_application_id: id)
+                  }        
     end
 
     event :approve do
@@ -255,7 +256,7 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :expire do
-      transitions from: %i[read_by_employer examined approved submitted drafted],
+      transitions from: %i[validated_by_employer read_by_employer examined approved submitted drafted],
                   to: :expired,
                   after: proc { |*_args|
         update!(expired_at: Time.now.utc)
