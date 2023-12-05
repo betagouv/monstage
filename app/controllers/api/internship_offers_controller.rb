@@ -68,6 +68,7 @@ module Api
               :max_candidates,
               :max_students_per_group,
               :is_public,
+              :handicap_accessible,
               coordinates: {},
               weeks: []
             )
@@ -90,6 +91,7 @@ module Api
               :max_students_per_group,
               :published_at,
               :is_public,
+              :handicap_accessible,
               coordinates: {},
               weeks: []
             )
@@ -127,7 +129,8 @@ module Api
           latitude: internship_offer.coordinates.latitude,
           longitude: internship_offer.coordinates.longitude,
           image: view_context.asset_pack_url("media/images/sectors/#{internship_offer.sector.cover}"),
-          sector: internship_offer.sector.name
+          sector: internship_offer.sector.name,
+          handicap_accessible: internship_offer.handicap_accessible,
         }
       }
     end

@@ -50,7 +50,6 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
             gender: 'np',
             email: 'fourcade.m@gmail.com',
             password: 'okokok',
-            handicap: 'cotorep',
             accept_terms: '1'
           }
         }
@@ -67,7 +66,6 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     assert_equal birth_date.day, created_student.birth_date.day
     assert_equal 'np', created_student.gender
     assert_equal 'fourcade.m@gmail.com', created_student.email
-    assert_equal 'cotorep', created_student.handicap
   end
 
   test 'sentry#1885447470, registration with no js/html5 fails gracefully' do
@@ -82,8 +80,6 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
               email: '',
               first_name: 'Jephthina' ,
               gender: 'f',
-              handicap: nil,
-              handicap_present: 0,
               last_name: "Théodore ",
               password: "[Filtered]",
               type: Users::Student.name
@@ -110,8 +106,6 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
             email: '',
             first_name: 'Jephthina',
             gender: 'f',
-            handicap: nil,
-            handicap_present: 0,
             last_name: "Théodore ",
             password: "[Filtered]",
             type: Users::Student.name

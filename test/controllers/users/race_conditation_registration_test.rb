@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class RaceCondidationRegistrationTest < ActionDispatch::IntegrationTest
+  # TODO remove this test
   setup do
     class ActiveRecord::Validations::UniquenessValidator
       alias saved_validate_each validate_each

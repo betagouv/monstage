@@ -9,7 +9,6 @@ import {
 
 export default class extends Controller {
   static targets = [
-    'handicapGroup',
     'emailHint',
     'emailExplanation',
     'emailInput',
@@ -58,11 +57,6 @@ export default class extends Controller {
       $(this.emailExplanationTarget).text(explanation);
     }
     $(this.labelTarget).text();
-  }
-
-  // show/hide handicap input if checkbox is checked
-  toggleHandicap() {
-    toggleElement($(this.handicapGroupTarget));
   }
 
   // check email address formatting on email input blur (14yo student, not always good with email)

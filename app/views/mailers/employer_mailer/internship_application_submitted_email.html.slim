@@ -4,11 +4,6 @@ p style=head_styles
 p style=p_styles
   = "Nous avons le plaisir de vous signifier que l'élève #{@internship_application.student.presenter.formal_name} vous a adressé une candidature."
 
-- if @internship_application.student.handicap.present?
-  p style=p_styles
-    | Besoin d'aménagement pour l'élève
-    = @internship_application.student.handicap
-
 = render(partial: "mailers/blue_call_to_action",
          locals: {href: dashboard_internship_offer_internship_application_url(internship_offer_id: @internship_application.internship_offer.id, id: @internship_application.id),
                   label:'Répondre à la candidature'})
