@@ -8,7 +8,7 @@ class SendSmsStudentValidatedApplicationJob < ApplicationJob
     url = internship_application.sgid_short_url
     phone = User.sanitize_mobile_phone_number(internship_application.student_phone, '+33')
 
-    unless phone.nil?
+    if phone.present?
       message = "Votre candidature pour le stage " \
                 "de #{internship_application.internship_offer.title} " \
                 "a été acceptée. Vous pouvez maintenant la confirmer " \
