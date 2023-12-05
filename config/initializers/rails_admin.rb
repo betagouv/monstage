@@ -28,8 +28,8 @@ class RailsAdmin::Config::Fields::Types::Json
   end
 end
 
-require Rails.root.join('lib', 'rails_admin', 'kpi.rb')
-require Rails.root.join('lib', 'rails_admin', 'switch_user.rb')
+require Rails.root.join('lib', 'rails_admin', 'config', 'actions', 'kpi.rb')
+require Rails.root.join('lib', 'rails_admin', 'config', 'actions', 'switch_user.rb')
 stats_path = "/reporting/dashboards?school_year=#{SchoolYear::Current.new.beginning_of_period.year}"
 
 RailsAdmin.config do |config|

@@ -13,7 +13,8 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
-  config.cache_classes = true
+  # config.cache_classes = true
+  config.enable_reloading = false
 
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
@@ -91,6 +92,7 @@ Rails.application.configure do
   config.action_mailer.show_previews = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default_url_options = { host: HOST }
+  config.action_mailer.preview_paths << "#{Rails.root}/lib/mailer_previews"
 
   # To choose port read https://help.heroku.com/IR3S6I5X/problem-in-sending-e-mails-through-smtp and then https://fr.mailjet.com/blog/news/port-smtp/
   # and https://stackoverflow.com/questions/26166032/rails-4-netreadtimeout-when-calling-actionmailer
