@@ -79,23 +79,6 @@ main#content[role="main"
                                 class: "font-weight-normal"
                       span.font-weight-normal
                         = " pour connaître les modalités d'utilisations de mes informations récoltées."
-                .fr-fieldset__element
-                  - error_tag  = errors.field_error_tag(resource_name: resource_name, resource: resource, field: :handicap_present)
-                  div class="fr-checkbox-group fr-mb-2v #{error_tag.present? ? 'fr-input-group--error' : ''}"
-                    = f.check_box :handicap_present, data: { action: "change->signup#toggleHandicap" }
-                    label.fr-label for="user_handicap_present"
-                      | J'aurai besoin d'une aide adaptée pendant mon stage, en raison de mon handicap.
-                      small.text-muted
-                        | (optionnel)
-                    = error_tag
-                .fr-fieldset__element 
-                  - error_tag  = errors.field_error_tag(resource_name: resource_name, resource: resource, field: :handicap)
-                  div [class="fr-checkbox-group fr-mb-2v #{error_tag.present? ? 'fr-input-group--error' : ''} #{resource.handicap_present ? '' : 'd-none'}"
-                       data-signup-target="handicapGroup"]
-                    label.fr-label for="user_handicap"
-                      | Indiquez ce dont vous avez besoin :
-                    = f.text_area :handicap, class: 'fr-input'
-                    = error_tag
 
                 .fr-fieldset__element.fr-pb-2w
                   .actions.text-right

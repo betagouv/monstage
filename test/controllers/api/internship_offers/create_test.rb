@@ -174,6 +174,7 @@ module Api
       assert_equal 2, internship_offer.remaining_seats_count
       assert_equal 'published', internship_offer.aasm_state
       assert internship_offer.is_public
+      assert_equal false, internship_offer.handicap_accessible
 
       assert_equal JSON.parse(internship_offer.to_json), json_response
     end
@@ -229,7 +230,8 @@ module Api
                 weeks: week_params,
                 remote_id: remote_id,
                 permalink: permalink,
-                max_candidates: 2
+                max_candidates: 2,
+                handicap_accessible: true
               }
             }
           )
@@ -243,6 +245,7 @@ module Api
       assert_equal coordinates[:latitude], internship_offer.coordinates.latitude
       assert_equal coordinates[:longitude], internship_offer.coordinates.longitude
       assert_equal JSON.parse(internship_offer.to_json), json_response
+      assert_equal true, internship_offer.handicap_accessible
     end  
 
     test 'POST #create as operator without max_candidates works and set up remaing_seats_count to 1' do

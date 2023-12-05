@@ -19,7 +19,7 @@ module Presenters
 
     def address
       if school.street.nil?
-        "#{'.' * 75}, #{school.zipcode} #{school.city}"
+        "#{'.' * 100}, #{school.zipcode} #{school.city}"
       else
         "#{school.street}, #{school.zipcode} #{school.city}"
       end
