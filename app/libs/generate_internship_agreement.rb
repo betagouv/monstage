@@ -39,6 +39,7 @@ class GenerateInternshipAgreement < Prawn::Document
     article_8
     article_9
     article_10
+    article_bonus
     signatures
     (0..2).each do |slice|
       signature_table_header(slice: slice)
@@ -389,6 +390,13 @@ class GenerateInternshipAgreement < Prawn::Document
       "au sein de l’organisme d’accueil.")
   end
 
+  def article_bonus
+    return unless @internship_agreement.student.school.agreement_conditions_rich_text.present?
+    headering("Article 11")
+    html_formating "<div style=''>#{@internship_agreement.student.school.agreement_conditions_rich_text.body.html_safe}</div>"
+    @pdf.move_down 30
+  end
+  
   def signatures
     @pdf.text "Fait en trois exemplaires à #{@internship_agreement.school_manager.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
 
