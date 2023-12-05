@@ -113,9 +113,10 @@ class EmployerMailer < ApplicationMailer
       token: @internship_application.access_token
     ).html_safe
 
-    mail(
+    send_email(
       to: email,
-      subject: 'Nouvelle candidature'
+      cc: @employer.email,
+      subject: "Transfert d'une candidature à un stage de 3e"
     )
   end
 
