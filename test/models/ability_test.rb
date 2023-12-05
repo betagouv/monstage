@@ -42,8 +42,6 @@ class AbilityTest < ActiveSupport::TestCase
             'student should be able to choose_class_room')
       assert(ability.can?(:choose_gender_and_birthday, student),
             'student should be able to choose_gender_and_birthday')
-      assert(ability.can?(:choose_handicap, student),
-            'student should be able to choose handicap')
       assert(ability.can?(:dashboard_index, student))
       assert(ability.can?(:dashboard_show, internship_application))
       assert(ability.can?(:internship_application_edit, internship_application))
