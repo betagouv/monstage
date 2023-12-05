@@ -155,7 +155,7 @@ module Api
       assert_nil @internship_offer.reload.published_at
       refute @internship_offer.published?
 
-      new_publication_date = Time.now.utc.iso8601(0)
+      new_publication_date = Time.now.utc
       patch api_internship_offer_path(
         id: @internship_offer.remote_id,
         params: {

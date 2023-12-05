@@ -1565,6 +1565,40 @@ ALTER SEQUENCE public.tutors_id_seq OWNED BY public.tutors.id;
 
 
 --
+-- Name: url_shrinkers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.url_shrinkers (
+    id bigint NOT NULL,
+    original_url character varying,
+    url_token character varying,
+    click_count integer DEFAULT 0,
+    user_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: url_shrinkers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.url_shrinkers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: url_shrinkers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.url_shrinkers_id_seq OWNED BY public.url_shrinkers.id;
+
+
+--
 -- Name: user_groups; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2015,6 +2049,13 @@ ALTER TABLE ONLY public.tutors ALTER COLUMN id SET DEFAULT nextval('public.tutor
 
 
 --
+-- Name: url_shrinkers id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.url_shrinkers ALTER COLUMN id SET DEFAULT nextval('public.url_shrinkers_id_seq'::regclass);
+
+
+--
 -- Name: user_groups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2335,6 +2376,14 @@ ALTER TABLE ONLY public.team_member_invitations
 
 ALTER TABLE ONLY public.tutors
     ADD CONSTRAINT tutors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: url_shrinkers url_shrinkers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.url_shrinkers
+    ADD CONSTRAINT url_shrinkers_pkey PRIMARY KEY (id);
 
 
 --
@@ -2854,6 +2903,13 @@ CREATE INDEX index_team_member_invitations_on_member_id ON public.team_member_in
 
 
 --
+-- Name: index_url_shrinkers_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_url_shrinkers_on_user_id ON public.url_shrinkers USING btree (user_id);
+
+
+--
 -- Name: index_user_groups_on_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3022,6 +3078,14 @@ ALTER TABLE ONLY public.school_internship_weeks
 
 ALTER TABLE ONLY public.hosting_info_weeks
     ADD CONSTRAINT fk_rails_0ab0d03d1c FOREIGN KEY (week_id) REFERENCES public.weeks(id);
+
+
+--
+-- Name: url_shrinkers fk_rails_15905c8f80; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.url_shrinkers
+    ADD CONSTRAINT fk_rails_15905c8f80 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -3647,6 +3711,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230915131604'),
 ('20231011094938'),
 ('20231019200634'),
-('20231030141148');
+('20231030141148'),
+('20231104093416');
 
 

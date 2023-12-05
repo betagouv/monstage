@@ -99,6 +99,7 @@ class InternshipAgreement < ApplicationRecord
                   to: :started_by_school_manager
     end
 
+    # validate is a reserved keyword and finalize is used instead
     event :finalize do
       transitions from: %i[completed_by_employer started_by_school_manager],
                   to: :validated,

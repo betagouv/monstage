@@ -9,6 +9,7 @@ class User < ApplicationRecord
   include ActiveModel::Dirty
 
   has_many :favorites
+  has_many :url_shrinkers
 
   attr_accessor :phone_prefix, :phone_suffix, :statistician_type
 
@@ -166,6 +167,25 @@ class User < ApplicationRecord
     return if phone.blank?
 
     phone[0..4].gsub('0', '') + phone[5..]
+  end
+
+  def self.sanitize_mobile_phone_number(number, prefix = '')
+    return if number.blank?
+
+    thin_number = number.gsub(/[\s|;\,\.\:]/, '')
+    if thin_number.match?(/\A\+330[6|7]\d{8}\z/)
+      "#{prefix}#{thin_number[3..]}"
+    elsif thin_number.match?(/\A\+33[6|7]\d{8}\z/)
+      "#{prefix}0#{thin_number[3..]}"
+    elsif thin_number.match?(/\A33[6|7]\d{8}\z/)
+      "#{prefix}0#{thin_number[2..]}"
+    elsif thin_number.match?(/\A330[6|7]\d{8}\z/)
+      "#{prefix}#{thin_number[2..]}"
+    elsif thin_number.match?(/\A0[6|7]\d{8}\z/)
+      "#{prefix}#{thin_number}"
+    else
+      nil
+    end
   end
 
   def send_sms_token
