@@ -238,4 +238,30 @@ class UserTest < ActiveSupport::TestCase
     phone = user[:phone]
     assert_nil user.formatted_phone
   end
+
+  test '.sanitize_mobile_phone_number' do
+    prefix = '+33'
+    number = '+33 6 12 34 56 78'
+    assert_equal '+330612345678', User.sanitize_mobile_phone_number(number, prefix)
+    number = '+33 06.  12 34 56 78'
+    assert_equal '+330612345678', User.sanitize_mobile_phone_number(number, prefix)
+    
+    prefix = ''
+    numbers = ['+33 06.  12 ..34    56 78',
+               '+33 6.  12 ..34    56 78',
+               '33 06.  12 ..34    56 78',
+               '33 6.  12 ..34    56 78',
+               '06.  12 ..34    56 78' ]
+    numbers.each do |number|
+      assert_equal '0612345678', User.sanitize_mobile_phone_number(number, prefix)
+    end
+    numbers = ['+33 2.  12 ..34    56 78',
+               '02.  12 ..34    56 78',
+               '06.  12 ..34    56 7',
+               '06.  12 ..34    56 78 9'
+              ]
+    numbers.each do |number|
+      assert_nil User.sanitize_mobile_phone_number(number, prefix)
+    end
+  end
 end
