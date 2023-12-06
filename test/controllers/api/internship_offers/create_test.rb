@@ -144,7 +144,9 @@ module Api
                 remote_id: remote_id,
                 permalink: permalink,
                 max_candidates: 2,
-                is_public: true
+                is_public: true,
+                lunch_break: 'Pause dej 12:00-14:00',
+                daily_hours: { "lundi":  ['8:30', '12:30'], "mardi": ['8:30', '12:30'], "mercredi": ['8:30', '12:30'], "jeudi": ['8:30', '12:30'], "vendredi": ['8:30', '12:30'] }
               }
             }
           )
@@ -175,6 +177,14 @@ module Api
       assert_equal 'published', internship_offer.aasm_state
       assert internship_offer.is_public
       assert_equal false, internship_offer.handicap_accessible
+      assert_equal 'Pause dej 12:00-14:00', internship_offer.lunch_break
+      assert_equal({ "lundi" =>  ['8:30', '12:30'], 
+               "mardi" => ['8:30', '12:30'], 
+               "mercredi" => ['8:30', '12:30'], 
+               "jeudi" => ['8:30', '12:30'], 
+               "vendredi" => ['8:30', '12:30'] }, 
+             internship_offer.daily_hours)
+
 
       assert_equal JSON.parse(internship_offer.to_json), json_response
     end
