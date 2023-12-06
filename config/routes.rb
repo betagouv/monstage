@@ -104,7 +104,7 @@ Rails.application.routes.draw do
         get '/information', to: 'schools#information', module: 'schools'
       end
 
-      resources :internship_offer_areas, path: 'espaces' do
+      resources :internship_offer_areas, path: 'espaces', except: %i[show] do
         get :filter_by_area, on: :member
         resources :area_notifications, path: 'notifications-d-espace', only: %i[edit update index], module: 'internship_offer_areas' do
           patch :flip , on: :member

@@ -31,8 +31,6 @@ class RaceCondidationRegistrationTest < ActionDispatch::IntegrationTest
           email: email,
           first_name: 'william',
           gender: 'm',
-          handicap: nil,
-          handicap_present: 0,
           last_name: 'pineau',
           password: 'okokok',
           school: {

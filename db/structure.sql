@@ -1085,7 +1085,8 @@ CREATE TABLE public.internship_offers (
     practical_info_id bigint,
     internship_offer_area_id bigint,
     lunch_break text,
-    contact_phone character varying(20)
+    contact_phone character varying(20),
+    handicap_accessible boolean DEFAULT false
 );
 
 
@@ -1427,6 +1428,39 @@ ALTER SEQUENCE public.sectors_id_seq OWNED BY public.sectors.id;
 
 
 --
+-- Name: sgid_mappings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sgid_mappings (
+    id bigint NOT NULL,
+    internship_application_id bigint NOT NULL,
+    sgid text,
+    short_sgid character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: sgid_mappings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sgid_mappings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sgid_mappings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sgid_mappings_id_seq OWNED BY public.sgid_mappings.id;
+
+
+--
 -- Name: signatures; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1749,7 +1783,7 @@ ALTER SEQUENCE public.users_internship_offers_histories_id_seq OWNED BY public.u
 CREATE TABLE public.users_search_histories (
     id bigint NOT NULL,
     user_id bigint NOT NULL,
-    keywords character varying(255),
+    keywords character varying,
     latitude double precision,
     longitude double precision,
     city character varying,
@@ -2019,6 +2053,13 @@ ALTER TABLE ONLY public.schools ALTER COLUMN id SET DEFAULT nextval('public.scho
 --
 
 ALTER TABLE ONLY public.sectors ALTER COLUMN id SET DEFAULT nextval('public.sectors_id_seq'::regclass);
+
+
+--
+-- Name: sgid_mappings id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sgid_mappings ALTER COLUMN id SET DEFAULT nextval('public.sgid_mappings_id_seq'::regclass);
 
 
 --
@@ -2345,6 +2386,14 @@ ALTER TABLE ONLY public.schools
 
 ALTER TABLE ONLY public.sectors
     ADD CONSTRAINT sectors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sgid_mappings sgid_mappings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sgid_mappings
+    ADD CONSTRAINT sgid_mappings_pkey PRIMARY KEY (id);
 
 
 --
@@ -2876,6 +2925,13 @@ CREATE INDEX index_schools_on_coordinates ON public.schools USING gist (coordina
 
 
 --
+-- Name: index_sgid_mappings_on_internship_application_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sgid_mappings_on_internship_application_id ON public.sgid_mappings USING btree (internship_application_id);
+
+
+--
 -- Name: index_signatures_on_internship_agreement_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3231,6 +3287,14 @@ ALTER TABLE ONLY public.internship_applications
 
 ALTER TABLE ONLY public.internship_offers
     ADD CONSTRAINT fk_rails_77a64a8062 FOREIGN KEY (school_id) REFERENCES public.schools(id);
+
+
+--
+-- Name: sgid_mappings fk_rails_7a08ac1182; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sgid_mappings
+    ADD CONSTRAINT fk_rails_7a08ac1182 FOREIGN KEY (internship_application_id) REFERENCES public.internship_applications(id);
 
 
 --
@@ -3710,11 +3774,13 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230828084430'),
 ('20230915094313'),
 ('20230915131604'),
+('20231003101628'),
 ('20231011094938'),
 ('20231019200634'),
 ('20231030141148'),
 ('20231104093416'),
 ('20231124105509'),
+('20231130102047'),
 ('20231204104224');
 
 

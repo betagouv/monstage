@@ -23,8 +23,7 @@ class UserTest < ActiveSupport::TestCase
     student = create(:student, email: 'test@test.com', first_name: 'Toto', last_name: 'Tata',
                                current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1', birth_date: '01/01/2000',
                                gender: 'm', class_room_id: class_room.id,
-                               resume_other: 'chocolat', resume_languages: 'FR', phone: '+330600110011',
-                               handicap: 'malvoyant')
+                               resume_other: 'chocolat', resume_languages: 'FR', phone: '+330600110011')
     internship_application = create(
       :weekly_internship_application,
       student: student,
@@ -56,7 +55,6 @@ class UserTest < ActiveSupport::TestCase
     assert_nil student.class_room_id
     assert_not_equal 'chocolat', student.resume_other
     assert_not_equal 'chocolat', student.resume_languages
-    assert_not_equal 'malvoyant', student.handicap
     assert_not_equal '+330600110011', student.phone
     assert student.anonymized
   end
@@ -67,8 +65,7 @@ class UserTest < ActiveSupport::TestCase
     student = create(:student, email: '', first_name: 'Toto', last_name: 'Tata',
                                current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1', birth_date: '01/01/2000',
                                gender: 'm', class_room_id: class_room.id,
-                               resume_other: 'chocolat', resume_languages: 'FR', phone: '+330600110011',
-                               handicap: 'malvoyant')
+                               resume_other: 'chocolat', resume_languages: 'FR', phone: '+330600110011')
 
     assert_enqueued_jobs 0 do
       student.anonymize
@@ -85,7 +82,6 @@ class UserTest < ActiveSupport::TestCase
     assert_not_equal '01/01/2000', student.birth_date
     assert_not_equal 'chocolat', student.resume_other
     assert_not_equal 'chocolat', student.resume_languages
-    assert_not_equal 'malvoyant', student.handicap
     assert_not_equal '+330600110011', student.phone
     assert student.anonymized
   end
@@ -96,8 +92,7 @@ class UserTest < ActiveSupport::TestCase
     student = create(:student, email: 'test@test.com', first_name: 'Toto', last_name: 'Tata',
                                current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1', birth_date: '01/01/2000',
                                gender: 'm', class_room_id: class_room.id,
-                               resume_other: 'chocolat', resume_languages: 'FR', phone: '+330600110011',
-                               handicap: 'malvoyant')
+                               resume_other: 'chocolat', resume_languages: 'FR', phone: '+330600110011')
 
     assert_enqueued_jobs 0, only: AnonymizeUserJob do
       student.archive
@@ -237,5 +232,31 @@ class UserTest < ActiveSupport::TestCase
     user = build(:student, phone: '')
     phone = user[:phone]
     assert_nil user.formatted_phone
+  end
+
+  test '.sanitize_mobile_phone_number' do
+    prefix = '+33'
+    number = '+33 6 12 34 56 78'
+    assert_equal '+330612345678', User.sanitize_mobile_phone_number(number, prefix)
+    number = '+33 06.  12 34 56 78'
+    assert_equal '+330612345678', User.sanitize_mobile_phone_number(number, prefix)
+    
+    prefix = ''
+    numbers = ['+33 06.  12 ..34    56 78',
+               '+33 6.  12 ..34    56 78',
+               '33 06.  12 ..34    56 78',
+               '33 6.  12 ..34    56 78',
+               '06.  12 ..34    56 78' ]
+    numbers.each do |number|
+      assert_equal '0612345678', User.sanitize_mobile_phone_number(number, prefix)
+    end
+    numbers = ['+33 2.  12 ..34    56 78',
+               '02.  12 ..34    56 78',
+               '06.  12 ..34    56 7',
+               '06.  12 ..34    56 78 9'
+              ]
+    numbers.each do |number|
+      assert_nil User.sanitize_mobile_phone_number(number, prefix)
+    end
   end
 end

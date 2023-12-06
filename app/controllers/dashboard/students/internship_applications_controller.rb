@@ -8,6 +8,8 @@ module Dashboard
       before_action :set_current_student
       before_action :set_internship_application, except: %i[index]
 
+      MAGIC_EXPIRATION_TIME = 3.days
+
       def index
         authorize! :dashboard_index, @current_student
         @internship_applications = @current_student.internship_applications
@@ -15,20 +17,21 @@ module Dashboard
                                                    .order_by_aasm_state
       end
 
-      # 0 no magic link - status quo
+      # 0 no magic link - status quo - default value
       # 1 magic link successfully clicked
       # 2 magic link clicked but expired
       def show
         if params[:sgid].present? && magic_fetch_student&.student? && magic_fetch_student.id == @current_student.id
           @internship_application.update(magic_link_tracker: 1)
-          @internship_application_sgid= @internship_application.to_sgid(expires_in: 20.seconds).to_s
-          render 'dashboard/students/internship_applications/_making_decisions' and return
+          @internship_application_sgid= @internship_application.to_sgid(expires_in: MAGIC_EXPIRATION_TIME).to_s
+          render 'dashboard/students/internship_applications/making_decisions' and return
         elsif params[:sgid].present?
           @internship_application.update(magic_link_tracker: 2)
-          redirect_to(dashboard_students_internship_application_path(
+          redirect_to(
+            dashboard_students_internship_application_path(
                         student_id: @current_student.id,
-                        id: @internship_application.id
-          )) and return
+                        id: @internship_application.id)
+          ) and return
         else
            authenticate_user!
         end

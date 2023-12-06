@@ -141,7 +141,6 @@ module Users
           first_name
           employer_role
           gender
-          handicap
           id
           last_name
           operator_id

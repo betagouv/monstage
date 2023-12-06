@@ -5,9 +5,6 @@ module Dashboard
       before_action :set_invitation, only: %i[destroy resend_invitation]
 
       def index
-        authorize! :list_invitations, Invitation
-        @invitations = Invitation.for_people_with_no_account_in(school_id: fetch_school_id)
-                                 .order(created_at: :desc)
       end
 
       def new
