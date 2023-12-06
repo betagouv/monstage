@@ -55,4 +55,37 @@ namespace :extracts do
     end
   end
 
+  desc 'scrapping afdas'
+  task :scrapping_afdas_data, [] => :environment do
+    require 'csv'
+    PrettyConsole.announce_task(name: "Starting extracting unml data from its website") do
+      url_ends = []
+      url_to_parse = 'https://www.afdas.com/en-region.html'
+      response = HTTParty.get url_to_parse
+      document = Nokogiri::HTML(response.body)
+      boxes = document.css('.container .row')
+      boxes.each do |box|
+        url_ends << box.xpath('//p/a/@href')
+      end
+      url_ends = url_ends.flatten.uniq
+      puts url_ends
+      CSV.open("tmp/afdas_scrapping.csv", "w",force_quotes: true, quote_char: '"', col_sep: ",") do |csv|
+        url_ends.each do |url_end|
+          url =  "https://www.afdas.com#{url_end}"
+          response = HTTParty.get url
+          document = Nokogiri::HTML(response.body)
+          sub_boxes = document.css('.article .contact')
+          sub_boxes.each do |sub_box|
+            title = sub_box.css('h2').text.strip
+            cols = sub_box.css('.col-lg-6')
+            ps = cols.first.css('p')
+            address = ps.first.text.strip
+            email = ps[1].css('a').text.strip.gsub('(@)', '@')
+            phone = cols[1].css('p strong').text.strip 
+            csv << [url_end, title, address, email, phone]
+          end
+        end
+      end
+    end
+  end
 end
