@@ -1,7 +1,7 @@
 module Dashboard
   class InternshipOfferAreasController < ApplicationController
     before_action :authenticate_user!, only: %i[index create edit update destroy new filter_by_area]
-    before_action :set_internship_offer_area, only: %i[show edit update destroy flip]
+    before_action :set_internship_offer_area, only: %i[edit update destroy flip]
 
     def index
       authorize! :index, InternshipOfferArea

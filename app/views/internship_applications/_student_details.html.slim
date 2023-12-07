@@ -43,8 +43,3 @@
           h3.h6 Activités extra-scolaires
           .reboot-trix-content = resume_other
 
-    - if internship_application.student.handicap?
-      h3.h6.mt-3
-        i.fas.fa-wheelchair
-        |Besoin d'accompagnement
-      .reboot-trix-content.student-handicap = internship_application.student.handicap.to_s

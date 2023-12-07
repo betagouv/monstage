@@ -47,15 +47,10 @@ class NavbarTest < ActionDispatch::IntegrationTest
     sign_in(other)
     get other.custom_dashboard_path
     follow_redirect!
-    puts '---writing html in debug_file.html ---'
-    puts ''
-    html = Nokogiri::HTML(response.body)
-    File.open('debug_file.html', 'w+') { |f| f.write html } 
-    puts '----------------------------------------'
 
     assert_select( '#classes-panel a[href=?]',
                     new_dashboard_school_class_room_path)
-    assert_select("a.small.fr-raw-link.fr-tag.fr-tag--sm[href=?]", 
+    assert_select("a.small.fr-raw-link.fr-tag.fr-tag--sm[href=?]",
                   dashboard_school_class_room_students_path(@school, @school.class_rooms.first))
                                 # href="/tableau-de-bord/ecoles/112/classes/39/eleves">3e A</a>)
     assert_select('li a.fr-link.text-decoration-none.active', text: 'Mon établissement', count: 1)

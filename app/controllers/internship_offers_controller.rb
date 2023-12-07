@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class InternshipOffersController < ApplicationController
-  before_action :authenticate_user!, only: %i[create edit update destroy]
+  before_action :authenticate_user!, only: %i[]
   layout 'search', only: :index
 
   with_options only: [:show] do
@@ -13,7 +13,6 @@ class InternshipOffersController < ApplicationController
   end
 
   def index
-
     respond_to do |format|
       format.html do
         # @internship_offers = finder.all.order(id: :desc)

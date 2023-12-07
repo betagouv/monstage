@@ -67,6 +67,27 @@ module Dashboard
         end
       end
 
+      test 'POST invitation with inexisting teacher but not invited by current school manager' do
+        school_manager_1 = create(:school_manager)
+        school_manager_2 = create(:school_manager)
+        invitation = {
+          first_name: "Louis",
+          last_name: "Malle",
+          email: "louis.malle@ac-paris.fr",
+          user_id: school_manager_2.id,
+          role: 'teacher'
+        }
+
+        sign_in(school_manager_1)
+        assert_difference 'Invitation.count' do
+          post(
+            dashboard_school_invitations_path(school_manager_1.school.id),
+            params: { invitation: invitation }
+          )
+          assert_redirected_to dashboard_school_users_path(school_manager_1.school)
+        end
+      end
+
       test 'DESTROY invitation' do
         school_manager = create(:school_manager)
         invitation = create(:invitation, user_id: school_manager.id)
