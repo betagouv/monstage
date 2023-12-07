@@ -28,7 +28,7 @@ module Dashboard::Stepper
     # process step 4
     def create
       authorize! :create, PracticalInfo
-      check_if_internship_offer_already_exists
+      destroy_dupplicate!
       @practical_info = PracticalInfo.new(
         {}.merge(practical_info_params)
           .merge(employer_id: current_user.id)
@@ -127,7 +127,7 @@ module Dashboard::Stepper
       }
     end
 
-    def check_if_internship_offer_already_exists
+    def destroy_dupplicate!
       internship_offer =  InternshipOffer.find_by(
         organisation_id: params[:organisation_id],
         internship_offer_info_id: params[:internship_offer_info_id],
