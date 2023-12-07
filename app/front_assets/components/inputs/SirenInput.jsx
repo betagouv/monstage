@@ -73,19 +73,35 @@ export default function SirenInput({
     document.getElementById("organisation_manual_enter").value = true;
   }
 
+  const isSiretValid = (siret) => {
+    let isValid = undefined;
+    if ((siret.length != 14) || (isNaN(siret)))
+      isValid = false;
+    else {
+      // le SIRET est un numérique à 14 chiffres dont le dernier chiffre est une clef de LUHN.
+      let sum = 0;
+      var tmp;
+      for (var index = 0; index < siret.length; index++) {
+        if ((index % 2) == 0) {
+          tmp = siret.charAt(index) * 2;
+          if (tmp > 9) { tmp -= 9; }
+        } else {
+          tmp = siret.charAt(index);
+        }
+        sum += parseInt(tmp,10);
+      }
+      isValid = ((sum % 10) != 0)
+    }
+    return isValid;
+  }
+
   useEffect(() => {
     document.getElementById('siren-error').classList.add('d-none');
-    //  a number ?
-    if (/^(?=.*\d)[\d ]+$/.test(siret)) {
-      const cleanSiret = siret.replace(/\s/g, '');
 
-      if (cleanSiret.length === 14) {
-        searchCompanyBySiret(cleanSiret);
-      } else {
-        setSearchResults([]);
-      }
-    // a text 
-    } else {
+    const cleanSiret = siret.replace(/\s/g, '');
+    if (isSiretValid(cleanSiret)) { //14 digits ?
+      (cleanSiret.length === 14) ? searchCompanyBySiret(cleanSiret) : setSearchResults([]);
+    } else { // a text
       if (siret.length > 2) {
         searchCompanyByName(siret);
       }
@@ -124,7 +140,6 @@ export default function SirenInput({
           }
           itemToString={item => (item ? item.value : '')}
         >
-          
           {({
             getInputProps,
             getItemProps,
@@ -153,7 +168,7 @@ export default function SirenInput({
                       value: currentSiret,
                       className: 'fr-input',
                       id: `${resourceName}_siren`,
-                      placeholder: 'Rechercher un nom ou un SIRET',
+                      placeholder: 'Rechercher par nom ou par SIRET(14 caractères)',
                       name: `${resourceName}[siren]`
                     })}
                   />
@@ -204,7 +219,7 @@ export default function SirenInput({
                 </div>
               </div>
 
-              { 
+              {
                 selectedCompany && (
                   <div className='mt-2 d-flex'>
                     <div className="fr-highlight">
