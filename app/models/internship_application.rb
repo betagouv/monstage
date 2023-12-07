@@ -151,6 +151,7 @@ class InternshipApplication < ApplicationRecord
           :approved,
           :rejected,
           :expired,
+          :expired_by_student,
           :canceled_by_employer,
           :canceled_by_student,
           :canceled_by_student_confirmation,
@@ -256,8 +257,16 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :expire do
-      transitions from: %i[validated_by_employer read_by_employer examined approved submitted drafted],
+      transitions from: %i[validated_by_employer],
                   to: :expired,
+                  after: proc { |*_args|
+        update!(expired_at: Time.now.utc)
+      }
+    end
+
+    event :expire_by_student do
+      transitions from: %i[validated_by_employer read_by_employer examined submitted drafted],
+                  to: :expired_by_student,
                   after: proc { |*_args|
         update!(expired_at: Time.now.utc)
       }
