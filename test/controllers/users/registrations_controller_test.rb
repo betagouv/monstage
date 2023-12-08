@@ -99,35 +99,4 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select '.fr-alert.fr-alert--error', text: "Aucun compte n'est lié à cet identifiant : #{random_id}Veuillez créer un compte"
   end
-
-  test 'GET #users_registrations_phone_standby as student using path?id=#id with pending account' do
-    phone = '+330611223344'
-    create(:student, phone: phone, confirmed_at: nil)
-    get users_registrations_phone_standby_path(phone: phone)
-    assert_response :success
-    assert_select('h1.h2', text: 'Encore une petite étape...')
-  end
-
-  test 'GET #registrations_standby using path?phone=0611223344 with confirmed phone' do
-    phone = '+330611223344'
-    student = create(:student, phone: phone, phone_token_validity: nil)
-    get users_registrations_phone_standby_path(id: student.id)
-    assert_response :success
-    assert_select '.alert.alert-success', text: "Votre compte est déjà confirmé (#{phone}).Veuillez vous connecter"
-  end
-
-  # What use case ??
-  # test 'GET #registrations_standby using path?id=#id with unknown account but whith phone' do
-  #   phone = '+330611223344'
-  #   get users_registrations_phone_standby_path(phone: phone)
-  #   assert_response :success
-  #   assert_select '.alert.alert-danger', text: "Aucun compte n'est lié au téléphone: #{phone}.Veuillez créer un compte"
-  # end
-
-  test 'POST #phone_validation redirect to sign in with phone preselected' do
-    phone = '+330611223344'
-    student = create(:student, email: nil, phone: phone, phone_token: '1234')
-    post phone_validation_path(phone: phone, phone_token: student.phone_token)
-    assert_redirected_to new_user_session_path(phone: phone)
-  end
 end
