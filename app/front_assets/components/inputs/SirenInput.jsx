@@ -73,38 +73,34 @@ export default function SirenInput({
     document.getElementById("organisation_manual_enter").value = true;
   }
 
-  const isSiretValid = (siret) => {
-    let isValid = undefined;
-    if ((siret.length != 14) || (isNaN(siret)))
-      isValid = false;
-    else {
-      // le SIRET est un numérique à 14 chiffres dont le dernier chiffre est une clef de LUHN.
-      let sum = 0;
-      var tmp;
-      for (var index = 0; index < siret.length; index++) {
-        if ((index % 2) == 0) {
-          tmp = siret.charAt(index) * 2;
-          if (tmp > 9) { tmp -= 9; }
-        } else {
-          tmp = siret.charAt(index);
-        }
-        sum += parseInt(tmp,10);
-      }
-      isValid = ((sum % 10) != 0)
+  const isAValidSiret = (siret) => {
+    if ((siret.length != 14) || (isNaN(siret))) { return false; }
+
+    // le SIRET est un numérique à 14 chiffres dont le dernier chiffre est une clef de LUHN.
+    let sum = 0;
+    let tmp;
+    for (let index = 0; index < siret.length; index++) {
+      tmp = parseInt(siret.charAt(index), 10) 
+      if ((index % 2) == 0) {
+        tmp *= 2;
+        tmp = tmp > 9 ? tmp - 9 : tmp;
+      } 
+      sum += tmp;
     }
-    return isValid;
+    return ((sum % 10) === 0)
   }
 
   useEffect(() => {
     document.getElementById('siren-error').classList.add('d-none');
 
     const cleanSiret = siret.replace(/\s/g, '');
-    if (isSiretValid(cleanSiret)) { //14 digits ?
-      (cleanSiret.length === 14) ? searchCompanyBySiret(cleanSiret) : setSearchResults([]);
-    } else { // a text
-      if (siret.length > 2) {
-        searchCompanyByName(siret);
-      }
+    const cleanSiretIsNumeric = /^\d{2,}$/.test(cleanSiret);
+    if (isAValidSiret(cleanSiret)) {
+      searchCompanyBySiret(cleanSiret)
+    } else if (cleanSiretIsNumeric) {
+      setSearchResults([]);
+    } else if (siret.length > 2) { // a text;
+      searchCompanyByName(siret);
     }
   }, [siret]);
 
