@@ -177,6 +177,33 @@ def populate_internship_offers
     employer_name: 'Editegis',
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
+  # 7
+  InternshipOffers::WeeklyFramed.create!(
+    max_candidates: 7,
+    max_students_per_group: 7,
+    employer: Users::Employer.first,
+    contact_phone: '+33637607757',
+    siret: siret,
+    weeks: weeks,
+    first_date: weeks.first.beginning_of_week,
+    last_date: weeks.last.beginning_of_week,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: 'Observation du métier d\'enseignant de mathématique - Collège Jean Moulin',
+    description_rich_text: 'Vous assistez au cours de mathématiques de 3eme générale du collège Jean Moulin',
+    employer_description_rich_text: "Le métier de professeur de mathématiques consiste à enseigner les mathématiques aux élèves de collège et de lycée. Il peut également enseigner dans le supérieur. Il peut être amené à participer à des projets pédagogiques et à encadrer des élèves.",
+    tutor_name: 'Marc Charles',
+    tutor_email: 'charles.m@gmail.com',
+    tutor_phone: '+33637607757',
+    tutor_role: 'Proviseur',
+    street: '56 rue d\'Entraigues , Tours',
+    zipcode: '37000',
+    city: 'Tours',
+    coordinates: { latitude: 47.38767879193098, longitude: 0.6870630687759274},
+    employer_name: 'Education Nationale',
+    internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
+  )
   # 3eme generale API
   weeks =  Week.selectable_on_school_year
   area_id = Users::Operator.first.reload.internship_offer_areas.first.id
