@@ -184,6 +184,27 @@ class GenerateInternshipAgreement < Prawn::Document
     to = "Au #{internship_application.week.end_of_week_with_years_long}"
     @pdf.table([[from, to], [{content: "Soit un nombre de jour de : 5", colspan: 2}]])
     @pdf.move_down 10
+    if @internship_agreement.daily_hours.present?
+      @pdf.text "Les horaires de présence de l’élève sont fixés à : "
+      @pdf.move_down 10
+      %w(lundi mardi mercredi jeudi vendredi).each_with_index do |weekday, i|
+        @pdf.text "#{weekday.capitalize} de #{@internship_agreement.daily_hours&.dig(weekday)&.first} à " \
+                  "#{@internship_agreement.daily_hours&.dig(weekday)&.last}"
+        @pdf.move_down 5
+      end
+    else
+      @pdf.text "Les horaires de présence de l’élève sont fixés à : "
+      @pdf.move_down 5
+      @pdf.text "De #{internship_application.internship_offer.weekly_hours&.first} à " \
+                "#{internship_application.internship_offer.weekly_hours&.last}"
+      @pdf.move_down 5
+    end
+    @pdf.move_down 10
+    @pdf.text "Repas :"
+    @pdf.move_down 10
+    @pdf.text @internship_agreement.lunch_break
+    @pdf.move_down 20
+
     @pdf.text "La séquence d’observation ne peut pas excéder 5 jours consécutifs."
     @pdf.move_down 20
   end
@@ -617,6 +638,6 @@ class GenerateInternshipAgreement < Prawn::Document
   end
 
   def enc(str)
-    str.encode("Windows-1252","UTF-8", undef: :replace, invalid: :replace)
+    str ? str.encode("Windows-1252","UTF-8", undef: :replace, invalid: :replace) : ''
   end
 end
