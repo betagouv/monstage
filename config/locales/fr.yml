@@ -362,9 +362,6 @@ fr:
         total_male_applications_count: Garçon
         total_female_applications_count: Fille
         total_no_gender_applications_count: Non précisé
-        total_convention_signed_applications_count: Nbr. de stages conclus
-        total_male_convention_signed_applications_count: Garçon
-        total_female_convention_signed_applications_count: Fille
         approved_applications_count: "Nbr. de candidatures acceptées"
         submitted_applications_count: "Nbr. de candidatures en attente"
         rejected_applications_count: "Nbr. de candidatures rejetées"
@@ -372,7 +369,6 @@ fr:
         total_female_approved_applications_count: Fille
         total_no_gender_approved_applications_count: Non précisé
         total: Total
-        convention_signed_applications_count: Nbr. de stages conclus
         siren: Code Siren
         permalink: "Lien vers l'association partenaire"
         sector_name: Secteur
