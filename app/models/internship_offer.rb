@@ -8,7 +8,7 @@ class InternshipOffer < ApplicationRecord
   TITLE_MAX_CHAR_COUNT = 150
   DESCRIPTION_MAX_CHAR_COUNT= 500
 
-  include StiPreload #TODO : remove this
+  include StiPreload 
   include AASM
 
   # queries
@@ -221,10 +221,6 @@ class InternshipOffer < ApplicationRecord
   def total_no_gender_applications_count
     total_applications_count - total_male_applications_count - total_female_applications_count
   end
-
-  # def total_no_gender_convention_signed_applications_count
-  #   convention_signed_applications_count - total_male_convention_signed_applications_count - total_female_convention_signed_applications_count
-  # end
 
   def anonymize
     fields_to_reset = {
