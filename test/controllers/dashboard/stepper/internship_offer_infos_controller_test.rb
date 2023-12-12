@@ -106,7 +106,7 @@ module Dashboard::Stepper
       new_title = 'ko'
       employer = create(:employer)
       organisation = create(:organisation, employer: employer)
-      internship_offer_info = create(:weekly_internship_offer_info,
+      internship_offer_info = create(:internship_offer_info,
                                      employer: employer,
                                      title: title)
       sign_in(employer)

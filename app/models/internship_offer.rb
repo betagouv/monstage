@@ -371,6 +371,31 @@ class InternshipOffer < ApplicationRecord
     end
   end
 
+  def available_weeks
+    return Week.selectable_from_now_until_end_of_school_year unless respond_to?(:weeks)
+    return Week.selectable_from_now_until_end_of_school_year unless persisted?
+    if weeks&.first.nil?
+      return Week.selectable_for_school_year(
+        school_year: SchoolYear::Floating.new(date: Date.today)
+      )
+    end
+
+    school_year = SchoolYear::Floating.new(date: weeks.first.week_date)
+
+    Week.selectable_on_specific_school_year(school_year: school_year)
+  end
+
+  def requires_update_at_toggle_time?
+    return false if published?
+
+    no_remaining_seat_anymore?
+  end
+
+  def available_weeks_when_editing
+    return nil unless persisted? && respond_to?(:weeks)
+    Week.selectable_from_now_until_end_of_school_year
+  end
+
   def approved_applications_current_school_year
     internship_applications.approved.current_school_year
   end

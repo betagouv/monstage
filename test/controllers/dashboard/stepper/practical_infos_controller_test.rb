@@ -19,7 +19,7 @@ module Dashboard::Stepper
       sign_in(employer)
       travel_to(Date.new(2019, 3, 1)) do
         organisation = create(:organisation, employer: employer)
-        internship_offer_info = create(:weekly_internship_offer_info)
+        internship_offer_info = create(:internship_offer_info)
         hosting_info = create(:hosting_info)
 
         get new_dashboard_stepper_practical_info_path(
@@ -47,7 +47,7 @@ module Dashboard::Stepper
       employer = create(:employer, phone: '+330623456789')
       sign_in(employer)
       organisation = create(:organisation, employer: employer)
-      internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
+      internship_offer_info = create(:internship_offer_info, employer: employer)
       hosting_info = create(:hosting_info, employer: employer)
       
       assert_difference('InternshipOffer.count', 1) do

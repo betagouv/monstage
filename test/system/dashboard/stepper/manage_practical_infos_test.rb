@@ -9,7 +9,7 @@ class ManagePracticalInfosTest < ApplicationSystemTestCase
     travel_to Date.new(2020, 1, 1) do
       employer              = create(:employer)
       organisation          = create(:organisation, employer: employer)
-      internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
+      internship_offer_info = create(:internship_offer_info, employer: employer)
       hosting_info          = create(:hosting_info, employer: employer)
       sign_in(employer)
       visit new_dashboard_stepper_practical_info_path(organisation_id: organisation.id, internship_offer_info_id: internship_offer_info.id, hosting_info_id: hosting_info.id)
@@ -37,7 +37,7 @@ class ManagePracticalInfosTest < ApplicationSystemTestCase
   # test 'cannot create PracticalInfos with badly formatted field' do
   #   employer              = create(:employer)
   #   organisation          = create(:organisation, employer: employer)
-  #   internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
+  #   internship_offer_info = create(:internship_offer_info, employer: employer)
   #   hosting_info          = create(:hosting_info, employer: employer)
   #   sign_in(employer)
   #   visit new_dashboard_stepper_practical_info_path(organisation_id: organisation.id, internship_offer_info_id: internship_offer_info.id, hosting_info_id: hosting_info.id)
