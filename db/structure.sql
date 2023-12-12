@@ -428,41 +428,6 @@ ALTER SEQUENCE public.class_rooms_id_seq OWNED BY public.class_rooms.id;
 
 
 --
--- Name: email_whitelists; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.email_whitelists (
-    id bigint NOT NULL,
-    email character varying,
-    zipcode character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    user_id bigint,
-    type character varying DEFAULT 'EmailWhitelists::PrefectureStatistician'::character varying NOT NULL,
-    group_id integer
-);
-
-
---
--- Name: email_whitelists_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.email_whitelists_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: email_whitelists_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.email_whitelists_id_seq OWNED BY public.email_whitelists.id;
-
-
---
 -- Name: favorites; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1850,13 +1815,6 @@ ALTER TABLE ONLY public.class_rooms ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
--- Name: email_whitelists id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.email_whitelists ALTER COLUMN id SET DEFAULT nextval('public.email_whitelists_id_seq'::regclass);
-
-
---
 -- Name: favorites id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2141,14 +2099,6 @@ ALTER TABLE ONLY public.area_notifications
 
 ALTER TABLE ONLY public.class_rooms
     ADD CONSTRAINT class_rooms_pkey PRIMARY KEY (id);
-
-
---
--- Name: email_whitelists email_whitelists_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.email_whitelists
-    ADD CONSTRAINT email_whitelists_pkey PRIMARY KEY (id);
 
 
 --
@@ -2484,13 +2434,6 @@ CREATE INDEX index_area_notifications_on_user_id ON public.area_notifications US
 --
 
 CREATE INDEX index_class_rooms_on_school_id ON public.class_rooms USING btree (school_id);
-
-
---
--- Name: index_email_whitelists_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_email_whitelists_on_user_id ON public.email_whitelists USING btree (user_id);
 
 
 --
@@ -3246,14 +3189,6 @@ ALTER TABLE ONLY public.internship_offers
 
 
 --
--- Name: email_whitelists fk_rails_8fe0f00dcd; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.email_whitelists
-    ADD CONSTRAINT fk_rails_8fe0f00dcd FOREIGN KEY (user_id) REFERENCES public.users(id);
-
-
---
 -- Name: users_search_histories fk_rails_9338fd3660; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3388,6 +3323,7 @@ ALTER TABLE ONLY public.internship_offer_weeks
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20231211143502'),
 ('20231211084232'),
 ('20231130102047'),
 ('20231124105509'),
