@@ -53,8 +53,7 @@ class InternshipApplicationsController < ApplicationController
 
     appli_params = {user_id: current_user.id}.merge(create_internship_application_params)
     @internship_application = InternshipApplication.create!(appli_params)
-    redirect_to internship_offer_internship_application_path(@internship_offer,
-                                                             @internship_application)
+    redirect_to dashboard_students_internship_applications_path(student_id: current_user.id, notice_banner: true)
   rescue ActiveRecord::RecordInvalid => e
     @internship_application = e.record
     puts @internship_application.errors.messages
