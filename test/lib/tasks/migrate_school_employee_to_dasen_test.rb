@@ -29,12 +29,6 @@ class MigrateSchoolEmployeeToDasenTest < ActiveSupport::TestCase
 
     Rake::Task['migrations:from_employer_to_departmental_statistician'].invoke("email:#{employer.email};zipcode:#{'35000'};agreement_signatorable:true]")
 
-    whitelist =  EmailWhitelists::PrefectureStatistician.last
-    refute whitelist.nil?
-    assert_equal employer_email, whitelist.email
-    assert_equal '35' , whitelist.zipcode
-    assert_equal employer_id, whitelist.user_id
-
     ex_employer = Users::PrefectureStatistician.last
     refute ex_employer.nil?
     assert_equal employer_email, ex_employer.email

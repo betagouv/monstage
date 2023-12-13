@@ -20,7 +20,6 @@ module Users
     before_update :trigger_agreements_creation
     # before_validation :confirm
     # Beware : order matters here !
-    # validate :email_in_list
     after_create :notify_manager
     after_update :confirm_if_validated
 
@@ -67,6 +66,10 @@ module Users
 
     def role
       self.class.name.demodulize.underscore
+    end
+
+    def signatory_role
+      Signature.signatory_roles[:employer]
     end
 
     rails_admin do
@@ -116,10 +119,5 @@ module Users
         end
       end
     end
-
-    def signatory_role
-      Signature.signatory_roles[:employer]
-    end
-  
   end 
 end

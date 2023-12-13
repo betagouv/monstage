@@ -51,7 +51,6 @@ module InternshipOffers
         field :total_applications_count
         field :approved_applications_count
         field :rejected_applications_count
-        field :convention_signed_applications_count
         field :is_public
       end
 

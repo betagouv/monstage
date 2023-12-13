@@ -11,12 +11,10 @@ module Finders
     #
     # raw queries for widgets (reporting/dashboard)
     #
-    # TODO/1/start/groupable in one query
+    #
     def total
       base_query.sum('max_candidates')
     end
-
-    # TODO/1/end/groupable in one query
 
     #
     # raw queries for stats (reporting/internship_offers)

@@ -32,11 +32,6 @@ namespace :migrations do
       PrettyConsole.puts_in_red message
     else
       ActiveRecord::Base.transaction do
-        whitelist = EmailWhitelists::EducationStatistician.create_or_find_by(
-          email: email,
-          zipcode: short_zipcode,
-          user_id: user.id
-        )
         # email sending is avoided from user existence test
         user.becomes!(Users::EducationStatistician)
         user.school_id = nil
@@ -74,11 +69,6 @@ namespace :migrations do
       PrettyConsole.puts_in_red "User not found or not an employer"
     else
       ActiveRecord::Base.transaction do
-        whitelist = EmailWhitelists::EducationStatistician.create_or_find_by(
-          email: email,
-          zipcode: short_zipcode,
-          user_id: user.id
-        )
         # skip emails sending from user existence test
         user.becomes!(Users::EducationStatistician)
         user.save!
@@ -120,11 +110,6 @@ namespace :migrations do
       PrettyConsole.puts_in_red "User not found or not an employer"
     else
       ActiveRecord::Base.transaction do
-        whitelist = EmailWhitelists::PrefectureStatistician.create_or_find_by(
-          email: email,
-          zipcode: short_zipcode,
-          user_id: user.id
-        )
         # skip emails sending from user existence test
         user.becomes!(Users::PrefectureStatistician)
         user.save!

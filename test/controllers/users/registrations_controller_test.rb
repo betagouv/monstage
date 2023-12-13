@@ -9,11 +9,10 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
   end
   
   test 'POST #registrations as statistician whitelisted' do
-    white_list = create(:statistician_email_whitelist)
     data = {
       first_name: 'James',
       last_name: 'Ref',
-      email: white_list.email,
+      email: 'test@free.fr',
       password: 'password',
       department: '75',
       type: 'Users::PrefectureStatistician',
@@ -26,11 +25,10 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'POST #registrations as ministry statistician whitelisted' do
-    white_list = create(:ministry_statistician_email_whitelist)
     data = {
       first_name: 'James',
       last_name: 'Ref',
-      email: white_list.email,
+      email: 'test@free.fr',
       password: 'password',
       type: 'Users::MinistryStatistician',
       accept_terms: true
@@ -42,11 +40,10 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'POST #registrations as education statistician whitelisted' do
-    white_list = create(:education_statistician_email_whitelist)
     data = {
       first_name: 'James',
       last_name: 'Ref',
-      email: white_list.email,
+      email: 'test@free.fr',
       department: '75',
       password: 'password',
       type: 'Users::EducationStatistician',
