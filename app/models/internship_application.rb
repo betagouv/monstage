@@ -86,6 +86,18 @@ class InternshipApplication < ApplicationRecord
       .order('orderable_aasm_state')
   }
 
+  scope :order_by_aasm_state_for_student, lambda {
+    select("#{table_name}.*")
+      .select(%(
+      CASE
+        WHEN aasm_state = 'validated_by_employer' THEN 0
+        ELSE 1
+      END as orderable_aasm_state
+    ))
+      .order('orderable_aasm_state')
+  }
+
+
   scope :no_date_index, lambda {
     where.not(aasm_state: [:drafted])
     .includes(
