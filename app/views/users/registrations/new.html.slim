@@ -71,7 +71,7 @@
                 - if as == "Statistician"
                   .fr-mt-3w.fr-ml-1w
                     p Vous êtes référent :
-                    #radio-hint.fr-fieldset 
+                    #radio-hint.fr-fieldset
                       .fr-fieldset__element
                         .fr-radio-group
                           = f.radio_button :statistician_type,
@@ -102,7 +102,7 @@
                                             data: { action: "change->signup#onMinistryTypeChange" }
                           label.fr-label[for="user_statistician_education"]
                             | DSDEN
-                      
+
                       .fr-fieldset__element.fr-mt-3w.fr-mb-2v.d-none#statistician-department
                         .row
                           .col-lg-6.col-12
@@ -110,14 +110,17 @@
                             label.fr-label[for="user_department"]
                               |Choisissez votre département
                             = f.select :department, options_for_select(Department::MAP.map { |code, name| ["#{code} - #{name}", code] }, resource.department), { prompt: "Départements" }, { class: "fr-select", required: false, data: { "signup-target": 'departmentSelect'  } }
-                      
+
                       .fr-fieldset__element.fr-mt-3w.fr-mb-2v.d-none#statistician-ministry
                         .row
                           .col-lg-8.col-12
                             / select field ministry
                             label.fr-label[for="user_group_id"]
                               |Choisissez le ministère correspondant
-                            = f.select :group_id, options_for_select(Group.is_public.all.map { |group| [group.name,group.id] }, resource.try(:group_id)), { prompt: "Ministères" }, { class: "fr-select", required: false, data: { "signup-target": 'ministrySelect' } }
+                            = f.select :group_id,
+                                       options_for_select(Group.is_public.all.map { |group| [group.name,group.id] }, resource.try(:group_id)),
+                                       { prompt: "Ministères" },
+                                       { class: "fr-select", required: false, data: { "signup-target": 'ministrySelect' } }
 
                 - if user_presenter.show_when_subscribe?(as: as, field: :role)
                   .fr-fieldset__element

@@ -39,6 +39,7 @@ class GenerateInternshipAgreement < Prawn::Document
     article_8
     article_9
     article_10
+    article_bonus
     signatures
     (0..2).each do |slice|
       signature_table_header(slice: slice)
@@ -100,10 +101,10 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.text "Adresse : #{internship_offer.street}, " \
               "#{internship_offer.zipcode} #{internship_offer.city}"
     @pdf.move_down 10
-    @pdf.text "Représenté(e) par (nom et prénom) : " \
+    @pdf.text enc "Représenté(e) par (nom et prénom) : " \
               "#{@internship_agreement.organisation_representative_full_name} "
     @pdf.move_down 2
-    @pdf.text "Fonction : #{@internship_agreement.organisation_representative_role} "
+    @pdf.text "Fonction : #{enc @internship_agreement.organisation_representative_role} "
     @pdf.move_down 2
     @pdf.text "Courriel : #{internship_offer.employer.email} "
     @pdf.move_down 2
@@ -112,7 +113,7 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.text "Référent en charge de l’élève au sein de la structure d’accueil" \
               " (nom et prénom) : #{@internship_agreement.tutor_full_name} "
     @pdf.move_down 2
-    @pdf.text "Fonction : #{@internship_agreement.tutor_role} "
+    @pdf.text "Fonction : #{enc @internship_agreement.tutor_role} "
     @pdf.move_down 2
     @pdf.text "Courriel : #{@internship_agreement.tutor_email} "
     @pdf.move_down 2
@@ -129,13 +130,13 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.move_down 2
     @pdf.text "Adresse : #{student.school.presenter.address} "
     @pdf.move_down 10
-    @pdf.text "Représenté par  : #{@internship_agreement.school_representative_full_name} "
+    @pdf.text enc "Représenté par  : #{@internship_agreement.school_representative_full_name} "
     @pdf.move_down 2
-    @pdf.text "Fonction  : #{@internship_agreement.school_representative_role} "
+    @pdf.text enc "Fonction  : #{@internship_agreement.school_representative_role} "
     @pdf.move_down 2
     @pdf.text "Courriel  : #{dotting student.school.school_manager.email} "
     @pdf.move_down 2
-    @pdf.text "N° de téléphone  : #{dotting student.school.school_manager&.phone} "
+    @pdf.text "N° de téléphone  : #{dotting @internship_agreement.school_representative_phone} "
 
     @pdf.move_down 20
   end
@@ -149,7 +150,7 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.move_down 2
     @pdf.text "Date de naissance : #{student.presenter.birth_date} "
     @pdf.move_down 2
-    @pdf.text "Adresse personnelle : #{dotting @internship_agreement.student_address, 75} "
+    @pdf.text enc "Adresse personnelle : #{dotting(@internship_agreement.student_address, 75)}"
     @pdf.move_down 2
     @pdf.text "Courriel : #{student.email} "
     @pdf.move_down 2
@@ -389,94 +390,13 @@ class GenerateInternshipAgreement < Prawn::Document
       "au sein de l’organisme d’accueil.")
   end
 
-
-  # def parties
-    # subtitle "ENTRE"
-  #   @pdf.text "L’entreprise ou l’organisme d’accueil, #{internship_offer.employer_name} représentée par #{@internship_agreement.organisation_representative_full_name}, en qualité de chef d’entreprise ou de responsable de l’organisme d’accueil d’une part,"
-  #   @pdf.move_down 10
-    # subtitle "ET"
-  #   @pdf.text "L’établissement d’enseignement scolaire, #{@internship_agreement.student_school} représenté par #{@internship_agreement.school_representative_full_name}, en qualité de chef d’établissement, a été nommé apte à signer les conventions par le conseil d'administration de l'établissement en date du #{@internship_agreement.school_delegation_to_sign_delivered_at.strftime("%d/%m/%Y")} d’autre part, "
-  #   @pdf.move_down 20
-  # end
-
-  # def terms
-  #   subtitle "il a été convenu ce qui suit :"
-  #   subtitle "TITRE PREMIER : DISPOSITIONS GÉNÉRALES"
-    # html_formating @internship_agreement.legal_terms_rich_text.body.to_s
-  #   @pdf.move_down 20
-  # end
-
-  # def part_two
-  #   subtitle "TITRE II - DISPOSITIONS PARTICULIÈRES"
-  #   subtitle "A - Convention de preuve"
-  #   subtitle "Article 10 -"
-  #   field_form "Les Parties conviennent expressément que les documents électroniques échangés sont des écrits électroniques ayant la même valeur probante que des écrits papier."
-  #   field_form "Les Parties conviennent expressément que tout document signé de manière dématérialisée depuis la plateforme monstagede3e constitue une preuve littérale au sens du Code civil. Elles reconnaissent que tout document signé de manière dématérialisée vaut preuve du contenu dudit document, de l’identité du signataire et de son consentement aux obligations et conséquences de faits et de droit qui découlent du document signé de manière dématérialisée."
-  #   @pdf.move_down 10
-  #   subtitle "B - Annexe pédagogique"
-  #   @pdf.move_down 10
-  # end
-
-  # def form
-  #   label_form "Nom de l’élève :"
-  #   field_form @internship_agreement.student_full_name
-
-  #   label_form "Classe :"
-  #   field_form @internship_agreement.student_class_room
-
-  #   label_form "Etablissemenet d'origine :"
-  #   field_form @internship_agreement.student_school
-
-  #   label_form "Nom du responsable de l’accueil en milieu professionnel du tuteur :"
-  #   field_form @internship_agreement.tutor_full_name
-
-  #   label_form "Nom du ou des enseignants chargés de suivre le déroulement de séquence d’observation en milieu professionnel : "
-  #   field_form @internship_agreement.main_teacher_full_name
-
-  #   label_form "Dates de la séquence d’observation en milieu professionnel :"
-  #   field_form @internship_agreement.date_range
-
-  #   label_form "Horaires journaliers de l’élève :"
-  #   if @internship_agreement.daily_planning?
-  #     %w(lundi mardi mercredi jeudi vendredi samedi).map do |day|
-  #       hours = @internship_agreement.daily_hours[day]
-  #       lunch_break = @internship_agreement.daily_lunch_break[day]
-  #       next if hours.blank? || hours.size != 2
-  #       daily_schedule = [ "de #{hours[0]} à #{hours[1]}" ]
-  #       daily_schedule = daily_schedule.push("pause dejeuner : #{lunch_break}") if lunch_break.present?
-  #       field_form "#{day.capitalize} : #{daily_schedule.join(', ')}"
-  #     end
-  #   else
-  #     hours = @internship_agreement.weekly_hours
-  #     lunch_break = @internship_agreement.weekly_lunch_break
-  #     daily_schedule = [ "de #{hours[0]} à #{hours[1]}" ]
-  #     daily_schedule = daily_schedule.push("pause dejeuner : #{lunch_break}") if lunch_break.present?
-
-  #     field_form "Tous les jours : #{daily_schedule.join(', ')}."
-  #   end
-
-    # unless @internship_agreement.troisieme_generale?
-    #   label_form "Objectifs assignés à la séquence d’observation en milieu professionnel :"
-    #   field_form @internship_agreement.activity_learnings_rich_text.body.html_safe, html: true
-    # end
-
-    # unless @internship_agreement.troisieme_generale?
-    #   label_form "Modalités de la concertation qui sera assurée pour organiser la préparation, contrôler le déroulement de la période en vue d’une véritable complémentarité des enseignements reçus :"
-    #   field_form @internship_agreement.activity_preparation_rich_text.body.html_safe, html: true
-    # end
-
-
-    # label_form "Activités prévues :"
-    # field_form @internship_agreement.activity_scope_rich_text.body.html_safe, html: true
-
-    # if @internship_agreement.activity_rating_rich_text.present?
-    #   label_form "Modalités d’évaluation de la séquence d’observation en milieu professionnel :"
-    #   field_form @internship_agreement.activity_rating_rich_text.body.html_safe, html: true
-    # end
-
-    # @pdf.move_down 20
-  # end
-
+  def article_bonus
+    return unless @internship_agreement.student.school.agreement_conditions_rich_text.present?
+    headering("Article 11")
+    html_formating "<div style=''>#{@internship_agreement.student.school.agreement_conditions_rich_text.body.html_safe}</div>"
+    @pdf.move_down 30
+  end
+  
   def signatures
     @pdf.text "Fait en trois exemplaires à #{@internship_agreement.school_manager.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
 
@@ -694,5 +614,9 @@ class GenerateInternshipAgreement < Prawn::Document
       table_data << row.each_slice(2).to_a[slice]
     end
     table_data
+  end
+
+  def enc(str)
+    str.encode("Windows-1252","UTF-8", undef: :replace, invalid: :replace)
   end
 end

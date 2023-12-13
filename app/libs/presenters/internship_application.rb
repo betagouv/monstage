@@ -207,26 +207,6 @@ module Presenters
       end
     end
 
-    def ok_for_examine_states
-      %w[submitted read_by_employer]
-    end
-
-    def ok_for_transfer_states
-      %w[submitted read_by_employer examined]
-    end
-
-    def ok_for_reject_states
-      %w[submitted
-        read_by_employer
-        examined
-        validated_by_employer
-        approved]
-    end
-
-    def ok_for_employer_validation_states
-      %w[submitted examined read_by_employer]
-    end
-
     def ok_for_examine?
       current_state_in_list?(ok_for_examine_states)
     end
@@ -285,7 +265,7 @@ module Presenters
 
     protected
     def initialize(internship_application, user)
-      @reader = user
+      @reader = user  
       @internship_application = internship_application
       @student                = internship_application.student
       @internship_offer       = internship_application.internship_offer
@@ -309,8 +289,30 @@ module Presenters
       )
     end
 
+    private
+    
     def current_state_in_list?(state_array)
       state_array.include?(internship_application.aasm_state)
+    end
+    
+    def ok_for_examine_states
+      %w[submitted read_by_employer]
+    end
+
+    def ok_for_transfer_states
+      %w[submitted read_by_employer examined]
+    end
+
+    def ok_for_reject_states
+      %w[submitted
+        read_by_employer
+        examined
+        validated_by_employer
+        approved]
+    end
+
+    def ok_for_employer_validation_states
+      %w[submitted examined read_by_employer]
     end
   end
 end

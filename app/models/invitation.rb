@@ -15,9 +15,9 @@ class Invitation < ApplicationRecord
   validates :first_name,
             :last_name,
             :email,
-            :role, 
+            :role,
             :user_id, presence: true
-             
+
   validate  :official_email_address
 
   scope :for_people_with_no_account_in, ->(school_id:) {
@@ -25,6 +25,9 @@ class Invitation < ApplicationRecord
                                              .where(school_id: school_id)
                                              .pluck(:email))
   }
+
+  scope :invited_by, ->(user_id:) { where(user_id: user_id) }
+
   def presenter
     @presenter ||= Presenters::Invitation.new(self)
   end

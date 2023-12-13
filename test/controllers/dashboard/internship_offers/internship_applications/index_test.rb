@@ -75,18 +75,6 @@ module InternshipApplications
       assert_response :success
     end
 
-    test 'GET #index succeed when logged in as employer, shows handicap field when present' do
-      school = create(:school, city: 'Paris', name: 'Mon établissement')
-      student = create(:student, school: school,
-                                 handicap: 'cotorep')
-      internship_application = create(:weekly_internship_application, :submitted, student: student)
-      sign_in(internship_application.internship_offer.employer)
-      get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
-      assert_response :success
-
-      assert_select '.student-handicap', student.handicap
-    end
-
     test 'GET #index with drafted does not shows internship_application' do
       internship_application = create(:weekly_internship_application, :drafted)
       sign_in(internship_application.internship_offer.employer)

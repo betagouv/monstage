@@ -37,9 +37,6 @@ class Ability
     can %i[destroy see_tutor], InternshipOffer
     can %i[read update export unpublish publish], InternshipOffer
     can %i[read update destroy export], InternshipApplication
-    can :manage, EmailWhitelists::EducationStatistician
-    can :manage, EmailWhitelists::PrefectureStatistician
-    can :manage, EmailWhitelists::Ministry
     can :manage, InternshipOfferKeyword
     can :manage, Group
     can :access, :rails_admin   # grant access to rails_admin
@@ -99,7 +96,6 @@ class Ability
            choose_school
            choose_class_room
            choose_gender_and_birthday
-           choose_handicap
            register_with_phone], User
     can_read_dashboard_students_internship_applications(user: user)
   end

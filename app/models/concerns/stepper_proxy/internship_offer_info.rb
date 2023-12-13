@@ -8,7 +8,7 @@ module StepperProxy
       attr_accessor :republish, :user_update
       after_initialize :init
 
-      # Validations
+      # Validations as they should be for new and older offers
       validates :title, presence: true, length: { maximum: InternshipOffer::TITLE_MAX_CHAR_COUNT }
 
 

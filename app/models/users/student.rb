@@ -42,8 +42,6 @@ module Users
 
     validate :validate_school_presence_at_creation
 
-    attr_reader :handicap_present
-
     def student?; true end
 
     def channel
@@ -83,7 +81,7 @@ module Users
     end
 
     def dashboard_name
-      'Candidatures / Réponses'
+      'Candidatures'
     end
 
     def default_account_section
@@ -131,7 +129,6 @@ module Users
       super(send_email: send_email)
 
       update_columns(birth_date: nil,
-                     handicap: nil,
                      current_sign_in_ip: nil,
                      last_sign_in_ip: nil,
                      class_room_id: nil)
