@@ -161,6 +161,20 @@ Exemple de ce que nous attendons donc un uuid dans nos API :
 internship_offer.sector_uuid: "c76e6364-7257-473c-89aa-c951141810ce"
 ```
 
+### <a name="ref-daily-hours"></a>
+## Horaires quotidiens
+Les stages se déroulant sur une semaine du lundi au vendredi, il est possible de préciser les horaires de chaque journée de la façon suivante :
+
+```
+{ JOUR: [HEURE_DEBUT, HEURE_FIN] }
+```
+
+Exemple de ce que nous attendons dans nos API :
+
+```
+internship_offer.daily_hours: { "lundi": ["8:30";"17:00"], "mardi": ["8:30";"17:00"], "mercredi": ["8:30";"17:00"], "jeudi": ["8:30";"17:00"], "vendredi": ["8:30";"17:00"]}
+```
+
 # Gestion d'erreurs
 Les erreurs de requête seront signalées via un code HTTP > 400.
 
@@ -203,6 +217,8 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 * **permalink** *(url, required)*
 * **max_candidates** *(integer)*
 * **is_public** *(boolean, optional)*: true|false
+* **lunch_break** *(text, optional *<= 500 caractères)
+* **daily_hours** *(object, optional, 
 
 ### Exemple curl
 

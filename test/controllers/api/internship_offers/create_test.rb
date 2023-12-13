@@ -123,6 +123,7 @@ module Api
       ]
       remote_id = 'test'
       permalink = 'https://www.google.fr'
+      daily_hours = {"lundi": ["9:00","17:00"], "mardi": ["9:00","17:00"], "mercredi": ["9:00","17:00"], "jeudi": ["9:00","17:00"], "vendredi": ["9:00","17:00"]}
       assert_difference('InternshipOffer.count', 1) do
         documents_as(endpoint: :'internship_offers/create', state: :created) do
           post api_internship_offers_path(
@@ -144,7 +145,9 @@ module Api
                 remote_id: remote_id,
                 permalink: permalink,
                 max_candidates: 2,
-                is_public: true
+                is_public: true,
+                daily_hours: daily_hours,
+                lunch_break: "Repas sur place"
               }
             }
           )
@@ -175,6 +178,12 @@ module Api
       assert_equal 'published', internship_offer.aasm_state
       assert internship_offer.is_public
       assert_equal false, internship_offer.handicap_accessible
+      assert_equal daily_hours[:lundi], internship_offer.daily_hours["lundi"]
+      assert_equal daily_hours[:mardi], internship_offer.daily_hours["mardi"]
+      assert_equal daily_hours[:mercredi], internship_offer.daily_hours["mercredi"]
+      assert_equal daily_hours[:jeudi], internship_offer.daily_hours["jeudi"]
+      assert_equal daily_hours[:vendredi], internship_offer.daily_hours["vendredi"]
+      assert_equal "Repas sur place", internship_offer.lunch_break
 
       assert_equal JSON.parse(internship_offer.to_json), json_response
     end
