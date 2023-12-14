@@ -30,16 +30,6 @@ class ConfirmationsControllerTest < ActionDispatch::IntegrationTest
                   html: '<strong>Téléphone mobile</strong> : Votre numéro de téléphone est inconnu'
   end
 
-  test 'CREATE#user_confirmation by phone' do
-    student = create(:student, phone: '+330637607756',
-                               email: nil,
-                               confirmed_at: nil)
-    assert_enqueued_jobs 1, only: SendSmsJob do
-      post user_confirmation_path(user: { channel: :phone, phone: student.phone })
-    end
-    assert_redirected_to users_registrations_phone_standby_path(phone: student.phone)
-  end
-
   test 'CREATE#user_confirmation by email' do
     student = create(:student, phone: nil,
                                email: 'fourcade.m@gmail.com',

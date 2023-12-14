@@ -24,6 +24,11 @@
         = link_to "Rechercher un stage", user_presenter.default_internship_offers_path, class: 'fr-btn my-1 px-5'
 - else
   .d-flex.flex-column
+    - if current_user.student? && current_user.internship_applications.validated_by_employer.count.positive?
+      div.fr-mb-2w style="width: 583px" 
+        .fr-alert.fr-alert--info
+          h3.fr-alert__title Candidature acceptée
+          p L’entreprise a validé votre stage, c’est à vous de confirmer que vous choisissez ce stage et que vous allez y aller.
     = render partial: "dashboard/students/internship_applications/student_internship_application",
              collection: @internship_applications
   - if current_user.student? && !current_user.has_already_approved_an_application?

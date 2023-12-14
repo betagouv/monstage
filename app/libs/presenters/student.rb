@@ -69,6 +69,10 @@ module Presenters
       end
     end
 
+    def validated_by_employer_applications_count
+      student.internship_applications.validated_by_employer.count
+    end
+
     private
 
     def anonymized_message

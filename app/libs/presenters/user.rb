@@ -34,6 +34,10 @@ module Presenters
       "#{gender_text} #{name}".strip
     end
 
+    def genred(word)
+      user.gender == 'f' ? "#{word}e" : word
+    end
+
     def short_civil_full_name
       name = full_name
       case user.gender

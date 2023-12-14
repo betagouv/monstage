@@ -32,6 +32,7 @@ FactoryBot.define do
     siret { '11122233300000' }
     aasm_state { 'published' }
     hidden_duplicate { false }
+    handicap_accessible { false }
     daily_hours do
       {
         'lundi' => ['09:00', '17:00'],

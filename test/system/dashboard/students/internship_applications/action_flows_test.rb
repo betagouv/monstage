@@ -68,6 +68,25 @@ module Dashboard
         find "a#show_link_#{internship_application.id}", text: "Voir"
       end
 
+      test 'student can submit an application for any week, when a week has been registered last year' do
+        school = nil
+        travel_to Date.new(2020, 1, 1) do
+          school = create(:school, :with_school_manager, :with_weeks)
+        end
+        travel_to Date.new(2021, 1, 1) do
+          student = create(:student, school: school)
+          internship_offer = create(:weekly_internship_offer, weeks: [Week.find_by(number: 5, year: 2021)])
+          sign_in(student)
+          visit internship_offer_path(internship_offer)
+          find('h1', text: internship_offer.title)
+          # FIND the link to the internship_applkication
+          within('#postuler-test') do
+            click_link 'Postuler'
+          end
+          select 'Semaine du 1 février au 7 février', from: 'internship_application_week_id'
+        end
+      end
+
       test 'GET #show as Student with existing draft application shows the draft' do
         if ENV['RUN_BRITTLE_TEST']
           weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]

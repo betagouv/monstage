@@ -36,9 +36,6 @@ module Teamable
 
     has_many :internship_applications, through: :kept_internship_offers
     has_many :internship_agreements, through: :internship_applications
-    has_many :organisations  #TODO keep ?
-    has_many :tutors #TODO keep ?
-    has_many :internship_offer_infos #TODO keep ?
 
     def personal_internship_offers
       InternshipOffer.where(employer_id: id)

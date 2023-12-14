@@ -41,8 +41,17 @@ end
     end
   end
 
+  desc "remove url_shrinker's content"
+  task :clean_url_shrinker, [] => :environment do |args|
+    framing_with_announce("Clearing url_shrinker content") do
+      UrlShrinker.delete_all
+      puts "-- done"
+    end
+  end
+
   desc "anonymize and delete what should be after school year's end"
   task anonymize_and_delete: %i[archive_students
                                 delete_invitations
-                                anonymize_internship_agreements]
+                                anonymize_internship_agreements
+                                clean_url_shrinker]
 end

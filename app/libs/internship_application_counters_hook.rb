@@ -11,9 +11,6 @@ class InternshipApplicationCountersHook
       total_male_approved_applications_count: total_male_approved_applications_count,
       total_female_approved_applications_count: total_female_approved_applications_count,
       rejected_applications_count: rejected_applications_count,
-      convention_signed_applications_count: convention_signed_applications_count,
-      total_male_convention_signed_applications_count: total_male_convention_signed_applications_count,
-      total_female_convention_signed_applications_count: total_female_convention_signed_applications_count,
       remaining_seats_count: remaining_seats_count
     }
   end
@@ -75,32 +72,6 @@ class InternshipApplicationCountersHook
   def submitted_applications_count
     internship_offer.internship_applications
                     .select(&:submitted?)
-                    .count
-  end
-
-  # TODO : wrong ? should count on internship_agreements
-
-  def convention_signed_applications_count
-    internship_offer.internship_applications
-                    .select(&:convention_signed?)
-                    .count
-  end
-
-  def total_male_convention_signed_applications_count
-    internship_offer.internship_applications
-                    .joins(:student)
-                    .includes(:student)
-                    .select(&:convention_signed?)
-                    .select(&:student_is_male?)
-                    .count
-  end
-
-  def total_female_convention_signed_applications_count
-    internship_offer.internship_applications
-                    .joins(:student)
-                    .includes(:student)
-                    .select(&:convention_signed?)
-                    .select(&:student_is_female?)
                     .count
   end
 
