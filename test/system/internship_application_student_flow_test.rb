@@ -78,7 +78,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       all('a', text: 'Postuler').first.click
       # check for phone fields
       page.find "input[name='internship_application[student_phone]']", visible: true
-      fill_in("Numéro de téléphone élève ou parent", with: '060011223344')
+      fill_in("Numéro de portable élève ou parent", with: '060011223344')
       # check for email fields
       page.find "input[name='internship_application[student_email]']", visible: true
       fill_in("Adresse électronique (email)", with: 'parents@gmail.com')
