@@ -12,6 +12,9 @@ p style=p_cyclop_styles
     | Il attend votre réponse,
   | confirmez votre présence.
 
+p style=p_styles
+  | Il vous reste 15 jours pour donner une réponse à l’entreprise. Passé ce délai, votre candidature sera automatiquement annulée.
+
 p style=p_cyclop_styles
 = render partial: "mailers/blue_call_to_action",
           locals: { href: @url,
