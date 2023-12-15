@@ -70,6 +70,16 @@ class GodMailer < ApplicationMailer
     )
   end
 
+  def students_global_applications_reminder(students_count)
+    @human_date = I18n.l Date.today,   format: '%d %B %Y'
+    @students_count = students_count
+
+    mail(
+      to: ENV['TEAM_EMAIL'],
+      subject: "#{@students_count} élèves relancés par sms au #{@human_date}"
+    )
+  end
+
   def new_statistician_email(statistician)
     @role = statistician.role
     @statistician = statistician.presenter
