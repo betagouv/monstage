@@ -41,7 +41,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
   end
 
   test 'search by location (zipcodes) works' do
-    travel_to (Date.new(2022, 9, 6)) do
+    travel_to (Date.new(2023, 9, 6)) do
       internship_offer_at_paris = create(:weekly_internship_offer,
                                         coordinates: Coordinates.paris)
       internship_offer_at_bordeaux = create(:weekly_internship_offer,
