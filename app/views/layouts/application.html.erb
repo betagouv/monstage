@@ -27,11 +27,7 @@
         <div class="col px-0">
           <%= render "layouts/navbar" %>
           <% if can?(:subscribe_to_webinar, current_user_or_visitor) %>
-            <% if in_dashboard? %>
-              <%= render 'layouts/new_cgu_banner' %>
-            <% else %>
-              <%= render 'layouts/webinar_banner' %>
-            <% end %>
+            <%= render 'layouts/webinar_banner' %>
           <% end %>
         </div>
       </header>
