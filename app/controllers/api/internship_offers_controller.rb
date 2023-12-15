@@ -69,6 +69,8 @@ module Api
               :max_students_per_group,
               :is_public,
               :handicap_accessible,
+              :lunch_break,
+              daily_hours: {},
               coordinates: {},
               weeks: []
             )

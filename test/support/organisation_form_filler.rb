@@ -38,7 +38,7 @@ module OrganisationFormFiller
     find('label', text: 'Public').click if is_public  # Default is private
     select group.name, from: 'organisation_group_id' if group
 
-    find('#organisation_employer_description_rich_text', visible: false).set("Une super cool entreprise")
+    find('#organisation_employer_description_rich_text', visible: false).set("Une entreprise super cool ")
     fill_in 'Site web (optionnel)', with: 'https://beta.gouv.fr/'
   end
 end

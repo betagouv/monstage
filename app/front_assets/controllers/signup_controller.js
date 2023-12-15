@@ -26,11 +26,6 @@ export default class extends Controller {
     'departmentSelect',
     'ministrySelect'
   ];
-  // 'passwordConfirmationHint',
-  // 'passwordConfirmationGroup',
-  // 'passwordConfirmationLabel',
-  // 'passwordConfirmationInput',
-  // data-signup - target="emailExplanation"
 
   static values = {
     channel: String,

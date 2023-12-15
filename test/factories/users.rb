@@ -129,9 +129,6 @@ FactoryBot.define do
       agreement_signatorable { false }
       department { '60' }
       statistician_validation { true }
-      before(:create) do |user|
-        create(:statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
-      end
     end
 
     factory :prefecture_statistician,
@@ -142,9 +139,6 @@ FactoryBot.define do
       agreement_signatorable { false }
       department { '60' }
       statistician_validation { true }
-      before(:create) do |user|
-        create(:statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
-      end
     end
 
     factory :education_statistician,
@@ -155,9 +149,6 @@ FactoryBot.define do
       agreement_signatorable { false }
       statistician_validation { true }
       department { '60' }
-      before(:create) do |user|
-        create(:education_statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
-      end
     end
 
     factory :ministry_statistician,

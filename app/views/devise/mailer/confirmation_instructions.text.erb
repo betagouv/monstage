@@ -1,7 +1,22 @@
-<%= "Plus qu'une étape..." %>
+<% if @resource.student? %>
+  <%= "#{@resource.presenter.formal_name}, "%>
 
-<%= "Bienvenue #{@resource.presenter.formal_name}" %>
-Votre compte a bien été enregistré !
-<%= "Cliquez ou copier/coller sur le lien suivant pour activer votre compte : #{confirmation_url(@resource, confirmation_token: @token)}" %>
+  Bienvenue à Monstagedetroisieme.fr !
 
-Merci.
+  Vous êtes maintenant <%=@resource.presenter.genred('prêt')%> à trouver votre stage de troisième.
+  Pour commencer, cliquez sur le lien ci-après pour faire une recherche de stage :
+
+  <%="#{ENV['HOST']}#{@resource.after_sign_in_path}" %>
+  
+  Si vous avez des questions ou rencontrez des problèmes, n'hésitez pas à nous contacter via le chat en direct sur notre site web ou par e-mail à support@monstagedetroisieme.fr
+
+  L'équipe Monstagedetroisieme.fr
+<% else %>
+  <%= "Plus qu'une étape..." %>
+
+  <%= "Bienvenue #{@resource.presenter.formal_name}" %>
+  Votre compte a bien été enregistré !
+  <%= "Cliquez ou copier/coller sur le lien suivant pour activer votre compte : #{confirmation_url(@resource, confirmation_token: @token)}" %>
+
+  Merci.
+<% end %>

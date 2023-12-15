@@ -61,8 +61,7 @@ module Users
 
     # POST /resource
     def create
-      [:statistician_registration_checking,
-       :honey_pot_checking,
+      [:honey_pot_checking,
        :phone_reuse_checking].each do |check|
           check_proc = send(check, params)
           (check_proc.call and return) if check_proc.respond_to?(:call)
@@ -78,6 +77,7 @@ module Users
         @current_ability = Ability.new(resource)
       end
       resource.try(:initializing_current_area) if resource.persisted?
+      resource.skip_confirmation! && resource.save if resource.student?
       flash.delete(:notice) if params.dig(:user, :statistician_type).present?
     end
 
@@ -163,16 +163,14 @@ module Users
     # end
 
     # The path used after sign up.
-    # def after_sign_up_path_for(resource)
+    # def after_sign_up_path(resource)
     #   super(resource)
     # end
 
     # The path used after sign up for inactive accounts.
     def after_inactive_sign_up_path_for(resource)
-      if resource.phone.present? && resource.student?
-        options = { id: resource.id }
-        options = options.merge({ as: 'Student'}) if resource.student?
-        users_registrations_phone_standby_path(options)
+      if resource.student?
+        register_student_path(resource)
       elsif resource.statistician?
         statistician_standby_path(id: resource.id)
       else
@@ -215,22 +213,6 @@ module Users
       })
     end
 
-    def statistician_registration_checking(params)
-      as = params[:as]
-      statisticians = %w[PrefectureStatistician MinistryStatistician EducationStatistitician]
-      # if as.in?(statisticians) && EmailWhitelist.where(email: params[:user][:email]).first.nil?
-      #   unregistered_message = "Votre adresse email n'est pas " \
-      #                          "enregistrée dans notre base de données. "\
-      #                          "Veuillez contacter l'administrateur."
-      #   flash = { danger: unregistered_message }
-      #   destination = new_user_registration_path(first_name: params[:user][:first_name],
-      #                                            last_name: params[:user][:last_name],
-      #                                            email: params[:user][:email],
-      #                                            accept_terms: params[:user][:accept_terms],
-      #                                            as: as)
-      #   lambda { redirect_to destination, flash: flash }
-      # end
-    end
 
     def honey_pot_checking(params)
       if params[:user][:confirmation_email].present?
@@ -249,6 +231,20 @@ module Users
             flash: { danger: I18n.t('devise.registrations.reusing_phone_number')}
           )
         }
+      end
+    end
+
+    def register_student_path(resource)
+      if resource.just_created?
+        flash.discard
+        resource.skip_confirmation! && resource.save
+        bypass_sign_in resource
+        internship_offers_path
+      elsif resource.phone.present?
+        options = { id: resource.id, as: 'Student' }
+        users_registrations_phone_standby_path(options)
+      else
+        users_registrations_standby_path(id: resource.id)
       end
     end
   end
