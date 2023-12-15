@@ -81,7 +81,7 @@ module Users
     end
 
     def dashboard_name
-      'Candidatures / Réponses'
+      'Candidatures'
     end
 
     def default_account_section

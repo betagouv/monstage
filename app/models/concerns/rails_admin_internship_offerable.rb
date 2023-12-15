@@ -20,12 +20,9 @@ module RailsAdminInternshipOfferable
       show do
         exclude_fields :blocked_weeks_count,
                        :total_applications_count,
-                       :convention_signed_applications_count,
                        :approved_applications_count,
                        :total_male_applications_count,
-                       :total_male_convention_signed_applications_count,
                        :total_female_applications_count,
-                       :total_female_convention_signed_applications_count,
                        :submitted_applications_count,
                        :rejected_applications_count,
                        :tutor
@@ -66,7 +63,6 @@ module RailsAdminInternshipOfferable
         field :max_candidates
         field :max_students_per_group
         field :total_applications_count
-        field :convention_signed_applications_count
         field :employer_name
         field :tutor_name
         field :tutor_phone

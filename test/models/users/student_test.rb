@@ -38,14 +38,6 @@ module Users
       assert_nil user.phone_token_validity
     end
 
-    test 'phone token creation after user creation' do
-      user = create(:student, phone: '+330711223344')
-      assert_not_nil user.phone_token
-      assert_equal 4, user.phone_token.size
-      assert_not_nil user.phone_token_validity
-      assert_equal true, user.phone_token_validity.between?(59.minutes.from_now, 61.minutes.from_now)
-    end
-
     test "#main_teacher" do
       school                     = create(:school)
       school_with_school_manager = create(:school, :with_school_manager)

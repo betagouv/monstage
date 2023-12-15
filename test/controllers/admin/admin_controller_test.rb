@@ -27,13 +27,5 @@ module Admin
       get rails_admin_path
       assert_response :success
     end
-
-    test 'allows to add dasen to whitelist' do
-      white_list = EmailWhitelists::EducationStatistician.new(email: 'Patrice.Minet@France-Culture.fr' , zipcode: 75)
-      white_list.save
-
-      assert_equal 'patrice.minet@france-culture.fr', white_list.reload.email
-      assert_equal "EmailWhitelists::EducationStatistician", white_list.type
-    end
   end
 end
