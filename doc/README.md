@@ -236,6 +236,28 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 
 - 409, Conflict. Une offre avec le même ```remote_id``` existe déjà
 
+### <a name="ref-index-internship-offer"></a>
+## Récupérer mes offres
+
+
+**url** : ```#{baseURL}/internship_offers```
+
+**method** : GET
+
+### Exemple curl
+
+``` bash
+curl -H "Authorization: Bearer $API_TOKEN" \
+     -H "Accept: application/json" \
+     -H "Content-type: application/json" \
+     -vvv \
+     $ENV/api/internship_offers
+```
+
+### Erreurs
+
+- 409, Conflict. Une offre avec le même ```remote_id``` existe déjà
+
 ### <a name="ref-modify-internship-offer"></a>
 ## Modification d'une offre
 

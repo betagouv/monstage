@@ -31,7 +31,8 @@ html lang="fr"
 
     div  data-controller='footer'
       = render 'layouts/footer'
-    = render partial: 'dashboard/internship_offers/reminder_modal' if session.delete(:show_student_reminder_modal)
+    - if current_user&.student? && current_user.internship_applications.validated_by_employer.count.positive?
+      = render partial: 'dashboard/internship_offers/reminder_modal' if session.delete(:show_student_reminder_modal)
     = render partial: "layouts/analytics"
 
 
