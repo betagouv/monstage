@@ -431,4 +431,20 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     assert_equal %w[submitted read_by_employer examined validated_by_employer],
                  InternshipApplication.pending_states
   end
+
+  test '.order_by_aasm_state_for_student' do
+    internship_application_1 = create(:weekly_internship_application, :submitted) #n°3 in the list by created_at
+    internship_application_2 = create(:weekly_internship_application, :validated_by_employer) #n°1 in the list by status
+    sleep(1)
+    internship_application_3 = create(:weekly_internship_application, :examined) #n°4 in the list by created_at
+    internship_application_4 = create(:weekly_internship_application, :read_by_employer) #n°5 in the list by created_at
+    sleep(1)
+    internship_application_5 = create(:weekly_internship_application, :validated_by_employer) #n°2 in the list by status
+
+    assert_equal internship_application_2, InternshipApplication.order_by_aasm_state_for_student.first
+    assert_equal internship_application_5, InternshipApplication.order_by_aasm_state_for_student.second
+    assert_equal internship_application_1, InternshipApplication.order_by_aasm_state_for_student.third
+    assert_equal internship_application_3, InternshipApplication.order_by_aasm_state_for_student.fourth
+    assert_equal internship_application_4, InternshipApplication.order_by_aasm_state_for_student.fifth
+  end
 end

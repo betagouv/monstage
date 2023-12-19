@@ -161,6 +161,20 @@ Exemple de ce que nous attendons donc un uuid dans nos API :
 internship_offer.sector_uuid: "c76e6364-7257-473c-89aa-c951141810ce"
 ```
 
+### <a name="ref-daily-hours"></a>
+## Horaires quotidiens
+Les stages se déroulant sur une semaine du lundi au vendredi, il est possible de préciser les horaires de chaque journée de la façon suivante :
+
+```
+{ JOUR: [HEURE_DEBUT, HEURE_FIN] }
+```
+
+Exemple de ce que nous attendons dans nos API :
+
+```
+internship_offer.daily_hours: { "lundi": ["8:30";"17:00"], "mardi": ["8:30";"17:00"], "mercredi": ["8:30";"17:00"], "jeudi": ["8:30";"17:00"], "vendredi": ["8:30";"17:00"]}
+```
+
 # Gestion d'erreurs
 Les erreurs de requête seront signalées via un code HTTP > 400.
 
@@ -203,6 +217,8 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 * **permalink** *(url, required)*
 * **max_candidates** *(integer)*
 * **is_public** *(boolean, optional)*: true|false
+* **lunch_break** *(text, optional *<= 500 caractères)
+* **daily_hours** *(object, optional, 
 
 ### Exemple curl
 
@@ -212,6 +228,28 @@ curl -H "Authorization: Bearer $API_TOKEN" \
      -H "Content-type: application/json" \
      -X POST \
      -d '{"internship_offer": {"title":"title","description":"description","employer_website":"http://google.fr","street":"Tour Effeil","zipcode":"75002","city":"Paris","employer_name":"employer_name", "weeks":["2021-W16","2021-W18"],"employer_description":"employer_description","remote_id":"test_2","permalink":"https://www.google.fr","sector_uuid": "1ce60ecc-273d-4c73-9b1a-2f5ee14e1bc6", "coordinates":{"latitude":1.0,"longitude":1.0}}}' \
+     -vvv \
+     $ENV/api/internship_offers
+```
+
+### Erreurs
+
+- 409, Conflict. Une offre avec le même ```remote_id``` existe déjà
+
+### <a name="ref-index-internship-offer"></a>
+## Récupérer mes offres
+
+
+**url** : ```#{baseURL}/internship_offers```
+
+**method** : GET
+
+### Exemple curl
+
+``` bash
+curl -H "Authorization: Bearer $API_TOKEN" \
+     -H "Accept: application/json" \
+     -H "Content-type: application/json" \
      -vvv \
      $ENV/api/internship_offers
 ```

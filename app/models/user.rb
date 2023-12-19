@@ -142,8 +142,6 @@ class User < ApplicationRecord
     }
     update_columns(fields_to_reset)
 
-    EmailWhitelist.destroy_by(email: email_for_job)
-
     discard! unless discarded?
 
     unless email_for_job.blank?
@@ -233,7 +231,7 @@ class User < ApplicationRecord
     if add_email_to_phone_account?
       self.confirm
     else
-      unless @skip_confirmation_notification || whitelisted? || created_by_teacher || statistician?
+      unless @skip_confirmation_notification || created_by_teacher || statistician?
         devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email })
                      .deliver_later
       end
@@ -343,9 +341,5 @@ class User < ApplicationRecord
         'Il faut conserver un email valide pour assurer la continuité du service'
       )
     end
-  end
-
-  def whitelisted?
-    !!EmailWhitelist.find_by_email(email)
   end
 end

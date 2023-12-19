@@ -4,13 +4,22 @@ module Api
   class InternshipOffersController < ApiBaseController
     before_action :authenticate_api_user!
 
-    def index
+    def search
       render_not_authorized and return unless current_api_user.operator.api_full_access
 
       @internship_offers = finder.all.includes([:sector, :employer, :school]).order(id: :desc)
       
       formatted_internship_offers = format_internship_offers(@internship_offers)
-      @params = query_params
+      data = {
+        pagination: page_links,
+        internshipOffers: formatted_internship_offers,
+      }
+      render json: data, status: 200
+    end
+
+    def index
+      @internship_offers = current_api_user.internship_offers.order(id: :desc).page(params[:page])
+      formatted_internship_offers = format_internship_offers(@internship_offers)
       data = {
         pagination: page_links,
         internshipOffers: formatted_internship_offers,
@@ -69,6 +78,8 @@ module Api
               :max_students_per_group,
               :is_public,
               :handicap_accessible,
+              :lunch_break,
+              daily_hours: {},
               coordinates: {},
               weeks: []
             )
@@ -141,8 +152,8 @@ module Api
         internshipOffersPerPage: InternshipOffer::PAGE_SIZE,
         totalPages: @internship_offers.total_pages,
         currentPage: @internship_offers.current_page,
-        nextPage: @internship_offers.next_page ? api_internship_offers_url(query_params.merge({page: @internship_offers.next_page})) : nil,
-        prevPage: @internship_offers.prev_page ? api_internship_offers_url(query_params.merge({page: @internship_offers.prev_page})) : nil,
+        nextPage: @internship_offers.next_page ? search_api_internship_offers_url(query_params.merge({page: @internship_offers.next_page})) : nil,
+        prevPage: @internship_offers.prev_page ? search_api_internship_offers_url(query_params.merge({page: @internship_offers.prev_page})) : nil,
         isFirstPage: @internship_offers.first_page?,
         isLastPage: @internship_offers.last_page?,
         pageUrlBase:  url_for(query_params.except('page'))

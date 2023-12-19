@@ -61,8 +61,7 @@ module Users
 
     # POST /resource
     def create
-      [:statistician_registration_checking,
-       :honey_pot_checking,
+      [:honey_pot_checking,
        :phone_reuse_checking].each do |check|
           check_proc = send(check, params)
           (check_proc.call and return) if check_proc.respond_to?(:call)
@@ -214,22 +213,6 @@ module Users
       })
     end
 
-    def statistician_registration_checking(params)
-      as = params[:as]
-      statisticians = %w[PrefectureStatistician MinistryStatistician EducationStatistitician]
-      # if as.in?(statisticians) && EmailWhitelist.where(email: params[:user][:email]).first.nil?
-      #   unregistered_message = "Votre adresse email n'est pas " \
-      #                          "enregistrée dans notre base de données. "\
-      #                          "Veuillez contacter l'administrateur."
-      #   flash = { danger: unregistered_message }
-      #   destination = new_user_registration_path(first_name: params[:user][:first_name],
-      #                                            last_name: params[:user][:last_name],
-      #                                            email: params[:user][:email],
-      #                                            accept_terms: params[:user][:accept_terms],
-      #                                            as: as)
-      #   lambda { redirect_to destination, flash: flash }
-      # end
-    end
 
     def honey_pot_checking(params)
       if params[:user][:confirmation_email].present?
