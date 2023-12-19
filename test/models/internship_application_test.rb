@@ -434,9 +434,11 @@ class InternshipApplicationTest < ActiveSupport::TestCase
 
   test '.order_by_aasm_state_for_student' do
     internship_application_1 = create(:weekly_internship_application, :submitted) #n°3 in the list by created_at
+    sleep(1)
     internship_application_2 = create(:weekly_internship_application, :validated_by_employer) #n°1 in the list by status
     sleep(1)
     internship_application_3 = create(:weekly_internship_application, :examined) #n°4 in the list by created_at
+    sleep(1)
     internship_application_4 = create(:weekly_internship_application, :read_by_employer) #n°5 in the list by created_at
     sleep(1)
     internship_application_5 = create(:weekly_internship_application, :validated_by_employer) #n°2 in the list by status
