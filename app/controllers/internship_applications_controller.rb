@@ -33,7 +33,7 @@ class InternshipApplicationsController < ApplicationController
     if params[:transition] == 'submit!'
       @internship_application.submit!
       @internship_application.save!
-      redirect_to completed_internship_offer_internship_application_path(@internship_offer, @internship_application)
+      redirect_to dashboard_students_internship_applications_path(student_id: current_user.id, notice_banner: true)
     else
       @internship_application.update(update_internship_application_params)
       redirect_to internship_offer_internship_application_path(@internship_offer, @internship_application)
@@ -53,7 +53,8 @@ class InternshipApplicationsController < ApplicationController
 
     appli_params = {user_id: current_user.id}.merge(create_internship_application_params)
     @internship_application = InternshipApplication.create!(appli_params)
-    redirect_to dashboard_students_internship_applications_path(student_id: current_user.id, notice_banner: true)
+    redirect_to internship_offer_internship_application_path(@internship_offer,
+                                                             @internship_application)
   rescue ActiveRecord::RecordInvalid => e
     @internship_application = e.record
     puts @internship_application.errors.messages
