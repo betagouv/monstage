@@ -130,7 +130,7 @@ module Dashboard::Stepper
       employer = create(:employer, phone: '+330623456789')
       sign_in(employer)
       organisation = create(:organisation, employer: employer)
-      internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
+      internship_offer_info = create(:internship_offer_info, employer: employer)
       hosting_info = create(:hosting_info, employer: employer)
       
       # first time
