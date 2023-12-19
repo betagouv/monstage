@@ -163,6 +163,7 @@ class InternshipApplication < ApplicationRecord
           :approved,
           :rejected,
           :expired,
+          :expired_by_student,
           :canceled_by_employer,
           :canceled_by_student,
           :canceled_by_student_confirmation,
@@ -202,7 +203,8 @@ class InternshipApplication < ApplicationRecord
                     update!("validated_by_employer_at": Time.now.utc, aasm_state: :validated_by_employer)
                     self.reload
                     after_employer_validation_notifications
-                  }
+                    CancelValidatedInternshipApplicationJob.set(wait: 15.days).perform_later(internship_application_id: id)
+                  }        
     end
 
     event :approve do
@@ -268,8 +270,16 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :expire do
-      transitions from: %i[read_by_employer examined approved submitted drafted],
+      transitions from: %i[submitted validated_by_employer],
                   to: :expired,
+                  after: proc { |*_args|
+        update!(expired_at: Time.now.utc)
+      }
+    end
+
+    event :expire_by_student do
+      transitions from: %i[validated_by_employer read_by_employer examined submitted drafted],
+                  to: :expired_by_student,
                   after: proc { |*_args|
         update!(expired_at: Time.now.utc)
       }

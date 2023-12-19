@@ -42,7 +42,6 @@ module Dashboard::InternshipOffers
     end
 
     test 'GET #index as employer returns his internship_offers with applications on them' do
-
       employer , included_internship_offer = create_employer_and_offer
       excluded_internship_offer = create(:weekly_internship_offer,
                                          internship_offer_area_id: employer.current_area_id,
