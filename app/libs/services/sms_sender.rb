@@ -4,7 +4,7 @@ module Services
     def perform
       response = get_request
       if response.nil? || !response.respond_to?(:body)
-        Rails.logger.error("NetSize error: response is ko | phone_number: #{@phone_number} | content: #{@content}")
+        Rails.logger.error("Link Mobility error: response is ko | phone_number: #{@phone_number} | content: #{@content}")
         return nil
       end
       response_body = JSON.parse(response.body)
@@ -16,7 +16,7 @@ module Services
     private
 
     def log_success(response_body)
-      info = "NetSize success for phone '#{@phone_number}', with content " \
+      info = "Link Mobility success for phone '#{@phone_number}', with content " \
             "'#{@content}' | traceId: '#{response_body['traceId']}' | " \
             "messageIds: '#{response_body['messageIds']}'"
       Rails.logger.info(info)
@@ -24,7 +24,7 @@ module Services
     end
 
     def log_failure(response_body)
-      error_message = "NetSize error: '#{response_body['responseMessage']}', " \
+      error_message = "Link Mobility error: '#{response_body['responseMessage']}', " \
                       "with code #{response_body['responseCode']}, for phone" \
                       " '#{@phone_number}', with content '#{@content}'"
       Rails.logger.error(error_message)
