@@ -433,13 +433,31 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test '.order_by_aasm_state_for_student' do
-    internship_application_1 = create(:weekly_internship_application, :submitted) #n°3 in the list by created_at
-    internship_application_2 = create(:weekly_internship_application, :validated_by_employer) #n°1 in the list by status
-    sleep(1)
-    internship_application_3 = create(:weekly_internship_application, :examined) #n°4 in the list by created_at
-    internship_application_4 = create(:weekly_internship_application, :read_by_employer) #n°5 in the list by created_at
-    sleep(1)
-    internship_application_5 = create(:weekly_internship_application, :validated_by_employer) #n°2 in the list by status
+    internship_application_1 = nil
+    internship_application_2 = nil
+    internship_application_3 = nil
+    internship_application_4 = nil
+    internship_application_5 = nil
+    travel_to Time.zone.local(2020, 1, 1, 12, 0, 0) do
+      #n°3 in the list by created_at
+      internship_application_1 = create(:weekly_internship_application, :submitted)
+    end
+    travel_to Time.zone.local(2020, 1, 1, 13, 0, 0) do
+      #n°1 in the list by status
+      internship_application_2 = create(:weekly_internship_application, :validated_by_employer)
+    end
+    travel_to Time.zone.local(2020, 1, 1, 14, 0, 0) do
+      #n°4 in the list by created_at
+      internship_application_3 = create(:weekly_internship_application, :examined)
+    end
+    travel_to Time.zone.local(2020, 1, 1, 15, 0, 0) do
+      #n°5 in the list by created_at
+      internship_application_4 = create(:weekly_internship_application, :read_by_employer)
+    end
+    travel_to Time.zone.local(2020, 1, 1, 16, 0, 0) do
+      #n°2 in the list by status
+      internship_application_5 = create(:weekly_internship_application, :validated_by_employer)
+    end
 
     assert_equal internship_application_2, InternshipApplication.order_by_aasm_state_for_student.first
     assert_equal internship_application_5, InternshipApplication.order_by_aasm_state_for_student.second
