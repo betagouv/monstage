@@ -454,11 +454,10 @@ class InternshipApplicationTest < ActiveSupport::TestCase
       internship_application_5 = create(:weekly_internship_application, :validated_by_employer) #n°2 in the list by status
     end
 
-    assert_equal [internship_application_2,
-                  internship_application_5,
-                  internship_application_1,
-                  internship_application_3,
-                  internship_application_4],
-                  InternshipApplication.order_by_aasm_state_for_student
+    assert_equal internship_application_2, InternshipApplication.order_by_aasm_state_for_student.first
+    assert_equal internship_application_5, InternshipApplication.order_by_aasm_state_for_student.second
+    assert_equal internship_application_1, InternshipApplication.order_by_aasm_state_for_student.third
+    assert_equal internship_application_3, InternshipApplication.order_by_aasm_state_for_student.fourth
+    assert_equal internship_application_4, InternshipApplication.order_by_aasm_state_for_student.fifth
   end
 end

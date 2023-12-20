@@ -212,7 +212,9 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 * **internship_offer.zipcode** *(string, required)*
 * **internship_offer.city** *(string, required)*
 * **internship_offer.sector_uuid** *(integer, required)*
-* **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
+* **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champ n'est pas rempli, le stage sera automatiquement disponible toute l'année
+* **internship_offer.lunch_break** *(string, optional)*: le de la pause déjeuner
+* **internship_offer.daily_hours** *(object, optional)*: Les horaires de chaque jour. ex: {"lundi": ['9:00', '16:00], "mardi": ['9:00', '16:00], "mercredi": ['9:00', '16:00], "jeudi": ['9:00', '16:00], "vendredi": ['9:00', '16:00]}
 * **remote_id** *(string, required)*: l'identifiant unique du coté operateur|collectivité|association
 * **permalink** *(url, required)*
 * **max_candidates** *(integer)*
@@ -228,6 +230,28 @@ curl -H "Authorization: Bearer $API_TOKEN" \
      -H "Content-type: application/json" \
      -X POST \
      -d '{"internship_offer": {"title":"title","description":"description","employer_website":"http://google.fr","street":"Tour Effeil","zipcode":"75002","city":"Paris","employer_name":"employer_name", "weeks":["2021-W16","2021-W18"],"employer_description":"employer_description","remote_id":"test_2","permalink":"https://www.google.fr","sector_uuid": "1ce60ecc-273d-4c73-9b1a-2f5ee14e1bc6", "coordinates":{"latitude":1.0,"longitude":1.0}}}' \
+     -vvv \
+     $ENV/api/internship_offers
+```
+
+### Erreurs
+
+- 409, Conflict. Une offre avec le même ```remote_id``` existe déjà
+
+### <a name="ref-index-internship-offer"></a>
+## Récupérer mes offres
+
+
+**url** : ```#{baseURL}/internship_offers```
+
+**method** : GET
+
+### Exemple curl
+
+``` bash
+curl -H "Authorization: Bearer $API_TOKEN" \
+     -H "Accept: application/json" \
+     -H "Content-type: application/json" \
      -vvv \
      $ENV/api/internship_offers
 ```

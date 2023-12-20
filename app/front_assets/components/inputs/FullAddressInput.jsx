@@ -132,7 +132,7 @@ export default function AddressInput({
                       name: `${resourceName}_autocomplete`,
                       id: `${resourceName}_autocomplete`,
                       placeholder: 'Adresse',
-                      data: {'target': 'organisation-form.requiredField'}
+                      "data-organisation-form-target": 'requiredField'
                     })}
                   />
                 </div>
@@ -217,7 +217,7 @@ export default function AddressInput({
               type="text"
               name={`${resourceName}[street]`}
               id={`${resourceName}_street`}
-              data-target="organisation-form.requiredField"
+              data-organisation-form-target="requiredField"
             />
           </div>
         </div>
@@ -252,7 +252,7 @@ export default function AddressInput({
               readOnly
               name={`${resourceName}[city]`}
               id={`${resourceName}_city`}
-              data-target="organisation-form.requiredField"
+              data-organisation-form-target="requiredField"
             />
           </div>
         </div>
@@ -272,7 +272,7 @@ export default function AddressInput({
               name={`${resourceName}[zipcode]`}
               id={`${resourceName}_zipcode`}
               readOnly
-              data-target="organisation-form.requiredField"
+              data-organisation-form-target="requiredField"
             />
           </div>
         </div>
