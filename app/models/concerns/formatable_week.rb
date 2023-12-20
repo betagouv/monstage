@@ -93,6 +93,10 @@ module FormatableWeek
       I18n.localize(week_date.end_of_week, format: :human_mm_dd_yyyy)
     end
 
+    def friday_of_week_with_years_long
+      I18n.localize(week_date + 4, format: :human_mm_dd_yyyy)
+    end
+
     def end_of_week_with_short_month_years_long
       I18n.localize(week_date.end_of_week, format: :human_dd_short_mm_yyyy)
     end
