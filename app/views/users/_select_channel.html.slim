@@ -42,6 +42,7 @@ fieldset.select-channel.fr-fieldset.fr-mt-n4w[aria-labelledby="channel-legend"]
           .text-muted = hint
         = form.text_field :email,
                       class: "fr-input fr-input--error",
+                      value: resource.email.blank? ? params[:email] : resource.email,
                       :'aria-describedby' => "text-input-error-desc-error",
                       placeholder: placeholder,
                       data: {action: 'change->signup#onBlurEmailInput', :"signup-target" => 'emailInput'}
@@ -58,8 +59,9 @@ fieldset.select-channel.fr-fieldset.fr-mt-n4w[aria-labelledby="channel-legend"]
           | Format attendu : nom@domaine.fr
         small#email-explanation.form-text.text-muted[data-signup-target="emailExplanation"]
         = form.email_field :email,
+                           id: "user_email",
                            class: "fr-input #{ hint.blank? ? '' : 'fr-mt-n2v'}",
-                           :'aria-describedby' => "user_email",
+                           value: resource.email.blank? ? params[:email] : resource.email,
                            autofocus: params[:email].blank? ? true : false,
                            placeholder: placeholder,
                            data: {action: 'change->signup#onBlurEmailInput', :"signup-target" => 'emailInput'}
