@@ -91,7 +91,6 @@ module StepperProxy
     end
 
     def missing_weeks_in_the_future
-      return false if published_at.nil? && republish.nil?
 
       if missing_weeks_info?
         errors.add(weeks_class, 'Vous devez sélectionner au moins une semaine dans le futur')
@@ -106,7 +105,9 @@ module StepperProxy
 
     def check_missing_seats_or_weeks
       return false if self.is_a?(::InternshipOfferInfo)
-      return false unless published?
+      return false if published_at.nil? # different from published? since published? checks the database and the former state of the object
+      return false if republish.nil?
+
 
       missing_weeks_in_the_future && check_for_missing_seats
     end
