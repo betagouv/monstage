@@ -433,11 +433,11 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test '.order_by_aasm_state_for_student' do
-    intership_application_1 = nil
-    intership_application_2 = nil
-    intership_application_3 = nil
-    intership_application_4 = nil
-    intership_application_5 = nil
+    internship_application_1 = nil
+    internship_application_2 = nil
+    internship_application_3 = nil
+    internship_application_4 = nil
+    internship_application_5 = nil
     travel_to Time.utc(2020, 1, 1, 12, 0, 0) do
       internship_application_1 = create(:weekly_internship_application, :submitted) #n°3 in the list by created_at
     end
