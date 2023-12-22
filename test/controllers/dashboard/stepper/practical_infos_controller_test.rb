@@ -126,6 +126,68 @@ module Dashboard::Stepper
       assert_equal created_practical_info.coordinates, created_internship_offer.coordinates
     end
 
+    test 'POST create when already created redirects to internship offer' do
+      employer = create(:employer, phone: '+330623456789')
+      sign_in(employer)
+      organisation = create(:organisation, employer: employer)
+      internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
+      hosting_info = create(:hosting_info, employer: employer)
+      
+      # first time
+      assert_difference('InternshipOffer.count', 1) do
+        assert_difference('PracticalInfo.count', 1) do
+          post(
+            dashboard_stepper_practical_infos_path(
+              organisation_id: organisation.id,
+              internship_offer_info_id: internship_offer_info.id,
+              hosting_info_id: hosting_info.id),
+            params: {
+              practical_info: {
+                street: '12 rue des bois',
+                street_complement: 'Batiment 1',
+                zipcode: '75001',
+                city: 'Paris',
+                coordinates: { latitude: 1, longitude: 1 },
+                contact_phone: '+330623456789',
+                daily_hours: {
+                  "lundi" => ['08:00', '15:00'],
+                  "mardi" => ['08:00', '13:00'],
+                  "mercredi" => ['09:00', '14:00'],
+                  "jeudi" => ['10:00', '15:00'],
+                  "vendredi" => ['11:00', '16:00']
+                }
+              },
+            })
+        end
+      end
+
+      # second time
+      assert_no_difference('InternshipOffer.count') do
+        post(
+          dashboard_stepper_practical_infos_path(
+            organisation_id: organisation.id,
+            internship_offer_info_id: internship_offer_info.id,
+            hosting_info_id: hosting_info.id),
+          params: {
+            practical_info: {
+              street: '12 rue des bois',
+              street_complement: 'Batiment 1',
+              zipcode: '75001',
+              city: 'Paris',
+              coordinates: { latitude: 1, longitude: 1 },
+              contact_phone: '+330623456789',
+              daily_hours: {
+                "lundi" => ['08:00', '15:00'],
+                "mardi" => ['08:00', '13:00'],
+                "mercredi" => ['09:00', '14:00'],
+                "jeudi" => ['10:00', '15:00'],
+                "vendredi" => ['11:00', '16:00']
+              }
+            },
+          })
+      end     
+    end
+
     test 'POST #create as employer with missing params' do
       employer = create(:employer)
       sign_in(employer)

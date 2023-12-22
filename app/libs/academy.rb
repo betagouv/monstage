@@ -84,8 +84,10 @@ class Academy
     MAP.map do |academy_name, departement_numbers|
       if ::Department.departement_identified_by_3_chars?(zipcode: zipcode)
         return academy_name if departement_numbers.include?(zipcode[0..2])
-      else
-        return academy_name if departement_numbers.include?(zipcode[0..1])
+      elsif zipcode[0..1] == '20'
+        return 'Académie de Corse' 
+      elsif departement_numbers.include?(zipcode[0..1])
+        return academy_name
       end
     end
   end

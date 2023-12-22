@@ -428,41 +428,6 @@ ALTER SEQUENCE public.class_rooms_id_seq OWNED BY public.class_rooms.id;
 
 
 --
--- Name: email_whitelists; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.email_whitelists (
-    id bigint NOT NULL,
-    email character varying,
-    zipcode character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    user_id bigint,
-    type character varying DEFAULT 'EmailWhitelists::PrefectureStatistician'::character varying NOT NULL,
-    group_id integer
-);
-
-
---
--- Name: email_whitelists_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.email_whitelists_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: email_whitelists_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.email_whitelists_id_seq OWNED BY public.email_whitelists.id;
-
-
---
 -- Name: favorites; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1043,13 +1008,11 @@ CREATE TABLE public.internship_offers (
     sector_id bigint,
     blocked_weeks_count integer DEFAULT 0 NOT NULL,
     total_applications_count integer DEFAULT 0 NOT NULL,
-    convention_signed_applications_count integer DEFAULT 0 NOT NULL,
     approved_applications_count integer DEFAULT 0 NOT NULL,
     employer_type character varying,
     department character varying DEFAULT ''::character varying NOT NULL,
     academy character varying DEFAULT ''::character varying NOT NULL,
     total_male_applications_count integer DEFAULT 0 NOT NULL,
-    total_male_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
     remote_id character varying,
     permalink character varying,
     view_count integer DEFAULT 0 NOT NULL,
@@ -1073,7 +1036,6 @@ CREATE TABLE public.internship_offers (
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
     total_female_applications_count integer DEFAULT 0 NOT NULL,
-    total_female_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
     total_female_approved_applications_count integer DEFAULT 0,
     max_students_per_group integer DEFAULT 1 NOT NULL,
     employer_manual_enter boolean DEFAULT false,
@@ -1428,39 +1390,6 @@ ALTER SEQUENCE public.sectors_id_seq OWNED BY public.sectors.id;
 
 
 --
--- Name: sgid_mappings; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sgid_mappings (
-    id bigint NOT NULL,
-    internship_application_id bigint NOT NULL,
-    sgid text,
-    short_sgid character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: sgid_mappings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sgid_mappings_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sgid_mappings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.sgid_mappings_id_seq OWNED BY public.sgid_mappings.id;
-
-
---
 -- Name: signatures; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1698,7 +1627,6 @@ CREATE TABLE public.users (
     class_room_id bigint,
     operator_id bigint,
     api_token character varying,
-    handicap text,
     accept_terms boolean DEFAULT false NOT NULL,
     discarded_at timestamp without time zone,
     department character varying,
@@ -1783,7 +1711,7 @@ ALTER SEQUENCE public.users_internship_offers_histories_id_seq OWNED BY public.u
 CREATE TABLE public.users_search_histories (
     id bigint NOT NULL,
     user_id bigint NOT NULL,
-    keywords character varying,
+    keywords character varying(255),
     latitude double precision,
     longitude double precision,
     city character varying,
@@ -1885,13 +1813,6 @@ ALTER TABLE ONLY public.area_notifications ALTER COLUMN id SET DEFAULT nextval('
 --
 
 ALTER TABLE ONLY public.class_rooms ALTER COLUMN id SET DEFAULT nextval('public.class_rooms_id_seq'::regclass);
-
-
---
--- Name: email_whitelists id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.email_whitelists ALTER COLUMN id SET DEFAULT nextval('public.email_whitelists_id_seq'::regclass);
 
 
 --
@@ -2056,13 +1977,6 @@ ALTER TABLE ONLY public.sectors ALTER COLUMN id SET DEFAULT nextval('public.sect
 
 
 --
--- Name: sgid_mappings id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sgid_mappings ALTER COLUMN id SET DEFAULT nextval('public.sgid_mappings_id_seq'::regclass);
-
-
---
 -- Name: signatures id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2186,14 +2100,6 @@ ALTER TABLE ONLY public.area_notifications
 
 ALTER TABLE ONLY public.class_rooms
     ADD CONSTRAINT class_rooms_pkey PRIMARY KEY (id);
-
-
---
--- Name: email_whitelists email_whitelists_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.email_whitelists
-    ADD CONSTRAINT email_whitelists_pkey PRIMARY KEY (id);
 
 
 --
@@ -2389,14 +2295,6 @@ ALTER TABLE ONLY public.sectors
 
 
 --
--- Name: sgid_mappings sgid_mappings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sgid_mappings
-    ADD CONSTRAINT sgid_mappings_pkey PRIMARY KEY (id);
-
-
---
 -- Name: signatures signatures_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2537,13 +2435,6 @@ CREATE INDEX index_area_notifications_on_user_id ON public.area_notifications US
 --
 
 CREATE INDEX index_class_rooms_on_school_id ON public.class_rooms USING btree (school_id);
-
-
---
--- Name: index_email_whitelists_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_email_whitelists_on_user_id ON public.email_whitelists USING btree (user_id);
 
 
 --
@@ -2925,13 +2816,6 @@ CREATE INDEX index_schools_on_coordinates ON public.schools USING gist (coordina
 
 
 --
--- Name: index_sgid_mappings_on_internship_application_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_sgid_mappings_on_internship_application_id ON public.sgid_mappings USING btree (internship_application_id);
-
-
---
 -- Name: index_signatures_on_internship_agreement_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3290,14 +3174,6 @@ ALTER TABLE ONLY public.internship_offers
 
 
 --
--- Name: sgid_mappings fk_rails_7a08ac1182; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sgid_mappings
-    ADD CONSTRAINT fk_rails_7a08ac1182 FOREIGN KEY (internship_application_id) REFERENCES public.internship_applications(id);
-
-
---
 -- Name: users fk_rails_804d743d22; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3311,14 +3187,6 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.internship_offers
     ADD CONSTRAINT fk_rails_8ab6b60f07 FOREIGN KEY (hosting_info_id) REFERENCES public.hosting_infos(id);
-
-
---
--- Name: email_whitelists fk_rails_8fe0f00dcd; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.email_whitelists
-    ADD CONSTRAINT fk_rails_8fe0f00dcd FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -3779,8 +3647,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231019200634'),
 ('20231030141148'),
 ('20231104093416'),
-('20231124105509'),
 ('20231130102047'),
-('20231204104224');
+('20231124105509'),
+('20231211084232'),
+('20231211143502');
 
 

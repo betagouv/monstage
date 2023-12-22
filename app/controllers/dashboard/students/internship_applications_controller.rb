@@ -14,7 +14,8 @@ module Dashboard
         authorize! :dashboard_index, @current_student
         @internship_applications = @current_student.internship_applications
                                                    .includes(:internship_offer, :student)
-                                                   .order_by_aasm_state
+                                                   .order_by_aasm_state_for_student
+                                                   .order(created_at: :desc)
       end
 
       # 0 no magic link - status quo - default value

@@ -86,6 +86,18 @@ class InternshipApplication < ApplicationRecord
       .order('orderable_aasm_state')
   }
 
+  scope :order_by_aasm_state_for_student, lambda {
+    select("#{table_name}.*")
+      .select(%(
+      CASE
+        WHEN aasm_state = 'validated_by_employer' THEN 0
+        ELSE 1
+      END as orderable_aasm_state
+    ))
+      .order('orderable_aasm_state')
+  }
+
+
   scope :no_date_index, lambda {
     where.not(aasm_state: [:drafted])
     .includes(
@@ -152,6 +164,7 @@ class InternshipApplication < ApplicationRecord
           :approved,
           :rejected,
           :expired,
+          :expired_by_student,
           :canceled_by_employer,
           :canceled_by_student,
           :canceled_by_student_confirmation,
@@ -207,7 +220,8 @@ class InternshipApplication < ApplicationRecord
                     update!("validated_by_employer_at": Time.now.utc, aasm_state: :validated_by_employer)
                     self.reload
                     after_employer_validation_notifications
-                  }
+                    CancelValidatedInternshipApplicationJob.set(wait: 15.days).perform_later(internship_application_id: id)
+                  }        
     end
 
     event :approve do
@@ -296,13 +310,16 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :expire do
-      from_states = %i[drafted
-                       read_by_employer
-                       examined
-                       submitted
-                       approved]
-      transitions from: from_states,
+      transitions from: %i[submitted validated_by_employer],
                   to: :expired,
+                  after: proc { |*_args|
+        update!(expired_at: Time.now.utc)
+      }
+    end
+
+    event :expire_by_student do
+      transitions from: %i[validated_by_employer read_by_employer examined submitted drafted],
+                  to: :expired_by_student,
                   after: proc { |*_args|
         update!(expired_at: Time.now.utc)
       }

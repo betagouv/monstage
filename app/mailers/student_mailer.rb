@@ -87,4 +87,15 @@ class StudentMailer < ApplicationMailer
     send_email(to: @student.email,
                subject: "[Relance] - Candidature validée par l'employeur")
   end
+
+  def internship_application_expired_email(internship_application:)
+    @internship_application = internship_application
+    @student = internship_application.student
+    @internship_offer = internship_application.internship_offer
+    @prez_offer = @internship_offer.presenter
+    @prez_student = @student.presenter
+
+    send_email(to: @student.email,
+               subject: "Votre candidature a expiré")
+  end
 end

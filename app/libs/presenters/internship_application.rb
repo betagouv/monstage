@@ -250,7 +250,6 @@ module Presenters
 
     protected
     def initialize(internship_application, user)
-      # TODO @reader is not used
       @reader = user  
       @internship_application = internship_application
       @student                = internship_application.student
