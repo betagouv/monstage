@@ -19,10 +19,9 @@ module Services
     def user_already_invited?
       return true if current_user.email == email # self invitation
 
-      TeamMemberInvitation.with_pending_invitations
-                .where(invitation_email: email)
-                .where(inviter_id: current_user.team_id)
-                .exists?
+      TeamMemberInvitation.where(invitation_email: email)
+                          .where(inviter_id: current_user.team_id)
+                          .exists?
     end
 
     def already_in_team?
