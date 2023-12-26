@@ -100,7 +100,7 @@ class EmployerMailer < ApplicationMailer
     )
   end
 
-  def transfer_internship_application(internship_application:, employer_id: , email:, message:)
+  def transfer_internship_application_email(internship_application:, employer_id: , email:, message:)
     @internship_application = internship_application
     @internship_offer       = internship_application.internship_offer
     @employer               = @internship_offer.employer

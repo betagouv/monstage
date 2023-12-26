@@ -1,0 +1,14 @@
+p style=head_styles
+  ="Candidature transférée"
+
+p style=p_styles
+  = "#{@employer_full_name} vous transmets la candidature de #{@student_full_name}."
+
+p style=p_styles
+  = "En cliquant sur le bouton <strong>\"Répondre à la candidature\"</strong>," \
+    " #{@employer_full_name} et l'élève seront informés directement de votre décision".html_safe
+
+p style=p_styles_italic
+  = @message
+
+= render(partial: "mailers/blue_call_to_action", locals: {href: @url, label:"Répondre à la candidature"})

@@ -93,7 +93,7 @@ class InternshipApplicationsController < ApplicationController
         @internship_application.generate_token
 
         destinations.each do |destination|
-          EmployerMailer.transfer_internship_application(
+          EmployerMailer.transfer_internship_application_email(
             internship_application: @internship_application,
             employer_id: current_user.id,
             email: destination,
