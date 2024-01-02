@@ -33,6 +33,32 @@ module Presenters
                .map(&:formatted_autocomplete_address)
       end
 
+      def applications_best_status
+        applications = student.internship_applications
+        if applications.empty?
+          return {color: 'warning', label: 'doit faire des candidatures'}
+        end
+
+        apps_status = applications.map(&:aasm_state)
+        rejected_status = %w[rejected canceled_by_employer canceled_by_student cancel_by_student_confirmation]
+        pending_status = %w[submitted read_by_employer examined]
+        if  "approved".in?(apps_status)
+          { color: 'success', label: 'Stage accepté' }
+        elsif "validated_by_employer".in?(apps_status)
+          { color: 'new', label: "Confirmer la venue dans l'entreprise" }
+        elsif "expired".in?(apps_status)
+          { color: 'error ', label: 'candidature expirée' }
+        elsif "submitted".in?(apps_status)
+          {color: 'warning', label: 'doit faire des candidatures'}
+        elsif ( pending_status & apps_status).present?
+          { color: 'info', label: 'en attente de réponse' }
+        elsif (rejected_status & apps_status).present?
+          { color: 'error', label: 'candidature refusée' }
+        else
+          { color: 'grey', label: "en attente" }
+        end
+      end
+
       Tutor = Struct.new(:tutor_name,
                          :tutor_phone,
                          :tutor_email,
