@@ -212,7 +212,9 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 * **internship_offer.zipcode** *(string, required)*
 * **internship_offer.city** *(string, required)*
 * **internship_offer.sector_uuid** *(integer, required)*
-* **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
+* **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champ n'est pas rempli, le stage sera automatiquement disponible toute l'année
+* **internship_offer.lunch_break** *(string, optional)*: le de la pause déjeuner
+* **internship_offer.daily_hours** *(object, optional)*: Les horaires de chaque jour. ex: {"lundi": ['9:00', '16:00], "mardi": ['9:00', '16:00], "mercredi": ['9:00', '16:00], "jeudi": ['9:00', '16:00], "vendredi": ['9:00', '16:00]}
 * **remote_id** *(string, required)*: l'identifiant unique du coté operateur|collectivité|association
 * **permalink** *(url, required)*
 * **max_candidates** *(integer)*
