@@ -8,5 +8,5 @@ fi
 
 cd ${APP_HOME}
 
-bundle exec rails employer_internship_application_reminders
+bundle exec rake employers:pending_internship_applications_reminder
 
