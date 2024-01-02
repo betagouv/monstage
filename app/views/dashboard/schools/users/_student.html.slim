@@ -33,7 +33,8 @@ tr class="test-student-#{student.id}"
                      class: "fr-select",
                      data: { action: 'change->students#selectStudentClassRoom' }
   td.col-3.text-center
-    = link_to dashboard_students_internship_applications_path(student) ,
-              class: 'fr-btn fr-btn--tertiary-no-outline fr-btn--sm' do
-      span.fr-icon-eye-line.fr-icon--sm aria-hidden="true"
-      .fr-pl-1w Voir
+    - if student.internship_applications.present?
+      = link_to dashboard_students_internship_applications_path(student) ,
+                class: 'fr-btn fr-btn--tertiary-no-outline fr-btn--sm' do
+        span.fr-icon-eye-line.fr-icon--sm aria-hidden="true"
+        .fr-pl-1w Voir
