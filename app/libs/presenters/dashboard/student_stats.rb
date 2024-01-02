@@ -46,12 +46,10 @@ module Presenters
           { color: 'success', label: 'Stage accepté' }
         elsif "validated_by_employer".in?(apps_status)
           { color: 'new', label: "Confirmer la venue dans l'entreprise" }
-        elsif "expired".in?(apps_status)
-          { color: 'error ', label: 'candidature expirée' }
-        elsif "submitted".in?(apps_status)
-          {color: 'warning', label: 'doit faire des candidatures'}
         elsif ( pending_status & apps_status).present?
           { color: 'info', label: 'en attente de réponse' }
+        elsif "expired".in?(apps_status)
+          { color: 'error ', label: 'candidature expirée' }
         elsif (rejected_status & apps_status).present?
           { color: 'error', label: 'candidature refusée' }
         else
