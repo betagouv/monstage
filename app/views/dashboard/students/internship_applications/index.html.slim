@@ -4,40 +4,42 @@
   = render 'layouts/breadcrumb',
             links: [ [current_user.presenter.dashboard_name_link, current_user.dashboard_name],
                    ['',  @current_student.presenter.full_name]]
-.row
-  .col-12
-    - if current_user.student?
-      h1.h2.mb-3
-        | Mes candidatures
-      - if params[:notice_banner]
-        = render 'notice_banner'
-    - else
-      h1.h2.mb-3
-        = @current_student.presenter.full_name
-    - unless current_user.student? ||  @current_student.class_room.nil?
-      p = link_to dashboard_school_class_room_students_path(@current_student.school, @current_student.class_room) do
-        i.fas.fa-chevron-left.mr-1
-        | Retour
-- if @internship_applications.size.zero?
+.fr-container
   .row
-    .col-12.text-center
-      h2.h4.mt-3.mb-2 Aucun stage
+    .col-12
       - if current_user.student?
-        = link_to "Rechercher un stage", user_presenter.default_internship_offers_path, class: 'fr-btn my-1 px-5'
-- else
-  .d-flex.flex-column
-    - if current_user.student? && current_user.internship_applications.validated_by_employer.count.positive?
-      div.fr-mb-2w style="width: 583px" 
-        .fr-alert.fr-alert--info
-          h3.fr-alert__title Candidature acceptée
-          p L’entreprise a validé votre stage, c’est à vous de confirmer que vous choisissez ce stage et que vous allez y aller.
-    = render partial: "dashboard/students/internship_applications/student_internship_application",
-             collection: @internship_applications
-  - if current_user.student? && !current_user.has_already_approved_an_application?
+        h1.h2.mb-3.text-dark
+          | Mes candidatures
+        - if params[:notice_banner]
+          = render 'notice_banner'
+      - else
+        h1.h2.mb-3
+          = @current_student.presenter.full_name
+      - unless current_user.student? ||  @current_student.class_room.nil?
+        p = link_to dashboard_school_class_room_students_path(@current_student.school, @current_student.class_room) do
+          i.fas.fa-chevron-left.mr-1
+          | Retour
+  - if @internship_applications.size.zero?
     .row
-      .col-12
-        = link_to "Rechercher un autre stage",
-                  user_presenter.default_internship_offers_path,
-                  class: 'fr-btn my-1 px-5'
+      .col-12.text-center
+        h2.h4.mt-3.mb-2 Aucun stage
+        - if current_user.student?
+          = link_to "Rechercher un stage", user_presenter.default_internship_offers_path, class: 'fr-btn my-1 px-5'
+  - else
+    .d-flex.flex-column
+      - if current_user.student? && current_user.internship_applications.validated_by_employer.count.positive?
+        .row
+          .col-12.col-md-6.fr-mb-2w
+            .fr-alert.fr-alert--info
+              h3.fr-alert__title Candidature acceptée
+              p L’entreprise a validé votre stage, c’est à vous de confirmer que vous choisissez ce stage et que vous allez y aller.
+      = render partial: "dashboard/students/internship_applications/student_internship_application",
+              collection: @internship_applications
+    - if current_user.student? && !current_user.has_already_approved_an_application?
+      .row
+        .col-12
+          = link_to "Rechercher un autre stage",
+                    user_presenter.default_internship_offers_path,
+                    class: 'fr-btn my-1 px-5'
 
-= render 'dashboard/satisfaction_survey'
+  = render 'dashboard/satisfaction_survey'

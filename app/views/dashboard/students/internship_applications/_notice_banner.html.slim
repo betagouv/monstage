@@ -4,19 +4,22 @@ div.fr-container.fr-px-0 style="overflow: hidden;"
       .col-12.col-sm-12
         .bloc
           .h2
-            h2 Félicitations, c'est ici que vous retrouvez toutes vos candidatures.
+            h4.fr-mb-2w Félicitations, c'est ici que vous retrouvez toutes vos candidatures.
     .row
-      .col-12.col-sm-3.fr-mb-sm-0
+      .d-none.d-md-block.col-12.col-sm-3.fr-mb-sm-0
         = image_tag asset_pack_path("media/images/internship_applications/#{current_user.gender == 'f' ? 'girl' : 'boy'}.svg"), alt: 'jeune eleve', class: 'image-character'
       .col-12.col-sm-3.fr-px-2w
-        .h1.text-center 1
+        .h1.text-center.d-none.d-md-block 1
         .fr-text--lead.text-blue-france
+          span.d-sm-none 1. 
           | Faites plusieurs candidatures pour être sûr d’avoir une réponse.
       .col-12.col-sm-3.fr-px-2w
-        .h1.text-center 2
+        .h1.text-center.d-none.d-md-block 2
         .fr-text--lead.text-blue-france
+          span.d-sm-none 2. 
           | Sous 15 jours, vous recevrez une réponse par email ou par SMS.
       .col-12.col-sm-3.fr-px-2w
-        .h1.text-center 3
+        .h1.text-center.d-none.d-md-block 3
         .fr-text--lead.text-blue-france
+          span.d-sm-none 3. 
           | Une fois accepté, confirmez que vous viendrez au stage depuis le menu Candidatures.
