@@ -53,6 +53,7 @@ gem 'ovh-rest'
 gem "sentry-ruby"
 gem "sentry-rails"
 gem 'geocoder'
+# TODO remove bitly
 gem 'bitly'
 gem 'mime-types'
 

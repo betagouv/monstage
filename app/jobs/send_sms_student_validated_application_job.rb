@@ -14,11 +14,6 @@ class SendSmsStudentValidatedApplicationJob < ApplicationJob
                 "a été acceptée. Vous pouvez maintenant la confirmer " \
                 "sur MonStageDeTroisieme : #{url}"
 
-      client = OVH::REST.new(
-        ENV['OVH_APPLICATION_KEY'],
-        ENV['OVH_APPLICATION_SECRET'],
-        ENV['OVH_CONSUMMER_KEY']
-      )
       if ENV.fetch('NO_SMS', false)
         sms_message = "sms [internship_application_id = #{internship_application.id}] " \
                           "to be sent with message '#{message}' " \
@@ -29,14 +24,8 @@ class SendSmsStudentValidatedApplicationJob < ApplicationJob
         puts '================'
         puts ''
       else
-        response = client.post("/sms/#{ENV['OVH_SMS_APPLICATION']}/jobs",
-                              {
-                                'sender': ENV['OVH_SENDER'],
-                                'message': message,
-                                'receivers': [phone],
-                                'noStopClause': 'true'
-                              })
-        puts response
+        Services::SmsSender.new(phone_number: phone, content: message)
+                           .perform
       end
     else
       error_message = "sms [internship_application_id = #{internship_application.id}] " \
