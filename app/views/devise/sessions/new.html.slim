@@ -49,7 +49,7 @@ main#content[role="main"
                           .fr-input-wrap
                             = f.password_field :password,
                                                 autocomplete: "current-password",
-                                                class: "fr-password__input fr-input #{error_status ? 'fr-input--error' : ''}",
+                                                class: "fr-password__input fr-input #{error_status ? 'text-input-error' : ''}",
                                                 :'aria-required' => true,
                                                 required: true,
                                                 autofocus: !params[:email].blank?
