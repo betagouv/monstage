@@ -428,7 +428,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test '.pending_states' do
-    assert_equal %w[submitted read_by_employer examined validated_by_employer],
+    assert_equal %w[submitted read_by_employer examined transfered validated_by_employer],
                  InternshipApplication.pending_states
   end
 

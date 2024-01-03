@@ -159,6 +159,7 @@ class InternshipApplication < ApplicationRecord
     state :submitted,
           :read_by_employer,
           :examined,
+          :transfered,
           :validated_by_employer,
           :approved,
           :rejected,
@@ -170,7 +171,9 @@ class InternshipApplication < ApplicationRecord
           :convention_signed
 
     event :submit do
-      transitions from: :drafted, to: :submitted, after: proc { |*_args|
+      transitions from: :drafted,
+                  to: :submitted,
+                  after: proc { |*_args|
         update!("submitted_at": Time.now.utc)
         deliver_later_with_additional_delay do
           EmployerMailer.internship_application_submitted_email(internship_application: self)
@@ -196,8 +199,22 @@ class InternshipApplication < ApplicationRecord
       }
     end
 
+    event :transfer do
+      transitions from: %i[submitted read_by_employer examined],
+                  to: :transfered,
+                  after: proc { |*_args|
+                    update!("transfered_at": Time.now.utc)
+      }
+    end
+
     event :employer_validate do
-      transitions from: %i[read_by_employer submitted examined cancel_by_employer rejected],
+      from_states = %i[read_by_employer
+                       submitted
+                       examined
+                       transfered
+                       cancel_by_employer
+                       rejected]
+      transitions from: from_states,
                   to: :validated_by_employer,
                   after: proc { |*_args|
                     update!("validated_by_employer_at": Time.now.utc, aasm_state: :validated_by_employer)
@@ -218,7 +235,12 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :cancel_by_student_confirmation do
-      transitions from: %i[submitted read_by_employer examined validated_by_employer],
+      from_states = %i[submitted
+                       read_by_employer
+                       examined
+                       transfered
+                       validated_by_employer ]
+      transitions from: from_states,
                   to: :canceled_by_student_confirmation,
                   after: proc { |*_args|
                     # Other employers notifications
@@ -229,7 +251,12 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :reject do
-      transitions from: %i[read_by_employer submitted examined validated_by_employer],
+      from_states = %i[read_by_employer
+                       submitted
+                       examined
+                       transfered
+                       validated_by_employer ]
+      transitions from: from_states,
                   to: :rejected,
                   after: proc { |*_args|
                            update!("rejected_at": Time.now.utc)
@@ -242,7 +269,15 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :cancel_by_employer do
-      transitions from: %i[drafted read_by_employer drafted submitted examined approved validated_by_employer],
+      from_states = %i[drafted
+                       read_by_employer
+                       drafted
+                       submitted
+                       examined
+                       transfered
+                       validated_by_employer
+                       approved ]
+      transitions from: from_states,
                   to: :canceled_by_employer,
                   after: proc { |*_args|
                            update!("canceled_at": Time.now.utc)
@@ -256,7 +291,12 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :cancel_by_student do
-      transitions from: %i[submitted read_by_employer examined validated_by_employer approved],
+      from_states = %i[submitted
+                       read_by_employer
+                       examined
+                       validated_by_employer
+                       approved]
+      transitions from: from_states,
                   to: :canceled_by_student,
                   after: proc { |*_args|
                            update!("canceled_at": Time.now.utc)
@@ -314,7 +354,7 @@ class InternshipApplication < ApplicationRecord
   # TODO constantize the following methods
 
   def self.received_states
-    %w[submitted read_by_employer examined expired]
+    %w[submitted read_by_employer examined expired transfered]
   end
 
   def self.pending_states
