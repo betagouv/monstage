@@ -19,7 +19,6 @@ class StatisticianRegistrationsTest < ActionDispatch::IntegrationTest
 
   test 'POST #create with missing department params fails creation' do
     email = 'bing@bongo.bang'
-    create :statistician_email_whitelist, email: email, zipcode: '60'
     assert_difference('Users::PrefectureStatistician.count', 0) do
       post user_registration_path(params: { user: { email: email,
                                                     first_name: 'dep',

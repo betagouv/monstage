@@ -61,7 +61,11 @@ div [data-controller='internship-offer-infos'  data-internship-offer-infos-base-
     .col-md-12
       - if submit_button
         .fr-my-2w
-          = link_to 'Précédent', edit_dashboard_stepper_organisation_path(params[:organisation_id]),
-                      class: 'fr-btn fr-mr-2w fr-btn--secondary'
-          = button_tag :submit, class: 'fr-btn', disabled: false, data: { 'internship-offer-infos-target': 'submitButton' } do
-                  = "Suivant "
+          = link_to 'Précédent',
+                    edit_dashboard_stepper_organisation_path(params[:organisation_id]),
+                    class: 'fr-btn fr-mr-2w fr-btn--secondary'
+          = button_tag :submit,
+                       class: 'fr-btn',
+                       disabled: false,
+                       data: { 'internship-offer-infos-target': 'submitButton' } do
+            = "Suivant "

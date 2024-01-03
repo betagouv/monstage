@@ -67,7 +67,11 @@ Rails.application.routes.draw do
     resources :favorites, only: %i[create destroy index]
 
     namespace :api, path: 'api' do
-      resources :internship_offers, only: %i[create update destroy index]
+      resources :internship_offers, only: %i[create update destroy index] do
+        collection do
+          get :search
+        end
+      end
       resources :schools, only: [] do
         collection do
           post :nearby
