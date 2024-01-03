@@ -60,6 +60,50 @@ module Presenters
         assert_equal tutor.tutor_phone, internship_offer.tutor_phone
         assert_equal tutor.tutor_email, internship_offer.tutor_email
       end
+
+      test '.applications_best_status' do
+        student = create(:student)
+        assert_equal({ color: 'warning', label: 'doit faire des candidatures' },
+                     @student_stats.applications_best_status)
+        create(:weekly_internship_application, :drafted, student: student)
+        assert_equal({ color: 'warning', label: 'doit faire des candidatures' },
+                     StudentStats.new(student: student.reload).applications_best_status)
+        create(:weekly_internship_application, :expired, student: student)
+	      assert_equal({ color: 'error ', label: 'candidature expirée' },
+                     StudentStats.new(student: student.reload).applications_best_status)
+        assert_equal({ color: 'error ', label: 'candidature expirée' },
+                     StudentStats.new(student: student.reload).applications_best_status)
+        create(:weekly_internship_application, :rejected, student: student)
+        assert_equal({ color: 'error', label: 'candidature refusée' },
+                     StudentStats.new(student: student.reload).applications_best_status)
+        create(:weekly_internship_application, :expired_by_student, student: student)
+        assert_equal({ color: 'error', label: 'candidature refusée' },
+                     StudentStats.new(student: student.reload).applications_best_status)
+        create(:weekly_internship_application, :canceled_by_student, student: student)
+        assert_equal({ color: 'error', label: 'candidature refusée' },
+                     StudentStats.new(student: student.reload).applications_best_status)
+        create(:weekly_internship_application, :canceled_by_student_confirmation, student: student)
+        assert_equal({ color: 'error', label: 'candidature refusée' },
+                     StudentStats.new(student: student.reload).applications_best_status)
+        create(:weekly_internship_application, :canceled_by_employer, student: student)
+        assert_equal({ color: 'error', label: 'candidature refusée' },
+                     StudentStats.new(student: student.reload).applications_best_status)
+        create(:weekly_internship_application, :submitted, student: student)
+        assert_equal({ color: 'info', label: 'en attente de réponse' },
+                     StudentStats.new(student: student.reload).applications_best_status)
+        create(:weekly_internship_application, :read_by_employer, student: student)
+        assert_equal({ color: 'info', label: 'en attente de réponse' },
+                     StudentStats.new(student: student.reload).applications_best_status)
+        create(:weekly_internship_application, :examined, student: student)
+        assert_equal({ color: 'info', label: 'en attente de réponse' },
+                     StudentStats.new(student: student.reload).applications_best_status)
+        create(:weekly_internship_application, :validated_by_employer, student: student)
+        assert_equal({ color: 'new', label: "confirmer la venue dans l'entreprise" },
+                     StudentStats.new(student: student.reload).applications_best_status)
+        create(:weekly_internship_application, :approved, student: student)
+        assert_equal({ color: 'success', label: 'stage accepté' },
+                     StudentStats.new(student: student.reload).applications_best_status)
+      end
     end
   end
 end
