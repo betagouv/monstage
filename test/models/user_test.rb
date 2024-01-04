@@ -27,7 +27,7 @@ class UserTest < ActiveSupport::TestCase
     internship_application = create(
       :weekly_internship_application,
       student: student,
-      motivation: 'a wonderful world', 
+      motivation: 'a wonderful world',
       student_phone: '33601254118',
       student_email: 'test@free.fr'
     )
@@ -237,18 +237,19 @@ class UserTest < ActiveSupport::TestCase
   test '.sanitize_mobile_phone_number' do
     prefix = '+33'
     number = '+33 6 12 34 56 78'
-    assert_equal '+330612345678', User.sanitize_mobile_phone_number(number, prefix)
+    assert_equal '+33612345678', User.sanitize_mobile_phone_number(number, prefix)
     number = '+33 06.  12 34 56 78'
-    assert_equal '+330612345678', User.sanitize_mobile_phone_number(number, prefix)
-    
+    assert_equal '+33612345678', User.sanitize_mobile_phone_number(number, prefix)
+
     prefix = ''
-    numbers = ['+33 06.  12 ..34    56 78',
+    numbers = ['+33 (0)6.  12 ..34    56 78',
+               '+33 06.  12 ..34    56 78',
                '+33 6.  12 ..34    56 78',
                '33 06.  12 ..34    56 78',
                '33 6.  12 ..34    56 78',
                '06.  12 ..34    56 78' ]
     numbers.each do |number|
-      assert_equal '0612345678', User.sanitize_mobile_phone_number(number, prefix)
+      assert_equal '612345678', User.sanitize_mobile_phone_number(number, prefix)
     end
     numbers = ['+33 2.  12 ..34    56 78',
                '02.  12 ..34    56 78',

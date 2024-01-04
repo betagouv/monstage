@@ -3,23 +3,14 @@
 class SendSmsJob < ApplicationJob
   queue_as :default
 
-  def perform(user:, message:)
-    if user.formatted_phone.nil?
-      error_message = "sms [user_id = #{user.id}] to be sent with empty phone number !"
-      Rails.logger.error(error_message) && return
-    end
+  def perform(user: , message: , phone_number: nil)
+    return if phone_number.nil? && user.phone.blank?
+    return if message.blank? || message.length > 318
 
-    client = OVH::REST.new(
-      ENV['OVH_APPLICATION_KEY'],
-      ENV['OVH_APPLICATION_SECRET'],
-      ENV['OVH_CONSUMMER_KEY']
-    )
-    response = client.post("/sms/#{ENV['OVH_SMS_APPLICATION']}/jobs",
-                           {
-                             'sender': ENV['OVH_SENDER'],
-                             'message': message,
-                             'receivers': [user.formatted_phone],
-                             'noStopClause': 'true'
-                           })
+    phone = phone_number || User.sanitize_mobile_phone_number(user.phone, '33')
+
+    Services::SmsSender.new(phone_number: phone, content: message)
+                       .perform
   end
 end
+
