@@ -65,6 +65,19 @@ class InternshipOffer < ApplicationRecord
   delegate :phone, to: :employer, prefix: true, allow_nil: true
   delegate :name, to: :sector, prefix: true
 
+  # Validations
+  validates :contact_phone,
+    presence: true,
+    unless: :from_api?,
+    length: { minimum: 10 },
+    on: :create
+  validates :contact_phone,
+    unless: :from_api?,
+    format: { with: /\A\+?[\d\s]+\z/,
+              message: 'Le numéro de téléphone doit contenir des caractères chiffrés uniquement' },
+    on: :create
+
+
   # Scopes
 
   # public.config_search_keyword config is
