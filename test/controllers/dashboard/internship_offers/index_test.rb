@@ -339,4 +339,21 @@ module Dashboard::InternshipOffers
                     count: 1
     end
   end
+
+    test 'GET #index as Employer with search params returns filtered internship_offers' do
+      employer = create(:employer)
+      sign_in(employer)
+      internship_offer = create(:weekly_internship_offer,
+                                employer: employer,
+                                title: 'Avocat fiscaliste')
+      internship_offer_2 = create(:weekly_internship_offer,
+                                        employer: employer,
+                                        title: 'Plombier')
+
+      get dashboard_internship_offers_path(search: 'avocat')
+
+      assert_response :success
+      assert_presence_of(internship_offer: internship_offer)
+      assert_absence_of(internship_offer: internship_offer_2)
+    end
 end
