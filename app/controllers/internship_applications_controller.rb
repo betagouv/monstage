@@ -33,7 +33,7 @@ class InternshipApplicationsController < ApplicationController
     if params[:transition] == 'submit!'
       @internship_application.submit!
       @internship_application.save!
-      redirect_to completed_internship_offer_internship_application_path(@internship_offer, @internship_application)
+      redirect_to dashboard_students_internship_applications_path(student_id: current_user.id, notice_banner: true)
     else
       @internship_application.update(update_internship_application_params)
       redirect_to internship_offer_internship_application_path(@internship_offer, @internship_application)

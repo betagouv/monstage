@@ -1,21 +1,22 @@
 - @prez = internship_application.presenter(current_user)
 - status_hash = @prez.human_state
-.internship-application-status.d-flex.flex-column.align-items-start
-  div class="fr-badge fr-badge--#{status_hash[:badge]} fr-badge--no-icon"
-    = status_hash[:label]
-  .internship-application-location
-    .d-flex
-      = inline_svg_pack_tag('media/images/icons/arrow_right.svg', class: 'fr-mr-1w fr-my-auto')
-      = @prez.internship_offer_address
-  .h5.internship-offer-title
-    = @prez.internship_offer_title
-  .action.mt-auto
-    .d-flex
-      - if status_hash[:actions].present?
-        - status_hash[:actions].each do |action|
-          = link_to action[:label],
-                    action[:path],
-                    id: "show_link_#{internship_application.id}",
-                    class: "fr-btn fr-btn--sm fr-btn--#{action[:level]}",
-                    disabled: action[:disabled] || false
-
+.row
+  .col-12.col-md-6
+    .internship-application-status.d-flex.flex-column.align-items-start
+      div class="fr-badge fr-badge--#{status_hash[:badge]} fr-badge--no-icon"
+        = status_hash[:label]
+      .internship-application-location
+        .d-flex
+          = inline_svg_pack_tag('media/images/icons/arrow_right.svg', class: 'fr-mr-1w fr-my-auto')
+          = @prez.internship_offer_address
+      .h5.internship-offer-title
+        = @prez.internship_offer_title
+      .action.mt-auto
+        .d-flex
+          - if status_hash[:actions].present?
+            - status_hash[:actions].each do |action|
+              = link_to action[:label],
+                        action[:path],
+                        id: "show_link_#{internship_application.id}",
+                        class: "fr-btn fr-btn--sm fr-btn--#{action[:level]}",
+                        disabled: action[:disabled] || false
