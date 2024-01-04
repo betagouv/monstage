@@ -399,7 +399,7 @@ module Dashboard::InternshipOffers
   
       get dashboard_internship_offers_path(search: 'PaRiS')
   
-      assert_response :successc
+      assert_response :success
 
       assert_presence_of(internship_offer: internship_offer)
       assert_absence_of(internship_offer: internship_offer_2)
