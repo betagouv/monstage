@@ -39,6 +39,7 @@ module Presenters
           expired: { color: 'error ', label: 'candidature expirée' },
           rejected: { color: 'error', label: 'candidature refusée' },
           waiting: { color: 'info', label: 'en attente de réponse' },
+          canceled: { color: 'error', label: "candidature annulée par l'élève"},
           validated: { color: 'new', label: "confirmer la venue dans l'entreprise" },
           approved: { color: 'success', label: 'stage accepté' }
         }
@@ -50,7 +51,9 @@ module Presenters
           states_hash[:must_apply]
         when "expired"
           states_hash[:expired]
-        when "rejected", "expired_by_student", "canceled_by_employer", "canceled_by_student", "canceled_by_student_confirmation"
+        when "canceled_by_student", "canceled_by_student_confirmation"
+          states_hash[:canceled]
+        when "rejected", "expired_by_student", "canceled_by_employer"
           states_hash[:rejected]
         when "submitted", "read_by_employer", "examined"
           states_hash[:waiting]
