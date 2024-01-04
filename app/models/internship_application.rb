@@ -13,11 +13,11 @@ class InternshipApplication < ApplicationRecord
   ORDERED_STATES_INDEX = %w[
     drafted
     expired
+    canceled_by_student_confirmation
+    canceled_by_student
     rejected
     expired_by_student
     canceled_by_employer
-    canceled_by_student
-    canceled_by_student_confirmation
     submitted
     read_by_employer
     examined

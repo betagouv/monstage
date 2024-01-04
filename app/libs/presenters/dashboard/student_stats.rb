@@ -37,9 +37,9 @@ module Presenters
         states_hash= {
           must_apply: {color: 'warning', label: 'doit faire des candidatures'},
           expired: { color: 'error ', label: 'candidature expirée' },
+          canceled: { color: 'error', label: "candidature annulée par l'élève"},
           rejected: { color: 'error', label: 'candidature refusée' },
           waiting: { color: 'info', label: 'en attente de réponse' },
-          canceled: { color: 'error', label: "candidature annulée par l'élève"},
           validated: { color: 'new', label: "confirmer la venue dans l'entreprise" },
           approved: { color: 'success', label: 'stage accepté' }
         }

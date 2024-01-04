@@ -71,18 +71,16 @@ module Presenters
         create(:weekly_internship_application, :expired, student: student)
 	      assert_equal({ color: 'error ', label: 'candidature expirée' },
                      StudentStats.new(student: student.reload).applications_best_status)
-        assert_equal({ color: 'error ', label: 'candidature expirée' },
+        create(:weekly_internship_application, :canceled_by_student_confirmation, student: student)
+        assert_equal({ color: 'error', label: 'candidature annulée par l\'élève' },
                      StudentStats.new(student: student.reload).applications_best_status)
-        create(:weekly_internship_application, :rejected, student: student)
-        assert_equal({ color: 'error', label: 'candidature refusée' },
+        create(:weekly_internship_application, :canceled_by_student, student: student)
+        assert_equal({ color: 'error', label: 'candidature annulée par l\'élève' },
                      StudentStats.new(student: student.reload).applications_best_status)
         create(:weekly_internship_application, :expired_by_student, student: student)
         assert_equal({ color: 'error', label: 'candidature refusée' },
-                     StudentStats.new(student: student.reload).applications_best_status)
-        create(:weekly_internship_application, :canceled_by_student, student: student)
-        assert_equal({ color: 'error', label: 'candidature refusée' },
-                     StudentStats.new(student: student.reload).applications_best_status)
-        create(:weekly_internship_application, :canceled_by_student_confirmation, student: student)
+                    StudentStats.new(student: student.reload).applications_best_status)
+        create(:weekly_internship_application, :rejected, student: student)
         assert_equal({ color: 'error', label: 'candidature refusée' },
                      StudentStats.new(student: student.reload).applications_best_status)
         create(:weekly_internship_application, :canceled_by_employer, student: student)
