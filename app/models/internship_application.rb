@@ -50,6 +50,12 @@ class InternshipApplication < ApplicationRecord
 
   paginates_per PAGE_SIZE
 
+  # Validations
+  validate :check_contact_uniqueness
+
+  # Callbacks
+  after_create :update_student_profile
+
   #
   # Triggers scopes (used for transactional mails)
   #
@@ -556,5 +562,22 @@ class InternshipApplication < ApplicationRecord
 
   def employer_aware_states
     %w[read_by_employer examined validated_by_employer]
+  end
+
+  def check_contact_uniqueness
+    if student_email && User.where.not(id: student.id).exists?(email: student_email)
+      errors.add(:student_email, 'Cet email est déjà utilisé')
+    end
+
+    if student_phone && User.where.not(id: student.id).exists?(phone: "+33#{student_phone}")
+      errors.add(:student_phone, 'Ce numéro de téléphone est déjà utilisé')
+    end
+  end
+
+  def update_student_profile
+    student.update( 
+      phone: student.phone || "+33#{student_phone}",
+      email: student.email || student_email
+    )
   end
 end

@@ -395,7 +395,15 @@ fr:
           canceled_by_employer: annulée par l'employeur
           canceled_by_student: annulée par l'élève
           convention_signed: convention signée
+        student_phone: Contact téléphone
+        student_email: Contact email
+        user_id: Elève
         week: Semaine
+
+      internship_applications/weekly_framed:
+        student_phone: Contact téléphone
+        student_email: Contact email
+
 
       invitation:
         email: Email

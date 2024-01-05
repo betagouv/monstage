@@ -2,6 +2,10 @@
 - placeholder ||= ''
 - required ||= false
 - id = "#{object.class.name.downcase}_#{field}"
+- field_type ||= :text_field
+- pattern ||= ''
+- title ||= ''
+- value ||= object.send(field)
 - if object&.errors.blank?
   .fr-input-group
     = f.label field,
@@ -10,11 +14,15 @@
       = label
     - unless hint.blank?
       .text-muted.fr-mb-4v = hint
-    = f.text_field field, class: "fr-input #{ hint.blank? ? "" : 'fr-mt-n2v'}",
+    = f.send(field_type, field,
+                          class: "fr-input #{ hint.blank? ? "" : 'fr-mt-n2v'}",
                           :'aria-describedby' => "text-input-valid-desc-valid",
                           id: id,
+                          value: value,
                           placeholder: placeholder,
-                          required: required
+                          required: required,
+                          pattern: pattern,
+                          title: title)
 - elsif object.errors[field].present?
   .fr-input-group.fr-input-group--error
     = f.label field,
@@ -23,11 +31,14 @@
       = label
     - unless hint.blank?
       .text-muted = hint
-    = f.text_field field,
+    = f.send(field_type, field,
                    class: "fr-input fr-input--error",
                    :'aria-describedby' => "text-input-error-desc-error",
                    id: id,
-                   required: required
+                   value: value,
+                   required: required,
+                   pattern: pattern,
+                   title: title)
     p.fr-error-text id="text-input-error-desc-error-#{field}"
       - field_name = t("activerecord.attributes.#{object.class.name.underscore}.#{field}")
       = "#{field_name} : #{object.errors[field].map(&:downcase).join(', ').html_safe}"
@@ -39,8 +50,11 @@
       = label
     - unless hint.blank?
       .text-muted = hint
-    = f.text_field field,
+    = f.send(field_type, field,
                    class: 'fr-input fr-input--valid',
                    :'aria-describedby' => "text-input-valid-desc-valid",
                    id: id,
-                   required: required
+                   value: value,
+                   required: required,
+                   pattern: pattern,
+                   title: title)
