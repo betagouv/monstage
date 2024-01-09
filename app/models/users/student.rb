@@ -96,16 +96,6 @@ module Users
       internship_applications.validated_by_employer.any?
     end
 
-    # Not used but certainly useful in the next future (today 2023-04-21)
-    # def expire_application_on_week(week:, keep_internship_application_id:)
-    #   internship_applications
-    #     .where(aasm_state: %i[approved submitted drafted])
-    #     .not_by_id(id: id)
-    #     .weekly_framed
-    #     .select { |application| application.week.id == week.id }
-    #     .map(&:expire!)
-    # end
-
     def school_and_offer_common_weeks(internship_offer)
       return [] unless school.has_weeks_on_current_year?
 
@@ -123,6 +113,19 @@ module Users
       class_room.school_managements
                 &.main_teachers
                 &.first
+    end
+
+    def available_offers(max_distance: Finders::ContextTypableInternshipOffer::MAX_RADIUS_SEARCH_DISTANCE)
+      Finders::InternshipOfferConsumer.new(user: self, params: {})
+                                      .available_offers(max_distance: max_distance)
+    end
+
+    def has_offers_to_apply_to?(max_distance: Finders::ContextTypableInternshipOffer::MAX_RADIUS_SEARCH_DISTANCE)
+      available_offers(max_distance: max_distance).any?
+    end
+
+    def has_applied?(date)
+      internship_applications.where(submitted_at: date.beginning_of_day..date.end_of_day).any?
     end
 
     def anonymize(send_email: true)

@@ -258,6 +258,7 @@ class User < ApplicationRecord
   def can_sign?(internship_agreement); false end
   def email_required? ; false end
   def needs_to_see_modal? ; false end
+  def has_offers_to_apply_to? ; false end
 
   def fetch_current_area_notification; nil end
   def create_signature_phone_token ; nil end
@@ -273,6 +274,7 @@ class User < ApplicationRecord
   def agreement_signatorable? ; agreement_signatorable end
   def anonymized? ; self.anonymized end
   def pending_invitation_to_a_team ; [] end
+  def available_offers; InternshipOffer.none end
   def team_members ; User.none end
 
   def just_created?
