@@ -87,7 +87,6 @@ class GenerateInternshipAgreement < Prawn::Document
 
     premises_organisation_name_text = "Nom de l'organisme d'accueil : #{internship_offer.employer_name}"
     @pdf.text premises_organisation_name_text
-    # TODO clarify this difference between premises_organisation_name_text & organisation_name_text
     @pdf.move_down 10
     organisation_name_text = "Raison sociale : #{internship_offer.employer_name}"
     @pdf.text organisation_name_text
