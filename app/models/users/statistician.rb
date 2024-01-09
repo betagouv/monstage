@@ -72,6 +72,12 @@ module Users
       Signature.signatory_roles[:employer]
     end
 
+    def trigger_agreements_creation
+      if changes[:agreement_signatorable] == [false, true]
+        AgreementsAPosterioriJob.perform_later(user_id: id)
+      end
+    end
+
     rails_admin do
       weight 5
 
