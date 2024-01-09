@@ -89,7 +89,7 @@ $line-height: 4px;
   background-color: #F5F5FF;
   .image-character {
     height: 420px;
-    margin-top: -200px;
+    margin-top: -180px;
   }
 }
 
@@ -117,11 +117,10 @@ $line-height: 4px;
 
 .internship-application-status {
   display: block;
-  width: 583px;
+  max-width: 583px;
   height: 244px;
   border: 1px solid $grey-disabled;
   padding: 40px 32px;
-  margin-right: 20px;
   margin-bottom: 20px;
   .internship-application-location{
     color: $grey-425;

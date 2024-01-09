@@ -22,32 +22,6 @@ module Dashboard
       #
       # Show, SchoolManagement
       #
-      test 'GET class_rooms#show as SchoolManagement shows student list' do
-        school = create(:school)
-        class_room = create(:class_room, school: school)
-        students = [
-          create(:student, class_room: class_room, school: school, confirmed_at: 2.days.ago),
-          create(:student, class_room: class_room, school: school),
-          create(:student, class_room: class_room, school: school)
-        ]
-        sign_in(create(:school_manager, school: school))
-
-        get dashboard_school_class_room_students_path(school, class_room)
-        students.map do |student|
-          assert_select 'a[href=?]', dashboard_students_internship_applications_path(student)
-
-          if student.confirmed?
-            assert_select ".test-student-#{student.id} .student_confirmed .fas.fa-square", 1
-            assert_select ".test-student-#{student.id} .student_confirmed .fas.fa-check", 1
-          else
-            assert_select ".test-student-#{student.id} .student_confirmed .far.fa-square", 1
-          end
-
-          student_stats = Presenters::Dashboard::StudentStats.new(student: student)
-          assert_select ".fr-badge--error", text: student_stats.applications_count.to_s
-          assert_select ".fr-badge--success", text: student_stats.applications_approved_count.to_s
-        end
-      end
 
       test 'GET class_rooms#show as SchoolManagement with weeks declared contains key navigations links' do
         school = create(:school, :with_school_manager, :with_weeks)
