@@ -735,7 +735,8 @@ CREATE TABLE public.internship_applications (
     validated_by_employer_at timestamp(6) without time zone,
     dunning_letter_count integer DEFAULT 0,
     magic_link_tracker integer DEFAULT 0,
-    access_token character varying
+    access_token character varying,
+    transfered_at timestamp(6) without time zone
 );
 
 
@@ -3325,6 +3326,7 @@ SET search_path TO "$user", public;
 INSERT INTO "schema_migrations" (version) VALUES
 ('20231211143502'),
 ('20231211084232'),
+('20231204104224'),
 ('20231130102047'),
 ('20231124105509'),
 ('20231104093416'),

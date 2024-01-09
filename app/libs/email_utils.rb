@@ -16,7 +16,7 @@ module EmailUtils
   end
 
   def self.reply_to
-    "support@monstagedetroisieme.fr"
+    "ne-pas-repondre@monstagedetroisieme.fr"
   end
 
   def self.formatted_reply_to

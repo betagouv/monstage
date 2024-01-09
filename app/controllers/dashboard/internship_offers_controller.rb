@@ -44,7 +44,6 @@ module Dashboard
 
     def edit
       authorize! :update, @internship_offer
-      @republish = params[:republish].present?
       @republish = true
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
@@ -59,6 +58,7 @@ module Dashboard
         anchor = "weeks_container"
         warning = "Votre annonce n'est pas encore republiée, car il faut ajouter des semaines de stage"
       end
+      # TODO remove republish: true in the redirect_to
       redirect_to edit_dashboard_internship_offer_path(@internship_offer, anchor: anchor, republish: true),
                   flash: { warning: warning}
     end
