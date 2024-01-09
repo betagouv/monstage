@@ -427,9 +427,9 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     assert_equal [employer_2.email], internship_application.filter_notified_emails
   end
 
-  test '.pending_states' do
+  test '::PENDING_STATES' do
     assert_equal %w[submitted read_by_employer examined transfered validated_by_employer],
-                 InternshipApplication.pending_states
+                 InternshipApplication::PENDING_STATES
   end
 
   test '.order_by_aasm_state_for_student' do

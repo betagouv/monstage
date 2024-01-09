@@ -42,9 +42,9 @@ module ApplicationTransitable
     protected
 
     def valid_states
-        InternshipApplication.received_states +
-          InternshipApplication.rejected_states +
-          InternshipApplication.approved_states
+        InternshipApplication::RECEIVED_STATES +
+          InternshipApplication::REJECTED_STATES +
+          InternshipApplication::APPROVED_STATES
     end
 
     def update_flash_message
