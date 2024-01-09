@@ -58,8 +58,7 @@ module Dashboard
         anchor = "weeks_container"
         warning = "Votre annonce n'est pas encore republiée, car il faut ajouter des semaines de stage"
       end
-      # TODO remove republish: true in the redirect_to
-      redirect_to edit_dashboard_internship_offer_path(@internship_offer, anchor: anchor, republish: true),
+      redirect_to edit_dashboard_internship_offer_path(@internship_offer, anchor: anchor),
                   flash: { warning: warning}
     end
 
