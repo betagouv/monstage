@@ -32,7 +32,7 @@ FactoryBot.define do
 
     trait :expired do
       aasm_state { :expired }
-      submitted_at { 15.days.ago }
+      submitted_at { 19.days.ago }
       expired_at { 3.days.ago }
     end
 
@@ -84,6 +84,11 @@ FactoryBot.define do
       submitted_at { 3.days.ago }
       approved_at { 2.days.ago }
       convention_signed_at { 1.days.ago }
+    end
+
+    trait :expired_by_student do
+      aasm_state { :expired_by_student }
+      submitted_at { 3.days.ago }
     end
 
     transient do
