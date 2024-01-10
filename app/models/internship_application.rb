@@ -191,6 +191,9 @@ class InternshipApplication < ApplicationRecord
         deliver_later_with_additional_delay do
           EmployerMailer.internship_application_submitted_email(internship_application: self)
         end
+        if student.internship_applications.count == 1
+          Triggers::SingleApplicationReminder.new.enqueue_all
+        end
       }
     end
 

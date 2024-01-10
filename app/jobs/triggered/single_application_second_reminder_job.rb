@@ -5,6 +5,18 @@ module Triggered
       student = Users::Student.find(student_id)
       return nil unless student&.kept?
       
+      notify_with_channel(student) if notifiable?(student, 5)
+    end
+
+    private
+
+    def notifiable?(student, delay)
+      student.internship_applications.count == 1 &&
+        student.has_offers_to_apply_to? &&
+        student.has_applied?(delay.days.ago)
+    end
+
+    def notify_with_channel(student)
       if student.phone.present?
         send_sms_to_student(student)
       else
@@ -12,8 +24,6 @@ module Triggered
                      .deliver
       end
     end
-
-    private
 
     def send_sms_to_student(student)
       content =  "Pas de réponse à votre candidature ? Les employeurs peuvent être lents" \

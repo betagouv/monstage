@@ -5,23 +5,9 @@ module Triggers
   class SingleApplicationReminder
     def enqueue_all
       Users::Student.find_each do |student|
-        notify(student) if notifiable?(student, 2)
-        notify_again(student) if notifiable?(student, 5)
+        Triggered::SingleApplicationReminderJob.set(wait: 2.days).perform_later(student.id)
+        Triggered::SingleApplicationSecondReminderJob.set(wait: 5.days).perform_later(student.id)
       end
-    end
-
-    def notifiable?(student, delay)
-      student.has_offers_to_apply_to? &&
-        student.internship_applications.count == 1 &&
-        student.has_applied?(delay.days.ago)
-    end
-
-    def notify(student)
-      Triggered::SingleApplicationReminderJob.perform_later(student.id)
-    end
-
-    def notify_again(student)
-      Triggered::SingleApplicationSecondReminderJob.perform_later(student.id)
     end
   end
 end
