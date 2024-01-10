@@ -28,7 +28,7 @@ module Presenters
     end
 
     def human_state
-      action_path = {path: internship_application_path}
+      action_path = { path: internship_application_path }
       case internship_application.aasm_state
       when "drafted"
         student_has_found = internship_application.student
@@ -292,12 +292,13 @@ module Presenters
       %w[submitted
         read_by_employer
         examined
+        transfered
         validated_by_employer
         approved]
     end
 
     def ok_for_employer_validation_states
-      %w[submitted examined read_by_employer]
+      %w[submitted examined transfered read_by_employer]
     end
   end
 end
