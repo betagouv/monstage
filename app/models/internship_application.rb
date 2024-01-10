@@ -184,8 +184,7 @@ class InternshipApplication < ApplicationRecord
           :expired_by_student,
           :canceled_by_employer,
           :canceled_by_student,
-          :canceled_by_student_confirmation,
-          :convention_signed
+          :canceled_by_student_confirmation
 
     event :submit do
       transitions from: :drafted,

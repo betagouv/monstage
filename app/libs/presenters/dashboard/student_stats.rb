@@ -19,7 +19,7 @@ module Presenters
                .select(&:rejected?)
                .size
       end
-
+      # TODO remove following method
       def applications_with_convention_signed_count
         student.internship_applications
                .select(&:convention_signed?)
@@ -28,7 +28,7 @@ module Presenters
 
       def internship_locations
         student.internship_applications
-               .select(&:convention_signed?)
+               .select(&:approved?)
                .map(&:internship_offer)
                .map(&:formatted_autocomplete_address)
       end
@@ -71,7 +71,7 @@ module Presenters
                          keyword_init: true)
       def internship_tutors
         student.internship_applications
-               .select(&:convention_signed?)
+               .select(&:approved?)
                .map(&:internship_offer)
                .map do |internship_offer|
           Tutor.new(tutor_name: internship_offer.tutor_name,
