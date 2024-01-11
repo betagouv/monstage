@@ -1,7 +1,7 @@
 import { Controller } from 'stimulus';
 
 export default class extends Controller {
-  static targets = ['code', 'button'];
+  static targets = ['code', 'button', 'codeContainer'];
   static values = { position: Number }
 
   onKeyUp(event) {
@@ -14,13 +14,9 @@ export default class extends Controller {
   // private
 
   eraseBack(event) {
-    if (this.positionValue >= this.codeTargets.length) { this.positionMove(-1) }
     this.eraseCurrentKey(event)
     if (this.firstPosition()) { return; }
-
-    this.positionMove(-1);
-    this.enableCurrent(event);
-    this.eraseCurrentKey(event);
+    this.moveBackward(event);
   }
 
   enterKey(event) {
@@ -29,15 +25,22 @@ export default class extends Controller {
 
   withNumericKey(event) {
     if (!event.shiftKey) { this.validateEnteredValue(event); }
-    this.positionMove(+1); //trick to keep last digit
-    if (this.pastLastPosition()) {
+    if (this.lastPosition()) {
       this.enableAll();
       this.enableForm();
     } else {
-      this.enableCurrent(event);
-      this.setFocus(event);
+      this.moveForward(event);
     }
   }
+
+  moveForward(event) { this.move(event, +1) }
+  moveBackward(event) {
+    this.move(event, -1);
+    this.codeContainerTarget.classList.remove('finished');
+  }
+  move(event, val) { this.positionValue += val; this.enableCurrent(event); }
+  firstPosition() { return this.positionValue == 0; }
+  lastPosition() { return this.positionValue == this.codeTargets.length - 1; }
 
   currentCodeTarget() { return this.codeTargets[parseInt(this.positionValue, 10)]; }
   parseCodes(fn, event = undefined) { fn(this.currentCodeTarget(), event); }
@@ -63,10 +66,6 @@ export default class extends Controller {
     this.codeTargets.forEach(element => { element.removeAttribute('disabled') });
   }
 
-  firstPosition() { return this.positionValue == 0; }
-  pastLastPosition() { return this.positionValue == this.codeTargets.length; }
-  positionMove(val) { this.positionValue += val; }
-
   isNumericKeyOrShiftKey(event) {
     const isInteger = /^\d+$/.test(event.key);
     const isShiftKey = event.shiftKey;
@@ -76,6 +75,8 @@ export default class extends Controller {
 
   enableForm() {
     this.buttonTarget.removeAttribute('disabled');
+    this.codeContainerTarget.classList.add('finished');
+    // window.setTimeout(() => {this.buttonTarget.focus()}, 150);
   }
 
   codeTargetConnected() {
@@ -84,6 +85,5 @@ export default class extends Controller {
       index === 0 ? element.focus() : element.setAttribute('disabled', true); 
     });
     this.buttonTarget.setAttribute('disabled', true);
-    this.connect();
   }
 }
