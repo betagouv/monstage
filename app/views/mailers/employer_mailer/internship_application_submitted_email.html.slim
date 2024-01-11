@@ -7,7 +7,7 @@ table
         = @internship_application.student.presenter.full_name
       - week = @internship_application.week
       p style=p_cyclop_styles({color: '#000091'})
-        ="Semaine du <strong>#{week.short_select_text_method}</strong>".html_safe
+        ="Semaine <strong>#{week.short_select_text_method}</strong>".html_safe
       - unless @internship_application.motivation.to_s.blank?
       p style=p_cyclop_styles({color: '#000091'})
         <strong> Motivations </strong>
