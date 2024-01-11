@@ -12,8 +12,7 @@ module Triggered
 
     def notifiable?(student, delay)
       student.internship_applications.count == 1 &&
-        student.has_offers_to_apply_to? &&
-        student.has_applied?(delay.days.ago)
+        student.has_offers_to_apply_to?
     end
 
     def notify_with_channel(student)
