@@ -3324,6 +3324,7 @@ ALTER TABLE ONLY public.internship_offer_weeks
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240111081028'),
 ('20231211143502'),
 ('20231211084232'),
 ('20231204104224'),
