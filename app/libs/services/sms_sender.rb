@@ -71,7 +71,7 @@ module Services
     def initialize(phone_number: , content: )
       @phone_number = phone_number 
       @content = content
-      @sender_name = 'Mon stage' # Max length: 16 chars
+      @sender_name = 'MonStage3e' # Max length: 16 chars
       @user = ENV['LINK_MOBILITY_USER']
       @pass = ENV['LINK_MOBILITY_SECRET']
     end

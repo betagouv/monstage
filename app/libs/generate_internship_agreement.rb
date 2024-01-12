@@ -183,7 +183,7 @@ class GenerateInternshipAgreement < Prawn::Document
     to = "Au #{internship_application.week.friday_of_week_with_years_long}"
     @pdf.table([[from, to], [{content: "Soit un nombre de jour de : 5", colspan: 2}]])
     @pdf.move_down 10
-    if @internship_agreement.daily_hours.present?
+    if @internship_agreement.daily_planning?
       @pdf.text "Les horaires de présence de l’élève sont fixés à : "
       @pdf.move_down 10
       %w(lundi mardi mercredi jeudi vendredi).each_with_index do |weekday, i|
@@ -194,8 +194,8 @@ class GenerateInternshipAgreement < Prawn::Document
     else
       @pdf.text "Les horaires de présence de l’élève sont fixés à : "
       @pdf.move_down 5
-      @pdf.text "De #{internship_application.internship_offer.weekly_hours&.first} à " \
-                "#{internship_application.internship_offer.weekly_hours&.last}"
+      @pdf.text "De #{@internship_agreement.weekly_hours&.first} à " \
+                "#{@internship_agreement.weekly_hours&.last}"
       @pdf.move_down 5
     end
     @pdf.move_down 10
