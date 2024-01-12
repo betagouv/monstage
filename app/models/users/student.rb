@@ -124,10 +124,6 @@ module Users
       available_offers(max_distance: max_distance).any?
     end
 
-    def has_applied?(date)
-      internship_applications.where(submitted_at: date.beginning_of_day..date.end_of_day).any?
-    end
-
     def anonymize(send_email: true)
       super(send_email: send_email)
 

@@ -115,25 +115,5 @@ module Users
         assert student.has_offers_to_apply_to?
       end
     end
-
-    test "#has_applied?" do
-      travel_to Date.new(2020, 9, 1) do
-        test_date        = Date.new(2020, 9, 7)
-        weeks_till_end   = Week.selectable_from_now_until_end_of_school_year
-        school           = create(:school, :with_school_manager, weeks: [weeks_till_end.first])
-        student          = create(:student, school: school)
-        internship_offer = create(:weekly_internship_offer, weeks:  weeks_till_end.first(2))
-        refute student.has_applied?(test_date)
-        create(:internship_application,
-               :submitted,
-               student: student,
-               submitted_at: test_date,
-               internship_offer: internship_offer,
-               week: weeks_till_end.first)
-        assert student.has_applied?(test_date)
-        refute student.has_applied?(test_date - 1.day)
-        refute student.has_applied?(test_date + 1.day)
-      end
-    end
   end
 end
