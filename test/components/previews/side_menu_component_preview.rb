@@ -3,7 +3,7 @@ class SidemenuComponentPreview < ViewComponent::Preview
   def _offers_active_without_agreements_authorization
     internship_agreement = InternshipAgreement.first
 
-    cmpnt = SidemenuComponent.new(candidatures_notice: 1,
+    cmpnt = SideMenuComponent.new(candidatures_notice: 1,
                                   agreements_notice: 2,
                                   agreements_authorization: false,
                                   current_page_offers: true,
@@ -15,7 +15,7 @@ class SidemenuComponentPreview < ViewComponent::Preview
   def _offers_active_with_agreements_authorization
     internship_agreement = InternshipAgreement.first
 
-    cmpnt = SidemenuComponent.new(candidatures_notice: 1,
+    cmpnt = SideMenuComponent.new(candidatures_notice: 1,
                                   agreements_notice: 2,
                                   agreements_authorization: true,
                                   current_page_offers: true,
@@ -27,7 +27,7 @@ class SidemenuComponentPreview < ViewComponent::Preview
   def _applications_active_with_agreements_authorization
     internship_agreement = InternshipAgreement.first
 
-    cmpnt = SidemenuComponent.new(candidatures_notice: 1,
+    cmpnt = SideMenuComponent.new(candidatures_notice: 1,
                                   agreements_notice: 2,
                                   agreements_authorization: true,
                                   current_page_offers: false,
@@ -39,7 +39,7 @@ class SidemenuComponentPreview < ViewComponent::Preview
   def _agreements_active_with_agreements_authorization
     internship_agreement = InternshipAgreement.first
 
-    cmpnt = SidemenuComponent.new(candidatures_notice: 1,
+    cmpnt = SideMenuComponent.new(candidatures_notice: 1,
                                   agreements_notice: 2,
                                   agreements_authorization: true,
                                   current_page_offers: false,

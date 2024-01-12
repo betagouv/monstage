@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SidemenuComponent < ApplicationComponent
+class SideMenuComponent < ApplicationComponent
   def initialize(candidatures_notice: ,
                  agreements_notice: ,
                  agreements_authorization: ,

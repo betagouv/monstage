@@ -17,7 +17,7 @@
 
 - else
   h1#fr-sidemenu-title.h3.text-dark Tableau de bord
-= render SidemenuComponent.new(candidatures_notice: applications_notice,
+= render SideMenuComponent.new(candidatures_notice: applications_notice,
                                agreements_notice: agreements_notice,
                                agreements_authorization: can?(:index, InternshipAgreement),
                                current_page_offers: current_page?(dashboard_internship_offers_path),
