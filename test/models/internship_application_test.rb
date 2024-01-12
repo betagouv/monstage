@@ -453,6 +453,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     travel_to Time.zone.local(2020, 1, 1, 16, 0, 0) do
       internship_application_5 = create(:weekly_internship_application, :validated_by_employer) #n°2 in the list by status
     end
+    sleep 1
 
     assert_equal internship_application_2, InternshipApplication.order_by_aasm_state_for_student.first
     assert_equal internship_application_5, InternshipApplication.order_by_aasm_state_for_student.second

@@ -20,6 +20,7 @@ class InternshipApplication < ApplicationRecord
     canceled_by_employer
     submitted
     read_by_employer
+    transfered
     examined
     validated_by_employer
     approved ]
