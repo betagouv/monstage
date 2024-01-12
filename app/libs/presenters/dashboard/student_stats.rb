@@ -19,12 +19,6 @@ module Presenters
                .select(&:rejected?)
                .size
       end
-      # TODO remove following method
-      def applications_with_convention_signed_count
-        student.internship_applications
-               .select(&:convention_signed?)
-               .size
-      end
 
       def internship_locations
         student.internship_applications
