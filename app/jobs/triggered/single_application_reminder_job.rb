@@ -32,7 +32,7 @@ module Triggered
       shrinked_url = UrlShrinker.short_url(url: url, user_id:student.id)
       content = "Multipliez vos chances de trouver un stage ! Envoyez au moins " \
                 "3 candidatures sur notre site : #{shrinked_url} . " \
-                "L'équipe Mon stage de troisieme "
+                "L'équipe Mon stage de troisième "
       SendSmsJob.new.perform(user: student, message: content)
     end
   end
