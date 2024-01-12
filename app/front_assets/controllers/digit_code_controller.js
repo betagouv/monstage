@@ -6,8 +6,9 @@ export default class extends Controller {
 
   onKeyUp(event) {
     event.preventDefault();
-    (event.key == 'Backspace' || event.key == 'ArrowLeft') ?
-      this.eraseBack(event) : this.enterKey(event);
+    if (event.key == 'Shift') { return; } 
+    const isBackKey = (event.key == 'Backspace' || event.key == 'ArrowLeft');
+    (isBackKey) ? this.eraseBack(event) : this.enterKey(event);
     this.setFocus(event);
   }
 
@@ -24,7 +25,7 @@ export default class extends Controller {
   }
 
   withNumericKey(event) {
-    if (!event.shiftKey) { this.validateEnteredValue(event); }
+    this.validateEnteredValue(event);
     if (this.lastPosition()) {
       this.enableAll();
       this.enableForm();
@@ -42,7 +43,7 @@ export default class extends Controller {
   firstPosition() { return this.positionValue == 0; }
   lastPosition() { return this.positionValue == this.codeTargets.length - 1; }
 
-  currentCodeTarget() { return this.codeTargets[parseInt(this.positionValue, 10)]; }
+  currentCodeTarget() { return this.codeTargets[this.positionValue]; }
   parseCodes(fn, event = undefined) { fn(this.currentCodeTarget(), event); }
 
   assignKey(element, event) { element.value = event.key; }
