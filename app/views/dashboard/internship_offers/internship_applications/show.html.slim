@@ -41,7 +41,7 @@
               message: "En choisissant ce stage, <strong>toutes vos autres candidatures seront annulées et vous ne pourrez pas revenir en arrière.</strong>".html_safe,
               rich_text: false,
               subtitle: ""
-    
+
   - elsif current_user.employer_like?
     .fr-mb-5w
         = link_to dashboard_candidatures_path(current_user.id),
@@ -73,7 +73,7 @@
                     li
                       = "son adresse email : "
                       strong = @internship_offer.employer.email
-                = mail_to(@internship_offer.employer.email, 
+                = mail_to(@internship_offer.employer.email,
                         'Lui écrire',
                         subject: "[Stagiaire #{@internship_application.student.presenter.short_civil_full_name}] - prise de contact",
                         class: 'fr-btn fr-btn--sm fr-mt-2w')
@@ -83,13 +83,25 @@
       = @internship_application.internship_offer.title
     p.fr-text--sm.fr-mb-4w
       = "#{@internship_application.internship_offer.city.capitalize} - #{@internship_application.internship_offer.employer_name}"
+.d-flex.align-items-end
+  .container-monstage-application
+    .grey-container-application.with-grey-background
+      h2.h4.fr-mb-4w = @internship_application.student.presenter.full_name
+      p.fr-icon-calendar-line.fr-btn--icon-left
+        - week = @internship_application.week
+        = "Semaine <strong>#{week.short_select_text_method}</strong>".html_safe
+      - unless @internship_application.motivation.to_s.blank?
+        h3.h5 Motivations
+        p = @internship_application.motivation.to_s
 
 .container-monstage-application
+  .fr-ml-11w.fr-mb-8v
+    = render 'internship_applications/transfer_notice'
   .grey-container-application.with-grey-background
     h2.h4.fr-mb-4w = @internship_application.student.presenter.full_name
     p.fr-icon-calendar-line.fr-btn--icon-left
       - week = @internship_application.week
-      ="Semaine du <strong>#{week.short_select_text_method}</strong>".html_safe
+      = "Semaine <strong>#{week.short_select_text_method}</strong>".html_safe
     - unless @internship_application.motivation.to_s.blank?
       h3.h5 Motivations
       p = @internship_application.motivation.to_s
@@ -103,4 +115,5 @@
         - opts = { internship_application: @internship_application }
         - opts.merge!(opened_modal: params[:opened_modal]) if params[:opened_modal].present?
         = render "dashboard/internship_offers/internship_applications/actions/employer_decisions", **opts
+
 

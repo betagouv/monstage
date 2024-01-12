@@ -33,7 +33,7 @@ class InternshipApplicationsController < ApplicationController
     if params[:transition] == 'submit!'
       @internship_application.submit!
       @internship_application.save!
-      redirect_to completed_internship_offer_internship_application_path(@internship_offer, @internship_application)
+      redirect_to dashboard_students_internship_applications_path(student_id: current_user.id, notice_banner: true)
     else
       @internship_application.update(update_internship_application_params)
       redirect_to internship_offer_internship_application_path(@internship_offer, @internship_application)
@@ -85,21 +85,34 @@ class InternshipApplicationsController < ApplicationController
     @internship_application = InternshipApplication.find(params[:id])
     authorize! :transfer, @internship_application
     # send email to the invited employer
-    if params[:destinations].present?
-      @internship_application.update(aasm_state: :examined)
-      @internship_application.generate_token
+    if transfer_params[:destinations].present?
+      destinations = transfer_params[:destinations].split(',').compact.map(&:strip)
+      faulty_emails = check_transfer_destinations(destinations)
+      if faulty_emails.empty?
+        @internship_application.transfer!
+        @internship_application.generate_token
 
-      params[:destinations].split(',').each do |destination|
-        EmployerMailer.transfer_internship_application(
-          internship_application: @internship_application,
-          employer_id: current_user.id,
-          email: destination,
-          message: params[:comment]).deliver_now unless destination.blank?
+        destinations.each do |destination|
+          EmployerMailer.transfer_internship_application_email(
+            internship_application: @internship_application,
+            employer_id: current_user.id,
+            email: destination,
+            message: transfer_params[:comment]
+          ).deliver_later
+        end
+        redirect_to dashboard_candidatures_path,
+                    flash: { success: 'La candidature a été transmise avec succès' }
+      else
+        target_path = edit_transfer_internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application)
+        flash_error_message = "Les adresses emails suivantes sont invalides : #{faulty_emails.join(', ')}" \
+                              ". Aucun transfert n'a été effectué, " \
+                              "aucun email n'a été émis."
+        redirect_to(target_path, flash: { danger: flash_error_message }) and return
       end
+    else
+      redirect_to edit_transfer_internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application),
+                  flash: { danger: "La candidature n'a pas pu être transmise avec succès, faute de destinataires" }
     end
-
-    redirect_to dashboard_internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application),
-                flash: { success: "La candidature a été transmise avec succès, son statut est à l'étude" }
   end
 
   private
@@ -125,6 +138,23 @@ class InternshipApplicationsController < ApplicationController
               resume_languages
             ]
           )
+  end
+
+  def check_transfer_destinations(destinations)
+    email_errors = []
+    destinations.each do |destination|
+      destination_is_email = destination.match?(Devise.email_regexp)
+      email_errors << destination unless destination_is_email
+    end
+    email_errors.uniq
+  end
+
+  def transfer_params
+    params.require(:application_transfer)
+          .permit(:comment,
+                  :destinations,
+                  :destination,
+                  :destinataires)
   end
 
   def create_internship_application_params

@@ -159,7 +159,7 @@ module Dashboard
             sleep 0.15
           end
 
-          page.find('h1', text: 'Félicitations !')
+          page.find('h4', text: "Félicitations, c'est ici que vous retrouvez toutes vos candidatures.")
         end
       end
 
