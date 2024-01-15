@@ -2,6 +2,7 @@ module Services
   class SmsSender
     LINK_MOBILITY_SENDING_ENDPOINT_URL = "https://europe.ipx.com/restapi/v1/sms/send".freeze
     # TODO link mobility provider as a class variable
+    def perform
       response = get_request
       if response.nil? || !response.respond_to?(:body)
         Rails.logger.error("Link Mobility error: response is ko | phone_number: #{@phone_number} | content: #{@content}")
