@@ -113,14 +113,6 @@ import './homepage/accueillir-un-stagiaire.svg';
 import './homepage/link-step-1-2.svg';
 import './homepage/link-step-2-3.svg';
 
-import './homepage/partenaires/Logo-jobirl.jpg';
-import './homepage/partenaires/Logo-le-reseau.jpg';
-import './homepage/partenaires/Logo-les-entreprises-pour-la-cite.jpg';
-import './homepage/partenaires/Logo-tous-en-stage.jpg';
-import './homepage/partenaires/Logo-un-stage-et-apres.jpg';
-import './homepage/partenaires/Logo-viens-voir-mon-taf.jpg';
-import './homepage/partenaires/Logo-moidans10ans.png';
-
 import './homepage/sponsors/logo-anct.svg';
 import './homepage/sponsors/logo-anct.png';
 import './homepage/sponsors/logo-ministere-education-nationale.svg';
