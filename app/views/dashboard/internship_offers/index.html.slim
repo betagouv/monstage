@@ -16,7 +16,7 @@
               |Publier une offre
   .d-flex.justify-content-end.fr-mt-3w
     = form_with url: dashboard_internship_offers_path, method: :get, role: "search", class: "fr-search-bar" do
-      = text_field_tag 'search', params[:search], placeholder: "Rechercher une offre, un lieu, une entreprise", class: "fr-input", id: "search-input", size: 40
+      = text_field_tag 'search', params[:search], placeholder: "Rechercher une offre, un lieu, une entreprise", class: "fr-input", id: "search-input", size: 40, 'aria-label':  "Rechercher"
       = button_tag type: "submit", class: "fr-btn", title: "Rechercher" do
         | Rechercher
 
