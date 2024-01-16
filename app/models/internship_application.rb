@@ -20,6 +20,7 @@ class InternshipApplication < ApplicationRecord
     canceled_by_employer
     submitted
     read_by_employer
+    transfered
     examined
     validated_by_employer
     approved ]
@@ -191,6 +192,7 @@ class InternshipApplication < ApplicationRecord
         deliver_later_with_additional_delay do
           EmployerMailer.internship_application_submitted_email(internship_application: self)
         end
+        setSingleApplicationReminderJobs
       }
     end
 
@@ -348,6 +350,13 @@ class InternshipApplication < ApplicationRecord
 
     max_ranking_state = applications.map(&:state_index).max
     ORDERED_STATES_INDEX[max_ranking_state]
+  end
+
+  def setSingleApplicationReminderJobs
+    if student.internship_applications.count == 1
+      Triggered::SingleApplicationReminderJob.set(wait: 2.days).perform_later(student.id)
+      Triggered::SingleApplicationSecondReminderJob.set(wait: 5.days).perform_later(student.id)
+    end
   end
 
   def student_approval_notifications

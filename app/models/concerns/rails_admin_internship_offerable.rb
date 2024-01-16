@@ -9,6 +9,7 @@ module RailsAdminInternshipOfferable
       list do
         scopes [:kept, :discarded]
         field :title
+        field :employer
         field :department
         field :zipcode
         field :employer_name
@@ -18,6 +19,7 @@ module RailsAdminInternshipOfferable
       end
 
       show do
+
         exclude_fields :blocked_weeks_count,
                        :total_applications_count,
                        :approved_applications_count,
@@ -26,6 +28,15 @@ module RailsAdminInternshipOfferable
                        :submitted_applications_count,
                        :rejected_applications_count,
                        :tutor
+        field :employer_email do
+          def label
+            "Email de l'employeur"
+          end
+          def pretty_value
+            bindings[:object].employer.email
+          end
+        end
+        field :employer
         field :internship_offer_area do
           label "Espace"
         end

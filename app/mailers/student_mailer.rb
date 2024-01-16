@@ -98,4 +98,31 @@ class StudentMailer < ApplicationMailer
     send_email(to: @student.email,
                subject: "Votre candidature a expiré")
   end
+
+  def single_application_reminder_email(student: )
+    @subject   = "Multipliez vos chances de trouver un stage !"
+    @student   = student
+    @message   = "Envoyez trois candidatures pour augmenter vos chances de " \
+                 "trouver un stage. Cela vous permet aussi de découvrir " \
+                 "différents métiers."
+
+    @cta_label = "Trouver un stage"
+    @url = internship_offers_url(student.default_search_options)
+
+    send_email(to: @student.email, subject: @subject)
+  end
+
+  def single_application_second_reminder_email(student: )
+    @subject   = "Multipliez vos chances de trouver un stage !"
+    @student   = student
+    @message   = "Les employeurs peuvent prendre du temps pour répondre aux " \
+                 "candidatures. Si vous n'avez pas de nouvelles, continuez à postuler " \
+                 "ailleurs. Cela maximise vos chances et vous garde actif dans " \
+                 "votre recherche de stage."
+
+    @cta_label = "Trouver un stage"
+    @url = internship_offers_url(student.default_search_options)
+
+    send_email(to: @student.email, subject: @subject)
+  end
 end

@@ -2,6 +2,7 @@
 # - they share the same inviter_id (and then team_owner_id)
 # - team_member is nil if invitation is pending or refused
 # - team_member is not nil when invitation is accepted
+# - team_members list those invitation that where accepted (TODO : rename to accepted_members)
 class Team
   def activate_member
     return if db_user.nil?

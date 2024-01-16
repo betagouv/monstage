@@ -1,0 +1,11 @@
+p style=head_cyclop_styles
+  = @subject
+
+p style=p_cyclop_styles
+  = @message
+
+
+p style=p_cyclop_styles
+= render partial: "mailers/blue_call_to_action",
+          locals: { href: @url,
+                    label: @cta_label }

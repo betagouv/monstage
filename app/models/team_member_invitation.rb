@@ -1,5 +1,12 @@
 class TeamMemberInvitation < ApplicationRecord
-
+    # id bigint NOT NULL,
+    # created_at timestamp(6) without time zone NOT NULL,
+    # updated_at timestamp(6) without time zone NOT NULL,
+    # inviter_id bigint NOT NULL,
+    # member_id bigint,
+    # invitation_email character varying(150) NOT NULL,
+    # invitation_refused_at timestamp(6) without time zone,
+    # aasm_state character varying DEFAULT 'pending_invitation'::character varying
   include AASM
    # Relations
   belongs_to :inviter,
