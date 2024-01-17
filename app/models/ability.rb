@@ -325,6 +325,7 @@ class Ability
     can :create, InternshipOffers::Api
     can :show, :api_token
     can %i[index_and_filter], Reporting::InternshipOffer
+    can %i[index], Sector
     can %i[index], Acl::Reporting do |_acl|
       true
     end
