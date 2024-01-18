@@ -1,4 +1,4 @@
 {
   "code": "UNAUTHORIZED",
-  "error": "wrong api token"
+  "error": "access denied"
 }

@@ -4,7 +4,7 @@ module Api
   class IndexTest < ActionDispatch::IntegrationTest
     include ::ApiTestHelpers
 
-    test 'GET #index without token renders :unauthorized payload' do
+    test 'GET #index without token is to render :unauthorized payload' do
       get api_sectors_path
       documents_as(endpoint: :'sectors/index', state: :unauthorized) do
         assert_response :unauthorized

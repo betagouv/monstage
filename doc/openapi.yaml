@@ -30,7 +30,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternshipOffer'
         '401':
-          description: l'authentification a échoué
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: L'utilisateur n'est pas autorisé à supprimer cette offre de stage
           content:
             application/json:
               schema:
@@ -38,14 +40,46 @@ paths:
                 properties:
                   code:
                     type: string
-                    example: "UNAUTHORIZED"
+                    example: "FORBIDDEN"
                   error:
                     type: string
                     example: "access denied"
                   status:
                     type: string
-                    example: "unauthorized"
+                    example: "forbidden"
+        '404':
+          description: Un argument de la requête fait échouer la requête.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "NOT_FOUND"
+                  error:
+                    type: string
+                    example: "can't find internship_offer with this remote_id"
+                  status:
+                    type: string
+                    example: "not_found"
 
+        '406':
+          description: Un ou plusieurs paramètres de requête sont invalides
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "VALIDATION_ERROR"
+                  error:
+                    type: string
+                    example: "Erreur de validation sur l'objet"
+                  status:
+                    type: string
+                    example: "conflict"
         '409':
           description: Conflit. Une offre de stage avec le même remote_id existe déjà
           content:
@@ -62,6 +96,84 @@ paths:
                   status:
                     type: string
                     example: "conflict"
+        '422':
+          description: Un argument au moins de la requête fait échouer la requête
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "BAD_ARGUMENT"
+                  error:
+                    type: string
+                    example: "Erreur sur la requête due à un un paramètre invalide"
+                  status:
+                    type: string
+                    example: "unprocessable_entity"
+  '/internship_offers/{remote_id}':
+    patch:
+      tags:
+        - developers
+      summary: met à jour une offre de stage d'un partenaire aux offres proposées en propre par les équipes monstagedetroisieme.fr
+      operationId: internship_offers_updatte
+      security:
+        - bearerAuth: []
+      description: |
+        Mise à jour des offres . Possibilité de désactiver son offre en passant le paramètre published_at à null
+      requestBody:
+        $ref: "#/components/requestBodies/InternshipOfferPatch"
+      parameters:
+        - name: remote_id
+          in: path
+          description: clé étrangère unique , id de l'offre de stage chez le partenaire
+          required: true
+          schema:
+            type: string
+            example: remote-123
+      responses:
+        '200':
+          description: Offre de stage mise à jour
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternshipOffer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: L'utilisateur n'est pas autorisé à supprimer cette offre de stage
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "FORBIDDEN"
+                  error:
+                    type: string
+                    example: "access denied"
+                  status:
+                    type: string
+                    example: "forbidden"
+        '404':
+          description: Un argument de la requête fait échouer la requête.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "NOT_FOUND"
+                  error:
+                    type: string
+                    example: "can't find internship_offer with this remote_id"
+                  status:
+                    type: string
+                    example: "not_found"
+
         '406':
           description: Un ou plusieurs paramètres de requête sont invalides
           content:
@@ -94,30 +206,34 @@ paths:
                   status:
                     type: string
                     example: "unprocessable_entity"
-    patch:
+    delete:
       tags:
         - developers
-      summary: met à jour une offre de stage d'un partenaire aux offres proposées en propre par les équipes monstagedetroisieme.fr
-      operationId: internship_offers_updatte
+      summary: Supprime une offre de stage d'un partenaire des offres proposées sur le site monstagedetroisieme.fr
+      operationId: internship_offers_delete
       security:
         - bearerAuth: []
       description: |
-        Les offres de stages décrits ci-dessous décrivent les offres réservées aux classes de **troisiemeen REP  ou REP+**, anciennement nommées troisieme générale
-      requestBody:
-        allOf:
-          - $ref: "#/components/requestBodies/InternshipOffer"
-          -published_at:
+        Suppression des offres
+      parameters:
+        - name: remote_id
+          in: path
+          description: id de l'offre de stage
+          required: true
+          schema:
             type: string
-            
+            example: remote-123
       responses:
         '200':
-          description: Offre de stage mise à jour
+          description: Offre de stage supprimée
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternshipOffer'
         '401':
-          description: l'authentification a échoué
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: L'utilisateur n'est pas autorisé à supprimer cette offre de stage
           content:
             application/json:
               schema:
@@ -125,16 +241,15 @@ paths:
                 properties:
                   code:
                     type: string
-                    example: "UNAUTHORIZED"
+                    example: "FORBIDDEN"
                   error:
                     type: string
                     example: "access denied"
                   status:
                     type: string
-                    example: "unauthorized"
-
-        '409':
-          description: Conflit. Une offre de stage avec le même remote_id existe déjà
+                    example: "forbidden"
+        '404':
+          description: Un argument de la requête fait échouer la requête.
           content:
             application/json:
               schema:
@@ -142,31 +257,15 @@ paths:
                 properties:
                   code:
                     type: string
-                    example: "DUPLICATE_WEEKY_FRAMED"
+                    example: "NOT_FOUND"
                   error:
                     type: string
-                    example: "weeky_framed with this remote_id (123) already exists."
+                    example: "can't find internship_offer with this remote_id"
                   status:
                     type: string
-                    example: "conflict"
-        '406':
-          description: Un ou plusieurs paramètres de requête sont invalides
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: string
-                    example: "VALIDATION_ERROR"
-                  error:
-                    type: string
-                    example: "Erreur de validation sur l'objet"
-                  status:
-                    type: string
-                    example: "conflict"
+                    example: "not_found"
         '422':
-          description: Un argument au moins de la requête fait échouer la requête
+          description: Un argument de la requête fait échouer la requête.
           content:
             application/json:
               schema:
@@ -175,6 +274,13 @@ paths:
                   code:
                     type: string
                     example: "BAD_ARGUMENT"
+                  error:
+                    type: string
+                    example: "Erreur sur la requête due à un un paramètre invalide"
+                  status:
+                    type: string
+                    example: "unprocessable_entity"
+
   '/sectors':
     get:
       tags:
@@ -206,9 +312,31 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/InternshipOffer'
+    InternshipOfferPatch:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternshipOfferPatch'
+  responses:
+    Unauthorized:
+      description: l'authentification a échoué
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                example: "UNAUTHORIZED"
+              error:
+                type: string
+                example: "access denied"
+              status:
+                type: string
+                example: "unauthorized"
+
   # COMPONENTS SCHEMAS
   schemas:
-
     InternshipOffer:
       type: object
       description: offre de stage
@@ -221,13 +349,9 @@ components:
         - weeks
         - remote_id
         - max_candidates
-        - published_at
         - is_public
         - sector_id
       properties:
-        id:
-          type: integer
-          example: 123
         description:
           type: string
           maxLength: 500
@@ -315,6 +439,15 @@ components:
         sector_id:
           $ref: '#/components/schemas/Sector'
 
+    InternshipOfferPatch:
+      allOf:
+        - type: object
+          properties:
+            published_at:
+              type: string
+              format: date-time
+              example: 2024-01-17 15:45:23.418901923 UTC
+        - $ref: '#/components/schemas/InternshipOffer'
     Sector:
       type: object
       description: Secteur économique.
