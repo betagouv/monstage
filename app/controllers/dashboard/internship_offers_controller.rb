@@ -14,6 +14,12 @@ module Dashboard
       @internship_offers = finder.all
       order_param = order_direction.nil? ? :published_at : {order_column => order_direction}
       @internship_offers = @internship_offers.order(order_param)
+      if params[:search].present?
+        @internship_offers = @internship_offers.where(
+          "title ILIKE :search OR employer_name ILIKE :search OR city ILIKE :search",
+          search: "%#{params[:search]}%"
+        )
+      end
     end
 
     # duplicate submit

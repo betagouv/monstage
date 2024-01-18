@@ -51,5 +51,16 @@ class StudentMailerPreview < ActionMailer::Preview
       applications_to_notify: internship_applications
     )
   end
-  
+
+  def single_application_reminder_email
+    StudentMailer.single_application_reminder_email(
+      student: Users::Student.first
+    )
+  end
+
+  def single_application_second_reminder_email
+    StudentMailer.single_application_second_reminder_email(
+      student: Users::Student.first
+    )
+  end
 end

@@ -1,8 +1,10 @@
 <%= "Bonjour #{@employer.name}," %>
 
 <% if @remindable_application_ids.size.positive? %>
-<% -count = @remindable_application_ids.size %>
-<%= "Vous avez actuellement #{count} #{"candidature".pluralize(count)} en attente de réponse. En l'absence de réponse de votre part, #{"elle".pluralize(count)} #{count > 1 ? "expireront" : "expirera"} expireront automatiquement dans 30 jours." %>
+<%- count = @remindable_application_ids.size%>
+<%= "Vous avez actuellement #{count} #{'candidature'.pluralize(count)} en attente de réponse. "%>
+<%= "En l'absence de réponse de votre part, #{'elle'.pluralize(count)} "%>
+<%= "#{count > 1 ? "expireront" : "expirera"} automatiquement dans #{InternshipApplication::EXPIRATION_DURATION/3600/24} jours." %>
 <% end %>
-
+Pour gérer vos candidatures :
 <%= dashboard_internship_offers_url %>

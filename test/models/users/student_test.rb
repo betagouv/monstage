@@ -74,8 +74,45 @@ module Users
         school_without_weeks = create(:school)
         student = create(:student, school: school_without_weeks)
         internship_offer = create(:weekly_internship_offer, weeks: [Week.selectable_on_school_year.first])
-        
+
         assert  student.school_and_offer_common_weeks(internship_offer).empty?
+      end
+    end
+
+    test "#available_offers" do
+      travel_to Date.new(2020, 9, 1) do
+        weeks_till_end = Week.selectable_from_now_until_end_of_school_year
+        school         = create(:school, :with_school_manager, weeks: [weeks_till_end.first])
+        student        = create(:student, school: school)
+        assert_equal 0 , student.available_offers.count
+        create(:weekly_internship_offer, weeks:  weeks_till_end.last(2))
+        # since no fit
+        assert_equal 0 , student.available_offers.count
+        # with one to fit
+        internship_offer = create(:weekly_internship_offer, weeks:  weeks_till_end.first(2))
+        assert_equal 1 , student.available_offers.count
+        create(:weekly_internship_offer, coordinates: Coordinates.bordeaux, weeks: weeks_till_end.first(2))
+        # still 1 since bordeaux won't fit
+        assert_equal 1 , student.available_offers.count
+        # and back to 0 if student has already applied
+        create(:internship_application,
+               student: student,
+               internship_offer: internship_offer,
+               week: weeks_till_end.second)
+        assert_equal 0 , student.available_offers.count
+      end
+    end
+
+    test "#has_offers_to_apply_to?" do
+      travel_to Date.new(2020, 9, 1) do
+        weeks_till_end = Week.selectable_from_now_until_end_of_school_year
+        school         = create(:school, :with_school_manager, weeks: [weeks_till_end.first])
+        student        = create(:student, school: school)
+        refute student.has_offers_to_apply_to?
+        create(:weekly_internship_offer, weeks:  weeks_till_end.last(2))
+        refute student.has_offers_to_apply_to?
+        create(:weekly_internship_offer, weeks:  weeks_till_end.first(2))
+        assert student.has_offers_to_apply_to?
       end
     end
   end

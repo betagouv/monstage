@@ -10,6 +10,20 @@ class InternshipApplication < ApplicationRecord
   EXPIRATION_DURATION = 15.days
   EXTENDED_DURATION = 15.days
   MAGIC_LINK_EXPIRATION_DELAY = 5.days
+  ORDERED_STATES_INDEX = %w[
+    drafted
+    expired
+    canceled_by_student_confirmation
+    canceled_by_student
+    rejected
+    expired_by_student
+    canceled_by_employer
+    submitted
+    read_by_employer
+    transfered
+    examined
+    validated_by_employer
+    approved ]
 
   attr_accessor :sgid
 
@@ -178,6 +192,7 @@ class InternshipApplication < ApplicationRecord
         deliver_later_with_additional_delay do
           EmployerMailer.internship_application_submitted_email(internship_application: self)
         end
+        setSingleApplicationReminderJobs
       }
     end
 
@@ -221,7 +236,7 @@ class InternshipApplication < ApplicationRecord
                     self.reload
                     after_employer_validation_notifications
                     CancelValidatedInternshipApplicationJob.set(wait: 15.days).perform_later(internship_application_id: id)
-                  }        
+                  }
     end
 
     event :approve do
@@ -323,6 +338,24 @@ class InternshipApplication < ApplicationRecord
                   after: proc { |*_args|
         update!(expired_at: Time.now.utc)
       }
+    end
+  end
+
+  def state_index
+    ORDERED_STATES_INDEX.index(aasm_state)
+  end
+
+  def self.best_state(applications)
+    return nil if applications.empty?
+
+    max_ranking_state = applications.map(&:state_index).max
+    ORDERED_STATES_INDEX[max_ranking_state]
+  end
+
+  def setSingleApplicationReminderJobs
+    if student.internship_applications.count == 1
+      Triggered::SingleApplicationReminderJob.set(wait: 2.days).perform_later(student.id)
+      Triggered::SingleApplicationSecondReminderJob.set(wait: 5.days).perform_later(student.id)
     end
   end
 
