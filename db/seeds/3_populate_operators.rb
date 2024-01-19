@@ -18,7 +18,7 @@ def populate_operators
                   target_count: 1200)
   Operator.create(name: "Myfuture",
                   website: "",
-                  logo: 'Logo-moidans10ans.png',
+                  logo: 'Logo-my-future.jpg',
                   target_count: 1200)
   Operator.create(name: "Les entreprises pour la cité (LEPC)",
                   website: "",
