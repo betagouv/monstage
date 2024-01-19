@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class InternshipOffersController < ApplicationController
-  before_action :authenticate_user!, only: %i[]
   layout 'search', only: :index
 
   with_options only: [:show] do
@@ -42,7 +41,7 @@ class InternshipOffersController < ApplicationController
   end
 
   def show
-    check_internship_offer_is_published_or_redirect
+
     @previous_internship_offer = finder.next_from(from: @internship_offer)
     @next_internship_offer = finder.previous_from(from: @internship_offer)
 
@@ -93,6 +92,8 @@ class InternshipOffersController < ApplicationController
   end
 
   def check_internship_offer_is_published_or_redirect
+    from_email = [params[:origin], params[:origine]].include?('email')
+    authenticate_user! if current_user.nil? && from_email
     return if can?(:create, @internship_offer)
     return if @internship_offer.published?
 
@@ -131,7 +132,6 @@ class InternshipOffersController < ApplicationController
     alternative_internship_offers = []
     priorities.each do |priority|
       next unless priority.any? { |p| params[p].present? && params[p] != Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER.to_s }
-      
 
        priority_offers = Finders::InternshipOfferConsumer.new(
         params: params.permit(*priority),

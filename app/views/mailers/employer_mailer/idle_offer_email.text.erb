@@ -1,0 +1,17 @@
+<%= @title %>
+
+<%= @bonjour %>
+
+<%= @paragraph_1 %>
+
+<%= @paragraph_2 %>
+
+<%- @paragraph3_items.each_with_index do |p, index| %>
+  <%= "- #{index + 1}.#{p}" %>
+<% end %>
+
+<%= @url_label %> : <%= @url %>
+
+<%= @paragraph_4 %>
+
+<%= @paragraph_5 %>

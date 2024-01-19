@@ -176,4 +176,32 @@ class EmployerMailer < ApplicationMailer
       subject: 'Candidatures en attente, veuillez y répondre'
     )
   end
+
+  def idle_offer_email(internship_offer:)
+    @employer = internship_offer.employer
+    @url = internship_offer_url( id: internship_offer.id,
+                                 mtm_campaign: 'Offreur_Offre_de_stage_en_attente',
+                                 origine: 'email' ).html_safe
+    @url_label   = "Publier l'offre"
+    subject      = "Votre offre de stage attend sa publication"
+    @title       = "Finalisez la publication de votre offre de stage."
+    @bonjour     = "Bonjour #{@employer.presenter.full_name},"
+    @paragraph_1 = "Nous avons remarqué que votre offre de stage intitulée #{internship_offer.title} " \
+                   "a été initiée sur Monstagedetroisieme.fr, mais reste enregistrée " \
+                   "en tant que brouillon."
+    @paragraph_2 = "Pour publier votre offre, suivez ces étapes simples :"
+    @paragraph3_items = [
+      "Connectez-vous à votre compte sur Monstagedetroisieme.fr.",
+      "Rendez-vous dans la section « Mes offres ».",
+      "Sélectionnez l'offre \"#{internship_offer.title}\"",
+      "Vérifiez les informations de l'offre et cliquez sur « Publier » pour la rendre visible aux élèves."
+    ]
+
+    @paragraph_4 = "Si l'offre n'est plus d'actualité ou si vous avez changé d'avis, " \
+                   "vous pouvez la supprimer depuis l’étape 4."
+    @paragraph_5 = "Nous sommes à votre disposition pour toute aide ou question. " \
+                   "N'hésitez pas à nous contacter sur support@monstagedetroisieme.fr"
+
+    send_email( to: @employer.email, subject: subject )
+  end
 end

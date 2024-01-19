@@ -80,6 +80,12 @@ class EmployerMailerPreview < ActionMailer::Preview
       email: "test@free.fr",
       message: "This is my message to youhuhu"
     )
-    
+  end
+
+  def idle_offer_email
+    internship_offer = InternshipOffers::WeeklyFramed.drafted.first
+    EmployerMailer.idle_offer_email(
+      internship_offer: internship_offer,
+    )
   end
 end
