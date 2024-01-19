@@ -220,7 +220,7 @@ module InternshipOffers::InternshipApplications
 
         sign_in(internship_offer.employer)
 
-        assert_enqueuked_jobs 1, only: SendSmsJoffb do
+        assert_enqueued_jobs 1, only: SendSmsJob do
           assert_enqueued_emails 1 do
             assert_changes -> { InternshipAgreement.all.count },
                         from: 0,

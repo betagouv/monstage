@@ -5,6 +5,7 @@
 - content ||= ''
 - limit ||= nil
 - required = required.nil?
+- pattern ||= ''
 .col-12.pt-3
   .form-group.form-group-tooltip
     = form.label field do
@@ -19,6 +20,7 @@
         = form.text_field field,
                           class: 'fr-input',
                           required: required,
+                          **(pattern.present? ? { pattern: pattern } : {}),
                           data: {:'internship-agreement-form-target' => 'textField',
                                  :'win1252-checker-target' => 'field',
                                  action: 'change->win1252-checker#checkWin1252'}

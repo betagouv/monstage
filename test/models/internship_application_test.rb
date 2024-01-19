@@ -427,9 +427,9 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     assert_equal [employer_2.email], internship_application.filter_notified_emails
   end
 
-  test '.pending_states' do
+  test '::PENDING_STATES' do
     assert_equal %w[submitted read_by_employer examined transfered validated_by_employer],
-                 InternshipApplication.pending_states
+                 InternshipApplication::PENDING_STATES
   end
 
   test '.order_by_aasm_state_for_student' do
@@ -464,6 +464,10 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     travel_to Time.zone.local(2020, 1, 1, 16, 0, 0) do
       internship_application_5 = create(:weekly_internship_application, :validated_by_employer) #n°2 in the list by status
     end
+<<<<<<< HEAD
+>>>>>>> staging
+=======
+    sleep 1
 >>>>>>> staging
 
     assert_equal internship_application_2, InternshipApplication.order_by_aasm_state_for_student.first

@@ -3,6 +3,7 @@
 module Finders
   # build base query to request internship offers per user.type
   class ContextTypableInternshipOffer
+    MAX_RADIUS_SEARCH_DISTANCE = 60_000
     delegate :next_from,
              :previous_from,
              :all,

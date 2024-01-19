@@ -36,9 +36,9 @@ module Dashboard
         @internship_offers = current_user.internship_offers
         @internship_applications = fetch_user_internship_applications.filtering_discarded_students
         @internship_offer_areas = current_user.internship_offer_areas
-        @received_internship_applications = @internship_applications.where(aasm_state: InternshipApplication.received_states)
-        @approved_internship_applications = @internship_applications.where(aasm_state: InternshipApplication.approved_states)
-        @rejected_internship_applications = @internship_applications.where(aasm_state: InternshipApplication.rejected_states)
+        @received_internship_applications = @internship_applications.where(aasm_state: InternshipApplication::RECEIVED_STATES)
+        @approved_internship_applications = @internship_applications.where(aasm_state: InternshipApplication::APPROVED_STATES)
+        @rejected_internship_applications = @internship_applications.where(aasm_state: InternshipApplication::REJECTED_STATES)
       end
 
       def show

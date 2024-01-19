@@ -16,7 +16,7 @@ module Triggered
     test 'perform does not send email when no pending internship_applications' do
       student = create(:student)
       internship_application = create(:weekly_internship_application, :submitted, student: student)
-      ovh_stub do
+      sms_stub do
         assert_no_emails do
           Triggered::StudentSmsInternshipApplicationReminderJob.perform_now(internship_application.id)
         end
@@ -26,7 +26,7 @@ module Triggered
     test 'perform and send sms when pending internship_applications' do
       student = create(:student)
       internship_application = create(:weekly_internship_application, :validated_by_employer, student: student)
-      ovh_stub do
+      sms_stub do
         assert_enqueued_jobs 1 do
           Triggered::StudentSmsInternshipApplicationReminderJob.perform_now(internship_application.id)
         end

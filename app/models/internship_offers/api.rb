@@ -2,7 +2,6 @@
 
 module InternshipOffers
   class Api < InternshipOffer
-    include WeeklyFramable
 
     rails_admin do
       weight 13
