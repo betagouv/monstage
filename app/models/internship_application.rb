@@ -249,7 +249,7 @@ class InternshipApplication < ApplicationRecord
                   after: proc { |*_args|
                     update!("approved_at": Time.now.utc)
                     student_approval_notifications
-                    cancel_all_pending_others_applications
+                    cancel_all_pending_applications
                   }
     end
 
