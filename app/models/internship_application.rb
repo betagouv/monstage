@@ -494,15 +494,9 @@ class InternshipApplication < ApplicationRecord
     "Candidature de " + student_name
   end
 
-<<<<<<< HEAD
-  def cancel_all_pending_others_applications
-    student.internship_applications.where(aasm_state: InternshipApplication::pending_states).each do |application|
-      application.cancel_by_student_confirmation! unless application == self
-=======
   def cancel_all_pending_applications
     student.internship_applications.where(aasm_state: InternshipApplication::PENDING_STATES).each do |application|
-      application.cancel_by_student_confirmation!
->>>>>>> staging
+      application.cancel_by_student_confirmation! unless application == self
     end
   end
 
