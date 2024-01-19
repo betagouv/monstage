@@ -32,7 +32,6 @@ class InternshipAgreement < ApplicationRecord
                 :enforce_main_teacher_validations,
                 :skip_validations_for_system
 
-  # TODO: flip based on current switch/branch
   with_options if: :enforce_main_teacher_validations? do
     validates :student_class_room, presence: true
     validates :main_teacher_full_name, presence: true

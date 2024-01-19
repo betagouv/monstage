@@ -1,13 +1,13 @@
-div data-controller='digit-code' data-digit-code-position-value="0"
-  .fr-mb-1w.d-flex.flex-row
+#otp-signatures data-controller='digit-code' data-digit-code-position-value="0" data-digit-code-target="codeContainer"
+  .fr-mb-1w.d-flex.flex-row 
     - 6.times do |i|
       = form.text_field :code,
-                     class: 'digit-code-size',
-                     id: "user-code-#{i}",
-                     name: "[user]digit-code-target-#{i}",
-                     maxlength: 1,
-                     data: {:"digit-code-target" => 'code',
-                            :action =>'keyup->digit-code#onKeyUp'}
+                        class: 'digit-code-size',
+                        id: "user-code-#{i}",
+                        name: "[user]digit-code-target-#{i}",
+                        maxlength: 1,
+                        data: {:"digit-code-target" => 'code',
+                              :action =>'keyup->digit-code#onKeyUp'}
   br
   ul.fr-btns-group.fr-btns-group--inline-reverse.fr-btns-group--inline-lg.fr-btns-group--icon-left
     li

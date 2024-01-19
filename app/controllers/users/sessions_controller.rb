@@ -22,7 +22,6 @@ module Users
     end
 
     def create
-      cookies[:prefered_channel] = params[:user][:channel]
       if by_phone? && fetch_user_by_phone.try(:valid_password?, params[:user][:password])
         user = fetch_user_by_phone
         if user.student?

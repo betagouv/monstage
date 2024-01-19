@@ -297,17 +297,6 @@ class User < ApplicationRecord
     Rails.env.production? ? satisfaction_survey_id : ENV['TALLY_STAGING_SURVEY_ID']
   end
 
-  protected
-
-  # TODO : this is to move to a statistician model
-
-  def trigger_agreements_creation
-    if changes[:agreement_signatorable] == [false, true]
-      AgreementsAPosterioriJob.perform_later(user_id: id)
-    end
-  end
-
-
   private
 
   def concatenate_and_clean
