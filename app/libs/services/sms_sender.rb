@@ -14,7 +14,7 @@ module Services
       status?(0, response_body) ? log_success(response_body) : log_failure(response_body)
     end
 
-    attr_reader :phone_number, :content , :sender_name, :user, :pass
+    attr_reader :phone_number, :content , :sender_name, :user, :pass, :campaign_name
 
     private
 
@@ -54,6 +54,7 @@ module Services
         username: user,
         password: pass,
         originatingAddress: sender_name,
+        campaignName: campaign_name,
         originatorTON: 1 # 1 = Alphanumeric, 2 = Shortcode, 3 = MSISDN
       }
     end
@@ -69,8 +70,9 @@ module Services
       { 'Accept': 'application/json' }
     end
 
-    def initialize(phone_number: , content: )
+    def initialize(phone_number: , content: , campaign_name: nil)
       @phone_number = phone_number 
+      @campaign_name = campaign_name
       @content = content
       @sender_name = 'MonStage3e' # Max length: 16 chars
       @user = ENV['LINK_MOBILITY_USER']
