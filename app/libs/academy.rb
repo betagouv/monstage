@@ -10,7 +10,7 @@ class Academy
     'Académie de Dijon' => %w[21 58 71 89],
     'Académie de Rennes' => %w[22 29 35 56],
     "Académie d'OrléansTours" => %w[18 28 36 37 41 45],
-    'Académie de Corse' => %w[2A 2B],
+    'Académie de Corse' => %w[2A 2B 200 201 202 206],
     'Académie de Nancy-Metz' => %w[54 55 57 88],
     'Académie de Reims' => %w[08 10 51 52],
     'Académie de Strasbourg' => %w[67 68],

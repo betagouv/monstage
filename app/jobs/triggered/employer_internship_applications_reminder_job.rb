@@ -2,7 +2,7 @@
 
 module Triggered
   class EmployerInternshipApplicationsReminderJob < ApplicationJob
-    queue_as :batches
+    queue_as :default
 
     def perform(employer)      
       internship_applications = employer.internship_applications

@@ -170,17 +170,17 @@ class User < ApplicationRecord
   def self.sanitize_mobile_phone_number(number, prefix = '')
     return if number.blank?
 
-    thin_number = number.gsub(/[\s|;\,\.\:]/, '')
+    thin_number = number.gsub(/[\s|;\,\.\:\(\)]/, '')
     if thin_number.match?(/\A\+330[6|7]\d{8}\z/)
-      "#{prefix}#{thin_number[3..]}"
+      "#{prefix}#{thin_number[4..]}"
     elsif thin_number.match?(/\A\+33[6|7]\d{8}\z/)
-      "#{prefix}0#{thin_number[3..]}"
+      "#{prefix}#{thin_number[3..]}"
     elsif thin_number.match?(/\A33[6|7]\d{8}\z/)
-      "#{prefix}0#{thin_number[2..]}"
-    elsif thin_number.match?(/\A330[6|7]\d{8}\z/)
       "#{prefix}#{thin_number[2..]}"
+    elsif thin_number.match?(/\A330[6|7]\d{8}\z/)
+      "#{prefix}#{thin_number[3..]}"
     elsif thin_number.match?(/\A0[6|7]\d{8}\z/)
-      "#{prefix}#{thin_number}"
+      "#{prefix}#{thin_number[1..]}"
     else
       nil
     end
