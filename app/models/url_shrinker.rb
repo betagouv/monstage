@@ -1,3 +1,4 @@
+# TODO move this to a service !!
 class UrlShrinker < ApplicationRecord
   belongs_to :user
 

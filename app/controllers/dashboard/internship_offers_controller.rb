@@ -14,6 +14,12 @@ module Dashboard
       @internship_offers = finder.all
       order_param = order_direction.nil? ? :published_at : {order_column => order_direction}
       @internship_offers = @internship_offers.order(order_param)
+      if params[:search].present?
+        @internship_offers = @internship_offers.where(
+          "title ILIKE :search OR employer_name ILIKE :search OR city ILIKE :search",
+          search: "%#{params[:search]}%"
+        )
+      end
     end
 
     # duplicate submit
@@ -58,8 +64,7 @@ module Dashboard
         anchor = "weeks_container"
         warning = "Votre annonce n'est pas encore republiée, car il faut ajouter des semaines de stage"
       end
-      # TODO remove republish: true in the redirect_to
-      redirect_to edit_dashboard_internship_offer_path(@internship_offer, anchor: anchor, republish: true),
+      redirect_to edit_dashboard_internship_offer_path(@internship_offer, anchor: anchor),
                   flash: { warning: warning}
     end
 

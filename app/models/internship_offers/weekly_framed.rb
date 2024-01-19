@@ -2,7 +2,6 @@
 
 module InternshipOffers
   class WeeklyFramed < InternshipOffer
-    include WeeklyFramable
     include RailsAdminInternshipOfferable
 
     after_initialize :init

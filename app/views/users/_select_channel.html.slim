@@ -11,8 +11,7 @@ fieldset.select-channel.fr-fieldset.fr-mt-n4w[aria-labelledby="channel-legend"]
                           "email",
                           id: "select-channel-email",
                           "data-action" => "change->signup#checkEmail",
-                          "data-signup-target" => "emailRadioButton",
-                          checked: (cookies[:prefered_channel] == "email")  do
+                          "data-signup-target" => "emailRadioButton"  do
       label.fr-label for="select-channel-email"
         | Par email
     .fr-radio-group.text-right
@@ -20,8 +19,7 @@ fieldset.select-channel.fr-fieldset.fr-mt-n4w[aria-labelledby="channel-legend"]
                           "phone",
                           id: "select-channel-phone",
                           "data-action" => "change->signup#checkPhone",
-                          "data-signup-target" => "phoneRadioButton",
-                          checked: (cookies[:prefered_channel] == "phone")
+                          "data-signup-target" => "phoneRadioButton"
       label.fr-label for="select-channel-phone"
         | Par téléphone
 
