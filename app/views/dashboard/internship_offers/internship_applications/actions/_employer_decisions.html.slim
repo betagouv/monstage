@@ -1,14 +1,22 @@
 .d-flex.flex-row
+  - with_options = !defined?(opened_modal)
   - prez = @internship_application.presenter(current_user)
   - if prez.ok_for_reject?
     = render "dashboard/internship_offers/internship_applications/actions/reject",
-              internship_application: @internship_application, token: params[:token]
-  - if prez.ok_for_transfer?
+              internship_application: @internship_application,
+              token: params[:token],
+              opened_modal: params[:opened_modal]
+  - if prez.ok_for_transfer? && with_options
     = render "dashboard/internship_offers/internship_applications/actions/transfer",
-              internship_application: @internship_application
-  - if prez.ok_for_examine?
+              internship_application: @internship_application,
+              opened_modal: false
+  - if prez.ok_for_examine? && with_options
     = render "dashboard/internship_offers/internship_applications/actions/examine",
-              internship_application: @internship_application
+              internship_application: @internship_application,
+              opened_modal: false
   - if prez.ok_for_employer_validation?
     = render "dashboard/internship_offers/internship_applications/actions/approve",
-              internship_application: @internship_application, token: params[:token]
+              internship_application: @internship_application,
+              token: params[:token],
+              opened_modal: params[:opened_modal]
+
