@@ -28,7 +28,7 @@ module Triggered
       content =  "Pas de réponse à votre candidature ? Les employeurs peuvent être lents" \
                  " à répondre. Continuez à postuler pour maximiser vos chances de trouver" \
                  " le stage idéal sur Monstagedetroisieme.fr."
-      SendSmsJob.new.perform_later(user: student, message: content)
+      SendSmsJob.new.perform(user: student, message: content)
     end
   end
 end
