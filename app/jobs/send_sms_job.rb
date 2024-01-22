@@ -10,7 +10,7 @@ class SendSmsJob < ApplicationJob
       Rails.logger.error("SMS: Message is just blank") if message
       return
     end
-    if campaign_name&.size&.to_i > 49
+    if campaign_name&.size.to_i > 49
       Rails.logger.error("Campaign name is too long: #{campaign_name}")
       return
     end
