@@ -36,19 +36,34 @@ module Dashboard
         @internship_offers = current_user.internship_offers
         @internship_applications = fetch_user_internship_applications.filtering_discarded_students
         @internship_offer_areas = current_user.internship_offer_areas
-        @received_internship_applications = @internship_applications.where(aasm_state: InternshipApplication.received_states)
-        @approved_internship_applications = @internship_applications.where(aasm_state: InternshipApplication.approved_states)
-        @rejected_internship_applications = @internship_applications.where(aasm_state: InternshipApplication.rejected_states)
+        @received_internship_applications = @internship_applications.where(aasm_state: InternshipApplication::RECEIVED_STATES)
+        @approved_internship_applications = @internship_applications.where(aasm_state: InternshipApplication::APPROVED_STATES)
+        @rejected_internship_applications = @internship_applications.where(aasm_state: InternshipApplication::REJECTED_STATES)
       end
 
+      # magic_link_tracker is not updated here
       def show
-        if params[:token].present?
-          redirect_to root_path, flash: { error: 'Vous n’avez pas accès à cette candidature' } unless current_user || (params[:token].present? && @internship_application.access_token == params[:token])
+        if params[:sgid].present?
+          internship_application = InternshipApplication.from_sgid(params[:sgid])
+          if internship_application.nil?
+            flash_error_message = 'Le lien a expiré, veuillez vous identifier pour accéder à la candidature.'
+            path = dashboard_internship_offer_internship_application(
+              internship_application.internship_offer,
+              internship_application)
+            redirect_to path, flash: { danger: flash_error_message } and return
+          else
+            sign_in(internship_application.employer)
+          end
+        elsif params[:token].present?
+          unless current_user || (params[:token].present? && @internship_application.access_token == params[:token])
+            redirect_to root_path, flash: { error: 'Vous n’avez pas accès à cette candidature' } and return
+          end
         else
           authenticate_user!
         end
-
+        authorize! :show, InternshipApplication
       end
+
 
       def school_details
         authorize! :index, InternshipApplication
@@ -106,7 +121,7 @@ module Dashboard
         @internship_offer = InternshipOffer.find(params[:internship_offer_id])
       end
 
-      
+
     end
   end
 end

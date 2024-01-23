@@ -7,7 +7,7 @@ class UrlShrinkersController < ApplicationController
       url_shrinker.increment_clicks!
       redirect_to url_shrinker.original_url, allow_other_host: true
     else
-      redirect_to root_url, alert: "Le lien est périmé"
+      redirect_to root_url, danger: "Le lien est périmé"
     end
   end
   alias :o :open
@@ -15,6 +15,6 @@ class UrlShrinkersController < ApplicationController
   private
 
   def unknown_token_handler(exception)
-    redirect_to root_url, alert: exception.message
+    redirect_to root_url, danger: exception.message
   end
 end

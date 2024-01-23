@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-4">
+        <div class="col-5">
           <% ViewComponent::Preview.all.each do |preview| %>
             <h5><%= preview.preview_name.titleize %></h5>
             <ul>
@@ -27,7 +27,7 @@
           <% end %>
         </div>
 
-        <div class="col-8" role="main"><%= yield %></div>
+        <div class="col-7" role="main"><%= yield %></div>
      </div>
   </body>
 </html>

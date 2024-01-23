@@ -7,7 +7,7 @@ module FormatableWeek
     # to, strip, join with space otherwise multiple spaces can be outputted,
     # then within html it is concatenated [html logic], but capybara fails to find this content
     def short_select_text_method
-      ['du', beginning_of_week, 'au', end_of_week]
+      ['du', beginning_of_week, 'au', end_of_working_week]
         .map(&:to_s)
         .map(&:strip)
         .join(' ')
@@ -83,6 +83,10 @@ module FormatableWeek
 
     def end_of_week
       I18n.localize(week_date.end_of_week, format: :human_mm_dd)
+    end
+
+    def end_of_working_week
+      I18n.localize(week_date.end_of_week - 2.days, format: :human_mm_dd)
     end
 
     def end_of_week_with_years

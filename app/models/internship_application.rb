@@ -10,6 +10,10 @@ class InternshipApplication < ApplicationRecord
   EXPIRATION_DURATION = 15.days
   EXTENDED_DURATION = 15.days
   MAGIC_LINK_EXPIRATION_DELAY = 5.days
+  RECEIVED_STATES = %w[submitted read_by_employer examined expired transfered]
+  PENDING_STATES = RECEIVED_STATES + %w[validated_by_employer] - %w[expired]
+  REJECTED_STATES = %w[rejected canceled_by_employer canceled_by_student]
+  APPROVED_STATES = %w[approved validated_by_employer]
   ORDERED_STATES_INDEX = %w[
     drafted
     expired
@@ -84,6 +88,7 @@ class InternshipApplication < ApplicationRecord
   #
   # Ordering scopes (used for ordering in ui)
   #
+  # TODO remove column convention_signed_at
   scope :order_by_aasm_state, lambda {
     select("#{table_name}.*")
       .select(%(
@@ -181,8 +186,7 @@ class InternshipApplication < ApplicationRecord
           :expired_by_student,
           :canceled_by_employer,
           :canceled_by_student,
-          :canceled_by_student_confirmation,
-          :convention_signed
+          :canceled_by_student_confirmation
 
     event :submit do
       transitions from: :drafted,
@@ -258,9 +262,9 @@ class InternshipApplication < ApplicationRecord
       transitions from: from_states,
                   to: :canceled_by_student_confirmation,
                   after: proc { |*_args|
-                    # Other employers notifications
-                    student.internship_applications.where(aasm_state: employer_aware_states).each do |application|
-                      EmployerMailer.internship_application_approved_for_an_other_internship_offer(internship_application: application).deliver_later unless application == self
+                    if employer_aware_states.include?(self.aasm_state)
+                      # Employer need to be notified
+                      EmployerMailer.internship_application_approved_for_an_other_internship_offer(internship_application: self).deliver_later
                     end
                   }
     end
@@ -384,24 +388,6 @@ class InternshipApplication < ApplicationRecord
     GlobalID::Locator.locate_signed( sgid)
   end
 
-  # TODO constantize the following methods
-
-  def self.received_states
-    %w[submitted read_by_employer examined expired transfered]
-  end
-
-  def self.pending_states
-    received_states + %w[validated_by_employer] - %w[expired]
-  end
-
-  def self.rejected_states
-    %w[rejected canceled_by_employer canceled_by_student]
-  end
-
-  def self.approved_states
-    %w[approved validated_by_employer]
-  end
-
   def self.with_employer_explanations_states
     %w[rejected canceled_by_employer examined]
   end
@@ -509,8 +495,8 @@ class InternshipApplication < ApplicationRecord
   end
 
   def cancel_all_pending_applications
-    student.internship_applications.where(aasm_state: InternshipApplication::pending_states).each do |application|
-      application.cancel_by_student_confirmation!
+    student.internship_applications.where(aasm_state: InternshipApplication::PENDING_STATES).each do |application|
+      application.cancel_by_student_confirmation! unless application == self
     end
   end
 

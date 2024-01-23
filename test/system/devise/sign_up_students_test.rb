@@ -282,7 +282,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       # ensure failure drives user to login_page
       find('span#alert-text', text: "Un compte est déjà associé à ce numéro de téléphone, connectez-vous ou réinitialisez votre mot de passe si vous l'avez oublié")
       # TODO functional is not ok
-      # assert_equal '+33 06 00 11 00 11', find("input[name='user[phone]']").value
+      assert_equal '+33 06 00 11 00 11', find("input[name='user[phone]']").value
     end
   end
 end

@@ -5,14 +5,16 @@ module Services
     def perform
       response = get_request
       if response.nil? || !response.respond_to?(:body)
-        Rails.logger.error("Link Mobility error: response is ko | phone_number: #{@phone_number} | content: #{@content}")
+        error_message = "Link Mobility error: response is ko | phone_number: " \
+                        "#{@phone_number} | content: #{@content}"
+        Rails.logger.error(error_message)
         return nil
       end
       response_body = JSON.parse(response.body)
       status?(0, response_body) ? log_success(response_body) : log_failure(response_body)
     end
 
-    attr_reader :phone_number, :content , :sender_name, :user, :pass
+    attr_reader :phone_number, :content , :sender_name, :user, :pass, :campaign_name
 
     private
 
@@ -52,6 +54,7 @@ module Services
         username: user,
         password: pass,
         originatingAddress: sender_name,
+        campaignName: campaign_name,
         originatorTON: 1 # 1 = Alphanumeric, 2 = Shortcode, 3 = MSISDN
       }
     end
@@ -67,8 +70,9 @@ module Services
       { 'Accept': 'application/json' }
     end
 
-    def initialize(phone_number: , content: )
+    def initialize(phone_number: , content: , campaign_name: nil)
       @phone_number = phone_number 
+      @campaign_name = campaign_name
       @content = content
       @sender_name = 'MonStage3e' # Max length: 16 chars
       @user = ENV['LINK_MOBILITY_USER']

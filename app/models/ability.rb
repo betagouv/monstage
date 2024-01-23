@@ -231,8 +231,8 @@ class Ability
     can %i[update edit], Organisation , employer_id: user.team_members_ids
     can %i[create], Tutor
     can %i[index update], InternshipApplication
-    can :transfer, InternshipApplication do |internship_application|
-      internship_application.internship_offer.employer_id == user.id
+    can %i[show transfer], InternshipApplication do |internship_application|
+      internship_application.internship_offer.employer_id == user.team_id
     end
   end
 
