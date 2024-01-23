@@ -262,9 +262,9 @@ class InternshipApplication < ApplicationRecord
       transitions from: from_states,
                   to: :canceled_by_student_confirmation,
                   after: proc { |*_args|
-                    # Other employers notifications
-                    student.internship_applications.where(aasm_state: employer_aware_states).each do |application|
-                      EmployerMailer.internship_application_approved_for_an_other_internship_offer(internship_application: application).deliver_later unless application == self
+                    if employer_aware_states.include?(self.aasm_state)
+                      # Employer need to be notified
+                      EmployerMailer.internship_application_approved_for_an_other_internship_offer(internship_application: self).deliver_later
                     end
                   }
     end
@@ -496,7 +496,7 @@ class InternshipApplication < ApplicationRecord
 
   def cancel_all_pending_applications
     student.internship_applications.where(aasm_state: InternshipApplication::PENDING_STATES).each do |application|
-      application.cancel_by_student_confirmation!
+      application.cancel_by_student_confirmation! unless application == self
     end
   end
 

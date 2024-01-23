@@ -1,9 +1,18 @@
 # frozen_string_literal: true
 
 class EmployerMailer < ApplicationMailer
+  #TODO : every method's name should finish with _email in every_template
   def internship_application_submitted_email(internship_application:)
     @internship_application = internship_application
+    @internship_offer       = @internship_application.internship_offer
     recipients_email        = internship_application.filter_notified_emails
+    @url = dashboard_internship_offer_internship_application_url(
+          @internship_offer,
+          @internship_application
+        )
+    @url_more_options = "#{@url}?sgid=#{@internship_application.to_sgid}"
+    @url_accept       = "#{@url_more_options}&opened_modal=accept"
+    @url_refuse       = "#{@url_more_options}&opened_modal=refuse"
     send_email(to: recipients_email,
                subject: 'Une candidature vous attend, veuillez y répondre')
   end
