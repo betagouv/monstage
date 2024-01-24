@@ -125,4 +125,18 @@ class StudentMailer < ApplicationMailer
 
     send_email(to: @student.email, subject: @subject)
   end
+
+  def reminder_without_application_email(student: )
+    @subject   = "Faîtes votre première candidature !"
+    @student   = student
+    @message   = "Vous n'avez pas encore postulé sur MonStagedeTroisieme.fr ? " \
+                 "Faîtes une recherche en indiquant le métier qui vous intéresse, " \
+                 "le lieu et la semaine de votre stage, puis proposez votre " \
+                  "candidature à plusieurs entreprises."
+
+    @cta_label = "Trouver un stage"
+    @url = internship_offers_url(student.default_search_options)
+
+    send_email(to: @student.email, subject: @subject)
+  end
 end
