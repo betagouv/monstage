@@ -87,7 +87,6 @@ class GenerateInternshipAgreement < Prawn::Document
 
     premises_organisation_name_text = "Nom de l'organisme d'accueil : #{internship_offer.employer_name}"
     @pdf.text premises_organisation_name_text
-    # TODO clarify this difference between premises_organisation_name_text & organisation_name_text
     @pdf.move_down 10
     organisation_name_text = "Raison sociale : #{internship_offer.employer_name}"
     @pdf.text organisation_name_text
@@ -181,9 +180,28 @@ class GenerateInternshipAgreement < Prawn::Document
     label_form("D - Dates et lieux")
     @pdf.move_down 5
     from = "Du #{internship_application.week.beginning_of_week_with_year_long}"
-    to = "Au #{internship_application.week.end_of_week_with_years_long}"
-    @pdf.table([[from, to], [{content: "Soit un nombre de jour de : 5", colspan: 2}]])
+    to = "Au #{internship_application.week.friday_of_week_with_years_long}"
+    @pdf.table([[from, to], [{content: "Soit un nombre de jours de : 5", colspan: 2}]])
     @pdf.move_down 10
+    @pdf.text "Les horaires de présence de l’élève sont fixés à : "
+    @pdf.move_down 10
+    %w(lundi mardi mercredi jeudi vendredi).each_with_index do |weekday, i|
+      if @internship_agreement.daily_planning?
+        start_hours = @internship_agreement.daily_hours&.dig(weekday)&.first
+        end_hours = @internship_agreement.daily_hours&.dig(weekday)&.last
+      else
+        start_hours = @internship_agreement.weekly_hours&.first
+        end_hours = @internship_agreement.weekly_hours&.last
+      end
+      @pdf.text "#{weekday.capitalize} de #{start_hours.gsub(':', 'h')} à #{end_hours.gsub(':', 'h')}"
+      @pdf.move_down 5
+    end
+    @pdf.move_down 10
+    @pdf.text "Repas :"
+    @pdf.move_down 10
+    @pdf.text @internship_agreement.lunch_break
+    @pdf.move_down 20
+
     @pdf.text "La séquence d’observation ne peut pas excéder 5 jours consécutifs."
     @pdf.move_down 20
   end
@@ -617,6 +635,6 @@ class GenerateInternshipAgreement < Prawn::Document
   end
 
   def enc(str)
-    str.encode("Windows-1252","UTF-8", undef: :replace, invalid: :replace)
+    str ? str.encode("Windows-1252","UTF-8", undef: :replace, invalid: :replace) : ''
   end
 end

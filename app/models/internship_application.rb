@@ -10,6 +10,24 @@ class InternshipApplication < ApplicationRecord
   EXPIRATION_DURATION = 15.days
   EXTENDED_DURATION = 15.days
   MAGIC_LINK_EXPIRATION_DELAY = 5.days
+  RECEIVED_STATES = %w[submitted read_by_employer examined expired transfered]
+  PENDING_STATES = RECEIVED_STATES + %w[validated_by_employer] - %w[expired]
+  REJECTED_STATES = %w[rejected canceled_by_employer canceled_by_student]
+  APPROVED_STATES = %w[approved validated_by_employer]
+  ORDERED_STATES_INDEX = %w[
+    drafted
+    expired
+    canceled_by_student_confirmation
+    canceled_by_student
+    rejected
+    expired_by_student
+    canceled_by_employer
+    submitted
+    read_by_employer
+    transfered
+    examined
+    validated_by_employer
+    approved ]
 
   attr_accessor :sgid
 
@@ -70,6 +88,7 @@ class InternshipApplication < ApplicationRecord
   #
   # Ordering scopes (used for ordering in ui)
   #
+  # TODO remove column convention_signed_at
   scope :order_by_aasm_state, lambda {
     select("#{table_name}.*")
       .select(%(
@@ -159,6 +178,7 @@ class InternshipApplication < ApplicationRecord
     state :submitted,
           :read_by_employer,
           :examined,
+          :transfered,
           :validated_by_employer,
           :approved,
           :rejected,
@@ -166,15 +186,17 @@ class InternshipApplication < ApplicationRecord
           :expired_by_student,
           :canceled_by_employer,
           :canceled_by_student,
-          :canceled_by_student_confirmation,
-          :convention_signed
+          :canceled_by_student_confirmation
 
     event :submit do
-      transitions from: :drafted, to: :submitted, after: proc { |*_args|
+      transitions from: :drafted,
+                  to: :submitted,
+                  after: proc { |*_args|
         update!("submitted_at": Time.now.utc)
         deliver_later_with_additional_delay do
           EmployerMailer.internship_application_submitted_email(internship_application: self)
         end
+        setSingleApplicationReminderJobs
       }
     end
 
@@ -196,15 +218,29 @@ class InternshipApplication < ApplicationRecord
       }
     end
 
+    event :transfer do
+      transitions from: %i[submitted read_by_employer examined],
+                  to: :transfered,
+                  after: proc { |*_args|
+                    update!("transfered_at": Time.now.utc)
+      }
+    end
+
     event :employer_validate do
-      transitions from: %i[read_by_employer submitted examined cancel_by_employer rejected],
+      from_states = %i[read_by_employer
+                       submitted
+                       examined
+                       transfered
+                       cancel_by_employer
+                       rejected]
+      transitions from: from_states,
                   to: :validated_by_employer,
                   after: proc { |*_args|
                     update!("validated_by_employer_at": Time.now.utc, aasm_state: :validated_by_employer)
                     self.reload
                     after_employer_validation_notifications
                     CancelValidatedInternshipApplicationJob.set(wait: 15.days).perform_later(internship_application_id: id)
-                  }        
+                  }
     end
 
     event :approve do
@@ -218,18 +254,28 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :cancel_by_student_confirmation do
-      transitions from: %i[submitted read_by_employer examined validated_by_employer],
+      from_states = %i[submitted
+                       read_by_employer
+                       examined
+                       transfered
+                       validated_by_employer ]
+      transitions from: from_states,
                   to: :canceled_by_student_confirmation,
                   after: proc { |*_args|
-                    # Other employers notifications
-                    student.internship_applications.where(aasm_state: employer_aware_states).each do |application|
-                      EmployerMailer.internship_application_approved_for_an_other_internship_offer(internship_application: application).deliver_later unless application == self
+                    if employer_aware_states.include?(self.aasm_state)
+                      # Employer need to be notified
+                      EmployerMailer.internship_application_approved_for_an_other_internship_offer(internship_application: self).deliver_later
                     end
                   }
     end
 
     event :reject do
-      transitions from: %i[read_by_employer submitted examined validated_by_employer],
+      from_states = %i[read_by_employer
+                       submitted
+                       examined
+                       transfered
+                       validated_by_employer ]
+      transitions from: from_states,
                   to: :rejected,
                   after: proc { |*_args|
                            update!("rejected_at": Time.now.utc)
@@ -242,7 +288,15 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :cancel_by_employer do
-      transitions from: %i[drafted read_by_employer drafted submitted examined approved validated_by_employer],
+      from_states = %i[drafted
+                       read_by_employer
+                       drafted
+                       submitted
+                       examined
+                       transfered
+                       validated_by_employer
+                       approved ]
+      transitions from: from_states,
                   to: :canceled_by_employer,
                   after: proc { |*_args|
                            update!("canceled_at": Time.now.utc)
@@ -256,7 +310,12 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :cancel_by_student do
-      transitions from: %i[submitted read_by_employer examined validated_by_employer approved],
+      from_states = %i[submitted
+                       read_by_employer
+                       examined
+                       validated_by_employer
+                       approved]
+      transitions from: from_states,
                   to: :canceled_by_student,
                   after: proc { |*_args|
                            update!("canceled_at": Time.now.utc)
@@ -270,7 +329,7 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :expire do
-      transitions from: %i[submitted validated_by_employer],
+      transitions from: %i[submitted  read_by_employer examined validated_by_employer],
                   to: :expired,
                   after: proc { |*_args|
         update!(expired_at: Time.now.utc)
@@ -283,6 +342,24 @@ class InternshipApplication < ApplicationRecord
                   after: proc { |*_args|
         update!(expired_at: Time.now.utc)
       }
+    end
+  end
+
+  def state_index
+    ORDERED_STATES_INDEX.index(aasm_state)
+  end
+
+  def self.best_state(applications)
+    return nil if applications.empty?
+
+    max_ranking_state = applications.map(&:state_index).max
+    ORDERED_STATES_INDEX[max_ranking_state]
+  end
+
+  def setSingleApplicationReminderJobs
+    if student.internship_applications.count == 1
+      Triggered::SingleApplicationReminderJob.set(wait: 2.days).perform_later(student.id)
+      Triggered::SingleApplicationSecondReminderJob.set(wait: 5.days).perform_later(student.id)
     end
   end
 
@@ -309,24 +386,6 @@ class InternshipApplication < ApplicationRecord
 
   def self.from_sgid(sgid)
     GlobalID::Locator.locate_signed( sgid)
-  end
-
-  # TODO constantize the following methods
-
-  def self.received_states
-    %w[submitted read_by_employer examined expired]
-  end
-
-  def self.pending_states
-    received_states + %w[validated_by_employer] - %w[expired]
-  end
-
-  def self.rejected_states
-    %w[rejected canceled_by_employer canceled_by_student]
-  end
-
-  def self.approved_states
-    %w[approved validated_by_employer]
   end
 
   def self.with_employer_explanations_states
@@ -436,8 +495,8 @@ class InternshipApplication < ApplicationRecord
   end
 
   def cancel_all_pending_applications
-    student.internship_applications.where(aasm_state: InternshipApplication::pending_states).each do |application|
-      application.cancel_by_student_confirmation!
+    student.internship_applications.where(aasm_state: InternshipApplication::PENDING_STATES).each do |application|
+      application.cancel_by_student_confirmation! unless application == self
     end
   end
 

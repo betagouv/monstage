@@ -170,17 +170,17 @@ class User < ApplicationRecord
   def self.sanitize_mobile_phone_number(number, prefix = '')
     return if number.blank?
 
-    thin_number = number.gsub(/[\s|;\,\.\:]/, '')
+    thin_number = number.gsub(/[\s|;\,\.\:\(\)]/, '')
     if thin_number.match?(/\A\+330[6|7]\d{8}\z/)
-      "#{prefix}#{thin_number[3..]}"
+      "#{prefix}#{thin_number[4..]}"
     elsif thin_number.match?(/\A\+33[6|7]\d{8}\z/)
-      "#{prefix}0#{thin_number[3..]}"
+      "#{prefix}#{thin_number[3..]}"
     elsif thin_number.match?(/\A33[6|7]\d{8}\z/)
-      "#{prefix}0#{thin_number[2..]}"
-    elsif thin_number.match?(/\A330[6|7]\d{8}\z/)
       "#{prefix}#{thin_number[2..]}"
+    elsif thin_number.match?(/\A330[6|7]\d{8}\z/)
+      "#{prefix}#{thin_number[3..]}"
     elsif thin_number.match?(/\A0[6|7]\d{8}\z/)
-      "#{prefix}#{thin_number}"
+      "#{prefix}#{thin_number[1..]}"
     else
       nil
     end
@@ -258,6 +258,7 @@ class User < ApplicationRecord
   def can_sign?(internship_agreement); false end
   def email_required? ; false end
   def needs_to_see_modal? ; false end
+  def has_offers_to_apply_to? ; false end
 
   def fetch_current_area_notification; nil end
   def create_signature_phone_token ; nil end
@@ -273,6 +274,7 @@ class User < ApplicationRecord
   def agreement_signatorable? ; agreement_signatorable end
   def anonymized? ; self.anonymized end
   def pending_invitation_to_a_team ; [] end
+  def available_offers; InternshipOffer.none end
   def team_members ; User.none end
 
   def just_created?
@@ -294,17 +296,6 @@ class User < ApplicationRecord
   def satisfaction_survey
     Rails.env.production? ? satisfaction_survey_id : ENV['TALLY_STAGING_SURVEY_ID']
   end
-
-  protected
-
-  # TODO : this is to move to a statistician model
-
-  def trigger_agreements_creation
-    if changes[:agreement_signatorable] == [false, true]
-      AgreementsAPosterioriJob.perform_later(user_id: id)
-    end
-  end
-
 
   private
 

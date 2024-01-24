@@ -102,7 +102,9 @@ module Api
               :max_students_per_group,
               :published_at,
               :is_public,
+              :lunch_break,
               :handicap_accessible,
+              daily_hours: {},
               coordinates: {},
               weeks: []
             )

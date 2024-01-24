@@ -8,4 +8,6 @@
           rich_text: true,
           modal_id: "reject-internship-application-#{internship_application.id}",
           fa_icon: "fr-icon-close-line",
-          token: defined?(token) ? token : nil
+          token: defined?(token) ? token : nil,
+          opened_modal: defined?(opened_modal) ? opened_modal == 'refuse' : false
+

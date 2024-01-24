@@ -220,7 +220,7 @@ module InternshipOffers::InternshipApplications
 
         sign_in(internship_offer.employer)
 
-        assert_enqueuked_jobs 1, only: SendSmsJoffb do
+        assert_enqueued_jobs 1, only: SendSmsJob do
           assert_enqueued_emails 1 do
             assert_changes -> { InternshipAgreement.all.count },
                         from: 0,
@@ -246,6 +246,60 @@ module InternshipOffers::InternshipApplications
       end
     end
 
+    test 'PATCH #update with approve! and update all other student internship_application and send emails to others employers' do
+      school = create(:school, :with_school_manager)
+      class_room = create(:class_room, school: school)
+      student = create(:student, school:school, class_room: class_room)
+      internship_application = create(
+        :weekly_internship_application,
+        :validated_by_employer,
+        user_id: student.id
+      )
+      internship_application_2 = create(
+        :weekly_internship_application,
+        :read_by_employer,
+        user_id: student.id
+      )
+      internship_application_3 = create(
+        :weekly_internship_application,
+        :read_by_employer,
+        user_id: student.id
+      )
+      internship_application_4 = create(
+        :weekly_internship_application,
+        :read_by_employer,
+        user_id: student.id
+      )
+      internship_offer = internship_application.internship_offer
+
+      sign_in(internship_offer.employer)
+
+      assert_enqueued_emails 4 do # 3 others applications emails + 1 for new agreement
+        assert_changes -> { InternshipAgreement.all.count },
+                    from: 0,
+                    to: 1 do
+          update_url = dashboard_internship_offer_internship_application_path(
+            internship_offer,
+            internship_application
+          )
+          patch(update_url, params: {
+                  transition: :approve!,
+                  internship_application: { approved_message: 'OK' }
+                })
+          assert_redirected_to internship_offer.employer.custom_candidatures_path(tab: :approve!)
+        end
+      end
+      internship_application.reload
+      internship_application_2.reload
+      internship_application_3.reload
+      internship_application_4.reload
+
+      assert_equal 'OK', internship_application.approved_message.try(:to_plain_text)
+      assert_equal true, internship_application.approved?
+      assert_equal 'canceled_by_student_confirmation', internship_application_2.aasm_state
+      assert_equal 'canceled_by_student_confirmation', internship_application_3.aasm_state
+      assert_equal 'canceled_by_student_confirmation', internship_application_4.aasm_state
+    end
 
     test 'PATCH #update with reject! transition sends email' do
       internship_application = create(:weekly_internship_application, :submitted)

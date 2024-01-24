@@ -38,7 +38,7 @@ tbody.internship-agreement
         - content = "Numéro de SIRET de l'entreprise"
         - filled_by = ["l'entreprise"]
         = render partial: 'dashboard/internship_agreements/text_field_element',
-                 locals: { field: :siret, limit: 14, form: form, text_label: label, content: content, title: title, filled_by: filled_by, disabled: disabled }
+                 locals: { field: :siret, limit: 14, form: form, text_label: label, content: content, title: title, filled_by: filled_by, disabled: disabled, pattern: "[0-9]{14}" }
       .row.mt-0
         - label = "Nom du responsable de l’accueil en milieu professionnel du tuteur"
         - title = "Note au chef d'entreprise"

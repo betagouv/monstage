@@ -116,7 +116,7 @@ export default class extends Controller {
     }
 
     $(this.weekCheckboxesTargets).each((i, el) => {
-      $(el).prop('checked', $(event.target).prop('checked'));
+      $(el).prop('checked', false);
     });
     if (event.target.checked) {
       hideElement($(this.checkboxesContainerTarget));
@@ -135,7 +135,7 @@ export default class extends Controller {
 
 
     $(this.weekCheckboxesTargets).each((i, el) => {
-      $(el).prop('checked', $(event.target).prop('checked'));
+      $(el).prop('checked', false);
     });
       
     if (event.target.checked) {

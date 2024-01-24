@@ -32,9 +32,8 @@ export default class extends Controller {
   };
 
   initialize() {
-    // set default per specification
-    this.show(this.emailBlocTarget)
-    this.checkEmail();
+    (localStorage.getItem('channel') === 'phone') ? this.checkPhone() : this.checkEmail();
+    
   }
 
   // on change email address, ensure user is shown academia address requirement when neeeded
@@ -70,7 +69,7 @@ export default class extends Controller {
     localStorage.removeItem('close_school_manager')
   }
 
-  connect() {
+  signupConnected() {
     const emailHintElement = this.emailHintTarget;
     const emailInputElement = this.emailInputTarget;
     const $hint = $(emailHintElement);
@@ -114,14 +113,13 @@ export default class extends Controller {
       },
     });
 
-    setTimeout(() => {
-      this.checkChannel();
-    }, 100);
+    // setTimeout(() => {
+    //   this.checkChannel();
+    // }, 100);
   }
 
   disconnect() {
     try {
-      localStorage.clear();
       this.wssClient.disconnect();
     } catch (e) {}
   }

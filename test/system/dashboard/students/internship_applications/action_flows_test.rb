@@ -136,7 +136,7 @@ module Dashboard
           find('#internship_application_motivation', wait: 3).native.send_keys('Je suis au taquet')
           refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
           fill_in("Adresse électronique (email)", with: 'parents@gmail.com')
-          fill_in("Numéro de téléphone élève ou parent", with: '060011223344')
+          fill_in("Numéro de portable élève ou parent", with: '0611223344')
           assert_changes lambda {
                           student.internship_applications
                                   .where(aasm_state: :drafted)
@@ -159,7 +159,7 @@ module Dashboard
             sleep 0.15
           end
 
-          page.find('h1', text: 'Félicitations !')
+          page.find('h4', text: "Félicitations, c'est ici que vous retrouvez toutes vos candidatures.")
         end
       end
 
@@ -194,7 +194,7 @@ module Dashboard
           find('#internship_application_student_attributes_resume_other').native.send_keys("et puis j'ai fait plein de trucs")
           find('#internship_application_student_attributes_resume_languages').native.send_keys("je parle couramment espagnol")
           fill_in("Adresse électronique (email)", with: 'parents@gmail.com')
-          fill_in("Numéro de téléphone élève ou parent", with: '060011223344')
+          fill_in("Numéro de portable élève ou parent", with: '0611223344')
           assert_no_changes lambda {
                           student.internship_applications
                                   .where(aasm_state: :drafted)

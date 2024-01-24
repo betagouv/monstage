@@ -11,8 +11,7 @@ fieldset.select-channel.fr-fieldset.fr-mt-n4w[aria-labelledby="channel-legend"]
                           "email",
                           id: "select-channel-email",
                           "data-action" => "change->signup#checkEmail",
-                          "data-signup-target" => "emailRadioButton",
-                          checked: (cookies[:prefered_channel] == "email")  do
+                          "data-signup-target" => "emailRadioButton"  do
       label.fr-label for="select-channel-email"
         | Par email
     .fr-radio-group.text-right
@@ -20,29 +19,53 @@ fieldset.select-channel.fr-fieldset.fr-mt-n4w[aria-labelledby="channel-legend"]
                           "phone",
                           id: "select-channel-phone",
                           "data-action" => "change->signup#checkPhone",
-                          "data-signup-target" => "phoneRadioButton",
-                          checked: (cookies[:prefered_channel] == "phone")
+                          "data-signup-target" => "phoneRadioButton"
       label.fr-label for="select-channel-phone"
         | Par téléphone
 
+  - hint        = 'Format attendu : nom@domaine.fr'
+  - placeholder = 'ex: nom@exemple.fr'
+  - label       = resource.school_manager? ? "Adresse électronique académique " : "Adresse électronique "
   .fr-fieldset__element.d-none.registration[data-signup-target="emailBloc"]
-    div class="fr-input-group #{error_status ? 'fr-input-group--error' : ''}"
-      = form.label :email, class: "fr-label #{error_status ? 'text-input-error' : ''}" do
-        span[data-signup-target="label"]
-          = resource.school_manager? ? "Adresse électronique académique " : "Adresse électronique "
-          | ou mot de passe incorrect
-        small.form-text.text-muted
+    - if error_status
+      / -------- error
+      p.fr-error-text id="text-input-error-desc-error-email"
+        ="#{label} ou mot de passe incorects"
+      .fr-input-group.fr-input-group--error
+        = form.label :email,
+                     class: 'fr-label',
+                     for: "user_email"
+          = label
+        - unless hint.blank?
+          .text-muted = hint
+        = form.text_field :email,
+                      class: "fr-input fr-input--error",
+                      value: resource.email.blank? ? params[:email] : resource.email,
+                      :'aria-describedby' => "text-input-error-desc-error",
+                      placeholder: placeholder,
+                      data: {action: 'change->signup#onBlurEmailInput', :"signup-target" => 'emailInput'}
+        small.d-none[data-signup-target="emailHint"]
+
+    - else
+      / -------- no error
+      .fr-input-group
+        = form.label :email,
+                     class: "fr-label",
+                     for: "user_email"
+          span[data-signup-target="label"] = label
+        small.form-text.text-muted.fr-mb-2w
           | Format attendu : nom@domaine.fr
         small#email-explanation.form-text.text-muted[data-signup-target="emailExplanation"]
+        = form.email_field :email,
+                           id: "user_email",
+                           class: "fr-input #{ hint.blank? ? '' : 'fr-mt-n2v'}",
+                           value: resource.email.blank? ? params[:email] : resource.email,
+                           autofocus: params[:email].blank? ? true : false,
+                           placeholder: placeholder,
+                           data: {action: 'change->signup#onBlurEmailInput', :"signup-target" => 'emailInput'}
 
-      = form.email_field :email,
-                         class: "fr-input",
-                         value: resource.email.blank? ? params[:email] : resource.email,
-                         placeholder: "ex: nom@exemple.fr",
-                         autofocus: params[:email].blank? ? true : false,
-                         :'aria-describedby' => "user_email",
-                         data: {action: 'change->signup#onBlurEmailInput', :"signup-target" => 'emailInput'}
-      small.d-none[data-signup-target="emailHint"]
+        small.d-none[data-signup-target="emailHint"]
+
   .fr-fieldset__element.phone.d-none[data-signup-target="phoneBloc"]
     = form.label :phone,
                   class: "fr-label",

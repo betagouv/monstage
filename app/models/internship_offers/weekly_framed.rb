@@ -2,7 +2,6 @@
 
 module InternshipOffers
   class WeeklyFramed < InternshipOffer
-    include WeeklyFramable
     include RailsAdminInternshipOfferable
 
     after_initialize :init
@@ -23,7 +22,7 @@ module InternshipOffers
                               greater_than: 0,
                               less_than_or_equal_to: :max_candidates,
                               message: "Le nombre maximal d'élèves par groupe ne peut pas dépasser le nombre maximal d'élèves attendus dans l'année" }
-    
+
     validate :enough_weeks, unless: :skip_enough_weeks_validation
     validate :schedules_check
 
@@ -85,7 +84,11 @@ module InternshipOffers
       to_be_unpublished += published.where('remaining_seats_count < 1').to_a
       to_be_unpublished.uniq.each do |offer|
         print '.'
-        offer.need_update!
+        # skip missing weeks validation
+        offer.update_columns(
+          aasm_state: 'need_to_be_updated',
+          published_at: nil
+          )
       end
     end
 

@@ -1,7 +1,7 @@
 - student_stats = Presenters::Dashboard::StudentStats.new(student: student)
 
 tr class="test-student-#{student.id}"
-  td.col-3 data-head="Élève"
+  td.col-2 data-head="Élève"
     .row.no-gutters
       .col-9.col-sm-12
         h3.h5.mb-0
@@ -16,25 +16,14 @@ tr class="test-student-#{student.id}"
                   dashboard_students_internship_applications_path(student),
                   class: 'small'
 
-  td.col-2 data-head="Confirmé" class="student_confirmed"
-    - if student.confirmed?
-      span.fa-stack.blue-france
-        small
-          i.fas.fa-square.fa-stack-2x
-          i.fas.fa-check.fa-stack-1x.fa-inverse
-    - else
-      span.fa-stack.blue-france
-        small
-          i.far.fa-square.fa-stack-2x
-
   td.col-2 data-head="Nombre de candidatures"
     span.applications_count= student_stats.applications_count
-  td.col-1.half-height data-head="Réponses"
-    .row.px-0
-      .col-6.text-center.px-1
-        .fr-badge.fr-badge--error.fr-badge--no-icon.small= student_stats.applications_rejected_count
-      .col-6.text-center.px-1
-        .fr-badge.fr-badge--success.fr-badge--no-icon.small= student_stats.applications_approved_count
+
+  td.col-4 data-head="Statut de la recherche"
+    - status_hash = student_stats.applications_best_status
+    p class="fr-badge fr-badge--#{status_hash[:color]} fr-badge--no-icon fr-mb-0"
+      = status_hash[:label]
+
   td.col-2
     .row
       .col-12
@@ -43,3 +32,9 @@ tr class="test-student-#{student.id}"
                      prompt: 'Cet élève ne fait pas partie de mon établissement' ,
                      class: "fr-select",
                      data: { action: 'change->students#selectStudentClassRoom' }
+  td.col-2.text-center
+    - if student.internship_applications.present?
+      = link_to dashboard_students_internship_applications_path(student) ,
+                class: 'fr-btn fr-btn--tertiary-no-outline fr-btn--sm' do
+        span.fr-icon-eye-line.fr-icon--sm aria-hidden="true"
+        .fr-pl-1w Voir
