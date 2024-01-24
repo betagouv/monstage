@@ -72,7 +72,7 @@ class ManageCompleteOfferFillingTest < ApplicationSystemTestCase
     travel_to(Date.new(2020, 3, 1)) do
       sign_in(employer)
       visit internship_offer_path(id: internship_offer.id, mtm_campaign: 'Offreur_Offre_de_stage_en_attente', origine: 'email')
-      assert_equal 'Stage de 3è - 1', find('h1').text
+      assert_equal internship_offer.title, find('h1').text
       assert_equal '1 rue du poulet 75001 Paris', find('.row .col-12 .fr-pl-1w.blue-france').text
     end
   end
@@ -87,7 +87,7 @@ class ManageCompleteOfferFillingTest < ApplicationSystemTestCase
       fill_in "Adresse électronique", with: employer.email
       fill_in "Mot de passe", with: password
       click_on 'Se connecter'
-      assert_equal 'Stage de 3è - 1', find('h1').text
+      assert_equal internship_offer.title, find('h1').text
       assert_equal '1 rue du poulet 75001 Paris', find('.row .col-12 .fr-pl-1w.blue-france').text
     end
   end
