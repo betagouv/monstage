@@ -52,6 +52,7 @@ gem "lograge"
 gem 'ovh-rest'
 gem "sentry-ruby"
 gem "sentry-rails"
+gem 'sentry-sidekiq'
 gem 'geocoder'
 # TODO remove bitly
 gem 'bitly'
