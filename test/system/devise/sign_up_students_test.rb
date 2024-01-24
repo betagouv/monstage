@@ -4,6 +4,8 @@ require 'application_system_test_case'
 
 class SignUpStudentsTest < ApplicationSystemTestCase
   # unfortunatelly on CI tests fails
+  include ActiveJob::TestHelper
+
   def safe_submit
     click_on "Valider"
   rescue Selenium::WebDriver::Error::ElementClickInterceptedError
@@ -198,52 +200,36 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     offer = create(:weekly_internship_offer)
 
     visit internship_offers_path
-    # click_on 'Je postule'
+    find('h4 a', text: offer.title).click
+    find('.sticky-top a[data-turbo="false"]', text: 'Postuler').click
+    click_link 'Créer mon compte'
 
     # below : 'Pas encore de compte ? Inscrivez-vous'
     # click_on(class: 'text-danger') /!\ do not work
     visit users_choose_profile_path
-    find('.fr-h4', text: 'Élève de 3ème REP et REP+').click
+    find('a[href="/identites/nouveau?as=Student"]').click
 
-    # signup as student
-    # assert_difference('Users::Student.count', 1) do
-    #   find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
-    #   find('#downshift-2-item-0').click
-    #   find("label[for=\"select-school-#{school_1.id}\"]").click
-    #   select(class_room_1.name, from: 'user_class_room_id')
-    #   fill_in 'Prénom', with: 'Coufert'
-    #   find("input[name='user[last_name]']").fill_in with: 'Darmarin'
-    #   fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
-    #   find('label', text: 'Masculin').click
-    #   find('label', text: 'SMS').click
-    #   execute_script("document.getElementById('phone-input').value = '#{valid_phone_number}';")
-    #   fill_in 'Créer un mot de passe', with: password
-    #   fill_in 'Ressaisir le mot de passe', with: password
-    #   execute_script("document.getElementById('user_accept_terms').checked = true;")
-    #   safe_submit
-    # end
-
-    # created_student = Users::Student.where(phone: valid_phone_number).first
-    # assert_equal offer.id, created_student.targeted_offer_id
-
-    # # confirmation mail under the hood
-    # created_student.confirm
-    # created_student.reload
-    # assert created_student.confirmed?
-    # # confirmation code step
-    # find('label', text: 'Code de confirmation').click
-    # find_field('Code de confirmation').fill_in(with: created_student.phone_token)
-    # click_on 'Valider'
-    # # visit login mail from confirmation mail
-    # find('label', text: 'Téléphone').click && sleep(0.6)
-    # execute_script("document.getElementById('phone-input').value = '#{valid_phone_number}';")
-    # find("input[name='user[password]']").fill_in with: password
-    # click_on 'Connexion'
-    # # redirected page is a show of targeted internship_offer
-    # assert_equal internship_offer_path(id: offer.id), current_path
-    # # targeted offer id at student's level is now empty
-    # assert_nil created_student.reload.targeted_offer_id,
-    #            'targeted offer should have been reset'
+    assert Identity.count.zero?
+    assert_difference('Users::Student.count', 1) do
+      # signup as student - Identity creation
+      find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
+      find('#downshift-0-item-0').click
+      select(school_1.name, from: "identity_school_id")
+      select(class_room_1.name, from: 'identity_class_room_id')
+      fill_in 'Prénom', with: 'Coufert'
+      fill_in 'Nom', with: 'Darmarin'
+      fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
+      find('label', text: 'Masculin').click
+      find('input[type="submit"]').click
+      # 2nd page
+      find('label[for="select-channel-phone"]').click
+      execute_script("document.querySelector('div[data-signup-target=\"phoneBloc\"]').classList.remove('d-none')")
+      execute_script("document.getElementById('phone-input').value = '#{valid_phone_number}';")
+      fill_in 'Créer un mot de passe', with: password
+      find('input[type="submit"]').click
+      assert Identity.count.positive?
+    end
+    find('h4 a', text: offer.title)
   end
 
   test 'navigation & interaction works until student creation with phone' do

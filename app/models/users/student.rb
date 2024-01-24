@@ -4,8 +4,9 @@ module Users
   class Student < User
     include StudentAdmin
 
-    belongs_to :school, optional: true
+    after_create_commit :welcome_new_student
 
+    belongs_to :school, optional: true
     belongs_to :class_room, optional: true
 
     has_many :internship_applications, dependent: :destroy,
@@ -15,17 +16,7 @@ module Users
       end
     end
     has_many :internship_agreements, through: :internship_applications
-
-    # has_many :favorites
-    
-    # has_many :users_internship_offers
     has_many :internship_offers, through: :favorites
-
-    # has_many :favorite_internship_offers, class_name: 'FavoriteInternshipOffer'
-    
-    # has_many :internship_offers, through: :favorite_internship_offers, class_name: 'InternshipOffer'
-    
-    # has_many :users_internship_offers
 
     scope :without_class_room, -> { where(class_room_id: nil, anonymized: false) }
 
@@ -167,6 +158,21 @@ module Users
         user: self
       )
       search_history.save
+    end
+
+    def welcome_new_student
+      target_url = Rails.application
+                        .routes
+                        .url_helpers
+                        .internship_offers_url(default_search_options, host: ENV.fetch('HOST'))
+      shrinked_url = UrlShrinker.short_url( url: target_url, user_id: id )
+      if phone.present?
+        message = I18n.t('devise.sms.welcome_student', shrinked_url: shrinked_url)
+        SendSmsJob.perform_later(user: self, message: message)
+      else
+        StudentMailer.welcome_email(student: self, shrinked_url: shrinked_url)
+                     .deliver_later
+      end
     end
   end
 end
