@@ -3,8 +3,8 @@
 FactoryBot.define do
   factory :user do
     first_name { 'Jean Claude' }
-    last_name { 'Dus' }
-    sequence(:email) { |n| "jean#{n}-claude@dus.fr" }
+    last_name { FFaker::NameFR.first_name.capitalize }
+    sequence(:email) { |n| "jean#{n}-claude@#{last_name}.fr" }
     password { 'ooooyeahhhh' }
     confirmed_at { Time.now }
     confirmation_sent_at { Time.now }
@@ -161,8 +161,8 @@ FactoryBot.define do
       groups { [create(:group, is_public: true), create(:group, is_public: true)] }
     end
 
+    # user_operator gets its offer_area created by callback
     factory :user_operator,
-            traits: %i[with_current_area],
             parent: :user,
             class: 'Users::Operator' do
       type { 'Users::Operator' }

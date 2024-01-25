@@ -7,6 +7,13 @@ module InternshipOfferAreable
                class_name: 'InternshipOfferArea',
                foreign_key: 'current_area_id',
                optional: true
+
+    def create_default_internship_offer_area
+      return if internship_offer_areas.any?
+
+      initializing_current_area('Mon espace')
+    end
+    
     def internship_offer_areas
       super if team.not_exists?
 
