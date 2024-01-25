@@ -119,7 +119,7 @@ module Users
     end
 
     test "reminders are set after creation" do
-      assert_enqueued_jobs 1, only: SendStudentReminderWithoutApplicationJob do
+      assert_enqueued_jobs 1, only: SendReminderToStudentsWithoutApplicationJob do
         student = create(:student)
       end
     end

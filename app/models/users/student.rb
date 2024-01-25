@@ -173,7 +173,7 @@ module Users
     end
 
     def set_reminders
-      SendStudentReminderWithoutApplicationJob.set(wait: 3.day).perform_later(id)
+      SendReminderToStudentsWithoutApplicationJob.set(wait: 3.day).perform_later(id)
     end
   end
 end

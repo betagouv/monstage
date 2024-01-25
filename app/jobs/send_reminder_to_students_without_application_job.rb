@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SendStudentReminderWithoutApplicationJob < ApplicationJob
+class SendReminderToStudentsWithoutApplicationJob < ApplicationJob
   queue_as :default
 
   def perform(student_id)
@@ -14,8 +14,7 @@ class SendStudentReminderWithoutApplicationJob < ApplicationJob
         content = "Faîtes votre première candidature et trouvez votre stage \
                     sur www.monstagedetroisieme.fr. L'équpe de Mon Stage de Troisième"
 
-        Services::SmsSender.new(phone_number: phone, content: content)
-                        .perform
+        SendSmsJob.perform_later(user: student, message: content)
     else
         # Send email
         StudentMailer.reminder_without_application_email(student: student).deliver_later
