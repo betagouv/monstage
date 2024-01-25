@@ -252,6 +252,7 @@ class Ability
       edit_complementary_terms_rich_text
       edit_date_range
       edit_organisation_representative_full_name
+      edit_organisation_representative_email
       edit_siret
       edit_tutor_full_name
       edit_weekly_hours

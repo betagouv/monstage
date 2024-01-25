@@ -78,6 +78,7 @@ module Builders
     def preprocess_internship_offer_params(internship_offer)
       {
         organisation_representative_full_name: internship_offer.employer.presenter.full_name,
+        organisation_representative_email: internship_offer.employer.email,
         organisation_representative_role: internship_offer.employer.employer_role,
         siret: internship_offer.try(:siret),
         tutor_full_name: internship_offer.tutor_name,

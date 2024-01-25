@@ -105,7 +105,7 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.move_down 2
     @pdf.text "Fonction : #{enc @internship_agreement.organisation_representative_role} "
     @pdf.move_down 2
-    @pdf.text "Courriel : #{internship_offer.employer.email} "
+    @pdf.text "Courriel : #{@internship_agreement.organisation_representative_email || internship_offer.employer.email} "
     @pdf.move_down 2
     @pdf.text "Téléphone : #{internship_offer.employer.phone} "
     @pdf.move_down 10

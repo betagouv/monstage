@@ -26,6 +26,13 @@ tbody.internship-agreement
         = render partial: 'dashboard/internship_agreements/text_field_element',
                  locals: { field: :organisation_representative_full_name, form: form, text_label: label, hint: hint, title: title, content: content, filled_by: filled_by, disabled: disabled }
       .row.mt-0
+        - label = "Adresse email du représentant de l'entreprise"
+        - title = "Email du chef d'entreprise"
+        - content = "Email du dirigeant de l'entreprise"
+        - filled_by = ["l'entreprise"]
+        = render partial: 'dashboard/internship_agreements/text_field_element',
+                 locals: { field: :organisation_representative_email, form: form, text_label: label, title: title, content: content, filled_by: filled_by, disabled: disabled }
+      .row.mt-0
         - label = "Fonction du représentant de l'entreprise"
         - title = "Note au chef d'entreprise"
         - content = "Métier ou fonction du représentant de l'entreprise dans cette convention - le représentant n'est pas forcément le tuteur de l'élève"

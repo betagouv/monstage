@@ -23,6 +23,7 @@ FactoryBot.define do
     student_class_room { '3e A'}
     main_teacher_full_name { FFaker::NameFR.name }
     organisation_representative_full_name { 'DGSE' }
+    organisation_representative_email { FFaker::Internet.email }
     tutor_role { 'Responsable financier' }
     tutor_full_name { FFaker::NameFR.name }
     date_range { "du 10/10/2020 au 15/10/2020" }

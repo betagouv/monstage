@@ -115,6 +115,7 @@ module Dashboard
               :student_class_room,
               :main_teacher_full_name,
               :organisation_representative_full_name,
+              :organisation_representative_email,
               :organisation_representative_role,
               :date_range,
               :doc_date,
