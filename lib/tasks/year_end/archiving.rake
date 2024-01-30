@@ -2,14 +2,14 @@ require 'pretty_console'
 
 namespace :year_end do
 
-def framing_with_announce(message)
-  time = Time.now
-  PrettyConsole.say_in_green("BEGIN: #{message}")
-  yield
-  PrettyConsole.say_in_green(" END: #{message.truncate(40)}")
-  PrettyConsole.puts_in_yellow("--  Took #{Time.now - time} seconds")
-  puts ' '
-end
+  def framing_with_announce(message)
+    time = Time.now
+    PrettyConsole.say_in_green("BEGIN: #{message}")
+    yield
+    PrettyConsole.say_in_green(" END: #{message.truncate(40)}")
+    PrettyConsole.puts_in_yellow("--  Took #{Time.now - time} seconds")
+    puts ' '
+  end
 
   desc 'archive students and unlink anonymized students from their class room'
   task :archive_students, [] => :environment do |args|
