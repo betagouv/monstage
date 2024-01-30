@@ -185,4 +185,22 @@ class EmployerMailer < ApplicationMailer
       subject: 'Candidatures en attente, veuillez y répondre'
     )
   end
+
+  def cleaning_notification_email(id)
+    @employer = Users::Employer.find(id)
+    @title    = 'Suppression de votre compte imminente'
+    subject   = @title
+    @hello    = "#{@employer.presenter.formal_name},"
+    @header   = 'Votre compte sera supprimé dans 14 jours.'
+    @content  = "Si vous souhaitez le conserver, " \
+                "connectez-vous à votre compte avant cette date."
+
+    @extra_content = "Cette suppression n'est naturellement pas notre souhait, " \
+                     "car votre participation " \
+                     "est essentielle au projet d'intégration de jeunes élèves " \
+                     "à la vie active"
+    @greetings = 'L\'équipe Monstage'
+    @cta_label = 'Se connecter'
+    send_email( to: @employer.email, subject: subject )
+  end
 end

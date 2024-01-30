@@ -15,9 +15,30 @@ namespace :cleaning do
     end
   end
 
+
   task :archive_idle_employers, [] => :environment do |args|
-    puts '(not implemented yet)'
-    puts ' '
+    PrettyConsole.announce_task("Archiving employers without active offers") do
+      reminder_period = 2.weeks
+      trigger_date = Date.today - Users::Employer::GRACE_PERIOD + reminder_period
+      employer_ids = InternshipOffers::WeeklyFramed.kept
+                                                   .where('last_date <= ?', trigger_date)
+                                                   .pluck(:employer_id)
+                                                   .uniq
+      raise 'empty employer list upnormal' if employer_ids.empty?
+      filtered_ids = employer_ids.select do |id|
+        InternshipOffers::WeeklyFramed.kept
+                                      .where(employer_id: id)
+                                      .pluck(:last_date)
+                                      .max <= trigger_date
+      end
+      filtered_ids.each do |id|
+        EmployerMailer.cleaning_notification_email(id)
+                      .deliver_later
+        CleaningEmployerJob.set(wait: reminder_period)
+                           .perform_later(id)
+      end
+
+    end
   end
 
   task task confidentiality_cleaning: %i[archive_idle_teachers

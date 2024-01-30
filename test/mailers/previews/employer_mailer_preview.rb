@@ -80,6 +80,10 @@ class EmployerMailerPreview < ActionMailer::Preview
       email: "test@free.fr",
       message: "This is my message to youhuhu"
     )
-    
+  end
+
+  def cleaning_notification_email
+    employer = Users::Employer.first
+    EmployerMailer.cleaning_notification_email(employer.id)
   end
 end
