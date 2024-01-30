@@ -207,7 +207,12 @@ module Builders
                 .where(week_id: week_id)
                 .each do |application|
           application.cancel_by_employer! if application.may_cancel_by_employer?
-          application.destroy! # TBD: should we destroy or keep them?
+          # Deleting these applications which weeks were no longer in
+          # the internship offer week list anymore leaded to jobs with missing
+          # internship_application_id, see :
+          # https://mon-stage-de-3e.sentry.io/issues/4685209330/?project=5933968&referrer=jira_integration
+          # but keeping them lead to week orphaned applications weeks
+          # after having tried the deleting approach, we decided to keep them
         end
       end
     end

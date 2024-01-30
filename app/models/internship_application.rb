@@ -289,9 +289,8 @@ class InternshipApplication < ApplicationRecord
 
     event :cancel_by_employer do
       from_states = %i[drafted
-                       read_by_employer
-                       drafted
                        submitted
+                       read_by_employer
                        examined
                        transfered
                        validated_by_employer
