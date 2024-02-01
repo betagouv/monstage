@@ -287,11 +287,11 @@ module Dashboard::InternshipOffers
                                         :submitted,
                                         week: weeks.first,
                                         internship_offer: internship_offer)
-
         sign_in(employer)
         patch dashboard_internship_offer_path(internship_offer.to_param),
               params: { internship_offer: internship_offer.attributes.merge!({week_ids:[weeks.second.id]}) }
-        assert InternshipApplication.last.canceled_by_employer?
+        refute internship_application.canceled_by_employer?
+        assert internship_application.reload.canceled_by_employer?
       end
     end
 

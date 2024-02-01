@@ -210,7 +210,8 @@ module Builders
           # deleting the application is not possible because of the foreign key
           # constraint on internship_applications.internship_offer_id
           # is used in a mail sent by application.cancel_by_employer!
-          # application will be kept
+          # application will be kept, see :
+          # https://mon-stage-de-3e.sentry.io/issues/4685209330/?project=5933968&referrer=jira_integration
         end
       end
     end
