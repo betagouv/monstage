@@ -207,7 +207,10 @@ module Builders
                 .where(week_id: week_id)
                 .each do |application|
           application.cancel_by_employer! if application.may_cancel_by_employer?
-          application.destroy! # TBD: should we destroy or keep them?
+          # deleting the application is not possible because of the foreign key
+          # constraint on internship_applications.internship_offer_id
+          # is used in a mail sent by application.cancel_by_employer!
+          # application will be kept
         end
       end
     end
