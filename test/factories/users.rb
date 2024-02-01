@@ -49,18 +49,9 @@ FactoryBot.define do
       end
     end
 
-    trait :with_current_area do
-      after(:create) do |user|
-        area = create(:area, employer_id: user.id, name: FFaker::Lorem.word)
-        user.current_area = area
-        user.save
-      end
-    end
-
     # Employer
     factory :employer,
             class: 'Users::Employer',
-            traits: %i[with_current_area] ,
             parent: :user do
       type { 'Users::Employer' }
       employer_role { 'PDG' }
@@ -123,7 +114,6 @@ FactoryBot.define do
 
     factory :statistician,
             class: 'Users::PrefectureStatistician',
-            traits: %i[with_current_area],
             parent: :user do
       type { 'Users::PrefectureStatistician' }
       agreement_signatorable { false }
@@ -133,7 +123,6 @@ FactoryBot.define do
 
     factory :prefecture_statistician,
             class: 'Users::PrefectureStatistician',
-            traits: %i[with_current_area],
             parent: :user do
       type { 'Users::PrefectureStatistician' }
       agreement_signatorable { false }
@@ -142,7 +131,6 @@ FactoryBot.define do
     end
 
     factory :education_statistician,
-            traits: %i[with_current_area],
             parent: :user,
             class: 'Users::EducationStatistician' do
       type { 'Users::EducationStatistician' }
@@ -152,7 +140,6 @@ FactoryBot.define do
     end
 
     factory :ministry_statistician,
-            traits: %i[with_current_area],
             parent: :user,
             class: 'Users::MinistryStatistician' do
       type { 'Users::MinistryStatistician' }

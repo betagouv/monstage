@@ -4,8 +4,6 @@ module Users
   class Operator < User
     include Teamable
 
-    after_create_commit :create_default_internship_offer_area
-
     belongs_to :operator, foreign_key: :operator_id,
                           class_name: '::Operator'
 

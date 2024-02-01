@@ -2,6 +2,8 @@ module InternshipOfferAreable
   extend ActiveSupport::Concern
 
   included do
+    after_create_commit :create_default_internship_offer_area
+
     has_many :area_notifications, dependent: :destroy
     belongs_to :current_area,
                class_name: 'InternshipOfferArea',
@@ -13,7 +15,7 @@ module InternshipOfferAreable
 
       initializing_current_area('Mon espace')
     end
-    
+
     def internship_offer_areas
       super if team.not_exists?
 
