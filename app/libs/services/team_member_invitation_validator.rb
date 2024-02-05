@@ -1,6 +1,7 @@
 module Services
   class TeamMemberInvitationValidator
     def check_invitation
+      return :invalid_email if email.blank? || !email.match(Devise.email_regexp)
       return :invited if user_already_invited?
       return :already_in_team if already_in_team?
       return :in_another_team if already_in_another_team?
