@@ -22,6 +22,28 @@ module Nearbyable
       where(query)
     }
 
+    scope :nearby_and_ordered, lambda { |latitude:, longitude:, radius:|
+      query = format(%{
+        ST_DWithin(
+          %s.coordinates,
+          ST_GeographyFromText('SRID=4326;POINT(%f %f)'),
+          %d
+        )
+      }, table_name, longitude, latitude, radius)
+
+      distance_query = format(%{
+        ST_Distance(
+          %s.coordinates,
+          ST_GeographyFromText('SRID=4326;POINT(%f %f)')
+        ) as distance
+      }, table_name, longitude, latitude)
+
+      subquery = where(query)
+               .select("#{table_name}.*, #{distance_query}")
+
+      from(subquery, table_name).order('distance')
+    }
+
     scope :with_distance_from, lambda { |latitude:, longitude:|
       query = format(%{
         ST_Distance(

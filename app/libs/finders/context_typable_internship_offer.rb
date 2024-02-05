@@ -92,12 +92,13 @@ module Finders
     end
 
     def nearby_query(query)
-      proximity_query = query.nearby(latitude: coordinate_params.latitude,
+      proximity_query = query.nearby_and_ordered(latitude: coordinate_params.latitude,
                                      longitude: coordinate_params.longitude,
                                      radius: radius_params)
                              .with_distance_from(latitude: coordinate_params.latitude,
                                                  longitude: coordinate_params.longitude)
       query.merge(proximity_query)
+
     end
 
     def hide_duplicated_offers_query(query)
