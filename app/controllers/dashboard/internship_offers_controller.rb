@@ -14,6 +14,12 @@ module Dashboard
       @internship_offers = finder.all
       order_param = order_direction.nil? ? :published_at : {order_column => order_direction}
       @internship_offers = @internship_offers.order(order_param)
+      if params[:search].present?
+        @internship_offers = @internship_offers.where(
+          "title ILIKE :search OR employer_name ILIKE :search OR city ILIKE :search",
+          search: "%#{params[:search]}%"
+        )
+      end
     end
 
     # duplicate submit
@@ -27,7 +33,7 @@ module Dashboard
                               "L'offre de stage a été dupliquée en tenant compte" \
                               ' de vos éventuelles modifications.'
                             end
-          redirect_to(internship_offer_path(created_internship_offer),
+          redirect_to(internship_offer_path(created_internship_offer, stepper: true),
                       flash: { success: success_message })
         end
         on.failure do |failed_internship_offer|
@@ -44,7 +50,6 @@ module Dashboard
 
     def edit
       authorize! :update, @internship_offer
-      @republish = params[:republish].present?
       @republish = true
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
@@ -59,7 +64,7 @@ module Dashboard
         anchor = "weeks_container"
         warning = "Votre annonce n'est pas encore republiée, car il faut ajouter des semaines de stage"
       end
-      redirect_to edit_dashboard_internship_offer_path(@internship_offer, anchor: anchor, republish: true),
+      redirect_to edit_dashboard_internship_offer_path(@internship_offer, anchor: anchor),
                   flash: { warning: warning}
     end
 
@@ -116,10 +121,8 @@ module Dashboard
       if @internship_offer.requires_updates?
         republish
       else
-        # TO DO Clean
         @internship_offer.publish!
-        @internship_offer.update(aasm_state: 'published')
-        redirect_to internship_offer_path(@internship_offer),
+        redirect_to dashboard_internship_offers_path(origine: 'dashboard'),
                     flash: { success: 'Votre annonce a bien été publiée' }
       end
     end
@@ -219,8 +222,8 @@ module Dashboard
                     :is_public, :group_id, :published_at, :republish, :type,
                     :employer_id, :employer_type, :school_id, :verb, :user_update,
                     :employer_description_rich_text, :siret, :employer_manual_enter,
-                    :weekly_lunch_break, coordinates: {}, week_ids: [],
-                    daily_hours: {}, daily_lunch_break: {}, weekly_hours:[],
+                    :contact_phone, :lunch_break, :aasm_state, coordinates: {}, week_ids: [],
+                    daily_hours: {}, weekly_hours:[],
                     organisation_attributes: [
                       :id,
                       :employer_name,

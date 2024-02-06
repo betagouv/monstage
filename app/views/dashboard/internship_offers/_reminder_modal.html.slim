@@ -1,0 +1,27 @@
+span[data-fr-opened="true" aria-controls="fr-modal-student-reminder"]
+dialog#fr-modal-student-reminder.fr-modal[aria-labelledby="fr-modal-student-reminder-title" role="dialog"]
+  .fr-container.fr-container--fluid.fr-container-md
+    .fr-grid-row.fr-grid-row--center
+      .fr-col-12.fr-col-md-8.fr-col-lg-6
+        .fr-modal__body
+          .fr-modal__header
+            button.fr-link--close.fr-link[aria-controls="fr-modal-student-reminder"]
+              | Fermer
+          .fr-modal__content
+            h1#fr-modal-student-reminder-title.fr-modal__title
+              span.fr-icon-arrow-right-line.fr-icon--lg aria-hidden="true"
+              | Une de vos candidatures a été acceptée
+           
+          .fr-modal__footer
+            ul.fr-btns-group.fr-btns-group--right.fr-btns-group--inline-reverse.fr-btns-group--inline-lg.fr-btns-group--icon-left
+              li
+                - if current_user.internship_applications.validated_by_employer.count > 1
+                  = link_to 'Voir mes candidatures',
+                            dashboard_students_internship_applications_path(student_id: current_user.id),
+                            class: 'fr-btn fr-icon-checkbox-line fr-px-1w'
+                - else
+                  - internship_application = current_user.internship_applications.validated_by_employer.last
+                  = link_to 'Voir ma candidature',
+                            dashboard_students_internship_application_path(student_id: current_user.id, id: internship_application.id),
+                            class: 'fr-btn fr-icon-checkbox-line fr-px-1w'
+             

@@ -28,27 +28,40 @@ div [class="test-search-container #{has_white_bg ? 'search-container py-2' : ''}
                                    whiteBg: has_white_bg } )
 
       = render partial: "internship_offers/search/weeks",
-               locals: {f: form,
-                        render_as_partial: render_as_partial,
-                        default_values: default_values,
-                        white_bg: has_white_bg}
+               locals: { f: form,
+                         render_as_partial: render_as_partial,
+                         default_values: default_values,
+                         white_bg: has_white_bg }
       - if params[:filter].in? ['past','unpublished']
         = render partial: "dashboard/internship_offers/school_years_filter",
-                 locals: { white_bg: has_white_bg}
+                 locals: { white_bg: has_white_bg }
 
       .pb-5
-      - if render_as_partial
-        .col-auto-md.fr-mr-2w data-search-popover-target="searchSubmitContainer"
+      - if render_as_partial || current_page?(eleves_path)
+        / desktop
+        div[class="fr-mr-2w d-none d-sm-block"
+            data-search-popover-target="searchSubmitContainer"]
           = form.button class: 'fr-ml-2w fr-btn fr-icon-search-line fr-btn--icon-right',
                         name: nil,
                         id: 'test-desktop-submit-search' do
             span.mr-2 = 'Rechercher'
-      - else render_as_partial
-        .actions.d-flex.d-stick.d-md-none.p-3
+        / mobile
+        div[class="d-block d-sm-none w-100"
+            data-search-popover-target="searchSubmitContainer"]
+          ul.fr-btns-group.w-100
+            li.w-100
+              = form.button class: 'fr-btn fr-ml-3w fr-mt-8w',
+                            style: "width: 90%; padding: 0 15% 0 15% ",
+                            name: nil,
+                            id: 'test-mobile-submit-search' do
+                span = 'Rechercher'
+      - else
+        .actions.d-md-none.w-100.text-centers.fr-ml-3v.fr-mt-6w data-search-popover-target="searchSubmitContainer"
           = form.button "Afficher les résultats",
                         class: 'fr-btn fr-icon-search-line fr-btn--icon-right',
+                        style: "width: 94%; padding: 0 15% 0 27% ",
                         id: 'test-mobile-submit-search' do
-            span.mr-2 = "Trouver un stage "
+            span.mr-2 = "Trouver un stage"
     .row
       .col.mb-2
 

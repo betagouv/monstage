@@ -70,4 +70,16 @@ class EmployerMailerPreview < ActionMailer::Preview
       current_user: employers.first
     )
   end
+
+  def transfer_internship_application_email
+    internship_application = InternshipApplication.first
+
+    EmployerMailer.transfer_internship_application_email(
+      internship_application: internship_application,
+      employer_id: internship_application.employer.id,
+      email: "test@free.fr",
+      message: "This is my message to youhuhu"
+    )
+    
+  end
 end

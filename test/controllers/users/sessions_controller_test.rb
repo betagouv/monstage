@@ -53,17 +53,6 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_select '#alert-warning #alert-text', text: 'Un message d’activation vous a été envoyé par courrier électronique. Veuillez suivre les instructions qu’il contient.', count: 1
   end
 
-  test 'POST session not confirmed by phone redirect to confirmation token page' do
-    pwd = 'okokok'
-    student = create(:student, password: pwd, phone: '+330611223344', confirmed_at: nil)
-    post user_session_path(params: { user: { channel: 'phone',
-                                             phone: student.phone,
-                                             password: pwd } })
-    assert_response :found
-    follow_redirect!
-    assert_select 'h1', 'Encore une petite étape...'
-  end
-
   test 'POST session with phone' do
     pwd = 'okokok'
     phone = '+330637607756'
@@ -113,4 +102,21 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     
     assert_redirected_to dashboard_internship_offers_path
   end
+
+  test 'GET #index as Student with a pending internship_application' do
+      student = create(:student, password: 'okokok')
+      internship_offer = create(:weekly_internship_offer)
+      internship_application = create(:weekly_internship_application, :validated_by_employer,
+            student: student,
+            internship_offer: internship_offer)
+
+      post user_session_path(params: { user: { channel: 'email',
+                                               email: student.email,
+                                               password: 'okokok' } })
+      
+                                               follow_redirect!
+      assert_response :success
+      assert response.body.include? 'Une de vos candidatures a été acceptée'
+      assert_select 'a[href=?]', dashboard_students_internship_application_path(student_id: student.id, id: internship_application.id), 1
+    end
 end

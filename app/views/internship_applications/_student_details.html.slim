@@ -1,6 +1,5 @@
 - student = internship_application.student
 - student_presenter = student.presenter
-- resume_content = student.resume_educational_background.to_s
 - resume_languages = student.resume_languages.to_s
 - resume_other = student.resume_other.to_s
 .row.no-gutters.mt-2
@@ -35,20 +34,12 @@
                 .school-city= student_presenter.school_city
     .row
       .col-md-4.col-sm-8.col-xs-12
-        - if resume_content.present? || resume_languages.present?
-          h3.h6 Parcours Scolaire
-          .reboot-trix-content = resume_content
-          - if resume_languages.present?
-            h3.h6.mt-3 Langues
-            .reboot-trix-content = resume_languages
+        - if resume_languages.present?
+          h3.h6.mt-3 Langues
+          .reboot-trix-content = resume_languages
 
       .col-md-4.col-sm-8.col-xs-12
         - if resume_other.present?
           h3.h6 Activités extra-scolaires
           .reboot-trix-content = resume_other
 
-    - if internship_application.student.handicap?
-      h3.h6.mt-3
-        i.fas.fa-wheelchair
-        |Besoin d'accompagnement
-      .reboot-trix-content.student-handicap = internship_application.student.handicap.to_s

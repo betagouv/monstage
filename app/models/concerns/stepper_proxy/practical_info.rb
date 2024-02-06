@@ -7,10 +7,10 @@ module StepperProxy
     included do
       include Nearbyable
 
-      # Validations
-      
+
+
       # Relations
-      
+
     end
   end
 end

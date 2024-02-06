@@ -29,8 +29,6 @@ module Dashboard::Stepper
       end
     end
 
-    # TODO: edit/update. other back does not works. which is missing
-
     # render back to step 1
     def edit
       @organisation = Organisation.find(params[:id])

@@ -41,6 +41,7 @@ class Sector < ApplicationRecord
     "Marketing, publicité" => "marketing.svg",
     "Mécanique" => "mecanique.svg",
     "Médical" => "medical.svg",
+    "Métiers d'art" => "art_design.svg",
     "Mode" => "mode.svg",
     "Paramédical" => "paramedical.svg",
     "Recherche" => "industrie_alimentaire.svg",

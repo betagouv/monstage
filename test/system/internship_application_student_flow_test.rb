@@ -7,6 +7,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   include ThirdPartyTestHelpers
 
   test 'student not in class room can not ask for week' do
+    weeks = Week.selectable_from_now_until_end_of_school_year.to_a.first(2)
     school = create(:school, weeks: [])
     student = create(:student, school: school, class_room: create(:class_room, school: school))
     internship_offer = create(:weekly_internship_offer, weeks: weeks)
@@ -18,6 +19,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   end
 
   test 'student can submit application when school has not choosen any week yet' do
+    weeks = Week.selectable_from_now_until_end_of_school_year.to_a.first(2)
     school = create(:school, weeks: [])
     student = create(:student, school: school, class_room: create(:class_room, school: school))
     internship_offer = create(:weekly_internship_offer, weeks: weeks)
@@ -56,7 +58,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       page.find("input[type='submit'][value='Valider']").click
       assert page.has_selector?(".fr-card__title a[href='/internship_offers/#{internship_offer.id}']", count: 1)
       click_button('Envoyer')
-      page.find('h1', text: 'Félicitations !')
+      page.find('h2', text: "Félicitations, c'est ici que vous retrouvez toutes vos candidatures.")
       page.find('h2.h1.display-1', text:'1')
       assert page.has_content?(internship_offer.title)
     end
@@ -76,7 +78,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       all('a', text: 'Postuler').first.click
       # check for phone fields
       page.find "input[name='internship_application[student_phone]']", visible: true
-      fill_in("Numéro de téléphone élève ou parent", with: '060011223344')
+      fill_in("Numéro de portable élève ou parent", with: '0611223344')
       # check for email fields
       page.find "input[name='internship_application[student_email]']", visible: true
       fill_in("Adresse électronique (email)", with: 'parents@gmail.com')
@@ -84,7 +86,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       page.find("input[type='submit'][value='Valider']").click
       assert page.has_selector?(".fr-card__title a[href='/offres-de-stage/#{internship_offer.id}']", count: 1)
       click_button('Envoyer')
-      page.find('h1', text: 'Félicitations !')
+      page.find('h4', text: "Félicitations, c'est ici que vous retrouvez toutes vos candidatures.")
     end
   end
 

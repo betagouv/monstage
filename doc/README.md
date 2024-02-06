@@ -130,6 +130,7 @@ L'API attend en paramètre obligatoire un secteur d'activité associé à une of
 * *Industrie chimique*: **4974df57-0111-492d-ab60-3bfdad10733d**
 * *Maintenance*: **0f51b2d6-91da-4543-a0aa-d49a7be3d249**
 * *Mécanique*: **4ee8bd54-7b5b-4ae9-9603-78f303d5aea8**
+* *Métiers d'art*: **82738129-au8h-8297-827h-oaieurjeh872**
 * *Verre, béton, céramique*: **463578f1-b371-4466-a13f-b0e99f783391**
 * *Informatique et réseaux*: **bfd92448-5eae-4d99-ae2c-67fffc8fec69**
 * *Jeu vidéo*: **be4bab4d-09ed-4205-bca1-1047da0500f8**
@@ -148,11 +149,30 @@ L'API attend en paramètre obligatoire un secteur d'activité associé à une of
 * *Artisanat d'art*: **1ce60ecc-273d-4c73-9b1a-2f5ee14e1bc6**
 * *Arts du spectacle*: **055b7580-c979-480f-a026-e94c8b8dc46e**
 * *Culture et patrimoine*: **c76e6364-7257-473c-89aa-c951141810ce**
+* *Administration publique*: **f329c1e8-30db-48b4-babb-52e2c90d7287**
+* *Conseil*: **9bb7b34c-caaf-413f-8c67-6f7a65ec6d56**
+* *Industrie, ingénierie industrielle*: **14d24150-86cd-4b66-95f0-7f94cf56b5cb**
+* *Immobilier, transactions immobilières*: **de7930b7-104f-44df-8e49-08eca31ec9e6**
+* *Services postaux*: **156f75da-37ee-41f8-ade4-94ea23acf715**
 
 Exemple de ce que nous attendons donc un uuid dans nos API :
 
 ```
 internship_offer.sector_uuid: "c76e6364-7257-473c-89aa-c951141810ce"
+```
+
+### <a name="ref-daily-hours"></a>
+## Horaires quotidiens
+Les stages se déroulant sur une semaine du lundi au vendredi, il est possible de préciser les horaires de chaque journée de la façon suivante :
+
+```
+{ JOUR: [HEURE_DEBUT, HEURE_FIN] }
+```
+
+Exemple de ce que nous attendons dans nos API :
+
+```
+internship_offer.daily_hours: { "lundi": ["8:30";"17:00"], "mardi": ["8:30";"17:00"], "mercredi": ["8:30";"17:00"], "jeudi": ["8:30";"17:00"], "vendredi": ["8:30";"17:00"]}
 ```
 
 # Gestion d'erreurs
@@ -192,11 +212,15 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 * **internship_offer.zipcode** *(string, required)*
 * **internship_offer.city** *(string, required)*
 * **internship_offer.sector_uuid** *(integer, required)*
-* **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
+* **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champ n'est pas rempli, le stage sera automatiquement disponible toute l'année
+* **internship_offer.lunch_break** *(string, optional)*: le de la pause déjeuner
+* **internship_offer.daily_hours** *(object, optional)*: Les horaires de chaque jour. ex: {"lundi": ['9:00', '16:00], "mardi": ['9:00', '16:00], "mercredi": ['9:00', '16:00], "jeudi": ['9:00', '16:00], "vendredi": ['9:00', '16:00]}
 * **remote_id** *(string, required)*: l'identifiant unique du coté operateur|collectivité|association
 * **permalink** *(url, required)*
 * **max_candidates** *(integer)*
 * **is_public** *(boolean, optional)*: true|false
+* **lunch_break** *(text, optional *<= 500 caractères)
+* **daily_hours** *(object, optional, 
 
 ### Exemple curl
 
@@ -206,6 +230,28 @@ curl -H "Authorization: Bearer $API_TOKEN" \
      -H "Content-type: application/json" \
      -X POST \
      -d '{"internship_offer": {"title":"title","description":"description","employer_website":"http://google.fr","street":"Tour Effeil","zipcode":"75002","city":"Paris","employer_name":"employer_name", "weeks":["2021-W16","2021-W18"],"employer_description":"employer_description","remote_id":"test_2","permalink":"https://www.google.fr","sector_uuid": "1ce60ecc-273d-4c73-9b1a-2f5ee14e1bc6", "coordinates":{"latitude":1.0,"longitude":1.0}}}' \
+     -vvv \
+     $ENV/api/internship_offers
+```
+
+### Erreurs
+
+- 409, Conflict. Une offre avec le même ```remote_id``` existe déjà
+
+### <a name="ref-index-internship-offer"></a>
+## Récupérer mes offres
+
+
+**url** : ```#{baseURL}/internship_offers```
+
+**method** : GET
+
+### Exemple curl
+
+``` bash
+curl -H "Authorization: Bearer $API_TOKEN" \
+     -H "Accept: application/json" \
+     -H "Content-type: application/json" \
      -vvv \
      $ENV/api/internship_offers
 ```
@@ -259,40 +305,6 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 
 - 404, Not Found. Aucune offre n'a été trouvée avec le ```remote_id``` spécifié
 - 422, Unprocessable Entity. Aucun paramètre n'a été spécifié pour la modification
-
-### <a name="ref-index-internship-offer"></a>
-## Recherche d'une offre
-
-
-**url** : ```#{baseURL}/internship_offers```
-
-**method** : GET
-
-**/!\ Endpoint ouvert sur demande**
-
-*Paramètres d'url* :
-
-* **keyword** *(string)*
-* **internship_offer.coordinates** *(object/geography)* : { "latitude" : 1.0, "longitude" : 1.0 }
-* **radius** *(integer, en mètres)*
-
-
-### Exemple curl
-
-``` bash
-curl -H "Authorization: Bearer $API_TOKEN" \
-     -H "Accept: application/json" \
-     -H "Content-type: application/json" \
-     -X GET \
-     -d '{"keyword":"Avocat"}' \
-     -vvv \
-     $ENV/api/internship_offers
-```
-
-### Erreurs
-
-- 401, wrong api token
-- 401, access denied
 
 ### <a name="ref-destroy-internship-offer"></a>
 ## Suppression d'une offre
@@ -359,6 +371,3 @@ MONSTAGEDETROISIEME_TOKEN=foobarbaz
 ## Suppression d'une offre
 * exemple d'appel à l'api : ```./requests/internship_offers/destroy.sh```
 * exemple de reponse, cf: ./output/internship_offers/destroy/*
-
-## Recherche d'une offre
-* exemple de reponse, cf: ./output/internship_offers/index/success.json

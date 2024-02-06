@@ -3,6 +3,7 @@ import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
 import { fetch } from 'whatwg-fetch';
 import { endpoints } from '../../utils/api';
+import { isMobile } from '../../utils/responsive';
 
 const COMPONENT_FOCUS_LABEL = 'keyword';
 
@@ -52,7 +53,7 @@ function KeywordInput({ existingKeyword, whiteBg }) {
         selectedItem,
       }) => (
         <div>
-          <label {...getLabelProps({ className: `${(whiteBg == true) ? 'fr-label' : 'font-weight-lighter'}`, htmlFor: "input-search-by-keyword" })}>
+          <label {...getLabelProps({ className: `fr-label ${(whiteBg == true) ? '' : 'font-weight-lighter'}`, htmlFor: "input-search-by-keyword" })}>
             Métiers, mots-clés, ...
           </label>
           <div
@@ -63,7 +64,7 @@ function KeywordInput({ existingKeyword, whiteBg }) {
               {...getInputProps({
                 onChange: inputChange,
                 value: inputValue,
-                className: 'fr-input almost-fitting',
+                className: `fr-input ${(isMobile) ? 'almost-fitting' : 'almost-fitting-even-more'}`,
                 id: 'input-search-by-keyword',
                 name: 'keyword',
                 placeholder: '',

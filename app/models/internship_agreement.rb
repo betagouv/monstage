@@ -32,7 +32,6 @@ class InternshipAgreement < ApplicationRecord
                 :enforce_main_teacher_validations,
                 :skip_validations_for_system
 
-  # TODO: flip based on current switch/branch
   with_options if: :enforce_main_teacher_validations? do
     validates :student_class_room, presence: true
     validates :main_teacher_full_name, presence: true
@@ -99,6 +98,7 @@ class InternshipAgreement < ApplicationRecord
                   to: :started_by_school_manager
     end
 
+    # validate is a reserved keyword and finalize is used instead
     event :finalize do
       transitions from: %i[completed_by_employer started_by_school_manager],
                   to: :validated,
@@ -213,23 +213,28 @@ class InternshipAgreement < ApplicationRecord
   end
 
   def weekly_planning?
-    weekly_hours.any?(&:present?) || weekly_lunch_break.present?
+    weekly_hours.any?(&:present?)
   end
 
   def valid_weekly_planning?
-    weekly_hours.any?(&:present?) && weekly_lunch_break.present?
+    weekly_hours.any?(&:present?)
   end
 
   def daily_planning?
-    new_daily_hours.except('samedi').values.flatten.any? { |v| !v.blank? }
+    return false if daily_hours.blank?
+
+    daily_hours.except('samedi').values.flatten.any? { |v| v.present? }
   end
 
   def valid_daily_planning?
-    new_daily_hours.except('samedi').values.all? do |v|
-      !v.blank?
-    end && daily_lunch_break.except('samedi').values.all? do |v|
-             !v.blank?
-           end
+    # daily_hours sample data :
+    # {"jeudi"=>["11:45", "16:00"], "lundi"=>["11:45", "15:45"], "mardi"=>["12:00", "16:00"], "samedi"=>["", ""], "mercredi"=>["12:00", "16:00"], "vendredi"=>["", ""]}
+    # {"jeudi"=>"a good meal", "lundi"=>"a good meal", "mardi"=>"a good meal", "samedi"=>"a good meal "mercredi"=>"a good meal", "vendredi"=>"a good meal"}
+    daily_hours_ok = daily_hours.except('samedi').values.all? do |v|
+      v.first.present? && v.second.present?
+    end
+    
+    daily_hours_ok && (weekly_lunch_break.present? || lunch_break.present?)
   end
 
   def roles_not_signed_yet

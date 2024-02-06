@@ -3,20 +3,23 @@ module ApplicationTransitable
 
   included do
 
+    # params[:token] is used for transfers from employer to outsiders (with no logging but decision abilities)
+    # params[:sgid] is used in short-lived links for students when choosing to accept or reject an offer
     def update
       authenticate_user! unless params[:sgid].present? || params[:token].present?
       authorize_through_sgid? || authorize_through_token? || authorize!(:update, @internship_application)
       if valid_transition?
+        # action happens here
         @internship_application.send(params[:transition].to_sym)
         @internship_application.update!(optional_internship_application_params)
-        extra_parameter = {tab: params[:transition]}
+        # now exit if temporary authorization
         if authorize_through_sgid? || authorize_through_token?
           reset_session
-          redirect_to root_path,
-                      flash: { success: update_flash_message }
+          redirect_to root_path, flash: { success: update_flash_message }
         else
-          redirect_to current_user.custom_candidatures_path(extra_parameter),
-                      flash: { success: update_flash_message }
+          extra_parameter = {tab: params[:transition]}
+          redirect_path = current_user ? current_user.custom_candidatures_path(extra_parameter) : root_path
+          redirect_to redirect_path, flash: { success: update_flash_message }
         end
       else
         redirect_back fallback_location: current_user.custom_dashboard_path,
@@ -42,9 +45,9 @@ module ApplicationTransitable
     protected
 
     def valid_states
-        InternshipApplication.received_states +
-          InternshipApplication.rejected_states +
-          InternshipApplication.approved_states
+        InternshipApplication::RECEIVED_STATES +
+          InternshipApplication::REJECTED_STATES +
+          InternshipApplication::APPROVED_STATES
     end
 
     def update_flash_message

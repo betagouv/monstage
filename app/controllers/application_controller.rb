@@ -15,8 +15,9 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    return resource.after_sign_in_path if resource.is_a?(Users::God)
-
+    return resource.after_sign_in_path if resource.is_a?(Users::God)  
+    session[:show_student_reminder_modal] = true if resource.needs_to_see_modal?
+  
     stored_location_for(resource) || resource.reload.after_sign_in_path || super
   end
 

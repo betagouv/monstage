@@ -6,6 +6,7 @@
   "street": "Rue de Grenelle",
   "zipcode": "75007",
   "city": "Paris",
+  "is_public": false,
   "employer_name": "Ministere",
   "employer_description": "employer_description",
   "remote_id": "remote_id",

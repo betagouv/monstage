@@ -7,16 +7,16 @@ module Dashboard
       include TeamAndAreasHelper
 
       test 'student can browse his internship_applications' do
-        school = create(:school, :with_school_manager)
+        school = create(:school, :with_school_manager , :with_weeks)
         student = create(:student, school: school)
         internship_applications = {
-          drafted: create(:weekly_internship_application, :drafted, student: student),
-          submitted: create(:weekly_internship_application, :submitted, student: student),
-          approved: create(:weekly_internship_application, :approved, student: student),
-          rejected: create(:weekly_internship_application, :rejected, student: student),
-          canceled_by_student_confirmation: create(:weekly_internship_application, :canceled_by_student_confirmation, student: student),
-          validated_by_employer: create(:weekly_internship_application, :validated_by_employer, student: student),
-          canceled_by_student: create(:weekly_internship_application, :canceled_by_student, student: student)
+          drafted: create(:weekly_internship_application, :drafted, internship_offer: create(:weekly_internship_offer, weeks: school.weeks), student: student),
+          submitted: create(:weekly_internship_application, :submitted, internship_offer: create(:weekly_internship_offer, weeks: school.weeks), student: student),
+          approved: create(:weekly_internship_application, :approved, internship_offer: create(:weekly_internship_offer, weeks: school.weeks), student: student),
+          rejected: create(:weekly_internship_application, :rejected, internship_offer: create(:weekly_internship_offer, weeks: school.weeks), student: student),
+          canceled_by_student_confirmation: create(:weekly_internship_application, :canceled_by_student_confirmation, internship_offer: create(:weekly_internship_offer, weeks: school.weeks), student: student),
+          validated_by_employer: create(:weekly_internship_application, :validated_by_employer, internship_offer: create(:weekly_internship_offer, weeks: school.weeks), student: student),
+          canceled_by_student: create(:weekly_internship_application, :canceled_by_student, internship_offer: create(:weekly_internship_offer, weeks: school.weeks), student: student)
         }
         sign_in(student)
         visit '/'
@@ -68,6 +68,25 @@ module Dashboard
         find "a#show_link_#{internship_application.id}", text: "Voir"
       end
 
+      test 'student can submit an application for any week, when a week has been registered last year' do
+        school = nil
+        travel_to Date.new(2020, 1, 1) do
+          school = create(:school, :with_school_manager, :with_weeks)
+        end
+        travel_to Date.new(2021, 1, 1) do
+          student = create(:student, school: school)
+          internship_offer = create(:weekly_internship_offer, weeks: [Week.find_by(number: 5, year: 2021)])
+          sign_in(student)
+          visit internship_offer_path(internship_offer)
+          find('h1', text: internship_offer.title)
+          # FIND the link to the internship_applkication
+          within('#postuler-test') do
+            click_link 'Postuler'
+          end
+          select 'Semaine du 1 février au 7 février', from: 'internship_application_week_id'
+        end
+      end
+
       test 'GET #show as Student with existing draft application shows the draft' do
         if ENV['RUN_BRITTLE_TEST']
           weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
@@ -117,7 +136,7 @@ module Dashboard
           find('#internship_application_motivation', wait: 3).native.send_keys('Je suis au taquet')
           refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
           fill_in("Adresse électronique (email)", with: 'parents@gmail.com')
-          fill_in("Numéro de téléphone élève ou parent", with: '060011223344')
+          fill_in("Numéro de portable élève ou parent", with: '0611223344')
           assert_changes lambda {
                           student.internship_applications
                                   .where(aasm_state: :drafted)
@@ -140,7 +159,7 @@ module Dashboard
             sleep 0.15
           end
 
-          page.find('h1', text: 'Félicitations !')
+          page.find('h4', text: "Félicitations, c'est ici que vous retrouvez toutes vos candidatures.")
         end
       end
 
@@ -172,11 +191,10 @@ module Dashboard
           human_first_week_label = weeks.third.human_select_text_method
           select human_first_week_label, from: 'internship_application_week_id', wait: 3
           find('#internship_application_motivation').native.send_keys('et ')
-          find('#internship_application_student_attributes_resume_educational_background').native.send_keys("j'ai de l'expérience")
           find('#internship_application_student_attributes_resume_other').native.send_keys("et puis j'ai fait plein de trucs")
           find('#internship_application_student_attributes_resume_languages').native.send_keys("je parle couramment espagnol")
           fill_in("Adresse électronique (email)", with: 'parents@gmail.com')
-          fill_in("Numéro de téléphone élève ou parent", with: '060011223344')
+          fill_in("Numéro de portable élève ou parent", with: '0611223344')
           assert_no_changes lambda {
                           student.internship_applications
                                   .where(aasm_state: :drafted)
@@ -187,7 +205,6 @@ module Dashboard
           end
           application =  student.internship_applications.last
           assert_equal 'et Suis hyper motivé', application.motivation.body.to_plain_text
-          assert_equal "j'ai de l'expérience", application.student.resume_educational_background.body.to_plain_text
           assert_equal "et puis j'ai fait plein de trucs", application.student.resume_other.body.to_plain_text
           assert_equal "je parle couramment espagnol", application.student.resume_languages.body.to_plain_text
 

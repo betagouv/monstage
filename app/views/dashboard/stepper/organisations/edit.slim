@@ -11,7 +11,7 @@
                 data: {turbo: false},
                 url: dashboard_stepper_organisation_path(id: @organisation.id) do |form|
       = render "dashboard/stepper/steps", { current_step_number: 1,
-                                        total_steps: 4,
+                                        total_steps: 5,
                                         current_step_title: "Information sur l'entreprise",
                                         next_step_title: "L'offre de stage" }
       = render "layouts/form_errors",

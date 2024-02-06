@@ -4,7 +4,7 @@ import ActionCable from 'actioncable';
 import { toggleElement, showElement, hideElement } from '../utils/dom';
 
 export default class extends Controller {
-  static targets = ['handicapGroup',
+  static targets = [
     'emailHint',
     'emailExplanation',
     'emailInput',
@@ -42,11 +42,6 @@ export default class extends Controller {
       'Merci de saisir une adresse au format : ce.UAI@ac-academie.fr. Cette adresse sera utilisée pour communiquer avec vous. ' : 
       'Merci de saisir une adresse au format : xxx@ac-academie.fr. Cette adresse sera utilisée pour communiquer avec vous. '
     )
-  }
-
-  // show/hide handicap input if checkbox is checked
-  toggleHandicap() {
-    toggleElement($(this.handicapGroupTarget));
   }
 
   // check email address formatting on email input blur (14yo student, not always good with email)

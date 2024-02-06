@@ -8,7 +8,7 @@ ruby File.read(".ruby-version").strip
 
 # fwk/server
 gem 'actionpack', ">= 6.1.3.2"
-gem "rails", "~> 7.0.3"
+gem "rails", "~> 7.1.2"
 gem 'puma'
 # db
 gem 'pg'
@@ -33,6 +33,7 @@ gem "react_on_rails"
 gem 'webpacker'
 gem 'caxlsx_rails'
 gem "split", require: "split/dashboard"
+gem "browser"
 
 # background jobs
 gem 'sidekiq', '~> 6.5', '>= 6.1.2'
@@ -52,6 +53,7 @@ gem 'ovh-rest'
 gem "sentry-ruby"
 gem "sentry-rails"
 gem 'geocoder'
+# TODO remove bitly
 gem 'bitly'
 gem 'mime-types'
 
@@ -73,6 +75,7 @@ gem 'jwt'
 # dev utils
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'bootsnap', require: false
+gem 'dalli'
 
 group :development, :test do
   gem "dotenv-rails", require: "dotenv/rails-now"

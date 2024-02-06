@@ -30,7 +30,10 @@ module SearchInternshipOfferHelpers
   end
 
   def fill_in_week(week:, open_popover:)
+    within ".form-group[data-search-popover-target='searchByDateContainer']" do
+      find("label", text: "Dates de stage").click
+    end
     find("#input-search-by-week").click if open_popover
-    find("#checkbox_#{week.id}").click
+    execute_script("document.getElementById('checkbox_#{week.id}').checked = true;")
   end
 end

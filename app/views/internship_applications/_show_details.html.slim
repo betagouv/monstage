@@ -6,10 +6,6 @@ h6 Votre candidature
     .reboot-trix-content= internship_application.motivation.to_s
 
     - unless is_resume_empty?(internship_application)
-      - if has_resume_educational_background?(internship_application)
-        h6.text-dark.mt-4 Parcours scolaire
-        .reboot-trix-content= internship_application.student.resume_educational_background.to_s
-
       - if has_resume_other?(internship_application)
         h6.text-dark.mb-1.mt-4 Activités extra-scolaires
         .reboot-trix-content= internship_application.student.resume_other.to_s

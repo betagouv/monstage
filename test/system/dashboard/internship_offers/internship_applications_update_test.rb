@@ -62,5 +62,68 @@ module Dashboard::InternshipOffers
       find('button#tabpanel-received[aria-controls="tabpanel-received-panel"]',  text: 'Reçues').click
       find('td.text-center[colspan="5"]', text: "Aucune candidature reçue")
     end
+
+    test 'employer can unpublish an internship_offer from index page' do
+      employer, internship_offer = create_employer_and_offer
+      assert internship_offer.published?
+      assert_equal 'published', internship_offer.aasm_state
+      refute_equal nil, internship_offer.published_at
+
+
+      sign_in(employer)
+      visit dashboard_internship_offers_path
+      find("td #toggle_status_internship_offers_weekly_framed_#{internship_offer.id}")
+      find("td #toggle_status_internship_offers_weekly_framed_#{internship_offer.id}").click
+      find("td #toggle_status_internship_offers_weekly_framed_#{internship_offer.id} .label", text: 'Masqué')
+      refute internship_offer.reload.published?
+    end
+
+    test 'employer can publish an internship_offer from index page' do
+      employer, internship_offer = create_employer_and_offer
+      internship_offer.unpublish!
+      refute internship_offer.published?
+      assert_equal 'unpublished', internship_offer.aasm_state
+      assert_nil internship_offer.published_at
+
+
+      sign_in(employer)
+      visit dashboard_internship_offers_path
+      find("td #toggle_status_internship_offers_weekly_framed_#{internship_offer.id}")
+      find("td #toggle_status_internship_offers_weekly_framed_#{internship_offer.id}").click
+      find("td #toggle_status_internship_offers_weekly_framed_#{internship_offer.id} .label", text: 'Publié')
+      assert internship_offer.reload.published?
+    end
+
+    test 'employer can transfer an internship_application' do
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
+      sign_in(employer)
+      visit dashboard_candidatures_path
+      click_link 'Répondre'
+      click_on 'Transférer'
+      fill_in 'Adresse email', with: 'test@free.fr'
+      text_area = first(:css, 'textarea.fr-input').native
+      text_area.send_keys('Test')
+      click_on 'Envoyer'
+      find('h2', text: 'Les candidatures')
+      assert_match /La candidature a été transmise avec succès/, find('div.alert.alert-success').text
+      click_on 'Répondre'
+      find('button[data-toggle="modal"][data-fr-js-modal-button="true"]', text: 'Accepter')
+      find('button[data-toggle="modal"][data-fr-js-modal-button="true"]', text: 'Refuser')
+    end
+
+    test 'employer cannot transfer an internship_application with a faulty email' do
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
+      sign_in(employer)
+      visit dashboard_candidatures_path
+      click_link 'Répondre'
+      click_on 'Transférer'
+      fill_in 'Adresse email', with: '@test@free.fr'
+      text_area = first(:css, 'textarea.fr-input').native
+      text_area.send_keys('Test')
+      click_on 'Envoyer'
+      assert_match /Transférer une candidature/, find('h1').text
+    end
   end
 end

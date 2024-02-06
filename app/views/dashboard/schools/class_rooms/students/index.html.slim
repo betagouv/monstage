@@ -12,15 +12,16 @@
             table
               thead
                 tr.tr-blue
-                  th.col-3.align-self-end
+                  th.col-2.align-self-end
                     small Élève
                   th.col-2.align-self-end
-                    small Confirmé
-                  th.col-2.align-self-end
                     small Candidatures
-                  th.col-1.text-center.align-self-end
-                    small Réponses
-                  th.col-2
+                  th.col-4.align-self-end
+                    small Statut de la recherche
+                  th.col-2.align-self-end
+                    small Classe
+                  th.col-2.text-center.align-self-end
+                    small Accéder aux candidatures
               tbody= render partial: "dashboard/schools/users/student",
                             collection: @students, locals: {}
 

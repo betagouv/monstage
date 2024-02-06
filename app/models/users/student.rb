@@ -42,8 +42,6 @@ module Users
 
     validate :validate_school_presence_at_creation
 
-    attr_reader :handicap_present
-
     def student?; true end
 
     def channel
@@ -94,15 +92,20 @@ module Users
       school_manager&.email
     end
 
-    # Not used but certainly useful in the next future (today 2023-04-21)
-    # def expire_application_on_week(week:, keep_internship_application_id:)
-    #   internship_applications
-    #     .where(aasm_state: %i[approved submitted drafted])
-    #     .not_by_id(id: id)
-    #     .weekly_framed
-    #     .select { |application| application.week.id == week.id }
-    #     .map(&:expire!)
-    # end
+    def needs_to_see_modal?
+      internship_applications.validated_by_employer.any?
+    end
+
+    def school_and_offer_common_weeks(internship_offer)
+      return [] unless school.has_weeks_on_current_year?
+
+      InternshipOfferWeek.applicable(
+          school: school,
+          internship_offer: internship_offer
+        ).map(&:week)
+         .uniq
+         .sort_by(&:id) & internship_offer.weeks
+    end
 
     def main_teacher
       return nil if try(:class_room).nil?
@@ -112,11 +115,19 @@ module Users
                 &.first
     end
 
+    def available_offers(max_distance: Finders::ContextTypableInternshipOffer::MAX_RADIUS_SEARCH_DISTANCE)
+      Finders::InternshipOfferConsumer.new(user: self, params: {})
+                                      .available_offers(max_distance: max_distance)
+    end
+
+    def has_offers_to_apply_to?(max_distance: Finders::ContextTypableInternshipOffer::MAX_RADIUS_SEARCH_DISTANCE)
+      available_offers(max_distance: max_distance).any?
+    end
+
     def anonymize(send_email: true)
       super(send_email: send_email)
 
       update_columns(birth_date: nil,
-                     handicap: nil,
                      current_sign_in_ip: nil,
                      last_sign_in_ip: nil,
                      class_room_id: nil)
@@ -143,6 +154,19 @@ module Users
 
     def has_already_approved_an_application?
       internship_applications.approved.any?
+    end
+
+    def log_search_history(search_params)
+      search_history = UsersSearchHistory.new(
+        keywords: search_params[:keyword],
+        latitude: search_params[:latitude],
+        longitude: search_params[:longitude],
+        city: search_params[:city],
+        radius: search_params[:radius],
+        results_count: search_params[:results_count],
+        user: self
+      )
+      search_history.save
     end
   end
 end

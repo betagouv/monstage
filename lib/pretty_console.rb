@@ -66,12 +66,14 @@ module PrettyConsole
   end
 
   def announce_task(task)
-    puts_with_green_background "Starting task : #{task.name}"
+    label = task.try(:name) || task
+    puts_with_green_background "-- Starting task : #{label}"
     start_time = Time.now
     yield
     end_time = Time.now
     puts ''
-    say_in_green "Task completed. Took #{(end_time - start_time).to_s } seconds"
+    puts_in_blue_loudly "-------- Task completed. Took #{(end_time - start_time).to_s } seconds"
+    puts_in_green "-- end #{label} ----"
   end
 
   def self.enhance_str(str)

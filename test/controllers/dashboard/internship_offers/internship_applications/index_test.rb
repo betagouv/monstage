@@ -40,7 +40,6 @@ module InternshipApplications
                                  phone: '+330665656565',
                                  email: 'student@edu.school',
                                  birth_date: 14.years.ago,
-                                 resume_educational_background: 'resume_educational_background',
                                  resume_other: 'resume_other',
                                  resume_languages: 'resume_languages')
       internship_application = create(:weekly_internship_application, :submitted, student: student)
@@ -57,7 +56,6 @@ module InternshipApplications
       assert_select '.student-age', "#{student.age} ans"
       assert_select '.student-email', internship_application.student_email
       assert_select '.student-phone', internship_application.student_phone
-      assert_select '.reboot-trix-content', student.resume_educational_background.to_plain_text
       assert_select '.reboot-trix-content', student.resume_other.to_plain_text
       assert_select '.reboot-trix-content', student.resume_languages.to_plain_text
     end
@@ -68,7 +66,6 @@ module InternshipApplications
                                  phone: '+330665656565',
                                  email: 'student@edu.school',
                                  birth_date: 14.years.ago,
-                                 resume_educational_background: 'resume_educational_background',
                                  resume_other: 'resume_other',
                                  resume_languages: 'resume_languages')
       internship_application = create(:weekly_internship_application, :submitted, student: student)
@@ -76,18 +73,6 @@ module InternshipApplications
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
-    end
-
-    test 'GET #index succeed when logged in as employer, shows handicap field when present' do
-      school = create(:school, city: 'Paris', name: 'Mon établissement')
-      student = create(:student, school: school,
-                                 handicap: 'cotorep')
-      internship_application = create(:weekly_internship_application, :submitted, student: student)
-      sign_in(internship_application.internship_offer.employer)
-      get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
-      assert_response :success
-
-      assert_select '.student-handicap', student.handicap
     end
 
     test 'GET #index with drafted does not shows internship_application' do
@@ -141,17 +126,6 @@ module InternshipApplications
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
       assert_has_link_count_to_transition(internship_application, :employer_validate!, 1)
-      assert_has_link_count_to_transition(internship_application, :reject!, 0)
-      assert_has_link_count_to_transition(internship_application, :cancel_by_employer!, 0)
-      assert_has_link_count_to_transition(internship_application, :signed!, 0)
-    end
-
-    test 'GET #index with convention_signed offer, does not shows any link' do
-      internship_application = create(:weekly_internship_application, :convention_signed)
-      sign_in(internship_application.internship_offer.employer)
-      get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
-      assert_response :success
-      assert_has_link_count_to_transition(internship_application, :approve!, 0)
       assert_has_link_count_to_transition(internship_application, :reject!, 0)
       assert_has_link_count_to_transition(internship_application, :cancel_by_employer!, 0)
       assert_has_link_count_to_transition(internship_application, :signed!, 0)

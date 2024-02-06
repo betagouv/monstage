@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :internship_offer_area do
     employer_type {'User'}
+    sequence(:name) { |n| "Bordeaux-#{n}" }
   end
 
   trait :weekly do

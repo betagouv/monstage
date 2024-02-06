@@ -119,7 +119,7 @@ import './homepage/partenaires/Logo-les-entreprises-pour-la-cite.jpg';
 import './homepage/partenaires/Logo-tous-en-stage.jpg';
 import './homepage/partenaires/Logo-un-stage-et-apres.jpg';
 import './homepage/partenaires/Logo-viens-voir-mon-taf.jpg';
-import './homepage/partenaires/Logo-moidans10ans.png';
+import './homepage/partenaires/Logo-my-future.jpg';
 
 import './homepage/sponsors/logo-anct.svg';
 import './homepage/sponsors/logo-anct.png';
@@ -131,6 +131,7 @@ import './documents_utiles/RienNeSertDeCourirPageBD.jpg';
 import './documents_utiles/MS3_Programme-a-remplir.jpg';
 import './documents_utiles/USEA-Carnet-Stage-Education.jpg';
 import './documents_utiles/USEA-Cherchez-la-chercheuse.jpg';
+import './documents_utiles/carnet-de-stage-pro.jpg';
 import './documents_utiles/versLinfini.jpg';
 import './documents_utiles/eleves.jpg';
 import './documents_utiles/equipe-pedago.jpg';

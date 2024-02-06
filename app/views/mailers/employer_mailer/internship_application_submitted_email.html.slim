@@ -1,15 +1,79 @@
 p style=head_styles
-  = "Vous avez une nouvelle candidature !"
+  = "Nouvelle candidature !"
+table
+  tr style='background-color: #f6f6f6; margin-top:24px; padding: 24px;'
+    td style='background-color: #f6f6f6; margin-top:24px; padding: 24px;'
+      p style=head_cyclop_styles
+        = @internship_application.student.presenter.full_name
+      - week = @internship_application.week
+      p style=p_cyclop_styles({color: '#000091'})
+        ="Semaine <strong>#{week.short_select_text_method}</strong>".html_safe
+      - unless @internship_application.motivation.to_s.blank?
+      p style=p_cyclop_styles({color: '#000091'})
+        <strong> Motivations </strong>
+      p style=p_cyclop_styles
+        = @internship_application.motivation.to_s
+      p style=p_cyclop_styles({color: '#000091', 'margin-bottom': '0'})
+        <strong> Informations sur l'élève </strong>
+      table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body standard"  width="500px"
+        tbody
+          tr style=tr_air_style
+            td style={color: '#000091', 'font-size': '16px', 'font-weight': 800}
+              strong
+                |Elève
+            td style={color: '#000091', 'font-size': '16px', 'font-weight': 800}
+              strong
+                |Age
 
-p style=p_styles
-  = "Nous avons le plaisir de vous signifier que l'élève #{@internship_application.student.presenter.formal_name} vous a adressé une candidature."
+          tr
+            td style={color: '#000091', 'font-size': '16px'}
+              = @internship_application.student.presenter.full_name
+            td style={color: '#000091', 'font-size': '16px'}
+              = @internship_application.student.presenter.age
+          / -----------------
+          tr style=tr_air_style
+            td style={color: '#000091', 'font-size': '16px', 'font-weight': 'bold'}
+              strong
+                |Email
 
-- if @internship_application.student.handicap.present?
-  p style=p_styles
-    | Besoin d'aménagement pour l'élève
-    = @internship_application.student.handicap
+            td style={color: '#000091', 'font-size': '16px', 'font-weight': 'bold'}
+              strong
+                |Téléphone élève ou parents
 
-= render(partial: "mailers/blue_call_to_action",
-         locals: {href: dashboard_internship_offer_internship_application_url(internship_offer_id: @internship_application.internship_offer.id, id: @internship_application.id),
-                  label:'Répondre à la candidature'})
+          tr
+            td style={color: '#000091', 'font-size': '16px'}
+              = @internship_application.student_email || 'Non communiqué'
+            td style={color: '#000091', 'font-size': '16px'}
+              = @internship_application.student_phone || 'Non communiqué'
+          / -----------------
+          tr style=tr_air_style
+            td style={color: '#000091', 'font-size': '16px', 'font-weight': 'bold'}
+              strong
+                |Etablissement
+
+            td style={color: '#000091', 'font-size': '16px', 'font-weight': 'bold'}
+              strong
+                |Ville
+          tr
+            td style={color: '#000091', 'font-size': '16px'}
+              = @internship_application.student.school.name
+            td style={color: '#000091', 'font-size': '16px'}
+              = @internship_application.student.school.city
+table role="presentation" border="0" cellpadding="10" cellspacing="0" class="body standard"  width="550px"
+  tbody
+    tr
+      td colspan="2" style="height: 4px;"
+
+    tr style=tr_air_style
+      td style="width: 50%; text-align: right; cell-spacing: 10px; padding-left: 10px;"
+        a href="#{@url_refuse}" style="padding: 10px; text-decoration: none; color: #000000; border: 1px solid #000091;"
+          | Refuser
+      td style="width: 50%; text-align: left; cell-spacing: 10px;"
+        a href="#{@url_accept}" style="background-color: #000091; color: #ffffff; padding: 10px; text-decoration: none;"
+          | Accepter
+    tr style=tr_air_style({'text-align': 'center'})
+      td colspan="2"
+        a href="#{@url_more_options}" style="color: #000000; padding: 10px;"
+          | Plus d'options
+
 

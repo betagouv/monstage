@@ -11,12 +11,15 @@ class PracticalInfo < ApplicationRecord
   # Relation
   belongs_to :internship_offer, optional: true
 
-  # validates :weeks, presence: true
-  # has_many :hosting_info_weeks, dependent: :destroy,
-  #                                          foreign_key: :hosting_info_id,
-  #                                          inverse_of: :hosting_info
-
-  # has_many :weeks, through: :hosting_info_weeks
+  # Validations
+  validates :contact_phone,
+            presence: true,
+            unless: :from_api?,
+            length: { minimum: 10 }
+  validates :contact_phone,
+            unless: :from_api?,
+            format: { with: /\A\+?[\d+\s]+\z/,
+                      message: 'Le numéro de téléphone doit contenir des caractères chiffrés uniquement' }
 
   def from_api?; false end
   def is_fully_editable?; true end

@@ -26,10 +26,7 @@ module InternshipApplicationAasmMessageBuilders
     end
 
     def on_examined_message
-      <<~HTML.strip
-        <p>Bonjour #{student.presenter.formal_name},</p>
-        <p>Votre candidature pour le stage "#{internship_offer.title}" pour la semaine #{week.short_select_text_method} est à l'étude. [à compléter]</p>
-      HTML
+      ''
     end
 
     def on_canceled_by_student_message

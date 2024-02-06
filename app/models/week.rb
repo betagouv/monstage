@@ -30,11 +30,22 @@ class Week < ApplicationRecord
   }
 
   scope :from_now, lambda {
-    (where('number >= ?', Date.current.cweek).where('year >= ?', Date.current.year)).or(where('year > ?', Date.current.year))
+    current_date = Date.current
+    if current_date.cweek == 53 && current_date.month == 12
+      (where('number = ?', 53).where('year = ?', current_date.year)).or( where('year > ?', current_date.year))
+    elsif current_date.cweek == 53 && current_date.month == 1
+      where('year >= ?', current_date.year)
+    else
+      (where('number >= ?', current_date.cweek).where('year >= ?', current_date.year)).or(where('year > ?', current_date.year))
+    end
   }
 
   scope :in_the_future, lambda {
-    (where('number > ?', Date.current.cweek).where('year >= ?', Date.current.year)).or(where('year > ?', Date.current.year))
+    if Date.current.cweek == 53 && Date.current.month == 1
+      where('year >= ?', Date.current.year)
+    else
+      (where('number > ?', Date.current.cweek).where('year >= ?', Date.current.year)).or(where('year > ?', Date.current.year))
+    end
   }
 
   scope :from_date_for_current_year, lambda { |from:|

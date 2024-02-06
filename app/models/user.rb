@@ -9,6 +9,7 @@ class User < ApplicationRecord
   include ActiveModel::Dirty
 
   has_many :favorites
+  has_many :url_shrinkers
 
   attr_accessor :phone_prefix, :phone_suffix, :statistician_type
 
@@ -20,7 +21,7 @@ class User < ApplicationRecord
   include DelayedDeviseEmailSender
 
   before_validation :concatenate_and_clean
-  after_create :send_sms_token
+  # after_create :send_sms_token
 
   # school_managements includes different roles
   # Everyone should register with ac-xxx.fr email
@@ -141,8 +142,6 @@ class User < ApplicationRecord
     }
     update_columns(fields_to_reset)
 
-    EmailWhitelist.destroy_by(email: email_for_job)
-
     discard! unless discarded?
 
     unless email_for_job.blank?
@@ -166,6 +165,25 @@ class User < ApplicationRecord
     return if phone.blank?
 
     phone[0..4].gsub('0', '') + phone[5..]
+  end
+
+  def self.sanitize_mobile_phone_number(number, prefix = '')
+    return if number.blank?
+
+    thin_number = number.gsub(/[\s|;\,\.\:\(\)]/, '')
+    if thin_number.match?(/\A\+330[6|7]\d{8}\z/)
+      "#{prefix}#{thin_number[4..]}"
+    elsif thin_number.match?(/\A\+33[6|7]\d{8}\z/)
+      "#{prefix}#{thin_number[3..]}"
+    elsif thin_number.match?(/\A33[6|7]\d{8}\z/)
+      "#{prefix}#{thin_number[2..]}"
+    elsif thin_number.match?(/\A330[6|7]\d{8}\z/)
+      "#{prefix}#{thin_number[3..]}"
+    elsif thin_number.match?(/\A0[6|7]\d{8}\z/)
+      "#{prefix}#{thin_number[1..]}"
+    else
+      nil
+    end
   end
 
   def send_sms_token
@@ -213,7 +231,7 @@ class User < ApplicationRecord
     if add_email_to_phone_account?
       self.confirm
     else
-      unless @skip_confirmation_notification || whitelisted? || created_by_teacher || statistician?
+      unless @skip_confirmation_notification || created_by_teacher || statistician?
         devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email })
                      .deliver_later
       end
@@ -239,6 +257,8 @@ class User < ApplicationRecord
   def has_already_approved_an_application? ; false end
   def can_sign?(internship_agreement); false end
   def email_required? ; false end
+  def needs_to_see_modal? ; false end
+  def has_offers_to_apply_to? ; false end
 
   def fetch_current_area_notification; nil end
   def create_signature_phone_token ; nil end
@@ -254,7 +274,12 @@ class User < ApplicationRecord
   def agreement_signatorable? ; agreement_signatorable end
   def anonymized? ; self.anonymized end
   def pending_invitation_to_a_team ; [] end
+  def available_offers; InternshipOffer.none end
   def team_members ; User.none end
+
+  def just_created?
+    self.created_at < Time.now  + 3.seconds
+  end
 
   def presenter
     Presenters::User.new(self)
@@ -271,17 +296,6 @@ class User < ApplicationRecord
   def satisfaction_survey
     Rails.env.production? ? satisfaction_survey_id : ENV['TALLY_STAGING_SURVEY_ID']
   end
-
-  protected
-
-  # TODO : this is to move to a statistician model
-
-  def trigger_agreements_creation
-    if changes[:agreement_signatorable] == [false, true]
-      AgreementsAPosterioriJob.perform_later(user_id: id)
-    end
-  end
-
 
   private
 
@@ -318,9 +332,5 @@ class User < ApplicationRecord
         'Il faut conserver un email valide pour assurer la continuité du service'
       )
     end
-  end
-
-  def whitelisted?
-    !!EmailWhitelist.find_by_email(email)
   end
 end

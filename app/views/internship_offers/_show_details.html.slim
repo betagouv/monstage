@@ -18,6 +18,8 @@
 
   .col-12.fr-pb-2
     = Presenters::InternshipOffer.new(internship_offer).internship_week_description
+    .fr-my-2w
+      = "Pause déjeuner : #{internship_offer.lunch_break}" if internship_offer.lunch_break
     - unless hidden_parts
       .row.d-block.d-sm-none
         .col-12.fr-py-2w.internship-offer-side-description
@@ -54,7 +56,7 @@
     .col-12
       .row
         .col-12
-          .fr-my-4w.d-none.d-sm-block
+          #postuler-test.fr-my-4w.d-none.d-sm-block
             = render "internship_offers/apply_cta", internship_offer: internship_offer
 
   .row

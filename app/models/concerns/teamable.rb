@@ -30,15 +30,12 @@ module Teamable
              foreign_key: 'employer_id'
 
     has_many :kept_internship_offers,
-             -> { merge(InternshipOffer.kept) },
-             class_name: 'InternshipOffer',
+             -> { merge(InternshipOffers::WeeklyFramed.kept) },
+             class_name: 'InternshipOffers::WeeklyFramed',
              foreign_key: 'employer_id'
 
     has_many :internship_applications, through: :kept_internship_offers
     has_many :internship_agreements, through: :internship_applications
-    has_many :organisations  #TODO keep ?
-    has_many :tutors #TODO keep ?
-    has_many :internship_offer_infos #TODO keep ?
 
     def personal_internship_offers
       InternshipOffer.where(employer_id: id)
@@ -134,7 +131,7 @@ module Teamable
       TeamMemberInvitation.refused_invitation.where(inviter_id: team_id)
     end
 
-    def intialize_current_area
+    def initializing_current_area
       create_current_area(
         name: "Espace de #{presenter.short_name}",
         employer_type: 'User',
@@ -142,7 +139,6 @@ module Teamable
       )
       save!
     end
-    
 
 
     # -------------------------------

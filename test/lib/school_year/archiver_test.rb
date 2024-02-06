@@ -30,8 +30,6 @@ module SchoolYear
                           current_sign_in_ip: "0.0.0.0",
                           last_sign_in_ip: '0.0.0.0',
                           birth_date: 14.years.ago,
-                          handicap: 'handicap',
-                          resume_educational_background: 'resume_educational_background',
                           resume_other: 'resume_other',
                           resume_languages: 'resume_languages')
           employer = create(:employer)
@@ -53,8 +51,6 @@ module SchoolYear
             assert_nil discarded_student.current_sign_in_ip
             assert_nil discarded_student.last_sign_in_ip
             assert_nil discarded_student.birth_date
-            assert_nil discarded_student.handicap
-            assert_empty discarded_student.resume_educational_background
             assert_empty discarded_student.resume_other
             assert_empty discarded_student.resume_languages
             discarded_student.internship_applications.each do |internship_application|
@@ -100,8 +96,6 @@ module SchoolYear
                           current_sign_in_ip: "0.0.0.0",
                           last_sign_in_ip: '0.0.0.0',
                           birth_date: 14.years.ago,
-                          handicap: 'handicap',
-                          resume_educational_background: 'resume_educational_background',
                           resume_other: 'resume_other',
                           resume_languages: 'resume_languages')
           employer = create(:employer)

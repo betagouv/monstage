@@ -2,15 +2,8 @@
 
 module Users
   class MinistryStatistician < Statistician
-    include Signatorable
-    # include Statisticianable
-    
-    METABASE_DASHBOARD_ID = 10
 
-    has_one :ministry_email_whitelist,
-            class_name: 'EmailWhitelists::Ministry',
-            foreign_key: :user_id,
-            dependent: :destroy
+    METABASE_DASHBOARD_ID = 10
 
     has_many :user_groups,
              foreign_key: :user_id,
@@ -19,14 +12,6 @@ module Users
               -> { where is_public: true },
               through: :user_groups
     has_many :organisations
-
-    def ministry_email_whitelist
-      EmailWhitelists::Ministry.find_by(email: email)
-    end
-
-    def email_whitelist
-      ministry_email_whitelist
-    end
 
     def ministries
       groups
@@ -37,14 +22,10 @@ module Users
     end
 
     def ministry_statistician? ; true end
+    def employer_like? ; true end
 
     def presenter
       Presenters::MinistryStatistician.new(self)
-    end
-
-    def assign_email_whitelist_and_confirm
-      # self.ministry_email_whitelist = EmailWhitelists::Ministry.find_by(email: email)
-      # self.confirmed_at = Time.now
     end
 
     rails_admin do
@@ -71,25 +52,20 @@ module Users
       end
 
       edit do
-        field :first_name do
-          label 'Prénom'
+        fields(*UserAdmin::DEFAULT_EDIT_FIELDS)
+        field :groups do
+          label 'Ministère'
+          pretty_value do
+            bindings[:object]&.groups.map(&:name)
+          end
         end
-        field :last_name do
-          label 'Nom'
-        end
-        field :email do
-          label 'Email'
-        end
-        # field :group_id do
-        #   label 'Ministère'
-        #   pretty_value do
-        #     bindings[:object]&.group&.name
-        #   end
-        # end
         field :statistician_validation do
           label 'Validation'
         end
-        
+        field :agreement_signatorable do
+          label 'Signataire des conventions'
+          help 'Si le V est coché en vert, le signataire doit signer TOUTES les conventions'
+        end
       end
 
       show do
@@ -132,20 +108,6 @@ module Users
 
     def department_name
       ''
-    end
-    
-    def employer_like? ; true end
-    
-    private
-
-    def email_in_list
-      if ministries&.empty? || ministry_email_whitelist.nil?
-        errors.add(
-          :email,
-          'Votre adresse électronique n\'est pas reconnue, veuillez la ' \
-          'transmettre à monstagedetroisieme@anct.gouv.fr afin que nous ' \
-          'puissions la valider.')
-      end
     end
   end
 end

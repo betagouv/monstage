@@ -1,9 +1,18 @@
 # frozen_string_literal: true
 
 class EmployerMailer < ApplicationMailer
+  #TODO : every method's name should finish with _email in every_template
   def internship_application_submitted_email(internship_application:)
     @internship_application = internship_application
+    @internship_offer       = @internship_application.internship_offer
     recipients_email        = internship_application.filter_notified_emails
+    @url = dashboard_internship_offer_internship_application_url(
+          @internship_offer,
+          @internship_application
+        )
+    @url_more_options = "#{@url}?sgid=#{@internship_application.to_sgid}"
+    @url_accept       = "#{@url_more_options}&opened_modal=accept"
+    @url_refuse       = "#{@url_more_options}&opened_modal=refuse"
     send_email(to: recipients_email,
                subject: 'Une candidature vous attend, veuillez y répondre')
   end
@@ -100,7 +109,7 @@ class EmployerMailer < ApplicationMailer
     )
   end
 
-  def transfer_internship_application(internship_application:, employer_id: , email:, message:)
+  def transfer_internship_application_email(internship_application:, employer_id: , email:, message:)
     @internship_application = internship_application
     @internship_offer       = internship_application.internship_offer
     @employer               = @internship_offer.employer
@@ -113,9 +122,10 @@ class EmployerMailer < ApplicationMailer
       token: @internship_application.access_token
     ).html_safe
 
-    mail(
+    send_email(
       to: email,
-      subject: 'Nouvelle candidature'
+      cc: @employer.email,
+      subject: "Transfert d'une candidature à un stage de 3e"
     )
   end
 
@@ -158,6 +168,21 @@ class EmployerMailer < ApplicationMailer
     mail(
       to: @email,
       subject: 'Invitation à rejoindre une équipe'
+    )
+  end
+
+  # every monday and thursday at 8:00
+  def pending_internship_applications_reminder_email(employer:, pending_application_ids:, examined_application_ids:)
+    @employer = employer
+    @pending_application_ids = pending_application_ids
+    @examined_application_ids = examined_application_ids
+    @url = dashboard_internship_offers_url(
+      mtm_campaign: 'Offreur - Candidatures en attente'
+    ).html_safe
+
+    send_email(
+      to: @employer.email,
+      subject: 'Candidatures en attente, veuillez y répondre'
     )
   end
 end

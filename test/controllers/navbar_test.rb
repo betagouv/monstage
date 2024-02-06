@@ -4,7 +4,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @school = create(:school, :with_school_manager)
+    @school = create(:school, :with_school_manager, :with_weeks)
   end
 
   test 'visitor navbar' do
@@ -43,14 +43,16 @@ class NavbarTest < ActionDispatch::IntegrationTest
 
   test 'other' do
     other = create(:other, school: @school)
+    create(:class_room, school: @school)
     sign_in(other)
     get other.custom_dashboard_path
-    assert_select(
-      'li a.fr-link[href=?]',
-      Presenters::User.new(other).default_internship_offers_path
-    )
-    assert_select("li a.fr-link.text-decoration-none[href=\"#{root_path}\"]", count: 1, text: 'Accueil')
-    assert_select('li a.fr-link.text-decoration-none.active', count: 1)
+    follow_redirect!
+
+    assert_select( '#classes-panel a[href=?]',
+                    new_dashboard_school_class_room_path)
+    assert_select("a.small.fr-raw-link.fr-tag.fr-tag--sm[href=?]",
+                  dashboard_school_class_room_students_path(@school, @school.class_rooms.first))
+                                # href="/tableau-de-bord/ecoles/112/classes/39/eleves">3e A</a>)
     assert_select('li a.fr-link.text-decoration-none.active', text: 'Mon établissement', count: 1)
   end
 
@@ -73,6 +75,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     school_manager = @school.school_manager
     sign_in(school_manager)
     get school_manager.custom_dashboard_path
+    follow_redirect!
     assert_select(
       'li a.fr-link[href=?]',
       school_manager.presenter.default_internship_offers_path
@@ -96,18 +99,18 @@ class NavbarTest < ActionDispatch::IntegrationTest
       student.presenter.default_internship_offers_path
     )
     assert_select('li a.fr-link.text-decoration-none.active', count: 1)
-    assert_select('li a.fr-link.text-decoration-none.active', text: student.dashboard_name, count: 1)
+    assert_select('li a.fr-link.text-decoration-none.active', text: "#{student.dashboard_name}0", count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Accueil', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Recherche', count: 1)
-    assert_select("li a.fr-link.mr-4", text: 'Candidatures', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Mon profil', count: 1)
     assert_select("li a.fr-link.mr-4", text: 'Espaces', count: 0)
     assert_select("li a.fr-link.mr-4", text: 'équipe'.capitalize, count: 0)
   end
 
   test 'teacher' do
-    teacher = create(:teacher, school: @school,
-                               class_room: create(:class_room, school: @school))
+    teacher = create(:teacher,
+                     school: @school,
+                     class_room: create(:class_room, school: @school))
     sign_in(teacher)
     get teacher.custom_dashboard_path
     assert_select(

@@ -37,9 +37,6 @@ class Ability
     can %i[destroy see_tutor], InternshipOffer
     can %i[read update export unpublish publish], InternshipOffer
     can %i[read update destroy export], InternshipApplication
-    can :manage, EmailWhitelists::EducationStatistician
-    can :manage, EmailWhitelists::PrefectureStatistician
-    can :manage, EmailWhitelists::Ministry
     can :manage, InternshipOfferKeyword
     can :manage, Group
     can :access, :rails_admin   # grant access to rails_admin
@@ -99,7 +96,6 @@ class Ability
            choose_school
            choose_class_room
            choose_gender_and_birthday
-           choose_handicap
            register_with_phone], User
     can_read_dashboard_students_internship_applications(user: user)
   end
@@ -235,8 +231,8 @@ class Ability
     can %i[update edit], Organisation , employer_id: user.team_members_ids
     can %i[create], Tutor
     can %i[index update], InternshipApplication
-    can :transfer, InternshipApplication do |internship_application|
-      internship_application.internship_offer.employer_id == user.id
+    can %i[show transfer], InternshipApplication do |internship_application|
+      internship_application.internship_offer.employer_id == user.team_id
     end
   end
 
@@ -522,7 +518,9 @@ class Ability
   end
 
   def student_can_apply?(internship_offer:, student:)
+    return true if student.class_room.nil? || student.school.nil? || !student.school.has_weeks_on_current_year?
     return false if student.has_already_approved_an_application?
+    return false if student.school_and_offer_common_weeks(internship_offer).empty?
 
     offer_is_reserved_to_another_school = internship_offer.reserved_to_school? && (internship_offer.school_id != student.school_id)
     !offer_is_reserved_to_another_school

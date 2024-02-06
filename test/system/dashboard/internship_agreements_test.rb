@@ -73,6 +73,80 @@ module Dashboard
       find('h1 span.fr-fi-arrow-right-line.fr-fi--lg', text: "Envoyer la convention")
     end
 
+    test 'employer reads internship agreement table with correct indications / daily hours - status: started_by_employer' do
+      internship_agreement = create(:internship_agreement, aasm_state: :started_by_employer)
+      sign_in(internship_agreement.employer)
+      visit dashboard_internship_agreements_path
+      within('td[data-head="Statut"]') do
+        find('div.actions', text: "Votre convention est remplie, mais elle n'est pas envoyée au chef d'établissement.")
+      end
+      find('a.button-component-cta-button', text: 'Valider ma convention').click
+      find("input[name='internship_agreement[organisation_representative_full_name]']")
+      fill_in "Fonction du représentant de l'entreprise", with: 'CEO'
+      fill_in "Email du tuteur", with: 'tuteur@free.fr'
+      find('label', text: 'Les horaires sont les mêmes toute la semaine')
+      execute_script("document.getElementById('weekly_planning').checked = false;")
+      execute_script("document.getElementById('daily-planning-container').classList.remove('d-none');")
+      select('08:00', from:'internship_agreement_daily_hours_lundi_start')
+      select('16:00', from:'internship_agreement_daily_hours_lundi_end')
+      select('08:00', from:'internship_agreement_daily_hours_mardi_start')
+      select('16:00', from:'internship_agreement_daily_hours_mardi_end')
+      select('08:00', from:'internship_agreement_daily_hours_mercredi_start')
+      select('16:00', from:'internship_agreement_daily_hours_mercredi_end')
+      select('08:00', from:'internship_agreement_daily_hours_jeudi_start')
+      select('16:00', from:'internship_agreement_daily_hours_jeudi_end')
+      select('08:00', from:'internship_agreement_daily_hours_vendredi_start')
+      select('16:00', from:'internship_agreement_daily_hours_vendredi_end')
+      text_area = first(:css,"textarea[name='internship_agreement[lunch_break]']").native.send_keys('un repas à la cantine bien chaud')
+      # samedi is avoided on purpose
+      click_button('Envoyer la convention')
+      find("button[data-action='click->internship-agreement-form#completeByEmployer']", text: "Envoyer la convention")
+      find("button[data-action='click->internship-agreement-form#completeByEmployer']", text: "Envoyer la convention").click
+      # find('h1', text: "truc", wait: 3.seconds)
+      # assert_in_delta internship_agreement.updated_at, Time.now, 1
+      find("span#alert-text", text: "La convention a été envoyée au chef d'établissement.")
+      find("h1.h4.fr-mb-8w.text-dark", text: "Editer, imprimer et signer les conventions dématérialisées")
+
+      expected_days_hours = {
+        "lundi" => ["08:00","16:00"],
+        "mardi" => ["08:00","16:00"],
+        "mercredi" => ["08:00","16:00"],
+        "jeudi" => ["08:00","16:00"],
+        "vendredi" => ["08:00","16:00"]}
+      assert_equal expected_days_hours, internship_agreement.reload.daily_hours
+    end
+
+    test 'employer reads internship agreement table with missing indications / daily hours - status: started_by_employer' do
+      internship_agreement = create(:internship_agreement, aasm_state: :started_by_employer, weekly_hours: [])
+      sign_in(internship_agreement.employer)
+      visit dashboard_internship_agreements_path
+      within('td[data-head="Statut"]') do
+        find('div.actions', text: "Votre convention est remplie, mais elle n'est pas envoyée au chef d'établissement.")
+      end
+      find('a.button-component-cta-button', text: 'Valider ma convention').click
+      find("input[name='internship_agreement[organisation_representative_full_name]']")
+      fill_in "Fonction du représentant de l'entreprise", with: 'CEO'
+      fill_in "Email du tuteur", with: 'tuteur@free.fr'
+      execute_script("document.getElementById('weekly_planning').checked = false;")
+      execute_script("document.getElementById('daily-planning-container').classList.remove('d-none');")
+      select('08:00', from:'internship_agreement_daily_hours_lundi_start')
+      select('16:00', from:'internship_agreement_daily_hours_lundi_end')
+      select('08:00', from:'internship_agreement_daily_hours_mardi_start')
+      select('16:00', from:'internship_agreement_daily_hours_mardi_end')
+      select('08:00', from:'internship_agreement_daily_hours_mercredi_start')
+      select('16:00', from:'internship_agreement_daily_hours_mercredi_end')
+      select('08:00', from:'internship_agreement_daily_hours_jeudi_start')
+      select('16:00', from:'internship_agreement_daily_hours_jeudi_end')
+      text_area = first(:css,"textarea[name='internship_agreement[lunch_break]']").native.send_keys('un repas à la cantine bien chaud')
+      # Missing lunch break indications on friday
+      # samedi is avoided on purpose
+      click_button('Envoyer la convention')
+      find("button[data-action='click->internship-agreement-form#completeByEmployer']", text: "Envoyer la convention")
+      find("button[data-action='click->internship-agreement-form#completeByEmployer']", text: "Envoyer la convention").click
+      alert_text = all(".fr-alert.fr-alert--error").first.text
+      assert_equal alert_text, "Planning hebdomadaire : Veuillez compléter les horaires et repas de la semaine de stage"
+    end
+
     test 'employer reads internship agreement table with correct indications - status: completed_by_employer /' do
       internship_agreement = create(:internship_agreement, aasm_state: :completed_by_employer)
       sign_in(internship_agreement.employer)

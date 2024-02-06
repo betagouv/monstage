@@ -5,10 +5,29 @@ require 'sti_preload'
 class InternshipApplication < ApplicationRecord
   include StiPreload
   include AASM
+  include Rails.application.routes.url_helpers
   PAGE_SIZE = 10
-  EXPIRATION_DURATION = 45.days
+  EXPIRATION_DURATION = 15.days
   EXTENDED_DURATION = 15.days
-  MAGIC_LINK_EXPIRATION_DELAY = 50.days
+  MAGIC_LINK_EXPIRATION_DELAY = 5.days
+  RECEIVED_STATES = %w[submitted read_by_employer examined expired transfered]
+  PENDING_STATES = RECEIVED_STATES + %w[validated_by_employer] - %w[expired]
+  REJECTED_STATES = %w[rejected canceled_by_employer canceled_by_student]
+  APPROVED_STATES = %w[approved validated_by_employer]
+  ORDERED_STATES_INDEX = %w[
+    drafted
+    expired
+    canceled_by_student_confirmation
+    canceled_by_student
+    rejected
+    expired_by_student
+    canceled_by_employer
+    submitted
+    read_by_employer
+    transfered
+    examined
+    validated_by_employer
+    approved ]
 
   attr_accessor :sgid
 
@@ -69,6 +88,7 @@ class InternshipApplication < ApplicationRecord
   #
   # Ordering scopes (used for ordering in ui)
   #
+  # TODO remove column convention_signed_at
   scope :order_by_aasm_state, lambda {
     select("#{table_name}.*")
       .select(%(
@@ -84,6 +104,18 @@ class InternshipApplication < ApplicationRecord
     ))
       .order('orderable_aasm_state')
   }
+
+  scope :order_by_aasm_state_for_student, lambda {
+    select("#{table_name}.*")
+      .select(%(
+      CASE
+        WHEN aasm_state = 'validated_by_employer' THEN 0
+        ELSE 1
+      END as orderable_aasm_state
+    ))
+      .order('orderable_aasm_state')
+  }
+
 
   scope :no_date_index, lambda {
     where.not(aasm_state: [:drafted])
@@ -115,6 +147,11 @@ class InternshipApplication < ApplicationRecord
     where(applications[:aasm_state].in(['approved', 'signed']))
   }
 
+  scope :pending_for_employers, lambda {
+    applications = InternshipApplication.arel_table
+    where(applications[:aasm_state].in(['submitted', 'read_by_employer']))
+  }
+
   scope :current_school_year, lambda {
     where(created_at: SchoolYear::Current.new.beginning_of_period..SchoolYear::Current.new.end_of_period)
   }
@@ -141,21 +178,25 @@ class InternshipApplication < ApplicationRecord
     state :submitted,
           :read_by_employer,
           :examined,
+          :transfered,
           :validated_by_employer,
           :approved,
           :rejected,
           :expired,
+          :expired_by_student,
           :canceled_by_employer,
           :canceled_by_student,
-          :canceled_by_student_confirmation,
-          :convention_signed
+          :canceled_by_student_confirmation
 
     event :submit do
-      transitions from: :drafted, to: :submitted, after: proc { |*_args|
+      transitions from: :drafted,
+                  to: :submitted,
+                  after: proc { |*_args|
         update!("submitted_at": Time.now.utc)
         deliver_later_with_additional_delay do
           EmployerMailer.internship_application_submitted_email(internship_application: self)
         end
+        setSingleApplicationReminderJobs
       }
     end
 
@@ -177,12 +218,28 @@ class InternshipApplication < ApplicationRecord
       }
     end
 
+    event :transfer do
+      transitions from: %i[submitted read_by_employer examined],
+                  to: :transfered,
+                  after: proc { |*_args|
+                    update!("transfered_at": Time.now.utc)
+      }
+    end
+
     event :employer_validate do
-      transitions from: %i[read_by_employer submitted examined cancel_by_employer rejected],
+      from_states = %i[read_by_employer
+                       submitted
+                       examined
+                       transfered
+                       cancel_by_employer
+                       rejected]
+      transitions from: from_states,
                   to: :validated_by_employer,
                   after: proc { |*_args|
-                    update!("validated_by_employer_at": Time.now.utc)
+                    update!("validated_by_employer_at": Time.now.utc, aasm_state: :validated_by_employer)
+                    self.reload
                     after_employer_validation_notifications
+                    CancelValidatedInternshipApplicationJob.set(wait: 15.days).perform_later(internship_application_id: id)
                   }
     end
 
@@ -197,18 +254,28 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :cancel_by_student_confirmation do
-      transitions from: %i[submitted read_by_employer examined validated_by_employer],
+      from_states = %i[submitted
+                       read_by_employer
+                       examined
+                       transfered
+                       validated_by_employer ]
+      transitions from: from_states,
                   to: :canceled_by_student_confirmation,
                   after: proc { |*_args|
-                    # Other employers notifications
-                    student.internship_applications.where(aasm_state: employer_aware_states).each do |application|
-                      EmployerMailer.internship_application_approved_for_an_other_internship_offer(internship_application: application).deliver_later unless application == self
+                    if employer_aware_states.include?(self.aasm_state)
+                      # Employer need to be notified
+                      EmployerMailer.internship_application_approved_for_an_other_internship_offer(internship_application: self).deliver_later
                     end
                   }
     end
 
     event :reject do
-      transitions from: %i[read_by_employer submitted examined validated_by_employer],
+      from_states = %i[read_by_employer
+                       submitted
+                       examined
+                       transfered
+                       validated_by_employer ]
+      transitions from: from_states,
                   to: :rejected,
                   after: proc { |*_args|
                            update!("rejected_at": Time.now.utc)
@@ -221,7 +288,14 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :cancel_by_employer do
-      transitions from: %i[read_by_employer drafted submitted examined approved validated_by_employer],
+      from_states = %i[drafted
+                       submitted
+                       read_by_employer
+                       examined
+                       transfered
+                       validated_by_employer
+                       approved ]
+      transitions from: from_states,
                   to: :canceled_by_employer,
                   after: proc { |*_args|
                            update!("canceled_at": Time.now.utc)
@@ -235,7 +309,12 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :cancel_by_student do
-      transitions from: %i[submitted read_by_employer examined validated_by_employer approved],
+      from_states = %i[submitted
+                       read_by_employer
+                       examined
+                       validated_by_employer
+                       approved]
+      transitions from: from_states,
                   to: :canceled_by_student,
                   after: proc { |*_args|
                            update!("canceled_at": Time.now.utc)
@@ -249,11 +328,37 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :expire do
-      transitions from: %i[read_by_employer examined approved submitted drafted],
+      transitions from: %i[submitted  read_by_employer examined validated_by_employer],
                   to: :expired,
                   after: proc { |*_args|
         update!(expired_at: Time.now.utc)
       }
+    end
+
+    event :expire_by_student do
+      transitions from: %i[validated_by_employer read_by_employer examined submitted drafted],
+                  to: :expired_by_student,
+                  after: proc { |*_args|
+        update!(expired_at: Time.now.utc)
+      }
+    end
+  end
+
+  def state_index
+    ORDERED_STATES_INDEX.index(aasm_state)
+  end
+
+  def self.best_state(applications)
+    return nil if applications.empty?
+
+    max_ranking_state = applications.map(&:state_index).max
+    ORDERED_STATES_INDEX[max_ranking_state]
+  end
+
+  def setSingleApplicationReminderJobs
+    if student.internship_applications.count == 1
+      Triggered::SingleApplicationReminderJob.set(wait: 2.days).perform_later(student.id)
+      Triggered::SingleApplicationSecondReminderJob.set(wait: 5.days).perform_later(student.id)
     end
   end
 
@@ -282,24 +387,6 @@ class InternshipApplication < ApplicationRecord
     GlobalID::Locator.locate_signed( sgid)
   end
 
-  # TODO constantize the following methods
-
-  def self.received_states
-    %w[submitted read_by_employer examined expired]
-  end
-
-  def self.pending_states
-    received_states + %w[validated_by_employer]
-  end
-
-  def self.rejected_states
-    %w[rejected canceled_by_employer canceled_by_student]
-  end
-
-  def self.approved_states
-    %w[approved validated_by_employer]
-  end
-
   def self.with_employer_explanations_states
     %w[rejected canceled_by_employer examined]
   end
@@ -315,14 +402,7 @@ class InternshipApplication < ApplicationRecord
         StudentMailer.internship_application_validated_by_employer_email(internship_application: self)
       end
     end
-    if student.phone.present? && !Rails.env.development?
-      sms_message = "Monstagedetroisieme.fr : Votre candidature a " \
-                    "été acceptée ! Consultez-la ici : #{short_target_url(self)}"
-      SendSmsJob.perform_later(
-        user: student,
-        message: sms_message
-      )
-    end
+    SendSmsStudentValidatedApplicationJob.perform_later(internship_application_id: id)
   end
 
   def generate_token
@@ -391,31 +471,21 @@ class InternshipApplication < ApplicationRecord
     self.save
   end
 
-  def short_target_url(application)
-    target = Rails.application
-                  .routes
-                  .url_helpers
-                  .dashboard_students_internship_application_url(
-                    application.student.id,
-                    application.id,
-                    Rails.configuration.action_mailer.default_url_options
-                  )
-    UrlShortener.short_url(target)
+  def short_target_url(sgid = nil)
+    options = Rails.configuration.action_mailer.default_url_options
+    target = dashboard_students_internship_application_url(
+                student_id: student.id,
+                id: id,
+                **options
+             )
+    target = "#{target}?student_id=#{student.id}"
+    target = "#{target}&sgid=#{sgid}" if sgid
+    UrlShrinker.short_url(url: target, user_id: student.id)
   end
 
   def sgid_short_url
     sgid = student.to_sgid(expires_in: InternshipApplication::MAGIC_LINK_EXPIRATION_DELAY).to_s
-
-    url = Rails.application
-        .routes
-        .url_helpers
-        .dashboard_students_internship_application_url(
-          student.id,
-          id,
-          sgid: sgid,
-          host: ENV['HOST'])
-    
-    UrlShortener.short_url(url)
+    short_target_url(sgid)
   end
 
   # Used for prettier links in rails_admin
@@ -424,8 +494,8 @@ class InternshipApplication < ApplicationRecord
   end
 
   def cancel_all_pending_applications
-    student.internship_applications.where(aasm_state: InternshipApplication::pending_states).each do |application|
-      application.cancel_by_student_confirmation!
+    student.internship_applications.where(aasm_state: InternshipApplication::PENDING_STATES).each do |application|
+      application.cancel_by_student_confirmation! unless application == self
     end
   end
 

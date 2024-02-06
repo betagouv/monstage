@@ -18,19 +18,22 @@ div [data-controller='internship-offer-infos'  data-internship-offer-infos-base-
                         class: "fr-select",
                         data: { 'internship-offer-infos-target': 'requiredField', action: 'input->internship-offer-infos#checkForm' },
                         required: true
-
-        .form-group.fr-my-2w
-          = form.label :title, class: 'fr-label' do
-            = "Intitulé du stage"
-
-            small.form-text.text-muted
-              | Indiquez clairement le métier à découvrir par l’élève
-          = form.text_field :title,
-                            class: "fr-input",
-                            placeholder: "Animateur sportif, Métiers de l’hôtellerie…",
-                            data: { 'internship-offer-infos-target': 'requiredField', action: 'input->internship-offer-infos#checkForm' },
-                            required: true
-
+  .row.fr-py-2w
+    .col-md-6
+      .form-group.fr-my-2w
+        = form.label :title, class: 'fr-label' do
+          = "Métier(s) à découvrir"
+          small.form-text.text-muted
+            | Indiquez clairement le métier à découvrir par l’élève
+        = form.text_field :title,
+                          class: "fr-input",
+                          placeholder: "Animateur sportif, Métiers de l’hôtellerie…",
+                          data: { 'internship-offer-infos-target': 'requiredField', action: 'input->internship-offer-infos#checkForm' },
+                          required: true
+    .col-md-6.order-md-2.order-1
+      .fr-alert.fr-alert--info
+        h3.fr-alert__title Conseil
+        p Nommez le(s) métiers qui sont concernés par le stage, cela facilitera la recherche de l’élève. Attention à l’utilisation des acronymes
   .row
     .col-md-6
         .form-group.fr-my-2w data-controller='maxlength-input' data-maxlength-input-limit-value="#{InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT}"
@@ -58,7 +61,11 @@ div [data-controller='internship-offer-infos'  data-internship-offer-infos-base-
     .col-md-12
       - if submit_button
         .fr-my-2w
-          = link_to 'Précédent', edit_dashboard_stepper_organisation_path(params[:organisation_id]),
-                      class: 'fr-btn fr-mr-2w fr-btn--secondary'
-          = button_tag :submit, class: 'fr-btn', disabled: false, data: { 'internship-offer-infos-target': 'submitButton' } do
-                  = "Suivant "
+          = link_to 'Précédent',
+                    edit_dashboard_stepper_organisation_path(params[:organisation_id]),
+                    class: 'fr-btn fr-mr-2w fr-btn--secondary'
+          = button_tag :submit,
+                       class: 'fr-btn',
+                       disabled: false,
+                       data: { 'internship-offer-infos-target': 'submitButton' } do
+            = "Suivant "

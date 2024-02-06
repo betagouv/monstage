@@ -51,7 +51,10 @@ const InternshipOfferCard = ({
         <div className="fr-card__body">
           <div className="fr-card__content">
             <h4 className="fr-card__title">
-              <a href={internshipOffer.link} className="row-link text-dark">
+              <a href={internshipOffer.link} 
+                className="row-link text-dark" 
+                onClick={(e) => { e.stopPropagation() }}
+              >
                 {internshipOffer.title}
               </a>
             </h4>

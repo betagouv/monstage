@@ -61,6 +61,11 @@ a:hover {
 .bg-cover-image-homepage {
   background-color: $blue;
 }
+@media (768px <=width <=1138px) {
+  .fr-tile-left-top-img .fr-tile__img {
+    display: none;
+  }
+}
 
 @media(1024px <= width <= 1218px){
   .container-homepage .fr-card .fr-card__content {
@@ -73,6 +78,28 @@ a:hover {
     background-image: url('../images/homepage/hero-illustration.svg');
     background-repeat: no-repeat;
     background-position: right bottom;
+  }
+  .bg-home-hero-image {
+    background-image: url('../images/homepage/hero-illustration.svg');
+    background-repeat: no-repeat;
+    background-position: right bottom;
+  }
+
+  .fr-tile-left-top-img .fr-tile__img {
+    align-items: start;
+    margin: -3rem 0 2rem 2rem !important;
+    justify-content: center;
+  }
+
+  .newsletter-button .fr-btn {
+    align-items: end;
+  }
+}
+
+@media(max-width: 450px){
+  .fr-container{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 }
 
@@ -88,40 +115,13 @@ a:hover {
   background-position: right bottom;
 }
 
-@media (min-width: 768px) {
-  .bg-home-hero-image {
-    background-image: url('../images/homepage/hero-illustration.svg');
-    background-repeat: no-repeat;
-    background-position: right bottom;
-  }
-}
-
 .fr-card-with-arrow::before {
   content: "" !important;
-}
-
-@media (min-width: 768px) {
-  .fr-tile-left-top-img .fr-tile__img {
-    align-items: start;
-    margin: -3rem 0 2rem 2rem !important;
-    justify-content: center;
-  }
-}
-@media (768px <= width <= 1138px) {
-  .fr-tile-left-top-img .fr-tile__img {
-    display: none;
-  }
 }
 
 .newsletter-button .fr-btn {
   justify-content: center;
   align-items: center;
-}
-
-@media (min-width: 768px) {
-  .newsletter-button .fr-btn {
-    align-items: end;
-  }
 }
 
 .fr-tile-left-top-img .fr-tile--horizontal-md {
@@ -190,6 +190,11 @@ img.covering {
 .almost-fitting {
   width: 90%
 }
+
+.almost-fitting-even-more {
+  width: 95%
+}
+
 .fitting {
   object-fit: cover;
   width: 100%
@@ -226,7 +231,7 @@ img.covering {
     position: relative;
     margin: 0 auto;
     max-width: 1200px;
-    
+
   }
 
   .video-ministry-responsive {
@@ -424,13 +429,13 @@ img.covering {
   background: url('../images/homepage/partenaires/logo_partenaires.jpg') -65px -250px;
 }
 
-.bg-logo_moi_dans_10_ans_my_future {
-  width: 180px; height: 100px;
+.bg-logo_my_future {
+  width: 150px; height: 100px;
   background: url('../images/homepage/partenaires/logo_partenaires.jpg') -340px -250px;
 }
 
 .bg-logo_tous_en_stage {
-  width: 150px; height: 100px;
+  width: 180px; height: 100px;
   background: url('../images/homepage/partenaires/logo_partenaires.jpg') -60px -370px;
 }
 

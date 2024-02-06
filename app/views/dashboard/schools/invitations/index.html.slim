@@ -1,8 +1,7 @@
-- invitations = @invitations || Invitation.for_people_with_no_account_in(school_id: current_user.school.id).order(created_at: :desc)
 .border
   .fr-my-3w
     h2.h3.fr-ml-3w.fr-mb-3w Liste des membres invités
-    - if invitations.present?
+    - if @invitations.present?
       .fr-table.fr-table--no-caption.fr-table--layout-fixed
         table
           thead
@@ -17,7 +16,7 @@
                 |Fonction
           tbody
             - if invitations.count.positive?
-              - invitations.each do |invitation|
+              - @invitations.each do |invitation|
                 = render partial: "dashboard/schools/users/invited_school_employee_simple",
                         locals: { invitation: invitation }
             - else
