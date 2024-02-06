@@ -24,9 +24,8 @@ const InternshipOfferFavoriteButton = ({
         .fail(fetchFail);
     };
 
-    const fetchDone = (result) => {
+  const fetchDone = (result) => {
       setIsFavorite(result['is_favorite']);
-      // sendNotification('Enregistré !');
       return true
     };
 
@@ -38,7 +37,7 @@ const InternshipOfferFavoriteButton = ({
 
   return (
     <div>
-      
+
       { isDisabled ? (
         <div className='heart-disabled'></div>
       ) : (

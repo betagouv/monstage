@@ -138,4 +138,17 @@ class InternshipOfferTest < ActiveSupport::TestCase
       assert_equal expected_weeks.ids, hosting_info.available_weeks.map(&:id)
     end
   end
+
+  test 'is_favorite?' do
+    student = create(:student)
+    other_student = create(:student)
+    internship_offer = create(:weekly_internship_offer)
+    other_internship_offer = create(:weekly_internship_offer)
+    refute internship_offer.is_favorite?(student)
+
+    create(:favorite, user: student, internship_offer: internship_offer)
+    create(:favorite, user: other_student, internship_offer: other_internship_offer)
+    refute internship_offer.is_favorite?(other_student)
+    assert internship_offer.is_favorite?(student)
+  end
 end
