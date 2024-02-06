@@ -65,7 +65,7 @@ module Presenters
     attr_reader :internship_offer
 
     def free_weeks
-      weeks = internship_offer.internship_offer_weeks.select do |internship_offer_week|
+      internship_offer.internship_offer_weeks.select do |internship_offer_week|
         internship_offer_week.blocked_applications_count != internship_offer.max_students_per_group
       end.sort_by{ |internship_offer_week| internship_offer_week.id }
          .map(&:week)

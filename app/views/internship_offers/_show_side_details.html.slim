@@ -13,8 +13,9 @@
   .col-12.fr-py-2w
     .fr-tag.fr-icon-calendar-fill.fr-tag--icon-left
       - weeks_summary = internship_offer.presenter.weeks_summary
-      .fr-mr-2w
-        = "Disponibles sur #{weeks_summary[:weeks_count] } semaines:"
+      - if weeks_summary.fetch(:weeks_count, 0) > 0
+        .fr-mr-2w
+          = "Disponibles sur #{weeks_summary[:weeks_count] } semaines:"
         ul
           - weeks_summary[:weeks_list].split_weeks_in_trunks.each do |week_list_element|
             - date_range = DateRange.new(weeks:[week_list_element.first_week, week_list_element.last_week])

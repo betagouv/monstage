@@ -5,18 +5,25 @@ class FavoritesController < ApplicationController
   before_action :set_internship_offer, only: [:create, :destroy]
 
   def create
-    favorite = Favorite.where(user_id: current_user.id, internship_offer_id: @internship_offer.id)&.first
-    favorite ||= Favorite.new(internship_offer: @internship_offer, user: current_user)
-    if favorite.save
+    favorite = Favorite.where(user_id: current_user.id, internship_offer_id: @internship_offer.id)
+                       .try(:first)
+    if favorite
       render json: format_internship_offer(@internship_offer), status: 200
-    else
-      puts favorite.errors.messages
-      render json: 'Erreur', status: 500
+      return
     end
+
+    if Favorite.new(internship_offer: @internship_offer.reload, user: current_user).save
+      render json: format_internship_offer(@internship_offer.reload), status: 200
+      return
+    end
+
+    render(json: "Erreur #{favorite.errors.messages}", status: 500)
   end
 
   def destroy
-    Favorite.where(internship_offer_id: @internship_offer.id, user_id: current_user.id).first.destroy
+    Favorite.where(internship_offer_id: @internship_offer.id, user_id: current_user.id)
+            .first
+            .destroy
     render json: format_internship_offer(@internship_offer), status: 200
   end
 
@@ -27,7 +34,7 @@ class FavoritesController < ApplicationController
   private
 
   def set_internship_offer
-    @internship_offer = InternshipOffer.find(params[:internship_offer_id] || params[:id])
+    @internship_offer ||= InternshipOffer.find(params[:internship_offer_id] || params[:id])
   end
 
   def format_internship_offers(internship_offers)
@@ -48,7 +55,7 @@ class FavoritesController < ApplicationController
       lon: internship_offer.coordinates.longitude,
       image: view_context.asset_pack_path("media/images/sectors/#{internship_offer.sector.cover}"),
       sector: internship_offer.sector.name,
-      is_favorite: current_user ? current_user.favorites.pluck(:internship_offer_id).include?(internship_offer.id) : false,
+      is_favorite: !!current_user && internship_offer.is_favorite?(current_user),
       logged_in: !!current_user
     }
   end

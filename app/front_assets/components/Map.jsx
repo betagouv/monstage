@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 
 import defaultMarker from '../images/corporate_pin.svg';
+// TODO isMobile n'est pas utilisé
 import { isMobile } from '../utils/responsive';
 
 const defaultPointerIcon = new L.Icon({
@@ -13,6 +14,7 @@ const defaultPointerIcon = new L.Icon({
 });
 
 const Map = ({ internshipOffer }) => {
+  // TODO isLoading et setIsLoading ne sont pas utilisés
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {  
