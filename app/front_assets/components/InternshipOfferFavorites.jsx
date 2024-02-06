@@ -61,7 +61,8 @@ const InternshipOfferFavorites = ({ internshipOffers }) => {
                     handleMouseOut={handleMouseOut}
                     handleMouseOver={(value) => { handleMouseOver(value) }}
                     sendNotification={(message) => { sendNotification(message) }}
-                    threeByRow = {!isTablet()}
+                    threeByRow={!isTablet()}
+                    can_manage_favorite = {internshipOffer.can_manage_favorite}
                   />
                 ))
               }

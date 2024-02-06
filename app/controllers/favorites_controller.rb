@@ -56,7 +56,8 @@ class FavoritesController < ApplicationController
       image: view_context.asset_pack_path("media/images/sectors/#{internship_offer.sector.cover}"),
       sector: internship_offer.sector.name,
       is_favorite: !!current_user && internship_offer.is_favorite?(current_user),
-      logged_in: !!current_user
+      logged_in: !!current_user,
+      can_manage_favorite: can?(:create, Favorite)
     }
   end
 end
