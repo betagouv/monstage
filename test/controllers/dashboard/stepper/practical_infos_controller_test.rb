@@ -134,7 +134,7 @@ module Dashboard::Stepper
       hosting_info = create(:hosting_info, employer: employer)
       
       # first time
-      assert_enqueued_jobs 1, only: IdleOfferJob do
+      assert_enqueued_jobs 1, only: DraftedInternshipOfferJob do
         assert_difference('InternshipOffer.count', 1) do
           assert_difference('PracticalInfo.count', 1) do
             post(

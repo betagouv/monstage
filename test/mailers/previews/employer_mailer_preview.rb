@@ -1,4 +1,5 @@
 class EmployerMailerPreview < ActionMailer::Preview
+  include FactoryBot::Syntax::Methods
   def internship_application_submitted_email
     internship_application = InternshipApplication.submitted.first
 
@@ -82,9 +83,10 @@ class EmployerMailerPreview < ActionMailer::Preview
     )
   end
 
-  def idle_offer_email
-    internship_offer = InternshipOffers::WeeklyFramed.drafted.first
-    EmployerMailer.idle_offer_email(
+  def drafted_internship_offer_email
+    internship_offer = InternshipOffers::WeeklyFramed.drafted&.first ||
+                         create(:weekly_internship_offer, :drafted)
+    EmployerMailer.drafted_internship_offer_email(
       internship_offer: internship_offer,
     )
   end

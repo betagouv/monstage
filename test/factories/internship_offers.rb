@@ -45,6 +45,10 @@ FactoryBot.define do
     weekly_hours { [] }
     lunch_break { "12:00-13:00" }
 
+    trait :drafted do
+      aasm_state { :drafted }
+    end
+
     trait :published do
       published_at { Time.now }
       aasm_state { 'published' }

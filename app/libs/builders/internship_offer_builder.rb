@@ -21,8 +21,8 @@ module Builders
             internship_offer_area_id: user.current_area_id)
         )
         internship_offer.save!
-        IdleOfferJob.set(wait: 1.week)
-                    .perform_later(internship_offer_id: internship_offer.id)
+        DraftedInternshipOfferJob.set(wait: 1.week)
+                                 .perform_later(internship_offer_id: internship_offer.id)
         callback.on_success.try(:call, internship_offer)
       rescue ActiveRecord::RecordInvalid => e
         callback.on_failure.try(:call, e.record)

@@ -186,7 +186,7 @@ class EmployerMailer < ApplicationMailer
     )
   end
 
-  def idle_offer_email(internship_offer:)
+  def drafted_internship_offer_email(internship_offer:)
     @employer = internship_offer.employer
     @url = internship_offer_url( id: internship_offer.id,
                                  mtm_campaign: 'Offreur_Offre_de_stage_en_attente',
