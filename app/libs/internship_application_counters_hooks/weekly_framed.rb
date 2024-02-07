@@ -8,18 +8,17 @@ module InternshipApplicationCountersHooks
     # BEWARE: order matters
     def update_all_counters
       update_internship_offer_week_counters
-      internship_offer.update!(
-        internship_offer_counters_attributes.merge(
-          blocked_weeks_count: blocked_weeks_count,
-          skip_enough_weeks_validation: true
-        )
-      )
+      update_internship_offer_stats
       update_favorites
       true
     end
 
     def update_favorites
       internship_offer.update_all_favorites
+    end
+
+    def update_internship_offer_stats
+      @internship_application.internship_offer.stats.recalculate
     end
 
     # PERF: can be optimized with one query
@@ -60,17 +59,6 @@ module InternshipApplicationCountersHooks
     def initialize(internship_application:)
       @internship_application = internship_application
       @internship_application.reload
-    end
-
-    #---------------------------------------
-    # blocked_weeks_count
-    # counts the number of weeks with any positive number of approved applications
-    # in each week for a given internship offer
-    #---------------------------------------
-    def blocked_weeks_count
-      internship_offer.internship_offer_weeks
-                      .where('internship_offer_weeks.blocked_applications_count > 0')
-                      .count
     end
   end
 end

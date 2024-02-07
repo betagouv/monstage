@@ -45,13 +45,14 @@ class InternshipOffer < ApplicationRecord
                                     foreign_key: :internship_offer_id,
                                     inverse_of: :internship_offer
   has_many :weeks, through: :internship_offer_weeks
+  has_one :stats, class_name: 'InternshipOfferStats', dependent: :destroy
 
   accepts_nested_attributes_for :organisation, allow_destroy: true
 
   has_rich_text :employer_description_rich_text
 
    # Callbacks
-  before_save :update_remaining_seats
+  #before_save :update_remaining_seats
   after_save :check_need_to_be_edited!
 
   after_initialize :init
@@ -63,6 +64,9 @@ class InternshipOffer < ApplicationRecord
 
   before_create :preset_published_at_to_now
   after_commit :sync_internship_offer_keywords
+  after_create :create_stats
+  
+  after_update :update_stats
 
   paginates_per PAGE_SIZE
 
@@ -70,6 +74,18 @@ class InternshipOffer < ApplicationRecord
   delegate :email, to: :employer, prefix: true, allow_nil: true
   delegate :phone, to: :employer, prefix: true, allow_nil: true
   delegate :name, to: :sector, prefix: true
+  delegate :remaining_seats_count, to: :stats, allow_nil: true
+  delegate :blocked_weeks_count, to: :stats, allow_nil: true
+  delegate :total_applications_count, to: :stats, allow_nil: true
+  delegate :approved_applications_count, to: :stats, allow_nil: true
+  delegate :submitted_applications_count, to: :stats, allow_nil: true
+  delegate :rejected_applications_count, to: :stats, allow_nil: true
+  delegate :view_count, to: :stats, allow_nil: true
+  delegate :total_male_applications_count, to: :stats, allow_nil: true
+  delegate :total_female_applications_count, to: :stats, allow_nil: true
+  delegate :total_male_approved_applications_count, to: :stats, allow_nil: true
+  delegate :total_female_approved_applications_count, to: :stats, allow_nil: true
+  delegate :update_need, to: :stats, allow_nil: true
 
   # Validations
   validates :contact_phone,
@@ -113,7 +129,7 @@ class InternshipOffer < ApplicationRecord
   }
 
   scope :with_seats, lambda {
-    where('remaining_seats_count > 0')
+    joins(:stats).where('internship_offer_stats.remaining_seats_count > 0')
   }
 
   scope :limited_to_department, lambda { |user:|
@@ -488,24 +504,16 @@ class InternshipOffer < ApplicationRecord
     end
   end
 
-  def update_remaining_seats
-    reserved_places = internship_offer_weeks&.sum(:blocked_applications_count)
-    self.remaining_seats_count = max_candidates - reserved_places
-    self.published_at = nil if no_remaining_seat_anymore?
-  end
-
   def no_remaining_seat_anymore?
     remaining_seats_count.zero?
   end
 
   def requires_updates?
-    may_need_update? && (!has_weeks_in_the_future? || no_remaining_seat_anymore?)
+    stats.update_needed?
   end
 
   def check_need_to_be_edited!
-    if requires_updates?
-      update_columns(aasm_state: 'need_to_be_updated', published_at: nil)
-    end
+    need_update! if requires_updates?
   end
 
   def approved_applications_current_school_year
@@ -522,5 +530,14 @@ class InternshipOffer < ApplicationRecord
     history = UsersInternshipOffersHistory.find_or_initialize_by(internship_offer: self, user: user)
     history.application_clicks += 1
     history.save
+  end
+
+  def create_stats
+    stats = InternshipOfferStats.create(internship_offer: self)
+    stats.recalculate
+  end
+
+  def update_stats
+    stats.recalculate
   end
 end

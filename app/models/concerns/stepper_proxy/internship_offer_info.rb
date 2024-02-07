@@ -112,6 +112,7 @@ module StepperProxy
       missing_weeks_in_the_future && check_for_missing_seats
     end
 
+    # TO DO make it CRON
     def requires_update_at_toggle_time?
       return false if published?
 

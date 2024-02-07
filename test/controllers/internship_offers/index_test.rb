@@ -342,10 +342,10 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as student finds internship_offers available with one week that is not available' do
-    max_candidates = 1
+    max_candidates = 2
     internship_weeks = [Week.first, Week.last]
     school = create(:school, weeks: internship_weeks)
-    blocked_internship_week = build(:internship_offer_week, blocked_applications_count: max_candidates,
+    blocked_internship_week = build(:internship_offer_week, blocked_applications_count: max_candidates - 1,
                                                             week: internship_weeks[0])
     not_blocked_internship_week = build(:internship_offer_week, blocked_applications_count: 0,
                                                                 week: internship_weeks[1])
@@ -353,6 +353,7 @@ class IndexTest < ActionDispatch::IntegrationTest
                                                         internship_offer_weeks: [blocked_internship_week,
                                                                                  not_blocked_internship_week])
     sign_in(create(:student, school: school))
+    
     InternshipOffer.stub :nearby, InternshipOffer.all do
       get internship_offers_path, params: { format: :json }
       assert_json_presence_of(json_response, internship_offer)
@@ -391,16 +392,18 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as student finds internship_offers blocked on other weeks' do
-    max_candidates = 1
+    max_candidates = 2
     internship_weeks = [Week.first, Week.last]
     school = create(:school, weeks: [internship_weeks[1]])
-    blocked_internship_week = build(:internship_offer_week, blocked_applications_count: max_candidates,
+    blocked_internship_week = build(:internship_offer_week, blocked_applications_count: max_candidates - 1,
                                                             week: internship_weeks[0])
+
     not_blocked_internship_week = build(:internship_offer_week, blocked_applications_count: 0,
                                                                 week: internship_weeks[1])
-    internship_offer = create(:weekly_internship_offer, max_candidates: max_candidates,
+    internship_offer = create(:weekly_internship_offer, published_at: Time.now, max_candidates: max_candidates,
                                                         internship_offer_weeks: [blocked_internship_week,
                                                                                  not_blocked_internship_week])
+    
 
     sign_in(create(:student, school: school))
 

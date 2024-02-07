@@ -25,6 +25,7 @@ module Finders
 
     def employer_query
       common_filter do
+        user.internship_offers.includes([:internship_offer_weeks])
         params[:filter] == 'approved' ? approved_filter : proposed_offers
       end
     end

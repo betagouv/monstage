@@ -21,12 +21,12 @@ module Finders
     #
     def dimension_offer
       base_query.dimension_offer
-                .includes(:sector, :weeks, :group, :school)
+                .includes(:sector, :weeks, :group, :school, :stats)
     end
 
     def dimension_by_group
       base_query.dimension_by_group
-                .includes(:group)
+                .includes(:group, :internship_offer_stats)
     end
 
     def dimension_by_detailed_typology(detailed_typology:)
