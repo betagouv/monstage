@@ -271,7 +271,10 @@ class InternshipOffer < ApplicationRecord
   end
 
   def has_spots_left?
-    internship_offer_weeks.any?(&:has_spots_left?)
+    InternshipOfferWeek.where(internship_offer_id: id)
+                       .where('internship_offer_weeks.blocked_applications_count < ?', max_students_per_group)
+                       .count
+                       .positive?
   end
 
   def is_fully_editable?

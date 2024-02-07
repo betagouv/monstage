@@ -1,6 +1,6 @@
 {
   "pagination": {
-    "totalInternshipOffers": 1,
+    "totalInternshipOffers": 2,
     "internshipOffersPerPage": 30,
     "totalPages": 1,
     "currentPage": 1,
@@ -8,22 +8,38 @@
     "prevPage": null,
     "isFirstPage": true,
     "isLastPage": true,
-    "pageUrlBase": "http://www.example.com/api/internship_offers?keyword=cuisine"
+    "pageUrlBase": "http://www.example.com/api/internship_offers"
   },
   "internshipOffers": [
     {
-      "id": 12,
-      "title": "Cheffe de cuisine",
-      "description": "Lorem ipsum dolor weekly_internship_offer",
+      "id": 1478,
+      "title": "Stage de 3è - 96",
+      "description": "Lorem ipsum dolor api",
       "employer_name": "Octo",
-      "url": "http://www.example.com/internship_offers/12?keyword=cuisine",
+      "url": "http://www.example.com/offres-de-stage/1478?page=1&utm_source=operator-39",
       "city": "Paris",
-      "date_start": " 7 novembre 2022",
-      "date_end": "13 novembre 2022",
+      "date_start": "22 janvier 2024",
+      "date_end": "28 janvier 2024",
       "latitude": 48.866667,
       "longitude": 2.333333,
       "image": "http://www.example.com/packs-test/media/images/sectors/default_sector-e1b60d1832d3ebc2a8ccff663f1a8dd8.svg",
-      "sector": "secteur-3"
+      "sector": "secteur-211",
+      "handicap_accessible": false
+    },
+    {
+      "id": 1477,
+      "title": "Stage de 3è - 95",
+      "description": "Lorem ipsum dolor api",
+      "employer_name": "Octo",
+      "url": "http://www.example.com/offres-de-stage/1477?page=1&utm_source=operator-39",
+      "city": "Paris",
+      "date_start": "22 janvier 2024",
+      "date_end": "28 janvier 2024",
+      "latitude": 48.866667,
+      "longitude": 2.333333,
+      "image": "http://www.example.com/packs-test/media/images/sectors/default_sector-e1b60d1832d3ebc2a8ccff663f1a8dd8.svg",
+      "sector": "secteur-209",
+      "handicap_accessible": false
     }
   ]
 }

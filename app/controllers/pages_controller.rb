@@ -34,19 +34,13 @@ class PagesController < ApplicationController
     end
   end
 
+  def offers_with_sector
+    InternshipOffer.includes([:sector])
+  end
+
   def student_landing
-    @internship_offers = InternshipOffer.includes([:sector]).last(3)
+    @internship_offers = offers_with_sector.last(3)
   end
-
-  def pro_landing
-    # @internship_offers = InternshipOffer.last(3)
-  end
-
-  def school_management_landing
-    @internship_offers = InternshipOffer.includes([:sector]).last(3)
-  end
-
-  def statistician_landing
-    @internship_offers = InternshipOffer.includes([:sector]).last(3)
-  end
+  alias_method :school_management_landing, :student_landing
+  alias_method :statistician_landing, :student_landing
 end
