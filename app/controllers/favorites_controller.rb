@@ -5,19 +5,13 @@ class FavoritesController < ApplicationController
   before_action :set_internship_offer, only: [:create, :destroy]
 
   def create
-    favorite = Favorite.where(user_id: current_user.id, internship_offer_id: @internship_offer.id)
-                       .try(:first)
-    if favorite
+    favorite = Favorite.where(user_id: current_user.id, internship_offer_id: @internship_offer.id)&.first
+    favorite ||= Favorite.new(internship_offer: @internship_offer, user: current_user)
+    if favorite.save
       render json: format_internship_offer(@internship_offer), status: 200
-      return
+    else
+      render(json: "Erreur #{favorite.errors.messages}", status: 500)
     end
-
-    if Favorite.new(internship_offer: @internship_offer.reload, user: current_user).save
-      render json: format_internship_offer(@internship_offer.reload), status: 200
-      return
-    end
-
-    render(json: "Erreur #{favorite.errors.messages}", status: 500)
   end
 
   def destroy
