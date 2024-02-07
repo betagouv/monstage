@@ -2,11 +2,7 @@
 
 class PagesController < ApplicationController
   WEBINAR_URL = ENV.fetch('WEBINAR_URL').freeze
-  layout 'homepage', only: %i[home
-                              student_landing
-                              pro_landing
-                              school_management_landing
-                              statistician_landing]
+  layout 'homepage', only: [:home, :student_landing, :pro_landing, :school_management_landing, :statistician_landing]
 
   def statistiques
     render 'pages/statistiques', layout: 'statistiques'

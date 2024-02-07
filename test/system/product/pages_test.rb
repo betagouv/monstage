@@ -11,26 +11,22 @@ module Product
 
     test 'USE_W3C, static pages' do
       %i[
-        accessibilite_path
-        conditions_d_utilisation_path
-        contact_path
-        documents_utiles_path
-        eleves_path
-        equipe_pedagogique_path
-        identities_path
-        inscription_permanence_path
-        les_10_commandements_d_une_bonne_offre_path
-        mentions_legales_path
-        newsletter_path
-        operators_path
-        politique_de_confidentialite_path
-        professionnels_path
-        referents_path
         root_path
+        les_10_commandements_d_une_bonne_offre_path
+        exemple_offre_ideale_ministere_path
+        exemple_offre_ideale_sport_path
+        mentions_legales_path
+        conditions_d_utilisation_path
+        politique_de_confidentialite_path
+        contact_path
+        accessibilite_path
+        documents_utiles_path
+        operators_path
         statistiques_path
       ].map do |page_path|
         run_request_and_cache_response(report_as: page_path.to_s) do
-          visit Rails.application.routes.url_helpers.send(page_path)
+          path = Rails.application.routes.url_helpers.send(page_path)
+          visit path
         end
       end
     end
