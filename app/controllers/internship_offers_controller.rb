@@ -64,9 +64,7 @@ class InternshipOffersController < ApplicationController
   private
 
   def set_internship_offer
-    @internship_offer = InternshipOffer.with_rich_text_description_rich_text
-                                       .with_rich_text_employer_description_rich_text
-                                       .find(params[:id])
+    @internship_offer = InternshipOffer.find(params[:id])
   end
 
   def query_params
@@ -122,6 +120,7 @@ class InternshipOffersController < ApplicationController
   end
 
   def alternative_internship_offers
+    # TODO refacto : difficult to understand
     priorities = [
       [:latitude, :longitude, :radius], #1
       [:week_ids], #2
@@ -131,9 +130,8 @@ class InternshipOffersController < ApplicationController
     alternative_internship_offers = []
     priorities.each do |priority|
       next unless priority.any? { |p| params[p].present? && params[p] != Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER.to_s }
-      
 
-       priority_offers = Finders::InternshipOfferConsumer.new(
+      priority_offers = Finders::InternshipOfferConsumer.new(
         params: params.permit(*priority),
         user: current_user_or_visitor
       ).all.to_a
