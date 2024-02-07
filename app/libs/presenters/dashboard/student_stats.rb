@@ -20,15 +20,9 @@ module Presenters
                .size
       end
 
-      def applications_with_convention_signed_count
-        student.internship_applications
-               .select(&:convention_signed?)
-               .size
-      end
-
       def internship_locations
         student.internship_applications
-               .select(&:convention_signed?)
+               .select(&:approved?)
                .map(&:internship_offer)
                .map(&:formatted_autocomplete_address)
       end
@@ -55,12 +49,14 @@ module Presenters
           states_hash[:canceled]
         when "rejected", "expired_by_student", "canceled_by_employer"
           states_hash[:rejected]
-        when "submitted", "read_by_employer", "examined"
+        when "submitted", "read_by_employer", "examined", "transfered"
           states_hash[:waiting]
         when "validated_by_employer"
           states_hash[:validated]
         when "approved"
           states_hash[:approved]
+        else
+          states_hash[:must_apply]
         end
       end
 
@@ -71,7 +67,7 @@ module Presenters
                          keyword_init: true)
       def internship_tutors
         student.internship_applications
-               .select(&:convention_signed?)
+               .select(&:approved?)
                .map(&:internship_offer)
                .map do |internship_offer|
           Tutor.new(tutor_name: internship_offer.tutor_name,

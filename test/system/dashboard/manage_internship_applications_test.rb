@@ -9,8 +9,7 @@ module Dashboard
                      approved
                      rejected
                      canceled_by_employer
-                     canceled_by_student
-                     convention_signed].freeze
+                     canceled_by_student ].freeze
     setup do
       @employer = create(:employer)
     end

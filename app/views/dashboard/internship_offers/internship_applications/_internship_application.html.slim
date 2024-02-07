@@ -45,7 +45,7 @@
       / labels
       .col-md-6.col-sm-12.font-weight-bold
         .d-flex.align-items-baseline.pt-2
-          - if internship_application.approved? || internship_application.convention_signed?
+          - if internship_application.approved?
             .d-flex.align-items-center.fr-text-with-success
               span.fr-icon-check-line aria-hidden="true"
               = " Candidature acceptée le #{localize(internship_application.approved_at, format: :human_mm_dd_hh)}"

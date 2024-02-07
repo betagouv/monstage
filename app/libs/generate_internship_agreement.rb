@@ -87,7 +87,6 @@ class GenerateInternshipAgreement < Prawn::Document
 
     premises_organisation_name_text = "Nom de l'organisme d'accueil : #{internship_offer.employer_name}"
     @pdf.text premises_organisation_name_text
-    # TODO clarify this difference between premises_organisation_name_text & organisation_name_text
     @pdf.move_down 10
     organisation_name_text = "Raison sociale : #{internship_offer.employer_name}"
     @pdf.text organisation_name_text
@@ -182,21 +181,19 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.move_down 5
     from = "Du #{internship_application.week.beginning_of_week_with_year_long}"
     to = "Au #{internship_application.week.friday_of_week_with_years_long}"
-    @pdf.table([[from, to], [{content: "Soit un nombre de jour de : 5", colspan: 2}]])
+    @pdf.table([[from, to], [{content: "Soit un nombre de jours de : 5", colspan: 2}]])
     @pdf.move_down 10
-    if @internship_agreement.daily_planning?
-      @pdf.text "Les horaires de présence de l’élève sont fixés à : "
-      @pdf.move_down 10
-      %w(lundi mardi mercredi jeudi vendredi).each_with_index do |weekday, i|
-        @pdf.text "#{weekday.capitalize} de #{@internship_agreement.daily_hours&.dig(weekday)&.first} à " \
-                  "#{@internship_agreement.daily_hours&.dig(weekday)&.last}"
-        @pdf.move_down 5
+    @pdf.text "Les horaires de présence de l’élève sont fixés à : "
+    @pdf.move_down 10
+    %w(lundi mardi mercredi jeudi vendredi).each_with_index do |weekday, i|
+      if @internship_agreement.daily_planning?
+        start_hours = @internship_agreement.daily_hours&.dig(weekday)&.first
+        end_hours = @internship_agreement.daily_hours&.dig(weekday)&.last
+      else
+        start_hours = @internship_agreement.weekly_hours&.first
+        end_hours = @internship_agreement.weekly_hours&.last
       end
-    else
-      @pdf.text "Les horaires de présence de l’élève sont fixés à : "
-      @pdf.move_down 5
-      @pdf.text "De #{@internship_agreement.weekly_hours&.first} à " \
-                "#{@internship_agreement.weekly_hours&.last}"
+      @pdf.text "#{weekday.capitalize} de #{start_hours.gsub(':', 'h')} à #{end_hours.gsub(':', 'h')}"
       @pdf.move_down 5
     end
     @pdf.move_down 10

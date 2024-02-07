@@ -9,5 +9,5 @@
             rich_text: false,
             modal_id: "approve-internship-application-#{internship_application.id}",
             fa_icon: "fr-icon-check-line",
-            token: defined?(token) ? token : nil
-- # TODO change the message !!!
+            token: defined?(token) ? token : nil,
+            opened_modal: defined?(opened_modal) ? opened_modal == 'accept' : false

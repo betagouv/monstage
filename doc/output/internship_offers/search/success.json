@@ -1,44 +1,29 @@
 {
   "pagination": {
-    "totalInternshipOffers": 2,
+    "totalInternshipOffers": 31,
     "internshipOffersPerPage": 30,
-    "totalPages": 1,
-    "currentPage": 1,
+    "totalPages": 2,
+    "currentPage": 2,
     "nextPage": null,
-    "prevPage": null,
-    "isFirstPage": true,
+    "prevPage": "http://www.example.com/api/internship_offers/search?page=1",
+    "isFirstPage": false,
     "isLastPage": true,
     "pageUrlBase": "http://www.example.com/api/internship_offers/search"
   },
   "internshipOffers": [
     {
-      "id": 207,
-      "title": "Stage de 3è - 91",
+      "id": 1553,
+      "title": "Stage de 3è - 185",
       "description": "Lorem ipsum dolor weekly_internship_offer",
       "employer_name": "Octo",
-      "url": "http://www.example.com/offres-de-stage/207?utm_source=operator-56",
+      "url": "http://www.example.com/offres-de-stage/1553?page=2&utm_source=operator-27",
       "city": "Paris",
-      "date_start": "18 décembre 2023",
-      "date_end": "24 décembre 2023",
+      "date_start": "22 janvier 2024",
+      "date_end": "28 janvier 2024",
       "latitude": 48.866667,
       "longitude": 2.333333,
       "image": "http://www.example.com/packs-test/media/images/sectors/default_sector-e1b60d1832d3ebc2a8ccff663f1a8dd8.svg",
-      "sector": "secteur-199",
-      "handicap_accessible": false
-    },
-    {
-      "id": 206,
-      "title": "Stage de 3è - 90",
-      "description": "Lorem ipsum dolor weekly_internship_offer",
-      "employer_name": "Octo",
-      "url": "http://www.example.com/offres-de-stage/206?utm_source=operator-56",
-      "city": "Paris",
-      "date_start": "18 décembre 2023",
-      "date_end": "24 décembre 2023",
-      "latitude": 48.866667,
-      "longitude": 2.333333,
-      "image": "http://www.example.com/packs-test/media/images/sectors/default_sector-e1b60d1832d3ebc2a8ccff663f1a8dd8.svg",
-      "sector": "secteur-197",
+      "sector": "secteur-386",
       "handicap_accessible": false
     }
   ]

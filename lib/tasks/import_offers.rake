@@ -72,7 +72,6 @@ end
 
 desc 'Import new offers'
 task :import_weekly_framed_offers_with_employers_already_created, [:csv_uri] => :environment do |t, args|
-  weeks = Week.selectable_from_now_until_end_of_school_year.map(&:id)
   created_count = 0
   errors_count = 0
   
@@ -87,6 +86,7 @@ task :import_weekly_framed_offers_with_employers_already_created, [:csv_uri] => 
     description = row[6]
     sector = row[7]
     max_candidates = row[10]
+    weeks = row[11].split('-').map { |w| Week.find_by(number: w.to_i, year: Date.current.year).id }
     tutor_name = row[13]
     tutor_email = row[14]
     tutor_phone = row[15]
@@ -141,29 +141,34 @@ task :import_weekly_framed_offers_with_employers_already_created, [:csv_uri] => 
 end
 
 desc 'Import new offers 4 steps'
-task :import_offers_in_4_steps_with_employers_already_created, [:employer_email, :csv_uri] => :environment do |t, args|
+task :import_offers_in_4_steps_with_employers_already_created, [:csv_uri] => :environment do |t, args|
   puts "---------"
-  puts args[:employer_email]
+  #puts args[:employer_email]
   puts args[:csv_uri]
   puts "---------"
 
-  
-  weeks = Week.selectable_from_now_until_end_of_school_year
   created_count = 0
   errors = []
-  employer = Users::Employer.where(email: args[:employer_email]).first
   csv_data =  URI.open(args[:csv_uri]).read
-  
+  puts 'csv_data'
+  #puts csv_data
+
   CSV.parse(csv_data).each do |row|
+    # puts row 
+
     employer_name = row[0]
     is_public = row[1] == "Public"
+    employer = Users::Employer.where(email: row[1]).first
     street = row[2]
     zipcode = row[3]
     city = row[4]
-    title = row[7]
+    title = row[6]
     description = row[6][0..499]
-    sector_id = Sector.where(name: row[8]).first.try(:id) 
-    max_candidates = row[11] || 1
+    sector_id = Sector.where(name: row[7]).first.try(:id)
+    contact_phone = row[15]
+
+    max_candidates = row[10] || 1
+    weeks = row[11].split('-').map { |w| Week.find_by(number: w.to_i, year: Date.current.year) }
     
     address = "#{street} #{zipcode} #{city}"
     coordinates = Geocoder.search(address).first.try(:coordinates)
@@ -176,7 +181,7 @@ task :import_offers_in_4_steps_with_employers_already_created, [:employer_email,
         street: street,
         zipcode: zipcode,
         city: city,
-        is_public: true,
+        is_public: is_public,
         coordinates: {latitude: coordinates[0], longitude: coordinates[1]},
         employer: employer
       )
@@ -213,7 +218,8 @@ task :import_offers_in_4_steps_with_employers_already_created, [:employer_email,
               city: city,
               coordinates: {latitude: coordinates[0], longitude: coordinates[1]},
               weekly_hours: ["9:00", "17:00"],
-              employer: employer
+              employer: employer,
+              contact_phone: contact_phone
             )
 
             if practical_info.save
@@ -234,12 +240,14 @@ task :import_offers_in_4_steps_with_employers_already_created, [:employer_email,
                 weekly_hours: ["9:00", "17:00"],
                 coordinates: {latitude: coordinates[0], longitude: coordinates[1]},
                 employer: employer,
-                internship_offer_area_id: employer.current_area_id
+                internship_offer_area_id: employer.current_area_id,
+                contact_phone: contact_phone
               )
       
               if offer.save
                 offer.publish!
                 puts "offer created : ##{offer.id}"
+                puts "offer published : ##{offer.contact_phone}"
                 created_count += 1
               else
                 puts "ERROR : "

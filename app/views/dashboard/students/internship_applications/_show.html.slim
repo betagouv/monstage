@@ -73,7 +73,7 @@
     h2.h4.fr-mb-4w = internship_application.student.presenter.full_name
     p.fr-icon-calendar-line.fr-btn--icon-left
       - week = internship_application.week
-      ="Semaine du <strong>#{week.short_select_text_method}</strong>".html_safe
+      ="Semaine <strong>#{week.short_select_text_method}</strong>".html_safe
     - unless internship_application.motivation.to_s.blank?
       h3.h5 Motivations
       p = internship_application.motivation.to_s

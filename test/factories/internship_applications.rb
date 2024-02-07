@@ -78,14 +78,6 @@ FactoryBot.define do
       approved_at { 1.days.ago }
     end
 
-    # TODO following should be removed
-    trait :convention_signed do
-      aasm_state { :convention_signed }
-      submitted_at { 3.days.ago }
-      approved_at { 2.days.ago }
-      convention_signed_at { 1.days.ago }
-    end
-
     trait :expired_by_student do
       aasm_state { :expired_by_student }
       submitted_at { 3.days.ago }

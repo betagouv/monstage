@@ -14,8 +14,7 @@
       = label
     - unless hint.blank?
       .text-muted.fr-mb-4v = hint
-    = f.send(field_type, field,
-                          class: "fr-input #{ hint.blank? ? "" : 'fr-mt-n2v'}",
+    = f.send(field_type, field, class: "fr-input #{ hint.blank? ? "" : 'fr-mt-n2v'}",
                           :'aria-describedby' => "text-input-valid-desc-valid",
                           id: id,
                           value: value,
