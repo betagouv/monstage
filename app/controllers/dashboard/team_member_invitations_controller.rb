@@ -40,8 +40,7 @@ module Dashboard
     def join
       authorize! :manage_teams, @team_member_invitation
       flash = {}
-      if @team_member_invitation.may_accept_invitation? ||
-         @team_member_invitation.may_refuse_invitation?
+      if @team_member_invitation.pending_invitation?
         action =  params[:commit] == "Oui" ? :accept_invitation! : :refuse_invitation!
         @team_member_invitation.send(action)
       else
