@@ -9,7 +9,6 @@ module Finders
 
     def next_from(from:)
       finder.base_query
-            .order(id: :desc)
             .next_from(current: from, column: :id, order: :desc)
             .limit(1)
             .first
@@ -17,7 +16,6 @@ module Finders
 
     def previous_from(from:)
       finder.base_query
-            .order(id: :desc)
             .previous_from(current: from, column: :id, order: :desc)
             .limit(1)
             .first

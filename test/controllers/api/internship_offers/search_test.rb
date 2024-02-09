@@ -34,9 +34,9 @@ module Api
 
     test 'GET #search without params returns all internship_offers available' do
       user = create(:user_operator, :fully_authorized)
-      offer_1 = create(:weekly_internship_offer)
-      offer_2 = create(:weekly_internship_offer)
-      offer_3 = create(:weekly_internship_offer, :unpublished)
+      offer_1 = create(:weekly_internship_offer, coordinates: Coordinates.tours, city: 'Tours')
+      offer_2 = create(:weekly_internship_offer, coordinates: Coordinates.paris, city: 'Paris')
+      offer_3 = create(:weekly_internship_offer, :unpublished, coordinates: Coordinates.bordeaux, city: 'Bordeaux')
 
       documents_as(endpoint: :'internship_offers/search', state: :success) do
         get search_api_internship_offers_path(
@@ -50,8 +50,9 @@ module Api
         assert_equal 2, json_response['pagination']['totalInternshipOffers']
         assert_equal 1, json_response['pagination']['totalPages']
         assert_equal true, json_response['pagination']['isFirstPage']
-        assert_equal offer_1.id, json_response['internshipOffers'][1]['id']
-        assert_equal offer_2.id, json_response['internshipOffers'][0]['id']
+        # since api order is id: :desc
+        assert_equal 'Paris', json_response['internshipOffers'][0]['city']
+        assert_equal 'Tours', json_response['internshipOffers'][1]['city']
       end
     end
 
@@ -131,14 +132,14 @@ module Api
             token: "Bearer #{user.api_token}",
             latitude: 44.8624,
             longitude: -0.5848,
-            radius: 10000
+            radius: 10_000
           }
         )
 
         assert_response :success
         assert_equal 2, json_response['internshipOffers'].count
-        assert_equal offer_2.id, json_response['internshipOffers'][0]['id']
-        assert_equal offer_1.id, json_response['internshipOffers'][1]['id']
+        assert_equal "Bordeaux", json_response['internshipOffers'][0]['city']
+        assert_equal "Le bouscat", json_response['internshipOffers'][1]['city']
       end
     end
 

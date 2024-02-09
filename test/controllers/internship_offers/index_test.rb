@@ -411,48 +411,49 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as student with page, returns paginated content' do
-    internship_offers = (InternshipOffer::PAGE_SIZE + 1)
-                        .times
-                        .map do
-      create(:weekly_internship_offer,
-             max_candidates: 1)
-    end
-
+    # Api offers are ordered by creation date, so we can't test pagination with cities
     travel_to(Date.new(2019, 3, 1)) do
+      # Student school is in Paris
       sign_in(create(:student))
-      InternshipOffer.stub :nearby, InternshipOffer.all do
-        InternshipOffer.stub :by_weeks, InternshipOffer.all do
-          InternshipOffer.stub :in_the_future, InternshipOffer.all do
-            get internship_offers_path, params: { format: :json }
-            assert_json_presence_of(json_response, internship_offers.last)
-            assert_json_absence_of(json_response, internship_offers.first)
-
-            get internship_offers_path(page: 2, format: :json)
-            assert_json_presence_of(json_response, internship_offers.first)
-            assert_json_absence_of(json_response, internship_offers.last)
+      internship_offers = (InternshipOffer::PAGE_SIZE).times.map do
+        create(:api_internship_offer, coordinates: Coordinates.bordeaux, city: 'Bordeaux')
+      end
+      # this one is in Paris, but it's the last one
+      create(:api_internship_offer)
+      InternshipOffer.stub :by_weeks, InternshipOffer.all do
+        InternshipOffer.stub :in_the_future, InternshipOffer.all do
+          get internship_offers_path, params: { format: :json }
+          json_response.first[1].each do |internship_offer|
+            assert_equal 'Bordeaux', internship_offer['city']
           end
+          assert_equal InternshipOffer::PAGE_SIZE, json_response.first[1].count
+
+          get internship_offers_path(page: 2, format: :json)
+          assert_equal 1, json_response.first[1].count
+          assert_equal 'Paris', json_response.first[1][0]['city']
         end
       end
     end
   end
 
   test 'GET #index as student with InternshipOffers::Api, returns paginated content' do
-    internship_offers = (InternshipOffer::PAGE_SIZE + 1).times.map do
-      create(:api_internship_offer)
-    end
     travel_to(Date.new(2019, 3, 1)) do
+      internship_offers = (InternshipOffer::PAGE_SIZE).times.map do
+        create(:api_internship_offer)
+      end
+      create(:api_internship_offer, coordinates: Coordinates.bordeaux, city: 'Bordeaux')
       sign_in(create(:student))
-      InternshipOffer.stub :nearby, InternshipOffer.all do
-        InternshipOffer.stub :by_weeks, InternshipOffer.all do
-          InternshipOffer.stub :in_the_future, InternshipOffer.all do
-            get internship_offers_path, params: { format: :json }
-            assert_json_presence_of(json_response, internship_offers.last)
-            assert_json_absence_of(json_response, internship_offers.first)
-
-            get internship_offers_path(page: 2, format: :json)
-            assert_json_presence_of(json_response, internship_offers.first)
-            assert_json_absence_of(json_response, internship_offers.last)
+      InternshipOffer.stub :by_weeks, InternshipOffer.all do
+        InternshipOffer.stub :in_the_future, InternshipOffer.all do
+          get internship_offers_path, params: { format: :json }
+          json_response.first[1].each do |internship_offer|
+            assert_equal 'Paris', internship_offer['city']
           end
+          assert_equal InternshipOffer::PAGE_SIZE, json_response.first[1].count
+
+          get internship_offers_path(page: 2, format: :json)
+          assert_equal 1, json_response.first[1].count
+          assert_equal 'Bordeaux', json_response.first[1][0]['city']
         end
       end
     end

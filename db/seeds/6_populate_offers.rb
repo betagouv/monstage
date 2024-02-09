@@ -23,10 +23,10 @@ def populate_internship_offers
     tutor_email: 'fourcade.m@gmail.com',
     tutor_role: 'Chef comptable',
     tutor_phone: '+33637607756',
-    street: '128 rue brancion',
-    zipcode: '75015',
-    city: 'paris',
-    coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
+    street: '56 rue d\'Entraigues , Tours',
+    zipcode: '37000',
+    city: 'Tours',
+    coordinates: { latitude: Coordinates.tours[:latitude], longitude: Coordinates.tours[:longitude]},
     employer_name: Group.is_paqte.first.name,
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
@@ -52,10 +52,10 @@ def populate_internship_offers
     tutor_email: 'fourcade.m@gmail.com',
     tutor_phone: '+33637607756',
     tutor_role: 'Chef comptable',
-    street: '128 rue brancion',
-    zipcode: '75015',
-    city: 'paris',
-    coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
+    street: '2 Allée de la Garenne',
+    zipcode: '78480',
+    city: 'Verneuil-sur-Seine',
+    coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
     employer_name: Group.is_paqte.first.name,
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
@@ -200,7 +200,7 @@ def populate_internship_offers
     street: '56 rue d\'Entraigues , Tours',
     zipcode: '37000',
     city: 'Tours',
-    coordinates: { latitude: 47.38767879193098, longitude: 0.6870630687759274},
+    coordinates: { latitude: Coordinates.tours[:latitude], longitude: Coordinates.tours[:longitude]},
     employer_name: 'Education Nationale',
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
@@ -218,7 +218,7 @@ def populate_internship_offers
     sector: Sector.first,
     group: Group.is_private.first,
     is_public: false,
-    title: "Observation du métier d'Administrateur de systèmes informatiques - IBM SERVICES CENTER",
+    title: "API - Observation du métier d'Administrateur de systèmes informatiques - IBM SERVICES CENTER",
     description: "Découvrez les machines mais aussi tous les interlocuteurs de notre société qui intéragissent avec nos services informatiques",
     description_rich_text: "Venez découvrir le métier d'administrateur systèmes ! Vous observerez comment nos administrateurs garantissent aux clients le bon fonctionnement etc.",
     employer_description_rich_text: "Le centre de service IBM de Lille délivre des services d'infrastructure informatique.",
@@ -296,7 +296,7 @@ MULTI_LINE
     street: '2 rue jean moulin',
     zipcode: '95160',
     city: 'Montmorency',
-    coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
+    coordinates: { latitude: Coordinates.montmorency[:latitude], longitude: Coordinates.montmorency[:longitude] },
     employer_name: 'Douanes Assistance Corp.',
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
@@ -325,9 +325,9 @@ MULTI_LINE
     tutor_email: 'fourcade.m@gmail.com',
     tutor_phone: '+33637607756',
     tutor_role: 'Chef de service',
-    street: '128 rue brancion',
-    zipcode: '75015',
-    city: 'paris',
+    street: '2 Allée de la Garenne',
+    zipcode: '78480',
+    city: 'Verneuil-sur-Seine',
     coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
     employer_name: 'MetaBoutShop',
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
@@ -376,10 +376,97 @@ MULTI_LINE
     street: '128 rue brancion',
     zipcode: '75015',
     city: 'paris',
-    coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
+    coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: 'Oyonnax Corp.',
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
+  weeks =  Week.selectable_on_school_year
+  InternshipOffers::WeeklyFramed.create!(
+    employer: Users::Employer.first,
+    contact_phone: '+33627607756',
+    siret: siret,
+    max_candidates: 2,
+    max_students_per_group: 2,
+    weeks: weeks,
+    first_date: weeks.first.beginning_of_week,
+    last_date: weeks.last.beginning_of_week,
+    sector: Sector.fourth,
+    group: Group.is_paqte.second,
+    is_public: false,
+    title: 'Stage concessionnaire automobile',
+    description_rich_text: "Vous assistez la responsable de la concession automobile, aux ventes de véhicules, et observez les manipulations nécessaires pour la logistique et l'approvisionnement des véhicules.",
+    employer_description_rich_text: "Un concessionnaire offre un service de qualité et, pour ses clients, la fierté de posséder un véhicule de qualité.",
+    employer_website: 'http://www.dtpm.fr/',
+    tutor_name: 'Philippe Lejeune',
+    tutor_email: 'lejeune.p@gmail.com',
+    tutor_role: 'CEO',
+    tutor_phone: '+33637647756',
+    street: '30 rue Jean Soula',
+    zipcode: '33000',
+    city: 'Bordeaux',
+    coordinates: { latitude: Coordinates.bordeaux[:latitude], longitude: Coordinates.bordeaux[:longitude]},
+    employer_name: Group.is_paqte.second.name,
+    internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
+  )
+  InternshipOffer.last.publish!
+
+  InternshipOffers::WeeklyFramed.create!(
+    employer: Users::Employer.first,
+    contact_phone: '+33637607156',
+    siret: "88339868700011",
+    max_candidates: 1,
+    max_students_per_group: 1,
+    weeks: weeks,
+    first_date: weeks.first.beginning_of_week,
+    last_date: weeks.last.beginning_of_week,
+    sector: Sector.second,
+    group: nil,
+    is_public: false,
+    title: 'Stage cordonnerie',
+    description_rich_text: "Vous observez le métier et la gestion de la clientèle d'une cordonnnerie.",
+    employer_description_rich_text: "Un artisan fier de son métier.",
+    employer_website: nil,
+    tutor_name: 'Olivier Plat',
+    tutor_email: 'o.plat.p@gmail.com',
+    tutor_role: 'cordonnier',
+    tutor_phone: '+33637647756',
+    street: '12, rue de la Serpe',
+    zipcode: '37000',
+    city: 'Tours',
+    coordinates: { latitude: Coordinates.tours[:latitude], longitude: Coordinates.tours[:longitude]},
+    employer_name: Group.is_paqte.second.name,
+    internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
+  )
+  InternshipOffer.last.publish!
+  # api - 2
+  InternshipOffers::Api.create!(
+    employer: Users::Operator.first,
+    contact_phone: '+33637607756',
+    siret: siret,
+    weeks: weeks,
+    first_date: weeks.first.beginning_of_week,
+    last_date: weeks.last.beginning_of_week,
+    sector: Sector.first,
+    group: Group.is_public.first,
+    is_public: false,
+    title: "Découverte des métiers administratifs de l'Education nationale",
+    description: "La Direction des Services de l'Education Nationale de Seine-et-Marne (DSDEN) propose des stages d'observation",
+    description_rich_text: "La Direction des Services de l'Education Nationale de Seine-et-Marne (DSDEN) se compose de plusieurs services répartis sur 11 étages. Ses 240 agents  ...",
+    employer_description_rich_text: "Le centre de service IBM de Lille délivre des services d'infrastructure informatique.",
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    tutor_role: 'Chef magasinier',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    remote_id: '3',
+    permalink: 'https://www.google.fr',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'Ministère de l\'Education Nationale',
+    internship_offer_area_id: area_id
+  )
+  InternshipOffer.last.publish!
 end
 
 call_method_with_metrics_tracking([:populate_internship_offers])
