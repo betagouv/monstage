@@ -78,6 +78,7 @@ Rails.application.routes.draw do
           post :search
         end
       end
+      resources :sectors, only: :index
     end
     # ------------------ DASHBOARD START ------------------
     namespace :dashboard, path: 'tableau-de-bord' do
