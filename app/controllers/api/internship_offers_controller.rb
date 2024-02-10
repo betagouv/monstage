@@ -18,7 +18,7 @@ module Api
     end
 
     def index
-      @internship_offers = current_api_user.internship_offers.order(id: :desc).page(params[:page])
+      @internship_offers = current_api_user.internship_offers.kept.order(id: :desc).page(params[:page])
       formatted_internship_offers = format_internship_offers(@internship_offers)
       data = {
         pagination: page_links,
@@ -47,7 +47,7 @@ module Api
 
     def destroy
       internship_offer_builder.discard(instance: InternshipOffer.find_by!(remote_id: params[:id])) do |on|
-        on.success(&method(:render_no_content))
+        on.success(&method(:render_ok))
         on.failure(&method(:render_discard_error))
       end
     end

@@ -72,7 +72,7 @@ module Builders
       yield callback if block_given?
       authorize :discard, instance
       instance.discard!
-      callback.on_success.try(:call)
+      callback.on_success.try(:call, instance)
     rescue Discard::RecordNotDiscarded
       callback.on_failure.try(:call, instance)
     end
