@@ -25,7 +25,7 @@ require 'webmock/minitest'
 require 'webdrivers/chromedriver'
 
 # version 115 is not working with chromedriver-helper
-Webdrivers::Chromedriver.required_version = "114.0.5735.90"
+# Webdrivers::Chromedriver.required_version = "114.0.5735.90"
 
 Capybara.save_path = Rails.root.join('tmp/screenshots')
 
@@ -46,10 +46,14 @@ WebMock.disable_net_connect!(
     /github.com/,
     /github-production-release-asset*/,
     /chromedriver\.storage\.googleapis\.com/,
+    /googlechromelabs.github.io/,
+    /edgedl.me.gvt1.com/,
     /api-adresse.data.gouv.fr/,
     /education.gouv.fr\/annuaire/
   ]
 )
+
+WebMock.enable! 
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
 
