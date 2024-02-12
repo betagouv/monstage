@@ -80,7 +80,7 @@ module Dashboard
           visit internship_offer_path(internship_offer)
           find('h1', text: internship_offer.title)
           # FIND the link to the internship_applkication
-          within('#postuler-test') do
+          within("##{dom_id(internship_offer)}-postuler-test") do
             click_link 'Postuler'
           end
           select 'Semaine du 1 février au 7 février', from: 'internship_application_week_id'

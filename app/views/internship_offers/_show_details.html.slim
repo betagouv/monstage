@@ -56,8 +56,9 @@
     .col-12
       .row
         .col-12
-          #postuler-test.fr-my-4w.d-none.d-sm-block
-            = render "internship_offers/apply_cta", internship_offer: internship_offer
+          div id="#{dom_id(internship_offer)}-postuler-test" class="fr-my-4w d-none d-sm-block"
+            = render "internship_offers/apply_cta",
+                     internship_offer: internship_offer
 
   .row
     .col-6
