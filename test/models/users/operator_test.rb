@@ -13,6 +13,8 @@ module Users
                                              accept_terms: true)
       assert_equal operator, user_operator.operator
       assert_not_nil user_operator.api_token
+      assert user_operator.current_area_id.present?
+      assert_equal "Mon espace", user_operator.current_area.name
     end
 
     test 'association.internship_offers' do
