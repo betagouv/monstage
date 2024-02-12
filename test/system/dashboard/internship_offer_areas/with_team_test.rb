@@ -53,9 +53,9 @@ class WithTeamTest < ApplicationSystemTestCase
     find('input[type="submit"]').click
     find('h1', text: space_name)
     assert_equal 6, AreaNotification.all.count # (one minimum area per user + new one )* 2 team members
-    find('label', text: 'Maxime Dus').click
-    find('label', text: 'Maxime Dus').click
-    find('label', text: 'Maxime Dus').click
+    find('label', text: employer_1.name).click
+    find('label', text: employer_1.name).click
+    find('label', text: employer_1.name).click
     assert_equal 6, AreaNotification.all.count
 
     click_link 'Tous mes espaces'
