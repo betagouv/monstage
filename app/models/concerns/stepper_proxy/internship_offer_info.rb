@@ -16,6 +16,7 @@ module StepperProxy
                               length: { maximum: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT }
 
 
+      
       before_validation :replicate_description_rich_text_to_raw_field, unless: :from_api?
 
       # Relations
@@ -37,10 +38,6 @@ module StepperProxy
 
       def init
       end
-    end
-
-    def user_update?
-      user_update == "true"
     end
   end
 end

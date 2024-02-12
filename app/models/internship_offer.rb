@@ -84,6 +84,7 @@ class InternshipOffer < ApplicationRecord
     on: :create
 
   validates :weeks, presence: true
+  validate :check_missing_seats_or_weeks, if: :user_update?, on: :update
 
   # Scopes
 
@@ -496,7 +497,8 @@ class InternshipOffer < ApplicationRecord
     self.remaining_seats_count = max_candidates - reserved_places
     self.published_at = nil if no_remaining_seat_anymore?
   end
-
+  
+  # TODO add rename in the future ?
   def no_remaining_seat_anymore?
     remaining_seats_count.zero?
   end
@@ -528,7 +530,7 @@ class InternshipOffer < ApplicationRecord
   def requires_update_at_toggle_time?
     return false if published?
 
-    no_remaining_seat_anymore?
+    !has_weeks_in_the_future? || no_remaining_seat_anymore?
   end
 
   def available_weeks_when_editing
@@ -550,5 +552,37 @@ class InternshipOffer < ApplicationRecord
     history = UsersInternshipOffersHistory.find_or_initialize_by(internship_offer: self, user: user)
     history.application_clicks += 1
     history.save
+  end
+
+  # TODO Rename
+  def missing_weeks_info?
+    byebug if id == 1
+    internship_offer_weeks.map(&:week_id).all? do |week_id|
+      week_id < Week.current.id.to_i + 1
+    end
+  end
+
+  def missing_weeks_in_the_future
+    if missing_weeks_info?
+      errors.add(weeks_class, 'Vous devez sélectionner au moins une semaine dans le futur')
+    end
+  end
+
+  def check_for_missing_seats
+    if no_remaining_seat_anymore?
+      errors.add(:max_candidates, 'Augmentez Le nombre de places disponibles pour accueillir des élèves')
+    end
+  end
+
+  def check_missing_seats_or_weeks
+    byebug if id == 1
+    return false if published_at.nil? # different from published? since published? checks the database and the former state of the object
+    return false if republish.nil?
+
+    missing_weeks_in_the_future && check_for_missing_seats
+  end
+
+  def user_update?
+    user_update == "true"
   end
 end
