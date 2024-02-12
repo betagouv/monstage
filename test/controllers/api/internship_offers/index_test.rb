@@ -57,7 +57,7 @@ module Api
     end
 
     test 'GET #index only returns operators offers not discarded' do
-      user = create(:user_operator, :with_current_area)
+      user = create(:user_operator)
 
       offer_1 = create(:api_internship_offer, employer: user, internship_offer_area_id: user.current_area.id)
       offer_2 = create(:api_internship_offer, employer: user, internship_offer_area_id: user.current_area.id)
