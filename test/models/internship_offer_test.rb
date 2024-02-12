@@ -151,4 +151,15 @@ class InternshipOfferTest < ActiveSupport::TestCase
     refute internship_offer.is_favorite?(other_student)
     assert internship_offer.is_favorite?(student)
   end
+  
+  test 'when bulking internship_offer is created, make sure area is set' do
+    employer = create(:employer)
+    assert_equal 1, employer.internship_offer_areas.count
+    offer = build(:weekly_internship_offer, employer: employer)
+    offer.internship_offer_area_id = nil
+    assert offer.valid?
+    assert offer.save
+    assert offer.internship_offer_area_id.present?
+    assert_equal employer.current_area_id, offer.internship_offer_area_id
+  end
 end

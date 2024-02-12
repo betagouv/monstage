@@ -266,6 +266,7 @@ class User < ApplicationRecord
   def signatory_role ; nil end
   def obfuscated_phone_number ; nil end
   def satisfaction_survey_id ; nil end
+  def create_default_internship_offer_area ; nil end
 
   def already_signed?(internship_agreement_id:); true end
 
