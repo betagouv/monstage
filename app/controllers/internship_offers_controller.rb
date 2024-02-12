@@ -21,14 +21,14 @@ class InternshipOffersController < ApplicationController
       format.json do
         @internship_offers_all_without_page = finder.all_without_page
         @internship_offers = finder.all
-        
+
         @is_suggestion = @internship_offers.to_a.count.zero?
-        @internship_offers = alternative_internship_offers if @is_suggestion 
-        
+        @internship_offers = alternative_internship_offers if @is_suggestion
+
         @internship_offers_all_without_page_array = @internship_offers_all_without_page.to_a
         @internship_offers_array = @internship_offers.to_a
 
-        formatted_internship_offers = format_internship_offers(@internship_offers_array)
+        formatted_internship_offers = format_internship_offers(@internship_offers)
         @params = query_params
         data = {
           internshipOffers: formatted_internship_offers,

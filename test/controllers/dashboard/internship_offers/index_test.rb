@@ -404,9 +404,5 @@ module Dashboard::InternshipOffers
       assert_presence_of(internship_offer: internship_offer)
       assert_absence_of(internship_offer: internship_offer_2)
     end
-
-    test 'pagination of internship_offers index is ok with api or weekly offers' do
-      # TODO: test with more than InternshipOffer::PAGE_SIZE offers
-    end
   end
 end

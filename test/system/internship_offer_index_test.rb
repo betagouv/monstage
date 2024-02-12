@@ -28,7 +28,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
       end
     end
   end
-  
+
   test 'publish navigation when week updates are necessary' do
     employer = create(:employer)
     internship_offer = nil
@@ -150,7 +150,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
           # ----------------------------
           within("#toggle_status_#{dom_id(internship_offer)}") do
             find("a[rel='nofollow'][data-method='patch']").click # this republishes the internship_offer
-          end 
+          end
           find("h2.h4", text: "Les offres")
           sleep 0.05
           assert internship_offer.reload.published?
@@ -261,6 +261,33 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
           find "h1.h2", text: "Modifier une offre de stage"
           find "span#alert-text", text: "Votre annonce n'est pas encore republiée, car il faut ajouter des places de stage"
         end
+      end
+    end
+  end
+
+  test 'pagination of internship_offers index is ok with api or weekly offers' do
+    travel_to Date.new(2022, 9, 1) do
+      2.times do
+        create(:weekly_internship_offer, city: 'Chatillon', coordinates: Coordinates.chatillon)
+      end
+      (InternshipOffer::PAGE_SIZE/2).times do
+        create(:weekly_internship_offer, city: 'Paris', coordinates: Coordinates.paris, zipcode: '75000')
+        create(:api_internship_offer, city: 'Paris', coordinates: Coordinates.paris, zipcode: '75000')
+      end
+      student = create(:student)
+      assert_equal 'Paris', student.school.city
+      sign_in(student)
+      visit internship_offers_path
+      find("li a.fr-link", text: 'Recherche').click
+      within(".fr-container.fr-test-internship-offers-container") do
+        sleep 1.5
+        assert_selector('.fr-card__desc p.blue-france', text: 'Paris', count: InternshipOffer::PAGE_SIZE)
+      end
+
+      click_link 'Page suivante'
+      within(".fr-container.fr-test-internship-offers-container") do
+        sleep 0.5
+        assert_selector('.fr-card__desc p.blue-france', text: 'Chatillon', count: 2)
       end
     end
   end

@@ -128,6 +128,7 @@ class IndexTest < ActionDispatch::IntegrationTest
       keyword: 'avocat',
       latitude: Coordinates.paris[:latitude],
       longitude: Coordinates.paris[:longitude],
+      radius: 60_000,
       format: :json
     )
 
