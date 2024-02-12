@@ -682,8 +682,7 @@ CREATE TABLE public.internship_agreements (
     school_representative_role character varying(60),
     school_representative_email character varying(100),
     discarded_at timestamp(6) without time zone,
-    lunch_break text,
-    organisation_representative_email character varying
+    lunch_break text
 );
 
 
@@ -3325,7 +3324,6 @@ ALTER TABLE ONLY public.internship_offer_weeks
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20240125102153'),
 ('20240111081028'),
 ('20231211143502'),
 ('20231211084232'),
