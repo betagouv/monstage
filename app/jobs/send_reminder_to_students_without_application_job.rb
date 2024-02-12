@@ -11,7 +11,7 @@ class SendReminderToStudentsWithoutApplicationJob < ApplicationJob
         # Send SMS
         return if student.phone.blank?
         phone = student.phone
-        content = "Faîtes votre première candidature et trouvez votre stage \
+        content = "Faites votre première candidature et trouvez votre stage \
                     sur www.monstagedetroisieme.fr. L'équpe de Mon Stage de Troisième"
 
         SendSmsJob.perform_later(user: student, message: content)
