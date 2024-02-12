@@ -53,7 +53,6 @@ WebMock.disable_net_connect!(
   ]
 )
 
-WebMock.enable! 
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
 
