@@ -428,8 +428,6 @@ class InternshipApplication < ApplicationRecord
     case self
     when InternshipApplications::WeeklyFramed
       InternshipApplicationCountersHooks::WeeklyFramed.new(internship_application: self)
-    when InternshipApplications::FreeDate
-      InternshipApplicationCountersHooks::FreeDate.new(internship_application: self)
     else
       raise 'can not process stats for this kind of internship_application'
     end
@@ -439,8 +437,6 @@ class InternshipApplication < ApplicationRecord
     case self
     when InternshipApplications::WeeklyFramed
       InternshipApplicationAasmMessageBuilders::WeeklyFramed.new(internship_application: self, aasm_target: aasm_target)
-    when InternshipApplications::FreeDate
-      InternshipApplicationAasmMessageBuilders::FreeDate.new(internship_application: self, aasm_target: aasm_target)
     else
       raise 'can not build aasm message for this kind of internship_application'
     end
