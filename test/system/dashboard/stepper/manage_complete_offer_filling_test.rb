@@ -65,4 +65,30 @@ class ManageCompleteOfferFillingTest < ApplicationSystemTestCase
       end
     end
   end
+
+  test 'logged in employer accesses her idle offer through email url (cta)' do
+    employer = create(:employer)
+    internship_offer = create(:weekly_internship_offer, employer: employer)
+    travel_to(Date.new(2020, 3, 1)) do
+      sign_in(employer)
+      visit internship_offer_path(id: internship_offer.id, mtm_campaign: 'Offreur_Offre_de_stage_en_attente', origine: 'email')
+      assert_equal internship_offer.title, find('h1').text
+      assert_equal '1 rue du poulet 75001 Paris', find('.row .col-12 .fr-pl-1w.blue-france').text
+    end
+  end
+
+  test 'unconnected employer accesses her idle offer through email url (cta) and logging' do
+    password = '45po78M;$'
+    employer = create(:employer, password: password)
+    internship_offer = create(:weekly_internship_offer, employer: employer)
+    travel_to(Date.new(2020, 3, 1)) do
+      visit internship_offer_path(id: internship_offer.id, mtm_campaign: 'Offreur_Offre_de_stage_en_attente', origine: 'email')
+      assert_equal 'Connexion à monstagedetroisième.fr', find('h1').text
+      fill_in "Adresse électronique", with: employer.email
+      fill_in "Mot de passe", with: password
+      click_on 'Se connecter'
+      assert_equal internship_offer.title, find('h1').text
+      assert_equal '1 rue du poulet 75001 Paris', find('.row .col-12 .fr-pl-1w.blue-france').text
+    end
+  end
 end
