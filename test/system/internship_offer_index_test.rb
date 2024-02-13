@@ -280,14 +280,12 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
       visit internship_offers_path
       find("li a.fr-link", text: 'Recherche').click
       within(".fr-container.fr-test-internship-offers-container") do
-        sleep 1.5
-        assert_selector('.fr-card__desc p.blue-france', text: 'Paris', count: InternshipOffer::PAGE_SIZE)
+        assert_selector('.fr-card__desc p.blue-france', text: 'Paris', count: InternshipOffer::PAGE_SIZE, wait: 4)
       end
 
       click_link 'Page suivante'
       within(".fr-container.fr-test-internship-offers-container") do
-        sleep 0.5
-        assert_selector('.fr-card__desc p.blue-france', text: 'Chatillon', count: 2)
+        assert_selector('.fr-card__desc p.blue-france', text: 'Chatillon', count: 2, wait: 2)
       end
     end
   end
