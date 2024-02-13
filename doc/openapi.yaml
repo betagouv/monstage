@@ -1,0 +1,472 @@
+openapi: 3.0.0
+
+info:
+  description: API pour la création d'offres de stages à destination des élèves de collège en REP ou REP+
+  version: "1.0.0"
+  title: API pour la création d'offres de stage sur monstagedetroisieme.fr
+  contact:
+    email: etienne.weil@monstagedetroisieme.fr
+tags:
+  - name: developers
+    description: Operations accessibles aux développeurs disposant d'une clé API
+paths:
+  '/internship_offers':
+    post:
+      tags:
+        - developers
+      summary: ajoute une offre de stage d'un partenaire aux offres proposées en propre par les équipes monstagedetroisieme.fr
+      operationId: internship_offers
+      security:
+        - bearerAuth: []
+      description: |
+        Les offres de stages décrits ci-dessous décrivent les offres réservées aux classes de **troisiemeen REP  ou REP+**, anciennement nommées troisieme générale
+      requestBody:
+        $ref: "#/components/requestBodies/InternshipOffer"
+      responses:
+        '201':
+          description: Offre de stage créée
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternshipOffer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: L'utilisateur n'est pas autorisé à supprimer cette offre de stage
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "FORBIDDEN"
+                  error:
+                    type: string
+                    example: "access denied"
+                  status:
+                    type: string
+                    example: "forbidden"
+        '404':
+          description: Un argument de la requête fait échouer la requête.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "NOT_FOUND"
+                  error:
+                    type: string
+                    example: "can't find internship_offer with this remote_id"
+                  status:
+                    type: string
+                    example: "not_found"
+
+        '406':
+          description: Un ou plusieurs paramètres de requête sont invalides
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "VALIDATION_ERROR"
+                  error:
+                    type: string
+                    example: "Erreur de validation sur l'objet"
+                  status:
+                    type: string
+                    example: "conflict"
+        '409':
+          description: Conflit. Une offre de stage avec le même remote_id existe déjà
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "DUPLICATE_WEEKY_FRAMED"
+                  error:
+                    type: string
+                    example: "weeky_framed with this remote_id (123) already exists."
+                  status:
+                    type: string
+                    example: "conflict"
+        '422':
+          description: Un argument au moins de la requête fait échouer la requête
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "BAD_ARGUMENT"
+                  error:
+                    type: string
+                    example: "Erreur sur la requête due à un un paramètre invalide"
+                  status:
+                    type: string
+                    example: "unprocessable_entity"
+  '/internship_offers/{remote_id}':
+    patch:
+      tags:
+        - developers
+      summary: met à jour une offre de stage d'un partenaire aux offres proposées en propre par les équipes monstagedetroisieme.fr
+      operationId: internship_offers_updatte
+      security:
+        - bearerAuth: []
+      description: |
+        Mise à jour des offres . Possibilité de désactiver son offre en passant le paramètre published_at à null
+      requestBody:
+        $ref: "#/components/requestBodies/InternshipOfferPatch"
+      parameters:
+        - name: remote_id
+          in: path
+          description: clé étrangère unique , id de l'offre de stage chez le partenaire
+          required: true
+          schema:
+            type: string
+            example: remote-123
+      responses:
+        '200':
+          description: Offre de stage mise à jour
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternshipOffer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: L'utilisateur n'est pas autorisé à supprimer cette offre de stage
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "FORBIDDEN"
+                  error:
+                    type: string
+                    example: "access denied"
+                  status:
+                    type: string
+                    example: "forbidden"
+        '404':
+          description: Un argument de la requête fait échouer la requête.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "NOT_FOUND"
+                  error:
+                    type: string
+                    example: "can't find internship_offer with this remote_id"
+                  status:
+                    type: string
+                    example: "not_found"
+
+        '406':
+          description: Un ou plusieurs paramètres de requête sont invalides
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "VALIDATION_ERROR"
+                  error:
+                    type: string
+                    example: "Erreur de validation sur l'objet"
+                  status:
+                    type: string
+                    example: "conflict"
+        '422':
+          description: Un argument au moins de la requête fait échouer la requête
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "BAD_ARGUMENT"
+                  error:
+                    type: string
+                    example: "Erreur sur la requête due à un un paramètre invalide"
+                  status:
+                    type: string
+                    example: "unprocessable_entity"
+    delete:
+      tags:
+        - developers
+      summary: Supprime une offre de stage d'un partenaire des offres proposées sur le site monstagedetroisieme.fr
+      operationId: internship_offers_delete
+      security:
+        - bearerAuth: []
+      description: |
+        Suppression des offres
+      parameters:
+        - name: remote_id
+          in: path
+          description: id de l'offre de stage
+          required: true
+          schema:
+            type: string
+            example: remote-123
+      responses:
+        '200':
+          description: Offre de stage supprimée
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternshipOffer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: L'utilisateur n'est pas autorisé à supprimer cette offre de stage
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "FORBIDDEN"
+                  error:
+                    type: string
+                    example: "access denied"
+                  status:
+                    type: string
+                    example: "forbidden"
+        '404':
+          description: Un argument de la requête fait échouer la requête.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "NOT_FOUND"
+                  error:
+                    type: string
+                    example: "can't find internship_offer with this remote_id"
+                  status:
+                    type: string
+                    example: "not_found"
+        '422':
+          description: Un argument de la requête fait échouer la requête.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "BAD_ARGUMENT"
+                  error:
+                    type: string
+                    example: "Erreur sur la requête due à un un paramètre invalide"
+                  status:
+                    type: string
+                    example: "unprocessable_entity"
+
+  '/sectors':
+    get:
+      tags:
+        - developers
+      summary: Récupère la liste des secteurs économiques
+      operationId: sectors
+      security:
+        - bearerAuth: []
+      description: Secteur économique. [https://github.com/betagouv/monstage/blob/staging/doc/README.md](https://github.com/betagouv/monstage/blob/staging/doc/README.md)
+      responses:
+        '200':
+          description: Liste des secteurs économiques
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sector'
+# COMPONENTS
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  requestBodies:
+    InternshipOffer:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternshipOffer'
+    InternshipOfferPatch:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternshipOfferPatch'
+  responses:
+    Unauthorized:
+      description: l'authentification a échoué
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                example: "UNAUTHORIZED"
+              error:
+                type: string
+                example: "access denied"
+              status:
+                type: string
+                example: "unauthorized"
+
+  # COMPONENTS SCHEMAS
+  schemas:
+    InternshipOffer:
+      type: object
+      description: offre de stage
+      required:
+        - title
+        - employer_name
+        - coordinates
+        - street
+        - city
+        - weeks
+        - remote_id
+        - max_candidates
+        - is_public
+        - sector_id
+      properties:
+        description:
+          type: string
+          maxLength: 500
+          description: Description de l'offre de stage
+        title:
+          type: string
+          example: Stage d'observation du métier de chef de service
+        employer_name:
+          type: string
+          example: BNP Paribas
+        employer_description:
+          type: string
+          example: Créateur de lotions, de parfums et de produits cosmétiques, embaumeur
+          maxLength: 275
+        street:
+          type: string
+          example: 16 rue de la paix
+        city:
+          type: string
+          example: Paris
+        zipcode:
+          type: string
+          example: 75001
+        employer_website:
+          type: string
+          example: http://www.acnee-corporation.fr
+        remote_id:
+          type: string
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example: 123
+          description: Identifiant de l'offre de stage chez le partenaire
+        lunch_break:
+          type: string
+          example: 12h-14h
+          description: Horaires de pause déjeuner
+        daily_hours:
+          type: object
+          description: Horaires de travail
+          example:
+            lundi:
+              - "9:00"
+              - "18:00"
+            mardi:
+              - "9:00"
+              - "18:00"
+            mercredi:
+              - "9:00"
+              - "18:00"
+            jeudi:
+              - "9:00"
+              - "18:00"
+            vendredi:
+              - "9:00"
+              - "18:00"
+        coordinates:
+          type: object
+          description: Coordonnées géographiques du lieu de stage
+          example:
+            latitude: 1
+            longitude: 1
+        weeks:
+          type: array
+          description: Semaines de stage proposées
+          items:
+            type: string
+            description: Semaine de stage
+          example:
+            - "2020-W16"
+            - "2020-W17"
+        permalink:
+          type: string
+          example: http://www.stagechezemployeur.fr
+          description: Site de l'employeur
+        max_candidates:
+          type: integer
+          example: 1
+          description: Nombre maximum de candidats pouvant postuler à cette offre de stage sur l'ensemble des semaines proposées
+        is_public:
+          type: boolean
+          example: true
+          description: true si l'offre de stage est issue d'une administration publique, false si elle est issue d'une entreprise privée
+        sector_id:
+          $ref: '#/components/schemas/Sector'
+
+    InternshipOfferPatch:
+      allOf:
+        - type: object
+          properties:
+            published_at:
+              type: string
+              format: date-time
+              example: 2024-01-17 15:45:23.418901923 UTC
+        - $ref: '#/components/schemas/InternshipOffer'
+    Sector:
+      type: object
+      description: Secteur économique.
+      properties:
+        id:
+          type: number
+          example: 1
+        sector_uuid:
+          type: string
+          format: uuid
+          example: b7564ac4-e184-41c4-a7a9-57233a9d244a
+        name:
+          type: string
+          example: "Mode"
+
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: http://localhost:3000/api
+    # url: https://v2-test.monstagedetroisieme.fr/api
+security:
+  - bearerAuth: []

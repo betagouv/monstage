@@ -174,6 +174,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     employer_1 = create(:employer)
     employer_2 = create(:employer)
     employer_3 = create(:employer)
+    employer_2.current_area.update(name: "Nantes")
     create(:team_member_invitation,
            :accepted_invitation,
            inviter_id: employer_1.id,

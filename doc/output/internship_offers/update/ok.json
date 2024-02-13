@@ -1,17 +1,18 @@
 {
   "title": "hellow",
-  "max_candidates": 2,
-  "published_at": null,
-  "max_students_per_group": 1,
-  "zipcode": "75001",
   "description": "Lorem ipsum dolor api",
+  "max_candidates": 2,
   "employer_website": null,
   "street": "1 rue du poulet",
+  "zipcode": "75001",
   "city": "Paris",
+  "is_public": true,
   "employer_name": "Octo",
   "employer_description": "on envoie du parpaing",
-  "remote_id": "6",
+  "remote_id": "43",
   "permalink": "https://google.fr",
+  "published_at": null,
+  "max_students_per_group": 1,
   "formatted_coordinates": {
     "latitude": 48.866667,
     "longitude": 2.333333
