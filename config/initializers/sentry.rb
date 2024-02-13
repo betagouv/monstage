@@ -11,4 +11,5 @@ Sentry.init do |config|
     true
   end
   config.enabled_environments = %w[production staging]
+  config.send_default_pii = true
 end

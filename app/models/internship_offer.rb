@@ -8,7 +8,7 @@ class InternshipOffer < ApplicationRecord
   TITLE_MAX_CHAR_COUNT = 150
   DESCRIPTION_MAX_CHAR_COUNT= 500
 
-  include StiPreload 
+  include StiPreload
   include AASM
 
   # queries
@@ -24,7 +24,7 @@ class InternshipOffer < ApplicationRecord
   # utils
   include Discard::Model
   include PgSearch::Model
-  
+
   attr_accessor :republish
 
   # Other associations
@@ -59,7 +59,8 @@ class InternshipOffer < ApplicationRecord
   before_validation :update_organisation
 
   before_save :sync_first_and_last_date,
-              :reverse_academy_by_zipcode
+              :reverse_academy_by_zipcode,
+              :make_sure_area_is_set
 
   before_create :preset_published_at_to_now
   after_commit :sync_internship_offer_keywords
@@ -270,7 +271,10 @@ class InternshipOffer < ApplicationRecord
   end
 
   def has_spots_left?
-    internship_offer_weeks.any?(&:has_spots_left?)
+    InternshipOfferWeek.where(internship_offer_id: id)
+                       .where('internship_offer_weeks.blocked_applications_count < ?', max_students_per_group)
+                       .count
+                       .positive?
   end
 
   def is_fully_editable?
@@ -512,15 +516,31 @@ class InternshipOffer < ApplicationRecord
     internship_applications.approved.current_school_year
   end
 
-  def log_view(user)  
+  def log_view(user)
     history = UsersInternshipOffersHistory.find_or_initialize_by(internship_offer: self, user: user)
     history.views += 1
     history.save
   end
-  
+
   def log_apply(user)
     history = UsersInternshipOffersHistory.find_or_initialize_by(internship_offer: self, user: user)
     history.application_clicks += 1
     history.save
+  end
+
+  protected
+
+  def make_sure_area_is_set
+    return if internship_offer_area_id.present?
+
+    if employer&.current_area_id.nil?
+      Rails.logger.error("no internship_offer_area with " \
+                         "internship_offer_id: #{id} and " \
+                         "employer_id: #{employer_id}")
+    end
+    self.internship_offer_area_id = employer.current_area_id
+    Rails.logger.warn("default internship_offer_area with " \
+                         "internship_offer_id: #{id} and " \
+                         "employer_id: #{employer_id}")
   end
 end
