@@ -3,9 +3,10 @@
 class StudentMailer < ApplicationMailer
 
   def welcome_email(student:, shrinked_url: )
-    @student = student
-    @shrinked_url = shrinked_url
-    @student_image =  'boy_girl.svg'
+    @student        = student
+    @shrinked_url   = shrinked_url
+    @student_image  = 'boy_girl.svg'
+    subject         = "Bienvenue sur Mon stage de 3e"
     @welcome_phrase = "Bienvenue sur <br/>Mon stage de 3e".html_safe
     @header_title = "Vous vous êtes inscrit sur le site, mais vous ne<br/>savez pas trop " \
                     "comment trouver un stage ?".html_safe
@@ -29,7 +30,7 @@ class StudentMailer < ApplicationMailer
 
     send_email(to: student.email,
                specific_layout: "welcome_mailer_layout",
-               subject: @welcome_phrase)
+               subject: subject)
   end
 
   def set_logo_attachment
