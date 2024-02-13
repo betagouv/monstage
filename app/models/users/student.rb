@@ -33,6 +33,9 @@ module Users
 
     validate :validate_school_presence_at_creation
 
+    # Callbacks
+    after_create :set_reminders
+
     def student?; true end
 
     def channel
@@ -173,6 +176,10 @@ module Users
         StudentMailer.welcome_email(student: self, shrinked_url: shrinked_url)
                      .deliver_later
       end
+    end
+    
+    def set_reminders
+      SendReminderToStudentsWithoutApplicationJob.set(wait: 3.day).perform_later(id)
     end
   end
 end

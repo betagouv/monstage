@@ -51,7 +51,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
       sign_in(employer)
       available_weeks = Week.selectable_from_now_until_end_of_school_year
       assert_equal [2023, 2024], available_weeks.map(&:year).uniq
-      assert_difference 'InternshipOfferInfos::WeeklyFramed.count' do
+      assert_difference 'InternshipOfferInfo.count' do
         visit new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
         fill_in_internship_offer_info_form(sector: sector)
         page.assert_no_selector('span.number', text: '1')

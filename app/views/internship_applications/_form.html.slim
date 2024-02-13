@@ -40,19 +40,27 @@
       .h4 Pour être recontacté par l'entreprise
     .row.fr-my-2w
       .col-xs-12.col-sm-6
-        .fr-label.required
-          = f.label :student_email do
-            | Adresse électronique (email)
-        .fr-input-group
-          = f.email_field :student_email, value: f.object.student_email || f.object.student.email, class: 'fr-input'
+        = render '/inputs/dsfr_input_field',
+                    f: f,
+                    field: :student_email,
+                    object: f.object,
+                    value: f.object.student_email || f.object.student.email,
+                    label: "Adresse électronique (email)",
+                    required: true,
+                    pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                    title: "S'il vous plaît, entrez une adresse email valide."
     .row.fr-my-2w.fr-mb-3w
       .col-xs-12.col-sm-6
-        .fr-label.required
-          = f.label :student_phone do
-            | Numéro de portable élève ou parent
-        .fr-input-group
-          small.form-text.text-muted Numéro commençant par 06 ou 07 uniquement
-          = f.phone_field :student_phone, value: f.object.student_phone || f.object.student.phone&.gsub!('+33', ''),  class: 'fr-input', required: true, pattern: '0[67][0-9]{8}'
+        = render '/inputs/dsfr_input_field',
+                    f: f,
+                    field: :student_phone,
+                    object: f.object,
+                    value: f.object.student_phone || f.object.student.phone&.gsub!('+33', ''),
+                    label: "Numéro de portable élève ou parent",
+                    required: true,
+                    pattern: '0[67][0-9]{8}',
+                    hint: "Numéro commençant par 06 ou 07 uniquement",
+                    title: "Numéro de portable"
 
     .actions.d-flex.justify-content-between.flex-row
       .d-inline-flex= link_to internship_offer_path(@internship_offer), class: 'fr-btn fr-btn--secondary' do

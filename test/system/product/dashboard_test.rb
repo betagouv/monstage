@@ -72,16 +72,13 @@ module Product
       internship_application_4 = create(:weekly_internship_application,
                                                :approved,
                                                 student: create(:student, school: school, class_room: class_room))
-
-      create(:internship_agreement, internship_application: internship_application_2,
-                                    employer_accept_terms: true,
-                                    school_manager_accept_terms: false)
-      create(:internship_agreement, internship_application: internship_application_3,
-                                    employer_accept_terms: false,
-                                    school_manager_accept_terms: true)
-      create(:internship_agreement, internship_application: internship_application_4,
-                                    employer_accept_terms: true,
-                                    school_manager_accept_terms: true)
+      
+      InternshipAgreement.find_by(internship_application: internship_application_2)
+                         .update_columns(employer_accept_terms: true, school_manager_accept_terms: false)
+      InternshipAgreement.find_by(internship_application: internship_application_3)
+                         .update_columns(employer_accept_terms: false, school_manager_accept_terms: true)
+      InternshipAgreement.find_by(internship_application: internship_application_4)
+                         .update_columns(employer_accept_terms: true, school_manager_accept_terms: true)
       sign_in(school.school_manager)
       run_request_and_cache_response(report_as: 'school_manager_dashboard_internship_agreements_path_with_steps') do
         visit dashboard_internship_agreements_path

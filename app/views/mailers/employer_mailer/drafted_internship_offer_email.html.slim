@@ -1,0 +1,19 @@
+p style=head_styles
+  = @title
+p style=p_styles
+  = @bonjour
+p style=p_styles
+  = @paragraph_1
+p style=p_styles
+  = @paragraph_2
+p style=p_styles
+  ol
+    - @paragraph3_items.each do |p|
+      li = p
+= render partial: "mailers/blue_call_to_action",
+         locals: { href: @url,
+                   label: @url_label }
+p style=p_styles
+  = @paragraph_4
+p style=p_styles
+  = @paragraph_5
