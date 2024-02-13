@@ -25,6 +25,7 @@ FactoryBot.define do
     organisation_representative_full_name { 'DGSE' }
     tutor_role { 'Responsable financier' }
     tutor_full_name { FFaker::NameFR.name }
+    tutor_email { FFaker::Internet.email }
     date_range { "du 10/10/2020 au 15/10/2020" }
     activity_scope_rich_text { '<div>Accueil clients</div>'}
     complementary_terms_rich_text { '<div>Ticket resto</div>'}

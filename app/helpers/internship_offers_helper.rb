@@ -7,7 +7,6 @@ module InternshipOffersHelper
 
     is_preselectable_entity = [
       InternshipOfferInfo,
-      InternshipOfferInfos::WeeklyFramed,
       InternshipOffer,
       InternshipOffers::WeeklyFramed,
       HostingInfo

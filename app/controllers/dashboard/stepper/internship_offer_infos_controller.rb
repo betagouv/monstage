@@ -10,7 +10,7 @@ module Dashboard::Stepper
     def new
       authorize! :create, InternshipOfferInfo
 
-      @internship_offer_info = InternshipOfferInfos::WeeklyFramed.new
+      @internship_offer_info = InternshipOfferInfo.new
       @organisation = Organisation.find(params[:organisation_id])
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
@@ -18,7 +18,7 @@ module Dashboard::Stepper
     # process step 2
     def create
       authorize! :create, InternshipOfferInfo
-      @internship_offer_info = InternshipOfferInfos::WeeklyFramed.new(
+      @internship_offer_info = InternshipOfferInfo.new(
         {}.merge(internship_offer_info_params)
           .merge(employer_id: current_user.id)
       )
@@ -76,7 +76,7 @@ module Dashboard::Stepper
     end
 
     def fetch_internship_offer_info
-      @internship_offer_info = InternshipOfferInfos::WeeklyFramed.find(params[:id])
+      @internship_offer_info = InternshipOfferInfo.find(params[:id])
     end
   end
 end

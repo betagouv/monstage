@@ -42,6 +42,9 @@ module Users
 
     validate :validate_school_presence_at_creation
 
+    # Callbacks
+    after_create :set_reminders
+
     def student?; true end
 
     def channel
@@ -167,6 +170,10 @@ module Users
         user: self
       )
       search_history.save
+    end
+
+    def set_reminders
+      SendReminderToStudentsWithoutApplicationJob.set(wait: 3.day).perform_later(id)
     end
   end
 end

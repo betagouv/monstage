@@ -10,7 +10,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
     sector = create(:sector)
     employer = create(:employer)
     organisation = create(:organisation, employer: employer)
-    internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
+    internship_offer_info = create(:internship_offer_info, employer: employer)
     school_name = 'Abd El Kader'  
     school = create(:school, city: 'Paris', zipcode: 75012, name: school_name)
 

@@ -3,6 +3,8 @@
 require 'test_helper'
 module Users
   class StudentTest < ActiveSupport::TestCase
+    include ActiveJob::TestHelper
+
     test 'student.after_sign_in_path redirects to internship_offers_path' do
       student = create(:student)
       assert_equal(student.after_sign_in_path,
@@ -113,6 +115,12 @@ module Users
         refute student.has_offers_to_apply_to?
         create(:weekly_internship_offer, weeks:  weeks_till_end.first(2))
         assert student.has_offers_to_apply_to?
+      end
+    end
+
+    test "reminders are set after creation" do
+      assert_enqueued_jobs 1, only: SendReminderToStudentsWithoutApplicationJob do
+        student = create(:student)
       end
     end
   end

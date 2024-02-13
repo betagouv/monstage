@@ -131,6 +131,8 @@ class InternshipApplicationsController < ApplicationController
     params.require(:internship_application)
           .permit(
             :motivation,
+            :student_phone,
+            :student_email,
             student_attributes: %i[
               email
               phone

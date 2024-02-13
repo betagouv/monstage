@@ -15,7 +15,6 @@ namespace :cleaning do
     end
   end
 
-
   task :archive_idle_employers, [] => :environment do |args|
     PrettyConsole.announce_task("Archiving employers without active offers") do
       reminder_period = 2.weeks
