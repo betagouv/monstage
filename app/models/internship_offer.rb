@@ -101,6 +101,7 @@ class InternshipOffer < ApplicationRecord
     on: :create
 
   validates :weeks, presence: true
+  validate :check_missing_seats_or_weeks, if: :user_update?, on: :update
 
   # Scopes
 
@@ -507,7 +508,8 @@ class InternshipOffer < ApplicationRecord
       Favorite.where(internship_offer_id: id).destroy_all
     end
   end
-
+  
+  # TODO add rename in the future ?
   def no_remaining_seat_anymore?
     remaining_seats_count.zero?
   end
@@ -518,6 +520,31 @@ class InternshipOffer < ApplicationRecord
 
   def check_need_to_be_edited!
     need_update! if requires_updates?
+  end
+
+  def available_weeks
+    return Week.selectable_from_now_until_end_of_school_year unless respond_to?(:weeks)
+    return Week.selectable_from_now_until_end_of_school_year unless persisted?
+    if weeks&.first.nil?
+      return Week.selectable_for_school_year(
+        school_year: SchoolYear::Floating.new(date: Date.today)
+      )
+    end
+
+    school_year = SchoolYear::Floating.new(date: weeks.first.week_date)
+
+    Week.selectable_on_specific_school_year(school_year: school_year)
+  end
+
+  def requires_update_at_toggle_time?
+    return false if published?
+
+    !has_weeks_in_the_future? || no_remaining_seat_anymore?
+  end
+
+  def available_weeks_when_editing
+    return nil unless persisted? && respond_to?(:weeks)
+    Week.selectable_from_now_until_end_of_school_year
   end
 
   def approved_applications_current_school_year
@@ -543,6 +570,38 @@ class InternshipOffer < ApplicationRecord
 
   def update_stats
     stats.recalculate
+  end
+  
+  # TODO Rename
+  def missing_weeks_info?
+    byebug if id == 1
+    internship_offer_weeks.map(&:week_id).all? do |week_id|
+      week_id < Week.current.id.to_i + 1
+    end
+  end
+
+  def missing_weeks_in_the_future
+    if missing_weeks_info?
+      errors.add(weeks_class, 'Vous devez sélectionner au moins une semaine dans le futur')
+    end
+  end
+
+  def check_for_missing_seats
+    if no_remaining_seat_anymore?
+      errors.add(:max_candidates, 'Augmentez Le nombre de places disponibles pour accueillir des élèves')
+    end
+  end
+
+  def check_missing_seats_or_weeks
+    byebug if id == 1
+    return false if published_at.nil? # different from published? since published? checks the database and the former state of the object
+    return false if republish.nil?
+
+    missing_weeks_in_the_future && check_for_missing_seats
+  end
+
+  def user_update?
+    user_update == "true"
   end
   
   protected

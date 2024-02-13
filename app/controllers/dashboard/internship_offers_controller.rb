@@ -3,7 +3,9 @@
 module Dashboard
   class InternshipOffersController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_internship_offer, only: %i[edit update destroy republish remove]
+    before_action :set_internship_offer,
+                  only: %i[edit update destroy republish remove]
+
     helper_method :order_direction
 
     def index
