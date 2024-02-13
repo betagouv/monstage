@@ -5,7 +5,7 @@ FactoryBot.define do
     # TODO use transient to set the distinction between weekly and api offers
     employer { create(:employer) }
     organisation { create(:organisation, employer: employer) }
-    internship_offer_info { create(:weekly_internship_offer_info, employer: employer) }
+    internship_offer_info { create(:internship_offer_info, employer: employer) }
     hosting_info { create(:hosting_info, employer: employer) }
     practical_info { create(:practical_info, employer: employer) }
 
