@@ -166,6 +166,9 @@ module Dashboard::TeamMemberInvitations
     test 'a user_operator can accept an invitation to join a team' do
       user_operator_1 = create(:user_operator)
       user_operator_2 = create(:user_operator)
+      assert_equal 0, user_operator_1.team.team_size
+      assert_equal 0, user_operator_2.team.team_size
+      assert_equal 2, InternshipOfferArea.count
       create :team_member_invitation,
              inviter_id: user_operator_1.id,
              invitation_email: user_operator_2.email

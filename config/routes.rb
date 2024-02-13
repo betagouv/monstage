@@ -78,6 +78,7 @@ Rails.application.routes.draw do
           post :search
         end
       end
+      resources :sectors, only: :index
     end
     # ------------------ DASHBOARD START ------------------
     namespace :dashboard, path: 'tableau-de-bord' do
@@ -166,7 +167,8 @@ Rails.application.routes.draw do
 
   get '/accessibilite', to: 'pages#accessibilite'
   get '/conditions-d-utilisation', to: 'pages#conditions_d_utilisation'
-  get '/conditions-d-utilisation-service-signature', to: 'pages#conditions_utilisation_service_signature'
+  # TODO
+  # get '/conditions-d-utilisation-service-signature', to: 'pages#conditions_utilisation_service_signature',
   get '/contact', to: 'pages#contact', as: 'contact'
   get '/documents-utiles', to: 'pages#documents_utiles'
   get '/javascript-required', to: 'pages#javascript_required'
@@ -177,6 +179,7 @@ Rails.application.routes.draw do
   get '/statistiques', to: 'pages#statistiques'
   post '/newsletter', to: 'newsletter#subscribe'
   get '/inscription-permanence', to: 'pages#register_to_webinar'
+  # TODO
   # To be removed after june 2023
   get '/register_to_webinar', to: 'pages#register_to_webinar'
   get '/eleves', to: 'pages#student_landing'

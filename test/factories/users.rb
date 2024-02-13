@@ -3,8 +3,8 @@
 FactoryBot.define do
   factory :user do
     first_name { 'Jean Claude' }
-    last_name { 'Dus' }
-    sequence(:email) { |n| "jean#{n}-claude@dus.fr" }
+    last_name { FFaker::NameFR.first_name.capitalize }
+    sequence(:email) { |n| "jean#{n}-claude@#{last_name}.fr" }
     password { 'ooooyeahhhh' }
     confirmed_at { Time.now }
     confirmation_sent_at { Time.now }
@@ -49,18 +49,9 @@ FactoryBot.define do
       end
     end
 
-    trait :with_current_area do
-      after(:create) do |user|
-        area = create(:area, employer_id: user.id, name: FFaker::Lorem.word)
-        user.current_area = area
-        user.save
-      end
-    end
-
     # Employer
     factory :employer,
             class: 'Users::Employer',
-            traits: %i[with_current_area] ,
             parent: :user do
       type { 'Users::Employer' }
       employer_role { 'PDG' }
@@ -123,7 +114,6 @@ FactoryBot.define do
 
     factory :statistician,
             class: 'Users::PrefectureStatistician',
-            traits: %i[with_current_area],
             parent: :user do
       type { 'Users::PrefectureStatistician' }
       agreement_signatorable { false }
@@ -133,7 +123,6 @@ FactoryBot.define do
 
     factory :prefecture_statistician,
             class: 'Users::PrefectureStatistician',
-            traits: %i[with_current_area],
             parent: :user do
       type { 'Users::PrefectureStatistician' }
       agreement_signatorable { false }
@@ -142,7 +131,6 @@ FactoryBot.define do
     end
 
     factory :education_statistician,
-            traits: %i[with_current_area],
             parent: :user,
             class: 'Users::EducationStatistician' do
       type { 'Users::EducationStatistician' }
@@ -152,7 +140,6 @@ FactoryBot.define do
     end
 
     factory :ministry_statistician,
-            traits: %i[with_current_area],
             parent: :user,
             class: 'Users::MinistryStatistician' do
       type { 'Users::MinistryStatistician' }
@@ -161,8 +148,8 @@ FactoryBot.define do
       groups { [create(:group, is_public: true), create(:group, is_public: true)] }
     end
 
+    # user_operator gets its offer_area created by callback
     factory :user_operator,
-            traits: %i[with_current_area],
             parent: :user,
             class: 'Users::Operator' do
       type { 'Users::Operator' }
