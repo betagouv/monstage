@@ -6,6 +6,8 @@ module Users
     include Signatorable
     include Teamable
 
+    GRACE_PERIOD = 2.years
+
     def custom_dashboard_path
       return custom_candidatures_path if internship_applications.submitted.any?
       url_helpers.dashboard_internship_offers_path

@@ -83,6 +83,11 @@ class EmployerMailerPreview < ActionMailer::Preview
     )
   end
 
+  def cleaning_notification_email
+    employer = Users::Employer.first
+    EmployerMailer.cleaning_notification_email(employer.id)
+  end
+
   def drafted_internship_offer_email
     internship_offer = InternshipOffers::WeeklyFramed.drafted&.first ||
                          create(:weekly_internship_offer, :drafted)
