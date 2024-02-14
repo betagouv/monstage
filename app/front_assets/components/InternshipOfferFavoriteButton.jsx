@@ -4,7 +4,6 @@ import { endpoints } from '../utils/api';
 
 const InternshipOfferFavoriteButton = ({
   internshipOffer,
-  isDisabled = true,
   }) => {
 
     const [isFavorite, setIsFavorite] = useState(internshipOffer.is_favorite);
@@ -24,9 +23,8 @@ const InternshipOfferFavoriteButton = ({
         .fail(fetchFail);
     };
 
-    const fetchDone = (result) => {
+  const fetchDone = (result) => {
       setIsFavorite(result['is_favorite']);
-      // sendNotification('Enregistré !');
       return true
     };
 
@@ -38,8 +36,7 @@ const InternshipOfferFavoriteButton = ({
 
   return (
     <div>
-      
-      { isDisabled ? (
+      { (internshipOffer.isDisabled) ? (
         <div className='heart-disabled'></div>
       ) : (
         <div
@@ -50,8 +47,7 @@ const InternshipOfferFavoriteButton = ({
             } else {
               addFavorite(internshipOffer.id)
             }
-          }
-          }
+          }}
         ></div>
       )}
     </div>

@@ -487,6 +487,12 @@ class InternshipOffer < ApplicationRecord
     Presenters::InternshipOffer.new(self)
   end
 
+  def is_favorite?(user)
+    return false if user.nil?
+
+    user.favorites.exists?(internship_offer_id: id)
+  end
+
   def update_all_favorites
     if approved_applications_count >= max_candidates || Time.now > last_date
       Favorite.where(internship_offer_id: id).destroy_all

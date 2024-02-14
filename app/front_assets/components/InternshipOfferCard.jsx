@@ -60,7 +60,7 @@ const InternshipOfferCard = ({
             </h4>
             <div className="fr-card__detail">
               <div className="mr-auto">{internshipOffer.employer_name}</div>
-              { internshipOffer.logged_in && 
+              { internshipOffer.logged_in && internshipOffer.can_manage_favorite &&
                 <div
                   className={`heart-${isFavorite ? 'full' : 'empty'}`}
                   onClick={(e) => {
