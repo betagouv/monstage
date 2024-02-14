@@ -119,7 +119,7 @@ import './homepage/partenaires/Logo-les-entreprises-pour-la-cite.jpg';
 import './homepage/partenaires/Logo-tous-en-stage.jpg';
 import './homepage/partenaires/Logo-un-stage-et-apres.jpg';
 import './homepage/partenaires/Logo-viens-voir-mon-taf.jpg';
-import './homepage/partenaires/Logo-moidans10ans.png';
+import './homepage/partenaires/Logo-my-future.jpg';
 
 import './homepage/sponsors/logo-anct.svg';
 import './homepage/sponsors/logo-anct.png';

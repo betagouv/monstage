@@ -31,7 +31,8 @@ module Dashboard::InternshipOffers
       assert_redirected_to root_path
     end
 
-    test 'PATCH #update as employer owning internship_offer updates internship_offer' do
+    test 'PATCH #update with title as employer owning internship_offer updates internship_offer' \
+         'even if dates are missing in the future since it is not published' do
       internship_offer = create(:weekly_internship_offer)
       new_title = 'new title'
       new_group = create(:group, is_public: false, name: 'woop')
@@ -41,6 +42,7 @@ module Dashboard::InternshipOffers
               title: new_title,
               week_ids: [weeks(:week_2019_1).id],
               is_public: false,
+              published_at: nil,
               group_id: new_group.id,
               daily_hours: {'lundi' => ['10h', '12h']}
 
@@ -52,11 +54,36 @@ module Dashboard::InternshipOffers
                    internship_offer.reload.title,
                    'can\'t update internship_offer title')
       assert_equal ['10h', '12h'], internship_offer.reload.daily_hours['lundi']
+    end
+
+
+    test 'PATCH #update sucessfully with title as employer owning internship_offer updates internship_offer' do
+      internship_offer = create(:weekly_internship_offer)
+      new_title = 'new title'
+      new_group = create(:group, is_public: false, name: 'woop')
+      sign_in(internship_offer.employer)
+      patch(dashboard_internship_offer_path(internship_offer.to_param),
+            params: {
+              internship_offer: {
+                title: new_title,
+                week_ids: Week.selectable_from_now_until_end_of_school_year.map(&:id),
+                is_public: false,
+                group_id: new_group.id,
+                daily_hours: {'lundi' => ['10h', '12h']}
+              }
+            })
+
+      assert_redirected_to(dashboard_internship_offers_path(origine: 'dashboard'))
+
+      assert_equal(new_title,
+                   internship_offer.reload.title,
+                   'can\'t update internship_offer title')
+      assert_equal ['10h', '12h'], internship_offer.reload.daily_hours['lundi']
 
     end
 
     test 'PATCH #update as employer owning internship_offer ' \
-         'updates internship_offer ' do
+         'updates internship_offer' do
       travel_to(Date.new(2019,9,1)) do
         weeks = Week.all.first(40).last(3)
         week_ids = weeks.map(&:id)
@@ -73,6 +100,7 @@ module Dashboard::InternshipOffers
                 max_candidates: 2
               } })
         follow_redirect!
+        
         assert_select("#alert-text", text: "Votre annonce a bien été modifiée")
         assert_equal 2, internship_offer.reload.max_candidates
       end
@@ -147,6 +175,25 @@ module Dashboard::InternshipOffers
                      to: published_at.to_i do
         patch(dashboard_internship_offer_path(internship_offer.to_param),
               params: { internship_offer: { published_at: published_at } })
+      end
+    end
+
+    test 'PATCH #update as employer owning internship_offer can unpublish an offer without enough remaining weeks' do
+      employer = create(:employer)
+      # publish in september to host 30 students
+      travel_to(Date.new(2023,9,1)) do
+        internship_offer = create(:weekly_internship_offer, employer: employer, max_candidates: 30, max_students_per_group: 1, week_ids: Week.selectable_from_now_until_end_of_school_year.map(&:id))
+      end
+      sign_in(employer)
+      # try to unpublish in june
+      travel_to(Date.new(2024,6,1)) do
+        internship_offer = InternshipOffer.last
+        assert_changes -> { internship_offer.reload.published_at },
+                       from: internship_offer.published_at,
+                       to: nil do
+          patch(dashboard_internship_offer_path(internship_offer.to_param),
+                params: { internship_offer: { aasm_state: 'unpublished' } })
+        end
       end
     end
 
@@ -259,13 +306,37 @@ module Dashboard::InternshipOffers
                                         :submitted,
                                         week: weeks.first,
                                         internship_offer: internship_offer)
-        assert_equal 1, InternshipApplication.all.count
-
         sign_in(employer)
         patch dashboard_internship_offer_path(internship_offer.to_param),
               params: { internship_offer: internship_offer.attributes.merge!({week_ids:[weeks.second.id]}) }
-        assert_equal 0, InternshipApplication.all.count
+        refute internship_application.canceled_by_employer?
+        assert internship_application.reload.canceled_by_employer?
       end
     end
+
+    test 'PATCH to unpublish offers with daily cron/rake job ' do
+      employer = create(:employer)
+      internship_offer = nil
+      travel_to Date.new(2019, 10, 1) do
+        weeks = Week.selectable_from_now_until_end_of_school_year.first(2)
+        internship_offer = create(:weekly_internship_offer,
+                                  employer: employer,
+                                  max_candidates: 1,
+                                  weeks: weeks,
+                                  max_students_per_group: 1)
+      end
+      refute_nil internship_offer.published_at
+      assert_equal 1, InternshipOffer.published.count
+      travel_to Date.new(2020, 3, 2) do
+        assert internship_offer.last_date < Time.now.utc
+        assert_changes -> {InternshipOffer.published.count},
+                       from: 1,
+                       to: 0 do
+          Monstage::Application.load_tasks
+          Rake::Task['internship_offers_unpublish'].invoke
+        end
+      end
+      assert_equal 'need_to_be_updated', internship_offer.reload.aasm_state
+    end
   end
-end
+end  

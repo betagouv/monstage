@@ -1,21 +1,22 @@
 - aasm_notifier = internship_application.internship_application_aasm_message_builder(aasm_target: aasm_target)
-
-= button_tag type: "button",
-             data: { toggle: 'modal', target: "##{modal_id}", 'fr-opened': "false" },
-             aria: { controls: "#{modal_id}" },
-             class: "#{fa_icon} fr-btn mx-1 fr-btn--icon-left #{aasm_notifier.target_action_color}"
-  = modal_opener_label
-= render 'dashboard/internship_offers/internship_applications/action_modal_dialog',
-         internship_application: internship_application,
-         aasm_target: aasm_target,
-         aasm_notifier: aasm_notifier,
-         fa_icon: fa_icon,
-         modal_id: modal_id,
-         modal_opener_label: modal_opener_label,
-         message: message,
-         rich_text: rich_text,
-         subtitle: subtitle,
-         input_title: defined?(input_title) ? input_title : nil,
-         info_notice_title: defined?(info_notice_title) ? info_notice_title : nil,
-         info_notice_message: defined?(info_notice_message) ? info_notice_message : nil,
-         token: defined?(token) ? token : nil
+/ data: { toggle: 'modal', target: "##{modal_id}", 'fr-opened': opened_modal },
+div data-controller="modal-opener" data-modal-opener-initial-state-value='#{opened_modal}'
+  = button_tag type: "button",
+              data: { toggle: 'modal', target: "##{modal_id}", 'fr-opened': false , 'modal-opener-target': 'button'},
+              aria: { controls: "#{modal_id}" },
+              class: "#{fa_icon} fr-btn mx-1 fr-btn--icon-left #{aasm_notifier.target_action_color}"
+    = modal_opener_label
+  = render 'dashboard/internship_offers/internship_applications/action_modal_dialog',
+          internship_application: internship_application,
+          aasm_target: aasm_target,
+          aasm_notifier: aasm_notifier,
+          fa_icon: fa_icon,
+          modal_id: modal_id,
+          modal_opener_label: modal_opener_label,
+          message: message,
+          rich_text: rich_text,
+          subtitle: subtitle,
+          input_title: defined?(input_title) ? input_title : nil,
+          info_notice_title: defined?(info_notice_title) ? info_notice_title : nil,
+          info_notice_message: defined?(info_notice_message) ? info_notice_message : nil,
+          token: defined?(token) ? token : nil

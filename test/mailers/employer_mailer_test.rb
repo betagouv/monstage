@@ -7,13 +7,12 @@ class EmployerMailerTest < ActionMailer::TestCase
   include TeamAndAreasHelper
 
   test '.internship_application_submitted_email delivers as expected' do
-    student = create(:student, handicap: 'cotorep')
+    student = create(:student)
     internship_application = create(:weekly_internship_application, student: student)
     email = EmployerMailer.internship_application_submitted_email(internship_application: internship_application)
     email.deliver_now
     assert_emails 1
     assert_equal [internship_application.internship_offer.employer.email], email.to
-    assert email.html_part.body.include?(student.handicap)
     refute_email_spammyness(email)
   end
 

@@ -23,17 +23,18 @@ module Dashboard::InternshipOffers
         internship_offer = build(:weekly_internship_offer, employer: employer)
         sign_in(internship_offer.employer)
         params = internship_offer
-                .attributes
-                .merge('type' => InternshipOffers::WeeklyFramed.name,
-                        'week_ids' => weeks.map(&:id),
-                        'coordinates' => { latitude: 1, longitude: 1 },
-                        'school_id' => school.id,
-                        'description_rich_text' => '<div>description</div>',
-                        'employer_description_rich_text' => '<div>hop+employer_description</div>',
-                        'employer_id' => internship_offer.employer_id,
-                        'employer_type' => 'Users::Employer')
+                  .attributes
+                  .merge('type' => InternshipOffers::WeeklyFramed.name,
+                         'week_ids' => weeks.map(&:id),
+                         'coordinates' => { latitude: 1, longitude: 1 },
+                         'school_id' => school.id,
+                         'description_rich_text' => '<div>description</div>',
+                         'employer_description_rich_text' => '<div>hop+employer_description</div>',
+                         'employer_id' => internship_offer.employer_id,
+                         'employer_type' => 'Users::Employer')
         assert_difference('InternshipOffer.count', 1) do
-          post(dashboard_internship_offers_path, params: { internship_offer: params })
+          post(dashboard_internship_offers_path,
+          params: { internship_offer: params })
         end
         created_internship_offer = InternshipOffer.last
         assert_equal InternshipOffers::WeeklyFramed.name, created_internship_offer.type
@@ -55,15 +56,15 @@ module Dashboard::InternshipOffers
         internship_offer = build(:weekly_internship_offer, employer: employer)
         sign_in(internship_offer.employer)
         params = internship_offer
-                .attributes
-                .merge('type' => InternshipOffers::WeeklyFramed.name,
-                        'group' => employer.ministries.first,
-                        'week_ids' => weeks.map(&:id),
-                        'coordinates' => { latitude: 1, longitude: 1 },
-                        'school_id' => school.id,
-                        'description_rich_text' => '<div>description</div>',
-                        'employer_description_rich_text' => '<div>hop+employer_description</div>',
-                        'employer_type' => 'Users::MinistryStatistician')
+                  .attributes
+                  .merge('type' => InternshipOffers::WeeklyFramed.name,
+                          'group' => employer.ministries.first,
+                          'week_ids' => weeks.map(&:id),
+                          'coordinates' => { latitude: 1, longitude: 1 },
+                          'school_id' => school.id,
+                          'description_rich_text' => '<div>description</div>',
+                          'employer_description_rich_text' => '<div>hop+employer_description</div>',
+                          'employer_type' => 'Users::MinistryStatistician')
 
         assert_difference('InternshipOffer.count', 1) do
           post(dashboard_internship_offers_path, params: { internship_offer: params })

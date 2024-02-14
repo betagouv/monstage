@@ -13,10 +13,7 @@ module Services
         approved_applications_count: 0,
         total_male_approved_applications_count: 0,
         total_female_approved_applications_count: 0,
-        rejected_applications_count: 0,
-        convention_signed_applications_count: 0,
-        total_male_convention_signed_applications_count: 0,
-        total_female_convention_signed_applications_count: 0
+        rejected_applications_count: 0
       )
       InternshipOfferWeek.update_all(
         blocked_applications_count: 0
@@ -37,10 +34,7 @@ module Services
           approved_applications_count: 0,
           total_male_approved_applications_count: 0,
           total_female_approved_applications_count: 0,
-          rejected_applications_count: 0,
-          convention_signed_applications_count: 0,
-          total_male_convention_signed_applications_count: 0,
-          total_female_convention_signed_applications_count: 0
+          rejected_applications_count: 0
         )
 
         if internship_offer.is_a?(InternshipOffers::WeeklyFramed)
@@ -56,7 +50,7 @@ module Services
 
         unless !!res
           Rails.logger.info '================'
-          Rails.logger.info "internship_offer.id : #{internship_offer.id}"
+          Rails.logger.info "reset_one_internship_offer_counter : internship_offer.id : #{internship_offer.id}"
           Rails.logger.info '================'
           Rails.logger.info ''
           ok = false

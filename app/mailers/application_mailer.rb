@@ -21,7 +21,7 @@ class ApplicationMailer < ActionMailer::Base
     else
       params = { to: to, subject: subject }
       params.merge!(cc: cc) unless cc.nil?
-      mail(params)
+      mail(**params)
     end
   end
 end

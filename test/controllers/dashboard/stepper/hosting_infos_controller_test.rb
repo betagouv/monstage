@@ -19,7 +19,7 @@ module Dashboard::Stepper
       sign_in(employer)
       travel_to(Date.new(2019, 3, 1)) do
         organisation = create(:organisation, employer: employer)
-        internship_offer_info = create(:weekly_internship_offer_info)
+        internship_offer_info = create(:internship_offer_info)
         get new_dashboard_stepper_hosting_info_path(organisation_id: organisation.id, internship_offer_info_id: internship_offer_info.id)
 
         assert_response :success
@@ -37,7 +37,7 @@ module Dashboard::Stepper
       employer = create(:employer)
       sign_in(employer)
       organisation = create(:organisation, employer: employer)
-      internship_offer_info = create(:weekly_internship_offer_info)
+      internship_offer_info = create(:internship_offer_info)
       
       get new_dashboard_stepper_hosting_info_path(organisation_id: organisation.id, internship_offer_info_id: internship_offer_info.id)
       
@@ -52,7 +52,7 @@ module Dashboard::Stepper
       sign_in(employer)
       weeks = [weeks(:week_2019_1), weeks(:week_2019_2)]
       organisation = create(:organisation, employer: employer)
-      internship_offer_info = create(:weekly_internship_offer_info)
+      internship_offer_info = create(:internship_offer_info)
       assert_difference('HostingInfo.count') do
         post(
           dashboard_stepper_hosting_infos_path(organisation_id: organisation.id, internship_offer_info_id: internship_offer_info.id),
@@ -80,7 +80,7 @@ module Dashboard::Stepper
       sign_in(statistician)
       weeks = [weeks(:week_2019_1), weeks(:week_2019_2)]
       organisation = create(:organisation, employer: statistician)
-      internship_offer_info = create(:weekly_internship_offer_info)
+      internship_offer_info = create(:internship_offer_info)
       assert_difference('HostingInfo.count') do
         post(
           dashboard_stepper_hosting_infos_path(organisation_id: organisation.id, internship_offer_info_id: internship_offer_info.id),
@@ -110,7 +110,7 @@ module Dashboard::Stepper
       sector = create(:sector)
       weeks = [weeks(:week_2019_1)]
       organisation = create(:organisation, employer: employer)
-      internship_offer_info = create(:weekly_internship_offer_info)
+      internship_offer_info = create(:internship_offer_info)
       post(
         dashboard_stepper_hosting_infos_path(organisation_id: organisation.id, internship_offer_info_id: internship_offer_info.id),
         params: {
@@ -131,7 +131,7 @@ module Dashboard::Stepper
       new_title = 'ko'
       employer = create(:employer)
       organisation = create(:organisation, employer: employer)
-      internship_offer_info = create(:weekly_internship_offer_info,
+      internship_offer_info = create(:internship_offer_info,
                                      employer: employer)
       hosting_info = create(:hosting_info, max_candidates: 2, max_students_per_group: 1, employer: employer)
       sign_in(employer)
@@ -158,7 +158,7 @@ module Dashboard::Stepper
     test 'GET #Edit as employer is not turbolinkable' do
       employer = create(:employer)
       organisation = create(:organisation, employer: employer)
-      internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
+      internship_offer_info = create(:internship_offer_info, employer: employer)
       hosting_info = create(:hosting_info, employer: employer)
 
       sign_in(employer)

@@ -31,7 +31,8 @@
               = prez.internship_offer.title
               br/
               = prez_offer.address
-            td.col-canceled-in = internship_application.expired? ? '-' : prez.expires_in
+            td.col-canceled-in
+              = internship_application.expired? ? '-' : prez.expires_in
             td.col-status
               p class="fr-mt-1w fr-badge fr-badge--sm fr-badge--#{prez.human_state[:badge]} fr-badge--no-icon"
                 = prez.human_state[:label]

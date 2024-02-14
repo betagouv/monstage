@@ -8,17 +8,17 @@ export default class extends Controller {
     'container'
   ];
 
-  addDestinataire() {
+  addDestinataire(event) {
     event.preventDefault();
 
     const input = document.createElement('input');
     input.type = 'text';
-    input.name = 'formulaire[destinataires][]';
+    input.name = 'application_transfer[destinataires][]';
     input.className = 'fr-input destinataire-input fr-my-3w';
 
     const formGroup = document.createElement('div');
     formGroup.className = 'form-group ';
-    formGroup.appendChild(input);  
+    formGroup.appendChild(input);
     this.containerTarget.appendChild(formGroup);
 
     this.addListeners();

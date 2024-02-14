@@ -5,6 +5,7 @@
 - content ||= ''
 - limit ||= nil
 - required = required.nil?
+- pattern ||= ''
 .col-12.pt-3
   .form-group.form-group-tooltip
     = form.label field do
@@ -14,12 +15,17 @@
     span.float-right.tool-tip data-toggle="tooltip" data-html='true' data-placement="top" title="<b>#{title}</b><p>#{content}</p>" data-controller='tooltip'
       i.fa.fa-info-circle
 
-    .input-group-custom data-controller="internship-agreement-field"
+    .input-group-custom data-controller="internship-agreement-field win1252-checker"
       - if edit_enable && !disabled
         = form.text_field field,
                           class: 'fr-input',
                           required: required,
-                          data: {:'internship-agreement-form-target' => 'textField' }
+                          **(pattern.present? ? { pattern: pattern } : {}),
+                          data: {:'internship-agreement-form-target' => 'textField',
+                                 :'win1252-checker-target' => 'field',
+                                 action: 'change->win1252-checker#checkWin1252'}
+        .fr-alert.fr-alert--error.fr-alert--sm.fr-mt-1v.d-none data-win1252-checker-target='errorMessage'
+          | Prière de retirer les caractères spéciaux de ce champ
 
       - else
         - options = { class: 'form-control', disabled: true , required: required }

@@ -58,7 +58,9 @@ module Api
           }
         )
       end
-      assert_response :no_content
+      assert_response :ok
+      assert_equal 0, InternshipOffer.kept.count
+      assert InternshipOffer.last.discarded?
     end
 
     test 'DELETE #destroy twice renders conflict' do

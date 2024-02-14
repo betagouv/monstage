@@ -57,7 +57,7 @@ def populate_applications
     student_email: 'paul@gmail.com'
   )
   #-----------------
-  # third student [1 approved, 1 canceled_by_student]
+  # third student [offers.fourth approved, 1 canceled_by_student]
   #-----------------
   InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
@@ -139,7 +139,7 @@ def populate_applications
     week: offers[5].internship_offer_weeks.last(2).first.week
   )
   #-----------------
-  # 5th student [1 approved]
+  # 5th student [offers.third approved]
   #-----------------
    InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
@@ -152,7 +152,7 @@ def populate_applications
     week: offers.third.internship_offer_weeks.last(2).first.week
   )
   #-----------------
-  # 6th student [1 approved]
+  # 6th student [offers.seventh approved]
   #-----------------
    InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
@@ -165,7 +165,7 @@ def populate_applications
     week: offers[6].internship_offer_weeks.last(4).first.week
   )
   #-----------------
-  # 7th student [1 approved]
+  # 7th student [offers[4] approved]
   #-----------------
    InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
@@ -178,7 +178,7 @@ def populate_applications
     week: offers[4].internship_offer_weeks.last(2).first.week
   )
   #-----------------
-  # 8th student [1 approved]
+  # 8th student [offers[5] approved]
   #-----------------
    InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,

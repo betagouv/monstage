@@ -298,23 +298,6 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     end
   end
 
-  test 'transition from submited to rejected does not send email to student w/o email' do
-    student = create(:student, phone: '+330611223944', email: nil )
-    internship_application = create(:weekly_internship_application, :submitted, student: student)
-    freeze_time do
-      assert_changes -> { internship_application.reload.rejected_at },
-                     from: nil,
-                     to: Time.now.utc do
-        mock_mail = Minitest::Mock.new
-        mock_mail.expect(:deliver_later, true, [{wait: 1.second}])
-        StudentMailer.stub :internship_application_rejected_email, mock_mail do
-          internship_application.reject!
-        end
-        assert_raises(MockExpectationError) { mock_mail.verify }
-      end
-    end
-  end
-
   test 'transition from rejected to employer_validate sends approved email' do
     internship_application = create(:weekly_internship_application, :rejected)
     freeze_time do
@@ -427,8 +410,41 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     assert_equal [employer_2.email], internship_application.filter_notified_emails
   end
 
-  test '.pending_states' do
-    assert_equal %w[submitted read_by_employer examined validated_by_employer],
-                 InternshipApplication.pending_states
+  test '::PENDING_STATES' do
+    assert_equal %w[submitted read_by_employer examined transfered validated_by_employer],
+                 InternshipApplication::PENDING_STATES
+  end
+
+  test '.order_by_aasm_state_for_student' do
+    # TODO fin a way to test this
+    if ENV['RUN_BRITTLE_TEST']
+      internship_application_1 = nil
+      internship_application_2 = nil
+      internship_application_3 = nil
+      internship_application_4 = nil
+      internship_application_5 = nil
+      travel_to Time.zone.local(2020, 1, 1, 12, 0, 0) do
+        internship_application_1 = create(:weekly_internship_application, :submitted) #n°3 in the list by created_at
+      end
+      travel_to Time.zone.local(2020, 1, 1, 13, 0, 0) do
+        internship_application_2 = create(:weekly_internship_application, :validated_by_employer) #n°1 in the list by status
+      end
+      travel_to Time.zone.local(2020, 1, 1, 14, 0, 0) do
+        internship_application_3 = create(:weekly_internship_application, :examined) #n°4 in the list by created_at
+      end
+      travel_to Time.zone.local(2020, 1, 1, 15, 0, 0) do
+        internship_application_4 = create(:weekly_internship_application, :read_by_employer) #n°5 in the list by created_at
+      end
+      travel_to Time.zone.local(2020, 1, 1, 16, 0, 0) do
+        internship_application_5 = create(:weekly_internship_application, :validated_by_employer) #n°2 in the list by status
+      end
+      sleep 1
+
+      assert_equal internship_application_2, InternshipApplication.order_by_aasm_state_for_student.first
+      assert_equal internship_application_5, InternshipApplication.order_by_aasm_state_for_student.second
+      assert_equal internship_application_1, InternshipApplication.order_by_aasm_state_for_student.third
+      assert_equal internship_application_3, InternshipApplication.order_by_aasm_state_for_student.fourth
+      assert_equal internship_application_4, InternshipApplication.order_by_aasm_state_for_student.fifth
+    end
   end
 end

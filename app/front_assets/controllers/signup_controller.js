@@ -9,7 +9,6 @@ import {
 
 export default class extends Controller {
   static targets = [
-    'handicapGroup',
     'emailHint',
     'emailExplanation',
     'emailInput',
@@ -27,20 +26,14 @@ export default class extends Controller {
     'departmentSelect',
     'ministrySelect'
   ];
-  // 'passwordConfirmationHint',
-  // 'passwordConfirmationGroup',
-  // 'passwordConfirmationLabel',
-  // 'passwordConfirmationInput',
-  // data-signup - target="emailExplanation"
 
   static values = {
     channel: String,
   };
 
   initialize() {
-    // set default per specification
-    this.show(this.emailBlocTarget)
-    this.checkEmail();
+    (localStorage.getItem('channel') === 'phone') ? this.checkPhone() : this.checkEmail();
+    
   }
 
   // on change email address, ensure user is shown academia address requirement when neeeded
@@ -60,11 +53,6 @@ export default class extends Controller {
     $(this.labelTarget).text();
   }
 
-  // show/hide handicap input if checkbox is checked
-  toggleHandicap() {
-    toggleElement($(this.handicapGroupTarget));
-  }
-
   // check email address formatting on email input blur (14yo student, not always good with email)
   onBlurEmailInput(event) {
     const email = event.target.value;
@@ -81,7 +69,7 @@ export default class extends Controller {
     localStorage.removeItem('close_school_manager')
   }
 
-  connect() {
+  signupConnected() {
     const emailHintElement = this.emailHintTarget;
     const emailInputElement = this.emailInputTarget;
     const $hint = $(emailHintElement);
@@ -125,14 +113,13 @@ export default class extends Controller {
       },
     });
 
-    setTimeout(() => {
-      this.checkChannel();
-    }, 100);
+    // setTimeout(() => {
+    //   this.checkChannel();
+    // }, 100);
   }
 
   disconnect() {
     try {
-      localStorage.clear();
       this.wssClient.disconnect();
     } catch (e) {}
   }
