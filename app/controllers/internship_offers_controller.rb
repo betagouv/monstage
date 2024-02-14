@@ -14,17 +14,18 @@ class InternshipOffersController < ApplicationController
   def index
     respond_to do |format|
       format.html do
-        # @internship_offers = finder.all.order(id: :desc)
-        # @formatted_internship_offers = format_internship_offers(@internship_offers)
-        # @alternative_internship_offers = alternative_internship_offers if @internship_offers.to_a.count == 0
         @sectors = Sector.all.order(:name).to_a
         @params = query_params
       end
       format.json do
         @internship_offers_all_without_page = finder.all_without_page
-        @internship_offers = finder.all.order(id: :desc)
-        @is_suggestion = @internship_offers.to_a.count === 0
-        @internship_offers = alternative_internship_offers if @internship_offers.to_a.count == 0
+        @internship_offers = finder.all
+
+        @is_suggestion = @internship_offers.to_a.count.zero?
+        @internship_offers = alternative_internship_offers if @is_suggestion
+
+        @internship_offers_all_without_page_array = @internship_offers_all_without_page.to_a
+        @internship_offers_array = @internship_offers.to_a
 
         formatted_internship_offers = format_internship_offers(@internship_offers)
         @params = query_params
@@ -184,14 +185,15 @@ class InternshipOffersController < ApplicationController
   end
 
   def page_links
-    return nil if @internship_offers.size < 1 || @is_suggestion
+    offers = @internship_offers
+    return nil if offers.to_a.size < 1 || @is_suggestion
     {
-      totalPages: @internship_offers.total_pages,
-      currentPage: @internship_offers.current_page,
-      nextPage: @internship_offers.next_page,
-      prevPage: @internship_offers.prev_page,
-      isFirstPage: @internship_offers.first_page?,
-      isLastPage: @internship_offers.last_page?,
+      totalPages: offers.total_pages,
+      currentPage: offers.current_page,
+      nextPage: offers.next_page,
+      prevPage: offers.prev_page,
+      isFirstPage: offers.first_page?,
+      isLastPage: offers.last_page?,
       pageUrlBase:  url_for(query_params.except('page'))
     }
   end
