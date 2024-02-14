@@ -52,9 +52,6 @@ class InternshipOffer < ApplicationRecord
   has_rich_text :employer_description_rich_text
 
    # Callbacks
-  #before_save :update_remaining_seats
-  after_save :check_need_to_be_edited!
-
   after_initialize :init
 
   before_validation :update_organisation
@@ -66,7 +63,6 @@ class InternshipOffer < ApplicationRecord
   before_create :preset_published_at_to_now
   after_commit :sync_internship_offer_keywords
   after_create :create_stats
-  
   after_update :update_stats
 
   paginates_per PAGE_SIZE
@@ -518,10 +514,6 @@ class InternshipOffer < ApplicationRecord
     stats.update_needed?
   end
 
-  def check_need_to_be_edited!
-    need_update! if requires_updates?
-  end
-
   def available_weeks
     return Week.selectable_from_now_until_end_of_school_year unless respond_to?(:weeks)
     return Week.selectable_from_now_until_end_of_school_year unless persisted?
@@ -574,7 +566,6 @@ class InternshipOffer < ApplicationRecord
   
   # TODO Rename
   def missing_weeks_info?
-    byebug if id == 1
     internship_offer_weeks.map(&:week_id).all? do |week_id|
       week_id < Week.current.id.to_i + 1
     end
@@ -593,7 +584,6 @@ class InternshipOffer < ApplicationRecord
   end
 
   def check_missing_seats_or_weeks
-    byebug if id == 1
     return false if published_at.nil? # different from published? since published? checks the database and the former state of the object
     return false if republish.nil?
 

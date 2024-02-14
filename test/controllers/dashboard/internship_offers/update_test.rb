@@ -222,28 +222,11 @@ module Dashboard::InternshipOffers
         internship_application = create(:weekly_internship_application,
                                         :submitted,
                                         internship_offer: internship_offer)
-        
-        
-        puts '***********'
-        puts internship_offer.internship_applications.count
-        puts '***********'
 
-        puts ' internship application validate !'
         internship_application.employer_validate!
-        puts 'after validate'
-        puts 'internship_offer.need_to_be_updated? + ' + internship_offer.need_to_be_updated?.to_s
-        
-        
-        puts ' internship application approve'
-        byebug
         internship_application.approve!
-        puts 'after approve'
-        puts 'internship_offer.need_to_be_updated? + ' + internship_offer.need_to_be_updated?.to_s
 
         assert_equal 0, internship_offer.reload.remaining_seats_count
-        
-        puts ' internship offer need to be updated'
-        
         assert internship_offer.need_to_be_updated?
 
         sign_in(employer)

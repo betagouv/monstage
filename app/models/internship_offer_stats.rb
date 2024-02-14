@@ -24,24 +24,12 @@ class InternshipOfferStats < ApplicationRecord
       remaining_seats_count: remaining_seats,
       update_needed: update_needed?
     )
-    puts '------recalculate------'
-    puts 'La valeur de update_needed est : ' + update_needed?.to_s
-    puts '-----------------------'
   end
   
   def update_needed?
-    puts 'update_needed? : ' + (internship_offer.may_need_update? && (!internship_offer.has_weeks_in_the_future? || remaining_seats.zero?)).to_s
-    puts 'internship_applications.count : ' + internship_applications.count.to_s
-    puts 'remaining_seats : ' + remaining_seats.to_s
-    if remaining_seats.zero?
-      puts internship_offer.may_need_update?
-      puts !internship_offer.has_weeks_in_the_future?
-      puts internship_offer.no_remaining_seat_anymore?
-      puts remaining_seats_count
-      puts remaining_seats
-      puts internship_offer.may_need_update? && (!internship_offer.has_weeks_in_the_future? || remaining_seats.zero?)
-    end
-    internship_offer.may_need_update? && (!internship_offer.has_weeks_in_the_future? || remaining_seats.zero?)
+    update_needed = internship_offer.may_need_update? && (!internship_offer.has_weeks_in_the_future? || remaining_seats.zero?)
+    internship_offer.update_columns(aasm_state: 'need_to_be_updated', published_at: nil) if update_needed && internship_offer.may_need_update?
+    update_needed
   end
 
   private
@@ -63,7 +51,6 @@ class InternshipOfferStats < ApplicationRecord
   end
 
   def total_male_applications
-
     internship_offer.internship_applications
                     .joins(:student)
                     .includes(:student)
