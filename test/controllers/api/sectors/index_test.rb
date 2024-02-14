@@ -14,7 +14,7 @@ module Api
     end
 
     test 'GET #index returns sectors' do
-      user_1 = create(:user_operator, :with_current_area)
+      user_1 = create(:user_operator)
       create(:sector, name: 'Agriculture')
       create(:sector, name: 'Agroalimentaire')
       create(:sector, name: 'Architecture')
