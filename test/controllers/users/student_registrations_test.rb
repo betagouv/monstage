@@ -23,7 +23,7 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     class_room = create(:class_room, school: school)
     birth_date = 14.years.ago
     email = 'fourcade.m@gmail.com'
-    assert_enqueued_jobs 1 do
+    assert_enqueued_jobs 2 do
       assert_enqueued_emails 1 do
         assert_difference('Users::Student.count') do
           post user_registration_path(
@@ -67,7 +67,7 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
             accept_terms: 1,
             birth_date: birth_date,
             channel: 'phone',
-            email: '',
+            email: '', # no email
             first_name: 'Jephthina' ,
             gender: 'f',
             last_name: "Théodore ",

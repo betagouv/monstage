@@ -4,8 +4,6 @@ module Users
   class Student < User
     include StudentAdmin
 
-    after_create_commit :welcome_new_student
-
     belongs_to :school, optional: true
     belongs_to :class_room, optional: true
 
@@ -34,7 +32,7 @@ module Users
     validate :validate_school_presence_at_creation
 
     # Callbacks
-    after_create :set_reminders
+    after_create :welcome_new_student, :set_reminders
 
     def student?; true end
 

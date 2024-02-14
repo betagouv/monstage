@@ -3,10 +3,12 @@ require 'test_helper'
 module Dashboard::Users
   class ResetPhoneNumberControllerTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
+    include TeamAndAreasHelper
 
     test 'employer resets his phone_number' do
-      internship_agreement = create(:internship_agreement)
-      employer = internship_agreement.employer
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, internship_application: internship_application)
       employer.update(phone: '+330602030405')
       sign_in(employer)
 
@@ -34,8 +36,9 @@ module Dashboard::Users
     end
 
     test 'employer is redirected to dashboard_internship_agreements_path when resetting his phone number fails' do
-      internship_agreement = create(:internship_agreement)
-      employer = internship_agreement.employer
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, internship_application: internship_application)
       employer.update(phone: '+330602030405')
       klass = Users::Employer
       sign_in(employer)

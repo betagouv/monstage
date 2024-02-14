@@ -41,6 +41,15 @@ module InternshipOfferAreable
       )
     end
 
+    def initializing_current_area(name = nil)
+      name ||= "Espace de #{presenter.short_name}"
+      create_current_area(
+        name: name,
+        employer_type: 'User',
+        employer_id: self.id
+      )
+    end
+
     # ------------  private ------------
     private
     # ----------------------------------

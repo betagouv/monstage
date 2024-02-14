@@ -55,6 +55,13 @@ FactoryBot.define do
             parent: :user do
       type { 'Users::Employer' }
       employer_role { 'PDG' }
+      after(:create) do |employer|
+        unless employer.current_area
+          new_area = create(:internship_offer_area, employer: employer)
+          employer.current_area = employer.internship_offer_area
+          employer.save
+        end
+      end
     end
 
     factory :god, class: 'Users::God', parent: :user do
@@ -128,6 +135,13 @@ FactoryBot.define do
       agreement_signatorable { false }
       department { '60' }
       statistician_validation { true }
+      after(:create) do |employer|
+        unless employer.current_area
+          new_area = create(:internship_offer_area, employer: employer)
+          employer.current_area = employer.internship_offer_area
+          employer.save
+        end
+      end
     end
 
     factory :education_statistician,
@@ -137,6 +151,13 @@ FactoryBot.define do
       agreement_signatorable { false }
       statistician_validation { true }
       department { '60' }
+      after(:create) do |employer|
+        unless employer.current_area
+          new_area = create(:internship_offer_area, employer: employer)
+          employer.current_area = employer.internship_offer_area
+          employer.save
+        end
+      end
     end
 
     factory :ministry_statistician,
@@ -146,6 +167,13 @@ FactoryBot.define do
       agreement_signatorable { false }
       statistician_validation { true }
       groups { [create(:group, is_public: true), create(:group, is_public: true)] }
+      after(:create) do |employer|
+        unless employer.current_area
+          new_area = create(:internship_offer_area, employer: employer)
+          employer.current_area = employer.internship_offer_area
+          employer.save
+        end
+      end
     end
 
     # user_operator gets its offer_area created by callback
@@ -159,6 +187,13 @@ FactoryBot.define do
       trait :fully_authorized do
         after(:create) do |user|
           user.operator.update(api_full_access: true)
+        end
+      end
+      after(:create) do |employer|
+        unless employer.current_area
+          new_area = create(:internship_offer_area, employer: employer)
+          employer.current_area = employer.internship_offer_area
+          employer.save
         end
       end
     end

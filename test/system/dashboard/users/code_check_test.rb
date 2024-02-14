@@ -2,6 +2,7 @@ require 'application_system_test_case'
 module Dashboard::Users
   class CodeCheckTest < ApplicationSystemTestCase
     include Devise::Test::IntegrationHelpers
+    include TeamAndAreasHelper
 
     def code_script_enables(index)
       "document.getElementById('user-code-#{index}').disabled=false"
@@ -12,8 +13,9 @@ module Dashboard::Users
 
 
     test 'employer signs and everything is ok' do
-      internship_agreement = create(:internship_agreement, :validated)
-      employer = internship_agreement.employer
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, internship_application: internship_application, aasm_state: :validated)
       sign_in(employer)
 
       visit dashboard_internship_agreements_path

@@ -6,6 +6,7 @@ module Dashboard::InternshipAgreements
   class UpdateTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
     include ActionMailer::TestHelper
+    include TeamAndAreasHelper
 
     # As Visitor
     test 'PATCH #update as visitor redirects to new_user_session_path' do
@@ -132,7 +133,8 @@ module Dashboard::InternshipAgreements
     end
 
     test 'PATCH #update as school manager owning students updates internship_agreement with missing school_manager_event' do
-      internship_application = create(:weekly_internship_application, :approved)
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application,:approved, internship_offer: internship_offer)
       internship_agreement = create(:internship_agreement, :created_by_system,
                                     school_manager_accept_terms: true,
                                     internship_application: internship_application)
@@ -174,8 +176,10 @@ module Dashboard::InternshipAgreements
     end
 
     test 'PATCH #update with complete!transition sends email' do
+      employer, internship_offer = create_employer_and_offer
       internship_application = create( :weekly_internship_application,
-                                       :approved )
+                                       :approved, 
+                                       internship_offer: internship_offer)
       internship_agreement = create(:internship_agreement,
                                     :started_by_employer,
                                     school_manager_accept_terms: true,
@@ -183,7 +187,7 @@ module Dashboard::InternshipAgreements
                                     organisation_representative_role: 'CEO',
                                     tutor_email: 'test@honer.com',
                                     internship_application: internship_application)
-      sign_in(internship_application.internship_offer.employer)
+      sign_in(employer)
 
       assert_enqueued_emails 1 do
         patch_url = dashboard_internship_agreement_path(internship_agreement.id)
