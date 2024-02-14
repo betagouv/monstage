@@ -119,7 +119,7 @@ module Dashboard::InternshipOffers
         click_on internship_offer.title
         first(:link, 'Postuler').click
         select('Semaine du 13 janvier au 19 janvier')
-        fill_in 'Numéro de téléphone élève ou parent',	with: "+3306060606"
+        fill_in 'Numéro de portable élève ou parent',	with: "+3306060606"
         click_on 'Valider'
         assert_equal 2, InternshipApplication.count
         other_internship_application = InternshipApplication.last

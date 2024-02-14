@@ -557,7 +557,6 @@ class InternshipOffer < ApplicationRecord
 
   # TODO Rename
   def missing_weeks_info?
-    byebug if id == 1
     internship_offer_weeks.map(&:week_id).all? do |week_id|
       week_id < Week.current.id.to_i + 1
     end
@@ -576,7 +575,6 @@ class InternshipOffer < ApplicationRecord
   end
 
   def check_missing_seats_or_weeks
-    byebug if id == 1
     return false if published_at.nil? # different from published? since published? checks the database and the former state of the object
     return false if republish.nil?
 
