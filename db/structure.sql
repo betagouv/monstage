@@ -924,7 +924,6 @@ CREATE TABLE public.internship_offer_stats (
     total_female_applications_count integer DEFAULT 0,
     total_male_approved_applications_count integer DEFAULT 0,
     total_female_approved_applications_count integer DEFAULT 0,
-    update_needed boolean DEFAULT false,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -2669,13 +2668,6 @@ CREATE INDEX index_internship_offer_stats_on_remaining_seats_count ON public.int
 --
 
 CREATE INDEX index_internship_offer_stats_on_total_applications_count ON public.internship_offer_stats USING btree (total_applications_count);
-
-
---
--- Name: index_internship_offer_stats_on_update_needed; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_internship_offer_stats_on_update_needed ON public.internship_offer_stats USING btree (update_needed);
 
 
 --

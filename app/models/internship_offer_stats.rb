@@ -8,7 +8,7 @@ class InternshipOfferStats < ApplicationRecord
 
   # Callbacks
   after_create :recalculate
-  after_update :check_remaining_seats
+  after_update :check_update_needed?
 
   def recalculate
     update(
@@ -21,17 +21,10 @@ class InternshipOfferStats < ApplicationRecord
       total_female_approved_applications_count: total_female_approved_applications,
       rejected_applications_count: rejected_applications,
       submitted_applications_count: submitted_applications,
-      remaining_seats_count: remaining_seats,
-      update_needed: update_needed?
+      remaining_seats_count: remaining_seats
     )
   end
   
-  def update_needed?
-    update_needed = internship_offer.may_need_update? && (!internship_offer.has_weeks_in_the_future? || remaining_seats.zero?)
-    internship_offer.update_columns(aasm_state: 'need_to_be_updated', published_at: nil) if update_needed && internship_offer.may_need_update?
-    update_needed
-  end
-
   private
   #---------------------------------------
   # blocked_weeks_count
@@ -109,7 +102,8 @@ class InternshipOfferStats < ApplicationRecord
     internship_offer.max_candidates - reserved_places
   end
 
-  def check_remaining_seats
-    internship_offer.update_column(:published_at, nil) if remaining_seats_count.zero?
+  def check_update_needed?
+    return unless internship_offer.requires_updates?
+    internship_offer.update_columns(aasm_state: 'need_to_be_updated', published_at: nil)
   end
 end

@@ -13,7 +13,6 @@ class CreateInternshipOfferStats < ActiveRecord::Migration[7.1]
       t.integer :total_female_applications_count, default: 0
       t.integer :total_male_approved_applications_count, default: 0
       t.integer :total_female_approved_applications_count, default: 0
-      t.boolean :update_needed, default: false
 
       t.timestamps
     end
@@ -21,7 +20,5 @@ class CreateInternshipOfferStats < ActiveRecord::Migration[7.1]
     add_index :internship_offer_stats, :remaining_seats_count
     add_index :internship_offer_stats, :blocked_weeks_count
     add_index :internship_offer_stats, :total_applications_count
-    add_index :internship_offer_stats, :update_needed
-    #add_index :internship_offer_stats, :internship_offer_id, unique: true
   end
 end

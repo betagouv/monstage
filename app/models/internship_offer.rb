@@ -505,13 +505,12 @@ class InternshipOffer < ApplicationRecord
     end
   end
   
-  # TODO add rename in the future ?
   def no_remaining_seat_anymore?
     remaining_seats_count.zero?
   end
 
   def requires_updates?
-    stats.update_needed?
+    may_need_update? && (!has_weeks_in_the_future? || no_remaining_seat_anymore?)
   end
 
   def available_weeks
