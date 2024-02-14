@@ -186,6 +186,27 @@ class EmployerMailer < ApplicationMailer
     )
   end
 
+  def cleaning_notification_email(id)
+    @employer = Users::Employer.find(id)
+    @title    = 'Suppression de votre compte imminente'
+    subject   = @title
+    @hello    = "#{@employer.presenter.formal_name},"
+    @header   = 'Votre compte sera supprimé dans 14 jours : '
+    @content  = "nous avons effectivement constaté que votre participation " \
+                "à la plateforme monstagedetroisieme.fr " \
+                "est très faible depuis deux ans.<br/> " \
+                "La suppression de votre compte n'est naturellement pas notre souhait, " \
+                "car votre participation " \
+                "est essentielle au projet d'intégration de jeunes élèves " \
+                "à la vie active".html_safe
+    @extra_content = "Si vous souhaitez conserver votre compte, " \
+                     "connectez-vous dès maintenant."
+    @greetings = 'L\'équipe Monstage'
+    @cta_label = 'Se connecter'
+    @url       = new_user_session_url
+    send_email( to: @employer.email, subject: subject )
+  end
+
   def drafted_internship_offer_email(internship_offer:)
     @employer = internship_offer.employer
     @url = internship_offer_url( id: internship_offer.id,

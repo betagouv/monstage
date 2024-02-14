@@ -73,7 +73,9 @@ class InternshipApplicationsController < ApplicationController
         week_ids: [@internship_application.week_id]
       },
       user: current_user_or_visitor
-    ).all.includes([:sector]).order(id: :desc).last(6)
+    ).all
+     .includes([:sector])
+     .last(6)
   end
 
   def edit_transfer

@@ -86,22 +86,22 @@ module Users
         weeks_till_end = Week.selectable_from_now_until_end_of_school_year
         school         = create(:school, :with_school_manager, weeks: [weeks_till_end.first])
         student        = create(:student, school: school)
-        assert_equal 0 , student.available_offers.count
+        assert_equal 0 , student.available_offers.to_a.count
         create(:weekly_internship_offer, weeks:  weeks_till_end.last(2))
         # since no fit
-        assert_equal 0 , student.available_offers.count
+        assert_equal 0 , student.available_offers.to_a.count
         # with one to fit
         internship_offer = create(:weekly_internship_offer, weeks:  weeks_till_end.first(2))
-        assert_equal 1 , student.available_offers.count
+        assert_equal 1 , student.available_offers.to_a.count
         create(:weekly_internship_offer, coordinates: Coordinates.bordeaux, weeks: weeks_till_end.first(2))
         # still 1 since bordeaux won't fit
-        assert_equal 1 , student.available_offers.count
+        assert_equal 1 , student.available_offers.to_a.count
         # and back to 0 if student has already applied
         create(:internship_application,
                student: student,
                internship_offer: internship_offer,
                week: weeks_till_end.second)
-        assert_equal 0 , student.available_offers.count
+        assert_equal 0 , student.available_offers.to_a.count
       end
     end
 
