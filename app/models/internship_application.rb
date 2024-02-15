@@ -35,7 +35,7 @@ class InternshipApplication < ApplicationRecord
   # has_many :internship_agreements
   belongs_to :student, class_name: 'Users::Student',
                        foreign_key: 'user_id'
-  has_one :internship_agreement
+  has_one :internship_agreement, dependent: :destroy
   # has_many :internship_applications
 
   delegate :update_all_counters, to: :internship_application_counter_hook
