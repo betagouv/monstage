@@ -65,7 +65,7 @@ module Dashboard
       end
       find('a.button-component-cta-button', text: 'Valider ma convention').click
       fill_in "Fonction du représentant de l'entreprise", with: 'CEO'
-      fill_in "Email du tuteur", with: 'tuteur@free.fr'
+      fill_in "Adresse email du responsable de l'accueil en milieu professionnel", with: 'tuteur@free.fr'
       select('08:00', from:'internship_agreement_weekly_hours_start')
       select('16:00', from:'internship_agreement_weekly_hours_end')
       fill_in('Pause déjeuner', with: "un repas à la cantine d'entreprise")
@@ -83,7 +83,7 @@ module Dashboard
       find('a.button-component-cta-button', text: 'Valider ma convention').click
       find("input[name='internship_agreement[organisation_representative_full_name]']")
       fill_in "Fonction du représentant de l'entreprise", with: 'CEO'
-      fill_in "Email du tuteur", with: 'tuteur@free.fr'
+      fill_in "Adresse email du responsable de l'accueil en milieu professionnel", with: 'tuteur@free.fr'
       find('label', text: 'Les horaires sont les mêmes toute la semaine')
       execute_script("document.getElementById('weekly_planning').checked = false;")
       execute_script("document.getElementById('daily-planning-container').classList.remove('d-none');")
@@ -126,7 +126,7 @@ module Dashboard
       find('a.button-component-cta-button', text: 'Valider ma convention').click
       find("input[name='internship_agreement[organisation_representative_full_name]']")
       fill_in "Fonction du représentant de l'entreprise", with: 'CEO'
-      fill_in "Email du tuteur", with: 'tuteur@free.fr'
+      fill_in "Adresse email du responsable de l'accueil en milieu professionnel", with: 'tuteur@free.fr'
       execute_script("document.getElementById('weekly_planning').checked = false;")
       execute_script("document.getElementById('daily-planning-container').classList.remove('d-none');")
       select('08:00', from:'internship_agreement_daily_hours_lundi_start')

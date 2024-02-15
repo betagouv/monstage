@@ -5,12 +5,5 @@ FactoryBot.define do
     description_rich_text { '<p>Lorem ipsum dolor sit amet.<p>' }
     sector { create(:sector) }
     employer { create(:employer) }
-
-    trait :weekly_internship_offer_info do
-    end
-
-    factory :weekly_internship_offer_info, traits: [:weekly_internship_offer_info],
-                                           class: 'InternshipOfferInfos::WeeklyFramed',
-                                           parent: :internship_offer_info
   end
 end

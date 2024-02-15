@@ -29,9 +29,9 @@ module Finders
                                    .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
       return student_query if school_latitude.nil? || school_longitude.nil?
 
-      student_query.nearby(latitude: school_latitude,
-                           longitude: school_longitude,
-                           radius: max_distance)
+      student_query.nearby_and_ordered(latitude: school_latitude,
+                                       longitude: school_longitude,
+                                       radius: max_distance)
     end
 
     private

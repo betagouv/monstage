@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class InternshipOffersController < ApplicationController
-  before_action :authenticate_user!, only: %i[]
   layout 'search', only: :index
 
   with_options only: [:show] do
@@ -15,17 +14,18 @@ class InternshipOffersController < ApplicationController
   def index
     respond_to do |format|
       format.html do
-        # @internship_offers = finder.all.order(id: :desc)
-        # @formatted_internship_offers = format_internship_offers(@internship_offers)
-        # @alternative_internship_offers = alternative_internship_offers if @internship_offers.to_a.count == 0
         @sectors = Sector.all.order(:name).to_a
         @params = query_params
       end
       format.json do
         @internship_offers_all_without_page = finder.all_without_page
-        @internship_offers = finder.all.order(id: :desc)
-        @is_suggestion = @internship_offers.to_a.count === 0
-        @internship_offers = alternative_internship_offers if @internship_offers.to_a.count == 0
+        @internship_offers = finder.all
+
+        @is_suggestion = @internship_offers.to_a.count.zero?
+        @internship_offers = alternative_internship_offers if @is_suggestion
+
+        @internship_offers_all_without_page_array = @internship_offers_all_without_page.to_a
+        @internship_offers_array = @internship_offers.to_a
 
         formatted_internship_offers = format_internship_offers(@internship_offers)
         @params = query_params
@@ -42,7 +42,7 @@ class InternshipOffersController < ApplicationController
   end
 
   def show
-    check_internship_offer_is_published_or_redirect
+
     @previous_internship_offer = finder.next_from(from: @internship_offer)
     @next_internship_offer = finder.previous_from(from: @internship_offer)
 
@@ -91,6 +91,8 @@ class InternshipOffersController < ApplicationController
   end
 
   def check_internship_offer_is_published_or_redirect
+    from_email = [params[:origin], params[:origine]].include?('email')
+    authenticate_user! if current_user.nil? && from_email
     return if can?(:create, @internship_offer)
     return if @internship_offer.published?
 
@@ -176,21 +178,23 @@ class InternshipOffersController < ApplicationController
         lon: internship_offer.coordinates.longitude,
         image: view_context.asset_pack_path("media/images/sectors/#{internship_offer.sector.cover}"),
         sector: internship_offer.sector.name,
-        is_favorite: current_user ? current_user.favorites.pluck(:internship_offer_id).include?(internship_offer.id) : false,
-        logged_in: !!current_user
+        is_favorite: !!current_user && internship_offer.is_favorite?(current_user),
+        logged_in: !!current_user,
+        can_manage_favorite: can?(:create, Favorite)
       }
     }
   end
 
   def page_links
-    return nil if @internship_offers.size < 1 || @is_suggestion
+    offers = @internship_offers
+    return nil if offers.to_a.size < 1 || @is_suggestion
     {
-      totalPages: @internship_offers.total_pages,
-      currentPage: @internship_offers.current_page,
-      nextPage: @internship_offers.next_page,
-      prevPage: @internship_offers.prev_page,
-      isFirstPage: @internship_offers.first_page?,
-      isLastPage: @internship_offers.last_page?,
+      totalPages: offers.total_pages,
+      currentPage: offers.current_page,
+      nextPage: offers.next_page,
+      prevPage: offers.prev_page,
+      isFirstPage: offers.first_page?,
+      isLastPage: offers.last_page?,
       pageUrlBase:  url_for(query_params.except('page'))
     }
   end

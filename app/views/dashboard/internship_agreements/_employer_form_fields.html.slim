@@ -40,23 +40,23 @@ tbody.internship-agreement
         = render partial: 'dashboard/internship_agreements/text_field_element',
                  locals: { field: :siret, limit: 14, form: form, text_label: label, content: content, title: title, filled_by: filled_by, disabled: disabled, pattern: "[0-9]{14}" }
       .row.mt-0
-        - label = "Nom du responsable de l’accueil en milieu professionnel du tuteur"
+        - label = "Nom du responsable de l’accueil en milieu professionnel"
         - title = "Note au chef d'entreprise"
         - content = "Nom, prénom et role du tuteur"
         - filled_by = ["l'entreprise"]
         = render partial: 'dashboard/internship_agreements/text_field_element',
                  locals: { field: :tutor_full_name, form: form, text_label: label, content: content, title: title, filled_by: filled_by, disabled: disabled }
       .row.mt-0
-        - label = "Fonction du tuteur dans l'entreprise"
+        - label = "Fonction du responsable de l’accueil dans l'entreprise"
         - title = "Note au chef d'entreprise"
         - content = "Fonction ou titre professionnel"
         - filled_by = ["l'entreprise"]
         = render partial: 'dashboard/internship_agreements/text_field_element',
                  locals: { field: :tutor_role, limit: 150, form: form, text_label: label, content: content, title: title, filled_by: filled_by, disabled: disabled}
       .row.mt-0
-        - label = "Email du tuteur"
+        - label = "Adresse email du responsable de l'accueil en milieu professionnel"
         - title = "Note au chef d'entreprise"
-        - content = "Email du tuteur dans l'entreprise"
+        - content = "Email du responsable de l’accueil dans l'entreprise"
         - filled_by = ["l'entreprise"]
         = render partial: 'dashboard/internship_agreements/text_field_element',
                  locals: { field: :tutor_email, limit: 80, form: form, text_label: label, content: content, title: title, filled_by: filled_by, disabled: disabled }

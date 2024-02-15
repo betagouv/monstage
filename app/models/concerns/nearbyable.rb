@@ -22,6 +22,15 @@ module Nearbyable
       where(query)
     }
 
+    # since relative_distance is not known as a column,
+    # this scope is to be used as the very last in the query
+    scope :nearby_and_ordered, lambda { |latitude:, longitude:, radius:|
+      nearby(latitude: latitude, longitude: longitude, radius: radius)
+        .with_distance_from(latitude: latitude, longitude: longitude)
+        .unscope(:order)
+        .order(relative_distance: :asc)
+    }
+
     scope :with_distance_from, lambda { |latitude:, longitude:|
       query = format(%{
         ST_Distance(
@@ -34,8 +43,6 @@ module Nearbyable
         .select("#{table_name}.*")
     }
 
-   
-
     def distance_from(latitude, longitude)
       query = format(%{
         SELECT ST_Distance(
@@ -45,7 +52,7 @@ module Nearbyable
         FROM %s
         WHERE id = %d
       }, longitude, latitude, self.class.table_name, id)
-  
+
       result = ActiveRecord::Base.connection.execute(query).first
       result['distance'].to_f if result.present?
     end

@@ -139,6 +139,19 @@ class InternshipOfferTest < ActiveSupport::TestCase
     end
   end
 
+  test 'is_favorite?' do
+    student = create(:student)
+    other_student = create(:student)
+    internship_offer = create(:weekly_internship_offer)
+    other_internship_offer = create(:weekly_internship_offer)
+    refute internship_offer.is_favorite?(student)
+
+    create(:favorite, user: student, internship_offer: internship_offer)
+    create(:favorite, user: other_student, internship_offer: other_internship_offer)
+    refute internship_offer.is_favorite?(other_student)
+    assert internship_offer.is_favorite?(student)
+  end
+  
   test 'when bulking internship_offer is created, make sure area is set' do
     employer = create(:employer)
     assert_equal 1, employer.internship_offer_areas.count

@@ -1,0 +1,18 @@
+p style=head_styles
+  =@title
+
+p style=p_styles
+ =@hello
+
+p style=p_styles
+  =@header
+  =@content
+p style=p_styles
+  =@extra_content
+
+= render "mailers/blue_call_to_action",
+         href: @url,
+         label: @cta_label
+
+p style=p_styles
+  =@greetings

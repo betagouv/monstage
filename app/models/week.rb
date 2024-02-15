@@ -11,10 +11,6 @@ class Week < ApplicationRecord
 
   has_many :internship_offers, through: :internship_offer_weeks
 
-  has_many :internship_offer_info_weeks, dependent: :destroy,
-                                         foreign_key: :internship_offer_info_id
-  has_many :internship_offer_infos, through: :internship_offer_info_weeks
-
   has_many :school_internship_weeks, dependent: :destroy
   has_many :schools, through: :school_internship_weeks
 

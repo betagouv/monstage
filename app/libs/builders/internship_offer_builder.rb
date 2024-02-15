@@ -21,6 +21,8 @@ module Builders
             internship_offer_area_id: user.current_area_id)
         )
         internship_offer.save!
+        DraftedInternshipOfferJob.set(wait: 1.week)
+                                 .perform_later(internship_offer_id: internship_offer.id)
         callback.on_success.try(:call, internship_offer)
       rescue ActiveRecord::RecordInvalid => e
         callback.on_failure.try(:call, e.record)
@@ -116,7 +118,7 @@ module Builders
         sector_id: internship_offer_info.sector_id,
         title: internship_offer_info.title,
         description_rich_text: (internship_offer_info.description_rich_text.present? ? internship_offer_info.description_rich_text.to_s : internship_offer_info.description),
-        type: 'InternshipOfferInfos::WeeklyFramed'
+        type: 'InternshipOfferInfo'
       }
     end
 

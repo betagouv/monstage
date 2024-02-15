@@ -19,7 +19,7 @@ module Dashboard::Stepper
       sign_in(employer)
       travel_to(Date.new(2019, 3, 1)) do
         organisation = create(:organisation, employer: employer)
-        internship_offer_info = create(:weekly_internship_offer_info)
+        internship_offer_info = create(:internship_offer_info)
         hosting_info = create(:hosting_info)
 
         get new_dashboard_stepper_practical_info_path(
@@ -47,7 +47,7 @@ module Dashboard::Stepper
       employer = create(:employer, phone: '+330623456789')
       sign_in(employer)
       organisation = create(:organisation, employer: employer)
-      internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
+      internship_offer_info = create(:internship_offer_info, employer: employer)
       hosting_info = create(:hosting_info, employer: employer)
       
       assert_difference('InternshipOffer.count', 1) do
@@ -130,34 +130,36 @@ module Dashboard::Stepper
       employer = create(:employer, phone: '+330623456789')
       sign_in(employer)
       organisation = create(:organisation, employer: employer)
-      internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
+      internship_offer_info = create(:internship_offer_info, employer: employer)
       hosting_info = create(:hosting_info, employer: employer)
       
       # first time
-      assert_difference('InternshipOffer.count', 1) do
-        assert_difference('PracticalInfo.count', 1) do
-          post(
-            dashboard_stepper_practical_infos_path(
-              organisation_id: organisation.id,
-              internship_offer_info_id: internship_offer_info.id,
-              hosting_info_id: hosting_info.id),
-            params: {
-              practical_info: {
-                street: '12 rue des bois',
-                street_complement: 'Batiment 1',
-                zipcode: '75001',
-                city: 'Paris',
-                coordinates: { latitude: 1, longitude: 1 },
-                contact_phone: '+330623456789',
-                daily_hours: {
-                  "lundi" => ['08:00', '15:00'],
-                  "mardi" => ['08:00', '13:00'],
-                  "mercredi" => ['09:00', '14:00'],
-                  "jeudi" => ['10:00', '15:00'],
-                  "vendredi" => ['11:00', '16:00']
-                }
-              },
-            })
+      assert_enqueued_jobs 1, only: DraftedInternshipOfferJob do
+        assert_difference('InternshipOffer.count', 1) do
+          assert_difference('PracticalInfo.count', 1) do
+            post(
+              dashboard_stepper_practical_infos_path(
+                organisation_id: organisation.id,
+                internship_offer_info_id: internship_offer_info.id,
+                hosting_info_id: hosting_info.id),
+              params: {
+                practical_info: {
+                  street: '12 rue des bois',
+                  street_complement: 'Batiment 1',
+                  zipcode: '75001',
+                  city: 'Paris',
+                  coordinates: { latitude: 1, longitude: 1 },
+                  contact_phone: '+330623456789',
+                  daily_hours: {
+                    "lundi" => ['08:00', '15:00'],
+                    "mardi" => ['08:00', '13:00'],
+                    "mercredi" => ['09:00', '14:00'],
+                    "jeudi" => ['10:00', '15:00'],
+                    "vendredi" => ['11:00', '16:00']
+                  }
+                },
+              })
+          end
         end
       end
 
