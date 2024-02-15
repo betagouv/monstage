@@ -7,8 +7,8 @@ class TeamMemberInvitationTest < ActiveSupport::TestCase
   end
 
   test "aasm_state accepted_invitation" do
-    employer = create(:employer)
-    invitee_employer = create(:employer)
+    employer = create(:employer, first_name: 'Jean', last_name: 'Dupont')
+    invitee_employer = create(:employer, first_name: 'Pierre', last_name: 'Creon')
     team_member_invitation = create(:team_member_invitation,
                          inviter_id: employer.id,
                          member_id: invitee_employer.id,
@@ -23,15 +23,15 @@ class TeamMemberInvitationTest < ActiveSupport::TestCase
   end
 
   test "no fusion between teams" do
-    employer = create(:employer)
-    invitee_employer = create(:employer)
+    employer = create(:employer, first_name: 'Jean', last_name: 'Dupont')
+    invitee_employer = create(:employer, first_name: 'Pierre', last_name: 'Creon')
     team_member_invitation = create(:team_member_invitation,
                          inviter_id: employer.id,
                          member_id: invitee_employer.id,
                          invitation_email: invitee_employer.email
     )
     team_member_invitation.accept_invitation!
-    employer_2 = create(:employer)
+    employer_2 = create(:employer, first_name: 'Hervé', last_name: 'Planchat')
     invitee_employer_2 = create(:employer)
     team_member_invitation = create(:team_member_invitation,
                          inviter_id: employer_2.id,
