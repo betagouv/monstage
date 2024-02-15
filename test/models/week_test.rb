@@ -30,10 +30,33 @@ class WeekTest < ActiveSupport::TestCase
   end
 
   test 'scope in_the_future' do
-    assert Week.in_the_future.count > 52
-    assert_equal 2050, Week.in_the_future.map(&:year).sort.last
-    assert_equal 52, Week.in_the_future.sort_by(&:number).sort.last.number
-    assert_equal 1, Week.in_the_future.sort_by(&:number).sort.last(52).first.number
+    travel_to(Date.new(2021, 1, 1)) do
+      assert Week.in_the_future.count > 52
+      assert_equal 2050, Week.in_the_future.map(&:year).sort.last
+      assert_equal 52, Week.in_the_future.sort_by(&:number).sort.last.number
+      assert_equal 1, Week.in_the_future.sort_by(&:number).sort.last(52).first.number
+      ordered_weeks = Week.from_now.order(:year, :number)
+      assert_equal 1, ordered_weeks.first.number
+      assert_equal 2021, ordered_weeks.first.year
+    end
+  end
+
+  test 'scope from_now' do
+    travel_to(Date.new(2021, 1, 1)) do
+      assert Week.from_now.count > 52
+      assert_equal 2050, Week.from_now.map(&:year).sort.last
+      assert_equal 52, Week.from_now.sort_by(&:number).sort.last.number
+      assert_equal 1, Week.from_now.sort_by(&:number).sort.last(52).first.number
+    end
+  end
+  
+  test 'scope from_now at the end of the year' do
+    travel_to(Date.new(2020, 12, 31)) do
+      assert Week.from_now.count > 52
+      ordered_weeks = Week.from_now.order(:year, :number)
+      assert_equal 53, ordered_weeks.first.number
+      assert_equal 2020, ordered_weeks.first.year
+    end
   end
 
   test '.ahead_of_school_year_start?' do

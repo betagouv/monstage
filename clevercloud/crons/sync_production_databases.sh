@@ -9,3 +9,4 @@ fi
 cd ${APP_HOME}
 
 bundle exec rails sync_production_databases
+# TODO : clean the existing crons never launched from crons folder

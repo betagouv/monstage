@@ -7,6 +7,6 @@ p style=p_styles
     = "Vous avez actuellement "
     strong style="color:#dc3545"= "#{count}  #{'candidature'.pluralize(count)}"
     = " en attente de réponse. En l'absence de réponse de votre part, #{'elle'.pluralize(count)} "
-    strong= "#{count > 1 ? "expireront" : "expirera"} automatiquement dans 30 jours."
+    strong= "#{count > 1 ? "expireront" : "expirera"} automatiquement dans #{InternshipApplication::EXPIRATION_DURATION/3600/24} jours."
 
 = render(partial: "mailers/blue_call_to_action", locals: {href: dashboard_internship_offers_url, label:"Gérer mes candidatures"})

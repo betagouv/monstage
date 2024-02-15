@@ -5,7 +5,7 @@ FactoryBot.define do
     # TODO use transient to set the distinction between weekly and api offers
     employer { create(:employer) }
     organisation { create(:organisation, employer: employer) }
-    internship_offer_info { create(:weekly_internship_offer_info, employer: employer) }
+    internship_offer_info { create(:internship_offer_info, employer: employer) }
     hosting_info { create(:hosting_info, employer: employer) }
     practical_info { create(:practical_info, employer: employer) }
 
@@ -32,6 +32,7 @@ FactoryBot.define do
     siret { '11122233300000' }
     aasm_state { 'published' }
     hidden_duplicate { false }
+    handicap_accessible { false }
     daily_hours do
       {
         'lundi' => ['09:00', '17:00'],
@@ -43,6 +44,10 @@ FactoryBot.define do
     end
     weekly_hours { [] }
     lunch_break { "12:00-13:00" }
+
+    trait :drafted do
+      aasm_state { :drafted }
+    end
 
     trait :published do
       published_at { Time.now }
@@ -67,10 +72,11 @@ FactoryBot.define do
 
     trait :api_internship_offer do
       weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
-      employer { create(:user_operator) }
       permalink { 'https://google.fr' }
       description { 'Lorem ipsum dolor api' }
       sequence(:remote_id) { |n| n }
+      employer { create(:user_operator) }
+      internship_offer_area { employer.current_area }
     end
 
     trait :last_year_weekly_internship_offer do

@@ -10,7 +10,7 @@
           .fr-text--md
             section.fr-accordion.align-items-center.p-3.bg-blue-950
               h3.fr-accordion__title
-                .fr-accordion__btn[aria-expanded="false" aria-controls="accordion-students"]
+                .fr-accordion__btn[aria-expanded="#{unaffected_students.count.positive?}" aria-controls="accordion-students"]
                   .row
                     .col-8.text-primary
                       | Les élèves ci-dessous ont besoin d'être affectés à une classe pour pouvoir postuler à des stages.

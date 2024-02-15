@@ -24,15 +24,6 @@ fr:
       area_notification:
         one: Notification
         other: Notifications
-      email_whitelists/education_statistician:
-        one: Courriel autorisé du Dsden
-        other: Courriels autorisés des Dsden
-      email_whitelists/statistician:
-        one: Courriel autorisé du référent départemental
-        other: Courriels autorisés des référents départementaux
-      email_whitelists/ministry:
-        one: Courriel autorisé du référent central
-        other: Courriels autorisés des référents centraux
       group:
         one: Groupe
         other: Groupes
@@ -154,8 +145,6 @@ fr:
         current_approved_internship_applications_count: Candidatures acceptées
         full_address: "Adresse de l'établissement"
         full_weeks: Semaines
-      email_whitelist:
-        zipcode: Code postal
       organisation: &organisation_fields
         employer_name: Employeur
         employer_description: Description de l'employeur
@@ -333,7 +322,6 @@ fr:
 
         id: Identifiant unique de l'offre
         internship_offer_weeks: Semaines ouvertes aux stages
-        internship_offer_info_weeks: Semaines ouvertes aux stages
         human_is_public: Public/Privé
         human_max_candidates: Nombre max d'élèves accueillis sur l'année
         human_max_students_per_group: Stage individuel / collectif
@@ -362,9 +350,6 @@ fr:
         total_male_applications_count: Garçon
         total_female_applications_count: Fille
         total_no_gender_applications_count: Non précisé
-        total_convention_signed_applications_count: Nbr. de stages conclus
-        total_male_convention_signed_applications_count: Garçon
-        total_female_convention_signed_applications_count: Fille
         approved_applications_count: "Nbr. de candidatures acceptées"
         submitted_applications_count: "Nbr. de candidatures en attente"
         rejected_applications_count: "Nbr. de candidatures rejetées"
@@ -372,7 +357,6 @@ fr:
         total_female_approved_applications_count: Fille
         total_no_gender_approved_applications_count: Non précisé
         total: Total
-        convention_signed_applications_count: Nbr. de stages conclus
         siren: Code Siren
         permalink: "Lien vers l'association partenaire"
         sector_name: Secteur
@@ -410,7 +394,15 @@ fr:
           canceled_by_employer: annulée par l'employeur
           canceled_by_student: annulée par l'élève
           convention_signed: convention signée
+        student_phone: Contact téléphone
+        student_email: Contact email
+        user_id: Elève
         week: Semaine
+
+      internship_applications/weekly_framed:
+        student_phone: Contact téléphone
+        student_email: Contact email
+
 
       invitation:
         email: Email
@@ -422,30 +414,30 @@ fr:
 
       user:
         accept_terms: "Conditions d'utilisation"
+        anonymized: Anonymisé
+        birth_date: Date de naissance
         class_room: "Classe"
         class_room_id: ID de la classe
         confirmed_at: Confirmé le
-        email_whitelist: Liste blanche
+        department: Département
+        discarded_at: Supprimé le
         first_name: Prénom
         gender: Sexe
-        birth_date: Date de naissance
         last_name: Nom
         main_teacher: "Professeur principal"
+        operator: Association
         other: "Autres fonctions"
         phone: Téléphone mobile
-        school: "Etablissement"
-        school_id: ID de l'établissement
-        school_manager: "Chef d'établissement"
-        teacher: "Professeur"
-        discarded_at: Supprimé le
-        operator: Association
         phone_password_reset_count: Compteur de remise à zéro de mot de passe par téléphone
-        anonymized: Anonymisé
-        zipcode: Code postal
         roles:
           prefecture_statistician: Référent départemental
           ministry_statistician: Référent central
           education_statistician: Référent de l'éducation nationale
+        school: "Etablissement"
+        school_id: ID de l'établissement
+        school_manager: "Chef d'établissement"
+        teacher: "Professeur"
+        zipcode: Code postal
 
       identity:
         first_name: Prénom

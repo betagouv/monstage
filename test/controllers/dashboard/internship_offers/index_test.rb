@@ -42,7 +42,6 @@ module Dashboard::InternshipOffers
     end
 
     test 'GET #index as employer returns his internship_offers with applications on them' do
-
       employer , included_internship_offer = create_employer_and_offer
       excluded_internship_offer = create(:weekly_internship_offer,
                                          internship_offer_area_id: employer.current_area_id,
@@ -338,6 +337,72 @@ module Dashboard::InternshipOffers
       ordonencer_params = sort_params.merge(location_params_forwarded_to_sort_links)
       assert_select ".sort-links a.fr-raw-link[href='#{dashboard_internship_offers_path(ordonencer_params)}']",
                     count: 1
+    end
+
+    test 'GET #index as Employer with search params returns filtered internship_offers by title' do
+      employer = create(:employer)
+      sign_in(employer)
+      internship_offer = create(:weekly_internship_offer,
+                                employer: employer,
+                                internship_offer_area_id: employer.current_area_id,
+                                title: 'Avocat fiscaliste')
+      internship_offer_2 = create(:weekly_internship_offer,
+                                        employer: employer,
+                                        internship_offer_area_id: employer.current_area_id,
+                                        title: 'Plombier')
+  
+      get dashboard_internship_offers_path(search: 'avocat')
+  
+      assert_response :success
+
+      assert_presence_of(internship_offer: internship_offer)
+      assert_absence_of(internship_offer: internship_offer_2)
+    end
+
+    test 'GET #index as Employer with search params returns filtered internship_offers by emplyer_name' do
+      employer = create(:employer)
+      sign_in(employer)
+      internship_offer = create(:weekly_internship_offer,
+                                employer: employer,
+                                internship_offer_area_id: employer.current_area_id,
+                                title: 'Avocat fiscaliste',
+                                employer_name: 'Corp')
+      internship_offer_2 = create(:weekly_internship_offer,
+                                        employer: employer,
+                                        internship_offer_area_id: employer.current_area_id,
+                                        title: 'Plombier',
+                                        employer_name: 'Artisan')
+  
+      get dashboard_internship_offers_path(search: 'corp')
+  
+      assert_response :success
+
+      assert_presence_of(internship_offer: internship_offer)
+      assert_absence_of(internship_offer: internship_offer_2)
+    end
+
+    test 'GET #index as Employer with search params returns filtered internship_offers by city' do
+      employer = create(:employer)
+      sign_in(employer)
+      internship_offer = create(:weekly_internship_offer,
+                                employer: employer,
+                                internship_offer_area_id: employer.current_area_id,
+                                title: 'Avocat fiscaliste',
+                                employer_name: 'Corp',
+                                city: 'Paris')
+      internship_offer_2 = create(:weekly_internship_offer,
+                                        employer: employer,
+                                        internship_offer_area_id: employer.current_area_id,
+                                        title: 'Plombier',
+                                        employer_name: 'Artisan',
+                                        city: 'Bordeaux')
+  
+      get dashboard_internship_offers_path(search: 'PaRiS')
+  
+      assert_response :success
+
+      assert_presence_of(internship_offer: internship_offer)
+      assert_absence_of(internship_offer: internship_offer_2)
     end
   end
 end

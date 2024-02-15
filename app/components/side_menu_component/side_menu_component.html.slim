@@ -1,0 +1,17 @@
+nav.fr-sidemenu.fr-sidemenu--sticky aria-labelledby="dashboard-title"
+  .fr-sidemenu__inner
+    button.fr-sidemenu__btn[hidden aria-controls="fr-sidemenu-wrapper" aria-expanded="false"]
+      |  Dans cette rubrique
+    #fr-sidemenu-wrapper.fr-collapse
+      ul.fr-sidemenu__list
+        - @menu_collection.each do |menu_item|
+          - if menu_item[:authorization]
+            li class="fr-sidemenu__item #{li_extra_class(menu_item)}"
+              .sidemenu-box
+                .sidemenu-box-left
+                  = link_to menu_item[:path], link_options(menu_item) do
+                    = menu_item[:label]
+                - if menu_item[:notice] && menu_item[:notice].to_i.positive?
+                  .sidemenu-box-right
+                    p.fr-badge.fr-badge--new.fr-badge--no-icon.fr-mt-3v
+                      = menu_item[:notice]

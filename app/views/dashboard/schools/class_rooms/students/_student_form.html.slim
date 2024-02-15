@@ -47,21 +47,6 @@
               .fr-radio-group.fr-radio-group--sm
                 = f.radio_button :gender, "np", id: "select-gender-unknown"
                 = f.label :gender, "Non précisé", class: "fr-label fr-mb-0", for: "select-gender-unknown"
-    
-    .row.fr-my-1w
-      .fr-col-12.fr-col-md-12.fr-pl-2w
-        .form-group
-          .fr-checkbox-group.fr-checkbox-group--sm
-            = f.check_box :handicap_present, data: { action: "change->signup#toggleHandicap" }
-            = f.label :handicap_present, class: "" do
-              | L'élève aura besoin d'une aide adaptée pendant son stage, en raison de son handicap.
-              small.text-muted
-                | (optionnel)
-            
-        .form-group.custom-label-container class="#{@student.handicap_present ? '' : 'd-none'}" data-signup-target="handicapGroup" 
-          = f.label "Indiquez ce dont l'élève a besoin", class: "fr-label"
-          = f.text_area :handicap, class: 'fr-input'
-
               
     .fr-highlight
       p

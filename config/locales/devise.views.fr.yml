@@ -53,7 +53,7 @@ fr:
         action: Confirmer mon courriel
         greeting: Bienvenue %{recipient} !
         instruction: 'Vous pouvez confirmer votre courriel grâce au lien ci-dessous :'
-        subject: Plus qu'une étape pour activer votre compte
+        subject: Activation de votre compte monstagedetroisieme.fr
       email_changed:
         greeting: Bonjour %{recipient} !
         message: Nous vous contactons pour vous notifier que votre adresse de courriel a été changée en %{email}.

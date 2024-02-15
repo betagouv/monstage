@@ -10,7 +10,7 @@ class Academy
     'Académie de Dijon' => %w[21 58 71 89],
     'Académie de Rennes' => %w[22 29 35 56],
     "Académie d'OrléansTours" => %w[18 28 36 37 41 45],
-    'Académie de Corse' => %w[2A 2B],
+    'Académie de Corse' => %w[2A 2B 200 201 202 206],
     'Académie de Nancy-Metz' => %w[54 55 57 88],
     'Académie de Reims' => %w[08 10 51 52],
     'Académie de Strasbourg' => %w[67 68],
@@ -84,8 +84,10 @@ class Academy
     MAP.map do |academy_name, departement_numbers|
       if ::Department.departement_identified_by_3_chars?(zipcode: zipcode)
         return academy_name if departement_numbers.include?(zipcode[0..2])
-      else
-        return academy_name if departement_numbers.include?(zipcode[0..1])
+      elsif zipcode[0..1] == '20'
+        return 'Académie de Corse' 
+      elsif departement_numbers.include?(zipcode[0..1])
+        return academy_name
       end
     end
   end

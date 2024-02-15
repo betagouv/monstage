@@ -126,7 +126,8 @@ module Api
               weeks: week_params,
               max_candidates: 2,
               published_at: nil,
-              is_public: true
+              is_public: true,
+              handicap_accessible: true
             }
           }
         )
@@ -139,6 +140,7 @@ module Api
       assert_equal 2, @internship_offer.max_candidates
       assert_equal JSON.parse(@internship_offer.to_json), json_response
       assert @internship_offer.reload.is_public
+      assert @internship_offer.reload.handicap_accessible
     end
 
     test 'PATCH #update as operator unpublish/republish internship_offers' do
@@ -166,7 +168,7 @@ module Api
         }
       )
       assert_response :success
-      assert_in_delta Time.now.to_i , @internship_offer.reload.published_at.to_i, 0.000_001
+      assert_in_delta Time.now.to_i , @internship_offer.reload.published_at.to_i, 0.000_01
       assert_equal true, @internship_offer.published?
     end
 

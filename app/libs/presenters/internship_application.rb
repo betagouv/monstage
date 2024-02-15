@@ -28,18 +28,17 @@ module Presenters
     end
 
     def human_state
+      action_path = { path: internship_application_path }
       case internship_application.aasm_state
       when "drafted"
         student_has_found = internship_application.student
                                                   .has_already_approved_an_application?
         label = student_has_found ? 'Voir' : 'Finaliser ma candidature'
         level = student_has_found ? 'tertiary' : 'primary'
+        
         {label: 'brouillon',
           badge:'grey',
-          actions: [ { label: label,
-                       path: internship_application_path,
-                       level: level
-                    }]
+          actions: [action_path.merge(label: label, level: level)]
         }
       when "submitted"
         label = reader.student? || reader.school_management? ? "Sans réponse de l'entreprise" : 'nouveau'
@@ -47,10 +46,7 @@ module Presenters
         action_level = reader.student? ? 'tertiary' : 'primary'
         { label: label,
           badge: 'info',
-          actions: [ { label: action_label,
-                      path: internship_application_path,
-                      level: action_level
-                    }]
+          actions: [action_path.merge(label: action_label, level: action_level)]
         }
       when "read_by_employer"
         label = reader.student? || reader.school_management? ? "Sans réponse de l'entreprise" : 'Lue'
@@ -59,21 +55,25 @@ module Presenters
         action_level = reader.student? ? 'tertiary' : 'primary'
         { label: label,
           badge: badge,
-          actions: [ { label: action_label,
-                      path: internship_application_path,
-                      level: action_level
-                    }]
+          actions: [action_path.merge(label: action_label, level: action_level)]
         }
       when "examined"
         action_label = reader.student? ? 'Voir' : 'Répondre'
         action_level = reader.student? ? 'tertiary' : 'primary'
         { label: 'à l\'étude',
           badge: 'info',
-          actions: [ { label: action_label,
-                      path: internship_application_path,
-                      level: action_level
-                    }]
+          actions: [action_path.merge(label: action_label, level: action_level)]
         }
+
+      when "transfered"
+        action_label = reader.student? ? 'en attente de réponse' : 'transféré'
+        action_level = reader.student? ? 'tertiary' : 'primary'
+        label = reader.student? ? 'en attente de réponse' : 'transféré'
+        { label: label,
+          badge: 'info',
+          actions: [action_path.merge(label: action_label, level: action_level)]
+        }
+
       when "validated_by_employer"
         label = reader.student? || reader.school_management? ? 'acceptée par l\'entreprise' : 'en attente de réponse'
         action_label = reader.student? ? 'Répondre' : 'Voir'
@@ -81,63 +81,42 @@ module Presenters
         badge = reader.student? ? 'success' : 'info'
         { label: label,
           badge: badge,
-          actions: [ { label: action_label,
-                      path: internship_application_path,
-                      level: action_level
-                      }]
+          actions: [action_path.merge(label: action_label, level: action_level)]
         }
       when "canceled_by_employer"
         label = reader.student? || reader.school_management? ? 'annulée par l\'entreprise' : 'refusée'
         { label: 'refusée par l\'entreprise',
           badge: 'error',
-          actions: [ { label: 'Voir',
-                       path: internship_application_path,
-                       level: 'tertiary'
-                      }]
+          actions: [action_path.merge(label: 'Voir', level: 'tertiary')]
         }
       when  "rejected"
         label = reader.student? || reader.school_management? ? 'refusée par l\'entreprise' : 'refusée'
         { label: 'refusée par l\'entreprise',
           badge: 'error',
-          actions: [ { label: 'Voir',
-                       path: internship_application_path,
-                       level: 'tertiary'
-                      }]
+          actions: [action_path.merge(label: 'Voir', level: 'tertiary')]
         }
       when "canceled_by_student"
         label = reader.student? || reader.school_management? ? 'annulée' : 'annulée par l\'élève'
         { label: label,
           badge:'purple-glycine',
-          actions: [ { label: 'Voir',
-                      path: internship_application_path,
-                      level: 'tertiary'
-                      }]
+          actions: [action_path.merge(label: 'Voir', level: 'tertiary')]
         }
       when "expired"
         { label: 'expirée',
           badge:'error',
-          actions: [ { label: 'Voir',
-                      path: internship_application_path,
-                      level: 'tertiary'
-                      }]
+          actions: [action_path.merge(label: 'Voir', level: 'tertiary')]
         }
       when "canceled_by_student_confirmation"
         { label: 'annulée',
           badge:'purple-glycine',
-          actions: [ { label: 'Voir',
-                      path: internship_application_path,
-                      level: 'tertiary'
-                      }]
+          actions: [action_path.merge(label: 'Voir', level: 'tertiary')]
         }
       when "approved"
         action_label = reader.student? ? 'Contacter l\'employeur' : 'Voir'
         action_level = reader.student? ? 'primary' : 'secondary'
         { label: "stage validé",
           badge: 'success',
-          actions: [ { label: action_label,
-                       path: internship_application_path,
-                       level: action_level
-                      }]
+          actions: [action_path.merge(label: action_label, level: action_level)]
         }
       else
         {}
@@ -164,17 +143,23 @@ module Presenters
       case internship_application.aasm_state
       when "drafted"
         [{ label: 'Modifier',
-            link_path: edit_internship_application_path,
-            color: 'primary',
-            level: 'secondary'
-          }, {
-            label: 'Envoyer la demande',
-            form_path: internship_application_path,
-            transition: "submit!",
-            color: 'primary',
-            level: 'primary'}]
+           link_path: edit_internship_application_path,
+           color: 'primary',
+           level: 'secondary'
+         }, {
+           label: 'Envoyer la demande',
+           form_path: internship_application_path,
+           transition: "submit!",
+           color: 'primary',
+           level: 'primary'}]
 
       when "submitted", "examined"
+         [{ label: 'Renvoyer la demande',
+            color: 'primary',
+            level: 'primary',
+          } ]
+
+      when "transfered", "examined"
          [{ label: 'Renvoyer la demande',
             color: 'primary',
             level: 'primary',
@@ -205,26 +190,6 @@ module Presenters
       else
         []
       end
-    end
-
-    def ok_for_examine_states
-      %w[submitted read_by_employer]
-    end
-
-    def ok_for_transfer_states
-      %w[submitted read_by_employer examined]
-    end
-
-    def ok_for_reject_states
-      %w[submitted
-        read_by_employer
-        examined
-        validated_by_employer
-        approved]
-    end
-
-    def ok_for_employer_validation_states
-      %w[submitted examined read_by_employer]
     end
 
     def ok_for_examine?
@@ -285,7 +250,7 @@ module Presenters
 
     protected
     def initialize(internship_application, user)
-      @reader = user
+      @reader = user  
       @internship_application = internship_application
       @student                = internship_application.student
       @internship_offer       = internship_application.internship_offer
@@ -309,8 +274,31 @@ module Presenters
       )
     end
 
+    private
+    
     def current_state_in_list?(state_array)
       state_array.include?(internship_application.aasm_state)
+    end
+    
+    def ok_for_examine_states
+      %w[submitted read_by_employer]
+    end
+
+    def ok_for_transfer_states
+      %w[submitted read_by_employer examined]
+    end
+
+    def ok_for_reject_states
+      %w[submitted
+        read_by_employer
+        examined
+        transfered
+        validated_by_employer
+        approved]
+    end
+
+    def ok_for_employer_validation_states
+      %w[submitted examined transfered read_by_employer]
     end
   end
 end

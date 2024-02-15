@@ -10,7 +10,7 @@
                   new_internship_offer_internship_application_path(internship_offer_id: internship_offer.id),
                   class: 'fr-btn fr-icon-edit-fill fr-btn--icon-left',
                   data: { action: 'click->internship-offer#applyCount', target: 'internship-offer.applyButton', internshipOfferId: internship_offer.id, userId: current_user.id, turbo: false }
-                
+
     - else
       / disabled button
       = button_to 'Postuler', '', class: 'fr-btn fr-btn--icon-left fr-icon-edit-fill', disabled: true
@@ -19,7 +19,12 @@
     = render "internship_applications/call_to_action/visitor", internship_offer: internship_offer
 
   .fr-mx-5w
-    = react_component("InternshipOfferFavoriteButton", props: { internshipOffer: { id: internship_offer.id, is_favorite: false }, isDisabled: !can?(:create, Favorite) })
+    - if(user_signed_in? && can?(:create, Favorite))
+      - is_favorite = internship_offer.is_favorite?(current_user)
+      = react_component("InternshipOfferFavoriteButton",
+                        props: { internshipOffer: { id: internship_offer.id,
+                                                    is_favorite: is_favorite,
+                                                    isDisabled: !can?(:create, Favorite) }})
 
 - if current_user.try(:has_already_approved_an_application?)
   p.fr-mx-1w.fr-mt-1w.fr-badge.fr-badge--warning

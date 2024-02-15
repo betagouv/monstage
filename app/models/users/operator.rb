@@ -7,12 +7,6 @@ module Users
     belongs_to :operator, foreign_key: :operator_id,
                           class_name: '::Operator'
 
-    # has_many :internship_offers, as: :employer,
-    #                              dependent: :destroy
-
-    # keep with following question : do api anonymize offers ? (since teamable uses kept_internship_offers)
-    # has_many :internship_applications, through: :internship_offers
-
     before_create :set_api_token
 
     rails_admin do

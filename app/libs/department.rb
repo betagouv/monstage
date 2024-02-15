@@ -134,10 +134,6 @@ end
 
   # edge case for [971->978]
   def self.departement_identified_by_3_chars?(zipcode:)
-    zipcode.starts_with?('97') ||
-      zipcode.starts_with?('202') ||
-      zipcode.starts_with?('206') ||
-      zipcode.starts_with?('201') ||
-      zipcode.starts_with?('200')
+    zipcode.starts_with?('97') || zipcode.starts_with?('20')
   end
 end

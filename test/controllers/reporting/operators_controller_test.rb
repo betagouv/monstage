@@ -20,7 +20,6 @@ module Reporting
       # assert_redirected_to root_path
     end
 
-    
     test 'get index as god works' do
       god = create(:god)
       sign_in(god)
@@ -33,7 +32,7 @@ module Reporting
       assert_select 'h1', "Statistiques associations"
       assert_select '.test-operator-count', count: 2
     end
-    
+
     test 'get index.xls as god works' do
       god = create(:god)
       sign_in(god)
@@ -41,15 +40,14 @@ module Reporting
       assert_response :success
     end
 
-
     test 'PATCH #update as god success'  do
       god = create(:god)
       operator_1 = create(:operator, target_count: 0)
       sign_in(god)
-      operator_params = { 
-        id: operator_1.id, 
-        target_count: 10, 
-        school_year: 2022, 
+      operator_params = {
+        id: operator_1.id,
+        target_count: 10,
+        school_year: 2022,
         onsite_count: '50',
         online_count: '30',
         hybrid_count: '20',
@@ -59,7 +57,7 @@ module Reporting
       }
 
       put reporting_operators_path, params: { operator: operator_params }
-      
+
       assert_response :redirect
       assert_equal 10, operator_1.reload.target_count
       assert_equal 100, operator_1.reload.realized_count['2022']['total']

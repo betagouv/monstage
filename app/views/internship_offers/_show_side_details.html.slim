@@ -13,12 +13,13 @@
   .col-12.fr-py-2w
     .fr-tag.fr-icon-calendar-fill.fr-tag--icon-left
       - weeks_summary = internship_offer.presenter.weeks_summary
-      .fr-mr-2w
-        = "Disponibles sur #{weeks_summary[:weeks_count] } semaines:"
-        ul.list-unstyled
-          - weeks_summary[:weeks_list].split_weeks_in_trunks.each do |week_list_element|
-            - date_range = DateRange.new(weeks:[week_list_element.first_week, week_list_element.last_week])
-            li = date_range.boundaries_as_string
+      - if weeks_summary.fetch(:weeks_count, 0) > 0
+        .fr-mr-2w
+          = "Disponibles sur #{weeks_summary[:weeks_count] } semaines:"
+          ul.list-unstyled
+            - weeks_summary[:weeks_list].split_weeks_in_trunks.each do |week_list_element|
+              - date_range = DateRange.new(weeks:[week_list_element.first_week, week_list_element.last_week])
+              li = date_range.boundaries_as_string
 .row
   .col-12.fr-py-2w
     .fr-tag.fr-icon-map-pin-2-fill.fr-tag--icon-left.blue-france

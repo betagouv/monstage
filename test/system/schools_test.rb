@@ -9,6 +9,7 @@ class SchoolsTest < ApplicationSystemTestCase
   test 'can create School' do
     god = create(:god)
     sign_in(god)
+    # TODO add or remove this test
     # assert_difference 'School.count' do
     #   visit new_school_path
     #   fill_in_school_form

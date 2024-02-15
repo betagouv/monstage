@@ -161,6 +161,36 @@ module Dashboard::InternshipOffers
         click_button "Refusées"
         find "p.fr-mt-1w.fr-badge.fr-badge--sm.fr-badge--purple-glycine.fr-badge--no-icon", text: "annulée".upcase
       end
+    test 'employer can transfer an internship_application' do
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
+      sign_in(employer)
+      visit dashboard_candidatures_path
+      click_link 'Répondre'
+      click_on 'Transférer'
+      fill_in 'Adresse email', with: 'test@free.fr'
+      text_area = first(:css, 'textarea.fr-input').native
+      text_area.send_keys('Test')
+      click_on 'Envoyer'
+      find('h2', text: 'Les candidatures')
+      assert_match /La candidature a été transmise avec succès/, find('div.alert.alert-success').text
+      click_on 'Répondre'
+      find('button[data-toggle="modal"][data-fr-js-modal-button="true"]', text: 'Accepter')
+      find('button[data-toggle="modal"][data-fr-js-modal-button="true"]', text: 'Refuser')
+    end
+
+    test 'employer cannot transfer an internship_application with a faulty email' do
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
+      sign_in(employer)
+      visit dashboard_candidatures_path
+      click_link 'Répondre'
+      click_on 'Transférer'
+      fill_in 'Adresse email', with: '@test@free.fr'
+      text_area = first(:css, 'textarea.fr-input').native
+      text_area.send_keys('Test')
+      click_on 'Envoyer'
+      assert_match /Transférer une candidature/, find('h1').text
     end
   end
 end

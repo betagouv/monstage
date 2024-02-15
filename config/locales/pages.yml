@@ -127,6 +127,14 @@ fr:
       page_title: 'Page opérateurs'
     statistiques:
       page_title: 'Compte-rendu statistique'
+    student_landing:
+      page_title: 'Accueil élèves'
+    pro_landing:
+      page_title: 'Accueil professionnels'
+    school_management_landing:
+      page_title: 'Accueil équipes pédagogiques'
+    statistician_landing:
+      page_title: 'Accueil référents administratifs'
   reporting:
     dashboards:
       index:
@@ -159,8 +167,6 @@ fr:
     registrations:
       choose_profile:
         page_title: "Création de compte"
-      confirmation_phone_standby:
-        page_title: "Inscription en attente de confirmation SMS"
       confirmation_standby:
         page_title: "Inscription en attente de confirmation"
       create:

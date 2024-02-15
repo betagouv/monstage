@@ -4,8 +4,8 @@ FactoryBot.define do
   factory :internship_application do
     student { create(:student_with_class_room_3e) }
     motivation { 'Suis hyper motivé' }
-    student_phone { '0606060606' }
-    student_email { 'paul@gmail.com' }
+    student_phone { "0#{rand(6..7)}#{FFaker::PhoneNumberFR.mobile_phone_number[2..-1]}" }
+    student_email { FFaker::Internet.email }
     access_token { nil }
 
     trait :drafted do
@@ -32,7 +32,7 @@ FactoryBot.define do
 
     trait :expired do
       aasm_state { :expired }
-      submitted_at { 15.days.ago }
+      submitted_at { 19.days.ago }
       expired_at { 3.days.ago }
     end
 
@@ -78,12 +78,9 @@ FactoryBot.define do
       approved_at { 1.days.ago }
     end
 
-    # TODO following should be removed
-    trait :convention_signed do
-      aasm_state { :convention_signed }
+    trait :expired_by_student do
+      aasm_state { :expired_by_student }
       submitted_at { 3.days.ago }
-      approved_at { 2.days.ago }
-      convention_signed_at { 1.days.ago }
     end
 
     transient do

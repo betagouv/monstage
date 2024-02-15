@@ -37,9 +37,6 @@ class Ability
     can %i[destroy see_tutor], InternshipOffer
     can %i[read update export unpublish publish], InternshipOffer
     can %i[read update destroy export], InternshipApplication
-    can :manage, EmailWhitelists::EducationStatistician
-    can :manage, EmailWhitelists::PrefectureStatistician
-    can :manage, EmailWhitelists::Ministry
     can :manage, InternshipOfferKeyword
     can :manage, Group
     can :access, :rails_admin   # grant access to rails_admin
@@ -99,7 +96,6 @@ class Ability
            choose_school
            choose_class_room
            choose_gender_and_birthday
-           choose_handicap
            register_with_phone], User
     can_read_dashboard_students_internship_applications(user: user)
   end
@@ -235,8 +231,8 @@ class Ability
     can %i[update edit], Organisation , employer_id: user.team_members_ids
     can %i[create], Tutor
     can %i[index update], InternshipApplication
-    can :transfer, InternshipApplication do |internship_application|
-      internship_application.internship_offer.employer_id == user.id
+    can %i[show transfer], InternshipApplication do |internship_application|
+      internship_application.internship_offer.employer_id == user.team_id
     end
   end
 
@@ -329,6 +325,7 @@ class Ability
     can :create, InternshipOffers::Api
     can :show, :api_token
     can %i[index_and_filter], Reporting::InternshipOffer
+    can %i[index], Sector
     can %i[index], Acl::Reporting do |_acl|
       true
     end
