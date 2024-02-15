@@ -141,6 +141,34 @@ class TeamMemberInvitationControllerTest < ActionDispatch::IntegrationTest
     assert_nil TeamMemberInvitation.find_by(id: team_member_2.id)
   end
 
+  test "when an employer of the team invites a user that has accepted " \
+       "invitation in between, it gets a special flash message telling him" \
+       " it is already accepted" do
+    employer_1 = create(:employer)
+    employer_2 = create(:employer)
+    employer_3 = create(:employer)
+    team_member_1 = create(:team_member_invitation,
+                           inviter: employer_1,
+                           member: employer_3,
+                           invitation_email: employer_3.email)
+    team_member_2 = create(:team_member_invitation,
+                           inviter: employer_2,
+                           member: employer_3,
+                           invitation_email: employer_3.email)
+    sign_in employer_3
+    TeamMemberInvitation.where(member: employer_3, inviter: employer_1)
+                        .first
+                        .accept_invitation!
+    get new_dashboard_team_member_invitation_path
+    assert_response :success
+      patch join_dashboard_team_member_invitation_path( id: team_member_1.id),
+            params: { id: team_member_2.id, commit: "Oui" }
+    assert_redirected_to dashboard_team_member_invitations_path
+    assert_equal "accepted_invitation", team_member_1.reload.aasm_state
+    assert_equal "refused_invitation", team_member_2.reload.aasm_state
+    assert_equal "L'invitation a déjà été acceptée", flash[:warning]
+  end
+
     # ------- Refuse
   test "invitation refused" do
     employer_1 = create(:employer)
