@@ -30,7 +30,7 @@ module Dashboard::InternshipOffers
       find('p.fr-mt-1w.fr-badge.fr-badge--sm.fr-badge--info', text: "à l'étude".upcase)
       find('span#alert-text', text: "Candidature mise à jour.")
     end
-    
+
     test 'employer can reject an internship_application' do
       employer, internship_offer = create_employer_and_offer
       internship_application = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
@@ -119,7 +119,7 @@ module Dashboard::InternshipOffers
         click_on internship_offer.title
         first(:link, 'Postuler').click
         select('Semaine du 13 janvier au 19 janvier')
-        fill_in 'Numéro de téléphone élève ou parent',	with: "+3306060606"
+        fill_in 'Numéro de portable élève ou parent',	with: "+3306060606"
         click_on 'Valider'
         assert_equal 2, InternshipApplication.count
         other_internship_application = InternshipApplication.last
@@ -140,7 +140,7 @@ module Dashboard::InternshipOffers
         student = create(:student, school: school)
         internship_application_1 = create(:weekly_internship_application, :submitted, internship_offer: internship_offer_1, student: student)
         internship_application_2 = create(:weekly_internship_application, :submitted, internship_offer: internship_offer_2, student: student)
-        
+
         sign_in(employer_2)
         visit dashboard_internship_offer_internship_application_path(internship_offer_2, internship_application_2)
         click_on 'Accepter'
@@ -161,6 +161,8 @@ module Dashboard::InternshipOffers
         click_button "Refusées"
         find "p.fr-mt-1w.fr-badge.fr-badge--sm.fr-badge--purple-glycine.fr-badge--no-icon", text: "annulée".upcase
       end
+    end
+
     test 'employer can transfer an internship_application' do
       employer, internship_offer = create_employer_and_offer
       internship_application = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)

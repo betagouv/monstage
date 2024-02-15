@@ -12,7 +12,7 @@ class InternshipApplication < ApplicationRecord
   MAGIC_LINK_EXPIRATION_DELAY = 5.days
   RECEIVED_STATES = %w[submitted read_by_employer examined expired transfered]
   PENDING_STATES = RECEIVED_STATES + %w[validated_by_employer] - %w[expired]
-  REJECTED_STATES = %w[rejected canceled_by_employer canceled_by_student]
+  REJECTED_STATES = %w[rejected canceled_by_employer canceled_by_student canceled_by_student_confirmation]
   APPROVED_STATES = %w[approved validated_by_employer]
   ORDERED_STATES_INDEX = %w[
     drafted
