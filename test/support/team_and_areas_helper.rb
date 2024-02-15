@@ -46,4 +46,8 @@ module TeamAndAreasHelper
                     internship_offer_area: user_operator.current_area)
     [user_operator, offer]
   end
+
+  def random_string
+    ('a'..'z').to_a.shuffle[0, 8].join
+  end
 end

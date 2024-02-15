@@ -1,16 +1,16 @@
 FactoryBot.define do
   factory :internship_offer_area do
     employer_type {'User'}
-    sequence(:name) { |n| "Bordeaux-#{n}" }
+    sequence(:name) { |n| "Bordeaux-#{n}-#{('a'..'z').to_a.shuffle[0, 4].join}" }
   end
 
   trait :weekly do
-    sequence(:name) { |n| "Bordeaux-#{n}" }
+    sequence(:name) { |n| "Bordeaux-#{n}-#{('a'..'z').to_a.shuffle[0, 4].join}" }
     employer_id { create(:employer).id }
   end
 
   trait :api do
-    sequence(:name) { |n| "Lille-#{n}" }
+    sequence(:name) { |n| "Lille-#{n}-#{('a'..'z').to_a.shuffle[0, 4].join}" }
     employer_id { create(:user_operator).id }
   end
 

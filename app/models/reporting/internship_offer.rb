@@ -17,6 +17,8 @@ module Reporting
     has_many :internship_offer_weeks
     has_many :weeks, through: :internship_offer_weeks
     has_many :internship_applications
+    has_one :stats, class_name: 'InternshipOfferStats', dependent: :destroy
+    has_one :internship_offer_stats, dependent: :destroy
 
     delegate :name, to: :group, prefix: true
     delegate :name, to: :sector, prefix: true
@@ -24,27 +26,27 @@ module Reporting
     # beware, order matters on csv export
     AGGREGATE_FUNCTIONS = {
       total_report_count: 'sum(max_candidates)',
-      total_applications_count: 'sum(total_applications_count)',
-      total_male_applications_count: 'sum(total_male_applications_count)',
-      total_female_applications_count: 'sum(total_female_applications_count)',
+      total_applications_count: 'sum(internship_offer_stats.total_applications_count)',
+      total_male_applications_count: 'sum(internship_offer_stats.total_male_applications_count)',
+      total_female_applications_count: 'sum(internship_offer_stats.total_female_applications_count)',
       total_no_gender_applications_count:
-        'sum(total_applications_count)' \
+        'sum(internship_offer_stats.total_applications_count)' \
         ' - ' \
-        'sum(total_male_applications_count)' \
+        'sum(internship_offer_stats.total_male_applications_count)' \
         ' - ' \
-        'sum(total_female_applications_count)',
+        'sum(internship_offer_stats.total_female_applications_count)',
       approved_applications_count:
-        'sum(approved_applications_count)',
+        'sum(internship_offer_stats.approved_applications_count)',
       total_male_approved_applications_count:
-        'sum(total_male_approved_applications_count)',
+        'sum(internship_offer_stats.total_male_approved_applications_count)',
       total_female_approved_applications_count:
-        'sum(total_female_approved_applications_count)',
+        'sum(internship_offer_stats.total_female_approved_applications_count)',
       total_no_gender_approved_applications_count:
-        'sum(approved_applications_count)' \
+        'sum(internship_offer_stats.approved_applications_count)' \
         ' - ' \
-        'sum(total_male_approved_applications_count)' \
+        'sum(internship_offer_stats.total_male_approved_applications_count)' \
         ' - ' \
-        'sum(total_female_approved_applications_count)'
+        'sum(internship_offer_stats.total_female_approved_applications_count)'
     }.freeze
 
     def self.aggregate_functions_to_sql_select
@@ -90,10 +92,12 @@ module Reporting
 
     scope :dimension_offer, lambda {
       select('internship_offers.*')
+        .joins("INNER JOIN internship_offer_stats ON internship_offer_stats.internship_offer_id = internship_offers.id")
     }
 
     scope :dimension_by_sector, lambda {
       select('sector_id', *aggregate_functions_to_sql_select)
+        .joins("INNER JOIN internship_offer_stats ON internship_offer_stats.internship_offer_id = internship_offers.id")
         .includes(:sector)
         .group(:sector_id)
         .order(:sector_id)
@@ -101,6 +105,7 @@ module Reporting
 
     scope :dimension_by_group, lambda {
       select('group_id', *aggregate_functions_to_sql_select)
+        .joins("INNER JOIN internship_offer_stats ON internship_offer_stats.internship_offer_id = internship_offers.id")  
         .includes(:group)
         .group(:group_id)
         .order(:group_id)

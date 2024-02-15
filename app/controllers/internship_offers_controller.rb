@@ -160,7 +160,7 @@ class InternshipOffersController < ApplicationController
   end
 
   def increment_internship_offer_view_count
-    @internship_offer.increment!(:view_count) if current_user&.student?
+    @internship_offer.stats.increment!(:view_count) if current_user&.student?
   end
 
   def format_internship_offers(internship_offers)

@@ -109,6 +109,10 @@ FactoryBot.define do
       group { create(:group, is_public: true) }
     end
 
+    #after(:create) do |internship_offer, params|
+    #  create(:internship_offer_stats, internship_offer: internship_offer)
+    #end
+
     factory :api_internship_offer, traits: [:api_internship_offer],
                                    class: 'InternshipOffers::Api',
                                    parent: :weekly_internship_offer
