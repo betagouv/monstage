@@ -17,34 +17,30 @@ def student_maker (school: ,class_room: )
   )
 end
 
-def add_area
-  last_user = User.all.order(:updated_at).last
-  last_user.internship_offer_areas.build(name: "Mon espace", employer_type: "User", employer_id: last_user.id).save!
-  last_user.update(current_area_id: InternshipOfferArea.last.id)
-end
-
 def populate_users
   class_room = ClassRoom.first
 
   with_class_name_for_defaults(
     Users::Employer.new(
+      first_name: 'Luc',
+      last_name: 'Archambaud',
       email: 'employer@ms3e.fr',
       password: 'review',
       employer_role: 'PDG',
       phone: '+330622554144'
     )
   ).save!
-  add_area
 
   with_class_name_for_defaults(
     Users::Employer.new(
+      first_name: 'Jean',
+      last_name: 'Nohan',
       email: 'other_employer@ms3e.fr',
       password: 'review',
       employer_role: 'PDG',
       phone: '+330622554145'
     )
   ).save!
-  add_area
 
   with_class_name_for_defaults(Users::God.new(email: 'god@ms3e.fr', password: 'review')).save!
 
@@ -64,21 +60,16 @@ def populate_users
 
   Operator.all.map do |operator|
     with_class_name_for_defaults(Users::Operator.new(email: "#{operator.name.parameterize}@ms3e.fr", password: 'review', operator: operator)).save!
-    add_area
   end
   with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', operator: Operator.first)).save!
-  add_area
 
   statistician_email = 'statistician@ms3e.fr'
   ministry_statistician_email = 'ministry_statistician@ms3e.fr'
   education_statistician_email = 'education_statistician@ms3e.fr'
   last_public_groups = Group.where(is_public: true).last(2)
   with_class_name_for_defaults(Users::PrefectureStatistician.new(email: statistician_email, password: 'review', department: '60')).save!
-  add_area
   with_class_name_for_defaults(Users::EducationStatistician.new(email: education_statistician_email, password: 'review',department: '60')).save!
-  add_area
   with_class_name_for_defaults(Users::MinistryStatistician.new(email: ministry_statistician_email, password: 'review', groups: last_public_groups)).save!
-  add_area
 end
 
 def populate_students

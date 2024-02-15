@@ -22,7 +22,7 @@ def populate_applications
         motivation: 'Au taquet',
         internship_offer: offer,
         week: offer.internship_offer_weeks.sample.week,
-        student_phone: '0606060606',
+        student_phone: '060606'+rand(1000..9999).to_s,
         student_email: 'paul@gmail.com'
       )
     end
@@ -39,7 +39,7 @@ def populate_applications
     motivation: 'Au taquet',
     internship_offer: offers.first,
     week: offers.first.internship_offer_weeks.first.week,
-    student_phone: '0606060606',
+    student_phone: '060606'+rand(1000..9999).to_s,
     student_email: 'paul@gmail.com'
   )
 
@@ -53,7 +53,7 @@ def populate_applications
     motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
     internship_offer: offers.second,
     week: offers.first.internship_offer_weeks.first.week,
-    student_phone: '0606060606',
+    student_phone: '060606'+rand(1000..9999).to_s,
     student_email: 'paul@gmail.com'
   )
   #-----------------
@@ -67,7 +67,7 @@ def populate_applications
     motivation: 'Au taquet',
     internship_offer: offers.third,
     week: offers.first.internship_offer_weeks.second.week,
-    student_phone: '0606060606',
+    student_phone: '060606'+rand(1000..9999).to_s,
     student_email: 'paul@gmail.com'
   )
   puts  "third 3e generale stud cancels his application to first offer"
@@ -80,7 +80,7 @@ def populate_applications
     motivation: 'Au taquet',
     internship_offer: offers.fourth,
     week: offers.second.internship_offer_weeks.second.week,
-    student_phone: '0606060606',
+    student_phone:'060606'+rand(1000..9999).to_s,
     student_email: 'paul@gmail.com'
   )
   #-----------------
@@ -94,7 +94,7 @@ def populate_applications
     motivation: 'Au taquet',
     internship_offer: offers.fourth,
     week: offers.first.internship_offer_weeks.third.week,
-    student_phone: '0606060606',
+    student_phone: '060606'+rand(1000..9999).to_s,
     student_email: 'paul@gmail.com'
   )
   InternshipApplications::WeeklyFramed.create!(
@@ -105,7 +105,7 @@ def populate_applications
     motivation: 'Assez moyennement motivé pour ce stage',
     internship_offer: offers.fifth,
     week: offers.fifth.internship_offer_weeks.third.week,
-    student_phone: '0606060606',
+    student_phone: '060606'+rand(1000..9999).to_s,
     student_email: 'paul@gmail.com'
   )
   InternshipApplications::WeeklyFramed.create!(
@@ -116,7 +116,7 @@ def populate_applications
     motivation: 'motivé moyennement pour ce stage, je vous préviens',
     internship_offer: offers[6],
     week: offers[6].internship_offer_weeks.second.week,
-    student_phone: '0606060606',
+    student_phone: '060606'+rand(1000..9999).to_s,
     student_email: 'paul@gmail.com'
   )
   InternshipApplications::WeeklyFramed.create!(
