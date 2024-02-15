@@ -199,7 +199,7 @@ class UserTest < ActiveSupport::TestCase
     mock_mail = Minitest::Mock.new
     mock_mail.expect(:deliver_later, true)
     CustomDeviseMailer.stub :confirmation_instructions, mock_mail do
-      student = create(:student, confirmed_at: nil)
+      create(:employer, confirmed_at: nil)
     end
     mock_mail.verify
   end

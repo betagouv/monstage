@@ -28,16 +28,18 @@ module Triggered
 
     test 'perform sends email and update pending_reminder_sent_at' \
          'when internship_applications is pending for more than 1 a week' do
-      internship_application = create(:weekly_internship_application, :submitted,
+      internship_application = nil
+      assert_enqueued_emails 1 do #one for student welcome messaging
+        internship_application = create(:weekly_internship_application, :submitted,
                                         submitted_at: 8.days.ago,
                                         internship_offer: @internship_offer)
-
+      end
       freeze_time do
         assert_changes -> { internship_application.reload.pending_reminder_sent_at },
                       from: nil,
                       to: Time.now.utc do
           InternshipApplicationsReminderJob.perform_now(@internship_offer.employer)
-          assert_enqueued_emails 1
+          assert_enqueued_emails 2 # one for employer
         end
         assert_nil internship_application.expired_at
         assert_equal DateTime.now, internship_application.pending_reminder_sent_at
@@ -50,17 +52,20 @@ module Triggered
 
     test 'perform does sends email and expire!' \
          'when internship_applications is pending for more than 45 days' do
-      internship_application = create(:weekly_internship_application, :submitted,
-                                      submitted_at: (InternshipApplication::EXPIRATION_DURATION + 1.day).ago,
-                                      pending_reminder_sent_at: 7.days.ago,
-                                      internship_offer: @internship_offer)
+      internship_application = nil
+      assert_enqueued_emails 1 do #one for student welcome messaging
+        internship_application = create(:weekly_internship_application, :submitted,
+                                        submitted_at: (InternshipApplication::EXPIRATION_DURATION + 1.day).ago,
+                                        pending_reminder_sent_at: 7.days.ago,
+                                        internship_offer: @internship_offer)
+      end      
 
       freeze_time do
         assert_changes -> { internship_application.reload.expired? },
                        from: false,
                        to: true do
           InternshipApplicationsReminderJob.perform_now(@internship_offer.employer)
-          assert_enqueued_emails 1 # one for employer
+          assert_enqueued_emails 2 # one for employer
         end
         internship_application.reload
         assert_equal Time.now.utc, internship_application.expired_at, 'expired_at not updated'

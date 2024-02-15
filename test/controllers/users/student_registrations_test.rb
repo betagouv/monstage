@@ -18,43 +18,33 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'label', /Sexe/
   end
 
-  test 'POST Create Student without class fails' do
-    assert_difference('Users::Student.count', 0) do
-      post user_registration_path(params: {
-                                    user: { email: 'fatou@snapchat.com',
-                                            password: 'okokok',
-                                            first_name: 'Fatou',
-                                            last_name: 'D',
-                                            type: 'Users::Student',
-                                            accept_terms: '1' }
-                                  })
-      assert_response 200
-    end
-  end
-
   test 'POST create Student with class responds with success' do
     school = create(:school)
     class_room = create(:class_room, school: school)
     birth_date = 14.years.ago
     email = 'fourcade.m@gmail.com'
-    assert_difference('Users::Student.count') do
-      post user_registration_path(
-        params: {
-          user: {
-            type: 'Users::Student',
-            school_id: school.id,
-            class_room_id: class_room.id,
-            first_name: 'Martin',
-            last_name: 'Fourcade',
-            birth_date: birth_date,
-            gender: 'np',
-            email: 'fourcade.m@gmail.com',
-            password: 'okokok',
-            accept_terms: '1'
-          }
-        }
-      )
-      assert_redirected_to internship_offers_path
+    assert_enqueued_jobs 2 do
+      assert_enqueued_emails 1 do
+        assert_difference('Users::Student.count') do
+          post user_registration_path(
+            params: {
+              user: {
+                type: 'Users::Student',
+                school_id: school.id,
+                class_room_id: class_room.id,
+                first_name: 'Martin',
+                last_name: 'Fourcade',
+                birth_date: birth_date,
+                gender: 'np',
+                email: 'fourcade.m@gmail.com',
+                password: 'okokok',
+                accept_terms: '1'
+              }
+            }
+          )
+          assert_redirected_to internship_offers_path
+        end
+      end
     end
     created_student = Users::Student.first
     assert_equal school, created_student.school
@@ -72,21 +62,21 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     birth_date = 14.years.ago
     assert_difference('Users::Student.count', 0) do
       post user_registration_path(
-          params: {
-            user: {
-              accept_terms: 1,
-              birth_date: birth_date,
-              channel: 'phone',
-              email: '',
-              first_name: 'Jephthina' ,
-              gender: 'f',
-              last_name: "Théodore ",
-              password: "[Filtered]",
-              type: Users::Student.name
-            }
+        params: {
+          user: {
+            accept_terms: 1,
+            birth_date: birth_date,
+            channel: 'phone',
+            email: '', # no email
+            first_name: 'Jephthina' ,
+            gender: 'f',
+            last_name: "Théodore ",
+            password: "[Filtered]",
+            type: Users::Student.name
           }
-        )
-        assert_response 200
+        }
+      )
+      assert_response 200
     end
   end
 

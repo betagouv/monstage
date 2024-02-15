@@ -219,7 +219,7 @@ class User < ApplicationRecord
   end
 
   def send_confirmation_instructions
-    return if created_by_teacher || statistician?
+    return if created_by_teacher || statistician? || student?
     super
   end
 

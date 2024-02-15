@@ -63,4 +63,11 @@ class StudentMailerPreview < ActionMailer::Preview
       student: Users::Student.first
     )
   end
+
+  def welcome_email
+    StudentMailer.welcome_email(
+      student: Users::Student.first,
+      shrinked_url: 'https://www.monstagedetroisieme.fr'
+    )
+  end
 end

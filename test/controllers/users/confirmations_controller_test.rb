@@ -31,7 +31,7 @@ class ConfirmationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'CREATE#user_confirmation by email' do
-    student = create(:student, phone: nil,
+    student = create(:employer, phone: nil,
                                email: 'fourcade.m@gmail.com',
                                confirmed_at: nil)
     assert_enqueued_emails 1 do
