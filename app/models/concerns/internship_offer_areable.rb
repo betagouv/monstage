@@ -13,7 +13,7 @@ module InternshipOfferAreable
     def create_default_internship_offer_area
       return if internship_offer_areas.any?
 
-      initializing_current_area('Mon espace')
+      initializing_current_area
     end
 
     def internship_offer_areas
@@ -43,11 +43,12 @@ module InternshipOfferAreable
 
     def initializing_current_area(name = nil)
       name ||= "Espace de #{presenter.short_name}"
-      create_current_area(
+      area = InternshipOfferArea.create(
         name: name,
         employer_type: 'User',
         employer_id: self.id
       )
+      self.current_area_id = area.id
     end
 
     # ------------  private ------------

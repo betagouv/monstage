@@ -2,8 +2,8 @@
 
 FactoryBot.define do
   factory :user do
-    first_name { 'Jean Claude' }
-    last_name { FFaker::NameFR.first_name.capitalize }
+    first_name { FFaker::NameFR.first_name.capitalize  }
+    last_name { FFaker::NameFR.last_name.capitalize }
     sequence(:email) { |n| "jean#{n}-claude@#{last_name}.fr" }
     password { 'ooooyeahhhh' }
     confirmed_at { Time.now }
@@ -18,9 +18,7 @@ FactoryBot.define do
     factory :student, class: 'Users::Student', parent: :user do
       type { 'Users::Student' }
 
-      first_name { FFaker::NameFR.first_name.capitalize  }
-      last_name { FFaker::NameFR.last_name.capitalize }
-      gender { 'm' }
+      gender { ['m','f'].shuffle.first }
       birth_date { 14.years.ago }
       school { create(:school, :with_school_manager) }
 

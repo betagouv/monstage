@@ -80,7 +80,7 @@ module Users
         resource.skip_confirmation!
         resource.save
       elsif resource.persisted?
-        resource.try(:initializing_current_area)
+        resource.try(:create_default_internship_offer_area)
         resource.save
       end
       flash.delete(:notice) if params.dig(:user, :statistician_type).present?

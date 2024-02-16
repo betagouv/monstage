@@ -260,4 +260,14 @@ class UserTest < ActiveSupport::TestCase
       assert_nil User.sanitize_mobile_phone_number(number, prefix)
     end
   end
+
+  test 'employer gets an internship_offer_area' do
+    employer = create(:employer)
+    assert employer.current_area
+  end
+
+  test 'ministry_statistician gets an internship_offer_area' do
+    ministry_statistician = create(:ministry_statistician)
+    assert ministry_statistician.current_area
+  end
 end

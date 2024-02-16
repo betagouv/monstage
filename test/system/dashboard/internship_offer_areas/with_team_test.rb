@@ -31,8 +31,9 @@ class WithTeamTest < ApplicationSystemTestCase
             invitation_email: employer_3.email
     sign_in(employer_3)
     visit employer_3.after_sign_in_path
-    click_button 'Oui'
-    assert_equal 9 , AreaNotification.count
+    assert_difference -> { AreaNotification.count }, 5 do
+      click_button 'Oui'
+    end
   end
 
   test 'adding an extra area make area_notifications count ok' do
