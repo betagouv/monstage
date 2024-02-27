@@ -40,6 +40,6 @@ namespace :cleaning do
     end
   end
 
-  task task confidentiality_cleaning: %i[archive_idle_teachers
-                                         archive_idle_employers ]
+  task confidentiality_cleaning: %i[ archive_idle_teachers
+                                     archive_idle_employers ]
 end
