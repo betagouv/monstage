@@ -35,6 +35,7 @@ module Dashboard
     end
 
     def update
+      authorize! :update, @internship_agreement
       internship_agreement_builder.update(instance: @internship_agreement,
                                           params: internship_agreement_params) do |on|
         on.success do |updated_internship_agreement|
@@ -57,6 +58,7 @@ module Dashboard
     end
 
     def show
+      authorize! :update, @internship_agreement
       respond_to do |format|
         format.html
         format.pdf do
