@@ -32,8 +32,6 @@ jobs: # a collection of steps
           install-yarn: true
           node-version: '16.15'
 
-      - browser-tools/install-chrome
-
       - run:
           name: versions
           command: |
