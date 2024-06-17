@@ -42,7 +42,7 @@
     "regenerator-runtime": "^0.13.3",
     "signature_pad": "^4.0.5",
     "stimulus": "3",
-    "trix": "^1.2.0",
+    "trix": "^2.1.1",
     "url-search-params-polyfill": "^8.0.0",
     "use-debounce": "5",
     "whatwg-fetch": "^3.2.0"
