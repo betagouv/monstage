@@ -24,6 +24,8 @@ class ManagePracticalInfosTest < ApplicationSystemTestCase
       assert_equal '75001', PracticalInfo.last.zipcode
       assert_equal 'Paris', PracticalInfo.last.city
       assert_equal ["08:00", "16:30"], PracticalInfo.last.weekly_hours
+      find('span#alert-text', text: 'Votre offre de stage est prête à être publiée.')
+      find('form.button_to', text: 'Publier')
       click_on "Publier"
       assert_equal 1, InternshipOffer.count
       assert_equal '+330623665555', InternshipOffer.last.contact_phone
