@@ -28,6 +28,7 @@ def populate_internship_offers
     city: 'Tours',
     coordinates: { latitude: Coordinates.tours[:latitude], longitude: Coordinates.tours[:longitude]},
     employer_name: Group.is_paqte.first.name,
+    weekly_hours: ['10:00','18:00'],
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
   weeks = [].concat(Week.selectable_on_school_year[0..1], Week.selectable_on_school_year[3..5])
@@ -57,6 +58,7 @@ def populate_internship_offers
     city: 'Verneuil-sur-Seine',
     coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
     employer_name: Group.is_paqte.first.name,
+    weekly_hours: ['10:00','18:00'],
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
 
@@ -88,6 +90,7 @@ def populate_internship_offers
     city: 'paris',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: Group.is_public.last.name,
+    weekly_hours: ['10:00','18:00'],
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
 
@@ -117,6 +120,7 @@ def populate_internship_offers
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
     employer_name: 'Du temps pour moi',
+    weekly_hours: ['10:00','18:00'],
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
   # dépubliée
@@ -146,6 +150,7 @@ def populate_internship_offers
     employer_name: 'Du temps pour moi',
     max_candidates: 7,
     max_students_per_group: 7,
+    weekly_hours: ['10:00','18:00'],
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
 
@@ -175,6 +180,7 @@ def populate_internship_offers
     city: 'paris',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: 'Editegis',
+    weekly_hours: ['10:00','18:00'],
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
   # 7
@@ -202,6 +208,7 @@ def populate_internship_offers
     city: 'Tours',
     coordinates: { latitude: Coordinates.tours[:latitude], longitude: Coordinates.tours[:longitude]},
     employer_name: 'Education Nationale',
+    weekly_hours: ['10:00','18:00'],
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
   # 3eme generale API
@@ -233,6 +240,7 @@ def populate_internship_offers
     permalink: 'https://www.google.fr',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: 'IBM',
+    weekly_hours: ['10:00','18:00'],
     internship_offer_area_id: area_id
   )
   # 3eme generale API
@@ -263,6 +271,7 @@ def populate_internship_offers
     permalink: 'https://www.google.fr',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
     employer_name: 'Ministère de l\'Education Nationale',
+    weekly_hours: ['10:00','18:00'],
     internship_offer_area_id: area_id
   )
 
@@ -298,6 +307,7 @@ MULTI_LINE
     city: 'Montmorency',
     coordinates: { latitude: Coordinates.montmorency[:latitude], longitude: Coordinates.montmorency[:longitude] },
     employer_name: 'Douanes Assistance Corp.',
+    weekly_hours: ['10:00','18:00'],
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
   # 3eme generale multi-line
@@ -330,6 +340,7 @@ MULTI_LINE
     city: 'Verneuil-sur-Seine',
     coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
     employer_name: 'MetaBoutShop',
+    weekly_hours: ['10:00','18:00'],
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
 
@@ -378,6 +389,7 @@ MULTI_LINE
     city: 'paris',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: 'Oyonnax Corp.',
+    weekly_hours: ['10:00','18:00'],
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
   weeks =  Week.selectable_on_school_year
@@ -406,6 +418,7 @@ MULTI_LINE
     city: 'Bordeaux',
     coordinates: { latitude: Coordinates.bordeaux[:latitude], longitude: Coordinates.bordeaux[:longitude]},
     employer_name: Group.is_paqte.second.name,
+    weekly_hours: ['10:00','18:00'],
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
   InternshipOffer.last.publish!
@@ -435,6 +448,7 @@ MULTI_LINE
     city: 'Tours',
     coordinates: { latitude: Coordinates.tours[:latitude], longitude: Coordinates.tours[:longitude]},
     employer_name: Group.is_paqte.second.name,
+    weekly_hours: ['10:00','18:00'],
     internship_offer_area_id: Users::Employer.first.internship_offer_areas.first.id
   )
   InternshipOffer.last.publish!
@@ -464,6 +478,7 @@ MULTI_LINE
     permalink: 'https://www.google.fr',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
     employer_name: 'Ministère de l\'Education Nationale',
+    weekly_hours: ['10:00','18:00'],
     internship_offer_area_id: area_id
   )
   InternshipOffer.last.publish!
