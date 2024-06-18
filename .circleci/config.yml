@@ -7,7 +7,7 @@ jobs: # a collection of steps
   build: # runs not using Workflows must have a `build` job as entry point
     working_directory: ~/project
     docker: # run the steps with Docker
-      - image: cimg/ruby:3.2.1-browsers # ...with this image as the primary container; this is where all `steps` will run
+      - image: cimg/ruby:3.3.0-browsers # ...with this image as the primary container; this is where all `steps` will run
         environment: # environment variables for primary container
           BUNDLE_JOBS: 3
           BUNDLE_RETRY: 3
@@ -16,12 +16,12 @@ jobs: # a collection of steps
           PGUSER: monstage_test
           RAILS_ENV: test
           HOST: https://www.example.fr
-      - image: cimg/postgres:15.6-postgis # database image with support of current dir
+      - image: cimg/postgres:16.3-postgis # database image with support of current dir
         environment: # environment variables for database
           POSTGRES_DB: monstage_test
           POSTGRES_USER: monstage_test
           POSTGRES_PASSWORD: monstage_test
-      - image: circleci/redis:6.0.15-alpine
+      - image: cimg/redis:7.2.5 # redis image with support of current dir
         environment:
           REDIS_URL: localhost:6379
 

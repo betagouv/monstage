@@ -63,6 +63,9 @@ module SearchHelper
       3 => [],
       4 => [],
       5 => [],
+      6 => [],
+      7 => [],
+      8 => []
     }
 
     @_list_months_for_search ||= Week.selectable_from_now_until_end_of_school_year
