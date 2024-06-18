@@ -49,6 +49,7 @@ module InternshipOfferAreable
         employer_id: self.id
       )
       self.current_area_id = area.id
+      save
     end
 
     # ------------  private ------------
