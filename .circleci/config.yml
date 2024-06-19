@@ -136,8 +136,8 @@ jobs: # a collection of steps
       - run:
           name: Deploy staging to Clever Cloud
           command: |
-            ssh-keyscan push-n3-par-clevercloud-customers.services.clever-cloud.com >>  ~/.ssh/known_hosts
-            git remote add clever git+ssh://git@push-n3-par-clevercloud-customers.services.clever-cloud.com/$CLEVER_APP_ID.git
+            ssh-keyscan push-par-clevercloud-customers.services.clever-cloud.com >>  ~/.ssh/known_hosts
+            git remote add clever git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/$CLEVER_APP_ID.git
             git push -u clever staging:master -f
 workflows:
   version: 2
