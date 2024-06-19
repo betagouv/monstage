@@ -132,8 +132,7 @@ jobs: # a collection of steps
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - "64:44:1e:17:fb:00:ae:75:15:ba:d2:cb:ad:c2:95:ee"
-            - "SHA256:Vf+oSncwt0iZXjJXZuowchMvKTQqLZfwDOXrFfuMmsc"
+            - "e4:5e:41:50:5b:d3:91:e2:9f:ad:37:eb:60:36:cc:f3"
       - run:
           name: Deploy staging to Clever Cloud
           command: |
