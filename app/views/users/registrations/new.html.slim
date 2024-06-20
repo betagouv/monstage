@@ -179,10 +179,15 @@
                                          autocomplete: "new-password",
                                          class: "fr-password__input fr-input fr-password__input fr-input #{error_tag.present? ? 'fr-input--error' : ''}",
                                          required: true,
-                                         data: { action: "change->signup#checkPassword", :"signup-target" => "passwordInput" }
+                                         data: { action: "signup#checkPassword", :"signup-target" => "passwordInput" }
                       #password-input-messages.fr-messages-group aria-live="assertive"
-                        p#password-input-message-info.fr-message.fr-message--info
-                          |6 caractères minimum
+                        ul.fr-pl-0
+                          li.fr-message.fr-message--info data-signup-target="length" 12 caractères
+                          li.fr-message.fr-message--info data-signup-target="lowercase" 1 minuscule
+                          li.fr-message.fr-message--info data-signup-target="uppercase" 1 majuscule
+                          li.fr-message.fr-message--info data-signup-target="number" 1 chiffre
+                          li.fr-message.fr-message--info data-signup-target="special" 1 caractère spécial
+
                       = errors.field_error_tag(resource_name: resource_name, resource: resource, field: :password) if errors.present?
                     #user_password-messages.fr-messages-group[aria-live="assertive"]
 
@@ -233,6 +238,9 @@
                     = error_tag
                 .fr-col-12
                   .actions.text-right
-                    = f.submit "Valider", class: "fr-btn fr-mx-2w", id: "test-create-user"
+                    = f.submit "Valider",
+                               class: "fr-btn fr-mx-2w",
+                               id: "test-create-user",
+                               :'data-signup-target' => "submitButton"
 
 
