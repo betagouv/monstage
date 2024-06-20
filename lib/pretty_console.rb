@@ -74,7 +74,10 @@ module PrettyConsole
 
   def announce_task(task)
     label = task.try(:name) || task
-    puts_with_green_background "-- Starting task : #{label}"
+    puts '--------------------------------------'
+    say_in_green "-- Starting task : #{label}"
+    puts '--------------------------------------'
+    puts ''
     start_time = Time.now
     yield
     end_time = Time.now
