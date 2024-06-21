@@ -23,8 +23,10 @@ div data-controller='practical-info-form' data-action="input->practical-info-for
                                 currentLatitude: resource.coordinates.try(:lat).try(:to_f),
                                 currentLongitude: resource.coordinates.try(:lon).try(:to_f),
                                 currentFullAddress: resource.formatted_autocomplete_address})
-        .form-group
-          = render partial: "dashboard/stepper/practical_infos/daily_hours",
+  .row
+    .col-md-6
+      .form-group
+        = render partial: "dashboard/stepper/practical_infos/daily_hours",
                    locals: { form: form, disabled: false }
 
         - if submit_button
@@ -37,3 +39,22 @@ div data-controller='practical-info-form' data-action="input->practical-info-for
                          disabled: false,
                          data: {:'practical-info-form-target' => 'submitButton'} do
               = "Suivant "
+    .col-md-6
+      .align-self-center
+        .fr-alert.fr-alert--info
+          h3.fr-alert__title
+            |
+              Les élèves peuvent-ils être accueillis en séquence d’observation en
+              dehors des horaires et jours de leur emploi du temps scolaire ?
+          p
+            |
+              La séquence d’observation ne doit pas forcément s’aligner sur l’emploi
+              du temps scolaire des élèves. L’accueil dans la structure doit se faire
+              dans la limite des durées maximales de travail hebdomadaires de
+              35 heures et quotidiennes de 7 heures. Les repos quotidiens de l’élève
+              sont respectivement de 12 heures consécutives au minimum pour les
+              élèves de plus de 16 ans et de 14 heures minimum pour les moins de 16 ans.
+              Le repos hebdomadaire est de 2 jours consécutifs pour tous les
+              élèves. Dès lors que le temps de présence quotidien atteint
+              4 heures 30, l’élève doit bénéficier d’un temps de pause de
+              30 minutes consécutives minimum.
