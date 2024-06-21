@@ -40,8 +40,18 @@ module Dashboard::Stepper
       @organisation = Organisation.find(params[:id])
       authorize! :update, @organisation
 
-      if @organisation.update!(organisation_params)
-        redirect_to new_dashboard_stepper_internship_offer_info_path(organisation_id: @organisation.id)
+      if @organisation.update(organisation_params)
+        if params[:internship_offer_info_id].present? && InternshipOfferInfo.find(params[:internship_offer_info_id])
+          redirect_to edit_dashboard_stepper_internship_offer_info_path(
+            organisation_id: @organisation.id,
+            internship_offer_info_id: params[:internship_offer_info_id],
+            hosting_info_id: params[:hosting_info_id],
+            practical_info_id: params[:practical_info_id],
+            id: params[:internship_offer_info_id]
+          )
+        else
+          redirect_to new_dashboard_stepper_internship_offer_info_path(organisation_id: @organisation.id)
+        end
       else
         render :new, status: :bad_request
       end

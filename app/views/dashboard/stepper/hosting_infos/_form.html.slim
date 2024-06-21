@@ -1,9 +1,11 @@
 - new_record = @hosting_info.new_record?
 - when_new = dashboard_stepper_hosting_infos_path(organisation_id: params[:organisation_id], internship_offer_info_id: params[:internship_offer_info_id])
 - unless new_record
-  - when_old = dashboard_stepper_hosting_info_path(id: @hosting_info,
+   - when_old = dashboard_stepper_hosting_info_path(id: @hosting_info,
                                                             organisation_id: params[:organisation_id],
-                                                            internship_offer_info_id: params[:internship_offer_info_id])
+                                                            internship_offer_info_id: params[:internship_offer_info_id],
+                                                            practical_info_id: params[:practical_info_id],
+                                                            hosting_info_id: params[:hosting_info_id])
 = form_with( model: @hosting_info,
              url: (new_record ? when_new : when_old),
              scope: :hosting_info,

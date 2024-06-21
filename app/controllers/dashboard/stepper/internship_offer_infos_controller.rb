@@ -45,13 +45,21 @@ module Dashboard::Stepper
       authorize! :update, @internship_offer_info
 
       if @internship_offer_info.update(internship_offer_info_params)
-        redirect_to new_dashboard_stepper_hosting_info_path(
-          organisation_id: params[:organisation_id],
-          internship_offer_info_id: @internship_offer_info.id
-        )
+        if params[:hosting_info_id].present? && HostingInfo.find(params[:hosting_info_id])
+          redirect_to edit_dashboard_stepper_hosting_info_path(
+            organisation_id: params[:organisation_id],
+            internship_offer_info_id: @internship_offer_info.id,
+            practical_info_id: params[:practical_info_id],
+            id: params[:hosting_info_id]
+          )
+        else
+          redirect_to new_dashboard_stepper_hosting_info_path(
+            organisation_id: params[:organisation_id],
+            internship_offer_info_id: @internship_offer_info.id
+          )
+        end
       else
         @organisation = Organisation.find(params[:organisation_id])
-        @available_weeks = Week.selectable_on_school_year_when_editing
         render :new, status: :bad_request
       end
     end

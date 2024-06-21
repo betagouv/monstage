@@ -78,18 +78,30 @@ module Dashboard::Stepper
       authorize! :update, @practical_info
 
       if @practical_info.update(practical_info_params)
-        internship_offer_builder.create_from_stepper(**builder_params) do |on|
-          on.success do |created_internship_offer|
-            redirect_to(internship_offer_path(created_internship_offer, origine: 'dashboard'),
+        internship_offer = InternshipOffer.find_by(practical_info_id: @practical_info.id)
+        if internship_offer.present?
+          # update internship_offer from builder
+          internship_offer_builder.update_from_stepper(internship_offer,
+                                                        organisation: Organisation.find(params[:organisation_id]),
+                                                        internship_offer_info: InternshipOfferInfo.find(params[:internship_offer_info_id]),
+                                                        hosting_info: HostingInfo.find(params[:hosting_info_id]),
+                                                        practical_info: @practical_info) do |on|
+            on.success do |created_internship_offer|
+              redirect_to(internship_offer_path(internship_offer, origine: 'dashboard'),
                         flash: { success: 'Votre offre de stage est prête à être publiée.' })
-          end
-          on.failure do |failed_internship_offer|
-            render :new, status: :bad_request
-          end
+            end
+            on.failure do |failed_internship_offer|
+              @organisation = Organisation.find(params[:organisation_id])
+              render :edit, status: :bad_request
+            end
+          end                            
+
+
+        else
+          redirect_to root_path, flash: { error: 'Erreur lors de la mise à jour de l\'offre de stage' }
         end
       else
         @organisation = Organisation.find(params[:organisation_id])
-        @available_weeks = Week.selectable_from_now_until_end_of_school_year
         render :new, status: :bad_request
       end
     end

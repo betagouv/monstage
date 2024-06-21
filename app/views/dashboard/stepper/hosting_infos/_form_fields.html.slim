@@ -95,8 +95,9 @@ div [data-controller='hosting-infos' data-hosting-infos-base-type-value="#{klass
         - if submit_button
           .fr-mt-2w 
             = link_to edit_dashboard_stepper_internship_offer_info_path(params[:internship_offer_info_id],
-                                                                organisation_id: params[:organisation_id]),
-                        class: 'fr-btn fr-mr-2w fr-btn--secondary' do
-              = 'Précédent'
+                                                          organisation_id: params[:organisation_id],
+                                                          hosting_info_id: params[:id],
+                                                          practical_info_id: params[:practical_info_id]), class: 'fr-btn fr-mr-2w fr-btn--secondary' do
+              | Précédent
             = button_tag :submit, class: 'fr-btn' do
               = 'Suivant'

@@ -30,7 +30,7 @@ div data-controller='practical-info-form' data-action="input->practical-info-for
         - if submit_button
           .fr-mt-3w
             = link_to 'Précédent',
-                      edit_dashboard_stepper_hosting_info_path(params[:hosting_info_id], organisation_id: params[:organisation_id], internship_offer_info_id: params[:internship_offer_info_id]),
+                      edit_dashboard_stepper_hosting_info_path(params[:hosting_info_id], organisation_id: params[:organisation_id], internship_offer_info_id: params[:internship_offer_info_id], practical_info_id: params[:id]),
                       class: 'fr-btn fr-mr-2w fr-btn--secondary'
             = button_tag :submit,
                          class: 'fr-btn',

@@ -2,7 +2,10 @@
 - when_new = dashboard_stepper_internship_offer_infos_path(organisation_id: params[:organisation_id])
 - unless new_record
   - when_old = dashboard_stepper_internship_offer_info_path(id: @internship_offer_info,
-                                                            organisation_id: params[:organisation_id])
+                                                            organisation_id: params[:organisation_id],
+                                                            hosting_info_id: params[:hosting_info_id],
+                                                            practical_info_id: params[:practical_info_id],
+                                                            internship_offer_info_id: params[:internship_offer_info_id])
 = form_with( model: @internship_offer_info,
              url: (new_record ? when_new : when_old),
              scope: :internship_offer_info,
