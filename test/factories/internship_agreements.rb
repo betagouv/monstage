@@ -35,6 +35,7 @@ FactoryBot.define do
     weekly_lunch_break { '1h dans la cantine. Repas fourni.' }
     activity_rating_rich_text { "<div>Après concertation, le tuteur appelera le professeur principal vers 17h le lundi et au moins un autre jour de la semaine choisi ensemble. L'élève n'est pas convié à cet échange.<br/>A ceci se rajoute le rapport de stage</div>"}
     activity_learnings_rich_text { '<div>Communication orale</div>'}
+    uuid { SecureRandom.uuid }
 
     trait :created_by_system do
       skip_validations_for_system { true }

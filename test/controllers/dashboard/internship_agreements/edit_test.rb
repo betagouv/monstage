@@ -34,7 +34,7 @@ module Dashboard::InternshipOffers
       internship_agreement = create(:internship_agreement, internship_application: internship_application, employer_accept_terms: true)
       sign_in(school.school_manager)
 
-      get edit_dashboard_internship_agreement_path(internship_agreement.id)
+      get edit_dashboard_internship_agreement_path(uuid: internship_agreement.uuid)
       assert_redirected_to root_path
     end
 
@@ -45,7 +45,7 @@ module Dashboard::InternshipOffers
       internship_agreement = create(:internship_agreement, internship_application: internship_application, school_manager_accept_terms: true)
       sign_in(school.school_manager)
 
-      get edit_dashboard_internship_agreement_path(internship_agreement.id)
+      get edit_dashboard_internship_agreement_path(uuid: internship_agreement.uuid)
       assert_response :success
     end
   end

@@ -85,7 +85,7 @@ Rails.application.routes.draw do
       resources :team_member_invitations, path: 'invitation-equipes', only: %i[create index new destroy] do
         patch :join, to: 'team_member_invitations#join', on: :member
       end
-      resources :internship_agreements,  path: 'conventions-de-stage', except: %i[destroy]
+      resources :internship_agreements,  path: 'conventions-de-stage', except: %i[destroy], param: :uuid
       resources :users, path: 'signatures', only: %i[update], module: 'group_signing' do
         member do
           post 'start_signing'
