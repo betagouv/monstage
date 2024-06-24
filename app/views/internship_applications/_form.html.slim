@@ -58,7 +58,8 @@
                     value: f.object.student_phone || f.object.student.phone&.gsub!('+33', ''),
                     label: "Numéro de portable élève ou parent",
                     required: true,
-                    pattern: '0[67][0-9]{8}',
+                    maxlength: 20,
+                    pattern:'^\+?(33|262|594|596|687|689)?\s?0?(6|7)\s?(\d{2,3}\s?){1,3}\d{2,3}$',
                     hint: "Numéro commençant par 06 ou 07 uniquement",
                     title: "Numéro de portable"
 

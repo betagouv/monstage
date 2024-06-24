@@ -367,8 +367,10 @@ module Dashboard
       text = "Le chef d'établissement a été nommé apte à signer les conventions par le conseil d'administration de l'établissement en date du"
       fill_in text, with: "12/02/2015"
       click_button('Valider la convention')
-      find('h1 span.fr-fi-arrow-right-line.fr-fi--lg', text: "Valider la convention")
-      click_button('Je valide la convention')
+      assert internship_agreement.reload.valid?
+      within("dialog[aria-labelledby='validation-modal-title']") do
+        click_button('Je valide la convention')
+      end
       find("span#alert-text", text: "La convention est validée, le fichier pdf de la convention est maintenant disponible.")
     end
 

@@ -3,7 +3,7 @@
 div [data-controller='hosting-infos' data-hosting-infos-base-type-value="#{klass}"]
   .row
     .col-md-12.order-md-1.order-2
-      
+
       / - TODO if edit_mode && resource.missing_weeks_info?
       /   #weeks_container.fr-mb-2w
       /     .fr-alert.fr-alert--info
@@ -28,8 +28,8 @@ div [data-controller='hosting-infos' data-hosting-infos-base-type-value="#{klass
                               data: { :'hosting-infos-target' => 'individualButton',
                                       action: "change->hosting-infos#toggleInternshipmaxStudentsPerGroup" }
           = label_tag :internship_type_true, 'Individuel, un seul élève par stage'
-              
-        .fr-radio-group        
+
+        .fr-radio-group
           = radio_button_tag :internship_type,
                               false,
                               resource.new_record? && resource.errors.empty? && params[:duplicate_id].blank? ? false : !resource.is_individual?,
@@ -51,7 +51,7 @@ div [data-controller='hosting-infos' data-hosting-infos-base-type-value="#{klass
                             class: 'fr-input col-lg-6',
                             disabled: false,
                             data: { :"hosting-infos-target" => "studentsMaxGroupInput",
-                                    action: "change->hosting-infos#handleMaxCandidatesPerGroupChanges"}    
+                                    action: "change->hosting-infos#handleMaxCandidatesPerGroupChanges"}
     .col-md-6
       .fr-alert.fr-alert--info
         h3.fr-alert__title Conseil
@@ -77,12 +77,12 @@ div [data-controller='hosting-infos' data-hosting-infos-base-type-value="#{klass
                             min: resource.is_a?(InternshipOffer) ? (resource.internship_applications.try(:approved).try(:count) || 0) : 0,
                             data: { :"hosting-infos-target" => 'maxCandidatesInput',
                                     action: "change->hosting-infos#handleMaxCandidatesChanges"}
-      
+
       = form.hidden_field :type, data: { :"hosting-infos-target" => "type" }
 
-        
+
       // TODO A vérifier si utile
-      .form-group 
+      .form-group
         = react_component("ReservedSchoolInput",
                           props: { label:"Ville ou nom de l'établissement pour lequel le stage est reservé",
                                     required: false,
@@ -90,10 +90,10 @@ div [data-controller='hosting-infos' data-hosting-infos-base-type-value="#{klass
                                     selectClassRoom: false,
                                     existingSchool: resource.school.as_json})
 
-        
+
 
         - if submit_button
-          .fr-mt-2w 
+          .fr-mt-2w
             = link_to edit_dashboard_stepper_internship_offer_info_path(params[:internship_offer_info_id],
                                                                 organisation_id: params[:organisation_id]),
                         class: 'fr-btn fr-mr-2w fr-btn--secondary' do
