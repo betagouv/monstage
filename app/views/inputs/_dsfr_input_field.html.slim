@@ -6,6 +6,7 @@
 - pattern ||= ''
 - title ||= ''
 - value = value || (object.send(field) if object)
+- data ||= {}
 - if object&.errors.blank?
   .fr-input-group
     = f.label field,
@@ -21,6 +22,7 @@
                           placeholder: placeholder,
                           required: required,
                           **(pattern.present? ? { pattern: pattern } : {}),
+                          **(data.present? ? { data: data } : {}),
                           title: title)
 - elsif object.errors[field].present?
   .fr-input-group.fr-input-group--error
@@ -56,4 +58,5 @@
                    value: value,
                    required: required,
                    **(pattern.present? ? { pattern: pattern } : {}),
+                   **(data.present? ? { data: data } : {}),
                    title: title)
