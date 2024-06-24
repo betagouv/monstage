@@ -298,6 +298,10 @@ class User < ApplicationRecord
     Rails.env.production? ? satisfaction_survey_id : ENV['TALLY_STAGING_SURVEY_ID']
   end
 
+  def anonymized_email
+    email.gsub(/(?<=.{2}).(?=[^@]*@)/, '*')
+  end
+
   private
 
   def concatenate_and_clean
