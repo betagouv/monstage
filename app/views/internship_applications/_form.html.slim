@@ -37,6 +37,8 @@ div data-controller="mandatory" data-mandatory-minimum-length-value="8"
                            required: true,
                            rows: 5
 
+
+
       = f.fields_for :student do |resume_form|
         = render partial: "users/resume_fields",
                 locals: { form: resume_form, phone_mail_disabled: true, disabled: false}
@@ -44,11 +46,12 @@ div data-controller="mandatory" data-mandatory-minimum-length-value="8"
         .h4 Pour être recontacté par l'entreprise
       .row.fr-my-2w
         .col-xs-12.col-sm-6
+          - email = f.object.student_email || f.object.student.email || f.object.previous_student_email
           = render '/inputs/dsfr_input_field',
                     f: f,
                     field: :student_email,
                     object: f.object,
-                    value: f.object.student_email || f.object.student.email,
+                    value: email,
                     label: "Adresse électronique (email)",
                     required: true,
                     title: "S'il vous plaît, entrez une adresse email valide.",
@@ -57,14 +60,16 @@ div data-controller="mandatory" data-mandatory-minimum-length-value="8"
                            action: 'input->mandatory#fieldChange'}
       .row.fr-my-2w.fr-mb-3w
         .col-xs-12.col-sm-6
+          - phone = f.object.student_phone || f.object.student.phone&.gsub!('+33', '') || f.object.previous_student_phone
           = render '/inputs/dsfr_input_field',
                       f: f,
                       field: :student_phone,
                       object: f.object,
-                      value: f.object.student_phone || f.object.student.phone&.gsub!('+33', ''),
+                      value: phone,
                       label: "Numéro de portable élève ou parent",
                       required: true,
-                      pattern: '^\+?(33|262|590|594|596)?0?[67]\d{8}$',
+                      maxlength: 20,
+                      pattern: '^\+?(33|262|590|594|596|687)?0?[67]\d{8}$',
                       hint: "Numéro commençant par 06 ou 07 uniquement",
                       title: "Numéro de portable",
                       data: {'mandatory-target' => 'mandatoryField',

@@ -49,7 +49,7 @@ class InternshipOfferTest < ActiveSupport::TestCase
 
   test 'faulty zipcode' do
     internship_offer = create(:weekly_internship_offer)
-    internship_offer.update_columns(zipcode: 'xy75012')
+    internship_offer.update_columns(zipcode: 'xy752')
 
     refute internship_offer.valid?
     assert_equal ["Code postal le code postal ne permet pas de déduire le département" ],

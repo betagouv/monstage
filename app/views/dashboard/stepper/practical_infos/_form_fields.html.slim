@@ -10,6 +10,8 @@ div data-controller='practical-info-form' data-action="input->practical-info-for
                            label: 'Votre numéro de téléphone de correspondance',
                            field: :contact_phone,
                            field_type: :phone_field,
+                           maxlength:  20,
+                           pattern:'^\+?(33|262|594|596|687|689)?\s?0?(6|7)\s?(\d{2,3}\s?){1,3}\d{2,3}$',
                            hint: 'Ce numéro ne sera pas partagé avec les élèves et sera utilisé éventuellement et uniquement par les équipes internes de monstagedetroisieme pour vous contacter au sujet de votre offre.',
                            required: true }
       fieldset.fr-mt-11v
