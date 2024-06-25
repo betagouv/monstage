@@ -243,24 +243,27 @@ def populate_agreements
     signatory_role: 'school_manager',
     signatory_ip: FFaker::Internet.ip_v4_address,
     signature_phone_number: agreement_4.school_manager.phone,
-    signature_date: 1.day.ago
-  ).save!
+    signature_date: 1.day.ago,
+    signature_image: Rack::Test::UploadedFile.new("test/fixtures/files/signature.png", "image/png")
+  ).save! unless agreement_4.school_manager.nil?
   Signature.new(
     signatory_ip: FFaker::Internet.ip_v4_address,
     internship_agreement_id: agreement_5.id,
     user_id: agreement_5.school_manager.id,
     signature_phone_number: agreement_5.school_manager.phone,
     signatory_role: 'school_manager',
-    signature_date: 1.day.ago
-  ).save!
+    signature_date: 1.day.ago,
+    signature_image: Rack::Test::UploadedFile.new("test/fixtures/files/signature.png", "image/png")
+  ).save! unless agreement_5.school_manager.nil?
   Signature.new(
     signatory_ip: FFaker::Internet.ip_v4_address,
     internship_agreement_id: agreement_5.id,
     user_id: agreement_5.employer.id,
     signature_phone_number: agreement_5.employer.phone,
     signatory_role: 'employer',
-    signature_date: 1.day.ago
-  ).save!
+    signature_date: 1.day.ago,
+    signature_image: Rack::Test::UploadedFile.new("test/fixtures/files/signature.png", "image/png")
+  ).save! unless agreement_5.school_manager.nil?
 end
 
 call_method_with_metrics_tracking([
