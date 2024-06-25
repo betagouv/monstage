@@ -3,6 +3,7 @@
 require 'test_helper'
 
 class SessionsControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
   test 'GET works' do
     get new_user_session_path
     assert_response :success
@@ -118,5 +119,12 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
       assert_response :success
       assert response.body.include? 'Une de vos candidatures a été acceptée'
       assert_select 'a[href=?]', dashboard_students_internship_application_path(student_id: student.id, id: internship_application.id), 1
+    end
+
+    test 'session cookies are deleted on sign out' do
+      student = create(:student)
+      sign_in(student)
+      delete destroy_user_session_path
+      assert_nil cookies['_ms2gt_manage_session']
     end
 end
