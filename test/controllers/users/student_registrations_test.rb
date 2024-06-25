@@ -37,7 +37,7 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
                 birth_date: birth_date,
                 gender: 'np',
                 email: 'fourcade.m@gmail.com',
-                password: 'okokok',
+                password: 'okokoK123456@!',
                 accept_terms: '1'
               }
             }
@@ -116,7 +116,7 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
             type: 'Users::Student',
             identity_token: identity.token,
             email: email,
-            password: 'okokok',
+            password: 'okokoK123456@!',
             accept_terms: '1'
           }
         }
@@ -143,7 +143,7 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
           user: {
             type: 'Users::Student',
             email: email,
-            password: 'okokok',
+            password: 'okokoK123456@!',
             accept_terms: '1'
           }
         }

@@ -23,7 +23,7 @@ class OperatorRegistrationsTest < ActionDispatch::IntegrationTest
   test 'POST #create with missing params fails creation' do
     assert_difference('Users::Operator.count', 0) do
       post user_registration_path(params: { user: { email: 'operator@vvmt.fr',
-                                                    password: 'okokok',
+                                                    password: 'okokoK123456@!',
                                                     type: 'Users::Operator',
                                                     first_name: 'Martin',
                                                     last_name: 'Fourcade',
@@ -37,7 +37,7 @@ class OperatorRegistrationsTest < ActionDispatch::IntegrationTest
     operator = create(:operator)
     assert_difference('Users::Operator.count', 1) do
       post user_registration_path(params: { user: { email: 'operator@vvmt.fr',
-                                                    password: 'okokok',
+                                                    password: 'okokoK123456@!',
                                                     type: 'Users::Operator',
                                                     first_name: 'Martin',
                                                     last_name: 'Fourcade',

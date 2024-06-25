@@ -23,7 +23,7 @@ class StatisticianRegistrationsTest < ActionDispatch::IntegrationTest
       post user_registration_path(params: { user: { email: email,
                                                     first_name: 'dep',
                                                     last_name: 'artement',
-                                                    password: 'okokok',
+                                                    password: 'okokoK123456@!',
                                                     type: 'Users::PrefectureStatistician',
                                                     accept_terms: '1' }})
     end

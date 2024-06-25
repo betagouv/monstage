@@ -21,7 +21,7 @@ class TeacherRegistrationsTest < ActionDispatch::IntegrationTest
   test 'POST #create with missing params fails creation' do
     assert_difference('Users::SchoolManagement.teacher.count', 0) do
       post user_registration_path(params: { user: { email: 'teacher@acu.fr',
-                                                    password: 'okokok',
+                                                    password: 'okokoK123456@!',
                                                     type: 'Users::SchoolManagement',
                                                     first_name: 'Martin',
                                                     last_name: 'Fourcade',
@@ -38,7 +38,7 @@ class TeacherRegistrationsTest < ActionDispatch::IntegrationTest
     class_room = create(:class_room, name: '3e A', school: school)
     assert_difference('Users::SchoolManagement.teacher.count', 1) do
       post user_registration_path(params: { user: { email: "teacher@#{school.email_domain_name}",
-                                                    password: 'okokok',
+                                                    password: 'okokoK123456@!',
                                                     type: 'Users::SchoolManagement',
                                                     first_name: 'Martin',
                                                     last_name: 'Fourcade',

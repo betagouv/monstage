@@ -24,7 +24,7 @@ class MinistryStatiticianRegistrationsTest < ActionDispatch::IntegrationTest
       post user_registration_path(params: { user: { email: email,
                                                     first_name: 'ref',
                                                     last_name: 'central',
-                                                    password: 'okokok',
+                                                    password: 'okokoK123456@!',
                                                     type: 'Users::MinistryStatistician',
                                                     group_id: group.id,
                                                     accept_terms: '1' } })

@@ -21,7 +21,7 @@ class EmployerRegistrationsTest < ActionDispatch::IntegrationTest
   test 'POST Create Employer' do
     assert_difference('Users::Employer.count') do
       post user_registration_path(params: { user: { email: 'madame@accor.fr',
-                                                    password: 'okokok',
+                                                    password: 'okokoK123456@!',
                                                     employer_role: 'chef de projet',
                                                     first_name: 'Madame',
                                                     last_name: 'Accor',
@@ -39,7 +39,7 @@ class EmployerRegistrationsTest < ActionDispatch::IntegrationTest
     assert_no_difference('Users::Employer.count') do
       post user_registration_path(params: { user: { email: 'madame@accor.fr',
                                                     confirmation_email: 'madame@accor.fr',
-                                                    password: 'okokok',
+                                                    password: 'okokoK123456@!',
                                                     employer_role: 'chef de projet',
                                                     first_name: 'Madame',
                                                     last_name: 'Accor',

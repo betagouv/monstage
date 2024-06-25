@@ -364,17 +364,40 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     sign_in(employer)
     user_params = {
       current_password: employer.password,
-      password: 'passw0rd',
-      confirmation_password: 'passw0rd',
+      password: 'okokoK123456@!',
+      confirmation_password: 'okokoK123456@!',
     }
     patch account_password_path, params: { user: user_params }
 
     assert_redirected_to account_path(section: :password)
     employer.reload
-    assert true, employer.valid_password?('passw0rd')
+    assert true, employer.valid_password?('okokoK123456@!')
     follow_redirect!
     assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
   end
 
+  test 'PATCH password as Employer fails with weak password' do
+    employer = create(:employer)
+    sign_in(employer)
+    user_params = {
+      current_password: employer.password,
+      password: 'password123',
+    }
+    patch account_password_path, params: { user: user_params }
+
+    assert_response :bad_request
+  end
+
+  test 'PATCH password as Employer registreed by phone fails with weak password' do
+    employer = create(:employer, email: nil, phone: '+330623042585')
+    sign_in(employer)
+    user_params = {
+      current_password: employer.password,
+      password: 'password123',
+    }
+    patch account_password_path, params: { user: user_params }
+
+    assert_response :bad_request
+  end
 
 end

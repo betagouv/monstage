@@ -104,7 +104,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as Student with a pending internship_application' do
-      student = create(:student, password: 'okokok')
+      student = create(:student, password: 'okokoK123456@!')
       internship_offer = create(:weekly_internship_offer)
       internship_application = create(:weekly_internship_application, :validated_by_employer,
             student: student,
@@ -112,7 +112,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
       post user_session_path(params: { user: { channel: 'email',
                                                email: student.email,
-                                               password: 'okokok' } })
+                                               password: 'okokoK123456@!' } })
       
                                                follow_redirect!
       assert_response :success
