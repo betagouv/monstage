@@ -48,6 +48,7 @@ class User < ApplicationRecord
 
   validate :email_or_phone
   validate :keep_email_existence, on: :update
+  validate :password_complexity
 
   delegate :application, to: Rails
   delegate :routes, to: :application
@@ -333,6 +334,17 @@ class User < ApplicationRecord
         :email,
         'Il faut conserver un email valide pour assurer la continuité du service'
       )
+    end
+  end
+
+  def password_complexity
+    if password.present?
+      unless password =~ /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/
+        errors.add :password, "doit inclure au moins une minuscule, une majuscule, un chiffre et un caractère spécial"
+      end
+      unless password.length >= 12
+        errors.add :password, "doit comporter au moins 12 caractères"
+      end
     end
   end
 end
