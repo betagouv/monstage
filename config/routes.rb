@@ -192,7 +192,9 @@ Rails.application.routes.draw do
 
   root to: 'pages#home'
 
+  get '/400', to: 'errors#bad_request'
   get '/404', to: 'errors#not_found'
+  get '/406', to: 'errors#not_acceptable'
   get '/422', to: 'errors#unacceptable'
   get '/500', to: 'errors#internal_error'
   get '/flyer_2022', to: 'pages#flyer'
