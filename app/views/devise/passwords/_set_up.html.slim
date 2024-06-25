@@ -21,8 +21,12 @@ hr
           span
             | Numéro de téléphone indiqué par votre professeur
           small.form-text.text-muted
-            | Ce numéro sera utilisé uniquement pour communiquer avec vous. Il vous servira également d’identifiant pour vous connecter.  
-        = f.text_field :phone, class: "fr-input", value: current_user.phone.gsub('+33', ''), disabled: true
+            | Ce numéro sera utilisé uniquement pour communiquer avec vous. Il vous servira également d’identifiant pour vous connecter.
+
+        = f.text_field :phone,
+                       class: "fr-input",
+                       value: current_user.phone,
+                       disabled: true
 
     - else 
       .form-group.custom-label-container
