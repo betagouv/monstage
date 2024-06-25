@@ -40,25 +40,28 @@
       .h4 Pour être recontacté par l'entreprise
     .row.fr-my-2w
       .col-xs-12.col-sm-6
+        - email = f.object.student_email || f.object.student.email || f.object.previous_student_email
         = render '/inputs/dsfr_input_field',
                     f: f,
                     field: :student_email,
                     object: f.object,
-                    value: f.object.student_email || f.object.student.email,
+                    value: email,
                     label: "Adresse électronique (email)",
                     required: true,
                     pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
                     title: "S'il vous plaît, entrez une adresse email valide."
     .row.fr-my-2w.fr-mb-3w
       .col-xs-12.col-sm-6
+        - phone = f.object.student_phone || f.object.student.phone&.gsub!('+33', '') || f.object.previous_student_phone
         = render '/inputs/dsfr_input_field',
                     f: f,
                     field: :student_phone,
                     object: f.object,
-                    value: f.object.student_phone || f.object.student.phone&.gsub!('+33', ''),
+                    value: phone,
                     label: "Numéro de portable élève ou parent",
                     required: true,
-                    pattern: '0[67][0-9]{8}',
+                    maxlength: 20,
+                    pattern:'^\+?(33|262|594|596|687|689)?\s?0?(6|7)\s?(\d{2,3}\s?){1,3}\d{2,3}$',
                     hint: "Numéro commençant par 06 ou 07 uniquement",
                     title: "Numéro de portable"
 
