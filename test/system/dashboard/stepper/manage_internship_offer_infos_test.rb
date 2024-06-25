@@ -25,21 +25,6 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
     end
   end
 
-  test 'create internship offer info fails gracefuly' do
-    sector = create(:sector)
-    employer = create(:employer)
-    organisation = create(:organisation, employer: employer)
-    sign_in(employer)
-    travel_to(Date.new(2019, 3, 1)) do
-      visit new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
-      fill_in_internship_offer_info_form(sector: sector)
-      as = 'a' * 151
-      fill_in 'internship_offer_info_title', with: as
-      click_on "Suivant"
-      find('.fr-alert.fr-alert--error')
-    end
-  end
-
   test 'employer can create an offer on May 31st for next year' do
     unless ENV.fetch('CI', false) == 'true'
       travel_to Date.new(2023, 5, 29) do

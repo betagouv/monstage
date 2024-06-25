@@ -11,7 +11,7 @@ FactoryBot.define do
     student_refering_teacher_full_name { FFaker::NameFR.name }
     student_refering_teacher_email { FFaker::Internet.email }
     student_refering_teacher_phone { FFaker::PhoneNumberFR.mobile_phone_number }
-    student_phone { '+330325254575' }
+    student_phone { '+330625254575' }
     siret { FFaker::CompanyFR.siret }
     student_full_name { internship_application.student.presenter.full_name }
     student_legal_representative_full_name {  FFaker::NameFR.name }

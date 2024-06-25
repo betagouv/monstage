@@ -7,11 +7,14 @@ module Services
       result = fetch_data
       result = second_try if result.nil?
       result = third_try if result.nil?
-      return nil if result.nil?
+      return nil if result&.empty?
+      return nil unless result.is_a?(Hash)
 
-      formatted_phone = result[:phone].nil? ? "" : french_phone_number_format(result[:phone] || "")
-      address = result[:address].nil? ? "" : sanitize(result[:address])
-      email = result[:email].nil? ? "" : result[:email]
+      result.reject! { |_k, value| value == '' }
+      formatted_phone = french_phone_number_format(result[:phone] || '')
+      address = result[:address].nil? ? '' : sanitize(result[:address])
+      email = result[:email] || ''
+      # considering data is to be updated rather than kept if once fetched
       school.update(
         fetched_school_phone: formatted_phone,
         fetched_school_address: address,
@@ -82,16 +85,25 @@ module Services
     end
 
     def data_parser(body:)
-      result = nil
+      result = {}
+      return result if body.nil?
+
       klass = ".etablissement.etablissement--extra_search_result.etablissement--search__item"
       Nokogiri::HTML5.parse(body).css(klass).each do |article|
         next unless article['about'].to_s.include?(code_uai)
 
-        result = {
-          phone: article.css(".establishment--search_item__contact a")[0]['href'][4..-1],
-          address: article.css(".establishment--search_item__content .establishment--address-line")[0].text.strip,
-          email: article.css(".establishment--search_item__content .establishment--search_item__address a")[0]['href'][7..-1]
-        }
+        contact = article.css(".establishment--search_item__contact a")
+        if contact.present? && contact[0].present? && contact[0]['href'].present?
+          result.merge!(phone: contact[0]['href']&.slice(4, -1))
+        end
+        address = article.css(".establishment--search_item__content .establishment--address-line")
+        if address.present? && address[0].present? && address[0].text.present?
+          result.merge!(address: address[0].text.strip)
+        end
+        email = article.css(".establishment--search_item__content .establishment--search_item__address a")
+        if email.present? && email[0].present? && email[0]['href'].present?
+          result.merge!(email: email[0]['href']&.slice(7,-1))
+        end
         break
       end
       result
