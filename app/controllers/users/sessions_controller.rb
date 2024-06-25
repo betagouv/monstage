@@ -40,6 +40,13 @@ module Users
       super
     end
 
+    def destroy
+      super do
+        cookies.delete(:_monstage_session)
+        cookies.delete(:_ms2gt_manage_session)
+      end
+    end
+
     protected
 
     def store_targeted_offer_id(user:)
