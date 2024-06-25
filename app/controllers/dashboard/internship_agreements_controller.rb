@@ -6,7 +6,7 @@ module Dashboard
 
     def new
       @internship_agreement = internship_agreement_builder.new_from_application(
-        InternshipApplication.find(params[:internship_application_id])
+        InternshipApplication.find_by(uuid: params[:internship_application_uuid])
       )
     end
 

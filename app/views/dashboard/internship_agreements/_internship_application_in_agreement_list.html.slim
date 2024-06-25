@@ -23,7 +23,7 @@ tr class="d-sm-flex student-application-no-agreement-#{internship_application.id
       .fr-badge.fr-badge--new Action requise
 
   - school_data = Services::SchoolDirectory.new(school: internship_application.student.school).school_data_search
-  - data_detail_link = school_details_dashboard_internship_offer_internship_application_path(internship_offer_id: internship_application.internship_offer.id, id: internship_application.id)
+  - data_detail_link = school_details_dashboard_internship_offer_internship_application_path(internship_offer_id: internship_application.internship_offer.id, uuid: internship_application.uuid)
   - link_to_path = school_data.nil? ? "#" : data_detail_link
   td.rg2a-width-100.col-sm-3.d-sm-flex.align-items-center.text-center.actions
     = link_to link_to_path, class: 'fr-btn fr-btn--secondary fr-btn--icon-left fr-btn-fr-icon-check-line fr-btn--sm fr-mb-2w fr-px-4w' do

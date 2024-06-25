@@ -117,6 +117,6 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
                                                follow_redirect!
       assert_response :success
       assert response.body.include? 'Une de vos candidatures a été acceptée'
-      assert_select 'a[href=?]', dashboard_students_internship_application_path(student_id: student.id, id: internship_application.id), 1
+      assert_select 'a[href=?]', dashboard_students_internship_application_path(student_id: student.id, uuid: internship_application.uuid), 1
     end
 end

@@ -34,7 +34,7 @@ module InternshipApplications
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
         assert_redirected_to internship_offer_internship_application_path(
           internship_offer,
-          InternshipApplications::WeeklyFramed.last
+          uuid: InternshipApplications::WeeklyFramed.last.uuid
         )
       end
 
@@ -76,7 +76,7 @@ module InternshipApplications
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
         assert_redirected_to internship_offer_internship_application_path(
           internship_offer,
-          InternshipApplications::WeeklyFramed.last
+          uuid: InternshipApplications::WeeklyFramed.last.uuid
         )
       end
 
@@ -118,7 +118,7 @@ module InternshipApplications
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
         assert_redirected_to internship_offer_internship_application_path(
           internship_offer,
-          InternshipApplications::WeeklyFramed.last
+          uuid: InternshipApplications::WeeklyFramed.last.uuid
         )
       end
 
@@ -180,7 +180,7 @@ module InternshipApplications
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
         assert_redirected_to internship_offer_internship_application_path(
           internship_offer,
-          InternshipApplications::WeeklyFramed.last
+          uuid: InternshipApplications::WeeklyFramed.last.uuid
         )
       end
     end
@@ -206,7 +206,7 @@ module InternshipApplications
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
         assert_redirected_to internship_offer_internship_application_path(
           internship_offer,
-          InternshipApplications::WeeklyFramed.last
+          uuid: InternshipApplications::WeeklyFramed.last.uuid
         )
       end
 
@@ -239,7 +239,7 @@ module InternshipApplications
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
         assert_redirected_to internship_offer_internship_application_path(
           internship_offer,
-          InternshipApplications::WeeklyFramed.last
+          uuid: InternshipApplications::WeeklyFramed.last.uuid
         )
       end
 

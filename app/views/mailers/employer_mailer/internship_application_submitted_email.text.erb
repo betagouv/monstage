@@ -2,5 +2,5 @@
 
 <%= "Nous avons le plaisir de vous signifier que l'élève #{@internship_application.student.name} vous a adressé une candidature." %>
 
-Pour répondre, cliquez sur lien suivant <%= dashboard_internship_offer_internship_application_url(internship_offer_id: @internship_application.internship_offer.id, id: @internship_application.id) %>
+Pour répondre, cliquez sur lien suivant <%= dashboard_internship_offer_internship_application_url(internship_offer_id: @internship_application.internship_offer.id, uuid: @internship_application.uuid) %>
 

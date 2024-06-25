@@ -27,7 +27,7 @@ module Dashboard
         @internship_application.read! if @internship_application.submitted?
         redirect_to dashboard_internship_offer_internship_application_path(
           @internship_application.internship_offer,
-          @internship_application
+          uuid: @internship_application.uuid
         )
       end
 
@@ -49,7 +49,7 @@ module Dashboard
             flash_error_message = 'Le lien a expiré, veuillez vous identifier pour accéder à la candidature.'
             path = dashboard_internship_offer_internship_application(
               internship_application.internship_offer,
-              internship_application)
+              uuid: internship_application.uuid)
             redirect_to path, flash: { danger: flash_error_message } and return
           else
             sign_in(internship_application.employer)
@@ -80,7 +80,7 @@ module Dashboard
       end
 
       def fetch_internship_application
-        @internship_application = InternshipApplication.find(params[:id])
+        @internship_application = InternshipApplication.find_by(uuid: params[:uuid])
       end
 
       def filter_by_week_or_application_date(internship_offer, params_order)
