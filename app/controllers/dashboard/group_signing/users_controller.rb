@@ -153,11 +153,19 @@ module Dashboard
                         notice: "Votre signature a été enregistrée pour #{signatures.size} " \
                                 "#{'convention'.pluralize(signatures.size)} de stage"
           end
-          on.failure do |error|
+          on.failure do |sig|
+            logger.info '================================'
+            logger.info "sig.errors.full_messages [agreement: sig.internship_agreement_id]: #{sig.errors.full_messages}"
+            logger.info '================================'
+            logger.info ''
             redirect_to dashboard_internship_agreements_path,
                         alert: 'Votre signature n\'a pas été enregistrée'
           end
           on.argument_error do |error|
+            logger.info '================================'
+            logger.info "error : #{error}"
+            logger.info '================================'
+            logger.info ''
             redirect_to dashboard_internship_agreements_path,
                         alert: 'Votre signature n\'a pas été détectée'
           end
