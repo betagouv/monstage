@@ -13,7 +13,7 @@
     <meta name="turbo-visit-control" content="reload">
     <%= favicon_link_tag asset_pack_path('media/images/favicon.png') %>
     <%= stylesheet_pack_tag "application.css", media: "all", 'data-turbo-track': "reload" %>
-    <%= stylesheet_link_tag "https://unpkg.com/leaflet@1.8.0/dist/leaflet.css", media: "all" %>
+    <%= stylesheet_link_tag "https://unpkg.com/leaflet@1.8.0/dist/leaflet.css", integrity: "sha384-Nh5DPXalR9stszhRpPoPEIgr5F2M4xe7DWJ7iqTp8FtJz0cvNdO/NvY2yjUSLfIS", crossorigin: "anonymous", media: "all" %>
     <%= javascript_pack_tag "application.js", defer: true, 'data-turbo-track': "reload" %>
     <%= javascript_include_tag "https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" %>
     <%= javascript_include_tag "https://tally.so/widgets/embed.js" %>
