@@ -29,8 +29,11 @@ fieldset.select-channel.fr-fieldset.fr-mt-n4w[aria-labelledby="channel-legend"]
   .fr-fieldset__element.d-none.registration[data-signup-target="emailBloc"]
     - if error_status
       / -------- error
-      p.fr-error-text id="text-input-error-desc-error-email"
-        ="#{label} ou mot de passe incorects"
+       p.fr-error-text id="text-input-error-desc-error-email"
+        - error_count = resource.try(:errors).try(:count)
+        - error_msg = resource.try(:errors).try(:full_messages).try(:first)
+        - msg_start = "#{label} ou mot de passe incorrects"
+        = "#{msg_start}#{error_count > 1 ? ", #{error_msg}}" : ''}"
       .fr-input-group.fr-input-group--error
         = form.label :email,
                      class: 'fr-label',
