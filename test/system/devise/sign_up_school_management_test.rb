@@ -5,10 +5,10 @@ require 'application_system_test_case'
 class SignUpSchoolManagersTest < ApplicationSystemTestCase
   test 'navigation & interaction works until school manager creation' do
     existing_email = 'ce.0750655E@ac-paris.fr'
-    
+
     school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin')
     create(:student, email: existing_email)
-    password = 'kikoololtest'
+    password = 'Kikoo4test;123'
     # go to signup as school_manager
     visit new_user_registration_path(as: 'SchoolManagement')
 
@@ -39,6 +39,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
   end
 
   test 'navigation & interaction works until teacher creation' do
+    password = 'Kikoo4test;123'
     school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515')
     create(:school_manager, school: school_1)
     school_2 = create(:school, name: 'Etablissement Test 2', city: 'Saint-Parfait', zipcode: '77555')
@@ -60,7 +61,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       fill_in 'Prénom', with: 'Martin'
       find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       fill_in 'Adresse électronique', with: existing_email
-      fill_in 'Créer un mot de passe', with: 'kikoololletest'
+      fill_in 'Créer un mot de passe', with: password
       execute_script("document.getElementById('user_accept_terms').checked = true;")
       click_on "Valider"
     end
@@ -77,7 +78,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       select school_1.name, from: "user_school_id"
       select(class_room_1.name, from: 'user_class_room_id')
       fill_in 'Adresse électronique', with: "another@#{school_1.email_domain_name}"
-      fill_in 'Créer un mot de passe', with: 'kikoololletest'
+      fill_in 'Créer un mot de passe', with: password
       execute_script("document.getElementById('user_accept_terms').checked = true;")
       click_on "Valider"
     end

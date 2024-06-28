@@ -16,7 +16,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable,
          :validatable, :confirmable, :trackable,
-         :timeoutable
+         :timeoutable, :lockable
 
   include DelayedDeviseEmailSender
 
@@ -267,6 +267,7 @@ class User < ApplicationRecord
   def obfuscated_phone_number ; nil end
   def satisfaction_survey_id ; nil end
   def create_default_internship_offer_area ; nil end
+  def team ;  nil end
 
   def already_signed?(internship_agreement_id:); true end
 

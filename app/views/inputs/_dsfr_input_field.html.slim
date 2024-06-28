@@ -5,7 +5,9 @@
 - field_type ||= :text_field
 - pattern ||= ''
 - title ||= ''
+- maxlength ||= ''
 - value = value || (object.send(field) if object)
+- data ||= {}
 - if object&.errors.blank?
   .fr-input-group
     = f.label field,
@@ -21,6 +23,8 @@
                           placeholder: placeholder,
                           required: required,
                           **(pattern.present? ? { pattern: pattern } : {}),
+                          **(data.present? ? { data: data } : {}),
+                          **(maxlength.present? ? { maxlength: maxlength } : {}),
                           title: title)
 - elsif object.errors[field].present?
   .fr-input-group.fr-input-group--error
@@ -37,6 +41,7 @@
                    value: value,
                    required: required,
                    **(pattern.present? ? { pattern: pattern } : {}),
+                   **(maxlength.present? ? { maxlength: maxlength } : {}),
                    title: title)
     p.fr-error-text id="text-input-error-desc-error-#{field}"
       - field_name = t("activerecord.attributes.#{object.class.name.underscore}.#{field}")
@@ -56,4 +61,6 @@
                    value: value,
                    required: required,
                    **(pattern.present? ? { pattern: pattern } : {}),
+                   **(data.present? ? { data: data } : {}),
+                   **(maxlength.present? ? { maxlength: maxlength } : {}),
                    title: title)

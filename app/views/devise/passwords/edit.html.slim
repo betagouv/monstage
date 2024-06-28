@@ -15,14 +15,26 @@
         = render "layouts/form_errors", resource: resource, resource_name: :user
         = f.hidden_field :reset_password_token
 
-        .form-group.custom-label-container
+        .form-group.custom-label-container data-controller="password"
           = f.label :password, class: "fr-label" do
             = t('.new_password')
             - if @minimum_password_length
               small.form-text.text-muted= t('devise.shared.minimum_password_length', count: @minimum_password_length)
             = f.rg2a_required_content_tag
-          = f.password_field :password, autofocus: true, autocomplete: "new-password", class: "fr-input"
-              
+          = f.password_field :password,
+                             autofocus: true,
+                             autocomplete: "new-password",
+                             class: "fr-password__input fr-input fr-password__input fr-input",
+                             required: true,
+                             pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W)[A-Za-z\d\W]{12,}$',
+                             data: { action: "password#checkFullPassword", :"password-target" => "passwordInput" }
+          #password-input-messages.fr-messages-group aria-live="assertive"
+            ul.fr-pl-0
+              li.fr-message.fr-message--info data-password-target="length" 12 caractères
+              li.fr-message.fr-message--info data-password-target="lowercase" 1 minuscule
+              li.fr-message.fr-message--info data-password-target="uppercase" 1 majuscule
+              li.fr-message.fr-message--info data-password-target="number" 1 chiffre
+              li.fr-message.fr-message--info data-password-target="special" 1 caractère spécial
 
         .actions.d-flex.d-sm-block.text-center.fr-mt-1w
           = f.submit t(".change_my_password"), class: "fr-btn"

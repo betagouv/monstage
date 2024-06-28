@@ -41,12 +41,13 @@ def populate_users
 
   with_class_name_for_defaults(Users::God.new(email: 'god@ms3e.fr', password: ENV['DEFAULT_PASSWORD'])).save!
 
-  school_manager = with_class_name_for_defaults(Users::SchoolManagement.new(
-    role: 'school_manager',
-    email: "ce.1234567X@#{find_default_school_during_test.email_domain_name}",
-    password: ENV['DEFAULT_PASSWORD'],
-    school: find_default_school_during_test,
-    phone: '+330623655541'))
+  school_manager = with_class_name_for_defaults(
+    Users::SchoolManagement.new(
+      role: :school_manager,
+      email: "ce.1234567X@#{find_default_school_during_test.email_domain_name}",
+      password: ENV['DEFAULT_PASSWORD'],
+      school: find_default_school_during_test,
+      phone: '+330623655541'))
   school_manager.save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: class_room, email: "main_teacher@#{find_default_school_during_test.email_domain_name}", password: ENV['DEFAULT_PASSWORD'], school: find_default_school_during_test)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', email: "main_teacher_no_class_room@#{find_default_school_during_test.email_domain_name}", password: ENV['DEFAULT_PASSWORD'], school: find_default_school_during_test)).save!
@@ -76,8 +77,8 @@ def populate_students
 
   school = class_room_1.school
 
-  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: ENV['DEFAULT_PASSWORD'], first_name: 'Abdelaziz', last_name: 'Benzedine', school: find_default_school_during_test, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: ENV['DEFAULT_PASSWORD'], first_name: 'Mohammed', last_name: 'Rivière', school: find_default_school_during_test, class_room: ClassRoom.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr', password: ENV['DEFAULT_PASSWORD'], first_name: 'Abdelaziz', last_name: 'Benzedine', school: find_default_school_during_test, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: ENV['DEFAULT_PASSWORD'], first_name: 'Mohammed', last_name: 'Rivière', school: find_default_school_during_test, class_room: class_room_1, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   # sans classe
   with_class_name_for_defaults(Users::Student.new(email: 'enzo@ms3e.fr', password: ENV['DEFAULT_PASSWORD'], first_name: 'Enzo', last_name: 'Clerc', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 3.days.ago)).save!
 

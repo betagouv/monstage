@@ -7,7 +7,12 @@ export default class extends Controller {
     'requiredField',
     'submitButton',
     'passwordHint',
-    'passwordInput'
+    'passwordInput',
+    'length',
+    'uppercase',
+    'lowercase',
+    'special',
+    'number',
   ];
 
   checkForm() {
@@ -43,6 +48,17 @@ export default class extends Controller {
       submitButton.disabled = false;
     }
   }
+
+  checkFullPassword() {
+    const password = this.passwordInputTarget.value;
+
+    this.lengthTarget.style.color = password.length >= 12 ? "green" : "red"
+    this.uppercaseTarget.style.color = /[A-Z]/.test(password) ? "green" : "red"
+    this.lowercaseTarget.style.color = /[a-z]/.test(password) ? "green" : "red"
+    this.numberTarget.style.color = /[0-9]/.test(password) ? "green" : "red"
+    this.specialTarget.style.color = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(password) ? "green" : "red"
+  }
+
 
   requiredFieldTargetConnected() {
     this.checkForm();

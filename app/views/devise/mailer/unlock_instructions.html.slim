@@ -1,0 +1,14 @@
+p style=head_styles
+  | Votre compte est actuellement verrouillé.
+
+p style=p_styles
+  = "Bonjour #{@resource.presenter.full_name}"
+
+p style=p_styles
+  | Vous avez effectivement tenté de vous connecter trop de fois avec des identifiants incorrects.
+
+p style=p_styles
+  = "Cliquez sur le bouton ci-dessous pour débloquer votre compte :"
+
+= render(partial: 'mailers/blue_call_to_action',
+         locals: { label: 'Débloquer mon compte', href: unlock_url(@resource, unlock_token: @token) })

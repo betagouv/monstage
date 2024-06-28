@@ -4,8 +4,7 @@
   .col.text-right
     = link_to destroy_user_session_path,
               class: "fr-btn fr-btn-danger fr-mx-w fr-mt-2w",
-              data: { turbo: false },
-              method: :delete do
+              data: { turbo_method: :delete } do
       | Déconnexion
 .fr-tabs
   ul.fr-tabs__list aria-label=("user-tab") role="tablist"
