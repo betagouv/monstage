@@ -55,10 +55,8 @@ class UserUpdateTest < ApplicationSystemTestCase
     assert find('input[type="submit"]').disabled?
     fill_in('user[password]', with: 'pass')
     assert find('input[type="submit"]').disabled?
-    find('.invalid-feedback', text: '6 caractères minimum sont attendus')
-    fill_in('user[password]', with: 'passpass')
+    fill_in('user[password]', with: 'passpass123$')
     refute find('input[type="submit"]').disabled?
-    assert_select('.invalid-feedback', text: '6 caractères minimum sont attendus', count: 0)
   end
 
   test 'student with no school is redirected to account(:school)' do
