@@ -4,7 +4,7 @@ module ApplicationTransitable
   included do
 
     # params[:token] is used for transfers from employer to outsiders (with no logging but decision abilities)
-    # params[:sgid] is used in short-lived links for students when choosing to accept or reject an offer
+    # params[:sgid] is used in short-living links for students when choosing to accept or reject an offer
     def update
       authenticate_user! unless params[:sgid].present? || params[:token].present?
       authorize_through_sgid? || authorize_through_token? || authorize!(:update, @internship_application)
@@ -39,6 +39,7 @@ module ApplicationTransitable
 
     def authorize_through_token?
       return false unless params[:token].present?
+
       @internship_application.access_token == params[:token]
     end
 

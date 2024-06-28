@@ -24,7 +24,13 @@ export default class extends Controller {
     'phoneSuffix',
     'schoolPhoneBloc',
     'departmentSelect',
-    'ministrySelect'
+    'ministrySelect',
+    'length',
+    'uppercase',
+    'lowercase',
+    'special',
+    'number',
+    'submitButton'
   ];
 
   static values = {
@@ -33,7 +39,6 @@ export default class extends Controller {
 
   initialize() {
     (localStorage.getItem('channel') === 'phone') ? this.checkPhone() : this.checkEmail();
-    
   }
 
   // on change email address, ensure user is shown academia address requirement when neeeded
@@ -118,6 +123,34 @@ export default class extends Controller {
     // }, 100);
   }
 
+  checkPassword() {
+    const password = this.passwordInputTarget.value;
+
+    this.lengthTarget.style.color = this.isPwdLengthOk(password) ? "green" : "red"
+    this.uppercaseTarget.style.color = this.isPwdUppercaseOk(password) ? "green" : "red"
+    this.lowercaseTarget.style.color = this.isPwdLowercaseOk(password) ? "green" : "red"
+    this.numberTarget.style.color = this.isPwdNumberOk(password) ? "green" : "red"
+    this.specialTarget.style.color = this.isPwdSpecialCharOk(password) ? "green" : "red"
+    const authorization = this.isPwdLengthOk(password) && this.isPwdUppercaseOk(password) && this.isPwdLowercaseOk(password) && this.isPwdNumberOk(password) && this.isPwdSpecialCharOk(password)
+    this.submitButtonTarget.disabled = !authorization
+  }
+
+  isPwdLengthOk(password) {
+    return this.lengthTarget.style.color = password.length >= 12
+  }
+  isPwdUppercaseOk(password) {
+    return this.uppercaseTarget.style.color = /[A-Z]/.test(password)
+  }
+  isPwdLowercaseOk(password) {
+    return this.lowercaseTarget.style.color = /[a-z]/.test(password)
+  }
+  isPwdNumberOk(password) {
+    return this.numberTarget.style.color = /[0-9]/.test(password)
+  }
+  isPwdSpecialCharOk(password) {
+    return this.specialTarget.style.color = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(password)
+  }
+
   disconnect() {
     try {
       this.wssClient.disconnect();
@@ -142,25 +175,6 @@ export default class extends Controller {
 
       $('#statistician-ministry').removeClass('d-none');
       this.ministrySelectTarget.required = true;
-    }
-  }
-
-
-  checkPassword() {
-    const passwordHintElement = this.passwordHintTarget;
-    const passwordGroupElement = this.passwordGroupTarget;
-    const passwordInputTargetElement = this.passwordInputTarget;
-    const $hint = $(passwordHintElement);
-    const $passwordGroup = $(passwordGroupElement);
-    if (passwordInputTargetElement.value.length === 0) {
-      $hint.attr('class', 'text-muted');
-      passwordHintElement.innerText = '(6 caractères au moins)';
-    } else if (passwordInputTargetElement.value.length < 6) {
-      $hint.attr('class', 'fr-message fr-message--error');
-      passwordHintElement.innerText = 'Ce mot de passe est trop court, veuillez corriger.';
-    } else {
-      $hint.attr('class', 'd-none');
-      $passwordGroup.attr('class', 'fr-password fr-input-group fr-input-group--valid');
     }
   }
 

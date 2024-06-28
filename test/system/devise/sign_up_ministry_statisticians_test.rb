@@ -10,6 +10,7 @@ class SignUpMinistryStatisticiansTest < ApplicationSystemTestCase
     create(:public_group, name: "Ministère de l'intérieur")
     visit new_user_registration_path(as: 'Statistician')
     email = 'kikoolol@gmail.com'
+    password = 'Kikoo4test;123'
     assert Group.is_public.count > 1
     assert_difference('Users::MinistryStatistician.count', 1) do
       fill_in 'Prénom', with: 'Martin'
@@ -19,7 +20,7 @@ class SignUpMinistryStatisticiansTest < ApplicationSystemTestCase
       execute_script(" document.getElementById('new_user').action = '/utilisateurs?as=MinistryStatistician';")
       select("Ministère de la Justice", from: "Choisissez le ministère correspondant")
       fill_in 'Adresse électronique', with: email
-      fill_in 'Créer un mot de passe', with: 'kikoololletest'
+      fill_in 'Créer un mot de passe', with: password
       execute_script("document.getElementById('user_accept_terms').checked = true;")
       click_on "Valider"
     end

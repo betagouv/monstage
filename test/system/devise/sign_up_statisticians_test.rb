@@ -7,6 +7,7 @@ class SignUpStatisticiansTest < ApplicationSystemTestCase
     # go to signup as statistician
     bad_email = 'lol@lol.fr'
     good_email = 'kikoolol@gmail.com'
+    password = 'Kikoo4test;123'
 
     visit new_user_registration_path(as: 'Statistician')
 
@@ -19,7 +20,7 @@ class SignUpStatisticiansTest < ApplicationSystemTestCase
       # choose 'Départemental'
       select('75', from: "user_department")
       fill_in 'Adresse électronique', with: good_email
-      fill_in 'Créer un mot de passe', with: 'kikoololletest'
+      fill_in 'Créer un mot de passe', with: password
       execute_script("document.getElementById('user_accept_terms').checked = true;")
       click_on "Valider"
     end

@@ -5,7 +5,7 @@ FactoryBot.define do
     first_name { FFaker::NameFR.first_name.capitalize  }
     last_name { FFaker::NameFR.last_name.capitalize }
     sequence(:email) { |n| "jean#{n}-claude@#{last_name}.fr" }
-    password { 'ooooyeahhhh' }
+    password { 'kiKooLo1;test' }
     confirmed_at { Time.now }
     confirmation_sent_at { Time.now }
     accept_terms { true }

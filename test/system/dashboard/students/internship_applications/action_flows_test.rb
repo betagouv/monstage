@@ -163,6 +163,45 @@ module Dashboard
         end
       end
 
+      test 'student can draft a internship_applications and get former filled in phone number when login is not a phone' do
+        travel_to Date.new(2019,12,1) do
+          weeks = [Week.find_by(number: 1, year: 2020)]
+          school = create(:school, weeks: weeks)
+          student = create(:student,
+                           school: school,
+                           class_room: create( :class_room,
+                           school: school)
+                           )
+          # former_application follows 
+          create(:weekly_internship_application, :drafted, student: student, student_phone: '0611223344')
+          internship_offer = create(:weekly_internship_offer, weeks: weeks)
+
+          sign_in(student)
+          visit internship_offer_path(internship_offer)
+
+          # show application form
+          first(:link, 'Postuler').click
+
+          # fill in application form
+          human_first_week_label = weeks.first.human_select_text_method
+          select human_first_week_label, from: 'internship_application_week_id', wait: 3
+          find('#internship_application_motivation', wait: 3).native.send_keys('Je suis au taquet')
+          refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
+          fill_in("Adresse électronique (email)", with: 'parents@gmail.com')
+          assert_changes lambda {
+                          student.internship_applications
+                                  .where(aasm_state: :drafted)
+                                  .count
+                        },
+                        from: 1,
+                        to: 2 do
+            click_on 'Valider'
+            page.find('#submit_application_form') # timer
+          end
+          assert InternshipApplication.last.student_phone, '0611223344'
+        end
+      end
+
       test 'student can update her internship_application' do
         travel_to Date.new(2023,2,1) do
           weeks = Week.selectable_from_now_until_end_of_school_year

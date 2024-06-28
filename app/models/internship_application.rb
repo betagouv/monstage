@@ -456,6 +456,20 @@ class InternshipApplication < ApplicationRecord
     student.gender == 'f'
   end
 
+  def previous_student_phone
+    student.internship_applications
+           .where.not(student_phone: nil)
+            &.last
+            &.student_phone
+  end
+
+  def previous_student_email
+    student.internship_applications
+           .where.not(student_email: nil)
+           &.last
+           &.student_email
+  end
+
   def application_via_school_manager?
     internship_offer&.school_id
   end
