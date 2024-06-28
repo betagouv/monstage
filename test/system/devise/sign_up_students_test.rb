@@ -166,7 +166,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
   test 'Student registered with phone logs in after visiting an internship_offer and lands on offer page' do
     travel_to Date.new(2020, 1, 1) do
-      password = 'kikoololletest'
+      password = 'Kikoo4test;123'
       weeks = Week.selectable_from_now_until_end_of_school_year.last(2)
       school_1 = create(:school, name: 'Etablissement Test 1',
                                 city: 'Saint-Martin', zipcode: '77515',

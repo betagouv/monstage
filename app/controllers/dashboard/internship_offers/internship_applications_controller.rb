@@ -53,15 +53,17 @@ module Dashboard
             redirect_to path, flash: { danger: flash_error_message } and return
           else
             sign_in(internship_application.employer)
+            authorize! :show, InternshipApplication
           end
         elsif params[:token].present?
-          unless current_user || (params[:token].present? && @internship_application.access_token == params[:token])
+          unless current_user || authorize_through_token?
             redirect_to root_path, flash: { error: 'Vous n’avez pas accès à cette candidature' } and return
           end
+          #no control here
         else
           authenticate_user!
+          authorize! :show, InternshipApplication
         end
-        authorize! :show, InternshipApplication
       end
 
 
@@ -120,8 +122,6 @@ module Dashboard
       def find_internship_offer
         @internship_offer = InternshipOffer.find(params[:internship_offer_id])
       end
-
-
     end
   end
 end

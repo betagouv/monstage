@@ -67,7 +67,7 @@
           li
             = link_to destroy_user_session_path,
                       class: "fr-link text-decoration-none mr-4",
-                      method: :delete do
+                      data: { method: :delete } do
             .inline-block style="text-decoration: none;background-color: red; color: #fff; font-weight: bold; padding-left: 5px; padding-right: 5px "
               i.white.fas.fa-lg.fa-caret-right.mr-1
               | Admin

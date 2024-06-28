@@ -26,6 +26,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
 
     sign_in(student)
     visit new_internship_offer_internship_application_path(internship_offer_id: internship_offer.id)
+    fill_in "Numéro de portable élève ou parent",	with: "+330625252525"
     page.find('.test-missing-school-weeks', visible: true)
 
     click_on 'Valider'
@@ -90,7 +91,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     end
   end
 
-  
+
 
   test 'student can receive a SMS when employer accepts her application' do
     school = create(:school)
@@ -156,7 +157,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     # refute page.has_selector?("a[href='#tab-convention-detail']", count: 1)
   end
 
- 
+
 
   test 'when an employer tries to access application forms, she fails' do
     employer = create(:employer)
