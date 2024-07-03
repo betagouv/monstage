@@ -1036,7 +1036,7 @@ CREATE TABLE public.internship_offers (
     tutor_phone character varying(100),
     tutor_email character varying(100),
     employer_website character varying(560),
-    street character varying(500),
+    street character varying(3000),
     zipcode character varying(5),
     city character varying(50),
     is_public boolean,

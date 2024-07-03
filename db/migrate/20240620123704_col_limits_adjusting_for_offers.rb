@@ -16,7 +16,7 @@ class ColLimitsAdjustingForOffers < ActiveRecord::Migration[7.1]
     change_column :internship_offers, :city, :string, limit: 50
     change_column :practical_infos, :city, :string, limit: 50
     change_column :organisations, :city, :string, limit: 50
-    change_column :internship_offers, :street, :string, limit: 500
+    change_column :internship_offers, :street, :string, limit: 3_000
     change_column :practical_infos, :street, :string, limit: 500
     change_column :organisations, :street, :string, limit: 500
     change_column :internship_offers, :zipcode, :string, limit: 5
