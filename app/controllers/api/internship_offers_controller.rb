@@ -117,6 +117,7 @@ module Api
         :longitude,
         :radius,
         :keyword,
+        sector_ids: [],
         week_ids: []
       )
     end

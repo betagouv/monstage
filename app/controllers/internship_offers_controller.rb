@@ -15,7 +15,7 @@ class InternshipOffersController < ApplicationController
     respond_to do |format|
       format.html do
         @sectors = Sector.all.order(:name).to_a
-        @params = query_params
+        @params = query_params.merge(sector_ids: params[:sector_ids])
       end
       format.json do
         @internship_offers_all_without_page = finder.all_without_page
@@ -75,6 +75,7 @@ class InternshipOffersController < ApplicationController
       :city,
       :radius,
       :keyword,
+      sector_ids: [],
       week_ids: []
     )
   end

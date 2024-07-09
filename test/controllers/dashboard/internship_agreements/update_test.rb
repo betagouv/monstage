@@ -26,7 +26,7 @@ module Dashboard::InternshipAgreements
       internship_application = create(:weekly_internship_application, :approved, user_id: student.id)
       internship_agreement   = create(:internship_agreement, employer_accept_terms: true, internship_application: internship_application)
       sign_in main_teacher
-      patch dashboard_internship_agreement_path(internship_agreement.id),
+      patch dashboard_internship_agreement_path(uuid: internship_agreement.uuid),
             params: {internship_agreement: {student_class_room: 'a'}}
       assert_redirected_to root_path
     end
@@ -53,6 +53,7 @@ module Dashboard::InternshipAgreements
                                     internship_application: internship_application)
       new_organisation_representative_full_name = 'John Doe'
       params = {
+        uuid: internship_agreement.uuid,
         'internship_agreement' => {
           employer_accept_terms: true,
           organisation_representative_full_name: new_organisation_representative_full_name,
@@ -64,7 +65,7 @@ module Dashboard::InternshipAgreements
       }
       sign_in(internship_application.internship_offer.employer)
 
-      patch dashboard_internship_agreement_path(internship_agreement.id, params)
+      patch dashboard_internship_agreement_path(params)
 
       assert_redirected_to(dashboard_internship_agreements_path,
                            'redirection should point to updated agreement')
@@ -84,6 +85,7 @@ module Dashboard::InternshipAgreements
                                       internship_application: internship_application)
       new_organisation_representative_full_name = 'John Doe'
       params = {
+        uuid: internship_agreement.uuid,
         'internship_agreement' => {
           employer_accept_terms: true,
           organisation_representative_full_name: new_organisation_representative_full_name,
@@ -94,7 +96,7 @@ module Dashboard::InternshipAgreements
       }
       sign_in(internship_application.internship_offer.employer)
 
-      patch dashboard_internship_agreement_path(internship_agreement.id, params)
+      patch dashboard_internship_agreement_path(params)
 
       assert_select('.fr-alert.fr-alert--error')
     end
@@ -117,13 +119,14 @@ module Dashboard::InternshipAgreements
       school_manager = internship_application.student.school_manager
       new_school_representative_full_name = 'John Doe'
       params = {
+        uuid: internship_agreement.uuid,
         'internship_agreement' => {
           school_representative_full_name: new_school_representative_full_name,
           school_manager_event: 'start_by_school_manager'
         }
       }
       sign_in(school_manager)
-      patch dashboard_internship_agreement_path(internship_agreement.id, params)
+      patch dashboard_internship_agreement_path(params)
 
       assert_redirected_to(dashboard_internship_agreements_path,
                            'redirection should point to updated agreement')
@@ -141,13 +144,14 @@ module Dashboard::InternshipAgreements
       school_manager = internship_application.student.school_manager
       new_school_representative_full_name = 'John Doe'
       params = {
+        uuid: internship_agreement.uuid,
         'internship_agreement' => {
           school_representative_full_name: "" #missing field
           # missing school_manager_event
         }
       }
       sign_in(school_manager)
-      patch dashboard_internship_agreement_path(internship_agreement.id, params)
+      patch dashboard_internship_agreement_path(params)
 
       assert_select('.fr-alert.fr-alert--error')
     end
@@ -160,13 +164,14 @@ module Dashboard::InternshipAgreements
       school_manager = internship_application.student.school_manager
       new_school_representative_full_name = 'John Doe'
       params = {
+        uuid: internship_agreement.uuid,
         'internship_agreement' => {
           school_representative_full_name: new_school_representative_full_name,
           school_manager_event: 'start_by_school_manager'
         }
       }
       sign_in(school_manager)
-      patch dashboard_internship_agreement_path(internship_agreement.id, params)
+      patch dashboard_internship_agreement_path(params)
 
       assert_redirected_to(dashboard_internship_agreements_path,
                            'redirection should point to updated agreement')
@@ -190,7 +195,7 @@ module Dashboard::InternshipAgreements
       sign_in(employer)
 
       assert_enqueued_emails 1 do
-        patch_url = dashboard_internship_agreement_path(internship_agreement.id)
+        patch_url = dashboard_internship_agreement_path(uuid: internship_agreement.uuid)
         params = { 'internship_agreement' => {
           school_manager_event: 'complete',
           school_representative_full_name: 'badoo'

@@ -1,5 +1,5 @@
 = form_with model: @internship_agreement,
-            url: dashboard_internship_agreement_path(@internship_agreement),
+            url: dashboard_internship_agreement_path(uuid: @internship_agreement.uuid),
             class: 'form-offset-header',
             data: { controller: 'internship-agreement-form',
                     turbo: false ,
