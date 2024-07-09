@@ -2,11 +2,20 @@ module InternshipOfferAreable
   extend ActiveSupport::Concern
 
   included do
+    after_create_commit :create_default_internship_offer_area
+
     has_many :area_notifications, dependent: :destroy
     belongs_to :current_area,
                class_name: 'InternshipOfferArea',
                foreign_key: 'current_area_id',
                optional: true
+
+    def create_default_internship_offer_area
+      return if internship_offer_areas.any?
+
+      initializing_current_area
+    end
+
     def internship_offer_areas
       super if team.not_exists?
 
@@ -30,6 +39,17 @@ module InternshipOfferAreable
         user_id: id,
         internship_offer_area_id: fetch_current_area_id
       )
+    end
+
+    def initializing_current_area(name = nil)
+      name ||= "Espace de #{presenter.short_name}"
+      area = InternshipOfferArea.create(
+        name: name,
+        employer_type: 'User',
+        employer_id: self.id
+      )
+      self.current_area_id = area.id
+      save
     end
 
     # ------------  private ------------

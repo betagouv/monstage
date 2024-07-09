@@ -5,13 +5,16 @@ require 'test_helper'
 module Dashboard::InternshipOffers
   class IndexTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
+    include TeamAndAreasHelper
 
     test 'GET #edit as employer owning application student school renders success' do
       school = create(:school, :with_school_manager)
-      internship_application = create(:weekly_internship_application, :approved)
-      internship_application.student.update(school_id: school.id)
+      student = create(:student, school: school)
+
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, :approved, student: student, internship_offer: internship_offer)
       internship_agreement = internship_application.internship_agreement
-      sign_in(internship_application.internship_offer.employer)
+      sign_in(employer)
 
       get dashboard_internship_agreements_path
       assert_select("td[data-head='#{internship_application.internship_offer.title}']", count: 1)
@@ -26,10 +29,11 @@ module Dashboard::InternshipOffers
 
     test 'GET #edit as employer when missing school_manager renders success but missing internship_agreements' do
       school = create(:school) #no_school_manager
-      internship_application = create(:weekly_internship_application, :approved)
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, :approved, internship_offer: internship_offer)
       internship_application.student.update(school_id: school.id)
       internship_agreement = create(:internship_agreement, internship_application: internship_application, school_manager_accept_terms: true)
-      sign_in(internship_application.internship_offer.employer)
+      sign_in(employer)
 
       get dashboard_internship_agreements_path
       assert_response :success
@@ -39,7 +43,8 @@ module Dashboard::InternshipOffers
     test 'GET #index as teacher ' do
       school = create(:school, :with_school_manager)
       teacher = create(:teacher, school: school)
-      internship_application = create(:weekly_internship_application, :approved)
+      internship_offer = create(:weekly_internship_offer, employer: create(:employer))
+      internship_application = create(:weekly_internship_application, :approved, internship_offer: internship_offer)
       internship_application.student.update(school_id: school.id)
       internship_agreement = create(:internship_agreement, internship_application: internship_application, school_manager_accept_terms: true)
 

@@ -11,7 +11,7 @@ def populate_applications
         motivation: 'Au taquet',
         internship_offer: offer,
         week: offer.internship_offer_weeks.sample.week,
-        student_phone: '0606060606',
+        student_phone: '060606'+ (1000..9999).to_a.sample.to_s,
         student_email: 'paul@gmail.com'
       )
     else
@@ -22,7 +22,7 @@ def populate_applications
         motivation: 'Au taquet',
         internship_offer: offer,
         week: offer.internship_offer_weeks.sample.week,
-        student_phone: '0606060606',
+        student_phone: '060606'+ (1000..9999).to_a.sample.to_s,
         student_email: 'paul@gmail.com'
       )
     end
@@ -39,7 +39,7 @@ def populate_applications
     motivation: 'Au taquet',
     internship_offer: offers.first,
     week: offers.first.internship_offer_weeks.first.week,
-    student_phone: '0606060606',
+    student_phone: '060606'+ (1000..9999).to_a.sample.to_s,
     student_email: 'paul@gmail.com'
   )
 
@@ -53,7 +53,7 @@ def populate_applications
     motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
     internship_offer: offers.second,
     week: offers.first.internship_offer_weeks.first.week,
-    student_phone: '0606060606',
+    student_phone: '060606'+ (1000..9999).to_a.sample.to_s,
     student_email: 'paul@gmail.com'
   )
   #-----------------
@@ -67,7 +67,7 @@ def populate_applications
     motivation: 'Au taquet',
     internship_offer: offers.third,
     week: offers.first.internship_offer_weeks.second.week,
-    student_phone: '0606060606',
+    student_phone: '060606'+ (1000..9999).to_a.sample.to_s,
     student_email: 'paul@gmail.com'
   )
   puts  "third 3e generale stud cancels his application to first offer"
@@ -80,7 +80,7 @@ def populate_applications
     motivation: 'Au taquet',
     internship_offer: offers.fourth,
     week: offers.second.internship_offer_weeks.second.week,
-    student_phone: '0606060606',
+    student_phone: '060606'+ (1000..9999).to_a.sample.to_s,
     student_email: 'paul@gmail.com'
   )
   #-----------------
@@ -94,7 +94,7 @@ def populate_applications
     motivation: 'Au taquet',
     internship_offer: offers.fourth,
     week: offers.first.internship_offer_weeks.third.week,
-    student_phone: '0606060606',
+    student_phone: '060606'+ (1000..9999).to_a.sample.to_s,
     student_email: 'paul@gmail.com'
   )
   InternshipApplications::WeeklyFramed.create!(
@@ -105,7 +105,7 @@ def populate_applications
     motivation: 'Assez moyennement motivé pour ce stage',
     internship_offer: offers.fifth,
     week: offers.fifth.internship_offer_weeks.third.week,
-    student_phone: '0606060606',
+    student_phone: '060606'+ (1000..9999).to_a.sample.to_s,
     student_email: 'paul@gmail.com'
   )
   InternshipApplications::WeeklyFramed.create!(
@@ -116,7 +116,7 @@ def populate_applications
     motivation: 'motivé moyennement pour ce stage, je vous préviens',
     internship_offer: offers[6],
     week: offers[6].internship_offer_weeks.second.week,
-    student_phone: '0606060606',
+    student_phone: '060606'+ (1000..9999).to_a.sample.to_s,
     student_email: 'paul@gmail.com'
   )
   InternshipApplications::WeeklyFramed.create!(
@@ -243,24 +243,27 @@ def populate_agreements
     signatory_role: 'school_manager',
     signatory_ip: FFaker::Internet.ip_v4_address,
     signature_phone_number: agreement_4.school_manager.phone,
-    signature_date: 1.day.ago
-  ).save!
+    signature_date: 1.day.ago,
+    signature_image: Rack::Test::UploadedFile.new("test/fixtures/files/signature.png", "image/png")
+  ).save! unless agreement_4.school_manager.nil?
   Signature.new(
     signatory_ip: FFaker::Internet.ip_v4_address,
     internship_agreement_id: agreement_5.id,
     user_id: agreement_5.school_manager.id,
     signature_phone_number: agreement_5.school_manager.phone,
     signatory_role: 'school_manager',
-    signature_date: 1.day.ago
-  ).save!
+    signature_date: 1.day.ago,
+    signature_image: Rack::Test::UploadedFile.new("test/fixtures/files/signature.png", "image/png")
+  ).save! unless agreement_5.school_manager.nil?
   Signature.new(
     signatory_ip: FFaker::Internet.ip_v4_address,
     internship_agreement_id: agreement_5.id,
     user_id: agreement_5.employer.id,
     signature_phone_number: agreement_5.employer.phone,
     signatory_role: 'employer',
-    signature_date: 1.day.ago
-  ).save!
+    signature_date: 1.day.ago,
+    signature_image: Rack::Test::UploadedFile.new("test/fixtures/files/signature.png", "image/png")
+  ).save! unless agreement_5.school_manager.nil?
 end
 
 call_method_with_metrics_tracking([

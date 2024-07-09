@@ -12,7 +12,7 @@ class InternshipApplication < ApplicationRecord
   MAGIC_LINK_EXPIRATION_DELAY = 5.days
   RECEIVED_STATES = %w[submitted read_by_employer examined expired transfered]
   PENDING_STATES = RECEIVED_STATES + %w[validated_by_employer] - %w[expired]
-  REJECTED_STATES = %w[rejected canceled_by_employer canceled_by_student]
+  REJECTED_STATES = %w[rejected canceled_by_employer canceled_by_student canceled_by_student_confirmation]
   APPROVED_STATES = %w[approved validated_by_employer]
   ORDERED_STATES_INDEX = %w[
     drafted
@@ -54,6 +54,12 @@ class InternshipApplication < ApplicationRecord
   has_rich_text :motivation
 
   paginates_per PAGE_SIZE
+
+  # Validations
+  validate :check_contact_uniqueness
+
+  # Callbacks
+  after_create :update_student_profile
 
   #
   # Triggers scopes (used for transactional mails)
@@ -289,9 +295,8 @@ class InternshipApplication < ApplicationRecord
 
     event :cancel_by_employer do
       from_states = %i[drafted
-                       read_by_employer
-                       drafted
                        submitted
+                       read_by_employer
                        examined
                        transfered
                        validated_by_employer
@@ -429,8 +434,6 @@ class InternshipApplication < ApplicationRecord
     case self
     when InternshipApplications::WeeklyFramed
       InternshipApplicationCountersHooks::WeeklyFramed.new(internship_application: self)
-    when InternshipApplications::FreeDate
-      InternshipApplicationCountersHooks::FreeDate.new(internship_application: self)
     else
       raise 'can not process stats for this kind of internship_application'
     end
@@ -440,8 +443,6 @@ class InternshipApplication < ApplicationRecord
     case self
     when InternshipApplications::WeeklyFramed
       InternshipApplicationAasmMessageBuilders::WeeklyFramed.new(internship_application: self, aasm_target: aasm_target)
-    when InternshipApplications::FreeDate
-      InternshipApplicationAasmMessageBuilders::FreeDate.new(internship_application: self, aasm_target: aasm_target)
     else
       raise 'can not build aasm message for this kind of internship_application'
     end
@@ -453,6 +454,20 @@ class InternshipApplication < ApplicationRecord
 
   def student_is_female?
     student.gender == 'f'
+  end
+
+  def previous_student_phone
+    student.internship_applications
+           .where.not(student_phone: nil)
+            &.last
+            &.student_phone
+  end
+
+  def previous_student_email
+    student.internship_applications
+           .where.not(student_email: nil)
+           &.last
+           &.student_email
   end
 
   def application_via_school_manager?
@@ -551,5 +566,22 @@ class InternshipApplication < ApplicationRecord
 
   def employer_aware_states
     %w[read_by_employer examined validated_by_employer]
+  end
+
+  def check_contact_uniqueness
+    if student_email && User.where.not(id: student.id).exists?(email: student_email)
+      errors.add(:student_email, 'Cet email est déjà utilisé')
+    end
+
+    if student_phone && User.where.not(id: student.id).exists?(phone: "+33#{student_phone}")
+      errors.add(:student_phone, 'Ce numéro de téléphone est déjà utilisé')
+    end
+  end
+
+  def update_student_profile
+    student.update( 
+      phone: student.phone || "+33#{student_phone}",
+      email: student.email || student_email
+    )
   end
 end

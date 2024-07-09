@@ -95,13 +95,13 @@ module Dashboard
 
       sign_in(school_manager)
       visit dashboard_school_users_path(school_id: school.id)
-      assert_difference('Invitation.count', 0 ) do
+      assert_changes('Invitation.count', from: 1, to: 0 ) do
         find('button[aria-label="Supprimer l\'invitation"]')
         accept_confirm do
           find('button[aria-label="Supprimer l\'invitation"]').click
         end
+        find( 'span#alert-text', text: "L'invitation a bien été supprimée")
       end
-      find( 'span#alert-text', text: "L'invitation a bien été supprimée")
     end
   end
 end

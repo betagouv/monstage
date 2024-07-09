@@ -11,22 +11,24 @@ module InternshipOffers::InternshipApplications
       school = create(:school, :with_school_manager)
       class_room = create(:class_room, school: school)
       student = create(:student, school: school, class_room: class_room)
+      internship_offer = create(:weekly_internship_offer, employer: create(:employer))
       internship_application = create(
         :weekly_internship_application,
         :validated_by_employer,
+        internship_offer: internship_offer,
         user_id: student.id
       )
       assert school.school_manager.present?
-      sign_in(internship_application.internship_offer.employer)
+      sign_in(internship_offer.employer)
 
       #since no main_teacher and mails to school_manager and employer are delivered later(they are queued)
       assert_enqueued_emails 1 do
         patch(
           dashboard_internship_offer_internship_application_path(
-            internship_application.internship_offer,
+            internship_offer,
             internship_application ),
             params: { transition: :approve! })
-          assert_redirected_to internship_application.internship_offer.employer.custom_candidatures_path(tab: :approve!)
+          assert_redirected_to internship_offer.employer.custom_candidatures_path(tab: :approve!)
       end
       assert_equal 1, InternshipAgreement.count
       assert_equal internship_application.id,

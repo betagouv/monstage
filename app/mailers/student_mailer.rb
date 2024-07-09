@@ -2,6 +2,45 @@
 
 class StudentMailer < ApplicationMailer
 
+  def welcome_email(student:, shrinked_url: )
+    @student        = student
+    @shrinked_url   = shrinked_url
+    @student_image  = 'boy_girl.svg'
+    subject         = "Bienvenue sur Mon stage de 3e"
+    @welcome_phrase = "Bienvenue sur <br/>Mon stage de 3e".html_safe
+    @header_title = "Vous vous êtes inscrit sur le site, mais vous ne<br/>savez pas trop " \
+                    "comment trouver un stage ?".html_safe
+    @sub_title_1 = "Vous avez une idée de ce qui vous intéresse ?"
+    @sub_title_1_content = "Dirigez-vous sur notre site et lancez une recherche " \
+                           "avec les critères de votre choix : métier, " \
+                           "localisation, et dates de stage. N'oubliez pas : " \
+                           "postuler à plusieurs offres augmente significativement " \
+                           "vos chances de succès !"
+    @sub_title_2 = "Vous ne savez pas quoi chercher?"
+    @sub_title_2_content  = "Prenez un moment pour réfléchir à vos passions et " \
+                            "intérêts. Qu'est-ce qui vous anime ? Quelles matières " \
+                            "vous captivent ? Discutez-en avec vos enseignants, " \
+                            "puis revenez sur notre site pour soumettre au moins " \
+                            "deux candidatures ciblées."
+    @bottom_line_phrase  = "💪 Prêt à trouver le stage de vos rêves ?"
+    @cta_label = "C'est parti !"
+    @public_securite_image= 'securite.svg'
+    @public_question_mark_image= 'question_mark.svg'
+    @root_url = root_url
+
+    send_email(to: student.email,
+               specific_layout: "welcome_mailer_layout",
+               subject: subject)
+  end
+
+  def set_logo_attachment
+    super
+    attachments.inline['securite.svg'] = File.read("#{Rails.root}/public/assets/securite.svg")
+    attachments.inline['question_mark.svg'] = File.read("#{Rails.root}/public/assets/question_mark.svg")
+    attachments.inline['logo-mon-stage-3e-blanc-short.svg'] = File.read("#{Rails.root}/public/assets/logo-mon-stage-3e-blanc-short.svg")
+    attachments.inline['boy_girl.svg'] = File.read("#{Rails.root}/public/assets/boy_girl.svg")
+  end
+
   def internship_application_approved_email(internship_application:)
     @internship_application = internship_application
 
@@ -119,6 +158,20 @@ class StudentMailer < ApplicationMailer
                  "candidatures. Si vous n'avez pas de nouvelles, continuez à postuler " \
                  "ailleurs. Cela maximise vos chances et vous garde actif dans " \
                  "votre recherche de stage."
+
+    @cta_label = "Trouver un stage"
+    @url = internship_offers_url(student.default_search_options)
+
+    send_email(to: @student.email, subject: @subject)
+  end
+
+  def reminder_without_application_email(student: )
+    @subject   = "Faites votre première candidature !"
+    @student   = student
+    @message   = "Vous n'avez pas encore postulé sur MonStagedeTroisieme.fr ? " \
+                 "Faites une recherche en indiquant le métier qui vous intéresse, " \
+                 "le lieu et la semaine de votre stage, puis proposez votre " \
+                  "candidature à plusieurs entreprises."
 
     @cta_label = "Trouver un stage"
     @url = internship_offers_url(student.default_search_options)

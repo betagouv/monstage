@@ -21,6 +21,8 @@ module Builders
             internship_offer_area_id: user.current_area_id)
         )
         internship_offer.save!
+        DraftedInternshipOfferJob.set(wait: 1.week)
+                                 .perform_later(internship_offer_id: internship_offer.id)
         callback.on_success.try(:call, internship_offer)
       rescue ActiveRecord::RecordInvalid => e
         callback.on_failure.try(:call, e.record)
@@ -116,7 +118,7 @@ module Builders
         sector_id: internship_offer_info.sector_id,
         title: internship_offer_info.title,
         description_rich_text: (internship_offer_info.description_rich_text.present? ? internship_offer_info.description_rich_text.to_s : internship_offer_info.description),
-        type: 'InternshipOfferInfos::WeeklyFramed'
+        type: 'InternshipOfferInfo'
       }
     end
 
@@ -207,7 +209,12 @@ module Builders
                 .where(week_id: week_id)
                 .each do |application|
           application.cancel_by_employer! if application.may_cancel_by_employer?
-          application.destroy! # TBD: should we destroy or keep them?
+          # Deleting these applications which weeks were no longer in
+          # the internship offer week list anymore leaded to jobs with missing
+          # internship_application_id, see :
+          # https://mon-stage-de-3e.sentry.io/issues/4685209330/?project=5933968&referrer=jira_integration
+          # but keeping them lead to week orphaned applications weeks
+          # after having tried the deleting approach, we decided to keep them
         end
       end
     end

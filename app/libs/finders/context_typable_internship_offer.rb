@@ -69,14 +69,14 @@ module Finders
       ].each do |sym_key|
         query = self.send("#{sym_key}_query", query) if use_params(sym_key)
       end
-      query = nearby_query(query) if coordinate_params
       query = school_year_query(query) if school_year_param
       query = hide_duplicated_offers_query(query) unless user.god?
+      query = nearby_query(query) if coordinate_params
       query
     end
 
     def week_ids_query(query)
-      query.merge(weekly_framed_scopes(:by_weeks, weeks: OpenStruct.new(ids: use_params(:week_ids))))
+      query.merge(InternshipOffer.by_weeks(weeks: OpenStruct.new(ids: use_params(:week_ids))))
     end
 
     def sector_ids_query(query)
@@ -84,7 +84,7 @@ module Finders
     end
 
     def school_year_query(query)
-      query.merge(weekly_framed_scopes(:specific_school_year, school_year: school_year_param))
+      query.merge(InternshipOffer.specific_school_year(school_year: school_year_param))
     end
 
     def keyword_query(query)
@@ -92,11 +92,9 @@ module Finders
     end
 
     def nearby_query(query)
-      proximity_query = query.nearby(latitude: coordinate_params.latitude,
-                                     longitude: coordinate_params.longitude,
-                                     radius: radius_params)
-                             .with_distance_from(latitude: coordinate_params.latitude,
-                                                 longitude: coordinate_params.longitude)
+      proximity_query = InternshipOffer.nearby_and_ordered(latitude: coordinate_params.latitude,
+                                                           longitude: coordinate_params.longitude,
+                                                           radius: radius_params)
       query.merge(proximity_query)
     end
 
@@ -106,14 +104,14 @@ module Finders
 
     protected
 
-    def weekly_framed_scopes(scope, args = nil)
-      if args.nil?
-        InternshipOffers::WeeklyFramed.send(scope)
-          .or(InternshipOffers::Api.send(scope))
-      else
-        InternshipOffers::WeeklyFramed.send(scope, **args)
-          .or(InternshipOffers::Api.send(scope, **args))
-      end
-    end
+    # def weekly_framed_scopes(scope, args = nil)
+    #   if args.nil?
+    #     InternshipOffers::WeeklyFramed.send(scope)
+    #       .or(InternshipOffers::Api.send(scope))
+    #   else
+    #     InternshipOffers::WeeklyFramed.send(scope, **args)
+    #       .or(InternshipOffers::Api.send(scope, **args))
+    #   end
+    # end
   end
 end

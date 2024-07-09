@@ -142,7 +142,7 @@ module Reporting
         sector: :index_stats
       }.each_pair do |dimension, template|
         get(reporting_internship_offers_path(dimension: dimension,
-                                             school_year: 2022,
+                                             school_year: Date.today.year,
                                              format: :xlsx))
         assert_response :success
         assert_template template

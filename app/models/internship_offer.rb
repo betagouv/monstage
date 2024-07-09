@@ -8,7 +8,7 @@ class InternshipOffer < ApplicationRecord
   TITLE_MAX_CHAR_COUNT = 150
   DESCRIPTION_MAX_CHAR_COUNT= 500
 
-  include StiPreload 
+  include StiPreload
   include AASM
 
   # queries
@@ -24,7 +24,7 @@ class InternshipOffer < ApplicationRecord
   # utils
   include Discard::Model
   include PgSearch::Model
-  
+
   attr_accessor :republish
 
   # Other associations
@@ -45,24 +45,25 @@ class InternshipOffer < ApplicationRecord
                                     foreign_key: :internship_offer_id,
                                     inverse_of: :internship_offer
   has_many :weeks, through: :internship_offer_weeks
+  has_one :stats, class_name: 'InternshipOfferStats', dependent: :destroy
 
   accepts_nested_attributes_for :organisation, allow_destroy: true
 
   has_rich_text :employer_description_rich_text
 
    # Callbacks
-  before_save :update_remaining_seats
-  after_save :check_need_to_be_edited!
-
   after_initialize :init
 
   before_validation :update_organisation
 
   before_save :sync_first_and_last_date,
-              :reverse_academy_by_zipcode
+              :reverse_academy_by_zipcode,
+              :make_sure_area_is_set
 
   before_create :preset_published_at_to_now
   after_commit :sync_internship_offer_keywords
+  after_create :create_stats
+  after_update :update_stats
 
   paginates_per PAGE_SIZE
 
@@ -70,6 +71,18 @@ class InternshipOffer < ApplicationRecord
   delegate :email, to: :employer, prefix: true, allow_nil: true
   delegate :phone, to: :employer, prefix: true, allow_nil: true
   delegate :name, to: :sector, prefix: true
+  delegate :remaining_seats_count, to: :stats, allow_nil: true
+  delegate :blocked_weeks_count, to: :stats, allow_nil: true
+  delegate :total_applications_count, to: :stats, allow_nil: true
+  delegate :approved_applications_count, to: :stats, allow_nil: true
+  delegate :submitted_applications_count, to: :stats, allow_nil: true
+  delegate :rejected_applications_count, to: :stats, allow_nil: true
+  delegate :view_count, to: :stats, allow_nil: true
+  delegate :total_male_applications_count, to: :stats, allow_nil: true
+  delegate :total_female_applications_count, to: :stats, allow_nil: true
+  delegate :total_male_approved_applications_count, to: :stats, allow_nil: true
+  delegate :total_female_approved_applications_count, to: :stats, allow_nil: true
+  delegate :update_need, to: :stats, allow_nil: true
 
   # Validations
   validates :contact_phone,
@@ -84,6 +97,7 @@ class InternshipOffer < ApplicationRecord
     on: :create
 
   validates :weeks, presence: true
+  validate :check_missing_seats_or_weeks, if: :user_update?, on: :update
 
   # Scopes
 
@@ -113,7 +127,7 @@ class InternshipOffer < ApplicationRecord
   }
 
   scope :with_seats, lambda {
-    where('remaining_seats_count > 0')
+    joins(:stats).where('internship_offer_stats.remaining_seats_count > 0')
   }
 
   scope :limited_to_department, lambda { |user:|
@@ -270,7 +284,10 @@ class InternshipOffer < ApplicationRecord
   end
 
   def has_spots_left?
-    internship_offer_weeks.any?(&:has_spots_left?)
+    InternshipOfferWeek.where(internship_offer_id: id)
+                       .where('internship_offer_weeks.blocked_applications_count < ?', max_students_per_group)
+                       .count
+                       .positive?
   end
 
   def is_fully_editable?
@@ -482,18 +499,18 @@ class InternshipOffer < ApplicationRecord
     Presenters::InternshipOffer.new(self)
   end
 
+  def is_favorite?(user)
+    return false if user.nil?
+
+    user.favorites.exists?(internship_offer_id: id)
+  end
+
   def update_all_favorites
     if approved_applications_count >= max_candidates || Time.now > last_date
       Favorite.where(internship_offer_id: id).destroy_all
     end
   end
-
-  def update_remaining_seats
-    reserved_places = internship_offer_weeks&.sum(:blocked_applications_count)
-    self.remaining_seats_count = max_candidates - reserved_places
-    self.published_at = nil if no_remaining_seat_anymore?
-  end
-
+  
   def no_remaining_seat_anymore?
     remaining_seats_count.zero?
   end
@@ -502,25 +519,99 @@ class InternshipOffer < ApplicationRecord
     may_need_update? && (!has_weeks_in_the_future? || no_remaining_seat_anymore?)
   end
 
-  def check_need_to_be_edited!
-    if requires_updates?
-      update_columns(aasm_state: 'need_to_be_updated', published_at: nil)
+  def available_weeks
+    return Week.selectable_from_now_until_end_of_school_year unless respond_to?(:weeks)
+    return Week.selectable_from_now_until_end_of_school_year unless persisted?
+    if weeks&.first.nil?
+      return Week.selectable_for_school_year(
+        school_year: SchoolYear::Floating.new(date: Date.today)
+      )
     end
+
+    school_year = SchoolYear::Floating.new(date: weeks.first.week_date)
+
+    Week.selectable_on_specific_school_year(school_year: school_year)
+  end
+
+  def requires_update_at_toggle_time?
+    return false if published?
+
+    !has_weeks_in_the_future? || no_remaining_seat_anymore?
+  end
+
+  def available_weeks_when_editing
+    return nil unless persisted? && respond_to?(:weeks)
+    Week.selectable_from_now_until_end_of_school_year
   end
 
   def approved_applications_current_school_year
     internship_applications.approved.current_school_year
   end
 
-  def log_view(user)  
+  def log_view(user)
     history = UsersInternshipOffersHistory.find_or_initialize_by(internship_offer: self, user: user)
     history.views += 1
     history.save
   end
-  
+
   def log_apply(user)
     history = UsersInternshipOffersHistory.find_or_initialize_by(internship_offer: self, user: user)
     history.application_clicks += 1
     history.save
+  end
+
+  def create_stats
+    stats = InternshipOfferStats.create(internship_offer: self)
+    stats.recalculate
+  end
+
+  def update_stats
+    stats.recalculate
+  end
+  
+  # TODO Rename
+  def missing_weeks_info?
+    internship_offer_weeks.map(&:week_id).all? do |week_id|
+      week_id < Week.current.id.to_i + 1
+    end
+  end
+
+  def missing_weeks_in_the_future
+    if missing_weeks_info?
+      errors.add(weeks_class, 'Vous devez sélectionner au moins une semaine dans le futur')
+    end
+  end
+
+  def check_for_missing_seats
+    if no_remaining_seat_anymore?
+      errors.add(:max_candidates, 'Augmentez Le nombre de places disponibles pour accueillir des élèves')
+    end
+  end
+
+  def check_missing_seats_or_weeks
+    return false if published_at.nil? # different from published? since published? checks the database and the former state of the object
+    return false if republish.nil?
+
+    missing_weeks_in_the_future && check_for_missing_seats
+  end
+
+  def user_update?
+    user_update == "true"
+  end
+  
+  protected
+
+  def make_sure_area_is_set
+    return if internship_offer_area_id.present?
+
+    if employer&.current_area_id.nil?
+      Rails.logger.error("no internship_offer_area with " \
+                         "internship_offer_id: #{id} and " \
+                         "employer_id: #{employer_id}")
+    end
+    self.internship_offer_area_id = employer.current_area_id
+    Rails.logger.warn("default internship_offer_area with " \
+                         "internship_offer_id: #{id} and " \
+                         "employer_id: #{employer_id}")
   end
 end

@@ -21,10 +21,12 @@ module InternshipApplications
           internship_offer_type: InternshipOffer.name,
           type: InternshipApplications::WeeklyFramed.name,
           student_attributes: {
-            phone: '+330656565400',
+            id: student.id,
             resume_other: 'resume_other',
             resume_languages: 'resume_languages'
-          }
+          },
+          student_email: student.email,
+          student_phone: '0600119988'
         }
       }
 
@@ -42,9 +44,10 @@ module InternshipApplications
       assert_equal student.id, created_internship_application.student.id
 
       student = student.reload
-      assert_equal '+330656565400', student.phone
       assert_equal 'resume_other', student.resume_other.to_plain_text
       assert_equal 'resume_languages', student.resume_languages.to_plain_text
+      assert_equal '0600119988', created_internship_application.student_phone
+      assert_equal student.email, created_internship_application.student_email
     end
 
     test 'POST #create internship application as student to offer posted by statistician' do
@@ -179,6 +182,120 @@ module InternshipApplications
           internship_offer,
           InternshipApplications::WeeklyFramed.last
         )
+      end
+    end
+
+    test 'POST #create internship application as student with empty phone in profile' do
+      internship_offer = create(:weekly_internship_offer)
+      school = create(:school, weeks: [internship_offer.weeks.first])
+      student = create(:student, school: school, phone: nil, email: 'marc@ms3e.fr', class_room: create(:class_room, school: school))
+      sign_in(student)
+      valid_params = {
+        internship_application: {
+          week_id: internship_offer.internship_offer_weeks.first.week.id,
+          motivation: 'Je suis trop motivé wesh',
+          user_id: student.id,
+          internship_offer_id: internship_offer.id,
+          internship_offer_type: InternshipOffer.name,
+          student_email: 'julie@ms3e.fr',
+          student_phone: '0600119988'
+        }
+      }
+
+      assert_difference('InternshipApplications::WeeklyFramed.count', 1) do
+        post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
+        assert_redirected_to internship_offer_internship_application_path(
+          internship_offer,
+          InternshipApplications::WeeklyFramed.last
+        )
+      end
+
+      created_internship_application = InternshipApplications::WeeklyFramed.last
+      student = student.reload
+      assert_equal '0600119988', created_internship_application.student_phone
+      assert_equal 'julie@ms3e.fr', created_internship_application.student_email
+      assert_equal '+330600119988', student.phone # changed
+      assert_equal 'marc@ms3e.fr', student.email # unchanged
+    end
+  
+    test 'POST #create internship application as student with empty email in profile' do
+      internship_offer = create(:weekly_internship_offer)
+      school = create(:school, weeks: [internship_offer.weeks.first])
+      student = create(:student, school: school, phone: '+330600110011', email: nil, class_room: create(:class_room, school: school))
+      sign_in(student)
+      valid_params = {
+        internship_application: {
+          week_id: internship_offer.internship_offer_weeks.first.week.id,
+          motivation: 'Je suis trop motivé wesh',
+          user_id: student.id,
+          internship_offer_id: internship_offer.id,
+          internship_offer_type: InternshipOffer.name,
+          student_email: 'marc@ms3e.fr',
+          student_phone: '0600000000'
+        }
+      }
+
+      assert_difference('InternshipApplications::WeeklyFramed.count', 1) do
+        post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
+        assert_redirected_to internship_offer_internship_application_path(
+          internship_offer,
+          InternshipApplications::WeeklyFramed.last
+        )
+      end
+
+      created_internship_application = InternshipApplications::WeeklyFramed.last
+      student = student.reload
+      assert_equal '0600000000', created_internship_application.student_phone
+      assert_equal 'marc@ms3e.fr', created_internship_application.student_email
+      assert_equal '+330600110011', student.phone # unchanged
+      assert_equal 'marc@ms3e.fr', student.email # changed
+    end
+
+    test 'POST #create internship application as student with duplicate contact email' do
+      internship_offer = create(:weekly_internship_offer)
+      school = create(:school, weeks: [internship_offer.weeks.first])
+      student = create(:student, school: school, phone: '+330600110011', email: nil, class_room: create(:class_room, school: school))
+      student_2 = create(:student)
+      sign_in(student)
+      valid_params = {
+        internship_application: {
+          week_id: internship_offer.internship_offer_weeks.first.week.id,
+          motivation: 'Je suis trop motivé wesh',
+          user_id: student.id,
+          internship_offer_id: internship_offer.id,
+          internship_offer_type: InternshipOffer.name,
+          student_email: student_2.email,
+          student_phone: '0600000000'
+        }
+      }
+
+      assert_difference('InternshipApplications::WeeklyFramed.count', 0) do
+        post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
+        assert_response :bad_request
+      end
+    end
+
+    test 'POST #create internship application as student with duplicate contact phone' do
+      internship_offer = create(:weekly_internship_offer)
+      school = create(:school, weeks: [internship_offer.weeks.first])
+      student = create(:student, school: school, phone: '+330600110011', class_room: create(:class_room, school: school))
+      student_2 = create(:student, phone: '+330600110022')
+      sign_in(student)
+      valid_params = {
+        internship_application: {
+          week_id: internship_offer.internship_offer_weeks.first.week.id,
+          motivation: 'Je suis trop motivé wesh',
+          user_id: student.id,
+          internship_offer_id: internship_offer.id,
+          internship_offer_type: InternshipOffer.name,
+          student_email: student.email,
+          student_phone: student_2.phone.gsub('+33', '')
+        }
+      }
+
+      assert_difference('InternshipApplications::WeeklyFramed.count', 0) do
+        post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
+        assert_response :bad_request
       end
     end
   end

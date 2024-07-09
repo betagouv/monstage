@@ -2,16 +2,18 @@ require 'application_system_test_case'
 module Dashboard::Users
   class RequestPhoneNumberTest < ApplicationSystemTestCase
     include Devise::Test::IntegrationHelpers
+    include TeamAndAreasHelper
 
     test 'employer without phone number starts the signing process' do
       # see signature_test.rb
     end
 
     test 'employer with phone number starts the signing process' do
-      internship_agreement = create(:internship_agreement, :validated)
-      employer = internship_agreement.employer
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, internship_application: internship_application, aasm_state: :validated)
       employer.update(phone: '+330622554411')
-      sign_in(employer.reload)
+      sign_in(employer)
 
       visit dashboard_internship_agreements_path
       click_on 'Ajouter aux signatures'

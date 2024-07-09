@@ -34,7 +34,7 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 -- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON EXTENSION postgis IS 'PostGIS geometry, geography, and raster spatial types and functions';
+COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
 
 
 --
@@ -642,18 +642,18 @@ ALTER SEQUENCE public.internship_agreement_presets_id_seq OWNED BY public.intern
 
 CREATE TABLE public.internship_agreements (
     id bigint NOT NULL,
-    date_range character varying NOT NULL,
+    date_range character varying(210) NOT NULL,
     aasm_state character varying,
     internship_application_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    organisation_representative_full_name character varying,
-    school_representative_full_name character varying,
-    student_full_name character varying,
-    student_class_room character varying,
-    student_school character varying,
-    tutor_full_name character varying,
-    main_teacher_full_name character varying,
+    organisation_representative_full_name character varying(150),
+    school_representative_full_name character varying(100),
+    student_full_name character varying(100),
+    student_class_room character varying(27),
+    student_school character varying(140),
+    tutor_full_name character varying(271),
+    main_teacher_full_name character varying(70),
     doc_date date,
     school_manager_accept_terms boolean DEFAULT false,
     employer_accept_terms boolean DEFAULT false,
@@ -663,26 +663,27 @@ CREATE TABLE public.internship_agreements (
     school_delegation_to_sign_delivered_at date,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
-    siret character varying(16),
+    siret character varying(145),
     tutor_role character varying(150),
-    tutor_email character varying(80),
-    organisation_representative_role character varying(100),
-    student_address character varying(250),
+    tutor_email character varying(85),
+    organisation_representative_role character varying(150),
+    student_address character varying(500),
     student_phone character varying(20),
     school_representative_phone character varying(20),
     student_refering_teacher_phone character varying(20),
-    student_legal_representative_email character varying(60),
-    student_refering_teacher_email character varying(60),
-    student_legal_representative_full_name character varying(120),
-    student_refering_teacher_full_name character varying(120),
-    student_legal_representative_phone character varying(20),
-    student_legal_representative_2_full_name character varying(120),
-    student_legal_representative_2_email character varying(70),
+    student_legal_representative_email character varying(100),
+    student_refering_teacher_email character varying(100),
+    student_legal_representative_full_name character varying(100),
+    student_refering_teacher_full_name character varying(100),
+    student_legal_representative_phone character varying(50),
+    student_legal_representative_2_full_name character varying(100),
+    student_legal_representative_2_email character varying(100),
     student_legal_representative_2_phone character varying(20),
-    school_representative_role character varying(60),
+    school_representative_role character varying(100),
     school_representative_email character varying(100),
     discarded_at timestamp(6) without time zone,
-    lunch_break text
+    lunch_break text,
+    organisation_representative_email character varying
 );
 
 
@@ -728,14 +729,14 @@ CREATE TABLE public.internship_applications (
     applicable_type character varying,
     internship_offer_type character varying NOT NULL,
     week_id bigint,
-    student_phone character varying,
-    student_email character varying,
+    student_phone character varying(683),
+    student_email character varying(100),
     read_at timestamp(6) without time zone,
     examined_at timestamp(6) without time zone,
     validated_by_employer_at timestamp(6) without time zone,
     dunning_letter_count integer DEFAULT 0,
     magic_link_tracker integer DEFAULT 0,
-    access_token character varying,
+    access_token character varying(25),
     transfered_at timestamp(6) without time zone
 );
 
@@ -831,7 +832,7 @@ ALTER SEQUENCE public.internship_offer_info_weeks_id_seq OWNED BY public.interns
 
 CREATE TABLE public.internship_offer_infos (
     id bigint NOT NULL,
-    title character varying,
+    title character varying(150),
     description text,
     max_candidates integer,
     school_id integer,
@@ -903,6 +904,48 @@ CREATE SEQUENCE public.internship_offer_keywords_id_seq
 --
 
 ALTER SEQUENCE public.internship_offer_keywords_id_seq OWNED BY public.internship_offer_keywords.id;
+
+
+--
+-- Name: internship_offer_stats; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.internship_offer_stats (
+    id bigint NOT NULL,
+    internship_offer_id bigint NOT NULL,
+    remaining_seats_count integer DEFAULT 0,
+    blocked_weeks_count integer DEFAULT 0,
+    total_applications_count integer DEFAULT 0,
+    approved_applications_count integer DEFAULT 0,
+    submitted_applications_count integer DEFAULT 0,
+    rejected_applications_count integer DEFAULT 0,
+    view_count integer DEFAULT 0,
+    total_male_applications_count integer DEFAULT 0,
+    total_female_applications_count integer DEFAULT 0,
+    total_male_approved_applications_count integer DEFAULT 0,
+    total_female_approved_applications_count integer DEFAULT 0,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: internship_offer_stats_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.internship_offer_stats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: internship_offer_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.internship_offer_stats_id_seq OWNED BY public.internship_offer_stats.id;
 
 
 --
@@ -985,36 +1028,36 @@ ALTER SEQUENCE public.internship_offer_weeks_id_seq OWNED BY public.internship_o
 
 CREATE TABLE public.internship_offers (
     id bigint NOT NULL,
-    title character varying,
-    description character varying,
+    title character varying(150),
+    description text,
     max_candidates integer DEFAULT 1 NOT NULL,
     internship_offer_weeks_count integer DEFAULT 0 NOT NULL,
-    tutor_name character varying,
-    tutor_phone character varying,
-    tutor_email character varying,
-    employer_website character varying,
-    street character varying,
-    zipcode character varying,
-    city character varying,
+    tutor_name character varying(290),
+    tutor_phone character varying(100),
+    tutor_email character varying(100),
+    employer_website character varying(560),
+    street character varying(3000),
+    zipcode character varying(5),
+    city character varying(50),
     is_public boolean,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     discarded_at timestamp without time zone,
     coordinates public.geography(Point,4326),
-    employer_name character varying,
+    employer_name character varying(180),
     employer_id bigint,
     school_id bigint,
-    employer_description character varying,
+    employer_description character varying(250),
     sector_id bigint,
     blocked_weeks_count integer DEFAULT 0 NOT NULL,
     total_applications_count integer DEFAULT 0 NOT NULL,
     approved_applications_count integer DEFAULT 0 NOT NULL,
-    employer_type character varying,
+    employer_type character varying(80),
     department character varying DEFAULT ''::character varying NOT NULL,
-    academy character varying DEFAULT ''::character varying NOT NULL,
+    academy text DEFAULT ''::character varying NOT NULL,
     total_male_applications_count integer DEFAULT 0 NOT NULL,
-    remote_id character varying,
-    permalink character varying,
+    remote_id character varying(50),
+    permalink character varying(280),
     view_count integer DEFAULT 0 NOT NULL,
     submitted_applications_count integer DEFAULT 0 NOT NULL,
     rejected_applications_count integer DEFAULT 0 NOT NULL,
@@ -1032,14 +1075,14 @@ CREATE TABLE public.internship_offers (
     tutor_id bigint,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
     daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED,
-    siret character varying,
+    siret character varying(14),
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
     total_female_applications_count integer DEFAULT 0 NOT NULL,
     total_female_approved_applications_count integer DEFAULT 0,
     max_students_per_group integer DEFAULT 1 NOT NULL,
     employer_manual_enter boolean DEFAULT false,
-    tutor_role character varying,
+    tutor_role character varying(150),
     remaining_seats_count integer DEFAULT 0,
     hidden_duplicate boolean DEFAULT false,
     daily_hours jsonb,
@@ -1192,12 +1235,12 @@ ALTER SEQUENCE public.operators_id_seq OWNED BY public.operators.id;
 
 CREATE TABLE public.organisations (
     id bigint NOT NULL,
-    employer_name character varying NOT NULL,
-    street character varying NOT NULL,
-    zipcode character varying NOT NULL,
-    city character varying NOT NULL,
+    employer_name character varying(180) NOT NULL,
+    street character varying(500) NOT NULL,
+    zipcode character varying(5) NOT NULL,
+    city character varying(50) NOT NULL,
     employer_website character varying,
-    employer_description text,
+    employer_description character varying(250),
     coordinates public.geography(Point,4326),
     department character varying DEFAULT ''::character varying NOT NULL,
     is_public boolean DEFAULT false NOT NULL,
@@ -1206,7 +1249,7 @@ CREATE TABLE public.organisations (
     updated_at timestamp(6) without time zone NOT NULL,
     employer_id integer,
     siren character varying,
-    siret character varying,
+    siret character varying(14),
     is_paqte boolean,
     manual_enter boolean DEFAULT false
 );
@@ -1238,9 +1281,9 @@ ALTER SEQUENCE public.organisations_id_seq OWNED BY public.organisations.id;
 CREATE TABLE public.practical_infos (
     id bigint NOT NULL,
     employer_id integer,
-    street character varying NOT NULL,
-    zipcode character varying NOT NULL,
-    city character varying NOT NULL,
+    street character varying(500) NOT NULL,
+    zipcode character varying(5) NOT NULL,
+    city character varying(50) NOT NULL,
     coordinates public.geography(Point,4326),
     department character varying DEFAULT ''::character varying NOT NULL,
     daily_hours jsonb DEFAULT '{}'::jsonb,
@@ -1499,13 +1542,13 @@ ALTER SEQUENCE public.team_member_invitations_id_seq OWNED BY public.team_member
 
 CREATE TABLE public.tutors (
     id bigint NOT NULL,
-    tutor_name character varying NOT NULL,
-    tutor_email character varying NOT NULL,
-    tutor_phone character varying NOT NULL,
+    tutor_name character varying(290) NOT NULL,
+    tutor_email character varying(100) NOT NULL,
+    tutor_phone character varying(100) NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     employer_id bigint NOT NULL,
-    tutor_role character varying
+    tutor_role character varying(150)
 );
 
 
@@ -1647,7 +1690,10 @@ CREATE TABLE public.users (
     created_by_teacher boolean DEFAULT false,
     survey_answered boolean DEFAULT false,
     current_area_id bigint,
-    statistician_validation boolean DEFAULT false
+    statistician_validation boolean DEFAULT false,
+    failed_attempts integer DEFAULT 0 NOT NULL,
+    unlock_token character varying,
+    locked_at timestamp(6) without time zone
 );
 
 
@@ -1897,6 +1943,13 @@ ALTER TABLE ONLY public.internship_offer_infos ALTER COLUMN id SET DEFAULT nextv
 --
 
 ALTER TABLE ONLY public.internship_offer_keywords ALTER COLUMN id SET DEFAULT nextval('public.internship_offer_keywords_id_seq'::regclass);
+
+
+--
+-- Name: internship_offer_stats id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_stats ALTER COLUMN id SET DEFAULT nextval('public.internship_offer_stats_id_seq'::regclass);
 
 
 --
@@ -2196,6 +2249,14 @@ ALTER TABLE ONLY public.internship_offer_infos
 
 ALTER TABLE ONLY public.internship_offer_keywords
     ADD CONSTRAINT internship_offer_keywords_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: internship_offer_stats internship_offer_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_stats
+    ADD CONSTRAINT internship_offer_stats_pkey PRIMARY KEY (id);
 
 
 --
@@ -2585,6 +2646,34 @@ CREATE UNIQUE INDEX index_internship_offer_keywords_on_word ON public.internship
 
 
 --
+-- Name: index_internship_offer_stats_on_blocked_weeks_count; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offer_stats_on_blocked_weeks_count ON public.internship_offer_stats USING btree (blocked_weeks_count);
+
+
+--
+-- Name: index_internship_offer_stats_on_internship_offer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offer_stats_on_internship_offer_id ON public.internship_offer_stats USING btree (internship_offer_id);
+
+
+--
+-- Name: index_internship_offer_stats_on_remaining_seats_count; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offer_stats_on_remaining_seats_count ON public.internship_offer_stats USING btree (remaining_seats_count);
+
+
+--
+-- Name: index_internship_offer_stats_on_total_applications_count; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offer_stats_on_total_applications_count ON public.internship_offer_stats USING btree (total_applications_count);
+
+
+--
 -- Name: index_internship_offer_weeks_on_blocked_applications_count; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2942,6 +3031,13 @@ CREATE INDEX index_users_on_school_id ON public.users USING btree (school_id);
 
 
 --
+-- Name: index_users_on_unlock_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_unlock_token ON public.users USING btree (unlock_token);
+
+
+--
 -- Name: index_users_search_histories_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3294,6 +3390,14 @@ ALTER TABLE ONLY public.users_internship_offers_histories
 
 
 --
+-- Name: internship_offer_stats fk_rails_e13d61cd66; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_stats
+    ADD CONSTRAINT fk_rails_e13d61cd66 FOREIGN KEY (internship_offer_id) REFERENCES public.internship_offers(id);
+
+
+--
 -- Name: internship_offer_info_weeks fk_rails_e9c5c89c26; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3324,6 +3428,10 @@ ALTER TABLE ONLY public.internship_offer_weeks
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240627152436'),
+('20240620123704'),
+('20240205142849'),
+('20240125102153'),
 ('20240111081028'),
 ('20231211143502'),
 ('20231211084232'),

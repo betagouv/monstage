@@ -178,6 +178,25 @@ module Dashboard::InternshipOffers
       end
     end
 
+    test 'PATCH #update as employer owning internship_offer can unpublish an offer without enough remaining weeks' do
+      employer = create(:employer)
+      # publish in september to host 30 students
+      travel_to(Date.new(2023,9,1)) do
+        internship_offer = create(:weekly_internship_offer, employer: employer, max_candidates: 30, max_students_per_group: 1, week_ids: Week.selectable_from_now_until_end_of_school_year.map(&:id))
+      end
+      sign_in(employer)
+      # try to unpublish in june
+      travel_to(Date.new(2024,6,1)) do
+        internship_offer = InternshipOffer.last
+        assert_changes -> { internship_offer.reload.published_at },
+                       from: internship_offer.published_at,
+                       to: nil do
+          patch(dashboard_internship_offer_path(internship_offer.to_param),
+                params: { internship_offer: { aasm_state: 'unpublished' } })
+        end
+      end
+    end
+
     test 'PATCH #update as employer is able to remove school' do
       # travel_to(Date.new(2019,9,1)) do
         school = create(:school)
@@ -203,8 +222,10 @@ module Dashboard::InternshipOffers
         internship_application = create(:weekly_internship_application,
                                         :submitted,
                                         internship_offer: internship_offer)
+
         internship_application.employer_validate!
         internship_application.approve!
+
         assert_equal 0, internship_offer.reload.remaining_seats_count
         assert internship_offer.need_to_be_updated?
 
@@ -287,12 +308,11 @@ module Dashboard::InternshipOffers
                                         :submitted,
                                         week: weeks.first,
                                         internship_offer: internship_offer)
-        assert_equal 1, InternshipApplication.all.count
-
         sign_in(employer)
         patch dashboard_internship_offer_path(internship_offer.to_param),
               params: { internship_offer: internship_offer.attributes.merge!({week_ids:[weeks.second.id]}) }
-        assert_equal 0, InternshipApplication.all.count
+        refute internship_application.canceled_by_employer?
+        assert internship_application.reload.canceled_by_employer?
       end
     end
 

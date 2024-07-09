@@ -81,7 +81,7 @@ module InternshipOffers
 
     def self.update_older_internship_offers
       to_be_unpublished = published.where('last_date < ?', Time.now.utc).to_a
-      to_be_unpublished += published.where('remaining_seats_count < 1').to_a
+      to_be_unpublished += published.joins(:stats).where('internship_offer_stats.remaining_seats_count < 1').to_a
       to_be_unpublished.uniq.each do |offer|
         print '.'
         # skip missing weeks validation

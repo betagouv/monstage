@@ -1,0 +1,277 @@
+<!doctype html>
+<% # bootstrap variables %>
+<% bg_color = "#fa0afa" %>
+<% text_color = "#494949" %>
+<% link_color = "#006699" %>
+<% font_size = "15px" %>
+<% font_family = "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji" %>
+
+<% #see: https://github.com/leemunroe/responsive-html-email-template %>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title><%= message.subject %></title>
+  <style>
+    ul {
+      padding-left: 0px;
+      list-style-position: inside;
+    }
+
+    @media only screen and (max-width: 600px) {
+      table[class=body] h1 {
+        font-size: 28px !important;
+        margin-bottom: 10px !important;
+      }
+
+      table[class=body] p,
+      table[class=body] ul,
+      table[class=body] ol,
+      table[class=body] td,
+      table[class=body] span,
+      table[class=body] a {
+        font-size: <%=font_size %> !important;
+      }
+
+      table[class=body] .wrapper,
+      table[class=body] .article {
+        padding: 10px !important;
+      }
+
+      table[class=body] .content {
+        padding: 0 !important;
+      }
+
+      table[class=body] .container {
+        padding: 0 !important;
+        width: 100% !important;
+      }
+
+      table[class=body] .main {
+        border-left-width: 0 !important;
+        border-radius: 0 !important;
+        border-right-width: 0 !important;
+      }
+
+      table[class=body] .fr-btn table {
+        width: 100% !important;
+      }
+
+      table[class=body] .fr-btn a {
+        width: 100% !important;
+      }
+
+      table[class=body] .img-responsive {
+        height: auto !important;
+        max-width: 100% !important;
+        width: auto !important;
+      }
+      table.standard{
+        border-collapse: collapse;
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+        width: 100%;
+      }
+      .thin-border{
+        border: 1px solid #e9e9e9;
+      }
+    }
+
+    @media all {
+      .ExternalClass {
+        width: 100%;
+      }
+
+      .ExternalClass,
+      .ExternalClass p,
+      .ExternalClass span,
+      .ExternalClass font,
+      .ExternalClass td,
+      .ExternalClass div {
+        line-height: 100%;
+      }
+
+      .apple-link a {
+        color: inherit !important;
+        font-family: inherit !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+        text-decoration: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="thin-border" style="background-color: #ffffff; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;">
+  <span class="preheader"
+    style="color: transparent; 
+           display: none;
+           height: 0;
+           max-height: 0;
+           max-width: 0;
+           opacity: 0;
+           overflow: hidden;
+           mso-hide: all; visibility: hidden; width: 0;">
+           <%= message.subject %>
+  </span>
+
+  <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body standard"  width="100%">
+    <tbody>
+      <tr>
+        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;" valign="top">&nbsp;</td>
+        <td class="container"
+          style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; max-width: 600px; width: 600px; margin: 0 auto;"
+          width="600" valign="top">
+        </td>
+        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;" valign="top">&nbsp;</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body standard border-collapse="collapse"
+    style="background-color: #ffffff;"
+    width="100%" bgcolor="#ffffff">
+    <tbody>
+      <tr>
+        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;" valign="top">&nbsp;</td>
+        <td class="container"
+            style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; max-width: 600px; width: 600px; margin: 0 auto; border-collapse: collapse"
+            width="600"
+            valign="top">
+          <div class="content"
+               style="box-sizing: border-box; display: block; margin: 0 auto; max-width: 600px; ">
+
+            <!-- START CENTERED WHITE CONTAINER -->
+            <table role="presentation" class="main"
+                   style="border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background: #ffffff; border: 1px solid grey; "
+                   width="100%">
+              <tbody>
+                <!-- START MAIN CONTENT AREA -->
+                <tr>
+                  <td style="font-family: helvetica; font-size: 14px; vertical-align: top; padding: 0" valign="top" class='container'>
+                    <table role="presentation" border="0" width='100%' border-collapse="collapse">
+                      <tr style="width: 100%">
+                        <td style="padding: 0" >
+                          <table role="presentation"
+                                 class="logo"
+                                 border-collapse="collapse"
+                                 mso-table-lspace='0pt'
+                                 mso-table-rspace='0pt'
+                                 cellpadding="0"
+                                 cellspacing="0"
+                                 bgcolor="#E87F7F" 
+                                 style="width: 100%">
+                            <tbody style="border-spacing: 0px">
+                              <tr>
+                                <td background="#{image_url}" height="65" style="padding: 0">
+                                  <table role="presentation"
+                                         border="0"
+                                         cellpadding="0"
+                                         cellspacing="0"
+                                         border-collapse="collapse"
+                                         mso-table-lspace='0pt'
+                                         mso-table-rspace='0pt'>
+                                    <tbody>
+                                      <tr>
+                                        <td style="width: 100%">
+                                          <table>
+                                            <tbody>
+                                              <tr style="height: 35px">
+                                                <td colspan="2" style="font-family: helvetica; padding:18px 20px 0 20px; margin-bottom: 0; vertical-align=top">
+                                                  <%= image_tag(attachments['logo-mon-stage-3e-blanc-short.svg'].url, height: 35, width: 64, alt: 'Logo monstagedetroisieme.fr') %>
+                                                </td>
+                                              </tr>
+                                              <tr style="height: 172px">
+                                                <td style="font-family: helvetica; padding:0px 35px ;text-align: left; width:100%; margin-bottom: 0px;vertical-align: middle; color: white; font-family: Helvetica; font-size: 35px; font-style: normal; font-weight: 700; line-height: normal;">
+                                                  <%= @welcome_phrase%>
+                                                </td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                        </td>
+                                        <td style="text-align: right; vertical-align: bottom; margin-bottom: 0px; padding-bottom: 0px" style="width: 100%">
+                                          <%= image_tag(attachments[@student_image].url, height:"207px", alt: 'Elève de troisième', style: "margin-bottom: -5px") %>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="font-family: helvetica; font-size: 14px; vertical-align: top; padding: 28px 44px" valign="top" class='container'>
+                          <%= yield %>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-family: helvetica; font-size: 14px; vertical-align: top; padding: 0" valign="top" class='container'>
+                    <table role="presentation" class="main"
+                            style="border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background: #ffffff;"
+                            width="100%">
+                      <tr bgcolor='#F5F5FD' style="line-height:40px; margin-bottom: 25px" >
+                        <td style="font-family: helvetica; font-size: 14px; padding-left: 20px ; vertical-align: middle;line-height:40px;">
+                          Suivez-nous sur les réseaux
+                        </td>
+                        <td style="font-family: helvetica; font-size: 14px; line-height:40px;" width='6%'>
+                          <a href="https://www.tweeter.com/monstagede3eme" style="text-decoration: none;">
+                            <%= image_tag(attachments['tweeter.png'].url, height: 18, width: 18, alt: 'Logo tweeter', style:"vertical-align: middle;padding-left: 3px")%>
+                          </a>
+                        </td>
+                        <td style="font-family: helvetica; font-size: 14px;  line-height:40px;" width='6%'>
+                          <a href="https://www.instagram.com/monstagede3eme" style="text-decoration: none;">
+                            <%= image_tag(attachments['insta.png'].url, height: 18, width: 18, alt: 'Logo Instagram', style:"vertical-align: middle;padding-left: 3px")%>
+                          </a>
+                        </td>
+                        <td style="font-family: helvetica; font-size: 14px; line-height:40px; padding-right: 20px ;" width='6%'>
+                          <a href="https://www.linkedin.com/company/mon-stage-de-3e" style="text-decoration: none;">
+                            <%= image_tag(attachments['linked_in.png'].url, height: 18, width: 18, alt: 'Logo linked_in', style:"vertical-align: middle;padding-left: 3px")%>
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-family: helvetica; font-size: 14px; vertical-align: top; padding: 0" valign="top" >
+                    <table role="presentation" class="main"
+                            style="border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background: #ffffff"
+                            width="100%">
+                      <tr>
+                        <td style="font-family: helvetica; font-size: 14px; line-height:131px; vertical-align: middle" width='40%'>
+                          <%= image_tag(attachments['rf.png'].url, height: 81, width: 90, alt: 'Logo République Française', style:"vertical-align: middle;padding-left: 16px")%>
+                        </td>
+                        <td style="font-family: helvetica; font-size: 12px; height: 131px;" width='60%'>
+                          <div style="display: block; vertical-align: middle;text-align:right; padding-right:25px">
+                            monstagedetroisieme.fr est un service fourni par
+                            <br>
+                            <a href='https://incubateur.anct.gouv.fr/'>l'Incubateur des Territoires de l'A.N.C.T</a>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+              <!-- END MAIN CONTENT AREA -->
+            </table>
+            <!-- END CENTERED WHITE CONTAINER -->
+          </div>
+        </td>
+        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;" valign="top">&nbsp;</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="line-height:40px"></p>
+</body>
+
+
+</html>

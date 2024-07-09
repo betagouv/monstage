@@ -1,0 +1,30 @@
+fr-container.fr-my-6w
+  h1.fr-h2.blue-france
+    = t('.resend_unlock_instructions')
+  = form_with(model: resource || User.new,
+              scope: resource_name,
+              data: { turbo: false },
+              url: unlock_path(resource_name),
+              html: { method: :post }) do |f|
+    = f.rg2a_explain_required_asterisk
+    = render "layouts/form_errors", resource: resource, resource_name: :user
+    .row.fr-my-4w
+      .col-lg-3.col-md-6.col-sm-12
+        .form-group
+          = f.label :email, class: "fr-label" do
+            |Adresse électronique (e-mail)
+            = f.rg2a_required_content_tag
+          = f.email_field :email,
+                          autofocus: true,
+                          autocomplete: "email",
+                          class: "fr-input",
+                          required: true,
+                          pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                          maxlength: 70
+
+    .row.fr-mt-4w.fr-mb-10w
+      .col-lg-3.col-md-6.col-sm-12
+        .actions.d-flex.justify-content-between
+          = f.submit t(".resend_unlock_instructions"),
+                     class: "fr-btn fr-mb-2w fr-mr-2w"
+          = link_to "Retour", new_user_session_path, class: "fr-btn fr-btn--secondary fr-mb-2w"

@@ -14,7 +14,7 @@ module Presenters
     end
 
     def short_name
-      "#{user.first_name[0].capitalize}. #{user.last_name}"
+      "#{user.first_name[0].capitalize}.#{user.last_name}"
     end
 
     def full_name

@@ -5,7 +5,7 @@ FactoryBot.define do
     # TODO use transient to set the distinction between weekly and api offers
     employer { create(:employer) }
     organisation { create(:organisation, employer: employer) }
-    internship_offer_info { create(:weekly_internship_offer_info, employer: employer) }
+    internship_offer_info { create(:internship_offer_info, employer: employer) }
     hosting_info { create(:hosting_info, employer: employer) }
     practical_info { create(:practical_info, employer: employer) }
 
@@ -44,6 +44,10 @@ FactoryBot.define do
     end
     weekly_hours { [] }
     lunch_break { "12:00-13:00" }
+
+    trait :drafted do
+      aasm_state { :drafted }
+    end
 
     trait :published do
       published_at { Time.now }
@@ -104,6 +108,10 @@ FactoryBot.define do
       is_public { true }
       group { create(:group, is_public: true) }
     end
+
+    #after(:create) do |internship_offer, params|
+    #  create(:internship_offer_stats, internship_offer: internship_offer)
+    #end
 
     factory :api_internship_offer, traits: [:api_internship_offer],
                                    class: 'InternshipOffers::Api',

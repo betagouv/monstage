@@ -22,6 +22,12 @@ module UserAdmin
         fields(*ACCOUNT_FIELDS)
 
         scopes(DEFAULT_SCOPES)
+        field :failed_attempts do
+          label 'Echecs de <br/>connexion'.html_safe
+          pretty_value do
+            "#{bindings[:object].failed_attempts} / #{bindings[:object].class.maximum_attempts} #{bindings[:object].access_locked? ? '- bloqué' : ''}"
+          end
+        end
       end
 
       edit do
@@ -40,6 +46,9 @@ module UserAdmin
           visible do
             bindings[:object].respond_to?(:school)
           end
+        end
+        field :failed_attempts do
+          label 'Nombre de tentatives'
         end
 
         field :sign_in_count

@@ -62,7 +62,7 @@ module InternshipAgreements
       when 'draft', 'started_by_employer' ,'completed_by_employer', 'started_by_school_manager' then
         {status: 'hidden', text: ''}
       when 'validated', 'signatures_started' then
-        if user_signed_condition 
+        if user_signed_condition?
           {status: 'disabled', text: 'Déjà signée'}
         elsif current_user.can_sign?(@internship_agreement)
           {status: 'enabled', text: 'Ajouter aux signatures'}
@@ -73,11 +73,13 @@ module InternshipAgreements
       end
     end
 
-    def user_signed_condition
+    def user_signed_condition?
       if current_user.school_manager? || current_user.admin_officer?
         @internship_agreement.signed_by_school?
+      elsif current_user.employer_like?
+        @internship_agreement.signed_by_team_member?(user: current_user)
       else
-        @internship_agreement.signed_by?(user: current_user)
+        false
       end
     end
   end

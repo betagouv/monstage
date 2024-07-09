@@ -3,6 +3,7 @@ require 'application_system_test_case'
 module Dashboard
   class InternshipAgreementTest < ApplicationSystemTestCase
     include Devise::Test::IntegrationHelpers
+    include TeamAndAreasHelper
 
     test 'employer reads internship agreement list and read his own agreements with student having a school with a school manager' do
       employer =  create(:employer)
@@ -47,8 +48,10 @@ module Dashboard
     end
 
     test 'employer reads internship agreement table with correct indications - draft' do
-      internship_agreement = create(:internship_agreement, aasm_state: :draft)
-      sign_in(internship_agreement.employer)
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, internship_application: internship_application, aasm_state: :draft)
+      sign_in(employer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
         find('div.actions', text: 'À remplir par les deux parties.')
@@ -57,15 +60,17 @@ module Dashboard
     end
 
     test 'employer reads internship agreement table with correct indications - status: started_by_employer' do
-      internship_agreement = create(:internship_agreement, aasm_state: :started_by_employer)
-      sign_in(internship_agreement.employer)
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, internship_application: internship_application, aasm_state: :started_by_employer)
+      sign_in(employer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
         find('div.actions', text: "Votre convention est remplie, mais elle n'est pas envoyée au chef d'établissement.")
       end
       find('a.button-component-cta-button', text: 'Valider ma convention').click
       fill_in "Fonction du représentant de l'entreprise", with: 'CEO'
-      fill_in "Email du tuteur", with: 'tuteur@free.fr'
+      fill_in "Adresse email du responsable de l'accueil en milieu professionnel", with: 'tuteur@free.fr'
       select('08:00', from:'internship_agreement_weekly_hours_start')
       select('16:00', from:'internship_agreement_weekly_hours_end')
       fill_in('Pause déjeuner', with: "un repas à la cantine d'entreprise")
@@ -74,8 +79,10 @@ module Dashboard
     end
 
     test 'employer reads internship agreement table with correct indications / daily hours - status: started_by_employer' do
-      internship_agreement = create(:internship_agreement, aasm_state: :started_by_employer)
-      sign_in(internship_agreement.employer)
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, internship_application: internship_application, aasm_state: :started_by_employer)
+      sign_in(employer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
         find('div.actions', text: "Votre convention est remplie, mais elle n'est pas envoyée au chef d'établissement.")
@@ -83,7 +90,7 @@ module Dashboard
       find('a.button-component-cta-button', text: 'Valider ma convention').click
       find("input[name='internship_agreement[organisation_representative_full_name]']")
       fill_in "Fonction du représentant de l'entreprise", with: 'CEO'
-      fill_in "Email du tuteur", with: 'tuteur@free.fr'
+      fill_in "Adresse email du responsable de l'accueil en milieu professionnel", with: 'tuteur@free.fr'
       find('label', text: 'Les horaires sont les mêmes toute la semaine')
       execute_script("document.getElementById('weekly_planning').checked = false;")
       execute_script("document.getElementById('daily-planning-container').classList.remove('d-none');")
@@ -117,8 +124,10 @@ module Dashboard
     end
 
     test 'employer reads internship agreement table with missing indications / daily hours - status: started_by_employer' do
-      internship_agreement = create(:internship_agreement, aasm_state: :started_by_employer, weekly_hours: [])
-      sign_in(internship_agreement.employer)
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, internship_application: internship_application, aasm_state: :started_by_employer, weekly_hours: [])
+      sign_in(employer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
         find('div.actions', text: "Votre convention est remplie, mais elle n'est pas envoyée au chef d'établissement.")
@@ -126,7 +135,7 @@ module Dashboard
       find('a.button-component-cta-button', text: 'Valider ma convention').click
       find("input[name='internship_agreement[organisation_representative_full_name]']")
       fill_in "Fonction du représentant de l'entreprise", with: 'CEO'
-      fill_in "Email du tuteur", with: 'tuteur@free.fr'
+      fill_in "Adresse email du responsable de l'accueil en milieu professionnel", with: 'tuteur@free.fr'
       execute_script("document.getElementById('weekly_planning').checked = false;")
       execute_script("document.getElementById('daily-planning-container').classList.remove('d-none');")
       select('08:00', from:'internship_agreement_daily_hours_lundi_start')
@@ -148,8 +157,10 @@ module Dashboard
     end
 
     test 'employer reads internship agreement table with correct indications - status: completed_by_employer /' do
-      internship_agreement = create(:internship_agreement, aasm_state: :completed_by_employer)
-      sign_in(internship_agreement.employer)
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, internship_application: internship_application, aasm_state: :completed_by_employer)
+      sign_in(employer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
         find('div.actions', text: "La convention est dans les mains du chef d'établissement.")
@@ -158,8 +169,10 @@ module Dashboard
     end
 
     test 'employer reads internship agreement table with correct indications - status: started_by_school_manager' do
-      internship_agreement = create(:internship_agreement, aasm_state: :started_by_school_manager)
-      sign_in(internship_agreement.employer)
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, internship_application: internship_application, aasm_state: :started_by_school_manager)
+      sign_in(employer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
         find('div.actions', text: "La convention est dans les mains du chef d'établissement.")
@@ -168,8 +181,10 @@ module Dashboard
     end
 
     test 'employer reads internship agreement table with correct indications - status: validated' do
-      internship_agreement = create(:internship_agreement, aasm_state: :validated)
-      sign_in(internship_agreement.employer)
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, internship_application: internship_application, aasm_state: :validated)
+      sign_in(employer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
         find('div.actions', text: "Votre convention est prête. Imprimez-la et renvoyez-la signée au chef d'établissement.")
@@ -179,9 +194,11 @@ module Dashboard
     end
 
     test 'employer reads internship agreement table with correct indications - status: signatures_started with employer' do
-      internship_agreement = create(:internship_agreement, aasm_state: :signatures_started)
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, internship_application: internship_application, aasm_state: :signatures_started)
       create(:signature, internship_agreement: internship_agreement, signatory_role: :employer, user_id: internship_agreement.employer.id)
-      sign_in(internship_agreement.employer.reload)
+      sign_in(employer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
         find('.actions.d-flex', text: "Vous avez déjà signé. En attente de la signature du chef d’établissement.")
@@ -191,9 +208,11 @@ module Dashboard
     end
 
     test 'employer reads internship agreement table with correct indications - status: signatures_started with school_manager' do
-      internship_agreement = create(:internship_agreement, aasm_state: :signatures_started)
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, internship_application: internship_application, aasm_state: :signatures_started)
       create(:signature, internship_agreement: internship_agreement, signatory_role: :school_manager, user_id: internship_agreement.school_manager.id)
-      sign_in(internship_agreement.employer)
+      sign_in(employer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
         find('.actions.d-flex', text: "Le chef d'établissement a déjà signé. En attente de votre signature.")
@@ -203,8 +222,11 @@ module Dashboard
     end
 
     test 'employer reads internship agreement table with correct indications - status: signed_by_all' do
-      internship_agreement = create(:internship_agreement, aasm_state: :signed_by_all)
-      sign_in(internship_agreement.employer)
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, internship_application: internship_application, aasm_state: :signed_by_all)
+      create(:signature, internship_agreement: internship_agreement, signatory_role: :school_manager, user_id: internship_agreement.school_manager.id)
+      sign_in(employer)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
         find('.actions.d-flex', text: "Signée par toutes les parties.")
@@ -216,7 +238,9 @@ module Dashboard
     # =================== School Manager ===================
 
     test 'school_manager reads internship agreement table with correct indications - draft' do
-      internship_agreement = create(:internship_agreement, aasm_state: :draft)
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, internship_application: internship_application, aasm_state: :draft)
       sign_in(internship_agreement.school_manager)
       visit dashboard_internship_agreements_path
       within('td[data-head="Statut"]') do
@@ -343,8 +367,10 @@ module Dashboard
       text = "Le chef d'établissement a été nommé apte à signer les conventions par le conseil d'administration de l'établissement en date du"
       fill_in text, with: "12/02/2015"
       click_button('Valider la convention')
-      find('h1 span.fr-fi-arrow-right-line.fr-fi--lg', text: "Valider la convention")
-      click_button('Je valide la convention')
+      assert internship_agreement.reload.valid?
+      within("dialog[aria-labelledby='validation-modal-title']") do
+        click_button('Je valide la convention')
+      end
       find("span#alert-text", text: "La convention est validée, le fichier pdf de la convention est maintenant disponible.")
     end
 
@@ -513,6 +539,8 @@ module Dashboard
     test 'statistician reads internship agreement table with correct indications - status: signed_by_all' do
       internship_offer = create(:weekly_internship_offer, employer: create(:statistician, agreement_signatorable: true))
       employer = internship_offer.employer
+      employer.update(current_area_id: internship_offer.internship_offer_area.id)
+      assert_equal employer.current_area, internship_offer.internship_offer_area 
       internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
       internship_agreement = create(:internship_agreement, aasm_state: :signed_by_all, internship_application: internship_application)
       sign_in(internship_agreement.employer)

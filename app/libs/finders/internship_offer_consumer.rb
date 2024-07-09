@@ -21,32 +21,35 @@ module Finders
       student_query = kept_published_future_offers_query.ignore_already_applied(user: user) # Whatever application status !!!
       return student_query if user.school.nil? || user.school.weeks.empty?
 
-      school_week_ids = user.school.weeks.map(&:id)
-      school_latitude = user.school.coordinates&.latitude
+      school_week_ids  = user.school.weeks.map(&:id)
+      school_latitude  = user.school.coordinates&.latitude
       school_longitude = user.school.coordinates&.longitude
       student_query = student_query.joins(:internship_offer_weeks)
                                    .where(internship_offer_weeks: { week_id: school_week_ids })
                                    .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
       return student_query if school_latitude.nil? || school_longitude.nil?
 
-      student_query.nearby(latitude: school_latitude,
-                           longitude: school_longitude,
-                           radius: max_distance)
+      student_query.nearby_and_ordered(latitude: school_latitude,
+                                       longitude: school_longitude,
+                                       radius: max_distance)
     end
 
     private
 
-    def kept_published_future_offers_query
+    def light_kept_published_future_offers_query
       InternshipOffer.kept
                      .published
                      .with_seats
                      .in_the_future
-                     .includes([:sector])
+    end
+
+    def kept_published_future_offers_query
+      light_kept_published_future_offers_query.includes([:sector])
     end
 
     def school_management_query
       common_filter do
-        kept_published_future_offers_query.ignore_internship_restricted_to_other_schools(
+        light_kept_published_future_offers_query.ignore_internship_restricted_to_other_schools(
           school_id: user.school_id
         )
       end
@@ -67,7 +70,7 @@ module Finders
     end
 
     def visitor_query
-      common_filter { kept_published_future_offers_query}
+      common_filter { light_kept_published_future_offers_query}
     end
   end
 end

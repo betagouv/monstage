@@ -3,7 +3,9 @@
 module Dashboard
   class InternshipOffersController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_internship_offer, only: %i[edit update destroy republish remove]
+    before_action :set_internship_offer,
+                  only: %i[edit update destroy republish remove]
+
     helper_method :order_direction
 
     def index
@@ -11,7 +13,7 @@ module Dashboard
         @internship_offer_areas = current_user.internship_offer_areas
       end
       authorize! :index, Acl::InternshipOfferDashboard.new(user: current_user)
-      @internship_offers = finder.all
+      @internship_offers = finder.all.includes([:internship_offer_weeks])
       order_param = order_direction.nil? ? :published_at : {order_column => order_direction}
       @internship_offers = @internship_offers.order(order_param)
       if params[:search].present?

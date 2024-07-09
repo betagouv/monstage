@@ -19,6 +19,8 @@ fr:
       unconfirmed: "Un message d’activation vous a été envoyé par courrier électronique. Veuillez suivre les instructions qu’il contient."
     passwords:
       update: 'Mot de passe mis à jour.'
+    sms:
+      welcome_student: "Bienvenue sur Mon Stage de 3e ! Faites votre première recherche et 2 candidatures ! Cliquez ici pour commencer : %{shrinked_url}"
   activerecord:
     models:
       area_notification:
@@ -322,7 +324,6 @@ fr:
 
         id: Identifiant unique de l'offre
         internship_offer_weeks: Semaines ouvertes aux stages
-        internship_offer_info_weeks: Semaines ouvertes aux stages
         human_is_public: Public/Privé
         human_max_candidates: Nombre max d'élèves accueillis sur l'année
         human_max_students_per_group: Stage individuel / collectif
@@ -395,7 +396,15 @@ fr:
           canceled_by_employer: annulée par l'employeur
           canceled_by_student: annulée par l'élève
           convention_signed: convention signée
+        student_phone: Contact téléphone
+        student_email: Contact email
+        user_id: Elève
         week: Semaine
+
+      internship_applications/weekly_framed:
+        student_phone: Contact téléphone
+        student_email: Contact email
+
 
       invitation:
         email: Email

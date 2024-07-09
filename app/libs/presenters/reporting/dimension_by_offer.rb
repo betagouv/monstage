@@ -9,13 +9,9 @@ module Presenters
                  human_max_students_per_group
                  published_at
                  discarded_at
-                 submitted_applications_count
-                 rejected_applications_count
-                 approved_applications_count
                  department
                  academy
-                 permalink
-                 view_count].freeze
+                 permalink].freeze
       METHODS = %i[group_name
                    human_is_public
                    sector_name
@@ -25,7 +21,11 @@ module Presenters
                    full_employer
                    full_address
                    full_school
-                   full_year].freeze
+                   full_year
+                   submitted_applications_count
+                   rejected_applications_count
+                   approved_applications_count
+                   view_count].freeze
 
       def self.metrics
         [].concat(ATTRS, METHODS)
@@ -103,6 +103,22 @@ module Presenters
         instance.weeks.each_with_index.map do |week, i|
           "Du #{week.beginning_of_week} au #{week.end_of_week}"
         end
+      end
+
+      def submitted_applications_count
+        instance.stats.submitted_applications_count
+      end
+
+      def rejected_applications_count
+        instance.stats.rejected_applications_count
+      end
+
+      def approved_applications_count
+        instance.stats.approved_applications_count
+      end
+
+      def view_count
+        instance.stats.view_count
       end
     end
   end

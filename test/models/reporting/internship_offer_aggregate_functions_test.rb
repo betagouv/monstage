@@ -53,6 +53,7 @@ module Reporting
 
         agri_stats, wood_stats = Reporting::InternshipOffer.dimension_by_sector
 
+        
         assert_equal 2, agri_stats.total_male_applications_count
         assert_equal 1, wood_stats.total_male_applications_count
         assert_equal 0, wood_stats.total_no_gender_applications_count

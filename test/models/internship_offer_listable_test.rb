@@ -5,10 +5,15 @@ require 'test_helper'
 class InternshipOfferPaginationTest < ActiveSupport::TestCase
   setup do
     @internship_offer_1 = create(:weekly_internship_offer, total_applications_count: 1)
+    @internship_offer_1.stats.update_attribute(:total_applications_count, 1)
     @internship_offer_2 = create(:weekly_internship_offer, total_applications_count: 2)
+    @internship_offer_2.stats.update_attribute(:total_applications_count, 2)
     @internship_offer_3 = create(:weekly_internship_offer, total_applications_count: 3)
+    @internship_offer_3.stats.update_attribute(:total_applications_count, 3)
     @internship_offer_4 = create(:weekly_internship_offer, total_applications_count: 4)
+    @internship_offer_4.stats.update_attribute(:total_applications_count, 4)
     @internship_offer_5 = create(:weekly_internship_offer, total_applications_count: 5)
+    @internship_offer_5.stats.update_attribute(:total_applications_count, 5)
   end
 
   test '.next_from (asc)' do

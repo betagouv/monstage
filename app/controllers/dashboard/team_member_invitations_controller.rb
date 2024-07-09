@@ -39,9 +39,16 @@ module Dashboard
     # when accepting an invitation or not
     def join
       authorize! :manage_teams, @team_member_invitation
-      action =  params[:commit] == "Oui" ? :accept_invitation! : :refuse_invitation!
-      @team_member_invitation.send(action)
-      redirect_to dashboard_team_member_invitations_path
+      flash = {}
+      if @team_member_invitation.pending_invitation?
+        action =  params[:commit] == "Oui" ? :accept_invitation! : :refuse_invitation!
+        @team_member_invitation.send(action)
+      else
+        state = @team_member_invitation.refused_invitation? ? "refusée" : "acceptée"
+        flash = {warning: "L'invitation a déjà été #{state}"}
+      end
+      redirect_to dashboard_team_member_invitations_path, flash: flash
+
     end
 
     def destroy

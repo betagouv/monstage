@@ -1,0 +1,32 @@
+p style=head_cyclop_styles(color: "#000000", 'font-size': "20px", 'font-weight': "bold", 'line-height': "23px", margin: "0 0 23px 0")
+  = @header_title
+
+table style="width: 100%;"
+  tr style="margin-bottom: 20px;"
+    td style="width: 50%;"
+      p style=p_cyclop_styles
+        = image_tag(attachments['securite.svg'].url, width:"241px", alt: 'Elève de troisième')
+    td style="width: 50%;"
+      p style=p_cyclop_styles(:'font-size' => '16px', :'margin-bottom' => '16px', :'line-height' => '17px', color: "#000091")
+        = @sub_title_1
+      p style=p_cyclop_styles(:'font-size' => '10px', :'line-height' => '12px')
+        = @sub_title_1_content
+  tr
+    td style="width: 50%;"
+      p style=p_cyclop_styles(:'margin-bottom' => '0px')
+        = image_tag(attachments['question_mark.svg'].url, width:"241px", alt: 'Elève de troisième')
+    td style="width: 50%;"
+      p style=p_cyclop_styles(:'font-size' => '16px', :'margin-bottom' => '16px', :'line-height' => '17px', color: "#000091")
+        = @sub_title_2
+      p style=p_cyclop_styles(:'font-size' => '10px', :'line-height' => '12px', :'margin-bottom' => '0px')
+        = @sub_title_2_content
+
+
+p style=p_cyclop_styles('text-align': "center", 'margin-bottom': "20px", 'margin-top': "37px")
+  = @bottom_line_phrase
+table style="width: 100%;margin-bottom: 20px;"
+    td style="width: 37%;"
+    td style="width: 63%;"
+      = render partial: "mailers/blue_call_to_action",
+              locals: { href: @shrinked_url,
+                        label: @cta_label }

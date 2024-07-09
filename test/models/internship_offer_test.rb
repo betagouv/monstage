@@ -49,7 +49,7 @@ class InternshipOfferTest < ActiveSupport::TestCase
 
   test 'faulty zipcode' do
     internship_offer = create(:weekly_internship_offer)
-    internship_offer.update_columns(zipcode: 'xy75012')
+    internship_offer.update_columns(zipcode: 'xy752')
 
     refute internship_offer.valid?
     assert_equal ["Code postal le code postal ne permet pas de déduire le département" ],
@@ -137,5 +137,29 @@ class InternshipOfferTest < ActiveSupport::TestCase
       hosting_info = create(:hosting_info, weeks: weeks, max_candidates: weeks.count)
       assert_equal expected_weeks.ids, hosting_info.available_weeks.map(&:id)
     end
+  end
+
+  test 'is_favorite?' do
+    student = create(:student)
+    other_student = create(:student)
+    internship_offer = create(:weekly_internship_offer)
+    other_internship_offer = create(:weekly_internship_offer)
+    refute internship_offer.is_favorite?(student)
+
+    create(:favorite, user: student, internship_offer: internship_offer)
+    create(:favorite, user: other_student, internship_offer: other_internship_offer)
+    refute internship_offer.is_favorite?(other_student)
+    assert internship_offer.is_favorite?(student)
+  end
+  
+  test 'when bulking internship_offer is created, make sure area is set' do
+    employer = create(:employer)
+    assert_equal 1, employer.internship_offer_areas.count
+    offer = build(:weekly_internship_offer, employer: employer)
+    offer.internship_offer_area_id = nil
+    assert offer.valid?
+    assert offer.save
+    assert offer.internship_offer_area_id.present?
+    assert_equal employer.current_area_id, offer.internship_offer_area_id
   end
 end

@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class InternshipApplicationsController < ApplicationController
+  include ApplicationTransitable
   before_action :persist_login_param, only: %i[new]
-  before_action :authenticate_user!, except: %i[update]
+  before_action :authenticate_user!, except: %i[update show]
   before_action :set_internship_offer
 
   def index
@@ -22,7 +23,14 @@ class InternshipApplicationsController < ApplicationController
   # alias for draft
   def show
     @internship_application = @internship_offer.internship_applications.find(params[:id])
-    authorize! :submit_internship_application, @internship_application
+    if params[:token].present?
+      unless current_user || authorize_through_token?
+        redirect_to root_path, flash: { error: 'Vous n’avez pas accès à cette candidature' }
+      end
+    else
+      authenticate_user!
+      authorize! :submit_internship_application, @internship_application
+    end
   end
 
   # alias for submit/update
@@ -58,6 +66,7 @@ class InternshipApplicationsController < ApplicationController
   rescue ActiveRecord::RecordInvalid => e
     @internship_application = e.record
     puts @internship_application.errors.messages
+    Rails.logger.error(@internship_application.errors.messages)
     render 'new', status: :bad_request
   end
 
@@ -73,7 +82,9 @@ class InternshipApplicationsController < ApplicationController
         week_ids: [@internship_application.week_id]
       },
       user: current_user_or_visitor
-    ).all.includes([:sector]).order(id: :desc).last(6)
+    ).all
+     .includes([:sector])
+     .last(6)
   end
 
   def edit_transfer
@@ -103,15 +114,21 @@ class InternshipApplicationsController < ApplicationController
         redirect_to dashboard_candidatures_path,
                     flash: { success: 'La candidature a été transmise avec succès' }
       else
-        target_path = edit_transfer_internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application)
-        flash_error_message = "Les adresses emails suivantes sont invalides : #{faulty_emails.join(', ')}" \
-                              ". Aucun transfert n'a été effectué, " \
-                              "aucun email n'a été émis."
+        target_path = edit_transfer_internship_offer_internship_application_path(
+          @internship_application.internship_offer,
+          @internship_application)
+        flash_error_message = "Les adresses emails suivantes sont invalides : " \
+                              "#{faulty_emails.join(', ')}. " \
+                              "Aucun transfert n'a été effectué, aucun email n'a été émis."
         redirect_to(target_path, flash: { danger: flash_error_message }) and return
       end
     else
-      redirect_to edit_transfer_internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application),
-                  flash: { danger: "La candidature n'a pas pu être transmise avec succès, faute de destinataires" }
+      danger_label = "La candidature n'a pas pu être transmise avec succès, " \
+                     "faute de destinataires"
+      redirect_to edit_transfer_internship_offer_internship_application_path(
+        @internship_application.internship_offer,
+        @internship_application),
+                  flash: { danger: danger_label }
     end
   end
 
@@ -131,6 +148,8 @@ class InternshipApplicationsController < ApplicationController
     params.require(:internship_application)
           .permit(
             :motivation,
+            :student_phone,
+            :student_email,
             student_attributes: %i[
               email
               phone

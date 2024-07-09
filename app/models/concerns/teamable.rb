@@ -107,8 +107,8 @@ module Teamable
     end
 
     def team_members_ids
-      members = team.team_members.pluck(:member_id).compact
-      members.empty? ? [id] : members
+      member_ids = team.team_members.pluck(:member_id).compact
+      member_ids.empty? ? [id] : member_ids
     end
 
     def db_team_members
@@ -130,16 +130,6 @@ module Teamable
     def refused_invitations
       TeamMemberInvitation.refused_invitation.where(inviter_id: team_id)
     end
-
-    def initializing_current_area
-      create_current_area(
-        name: "Espace de #{presenter.short_name}",
-        employer_type: 'User',
-        employer_id: self.id
-      )
-      save!
-    end
-
 
     # -------------------------------
     private

@@ -47,6 +47,13 @@ module PrettyConsole
         console_in_color(COLOR_MAP, bold(str), color)
       end
     )
+    # print_in_red('Hello World')
+    define_singleton_method(
+      "print_in_#{color}".to_sym,
+      Proc.new do |str|
+        print_in_color(COLOR_MAP, str, color)
+      end
+    )
   end
   BACKGROUND_COLOR_MAP.keys.each do |color|
     # say_with_leight_background('Hello World')
@@ -67,7 +74,10 @@ module PrettyConsole
 
   def announce_task(task)
     label = task.try(:name) || task
-    puts_with_green_background "-- Starting task : #{label}"
+    puts '--------------------------------------'
+    say_in_green "-- Starting task : #{label}"
+    puts '--------------------------------------'
+    puts ''
     start_time = Time.now
     yield
     end_time = Time.now
@@ -86,5 +96,9 @@ module PrettyConsole
 
   def self.console_in_color(map, str, color)
     puts "\e[#{map[color.to_sym]}m#{str}\e[0m"
+  end
+
+  def self.print_in_color(map, str, color)
+    print "\e[#{map[color.to_sym]}m#{str}\e[0m"
   end
 end

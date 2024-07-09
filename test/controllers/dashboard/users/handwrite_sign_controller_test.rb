@@ -3,7 +3,7 @@ require 'test_helper'
 module Dashboard::Users
   class HandwriteSignControllerTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
-
+    include TeamAndAreasHelper
     def check_code(user)
       user.update(signature_phone_token_checked_at: DateTime.now)
     end
@@ -35,8 +35,9 @@ module Dashboard::Users
     end
 
     test 'when employer handwrite_sign_dashboard_internship_agreement_user_path fails with missing handwrite' do
-      internship_agreement = create(:internship_agreement, aasm_state: :validated)
-      employer = internship_agreement.employer
+      employer, internship_offer = create_employer_and_offer
+      internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+      internship_agreement = create(:internship_agreement, internship_application: internship_application, aasm_state: :validated)
       employer.update(phone: '+330623456789')
       employer.create_signature_phone_token
       check_code(employer)

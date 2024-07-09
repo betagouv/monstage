@@ -1,63 +1,87 @@
 - applicable_weeks = current_user.presenter.applicable_weeks(@internship_offer)
 - is_creating = @internship_application.try(:new_record?)
+div data-controller="mandatory" data-mandatory-minimum-length-value="8"
+  = form_with(model: @internship_application,
+              data: {turbo: false},
+              url: (is_creating ? internship_offer_internship_applications_path(@internship_offer) : internship_offer_internship_application_path(@internship_offer, @internship_application)),
+              scope: :internship_application,
+              html: { method: is_creating ? :post : :patch,
+                      id: 'new_internship_application' }) do |f|
+    = render "layouts/form_errors",
+              resource: @internship_application,
+              resource_name: :internship_application
 
-= form_with(model: @internship_application,
-            data: {turbo: false},
-            url: (is_creating ? internship_offer_internship_applications_path(@internship_offer) : internship_offer_internship_application_path(@internship_offer, @internship_application)),
-            scope: :internship_application,
-            html: {method: is_creating ? :post : :patch, id: 'new_internship_application'}) do |f|
-  = render "layouts/form_errors",
-            resource: @internship_application,
-            resource_name: :internship_application
+    = f.hidden_field :type, value: 'InternshipApplications::WeeklyFramed'
+    = f.hidden_field :internship_offer_id
+    = f.hidden_field :internship_offer_type
 
-  = f.hidden_field :type, value: 'InternshipApplications::WeeklyFramed'
-  = f.hidden_field :internship_offer_id
-  = f.hidden_field :internship_offer_type
+    fieldset.mb-4
 
-  fieldset.mb-4
+      - unless current_user.school.has_weeks_on_current_year?
+        = render partial: "internship_applications/forms/student_missing_school_weeks"
+      .fr-select-group
+        = f.label :internship_offer_week_id, class: 'required fr-label' do
+          | Quelle semaine ?
 
-    - unless current_user.school.has_weeks_on_current_year?
-      = render partial: "internship_applications/forms/student_missing_school_weeks"
-    .fr-select-group
-      = f.label :internship_offer_week_id, class: 'required fr-label' do
-        | Quelle semaine ?
+        = f.select :week_id,
+                    options_from_collection_for_select(applicable_weeks, :id, :human_select_text_method, @internship_application.week_id),
+                    { prompt: 'Choisir une semaine'},
+                    class: "fr-select",
+                    required: true
+      div class="form-group"
+        .fr-label.required data-controller="rich-text-label" data-rich-text-label-for-value="internship_application_motivation" data-rich-text-label-enable-value=""
+          = "Pourquoi ce stage me motive"
+          small.form-text.text-muted Relisez-vous pour éviter les fautes d'orthographe et utilisez une formule de politesse pour conclure.
+        = f.rich_text_area :motivation,
+                           class: "fr-input col-12",
+                           required: true,
+                           rows: 5
 
-      = f.select :week_id,
-                  options_from_collection_for_select(applicable_weeks, :id, :human_select_text_method, @internship_application.week_id),
-                  { prompt: 'Choisir une semaine'},
-                  class: "fr-select",
-                  required: true
-    div class="form-group"
-      .fr-label.required data-controller="rich-text-label" data-rich-text-label-for-value="internship_application_motivation" data-rich-text-label-enable-value=""
-        = "Pourquoi ce stage me motive"
-        small.form-text.text-muted Relisez-vous pour éviter les fautes d'orthographe et utilisez une formule de politesse pour conclure.
-      = f.rich_text_area :motivation, class: "fr-input col-12", required: true, rows: 5
 
-    = f.fields_for :student do |resume_form|
-      = render partial: "users/resume_fields",
-              locals: { form: resume_form, phone_mail_disabled: true, disabled: false}
-    .fr-my-2w
-      .h4 Pour être recontacté par l'entreprise
-    .row.fr-my-2w
-      .col-xs-12.col-sm-6
-        .fr-label.required
-          = f.label :student_email do
-            | Adresse électronique (email)
-        .fr-input-group
-          = f.email_field :student_email, value: f.object.student_email || f.object.student.email, class: 'fr-input'
-    .row.fr-my-2w.fr-mb-3w
-      .col-xs-12.col-sm-6
-        .fr-label.required
-          = f.label :student_phone do
-            | Numéro de portable élève ou parent
-        .fr-input-group
-          small.form-text.text-muted Numéro commençant par 06 ou 07 uniquement
-          = f.phone_field :student_phone, value: f.object.student_phone || f.object.student.phone&.gsub!('+33', ''),  class: 'fr-input', required: true, pattern: '0[67][0-9]{8}'
 
-    .actions.d-flex.justify-content-between.flex-row
-      .d-inline-flex= link_to internship_offer_path(@internship_offer), class: 'fr-btn fr-btn--secondary' do
-        | Annuler
-      .d-inline-flex= f.submit "Valider", { class: 'fr-btn' }
+      = f.fields_for :student do |resume_form|
+        = render partial: "users/resume_fields",
+                locals: { form: resume_form, phone_mail_disabled: true, disabled: false}
+      .fr-my-2w
+        .h4 Pour être recontacté par l'entreprise
+      .row.fr-my-2w
+        .col-xs-12.col-sm-6
+          - email = f.object.student_email || f.object.student.email || f.object.previous_student_email
+          = render '/inputs/dsfr_input_field',
+                    f: f,
+                    field: :student_email,
+                    object: f.object,
+                    value: email,
+                    label: "Adresse électronique (email)",
+                    required: true,
+                    title: "S'il vous plaît, entrez une adresse email valide.",
+                    pattern: '[^@\s]+@[^@\s]+\.[^@\s]{2,}',
+                    data: {'mandatory-target' => 'mandatoryField',
+                           action: 'input->mandatory#fieldChange'}
+      .row.fr-my-2w.fr-mb-3w
+        .col-xs-12.col-sm-6
+          - phone = f.object.student_phone || f.object.student.phone&.gsub!('+33', '') || f.object.previous_student_phone
+          = render '/inputs/dsfr_input_field',
+                      f: f,
+                      field: :student_phone,
+                      object: f.object,
+                      value: phone,
+                      label: "Numéro de portable élève ou parent",
+                      required: true,
+                      maxlength: 20,
+                      pattern: '^\+?(33|262|590|594|596|687)?0?[67]\d{8}$',
+                      hint: "Numéro commençant par 06 ou 07 uniquement",
+                      title: "Numéro de portable",
+                      data: {'mandatory-target' => 'mandatoryField',
+                             action: 'input->mandatory#fieldChange'}
+
+      .actions.d-flex.justify-content-between.flex-row
+        .d-inline-flex= link_to internship_offer_path(@internship_offer), class: 'fr-btn fr-btn--secondary' do
+          | Annuler
+        .d-inline-flex
+          = f.submit "Valider",
+                    { class: 'fr-btn',
+                      :'data-mandatory-target' => 'disabledField'}
 
 
 

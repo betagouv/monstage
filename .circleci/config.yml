@@ -1,13 +1,13 @@
 version: 2.1
 orbs:
-  node: circleci/node@5.1.0
-  ruby: circleci/ruby@2.1.0
-  browser-tools: circleci/browser-tools@1.4.4
+  node: circleci/node@5.2.0
+  ruby: circleci/ruby@2.1.3
+  browser-tools: circleci/browser-tools@1.4.8
 jobs: # a collection of steps
   build: # runs not using Workflows must have a `build` job as entry point
     working_directory: ~/project
     docker: # run the steps with Docker
-      - image: cimg/ruby:3.2.1-browsers # ...with this image as the primary container; this is where all `steps` will run
+      - image: cimg/ruby:3.3.0-browsers # ...with this image as the primary container; this is where all `steps` will run
         environment: # environment variables for primary container
           BUNDLE_JOBS: 3
           BUNDLE_RETRY: 3
@@ -16,12 +16,12 @@ jobs: # a collection of steps
           PGUSER: monstage_test
           RAILS_ENV: test
           HOST: https://www.example.fr
-      - image: circleci/postgres:12.0-alpine-postgis # database image with support of current dir
+      - image: cimg/postgres:16.3-postgis # database image with support of current dir
         environment: # environment variables for database
           POSTGRES_DB: monstage_test
           POSTGRES_USER: monstage_test
           POSTGRES_PASSWORD: monstage_test
-      - image: circleci/redis:6.0.15-alpine
+      - image: cimg/redis:7.2.5 # redis image with support of current dir
         environment:
           REDIS_URL: localhost:6379
 
@@ -31,15 +31,10 @@ jobs: # a collection of steps
       - node/install:
           install-yarn: true
           node-version: '16.15'
-      - run:
-          name: get missing parts for chrome
-          command: |
-            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-            sudo apt-get update --allow-releaseinfo-change && sudo apt-get install -y libnss3 libgbm-dev systemd-sysv adwaita-icon-theme at-spi2-core dbus-user-session dconf-gsettings-backend dconf-service fonts-liberation glib-networking glib-networking-common glib-networking-services google-chrome-stable gsettings-desktop-schemas gtk-update-icon-cache libasound2 libasound2-data libatk-bridge2.0-0 libatk1.0-0 libatk1.0-data libatspi2.0-0 libauthen-sasl-perl libavahi-client3 libavahi-common-data libavahi-common3 libclone-perl libcolord2 libcups2 libdata-dump-perl libdconf1 libencode-locale-perl libepoxy0 libfile-basedir-perl libfile-desktopentry-perl libfile-listing-perl libfile-mimeinfo-perl libfont-afm-perl libgbm1 libgtk-3-0 libgtk-3-bin libgtk-3-common libhtml-form-perl libhtml-format-perl libhtml-parser-perl libhtml-tagset-perl libhtml-tree-perl libhttp-cookies-perl libhttp-daemon-perl libhttp-date-perl libhttp-message-perl libhttp-negotiate-perl libio-html-perl libio-socket-ssl-perl libio-stringy-perl libipc-system-simple-perl libjson-glib-1.0-0 libjson-glib-1.0-common liblua5.3-0 liblwp-mediatypes-perl liblwp-protocol-https-perl libmailtools-perl libnet-dbus-perl libnet-http-perl libnet-smtp-ssl-perl libnet-ssleay-perl libnspr4 libnss-systemd libnss3 libpam-systemd libproxy1v5 librest-0.7-0 libsoup-gnome2.4-1 libsoup2.4-1 libtext-iconv-perl libtie-ixhash-perl libtimedate-perl libtry-tiny-perl libu2f-udev liburi-perl libvte-2.91-0 libvte-2.91-common libwayland-cursor0 libwayland-egl1 libwayland-server0 libwww-perl libwww-robotrules-perl libx11-protocol-perl libxcb-shape0 libxcomposite1 libxcursor1 libxft2 libxi6 libxinerama1 libxkbcommon0 libxml-parser-perl libxml-twig-perl libxml-xpathengine-perl libxrandr2 libxtst6 libxv1 libxxf86dga1 perl-openssl-defaults systemd-sysv termit udev x11-utils x11-xserver-utils xdg-utils
 
       - browser-tools/install-chrome:
           replace-existing: true
-          chrome-version: '114.0.5735.90'
+          chrome-version: 'latest'
 
       - run:
           name: versions
@@ -137,13 +132,13 @@ jobs: # a collection of steps
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - "64:44:1e:17:fb:00:ae:75:15:ba:d2:cb:ad:c2:95:ee"
+            - "e4:5e:41:50:5b:d3:91:e2:9f:ad:37:eb:60:36:cc:f3"
       - run:
           name: Deploy staging to Clever Cloud
           command: |
-            ssh-keyscan push-n2-par-clevercloud-customers.services.clever-cloud.com >>  ~/.ssh/known_hosts
-            git remote add clever git+ssh://git@push-n2-par-clevercloud-customers.services.clever-cloud.com/$CLEVER_APP_ID.git
-            git push -u clever staging:master -f
+            ssh-keyscan push-par-clevercloud-customers.services.clever-cloud.com >>  ~/.ssh/known_hosts
+            git remote add staging git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/$CLEVER_APP_ID.git
+            git push -u staging staging:master -f
 workflows:
   version: 2
   build-deploy:

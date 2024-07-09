@@ -26,6 +26,7 @@
                                 class: 'fr-input',
                                 placeholder: raison,
                                 required: true,
+                                maxlength: 100,
                                 data: { "organisation-form-target": "organisationName", 'target': 'organisation-form.requiredField'}
             .form-group.fr-my-2w
               = form.label :siret, "SIRET"
@@ -110,7 +111,10 @@
         = form.label :employer_website, class: 'fr-label' do
           = 'Site web (optionnel)'
           small.form-text.text-muted Afin que l’élève puisse en apprendre plus sur son futur stage
-        = form.url_field :employer_website, class: 'fr-input', placeholder: "https://"
+        = form.url_field :employer_website,
+                         class: 'fr-input',
+                         maxlength:150,
+                         placeholder: "https://..."
 
     .col-md-6
       .fr-alert.fr-alert--info
