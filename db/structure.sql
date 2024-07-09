@@ -683,7 +683,8 @@ CREATE TABLE public.internship_agreements (
     school_representative_email character varying(100),
     discarded_at timestamp(6) without time zone,
     lunch_break text,
-    organisation_representative_email character varying
+    organisation_representative_email character varying,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL
 );
 
 
@@ -2576,6 +2577,13 @@ CREATE INDEX index_internship_agreements_on_internship_application_id ON public.
 
 
 --
+-- Name: index_internship_agreements_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_internship_agreements_on_uuid ON public.internship_agreements USING btree (uuid);
+
+
+--
 -- Name: index_internship_applications_on_aasm_state; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3429,6 +3437,7 @@ SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20240627152436'),
+('20240624201910'),
 ('20240620123704'),
 ('20240205142849'),
 ('20240125102153'),

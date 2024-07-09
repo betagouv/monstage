@@ -1,6 +1,6 @@
 - if internship_agreement.try(:confirmed_by?, user: current_user)
   - if ready_to_print?
-    = link_to dashboard_internship_agreement_path(internship_agreement, format: :pdf),
+    = link_to dashboard_internship_agreement_path(uuid: internship_agreement.uuid, format: :pdf),
               target: "_blank",
               class: 'fr-btn ml-2 text-nowrap ',
               data: { test: "active-internship-agreement-progress-#{internship_agreement.id}" } do
@@ -9,6 +9,6 @@
     span.btn.btn.btn-light.ml-2.text-nowrap data-test="inactive-internship-agreement-progress-#{internship_agreement.id}"
       | Imprimer
 - else
-  = link_to internship_agreement ? edit_dashboard_internship_agreement_path(internship_agreement) : new_dashboard_internship_agreement_path(internship_application_id: internship_application.id),
+  = link_to internship_agreement ? edit_dashboard_internship_agreement_path(uuid: internship_agreement.uuid) : new_dashboard_internship_agreement_path(internship_application_id: internship_application.id),
             class: 'fr-btn ml-2 text-nowrap' do
     = label
