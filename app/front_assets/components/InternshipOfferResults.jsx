@@ -29,7 +29,7 @@ const defaultPointerIcon = new L.Icon({
   popupAnchor: [0, -60], // changed popup position
 });
 
-const InternshipOfferResults = ({ count, sectors, params }) => {
+const InternshipOfferResults = ({ count, sectors, searchParams }) => {
   // const [map, setMap] = useState(null);
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [paginateLinks, setPaginateLinks] = useState(null);
@@ -38,14 +38,15 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
   const [isSuggestion, setIsSuggestion] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [newDataFetched, setNewDataFetched] = useState(false);
-  const [selectedSectors, setSelectedSectors] = useState([]);
+  const [selectedSectors, setSelectedSectors] = useState(searchParams['sector_ids'] || []);
   const [internshipOffersSeats, setInternshipOffersSeats] = useState(0);
   const [notify, setNotify] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
+  const[params, setParams] = useState(searchParams);
 
   useEffect(() => {
-    requestInternshipOffers();
-  }, []);
+    fetchtInternshipOffers();
+  }, [params]);
 
   const ClickMap = ({ internshipOffers, recenterMap }) => {
     if (isMobile()) {return null };
@@ -72,7 +73,7 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
     // setSelectedOffer(null);
   };
 
-  const getSectors = () => {
+  const getSectorsSelected = () => {
     const sectors = [];
     var clist = document.getElementsByClassName("checkbox-sector");
     for (var i = 0; i < clist.length; ++i) {
@@ -84,17 +85,21 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
     return sectors;
   }
 
-  const requestInternshipOffers = () => {
+  const fetchtInternshipOffers = () => {
     setIsLoading(true);
+    $.ajax({ type: 'GET', url: endpoints['searchInternshipOffers'](), data: params })
+    .done(fetchDone)
+    .fail(fetchFail);
+  };
+
+  const updateSectors = () => {
     if (!isMobile()) {
       document.getElementById("fr-modal-filter").classList.remove("fr-modal--opened");
       document.getElementById("filter-sectors-button").setAttribute('data-fr-opened', false);
-      params['sector_ids'] = getSectors();
     }
 
-    $.ajax({ type: 'GET', url: endpoints['searchInternshipOffers'](), data: params })
-      .done(fetchDone)
-      .fail(fetchFail);
+    const newParams = { ...params, page: 1, sector_ids: getSectorsSelected() };
+    setParams(newParams);
   };
 
   const fetchDone = (result) => {
@@ -295,8 +300,9 @@ const InternshipOfferResults = ({ count, sectors, params }) => {
         (
           <FilterModal
           sectors={sectors}
-          requestInternshipOffers={requestInternshipOffers}
+          updateSectors={updateSectors}
           clearSectors={clearSectors}
+          selectedSectors={selectedSectors}
           />
         )
       }
