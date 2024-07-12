@@ -123,8 +123,9 @@ import './homepage/partenaires/Logo-my-future.jpg';
 
 import './homepage/sponsors/logo-anct.svg';
 import './homepage/sponsors/logo-anct.png';
+import './homepage/sponsors/logo-anct-alone.png';
 import './homepage/sponsors/logo-ministere-education-nationale.svg';
-import './homepage/sponsors/logo-ministere-de-la-transition-ecologique.svg';
+import './homepage/sponsors/logo-ministere-education-nationale.png';
 
 import './documents_utiles/CarnetStagePro_USEA_WEB-2.jpg';
 import './documents_utiles/RienNeSertDeCourirPageBD.jpg';
