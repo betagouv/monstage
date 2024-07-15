@@ -186,7 +186,7 @@ module Dashboard
     end
 
     def set_internship_agreement
-      @internship_agreement = InternshipAgreement.find(params[:id])
+      @internship_agreement = InternshipAgreement.find_by(uuid: params[:uuid])
     end
   end
 end

@@ -6,23 +6,32 @@ module InternshipApplications
   class ShowTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
-  
-
     test 'GET #show redirects to new_user_session_path when not logged in' do
       internship_application = create(:weekly_internship_application)
-      get dashboard_internship_offer_internship_application_path(internship_application.internship_offer, uuid: internship_application.uuid)
+      get dashboard_internship_offer_internship_application_path(internship_application.internship_offer,
+                                                                 uuid: internship_application.uuid)
       assert_redirected_to new_user_session_path
     end
 
     test 'GET #show renders page when not logged in unless token given' do
       internship_application = create(:weekly_internship_application, :examined)
-      get dashboard_internship_offer_internship_application_path(internship_application.internship_offer, uuid: internship_application.uuid, token: internship_application.access_token)
-      assert_redirected_to root_path
+      get dashboard_internship_offer_internship_application_path(internship_application.internship_offer,
+                                                                 uuid: internship_application.uuid, token: internship_application.access_token)
+      assert_response :success
+    end
+
+    test 'GET #show with employer renders page when logged in' do
+      internship_application = create(:weekly_internship_application, :examined)
+      sign_in(internship_application.employer)
+      get dashboard_internship_offer_internship_application_path(internship_application.internship_offer,
+                                                                 uuid: internship_application.uuid)
+      assert_response :success
     end
 
     test 'GET #show redirects to new_user_session_path when token is wrong' do
       internship_application = create(:weekly_internship_application, :examined)
-      get dashboard_internship_offer_internship_application_path(internship_application.internship_offer, uuid: internship_application.uuid, token: 'abc')
+      get dashboard_internship_offer_internship_application_path(internship_application.internship_offer,
+                                                                 uuid: internship_application.uuid, token: 'abc')
       assert_redirected_to root_path
     end
   end

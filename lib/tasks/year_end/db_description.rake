@@ -20,10 +20,11 @@ namespace :year_end do
           next unless table.columns_hash[column_name].type == :string
 
           limit1 = table.pluck(column_name.to_sym)
-                        .map(&:to_s)
-                        .sort_by { |a| a.size}
-                        .last
-                        .size
+                        .compact
+                        &.map(&:to_s)
+                        &.sort_by { |a| a.size}
+                        &.last
+                        &.size
           PrettyConsole.print_in_yellow "#{column_name} ; #{limit1};"
           puts ''
         end

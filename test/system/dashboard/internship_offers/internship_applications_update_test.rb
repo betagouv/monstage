@@ -178,9 +178,16 @@ module Dashboard::InternshipOffers
       click_on 'Envoyer'
       find('h2', text: 'Les candidatures')
       assert_match /La candidature a été transmise avec succès/, find('div.alert.alert-success').text
-      click_on 'Répondre'
-      find('button[data-toggle="modal"][data-fr-js-modal-button="true"]', text: 'Accepter')
+      sign_out(employer)
+      # in mail
+      puts internship_application.reload.access_token
+      visit dashboard_internship_offer_internship_application_path(
+        internship_offer,
+        internship_application,
+        token: internship_application.reload.access_token)
       find('button[data-toggle="modal"][data-fr-js-modal-button="true"]', text: 'Refuser')
+      # click_on 'Répondre'
+      find('button[data-toggle="modal"][data-fr-js-modal-button="true"]', text: 'Accepter').click
     end
 
     test 'employer cannot transfer an internship_application with a faulty email' do

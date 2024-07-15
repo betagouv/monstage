@@ -1,6 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-const FilterModal = ({ sectors, requestInternshipOffers, clearSectors }) => (
+const FilterModal = ({ sectors, updateSectors, clearSectors, selectedSectors, toggleSectorSelection }) => {
+  const [selected, setSelected] = useState(selectedSectors);
+
+  useEffect(() => {
+    setSelected(selectedSectors);
+  }, [selectedSectors]);
+
+  const handleCheckboxChange = (sectorId) => {
+    const updatedSelection = selected.includes(sectorId)
+      ? selected.filter(id => id !== sectorId)
+      : [...selected, sectorId];
+
+    setSelected(updatedSelection);
+  };
+
+  return (
   <dialog aria-labelledby="fr-modal-title-modal-filter" role="dialog" id="fr-modal-filter" className="fr-modal modal-filter">
   <div className="fr-container fr-container--fluid fr-container-md">
     <div className="fr-grid-row fr-grid-row--center">
@@ -14,7 +29,7 @@ const FilterModal = ({ sectors, requestInternshipOffers, clearSectors }) => (
                 >
                 Tous les filtres
               </div>
-              <div className="float-right text-right" style={{float: 'right'}}>
+              <div className="float-right text-right fr-pr-1w" style={{float: 'right'}}>
                 <button className="fr-btn--close fr-btn" title="Fermer la fenêtre modale" aria-controls="fr-modal-filter">Fermer</button>
               </div>
             </div>
@@ -22,16 +37,24 @@ const FilterModal = ({ sectors, requestInternshipOffers, clearSectors }) => (
 
           <form onSubmit={ e => {
             e.preventDefault();
-            requestInternshipOffers();
+            updateSectors();
           }}
           >
             <div className="fr-modal__content modal-section">
               <h1 id="fr-modal-title-modal-1" className="fr-modal__title fr-mt-2w">Secteurs d'activité</h1>
-              <div className="row">
+              <div className="row fr-py-1w">
                 {
                   sectors.map((sector, index) => (
                     <div className='fr-checkbox-group col-6 fr-checkbox-group--sm' key={sector.id}>
-                      <input type="checkbox" id={`checkbox-${index+1}`} name={`checkbox-${index+1}`} data-sector-id={sector.id} className="checkbox-sector"/>
+                       <input 
+                        type="checkbox" 
+                        id={`checkbox-${index+1}`} 
+                        name={`checkbox-${index+1}`} 
+                        data-sector-id={sector.id} 
+                        className="checkbox-sector" 
+                        checked={selected.includes(sector.id.toString())}
+                        onChange={() => handleCheckboxChange(sector.id.toString())}
+                      />
                       <label className="fr-label muted" htmlFor={`checkbox-${index+1}`}>{ sector.name }</label>
                     </div>
                   ))
@@ -57,7 +80,7 @@ const FilterModal = ({ sectors, requestInternshipOffers, clearSectors }) => (
       </div>
     </div>
   </div>
-</dialog>
-)
-
+  </dialog>
+  )
+};
 export default FilterModal;

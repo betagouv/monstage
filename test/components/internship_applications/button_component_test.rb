@@ -20,7 +20,7 @@ module InternshipApplications
       render_inline(InternshipApplications::ButtonComponent.new(internship_application: internship_agreement.internship_application,
                                         current_user: employer))
 
-      assert_selector("a[href=\"#{url_helpers.edit_dashboard_internship_agreement_path(internship_agreement)}\"]")
+      assert_selector("a[href=\"#{url_helpers.edit_dashboard_internship_agreement_path(uuid: internship_agreement.uuid)}\"]")
     end
 
     test "when internship_agreement render progress when i signed" do
@@ -60,7 +60,7 @@ module InternshipApplications
         current_user: employer
       ))
 
-      assert_selector("a[href=\"#{url_helpers.dashboard_internship_agreement_path(internship_agreement,format: :pdf)}\"]")
+      assert_selector("a[href=\"#{url_helpers.dashboard_internship_agreement_path(uuid: internship_agreement.uuid,format: :pdf)}\"]")
     end
   end
 end

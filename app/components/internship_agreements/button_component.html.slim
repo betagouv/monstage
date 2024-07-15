@@ -6,14 +6,14 @@
                 '',
                 class: "#{classes} disabled"
     - elsif started_or_signed?
-      = link_to dashboard_internship_agreement_path(internship_agreement, format: :pdf),
+      = link_to dashboard_internship_agreement_path(uuid: internship_agreement.uuid, format: :pdf),
                 target: "_blank",
                 style: 'max-width: none;',
                 class: "#{classes} fr-btn--secondary",
                 data: { test: "active-internship-agreement-progress-#{internship_agreement.id}" } do
         = label[:text]
     - elsif on_going_process?
-      = link_to edit_dashboard_internship_agreement_path(internship_agreement),
+      = link_to edit_dashboard_internship_agreement_path(uuid: internship_agreement.uuid),
                 class: "#{classes} #{(label[:status] == 'secondary_cta') ? 'fr-btn--secondary' : ''}" do
         = label[:text]
     - else

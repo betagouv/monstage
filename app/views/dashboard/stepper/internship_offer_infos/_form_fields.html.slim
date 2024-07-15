@@ -34,7 +34,10 @@ div [data-controller='internship-offer-infos'  data-internship-offer-infos-base-
     .col-md-6.order-md-2.order-1
       .fr-alert.fr-alert--info
         h3.fr-alert__title Conseil
-        p Nommez le(s) métiers qui sont concernés par le stage, cela facilitera la recherche de l’élève. Attention à l’utilisation des acronymes
+        p
+          | Nommez le(s) métier(s) qui sont concernés par le stage, cela facilitera la recherche de l’élève. Attention à
+          |< l’utilisation des acronymes. Les 40 premiers caractères de cette zone apparaîtront comme titre de votre
+          |< offre : soyez explicite et concis !
   .row
     .col-md-6
         .form-group.fr-my-2w data-controller='maxlength-input' data-maxlength-input-limit-value="#{InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT}"
@@ -55,8 +58,12 @@ div [data-controller='internship-offer-infos'  data-internship-offer-infos-base-
           small.form-text data-maxlength-input-target="trixElementCharCount"
     .col-md-6.order-md-2.order-1
       .fr-alert.fr-alert--info
-        h3.fr-alert__title Conseil
-        p Ce paragraphe est très important car il va permettre à l'élève de se projeter dans son futur stage. Il est important d'utiliser des mots simples. N'hésitez pas à ajouter des détails.
+        h3.fr-alert__title Information
+        p 
+          | Durant la séquence d'observation, les élèves n'ont pas à concourir au travail dans l'entreprise ou l'organisme d'accueil. Le stage étant une séquence d'observation en milieu professionnel, les élèves peuvent également participer à des activités de l'entreprise ou de l'organisme d’accueil en liaison avec les enseignements et les objectifs de formation de leur classe, sous le contrôle des personnels responsables de leur encadrement en milieu professionnel. Les élèves ne peuvent accéder aux machines, appareils ou produits dont l'usage est proscrit aux mineurs par les articles D. 4153-15 à D. 4153-37 du code du travail. Ils ne peuvent ni procéder à des manœuvres ou manipulations sur d'autres machines, produits ou appareils de production ni effectuer des travaux légers autorisés aux mineurs par ce même code.
+          br
+          br
+          | Toute offre contraire sera retirée de la plateforme.
 
   .row
     .col-md-12
