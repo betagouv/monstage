@@ -99,3 +99,12 @@ main#content[role="main"
                   = link_to "Renvoyer le message d'activation",
                              new_user_confirmation_path(resource_name),
                              class: 'fr-btn fr-btn--tertiary'
+              - if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks'
+                hr.fr-mb-0
+                h2.fr-h4
+                  | Vous n’avez pas reçu le lien de déblocage ?
+                ul.fr-btns-group.fr-mt-2w
+                  li
+                    = link_to "Renvoyer le message de déblocage",
+                              new_unlock_path(resource_name),
+                              class: 'fr-btn fr-btn--tertiary'
