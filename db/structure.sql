@@ -52,6 +52,21 @@ COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
 
 --
+-- Name: uuid-ossp; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
+
+
+
+--
 -- Name: agreement_signatory_role; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -228,8 +243,29 @@ CREATE TABLE public.action_text_rich_texts (
     record_type character varying NOT NULL,
     record_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    dedupid integer NOT NULL
 );
+
+
+--
+-- Name: action_text_rich_texts_dedupid_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.action_text_rich_texts_dedupid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: action_text_rich_texts_dedupid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.action_text_rich_texts_dedupid_seq OWNED BY public.action_text_rich_texts.dedupid;
 
 
 --
@@ -404,8 +440,30 @@ CREATE TABLE public.class_rooms (
     name character varying,
     school_id bigint,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    dedupid integer NOT NULL,
+    discarded_at timestamp without time zone
 );
+
+
+--
+-- Name: class_rooms_dedupid_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.class_rooms_dedupid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: class_rooms_dedupid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.class_rooms_dedupid_seq OWNED BY public.class_rooms.dedupid;
 
 
 --
@@ -642,49 +700,49 @@ ALTER SEQUENCE public.internship_agreement_presets_id_seq OWNED BY public.intern
 
 CREATE TABLE public.internship_agreements (
     id bigint NOT NULL,
-    date_range character varying(210) NOT NULL,
+    date_range character varying(90) NOT NULL,
     aasm_state character varying,
     internship_application_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    organisation_representative_full_name character varying(150),
-    school_representative_full_name character varying(100),
-    student_full_name character varying(100),
-    student_class_room character varying(27),
-    student_school character varying(140),
-    tutor_full_name character varying(271),
+    organisation_representative_full_name character varying(90),
+    school_representative_full_name character varying(70),
+    student_full_name character varying(70),
+    student_class_room character varying(20),
+    student_school character varying(80),
+    tutor_full_name character varying(95),
     main_teacher_full_name character varying(70),
     doc_date date,
-    school_manager_accept_terms boolean DEFAULT false,
-    employer_accept_terms boolean DEFAULT false,
     weekly_hours text[] DEFAULT '{}'::text[],
     daily_hours jsonb DEFAULT '{}'::jsonb,
+    school_manager_accept_terms boolean DEFAULT false,
+    employer_accept_terms boolean DEFAULT false,
     main_teacher_accept_terms boolean DEFAULT false,
     school_delegation_to_sign_delivered_at date,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
-    siret character varying(145),
-    tutor_role character varying(150),
-    tutor_email character varying(85),
-    organisation_representative_role character varying(150),
-    student_address character varying(500),
+    siret character varying(15),
+    tutor_role character varying(85),
+    tutor_email character varying(77),
+    organisation_representative_role character varying(100),
+    student_address character varying(300),
     student_phone character varying(20),
     school_representative_phone character varying(20),
     student_refering_teacher_phone character varying(20),
-    student_legal_representative_email character varying(100),
-    student_refering_teacher_email character varying(100),
-    student_legal_representative_full_name character varying(100),
-    student_refering_teacher_full_name character varying(100),
-    student_legal_representative_phone character varying(50),
-    student_legal_representative_2_full_name character varying(100),
-    student_legal_representative_2_email character varying(100),
+    student_legal_representative_email character varying(70),
+    student_refering_teacher_email character varying(70),
+    student_legal_representative_full_name character varying(70),
+    student_refering_teacher_full_name character varying(70),
+    student_legal_representative_phone character varying(20),
+    student_legal_representative_2_full_name character varying(70),
+    student_legal_representative_2_email character varying(70),
     student_legal_representative_2_phone character varying(20),
     school_representative_role character varying(100),
-    school_representative_email character varying(100),
+    school_representative_email character varying(70),
     discarded_at timestamp(6) without time zone,
     lunch_break text,
-    organisation_representative_email character varying,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
+    activity_preparation text
 );
 
 
@@ -731,14 +789,15 @@ CREATE TABLE public.internship_applications (
     internship_offer_type character varying NOT NULL,
     week_id bigint,
     student_phone character varying(683),
-    student_email character varying(100),
+    student_email character varying(70),
     read_at timestamp(6) without time zone,
     examined_at timestamp(6) without time zone,
     validated_by_employer_at timestamp(6) without time zone,
     dunning_letter_count integer DEFAULT 0,
     magic_link_tracker integer DEFAULT 0,
     access_token character varying(25),
-    transfered_at timestamp(6) without time zone
+    transfered_at timestamp(6) without time zone,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL
 );
 
 
@@ -848,9 +907,9 @@ CREATE TABLE public.internship_offer_infos (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
+    max_students_per_group integer DEFAULT 1 NOT NULL,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
-    max_students_per_group integer DEFAULT 1 NOT NULL,
     remaining_seats_count integer DEFAULT 0
 );
 
@@ -884,8 +943,29 @@ CREATE TABLE public.internship_offer_keywords (
     ndoc integer NOT NULL,
     nentry integer NOT NULL,
     searchable boolean DEFAULT true NOT NULL,
-    word_nature character varying(200) DEFAULT NULL::character varying
+    word_nature character varying(200) DEFAULT NULL::character varying,
+    dedupid integer NOT NULL
 );
+
+
+--
+-- Name: internship_offer_keywords_dedupid_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.internship_offer_keywords_dedupid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: internship_offer_keywords_dedupid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.internship_offer_keywords_dedupid_seq OWNED BY public.internship_offer_keywords.dedupid;
 
 
 --
@@ -1035,9 +1115,9 @@ CREATE TABLE public.internship_offers (
     internship_offer_weeks_count integer DEFAULT 0 NOT NULL,
     tutor_name character varying(290),
     tutor_phone character varying(100),
-    tutor_email character varying(100),
-    employer_website character varying(560),
-    street character varying(3000),
+    tutor_email character varying(70),
+    employer_website character varying(370),
+    street character varying(300),
     zipcode character varying(5),
     city character varying(50),
     is_public boolean,
@@ -1048,7 +1128,6 @@ CREATE TABLE public.internship_offers (
     employer_name character varying(180),
     employer_id bigint,
     school_id bigint,
-    employer_description character varying(250),
     sector_id bigint,
     blocked_weeks_count integer DEFAULT 0 NOT NULL,
     total_applications_count integer DEFAULT 0 NOT NULL,
@@ -1076,12 +1155,12 @@ CREATE TABLE public.internship_offers (
     tutor_id bigint,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
     daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED,
-    siret character varying(14),
-    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
-    weekly_lunch_break text,
     total_female_applications_count integer DEFAULT 0 NOT NULL,
     total_female_approved_applications_count integer DEFAULT 0,
+    siret character varying(14),
     max_students_per_group integer DEFAULT 1 NOT NULL,
+    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
+    weekly_lunch_break text,
     employer_manual_enter boolean DEFAULT false,
     tutor_role character varying(150),
     remaining_seats_count integer DEFAULT 0,
@@ -1092,7 +1171,8 @@ CREATE TABLE public.internship_offers (
     internship_offer_area_id bigint,
     lunch_break text,
     contact_phone character varying(20),
-    handicap_accessible boolean DEFAULT false
+    handicap_accessible boolean DEFAULT false,
+    employer_description text
 );
 
 
@@ -1204,8 +1284,8 @@ CREATE TABLE public.operators (
     target_count integer DEFAULT 0,
     logo character varying,
     website character varying,
-    created_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.377616'::timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.384734'::timestamp without time zone NOT NULL,
+    created_at timestamp without time zone DEFAULT '2021-05-31 19:54:30.697678'::timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone DEFAULT '2021-05-31 19:54:30.703573'::timestamp without time zone NOT NULL,
     api_full_access boolean DEFAULT false,
     realized_count json DEFAULT '{}'::json
 );
@@ -1237,11 +1317,10 @@ ALTER SEQUENCE public.operators_id_seq OWNED BY public.operators.id;
 CREATE TABLE public.organisations (
     id bigint NOT NULL,
     employer_name character varying(180) NOT NULL,
-    street character varying(500) NOT NULL,
+    street character varying(300) NOT NULL,
     zipcode character varying(5) NOT NULL,
     city character varying(50) NOT NULL,
     employer_website character varying,
-    employer_description character varying(250),
     coordinates public.geography(Point,4326),
     department character varying DEFAULT ''::character varying NOT NULL,
     is_public boolean DEFAULT false NOT NULL,
@@ -1249,10 +1328,10 @@ CREATE TABLE public.organisations (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     employer_id integer,
-    siren character varying,
     siret character varying(14),
     is_paqte boolean,
-    manual_enter boolean DEFAULT false
+    manual_enter boolean DEFAULT false,
+    employer_description text
 );
 
 
@@ -1282,7 +1361,7 @@ ALTER SEQUENCE public.organisations_id_seq OWNED BY public.organisations.id;
 CREATE TABLE public.practical_infos (
     id bigint NOT NULL,
     employer_id integer,
-    street character varying(500) NOT NULL,
+    street character varying(300) NOT NULL,
     zipcode character varying(5) NOT NULL,
     city character varying(50) NOT NULL,
     coordinates public.geography(Point,4326),
@@ -1544,7 +1623,7 @@ ALTER SEQUENCE public.team_member_invitations_id_seq OWNED BY public.team_member
 CREATE TABLE public.tutors (
     id bigint NOT NULL,
     tutor_name character varying(290) NOT NULL,
-    tutor_email character varying(100) NOT NULL,
+    tutor_email character varying(70) NOT NULL,
     tutor_phone character varying(100) NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -1680,21 +1759,24 @@ CREATE TABLE public.users (
     phone_password_reset_count integer DEFAULT 0,
     last_phone_password_reset timestamp without time zone,
     anonymized boolean DEFAULT false NOT NULL,
-    banners jsonb DEFAULT '{}'::jsonb,
     targeted_offer_id integer,
+    banners jsonb DEFAULT '{}'::jsonb,
     signature_phone_token character varying(6),
     signature_phone_token_expires_at timestamp(6) without time zone,
     signature_phone_token_checked_at timestamp(6) without time zone,
     employer_role character varying,
     subscribed_to_webinar_at timestamp(6) without time zone DEFAULT NULL::timestamp without time zone,
     agreement_signatorable boolean DEFAULT false,
-    created_by_teacher boolean DEFAULT false,
     survey_answered boolean DEFAULT false,
+    created_by_teacher boolean DEFAULT false,
     current_area_id bigint,
     statistician_validation boolean DEFAULT false,
     failed_attempts integer DEFAULT 0 NOT NULL,
     unlock_token character varying,
-    locked_at timestamp(6) without time zone
+    locked_at timestamp(6) without time zone,
+    resume_educational_background text,
+    resume_other text,
+    resume_languages text
 );
 
 
@@ -1828,6 +1910,13 @@ ALTER TABLE ONLY public.action_text_rich_texts ALTER COLUMN id SET DEFAULT nextv
 
 
 --
+-- Name: action_text_rich_texts dedupid; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.action_text_rich_texts ALTER COLUMN dedupid SET DEFAULT nextval('public.action_text_rich_texts_dedupid_seq'::regclass);
+
+
+--
 -- Name: active_storage_attachments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1860,6 +1949,13 @@ ALTER TABLE ONLY public.area_notifications ALTER COLUMN id SET DEFAULT nextval('
 --
 
 ALTER TABLE ONLY public.class_rooms ALTER COLUMN id SET DEFAULT nextval('public.class_rooms_id_seq'::regclass);
+
+
+--
+-- Name: class_rooms dedupid; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.class_rooms ALTER COLUMN dedupid SET DEFAULT nextval('public.class_rooms_dedupid_seq'::regclass);
 
 
 --
@@ -1944,6 +2040,13 @@ ALTER TABLE ONLY public.internship_offer_infos ALTER COLUMN id SET DEFAULT nextv
 --
 
 ALTER TABLE ONLY public.internship_offer_keywords ALTER COLUMN id SET DEFAULT nextval('public.internship_offer_keywords_id_seq'::regclass);
+
+
+--
+-- Name: internship_offer_keywords dedupid; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_keywords ALTER COLUMN dedupid SET DEFAULT nextval('public.internship_offer_keywords_dedupid_seq'::regclass);
 
 
 --
@@ -2493,6 +2596,13 @@ CREATE INDEX index_area_notifications_on_user_id ON public.area_notifications US
 
 
 --
+-- Name: index_class_rooms_on_discarded_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_class_rooms_on_discarded_at ON public.class_rooms USING btree (discarded_at);
+
+
+--
 -- Name: index_class_rooms_on_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2609,6 +2719,13 @@ CREATE INDEX index_internship_applications_on_internship_offer_week_id ON public
 --
 
 CREATE INDEX index_internship_applications_on_user_id ON public.internship_applications USING btree (user_id);
+
+
+--
+-- Name: index_internship_applications_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_internship_applications_on_uuid ON public.internship_applications USING btree (uuid);
 
 
 --
@@ -3433,14 +3550,15 @@ ALTER TABLE ONLY public.internship_offer_weeks
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public;
+SET search_path TO "$user", public, tiger, topology;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240711131816'),
 ('20240627152436'),
+('20240625141243'),
 ('20240624201910'),
 ('20240620123704'),
 ('20240205142849'),
-('20240125102153'),
 ('20240111081028'),
 ('20231211143502'),
 ('20231211084232'),
@@ -3549,7 +3667,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210506142429'),
 ('20210430083329'),
 ('20210422145040'),
-('20210408113406'),
 ('20210326100435'),
 ('20210310173554'),
 ('20210225164349'),
@@ -3557,7 +3674,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210129121617'),
 ('20210128162938'),
 ('20210121172155'),
-('20210121171025'),
 ('20210113140604'),
 ('20210112164129'),
 ('20201203153154'),
@@ -3577,11 +3693,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200928122922'),
 ('20200928102905'),
 ('20200924093439'),
-('20200923164419'),
 ('20200918165533'),
 ('20200911160718'),
 ('20200911153501'),
-('20200911153500'),
 ('20200909134849'),
 ('20200909065612'),
 ('20200904083343'),

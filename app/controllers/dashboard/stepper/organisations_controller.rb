@@ -4,7 +4,7 @@ module Dashboard::Stepper
   # Step 1 of internship offer creation: fill in company info
   class OrganisationsController < ApplicationController
     before_action :authenticate_user!
-    before_action :clean_params, only: [:create, :update]
+    before_action :clean_params, only: %i[create update]
 
     # render step 1
     def new
@@ -48,6 +48,7 @@ module Dashboard::Stepper
     end
 
     private
+
     def organisation_params
       params.require(:organisation)
             .permit(
@@ -57,17 +58,19 @@ module Dashboard::Stepper
               :city,
               :siret,
               :manual_enter,
-              :employer_description_rich_text,
+              :employer_description,
               :employer_website,
               :is_public,
               :group_id,
               :autocomplete,
-              coordinates: {})
+              coordinates: {}
+            )
             .merge(employer_id: current_user.id)
     end
 
     def clean_params
-      params[:organisation][:street] = [params[:organisation][:street], params[:organisation][:street_complement]].compact_blank.join(' - ')
+      params[:organisation][:street] =
+        [params[:organisation][:street], params[:organisation][:street_complement]].compact_blank.join(' - ')
     end
   end
 end

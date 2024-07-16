@@ -18,7 +18,7 @@ module Dashboard::Stepper
       employer = create(:employer)
       sign_in(employer)
       travel_to(Date.new(2019, 3, 1)) do
-        organisation = create(:organisation, employer: employer)
+        organisation = create(:organisation, employer:)
         get new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
 
         assert_response :success
@@ -34,7 +34,7 @@ module Dashboard::Stepper
       sign_in(employer)
       sector = create(:sector)
       weeks = [weeks(:week_2019_1)]
-      organisation = create(:organisation, employer: employer)
+      organisation = create(:organisation, employer:)
       assert_difference('InternshipOfferInfo.count') do
         post(
           dashboard_stepper_internship_offer_infos_path(organisation_id: organisation.id),
@@ -42,17 +42,18 @@ module Dashboard::Stepper
             internship_offer_info: {
               sector_id: sector.id,
               title: 'PDG stagiaire',
-              description_rich_text: '<div><b>Activités de découverte</b></div>'
-            },
-          })
+              description: 'Activités de découverte'
+            }
+          }
+        )
       end
       created_internship_offer_info = InternshipOfferInfo.last
       assert_equal 'PDG stagiaire', created_internship_offer_info.title
       assert_equal sector.id, created_internship_offer_info.sector_id
-      assert_equal 'Activités de découverte', created_internship_offer_info.description_rich_text.to_plain_text
+      assert_equal 'Activités de découverte', created_internship_offer_info.description
       assert_redirected_to new_dashboard_stepper_hosting_info_path(
         organisation_id: organisation.id,
-        internship_offer_info_id: created_internship_offer_info.id,
+        internship_offer_info_id: created_internship_offer_info.id
       )
     end
 
@@ -69,61 +70,61 @@ module Dashboard::Stepper
             internship_offer_info: {
               sector_id: sector.id,
               title: 'PDG stagiaire',
-              description_rich_text: '<div><b>Activités de découverte</b></div>',
-            },
-          })
+              description: 'Activités de découverte'
+            }
+          }
+        )
       end
       created_internship_offer_info = InternshipOfferInfo.last
       assert_equal 'PDG stagiaire', created_internship_offer_info.title
       assert_equal sector.id, created_internship_offer_info.sector_id
-      assert_equal 'Activités de découverte', created_internship_offer_info.description_rich_text.to_plain_text
+      assert_equal 'Activités de découverte', created_internship_offer_info.description
       assert_redirected_to new_dashboard_stepper_hosting_info_path(
         organisation_id: organisation.id,
-        internship_offer_info_id: created_internship_offer_info.id,
+        internship_offer_info_id: created_internship_offer_info.id
       )
     end
-
 
     test 'POST create render new when missing params, prefill form' do
       employer = create(:employer)
       sign_in(employer)
       sector = create(:sector)
-      organisation = create(:organisation, employer: employer)
+      organisation = create(:organisation, employer:)
       post(
         dashboard_stepper_internship_offer_infos_path(organisation_id: organisation.id),
         params: {
           internship_offer_info: { # title is missing
             sector_id: sector.id,
-            description_rich_text: '<div><b>Activités de découverte</b></div>'
+            description: 'Activités de découverte'
           }
-        })
-        assert_response :bad_request
+        }
+      )
+      assert_response :bad_request
     end
-
 
     test 'GET Edit' do
       title = 'ok'
       new_title = 'ko'
       employer = create(:employer)
-      organisation = create(:organisation, employer: employer)
+      organisation = create(:organisation, employer:)
       internship_offer_info = create(:internship_offer_info,
-                                     employer: employer,
-                                     title: title)
+                                     employer:,
+                                     title:)
       sign_in(employer)
       assert_changes -> { internship_offer_info.reload.title },
-                    from: title,
-                    to: new_title do
+                     from: title,
+                     to: new_title do
         patch(
           dashboard_stepper_internship_offer_info_path(id: internship_offer_info.id, organisation_id: organisation.id),
           params: {
             internship_offer_info: internship_offer_info.attributes.merge({
-              title: new_title,
-            })
+                                                                            title: new_title
+                                                                          })
           }
         )
         assert_redirected_to new_dashboard_stepper_hosting_info_path(
           organisation_id: organisation.id,
-          internship_offer_info_id: internship_offer_info.id,
+          internship_offer_info_id: internship_offer_info.id
         )
       end
     end

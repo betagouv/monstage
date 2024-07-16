@@ -105,7 +105,7 @@ module Builders
       {
         employer_name: organisation.employer_name,
         employer_website: organisation.employer_website,
-        employer_description_rich_text: organisation.employer_description,
+        employer_description: organisation.employer_description,
         is_public: organisation.is_public,
         group_id: organisation.group_id,
         siret: organisation.siret,
@@ -117,7 +117,7 @@ module Builders
       {
         sector_id: internship_offer_info.sector_id,
         title: internship_offer_info.title,
-        description_rich_text: (internship_offer_info.description_rich_text.present? ? internship_offer_info.description_rich_text.to_s : internship_offer_info.description),
+        description: internship_offer_info.description,
         type: 'InternshipOfferInfo'
       }
     end

@@ -49,7 +49,8 @@ module Dashboard
             flash_error_message = 'Le lien a expiré, veuillez vous identifier pour accéder à la candidature.'
             path = dashboard_internship_offer_internship_application(
               internship_application.internship_offer,
-              internship_application)
+              internship_application
+            )
             redirect_to path, flash: { danger: flash_error_message } and return
           else
             sign_in(internship_application.employer)
@@ -59,13 +60,12 @@ module Dashboard
           unless current_user || authorize_through_token?
             redirect_to root_path, flash: { error: 'Vous n’avez pas accès à cette candidature' } and return
           end
-          #no control here
+          # no control here
         else
           authenticate_user!
           authorize! :show, InternshipApplication
         end
       end
-
 
       def school_details
         authorize! :index, InternshipApplication
@@ -92,13 +92,10 @@ module Dashboard
                          internship_agreement
                          rich_text_rejected_message
                          rich_text_canceled_by_employer_message ]
-        student_includings = %i[ school
-                                 rich_text_resume_languages
-                                 rich_text_resume_languages
-                                 rich_text_resume_other ]
+        student_includings = %i[school]
         internship_applications = InternshipApplications::WeeklyFramed.includes(*includings)
                                                                       .includes(student: [*student_includings])
-                                                                      .where(internship_offer: internship_offer)
+                                                                      .where(internship_offer:)
                                                                       .not_drafted
         if params_order == ORDER_WITH_INTERNSHIP_DATE
           internship_applications.order(

@@ -35,11 +35,11 @@ class InternshipOfferTest < ActiveSupport::TestCase
     end
 
     assert_enqueued_jobs 1, only: SyncInternshipOfferKeywordsJob do
-      internship_offer.update(description_rich_text: 'bingo bango bang')
+      internship_offer.update(description: 'bingo bango bang')
     end
 
     assert_enqueued_jobs 1, only: SyncInternshipOfferKeywordsJob do
-      internship_offer.update(employer_description_rich_text: 'bingo bango bang')
+      internship_offer.update(employer_description: 'bingo bango bang')
     end
 
     assert_enqueued_jobs 0, only: SyncInternshipOfferKeywordsJob do

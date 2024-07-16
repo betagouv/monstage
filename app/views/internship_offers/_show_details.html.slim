@@ -10,7 +10,7 @@
   .col-12
     h2.h4.fr-mb-2w Informations sur le stage
   .col-12.pb-2w
-    .reboot-trix-content= internship_offer.description_rich_text.to_s.present? ? internship_offer.description_rich_text.to_s : internship_offer.description
+    .reboot-trix-content= internship_offer.description
 
 .row.fr-pt-3w.thin-line-below
   .col-12
@@ -35,8 +35,8 @@
         .fr-pl-1w.blue-france= Presenters::Address.new(instance: internship_offer).full_address
     .row.fr-my-1w
       .col-12
-        - if internship_offer.employer_description_rich_text.present? || internship_offer.employer_description.present?
-          .reboot-trix-content.mt-2.test-description= internship_offer.employer_description_rich_text.to_s.present? ? internship_offer.employer_description_rich_text.to_s : internship_offer.employer_description
+        - if internship_offer.employer_description
+          .reboot-trix-content.mt-2.test-description= internship_offer.employer_description
 
     .row
       .col-12.fr-my-1w

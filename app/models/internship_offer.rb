@@ -49,7 +49,7 @@ class InternshipOffer < ApplicationRecord
 
   accepts_nested_attributes_for :organisation, allow_destroy: true
 
-  has_rich_text :employer_description_rich_text
+  # has_rich_text :employer_description_rich_text
 
    # Callbacks
   after_initialize :init
@@ -449,16 +449,8 @@ class InternshipOffer < ApplicationRecord
 
   def generate_offer_from_attributes(white_list)
     internship_offer = InternshipOffer.new(attributes.slice(*white_list))
-    internship_offer.description_rich_text = (if description_rich_text.present?
-                                                description_rich_text.to_s
-                                              else
-                                                description
-                                              end)
-    internship_offer.employer_description_rich_text = (if employer_description_rich_text.present?
-                                                         employer_description_rich_text.to_s
-                                                       else
-                                                         employer_description
-                                                       end)
+    internship_offer.description = description
+    internship_offer.employer_description = employer_description
     internship_offer
   end
 

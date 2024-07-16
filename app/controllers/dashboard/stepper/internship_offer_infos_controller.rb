@@ -26,7 +26,7 @@ module Dashboard::Stepper
       redirect_to(new_dashboard_stepper_hosting_info_path(
                     organisation_id: params[:organisation_id],
                     internship_offer_info_id: @internship_offer_info.id
-      ))
+                  ))
     rescue ActiveRecord::RecordInvalid
       @organisation = Organisation.find(params[:organisation_id])
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
@@ -67,12 +67,12 @@ module Dashboard::Stepper
               :sector_id,
               :school_id,
               :employer_id,
-              :description_rich_text,
+              :description,
               :max_candidates,
               :max_students_per_group,
               :siret,
               week_ids: []
-              )
+            )
     end
 
     def fetch_internship_offer_info

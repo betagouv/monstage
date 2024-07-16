@@ -47,7 +47,7 @@ div [data-controller='internship-offer-infos'  data-internship-offer-infos-base-
             data-controller="rich-text-label"]
             = "Activités du stage"
 
-          = form.rich_text_area :description_rich_text,
+          = form.text_area :description,
                                 class: "fr-input col-lg-12",
                                 required: true,
                                 rows: 5,

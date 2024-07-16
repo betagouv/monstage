@@ -37,7 +37,7 @@ task :import_weekly_framed_offers, [:employer_id, :csv_uri] => :environment do |
         type: InternshipOffers::WeeklyFramed, 
         title: title,
         sector_id: sector,
-        description_rich_text: "<div>#{description}</div>",
+        description: description,
         max_candidates: max_candidates, 
         tutor_name: tutor_name,
         tutor_email: tutor_email,
@@ -107,7 +107,7 @@ task :import_weekly_framed_offers_with_employers_already_created, [:csv_uri] => 
         type: InternshipOffers::WeeklyFramed, 
         title: title,
         sector_id: sector,
-        description_rich_text: "<div>#{description}</div>",
+        description: description,
         max_candidates: max_candidates, 
         tutor_name: tutor_name,
         tutor_email: tutor_email,
@@ -250,7 +250,7 @@ task :import_offers_in_4_steps, [:csv_uri] => :environment do |t, args|
         # Step 2
         internship_offer_info = InternshipOfferInfo.new(
           title: title,
-          description_rich_text: "<div>#{description}</div>",
+          description: description,
           sector_id: sector_id,
           max_candidates: max_candidates,
           employer: employer

@@ -15,9 +15,9 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
       travel_to(Date.new(2019, 3, 1)) do
         visit employer.custom_dashboard_path
         find('#test-create-offer').click
-        fill_in_organisation_form(is_public: true, group: group)
+        fill_in_organisation_form(is_public: true, group:)
         find('span', text: 'Étape 1 sur 5')
-        click_on "Suivant"
+        click_on 'Suivant'
       end
     end
   end
@@ -30,9 +30,9 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
     travel_to(Date.new(2019, 3, 1)) do
       visit employer.custom_dashboard_path
       find('#test-create-offer').click
-      fill_in_organisation_form(is_public: true, group: group)
+      fill_in_organisation_form(is_public: true, group:)
       as = 'a' * (InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT + 2)
-      find('#organisation_employer_description_rich_text', visible: false).set(as)
+      find('#organisation_employer_description', visible: false).set(as)
       find('.fr-alert.fr-alert--error')
     end
   end
