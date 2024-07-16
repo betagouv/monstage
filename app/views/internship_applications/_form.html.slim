@@ -3,7 +3,7 @@
 div data-controller="mandatory" data-mandatory-minimum-length-value="8"
   = form_with(model: @internship_application,
               data: {turbo: false},
-              url: (is_creating ? internship_offer_internship_applications_path(@internship_offer) : internship_offer_internship_application_path(@internship_offer, @internship_application)),
+              url: (is_creating ? internship_offer_internship_applications_path(@internship_offer) : internship_offer_internship_application_path(@internship_offer, uuid: @internship_application.uuid)),
               scope: :internship_application,
               html: { method: is_creating ? :post : :patch,
                       id: 'new_internship_application' }) do |f|

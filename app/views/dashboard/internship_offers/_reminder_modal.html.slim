@@ -22,6 +22,6 @@ dialog#fr-modal-student-reminder.fr-modal[aria-labelledby="fr-modal-student-remi
                 - else
                   - internship_application = current_user.internship_applications.validated_by_employer.last
                   = link_to 'Voir ma candidature',
-                            dashboard_students_internship_application_path(student_id: current_user.id, id: internship_application.id),
+                            dashboard_students_internship_application_path(student_id: current_user.id, uuid: internship_application.uuid),
                             class: 'fr-btn fr-icon-checkbox-line fr-px-1w'
              

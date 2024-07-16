@@ -16,7 +16,7 @@ class InternshipApplicationsControllerTest < ActionDispatch::IntegrationTest
     internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
     sign_in(employer)
 
-    get edit_transfer_internship_offer_internship_application_path(internship_offer, internship_application)
+    get edit_transfer_internship_offer_internship_application_path(internship_offer, uuid: internship_application.uuid)
     assert_response :success
   end
 
@@ -26,7 +26,7 @@ class InternshipApplicationsControllerTest < ActionDispatch::IntegrationTest
     internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
     sign_in(employer)
 
-    get edit_transfer_internship_offer_internship_application_path(internship_offer, internship_application)
+    get edit_transfer_internship_offer_internship_application_path(internship_offer, uuid: internship_application.uuid)
     assert_response :success
   end
 
@@ -44,7 +44,7 @@ class InternshipApplicationsControllerTest < ActionDispatch::IntegrationTest
           destinations: 'test@mail.com,jojo@mail.com'
         }
       }
-      post transfer_internship_offer_internship_application_path(internship_offer, internship_application), params: params
+      post transfer_internship_offer_internship_application_path(internship_offer, uuid: internship_application.uuid), params: params
     end
 
     internship_application.reload
@@ -66,7 +66,7 @@ class InternshipApplicationsControllerTest < ActionDispatch::IntegrationTest
           destinations: '@test@mail.com,jojo@mail.com'
         }
       }
-      post transfer_internship_offer_internship_application_path(internship_offer, internship_application), params: params
+      post transfer_internship_offer_internship_application_path(internship_offer, uuid: internship_application.uuid), params: params
     end
 
     internship_application.reload

@@ -11,7 +11,7 @@ module InternshipApplications
       if count.positive?
         assert_select 'form[action=?]',
                       dashboard_internship_offer_internship_application_path(internship_offer,
-                                                                             internship_application)
+                                                                             uuid: internship_application.uuid)
       end
       assert_select "form input[name=\"transition\"][value=\"#{transition}\"]",
                     count: count

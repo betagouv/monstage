@@ -15,7 +15,7 @@ module InternshipApplications
                      from: false,
                      to: true do
         patch internship_offer_internship_application_path(internship_offer,
-                                                           internship_application,
+                                                           uuid: internship_application.uuid,
                                                            transition: :submit!)
         assert_redirected_to dashboard_students_internship_applications_path(
           internship_application.student,
@@ -36,10 +36,10 @@ module InternshipApplications
                      from: initial_motivation,
                      to: new_motivation do
         patch internship_offer_internship_application_path(internship_offer,
-                                                           internship_application),
+                                                           uuid: internship_application.uuid),
               params: { internship_application: { motivation: new_motivation } }
         assert_redirected_to internship_offer_internship_application_path(internship_offer,
-          internship_application)
+          uuid: internship_application.uuid)
       end
     end
 
@@ -47,10 +47,10 @@ module InternshipApplications
       internship_application = create(:weekly_internship_application, :submitted)
       sign_in(internship_application.student)
       patch internship_offer_internship_application_path(internship_application.internship_offer,
-                                                         internship_application,
+                                                         uuid: internship_application.uuid,
                                                          transition: :submit!)
       assert_redirected_to dashboard_students_internship_applications_path(internship_application.student,
-                                                                           internship_application)
+                                                                           uuid: internship_application.uuid)
     end
 
     test 'patch #update for student not owning internship_application is forbidden' do
@@ -59,7 +59,7 @@ module InternshipApplications
       sign_in(create(:student))
 
       patch internship_offer_internship_application_path(internship_offer,
-                                                         internship_application,
+                                                         uuid: internship_application.uuid,
                                                          transition: :submit!),
             params: { internship_application: { motivation: 'whoop' } }
       assert_response :redirect

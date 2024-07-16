@@ -1,6 +1,6 @@
 - sgid ||= ""
 = form_with( model: internship_application,
-             url: dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application, token: defined?(token) ? token : nil),
+             url: dashboard_internship_offer_internship_application_path(internship_application.internship_offer, uuid: internship_application.uuid, token: defined?(token) ? token : nil),
              scope: :internship_application,
              data: {turbo: false},
              html: {method: 'patch', class:'modal', id: modal_id, tabindex: "-1", role: "dialog"}) do |f|
