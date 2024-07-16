@@ -6,7 +6,7 @@
     .col
       h1.h2.mb-3 Transférer une candidature
 
-  = form_with url: transfer_internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application),
+  = form_with url: transfer_internship_offer_internship_application_path(@internship_application.internship_offer, uuid: @internship_application.uuid),
               scope: :application_transfer,
               method: :post,
               data: {turbo: false} do |form|
