@@ -32,14 +32,14 @@ class UserTest < ActiveSupport::TestCase
       student_email: 'test@free.fr'
     )
     assert internship_application.motivation.present?
-    assert_equal 'a wonderful world', internship_application.motivation.body
+    assert_equal 'a wonderful world', internship_application.motivation
 
     assert_enqueued_jobs 1, only: AnonymizeUserJob do
       student.anonymize
     end
 
     assert_equal 'm', student.gender
-    assert_nil internship_application.reload.motivation.body
+    assert_nil internship_application.reload.motivation
     assert_nil internship_application.student_phone
     assert_nil internship_application.student_email
     assert_nil student.class_room_id
