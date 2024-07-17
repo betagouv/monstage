@@ -234,7 +234,7 @@ module Dashboard
           # fill in application form
           human_first_week_label = weeks.third.human_select_text_method
           select human_first_week_label, from: 'internship_application_week_id', wait: 3
-          find('#internship_application_motivation').native.send_keys('et ')
+          find('#internship_application_motivation').native.send_keys(' en plus')
           find('#internship_application_student_attributes_resume_other').native.send_keys("et puis j'ai fait plein de trucs")
           find('#internship_application_student_attributes_resume_languages').native.send_keys('je parle couramment espagnol')
           fill_in('Adresse électronique (email)', with: 'parents@gmail.com')
@@ -247,8 +247,8 @@ module Dashboard
             find('input.fr-btn[type="submit"][name="commit"][value="Valider"]').click
             page.find('#submit_application_form') # timer
           end
-          application = student.internship_applications.last
-          assert_equal 'et Suis hyper motivé', application.motivation
+          application = student.internship_applications.last.reload
+          assert_equal 'Suis hyper motivé en plus', application.motivation
           assert_equal "et puis j'ai fait plein de trucs", application.student.resume_other
           assert_equal 'je parle couramment espagnol', application.student.resume_languages
 

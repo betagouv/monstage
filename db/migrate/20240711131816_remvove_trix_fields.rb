@@ -8,5 +8,7 @@ class RemvoveTrixFields < ActiveRecord::Migration[7.1]
     add_column :internship_offers, :employer_description, :text
 
     add_column :internship_agreements, :activity_preparation, :text
+
+    add_column :internship_applications, :motivation, :text
   end
 end

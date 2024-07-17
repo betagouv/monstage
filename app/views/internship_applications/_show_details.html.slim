@@ -3,7 +3,7 @@ h6 Votre candidature
 .row.bg-dark-light.mt-3
   .col-12
     h6.text-dark Motivation
-    .reboot-trix-content= internship_application.motivation.to_s
+    .reboot-trix-content= internship_application.motivation
 
     - unless is_resume_empty?(internship_application)
       - if has_resume_other?(internship_application)
