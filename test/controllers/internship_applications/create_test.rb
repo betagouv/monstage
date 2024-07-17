@@ -40,7 +40,7 @@ module InternshipApplications
 
       created_internship_application = InternshipApplications::WeeklyFramed.last
       assert_equal internship_offer.internship_offer_weeks.first.week.id, created_internship_application.week.id
-      assert_equal 'Je suis trop motivé wesh', created_internship_application.motivation.to_plain_text
+      assert_equal 'Je suis trop motivé wesh', created_internship_application.motivation
       assert_equal student.id, created_internship_application.student.id
 
       student = student.reload
@@ -82,7 +82,7 @@ module InternshipApplications
 
       created_internship_application = InternshipApplications::WeeklyFramed.last
       assert_equal internship_offer.internship_offer_weeks.first.week.id, created_internship_application.week.id
-      assert_equal 'Je suis trop motivé wesh', created_internship_application.motivation.to_plain_text
+      assert_equal 'Je suis trop motivé wesh', created_internship_application.motivation
       assert_equal student.id, created_internship_application.student.id
 
       student = student.reload
@@ -122,7 +122,7 @@ module InternshipApplications
 
       created_internship_application = InternshipApplications::WeeklyFramed.last
       assert_equal internship_offer.internship_offer_weeks.first.week.id, created_internship_application.week.id
-      assert_equal 'Je suis trop motivé wesh', created_internship_application.motivation.to_plain_text
+      assert_equal 'Je suis trop motivé wesh', created_internship_application.motivation
       assert_equal student.id, created_internship_application.student.id
 
       student = student.reload

@@ -477,11 +477,11 @@ class InternshipApplication < ApplicationRecord
   end
 
   def anonymize
-    motivation.try(:delete)
     return unless student_phone || student_email
 
     self.student_phone = nil
     self.student_email = nil
+    self.motivation = nil
     save
   end
 

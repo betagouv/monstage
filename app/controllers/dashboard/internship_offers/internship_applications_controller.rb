@@ -88,7 +88,6 @@ module Dashboard
       def filter_by_week_or_application_date(internship_offer, params_order)
         includings = %i[ week
                          internship_offer
-                         rich_text_motivation
                          internship_agreement
                          rich_text_rejected_message
                          rich_text_canceled_by_employer_message ]
