@@ -6,7 +6,9 @@ export default class extends Controller {
   static values = {
     limit: Number
   }
+
   connect() {
+    console.log('max length controller connected');
     const limit = this.limitValue;
     const $trixElementCharCount = $(this.trixElementCharCountTarget);
 
