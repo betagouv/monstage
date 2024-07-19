@@ -4,17 +4,17 @@
     .row
       .col-12.col-md-12
         .form-group
-          #activities.fr-label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{sanitize_to_id(form.object_name)}_resume_other" data-controller="rich-text-label"
+          label#activities.fr-label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{sanitize_to_id(form.object_name)}_resume_other" data-controller="rich-text-label" for="#{sanitize_to_id(form.object_name)}_resume_other"
             = 'Activités extra-scolaires'
             small.form-text.text-muted Sports, loisirs, engagements associatifs, etc.
-          = form.text_area :resume_other, class: 'fr-input col-12', disabled: disabled, rows: 3
+          = form.text_area :resume_other, class: 'fr-input col-12', disabled: disabled, rows: 3, 'aria-label': "Activités extra-scolaires"
     .row
       .col-12.col-md-12
         .form-group
-          .fr-label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{sanitize_to_id(form.object_name)}_resume_languages" data-controller="rich-text-label"
+          label.fr-label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{sanitize_to_id(form.object_name)}_resume_languages" data-controller="rich-text-label" for="#{sanitize_to_id(form.object_name)}_resume_languages"
             = 'Langues vivantes'
             small.form-text.text-muted Langues étudiées et/ou parlées
-          = form.text_area :resume_languages, class: 'fr-input col-12', disabled: disabled, rows: 3
+          = form.text_area :resume_languages, class: 'fr-input col-12', disabled: disabled, rows: 3, "aria-label": "Langues vivantes"
 
   - unless current_controller?(:internship_applications)
     fieldset.col-12.mb-4 aria-label="Modalités de contact"
