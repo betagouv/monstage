@@ -217,13 +217,13 @@ module Dashboard
 
     def internship_offer_params
       params.require(:internship_offer)
-            .permit(:title, :description_rich_text, :sector_id, :max_candidates,
+            .permit(:title, :description, :sector_id, :max_candidates,
                     :max_students_per_group, :tutor_name, :tutor_phone, :tutor_role,
                     :tutor_email, :employer_website, :employer_name, :street,
                     :zipcode, :city, :department, :region, :academy, :renewed,
                     :is_public, :group_id, :published_at, :republish, :type,
                     :employer_id, :employer_type, :school_id, :verb, :user_update,
-                    :employer_description_rich_text, :siret, :employer_manual_enter,
+                    :employer_description, :siret, :employer_manual_enter,
                     :contact_phone, :lunch_break, :aasm_state, coordinates: {}, week_ids: [],
                     daily_hours: {}, weekly_hours:[],
                     organisation_attributes: [
@@ -234,7 +234,7 @@ module Dashboard
                       :city,
                       :siret,
                       :manual_enter,
-                      :employer_description_rich_text,
+                      :employer_description,
                       :employer_website,
                       :is_public,
                       :group_id,

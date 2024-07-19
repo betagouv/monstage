@@ -38,11 +38,10 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test 'GET account_path(section: :school) as SchoolManagement' do
     school = create(:school, :with_school_manager)
-    [ school.school_manager,
-      create(:main_teacher, school: school),
-      create(:teacher, school: school),
-      create(:other, school: school)
-    ].each do |role|
+    [school.school_manager,
+     create(:main_teacher, school:),
+     create(:teacher, school:),
+     create(:other, school:)].each do |role|
       sign_in(role)
       get account_path(section: 'school')
     end
@@ -51,9 +50,9 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test 'GET account_path(section: :identiy) as SchoolManagement can change identity' do
     school = create(:school, :with_school_manager)
     [
-      create(:main_teacher, school: school),
-      create(:teacher, school: school),
-      create(:other, school: school)
+      create(:main_teacher, school:),
+      create(:teacher, school:),
+      create(:other, school:)
     ].each do |role|
       sign_in(role)
       get account_path(section: 'identity')
@@ -64,7 +63,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test 'GET account_path(section: :identity) as main_teacher when removed from school' do
     school = create(:school, :with_school_manager)
-    main_teacher = create(:main_teacher, school: school)
+    main_teacher = create(:main_teacher, school:)
     main_teacher.school = nil
     main_teacher.save!
 
@@ -82,14 +81,14 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test 'GET edit render :edit success with all roles' do
     school = create(:school)
-    class_room_1 = create(:class_room, school: school)
-    class_room_2 = create(:class_room, school: school)
+    class_room_1 = create(:class_room, school:)
+    class_room_2 = create(:class_room, school:)
     [
-      create(:school_manager, school: school),
+      create(:school_manager, school:),
       create(:student),
-      create(:main_teacher, school: school, class_room: class_room_1),
-      create(:teacher, school: school, class_room: class_room_2),
-      create(:other, school: school)
+      create(:main_teacher, school:, class_room: class_room_1),
+      create(:teacher, school:, class_room: class_room_2),
+      create(:other, school:)
     ].each do |role|
       sign_in(role)
       get account_path(section: 'identity')
@@ -101,9 +100,9 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test 'GET edit render as student also allow him to change class_room' do
     school = create(:school)
-    class_room_1 = create(:class_room, school: school)
-    class_room_2 = create(:class_room, school: school)
-    student = create(:student, school: school, class_room: class_room_1)
+    class_room_1 = create(:class_room, school:)
+    class_room_2 = create(:class_room, school:)
+    student = create(:student, school:, class_room: class_room_1)
 
     sign_in(student)
     get account_path(section: 'identity')
@@ -131,11 +130,11 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'PATCH edit as employer, updates banners' do
-    employer = create(:employer, banners:{})
+    employer = create(:employer, banners: {})
     sign_in(employer)
 
-    assert_changes -> { employer.reload.banners.key?("background") } do
-      patch(account_path, params: { user: { banners: { background: true }}})
+    assert_changes -> { employer.reload.banners.key?('background') } do
+      patch(account_path, params: { user: { banners: { background: true } } })
       assert_response :found
     end
   end
@@ -154,8 +153,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to account_path
     student.reload
-    assert_equal 'other', student.resume_other.to_plain_text
-    assert_equal 'languages', student.resume_languages.to_plain_text
+    assert_equal 'other', student.resume_other
+    assert_equal 'languages', student.resume_languages
     assert_equal '+330665656540', student.phone
     follow_redirect!
     assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
@@ -174,15 +173,16 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'PATCH edit as student cannot nullify his email' do
-    error_message = "<strong>Courriel</strong> : Il faut conserver un email valide pour assurer la continuité du service</div>"
+    error_message = '<strong>Courriel</strong> : Il faut conserver un email valide pour assurer la continuité du service</div>'
     student = create(:student, phone: '+330623042585', email: 'test@test.fr')
     sign_in(student)
 
     patch(account_path, params: { user: { email: '' } })
     refute student.reload.unconfirmed_email == ''
     assert_template 'users/edit'
-    assert_select '.fr-alert.fr-alert--error strong',  html: 'Courriel'
-    assert_select '.fr-alert.fr-alert--error',  text: 'Courriel : Il faut conserver un email valide pour assurer la continuité du service'
+    assert_select '.fr-alert.fr-alert--error strong', html: 'Courriel'
+    assert_select '.fr-alert.fr-alert--error',
+                  text: 'Courriel : Il faut conserver un email valide pour assurer la continuité du service'
   end
 
   test 'PATCH failures does not crashes' do
@@ -229,7 +229,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     patch account_path, params: { user: {
       phone_prefix: '+33',
-      phone_suffix: some_phone_number } }
+      phone_suffix: some_phone_number
+    } }
 
     assert_redirected_to account_path
     school_manager.reload
@@ -279,8 +280,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test 'PATCH edit as student can change class_room_id' do
     school = create(:school)
-    student = create(:student, school: school)
-    class_room = create(:class_room, school: school)
+    student = create(:student, school:)
+    class_room = create(:class_room, school:)
     sign_in(student)
 
     patch account_path, params: { user: { school_id: school.id,
@@ -299,9 +300,9 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     school = create(:school, :with_school_manager)
     users = [
       school.school_manager,
-      create(:main_teacher, school: school),
-      create(:teacher, school: school),
-      create(:other, school: school)
+      create(:main_teacher, school:),
+      create(:teacher, school:),
+      create(:other, school:)
     ]
     users.each.with_index do |user_change_role, i|
       sign_in(user_change_role)
@@ -329,9 +330,9 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test 'PATCH edit as main_teacher can change class_room_id' do
     school = create(:school)
-    school_manager = create(:school_manager, school: school)
-    main_teacher = create(:main_teacher, school: school)
-    class_room = create(:class_room, school: school)
+    school_manager = create(:school_manager, school:)
+    main_teacher = create(:main_teacher, school:)
+    class_room = create(:class_room, school:)
     sign_in(main_teacher)
 
     patch account_path, params: { user: { class_room_id: class_room.id } }
@@ -365,7 +366,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     user_params = {
       current_password: employer.password,
       password: 'passw0rd',
-      confirmation_password: 'passw0rd',
+      confirmation_password: 'passw0rd'
     }
     patch account_password_path, params: { user: user_params }
 
@@ -375,6 +376,4 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
   end
-
-
 end

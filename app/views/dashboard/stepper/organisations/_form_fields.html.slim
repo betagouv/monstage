@@ -94,14 +94,14 @@
         legend Présentation de l'entreprise
       .form-group.fr-my-2w data-controller='maxlength-input' data-maxlength-input-limit-value="#{InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT}"
         #label_organisation_description_rich_text.label.fr-label [data-rich-text-label-enable-value=true
-                                                                  data-rich-text-label-for-value="#{form.object_name} employer_description_rich_text"
+                                                                  data-rich-text-label-for-value="#{form.object_name} employer_description"
                                                                   data-controller="rich-text-label"]
           | Description de l'entreprise (optionnel)
-        = form.rich_text_area :employer_description_rich_text,
+        = form.rich_text_area :employer_description,
                               class: "fr-input col-12 col-lg-12",
                               required: true,
                               data: { :"maxlength-input-target" => 'trixElement' },
-                              aria: {labelledby: 'label_organisation_description_rich_text'},
+                              aria: {labelledby: 'label_organisation_description'},
                               rows: 5
         .fr-alert.fr-alert--error.fr-alert--sm.d-none.fr-mt-1w data-maxlength-input-target="maxLengthMessage"
           |La description est trop longue

@@ -9,8 +9,8 @@
     
     .row
       .col-12
-        - if internship_offer.employer_description_rich_text.present? || internship_offer.employer_description.present?
-          .reboot-trix-content.mt-2.test-description= internship_offer.employer_description_rich_text.to_s.present? ? internship_offer.employer_description_rich_text.to_s : internship_offer.employer_description
+        - if internship_offer.employer_description.present?
+          .reboot-trix-content.mt-2.test-description= internship_offer.employer_description
     
     .row 
       .col-12.my-4

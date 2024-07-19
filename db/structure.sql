@@ -684,7 +684,8 @@ CREATE TABLE public.internship_agreements (
     discarded_at timestamp(6) without time zone,
     lunch_break text,
     organisation_representative_email character varying,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
+    activity_preparation text
 );
 
 
@@ -738,7 +739,9 @@ CREATE TABLE public.internship_applications (
     dunning_letter_count integer DEFAULT 0,
     magic_link_tracker integer DEFAULT 0,
     access_token character varying(25),
-    transfered_at timestamp(6) without time zone
+    transfered_at timestamp(6) without time zone,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
+    motivation text
 );
 
 
@@ -1048,7 +1051,6 @@ CREATE TABLE public.internship_offers (
     employer_name character varying(180),
     employer_id bigint,
     school_id bigint,
-    employer_description character varying(250),
     sector_id bigint,
     blocked_weeks_count integer DEFAULT 0 NOT NULL,
     total_applications_count integer DEFAULT 0 NOT NULL,
@@ -1092,7 +1094,8 @@ CREATE TABLE public.internship_offers (
     internship_offer_area_id bigint,
     lunch_break text,
     contact_phone character varying(20),
-    handicap_accessible boolean DEFAULT false
+    handicap_accessible boolean DEFAULT false,
+    employer_description text
 );
 
 
@@ -1241,7 +1244,6 @@ CREATE TABLE public.organisations (
     zipcode character varying(5) NOT NULL,
     city character varying(50) NOT NULL,
     employer_website character varying,
-    employer_description character varying(250),
     coordinates public.geography(Point,4326),
     department character varying DEFAULT ''::character varying NOT NULL,
     is_public boolean DEFAULT false NOT NULL,
@@ -1252,7 +1254,8 @@ CREATE TABLE public.organisations (
     siren character varying,
     siret character varying(14),
     is_paqte boolean,
-    manual_enter boolean DEFAULT false
+    manual_enter boolean DEFAULT false,
+    employer_description text
 );
 
 
@@ -1694,7 +1697,10 @@ CREATE TABLE public.users (
     statistician_validation boolean DEFAULT false,
     failed_attempts integer DEFAULT 0 NOT NULL,
     unlock_token character varying,
-    locked_at timestamp(6) without time zone
+    locked_at timestamp(6) without time zone,
+    resume_educational_background text,
+    resume_other text,
+    resume_languages text
 );
 
 
@@ -2612,6 +2618,13 @@ CREATE INDEX index_internship_applications_on_user_id ON public.internship_appli
 
 
 --
+-- Name: index_internship_applications_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_internship_applications_on_uuid ON public.internship_applications USING btree (uuid);
+
+
+--
 -- Name: index_internship_applications_on_week_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3436,7 +3449,9 @@ ALTER TABLE ONLY public.internship_offer_weeks
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240711131816'),
 ('20240627152436'),
+('20240625141243'),
 ('20240624201910'),
 ('20240620123704'),
 ('20240205142849'),

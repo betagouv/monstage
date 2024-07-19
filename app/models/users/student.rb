@@ -18,10 +18,6 @@ module Users
 
     scope :without_class_room, -> { where(class_room_id: nil, anonymized: false) }
 
-    has_rich_text :resume_educational_background
-    has_rich_text :resume_other
-    has_rich_text :resume_languages
-
     delegate :school_manager,
              to: :school
 
@@ -34,7 +30,7 @@ module Users
     # Callbacks
     after_create :welcome_new_student, :set_reminders
 
-    def student?; true end
+    def student? = true
 
     def channel
       return :email if email.present?
@@ -68,7 +64,7 @@ module Users
       url_helpers.dashboard_students_internship_applications_path(self)
     end
 
-    def custom_candidatures_path(parameters={})
+    def custom_candidatures_path(parameters = {})
       custom_dashboard_path
     end
 
@@ -92,11 +88,11 @@ module Users
       return [] unless school.has_weeks_on_current_year?
 
       InternshipOfferWeek.applicable(
-          school: school,
-          internship_offer: internship_offer
-        ).map(&:week)
-         .uniq
-         .sort_by(&:id) & internship_offer.weeks
+        school:,
+        internship_offer:
+      ).map(&:week)
+                         .uniq
+                         .sort_by(&:id) & internship_offer.weeks
     end
 
     def main_teacher
@@ -109,31 +105,31 @@ module Users
 
     def available_offers(max_distance: Finders::ContextTypableInternshipOffer::MAX_RADIUS_SEARCH_DISTANCE)
       Finders::InternshipOfferConsumer.new(user: self, params: {})
-                                      .available_offers(max_distance: max_distance)
+                                      .available_offers(max_distance:)
     end
 
     def has_offers_to_apply_to?(max_distance: Finders::ContextTypableInternshipOffer::MAX_RADIUS_SEARCH_DISTANCE)
-      available_offers(max_distance: max_distance).any?
+      available_offers(max_distance:).any?
     end
 
     def anonymize(send_email: true)
-      super(send_email: send_email)
+      super(send_email:)
 
       update_columns(birth_date: nil,
                      current_sign_in_ip: nil,
                      last_sign_in_ip: nil,
-                     class_room_id: nil)
+                     class_room_id: nil,
+                     resume_other: nil,
+                     resume_languages: nil,
+                     resume_educational_background: nil)
       update_columns(phone: 'NA') unless phone.nil?
-      resume_educational_background.try(:delete)
-      resume_other.try(:delete)
-      resume_languages.try(:delete)
       internship_applications.map(&:anonymize)
     end
 
     def validate_school_presence_at_creation
-      if new_record? && school.blank?
-        errors.add(:school, :blank)
-      end
+      return unless new_record? && school.blank?
+
+      errors.add(:school, :blank)
     end
 
     def presenter
@@ -166,16 +162,16 @@ module Users
                         .routes
                         .url_helpers
                         .internship_offers_url(default_search_options, host: ENV.fetch('HOST'))
-      shrinked_url = UrlShrinker.short_url( url: target_url, user_id: id )
+      shrinked_url = UrlShrinker.short_url(url: target_url, user_id: id)
       if phone.present?
-        message = I18n.t('devise.sms.welcome_student', shrinked_url: shrinked_url)
-        SendSmsJob.perform_later(user: self, message: message)
+        message = I18n.t('devise.sms.welcome_student', shrinked_url:)
+        SendSmsJob.perform_later(user: self, message:)
       else
-        StudentMailer.welcome_email(student: self, shrinked_url: shrinked_url)
+        StudentMailer.welcome_email(student: self, shrinked_url:)
                      .deliver_later
       end
     end
-    
+
     def set_reminders
       SendReminderToStudentsWithoutApplicationJob.set(wait: 3.day).perform_later(id)
     end

@@ -17,7 +17,8 @@ class InternshipApplicationsController < ApplicationController
     @internship_application = InternshipApplication.new(
       internship_offer_id: params[:internship_offer_id],
       internship_offer_type: 'InternshipOffer',
-      student: current_user)
+      student: current_user
+    )
   end
 
   # alias for draft
@@ -59,7 +60,7 @@ class InternshipApplicationsController < ApplicationController
     set_internship_offer
     authorize! :apply, @internship_offer
 
-    appli_params = {user_id: current_user.id}.merge(create_internship_application_params)
+    appli_params = { user_id: current_user.id }.merge(create_internship_application_params)
     @internship_application = InternshipApplication.create!(appli_params)
     redirect_to internship_offer_internship_application_path(@internship_offer,
                                                              @internship_application)
@@ -83,8 +84,8 @@ class InternshipApplicationsController < ApplicationController
       },
       user: current_user_or_visitor
     ).all
-     .includes([:sector])
-     .last(6)
+                                                        .includes([:sector])
+                                                        .last(6)
   end
 
   def edit_transfer
@@ -116,18 +117,20 @@ class InternshipApplicationsController < ApplicationController
       else
         target_path = edit_transfer_internship_offer_internship_application_path(
           @internship_application.internship_offer,
-          @internship_application)
-        flash_error_message = "Les adresses emails suivantes sont invalides : " \
+          @internship_application
+        )
+        flash_error_message = 'Les adresses emails suivantes sont invalides : ' \
                               "#{faulty_emails.join(', ')}. " \
                               "Aucun transfert n'a été effectué, aucun email n'a été émis."
         redirect_to(target_path, flash: { danger: flash_error_message }) and return
       end
     else
       danger_label = "La candidature n'a pas pu être transmise avec succès, " \
-                     "faute de destinataires"
+                     'faute de destinataires'
       redirect_to edit_transfer_internship_offer_internship_application_path(
         @internship_application.internship_offer,
-        @internship_application),
+        @internship_application
+      ),
                   flash: { danger: danger_label }
     end
   end

@@ -14,7 +14,7 @@ module InternshipApplications
                                                                              internship_application)
       end
       assert_select "form input[name=\"transition\"][value=\"#{transition}\"]",
-                    count: count
+                    count:
     end
 
     test 'GET internship_applications#index redirects to new_user_session_path when not logged in' do
@@ -36,13 +36,13 @@ module InternshipApplications
 
     test 'GET #index succeed with weekly_internship_application when logged in as employer, shows default fields' do
       school = create(:school, city: 'Paris', name: 'Mon établissement')
-      student = create(:student, school: school,
+      student = create(:student, school:,
                                  phone: '+330665656565',
                                  email: 'student@edu.school',
                                  birth_date: 14.years.ago,
                                  resume_other: 'resume_other',
                                  resume_languages: 'resume_languages')
-      internship_application = create(:weekly_internship_application, :submitted, student: student)
+      internship_application = create(:weekly_internship_application, :submitted, student:)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
@@ -56,19 +56,19 @@ module InternshipApplications
       assert_select '.student-age', "#{student.age} ans"
       assert_select '.student-email', internship_application.student_email
       assert_select '.student-phone', internship_application.student_phone
-      assert_select '.reboot-trix-content', student.resume_other.to_plain_text
-      assert_select '.reboot-trix-content', student.resume_languages.to_plain_text
+      assert_select '.reboot-trix-content', student.resume_other
+      assert_select '.reboot-trix-content', student.resume_languages
     end
 
     test 'GET #index (sentry#1887730132) succeed with weekly_internship_application when logged in as employer, and student is archived' do
       school = create(:school, city: 'Paris', name: 'Mon établissement')
-      student = create(:student, school: school,
+      student = create(:student, school:,
                                  phone: '+330665656565',
                                  email: 'student@edu.school',
                                  birth_date: 14.years.ago,
                                  resume_other: 'resume_other',
                                  resume_languages: 'resume_languages')
-      internship_application = create(:weekly_internship_application, :submitted, student: student)
+      internship_application = create(:weekly_internship_application, :submitted, student:)
       student.archive
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
@@ -108,7 +108,7 @@ module InternshipApplications
 
     test 'GET #index as Employer with approved internship_application, shows cancel_by_employer! & signed! links' do
       internship_application = create(:weekly_internship_application, :validated_by_employer)
-      internship_agreement = create(:internship_agreement, internship_application: internship_application)
+      internship_agreement = create(:internship_agreement, internship_application:)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success

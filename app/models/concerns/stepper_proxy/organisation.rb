@@ -21,14 +21,9 @@ module StepperProxy
       validate :validate_group_is_public?, if: :is_public?
       validate :validate_group_is_not_public?, unless: :is_public?
 
-      has_rich_text :employer_description_rich_text
+      # has_rich_text :employer_description
 
-      before_validation :replicate_employer_description_rich_text_to_raw_field, unless: :from_api?
       before_validation :clean_siret
-
-      def replicate_employer_description_rich_text_to_raw_field
-        self.employer_description = employer_description_rich_text.to_plain_text if employer_description_rich_text.present?
-      end
 
       def validate_group_is_public?
         return if from_api?
@@ -45,7 +40,7 @@ module StepperProxy
       end
 
       def clean_siret
-        self.siret = self.siret.gsub(' ', '') if self.try(:siret)
+        self.siret = siret.gsub(' ', '') if try(:siret)
       end
     end
   end

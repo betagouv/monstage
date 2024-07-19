@@ -3,7 +3,6 @@
 module Builders
   # wrap internship offer creation logic / failure for API/web usage
   class InternshipAgreementBuilder < BuilderBase
-
     def new_from_application(internship_application)
       authorize :new, InternshipAgreement
       internship_agreement = InternshipAgreement.new(
@@ -50,11 +49,12 @@ module Builders
       @callback = Callback.new
     end
 
-    def preprocess_terms(soft_saving= false)
+    def preprocess_terms(soft_saving = false)
       return { enforce_school_manager_validations: !soft_saving } if user.school_manager? || user.admin_officer?
       return { enforce_main_teacher_validations: !soft_saving } if user.main_teacher?
       return { enforce_employer_validations: !soft_saving } if user.employer_like?
       return { skip_validations_for_system: true } if user.is_a?(Users::God)
+
       raise ArgumentError, "#{user.type} can not create agreement yet"
     end
 
@@ -83,7 +83,7 @@ module Builders
         tutor_full_name: internship_offer.tutor_name,
         tutor_role: internship_offer.try(:tutor_role),
         tutor_email: internship_offer.try(:tutor_email),
-        activity_preparation_rich_text: internship_offer.description_rich_text.body,
+        activity_preparation: internship_offer.description,
         daily_hours: internship_offer.daily_hours,
         weekly_hours: internship_offer.weekly_hours,
         lunch_break: internship_offer.lunch_break,
@@ -99,7 +99,7 @@ module Builders
         student_class_room = student&.class_room&.name
       else
         main_teacher_full_name = 'N/A'
-        student_class_room = ""
+        student_class_room = ''
       end
       {
         student_school: student.presenter.formal_school_name,
@@ -112,8 +112,8 @@ module Builders
         student_refering_teacher_phone: main_teacher&.phone,
         student_phone: student.phone,
         student_full_name: student.name,
-        student_class_room: student_class_room,
-        main_teacher_full_name: main_teacher_full_name
+        student_class_room:,
+        main_teacher_full_name:
       }
       # student_class_room is not used ...
     end

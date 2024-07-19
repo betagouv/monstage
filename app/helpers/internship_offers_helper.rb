@@ -96,7 +96,7 @@ module InternshipOffersHelper
   end
 
   def truncate_description(internship_offer)
-    description = internship_offer.description_rich_text.to_s.present? ? internship_offer.description_rich_text.to_plain_text : internship_offer.description
+    description = internship_offer.description
     description.truncate(280, separator: ' ')
   end
 end
