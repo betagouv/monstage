@@ -2,7 +2,6 @@
 
 require 'sti_preload'
 class User < ApplicationRecord
-
   include StiPreload
   include Discard::Model
   include UserAdmin
@@ -57,29 +56,29 @@ class User < ApplicationRecord
 
   scope :employers, -> { where(type: 'Users::Employer') }
 
-  def channel ; :email end
+  def channel = :email
 
   def default_search_options
     opts = {}
 
     opts = opts.merge(school.default_search_options) if has_relationship?(:school)
-    if has_relationship?(:class_room) || self.is_a?(Users::SchoolManagement)
+    if has_relationship?(:class_room) || is_a?(Users::SchoolManagement)
       week_ids = school.weeks
                        .where(id: Week.selectable_on_school_year.pluck(:id))
                        .pluck(:id)
                        .map(&:to_s)
-      opts = opts.merge(week_ids: week_ids) if week_ids.size.positive?
+      opts = opts.merge(week_ids:) if week_ids.size.positive?
     end
     opts
   end
 
   def has_relationship?(relationship)
-    respond_to?(relationship) && self.send(relationship).present?
+    respond_to?(relationship) && send(relationship).present?
   end
-
 
   def missing_school?
     return true if respond_to?(:school) && school.blank?
+
     false
   end
 
@@ -118,7 +117,7 @@ class User < ApplicationRecord
   end
 
   def email_domain_name
-    self.email.split('@').last
+    email.split('@').last
   end
 
   def archive
@@ -126,13 +125,15 @@ class User < ApplicationRecord
   end
 
   def anonymize(send_email: true)
+    return if anonymized && !discarded_at.nil?
+
     # Remove all personal information
     email_for_job = email.dup
 
     email = email.blank? ? nil : "#{SecureRandom.hex}@#{email_domain_name}"
 
     fields_to_reset = {
-      email: email ,
+      email:,
       first_name: 'NA',
       last_name: 'NA',
       phone: nil,
@@ -144,9 +145,9 @@ class User < ApplicationRecord
 
     discard! unless discarded?
 
-    unless email_for_job.blank?
-      AnonymizeUserJob.perform_later(email: email_for_job) if send_email
-    end
+    return if email_for_job.blank?
+
+    AnonymizeUserJob.perform_later(email: email_for_job) if send_email
   end
 
   def destroy
@@ -154,11 +155,11 @@ class User < ApplicationRecord
   end
 
   def reset_password_by_phone
-    if phone_password_reset_count < MAX_DAILY_PHONE_RESET || last_phone_password_reset < 1.day.ago
-      send_sms_token
-      update(phone_password_reset_count: phone_password_reset_count + 1,
-             last_phone_password_reset: Time.now)
-    end
+    return unless phone_password_reset_count < MAX_DAILY_PHONE_RESET || last_phone_password_reset < 1.day.ago
+
+    send_sms_token
+    update(phone_password_reset_count: phone_password_reset_count + 1,
+           last_phone_password_reset: Time.now)
   end
 
   def formatted_phone
@@ -170,7 +171,7 @@ class User < ApplicationRecord
   def self.sanitize_mobile_phone_number(number, prefix = '')
     return if number.blank?
 
-    thin_number = number.gsub(/[\s|;\,\.\:\(\)]/, '')
+    thin_number = number.gsub(/[\s|;,.:()]/, '')
     if thin_number.match?(/\A\+330[6|7]\d{8}\z/)
       "#{prefix}#{thin_number[4..]}"
     elsif thin_number.match?(/\A\+33[6|7]\d{8}\z/)
@@ -190,8 +191,8 @@ class User < ApplicationRecord
     return unless phone.present? && student? && !created_by_teacher
 
     create_phone_token
-    message = "Votre code de validation : #{self.phone_token}"
-    SendSmsJob.perform_later(user: self, message: message)
+    message = "Votre code de validation : #{phone_token}"
+    SendSmsJob.perform_later(user: self, message:)
   end
 
   def create_phone_token
@@ -220,16 +221,15 @@ class User < ApplicationRecord
 
   def send_confirmation_instructions
     return if created_by_teacher || statistician? || student?
+
     super
   end
 
   def send_reconfirmation_instructions
     @reconfirmation_required = false
-    unless @raw_confirmation_token
-      generate_confirmation_token!
-    end
+    generate_confirmation_token! unless @raw_confirmation_token
     if add_email_to_phone_account?
-      self.confirm
+      confirm
     else
       unless @skip_confirmation_notification || created_by_teacher || statistician?
         devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email })
@@ -239,48 +239,48 @@ class User < ApplicationRecord
   end
 
   def canceled_targeted_offer_id
-    canceled_targeted_offer_id = self.targeted_offer_id
+    canceled_targeted_offer_id = targeted_offer_id
     self.targeted_offer_id = nil
     save
     canceled_targeted_offer_id
   end
 
-  def statistician? ; false end
-  def department_statistician? ; false end
-  def ministry_statistician? ; false end
-  def student? ; false end
-  def employer? ; false end
-  def operator? ; false end
-  def school_management? ; false end
-  def god? ; false end
-  def employer_like? ; false end
-  def has_already_approved_an_application? ; false end
-  def can_sign?(internship_agreement); false end
-  def email_required? ; false end
-  def needs_to_see_modal? ; false end
-  def has_offers_to_apply_to? ; false end
+  def statistician? = false
+  def department_statistician? = false
+  def ministry_statistician? = false
+  def student? = false
+  def employer? = false
+  def operator? = false
+  def school_management? = false
+  def god? = false
+  def employer_like? = false
+  def has_already_approved_an_application? = false
+  def can_sign?(internship_agreement) = false
+  def email_required? = false
+  def needs_to_see_modal? = false
+  def has_offers_to_apply_to? = false
 
-  def fetch_current_area_notification; nil end
-  def create_signature_phone_token ; nil end
-  def send_signature_sms_token ; nil end
-  def signatory_role ; nil end
-  def obfuscated_phone_number ; nil end
-  def satisfaction_survey_id ; nil end
-  def create_default_internship_offer_area ; nil end
-  def team ;  nil end
+  def fetch_current_area_notification = nil
+  def create_signature_phone_token = nil
+  def send_signature_sms_token = nil
+  def signatory_role = nil
+  def obfuscated_phone_number = nil
+  def satisfaction_survey_id = nil
+  def create_default_internship_offer_area = nil
+  def team = nil
 
-  def already_signed?(internship_agreement_id:); true end
+  def already_signed?(internship_agreement_id:) = true
 
-  def team_id; id end
-  def team_members_ids; [id] end
-  def agreement_signatorable? ; agreement_signatorable end
-  def anonymized? ; self.anonymized end
-  def pending_invitation_to_a_team ; [] end
-  def available_offers; InternshipOffer.none end
-  def team_members ; User.none end
+  def team_id = id
+  def team_members_ids = [id]
+  def agreement_signatorable? = agreement_signatorable
+  def anonymized? = anonymized
+  def pending_invitation_to_a_team = []
+  def available_offers = InternshipOffer.none
+  def team_members = User.none
 
   def just_created?
-    self.created_at < Time.now  + 3.seconds
+    created_at < Time.now + 3.seconds
   end
 
   def presenter
@@ -291,7 +291,7 @@ class User < ApplicationRecord
     raw, hashed = Devise.token_generator.generate(User, :reset_password_token)
     self.reset_password_token = hashed
     self.reset_password_sent_at = Time.now.utc
-    self.save
+    save
     raw
   end
 
@@ -322,17 +322,17 @@ class User < ApplicationRecord
   end
 
   def email_or_phone
-    if email.blank? && phone.blank?
-      errors.add(:email, 'Un email ou un numéro de mobile sont nécessaires.')
-    end
+    return unless email.blank? && phone.blank?
+
+    errors.add(:email, 'Un email ou un numéro de mobile sont nécessaires.')
   end
 
   def keep_email_existence
-    if email_was.present? && email.blank?
-      errors.add(
-        :email,
-        'Il faut conserver un email valide pour assurer la continuité du service'
-      )
-    end
+    return unless email_was.present? && email.blank?
+
+    errors.add(
+      :email,
+      'Il faut conserver un email valide pour assurer la continuité du service'
+    )
   end
 end
