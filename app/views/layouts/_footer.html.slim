@@ -55,15 +55,21 @@ footer#footer.fr-footer.fr-mt-1w role="contentinfo" data-controller='footer'
       .fr-footer__brand.fr-enlarge-link
         =link_to root_path, html_options: { title: "Retour à l’accueil"}
           .fr-logo title=("république française")
-            | république
+            | Ministère 
             br
-            | française
+            | de l'éducation 
+            br
+            | nationale
+            br
+            | et de la jeunesse
       .fr-footer__content
         - link = link_to "Incubateur des Territoires de l'ANCT",'https://incubateur.anct.gouv.fr/',
                         target: '_blank',
                         class: 'fr-text--sm'
-        p.fr-footer__content-desc = "monstagedetroisieme.fr est un service fourni par <br/>l'#{link}".html_safe
+        p.fr-footer__content-desc = "monstagedetroisieme.fr est un service fourni par la Direction du Numérique pour l'Éducation (DNE)."
         ul.fr-footer__content-list
+          li.fr-footer__content-item
+            a.fr-footer__content-link href="https://education.gouv.fr" education.gouv.fr
           li.fr-footer__content-item
             a.fr-footer__content-link href="https://legifrance.gouv.fr" legifrance.gouv.fr
           li.fr-footer__content-item
