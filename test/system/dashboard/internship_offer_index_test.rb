@@ -21,7 +21,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
     travel_to Date.new(2021, 10, 1) do
       internship_offer = create(
         :weekly_internship_offer,
-        employer: employer,
+        employer:,
         weeks: [Week.next],
         internship_offer_area_id: employer.current_area_id
       )
@@ -35,15 +35,16 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
           refute internship_offer.published?
           visit dashboard_internship_offers_path
           within("#toggle_status_#{dom_id(internship_offer)}") do
-            find(".label", text: "Masqué")
+            find('.label', text: 'Masqué')
             find("label.fr-toggle__label[for='toggle-#{internship_offer.id}']") # this publishes the internship_offer
             execute_script("document.getElementById('axe-toggle-#{internship_offer.id}').closest('form').submit()")
           end
 
           refute internship_offer.reload.published?
 
-          find "h1.h2", text: "Modifier une offre de stage"
-          find "span#alert-text", text: "Votre annonce n'est pas encore republiée, car il faut ajouter des semaines de stage"
+          find 'h1.h2', text: 'Modifier une offre de stage'
+          find 'span#alert-text',
+               text: "Votre annonce n'est pas encore republiée, car il faut ajouter des semaines de stage"
 
           # find('h3.fr-alert__title', text: 'Ajoutez des semaines aux précédentes')
 
@@ -57,10 +58,12 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
     employer = create(:employer)
     old_internship_offer = nil
     travel_to Date.new(2020, 10, 1) do
-      old_internship_offer = create(:weekly_internship_offer, employer: employer, internship_offer_area_id: employer.current_area_id)
+      old_internship_offer = create(:weekly_internship_offer, employer:,
+                                                              internship_offer_area_id: employer.current_area_id)
     end
     travel_to Date.new(2021, 10, 1) do
-      internship_offer = create(:weekly_internship_offer, employer: employer, internship_offer_area_id: employer.current_area_id)
+      internship_offer = create(:weekly_internship_offer, employer:,
+                                                          internship_offer_area_id: employer.current_area_id)
 
       sign_in(employer)
 
@@ -68,14 +71,14 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
         InternshipOffer.stub :by_weeks, InternshipOffer.all do
           visit dashboard_internship_offers_path
 
-          assert_presence_of(internship_offer: internship_offer)
+          assert_presence_of(internship_offer:)
           assert_presence_of(internship_offer: old_internship_offer)
 
           within("#toggle_status_internship_offers_weekly_framed_#{internship_offer.id}") do
-            find(".label", text: "Publié")
+            find('.label', text: 'Publié')
           end
           within("#toggle_status_internship_offers_weekly_framed_#{old_internship_offer.id}") do
-            find(".label", text: "Publié")
+            find('.label', text: 'Publié')
           end
 
           InternshipOffers::WeeklyFramed.update_older_internship_offers
@@ -83,10 +86,10 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
           visit dashboard_internship_offers_path
 
           within("#toggle_status_#{dom_id(internship_offer)}") do
-            find(".label", text: "Publié")
+            find('.label', text: 'Publié')
           end
           within("#toggle_status_#{dom_id(old_internship_offer)}") do
-            find(".label", text: "Masqué")
+            find('.label', text: 'Masqué')
           end
         end
       end
@@ -95,12 +98,11 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
 
   test 'tabs test(still todo)' do
     employer = create(:employer)
-    internship_offer = create(:weekly_internship_offer, employer: employer)
+    internship_offer = create(:weekly_internship_offer, employer:)
     sign_in(employer)
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
         visit dashboard_internship_offers_path
-
       end
     end
   end
@@ -108,7 +110,8 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
   test 'unpublish navigation and republish after' do
     travel_to Date.new(2021, 10, 1) do
       employer = create(:employer)
-      internship_offer = create(:weekly_internship_offer, employer: employer, weeks: [Week.next], internship_offer_area_id: employer.current_area_id)
+      internship_offer = create(:weekly_internship_offer, employer:, weeks: [Week.next],
+                                                          internship_offer_area_id: employer.current_area_id)
       sign_in(employer)
       InternshipOffer.stub :nearby, InternshipOffer.all do
         InternshipOffer.stub :by_weeks, InternshipOffer.all do
@@ -117,16 +120,16 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
           assert internship_offer.reload.published?
           visit dashboard_internship_offers_path
           within("#toggle_status_#{dom_id(internship_offer)}") do
-            find(".label", text: "Publié")
+            find('.label', text: 'Publié')
             find("a[rel='nofollow'][data-method='patch']").click # this unpublishes the internship_offer
           end
 
-          find("h2.h4", text: "Les offres")
+          find('h2.h4', text: 'Les offres')
           sleep 0.05
           assert internship_offer.reload.unpublished?
 
           within("#toggle_status_#{dom_id(internship_offer)}") do
-            find(".label", text: "Masqué")
+            find('.label', text: 'Masqué')
           end
           assert internship_offer.reload.unpublished?
           assert_nil internship_offer.published_at
@@ -137,7 +140,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
           within("#toggle_status_#{dom_id(internship_offer)}") do
             find("a[rel='nofollow'][data-method='patch']").click # this republishes the internship_offer
           end
-          find("h2.h4", text: "Les offres")
+          find('h2.h4', text: 'Les offres')
           sleep 0.05
           assert internship_offer.reload.published?
           refute internship_offer.published_at.nil?
@@ -152,7 +155,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
       within_2_weeks = Week.find_by(id: Week.current.id + 2)
       internship_offer = create(
         :weekly_internship_offer,
-        employer: employer,
+        employer:,
         weeks: [within_2_weeks],
         internship_offer_area_id: employer.current_area_id
       )
@@ -163,15 +166,15 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
         InternshipOffer.stub :by_weeks, InternshipOffer.all do
           visit dashboard_internship_offers_path
           within("#toggle_status_#{dom_id(internship_offer)}") do
-            find(".label", text: "Masqué")
+            find('.label', text: 'Masqué')
             # following leads to intenship offer detail page because no updates are necessary
             find("a[title='Publier / Masquer']").click
           end
 
-          find("h1.h3.text-dark", text: internship_offer.title)
+          find('h1.h3.text-dark', text: internship_offer.title, wait: 3)
 
-          within(".fr-container .fat-line-below .col-8.d-print-none") do
-            find("p.fr-badge.fr-badge--new", text: 'BROUILLON')
+          within('.fr-container .fat-line-below .col-8.d-print-none') do
+            find('p.fr-badge.fr-badge--new', text: 'BROUILLON')
           end
           assert_equal 'drafted', internship_offer.aasm_state
         end
@@ -183,7 +186,8 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
     employer = create(:employer)
     internship_offer = nil
     travel_to Date.new(2021, 10, 1) do
-      internship_offer = create(:weekly_internship_offer, employer: employer, weeks: [Week.next], internship_offer_area_id: employer.current_area_id)
+      internship_offer = create(:weekly_internship_offer, employer:, weeks: [Week.next],
+                                                          internship_offer_area_id: employer.current_area_id)
       internship_offer.need_update!
     end
     travel_to Date.new(2022, 10, 8) do
@@ -193,15 +197,16 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
           refute internship_offer.published?
           visit dashboard_internship_offers_path
           within("#toggle_status_#{dom_id(internship_offer)}") do
-            find(".label", text: "Masqué")
+            find('.label', text: 'Masqué')
             find("label.fr-toggle__label[for='toggle-#{internship_offer.id}']") # this publishes the internship_offer
             execute_script("document.getElementById('axe-toggle-#{internship_offer.id}').closest('form').submit()")
           end
 
           refute internship_offer.reload.published?
 
-          find "h1.h2", text: "Modifier une offre de stage"
-          find "span#alert-text", text: "Votre annonce n'est pas encore republiée, car il faut ajouter des semaines de stage"
+          find 'h1.h2', text: 'Modifier une offre de stage'
+          find 'span#alert-text',
+               text: "Votre annonce n'est pas encore republiée, car il faut ajouter des semaines de stage"
 
           # find('h3.fr-alert__title', text: 'Ajoutez des semaines aux précédentes')
 
@@ -220,14 +225,13 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
       internship_offer = create(
         :weekly_internship_offer,
         max_candidates: 1,
-        employer: employer,
+        employer:,
         weeks: [within_2_weeks, within_1_year],
         internship_offer_area_id: employer.current_area_id
       )
       create(:weekly_internship_application,
              :approved,
-             internship_offer: internship_offer
-      )
+             internship_offer:)
     end
     travel_to Date.new(2022, 9, 1) do
       internship_offer.need_update! # due to cron job and max_candidates too low
@@ -237,15 +241,16 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
           refute internship_offer.published?
           visit dashboard_internship_offers_path
           within("#toggle_status_#{dom_id(internship_offer)}") do
-            find(".label", text: "Masqué")
+            find('.label', text: 'Masqué')
             find("label.fr-toggle__label[for='toggle-#{internship_offer.id}']") # this publishes the internship_offer
             execute_script("document.getElementById('axe-toggle-#{internship_offer.id}').closest('form').submit()")
           end
 
           refute internship_offer.reload.published?
 
-          find "h1.h2", text: "Modifier une offre de stage"
-          find "span#alert-text", text: "Votre annonce n'est pas encore republiée, car il faut ajouter des places de stage"
+          find 'h1.h2', text: 'Modifier une offre de stage'
+          find 'span#alert-text',
+               text: "Votre annonce n'est pas encore republiée, car il faut ajouter des places de stage"
         end
       end
     end
