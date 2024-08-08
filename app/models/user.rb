@@ -121,6 +121,7 @@ class User < ApplicationRecord
   end
 
   def archive
+    print '.'
     anonymize(send_email: false)
   end
 
