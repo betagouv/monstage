@@ -25,6 +25,10 @@ module StepperProxy
         max_students_per_group == 1
       end
 
+      def skip_enough_weeks_validation
+        @skip_enough_weeks_validation ||= false
+      end
+
       def init
         self.max_candidates ||= 1
         self.max_students_per_group ||= 1

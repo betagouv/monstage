@@ -341,10 +341,10 @@ class InternshipOffer < ApplicationRecord
     original_week_ids = week_ids
     return nil if next_year_week_ids.empty?
 
-   
+
     self.skip_enough_weeks_validation = true
     clean_or_fake_contact_phone
-    
+
     internship_offer = duplicate
     internship_offer.weeks = next_year_weeks
     internship_offer.remaining_seats_count = max_candidates
@@ -355,6 +355,7 @@ class InternshipOffer < ApplicationRecord
     self.hidden_duplicate = true
 
     save
+    unpublish!
     # next year internship_offer
     internship_offer.save
     internship_offer

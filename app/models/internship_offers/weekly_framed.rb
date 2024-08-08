@@ -69,10 +69,6 @@ module InternshipOffers
       published? ? 'oui' : 'non'
     end
 
-    def skip_enough_weeks_validation
-      @skip_enough_weeks_validation ||= false
-    end
-
     def supplied_applications
       InternshipApplication.where(internship_offer_id: id)
                            .where(aasm_state: %w[approved convention_signed])
