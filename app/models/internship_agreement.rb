@@ -332,6 +332,7 @@ class InternshipAgreement < ApplicationRecord
       school_representative_email: 'NA',
       student_legal_representative_phone: 'NA'
     }
+    print '.'
     update_columns(fields_to_reset)
     discard! unless discarded?
   end
