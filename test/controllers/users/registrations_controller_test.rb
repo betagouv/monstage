@@ -86,7 +86,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     student = create(:student, email: email, confirmed_at: Time.now)
     get users_registrations_standby_path(id: student.id)
     assert_response :success
-    assert_select '.fr-alert.fr-alert--success', text: "Votre compte est déjà confirmé (#{email})Veuillez vous connecter"
+    assert_select '.fr-alert.fr-alert--success', text: "Votre compte est déjà confirmé (fo********@gmail.com)Veuillez vous connecter"
   end
 
   # What use case ??
