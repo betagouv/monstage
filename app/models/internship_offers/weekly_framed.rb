@@ -37,7 +37,7 @@ module InternshipOffers
       offer_weeks_ar = InternshipOfferWeek.arel_table
 
       joins(:internship_offer_weeks)
-        .select([offer_weeks_ar[:blocked_applications_count].sum, offers_ar[:id],offers_ar[:max_candidates]])
+        .select([offer_weeks_ar[:blocked_applications_count].sum, offers_ar[:id], offers_ar[:max_candidates]])
         .group(offers_ar[:id])
         .having(offer_weeks_ar[:blocked_applications_count].sum.gteq(offers_ar[:max_candidates]))
     }
@@ -66,7 +66,7 @@ module InternshipOffers
     }
 
     def visible
-      published? ? "oui" : "non"
+      published? ? 'oui' : 'non'
     end
 
     def skip_enough_weeks_validation
@@ -75,7 +75,7 @@ module InternshipOffers
 
     def supplied_applications
       InternshipApplication.where(internship_offer_id: id)
-                           .where(aasm_state: ['approved', 'convention_signed'])
+                           .where(aasm_state: %w[approved convention_signed])
                            .count
     end
 
@@ -88,15 +88,15 @@ module InternshipOffers
         offer.update_columns(
           aasm_state: 'need_to_be_updated',
           published_at: nil
-          )
+        )
       end
     end
 
     def schedules_check
-      unless schedules_ok?
-        errors.add(:weekly_hours, :blank) if weekly_hours.blank?
-        errors.add(:daily_hours, :blank) if daily_hours.blank?
-      end
+      return if schedules_ok?
+
+      errors.add(:weekly_hours, :blank) if weekly_hours.blank?
+      errors.add(:daily_hours, :blank) if daily_hours.blank?
     end
 
     def schedules_ok?

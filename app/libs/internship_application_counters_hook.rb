@@ -3,15 +3,15 @@ class InternshipApplicationCountersHook
   delegate :remaining_seats_count, to: :internship_application
   def internship_offer_counters_attributes
     {
-      total_applications_count: total_applications_count,
-      total_male_applications_count: total_male_applications_count,
-      total_female_applications_count: total_female_applications_count,
-      submitted_applications_count: submitted_applications_count,
-      approved_applications_count: approved_applications_count,
-      total_male_approved_applications_count: total_male_approved_applications_count,
-      total_female_approved_applications_count: total_female_approved_applications_count,
-      rejected_applications_count: rejected_applications_count,
-      remaining_seats_count: remaining_seats_count
+      total_applications_count:,
+      total_male_applications_count:,
+      total_female_applications_count:,
+      submitted_applications_count:,
+      approved_applications_count:,
+      total_male_approved_applications_count:,
+      total_female_approved_applications_count:,
+      rejected_applications_count:,
+      remaining_seats_count:
     }
   end
 
@@ -74,7 +74,6 @@ class InternshipApplicationCountersHook
                     .select(&:submitted?)
                     .count
   end
-
 
   private
 
