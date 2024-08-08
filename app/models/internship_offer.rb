@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "sti_preload"
+require 'sti_preload'
 class InternshipOffer < ApplicationRecord
   PAGE_SIZE = 30
-  EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
   MAX_CANDIDATES_HIGHEST = 200
   TITLE_MAX_CHAR_COUNT = 150
-  DESCRIPTION_MAX_CHAR_COUNT= 500
+  DESCRIPTION_MAX_CHAR_COUNT = 500
+  EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
 
   include StiPreload
   include AASM
@@ -51,7 +51,7 @@ class InternshipOffer < ApplicationRecord
 
   has_rich_text :employer_description_rich_text
 
-   # Callbacks
+  # Callbacks
   after_initialize :init
 
   before_validation :update_organisation
@@ -86,15 +86,15 @@ class InternshipOffer < ApplicationRecord
 
   # Validations
   validates :contact_phone,
-    presence: true,
-    unless: :from_api?,
-    length: { minimum: 10 },
-    on: :create
+            presence: true,
+            unless: :from_api?,
+            length: { minimum: 10 },
+            on: :create
   validates :contact_phone,
-    unless: :from_api?,
-    format: { with: /\A\+?[\d\s]+\z/,
-              message: 'Le numéro de téléphone doit contenir des caractères chiffrés uniquement' },
-    on: :create
+            unless: :from_api?,
+            format: { with: /\A\+?[\d\s]+\z/,
+                      message: 'Le numéro de téléphone doit contenir des caractères chiffrés uniquement' },
+            on: :create
 
   validates :weeks, presence: true
   validate :check_missing_seats_or_weeks, if: :user_update?, on: :update
@@ -123,7 +123,7 @@ class InternshipOffer < ApplicationRecord
                   }
 
   scope :by_sector, lambda { |sector_id|
-    where(sector_id: sector_id)
+    where(sector_id:)
   }
 
   scope :with_seats, lambda {
@@ -201,7 +201,7 @@ class InternshipOffer < ApplicationRecord
   }
 
   scope :specific_school_year, lambda { |school_year:|
-    week_ids = Week.weeks_of_school_year(school_year: school_year).pluck(:id)
+    week_ids = Week.weeks_of_school_year(school_year:).pluck(:id)
 
     joins(:internship_offer_weeks)
       .where('internship_offer_weeks.week_id in (?)', week_ids)
@@ -213,7 +213,7 @@ class InternshipOffer < ApplicationRecord
 
   scope :with_weeks_next_year, lambda {
     joins(:internship_offer_weeks).where(
-      internship_offer_weeks: { week_id:  Week.selectable_on_next_school_year }
+      internship_offer_weeks: { week_id: Week.selectable_on_next_school_year }
     ).distinct
   }
 
@@ -228,36 +228,36 @@ class InternshipOffer < ApplicationRecord
     event :publish do
       transitions from: %i[drafted unpublished need_to_be_updated],
                   to: :published, after: proc { |*_args|
-        update!("published_at": Time.now.utc)
-      }
+                                           update!("published_at": Time.now.utc)
+                                         }
     end
 
     event :remove do
       transitions from: %i[published need_to_be_updated drafted unpublished],
                   to: :removed, after: proc { |*_args|
-        update!(published_at: nil)
-      }
+                                         update!(published_at: nil)
+                                       }
     end
 
     event :unpublish do
       transitions from: %i[published need_to_be_updated],
                   to: :unpublished, after: proc { |*_args|
-        update!(published_at: nil)
-      }
+                                             update!(published_at: nil)
+                                           }
     end
 
     event :split do
       transitions from: %i[published need_to_be_updated drafted unpublished],
                   to: :splitted, after: proc { |*_args|
-        # update!(published_at: nil) TODO
-      }
+                                          # update!(published_at: nil) TODO
+                                        }
     end
 
     event :need_update do
       transitions from: %i[published drafted unpublished need_to_be_updated],
                   to: :need_to_be_updated, after: proc { |*_args|
-        update!(published_at: nil)
-      }
+                                                    update!(published_at: nil)
+                                                  }
     end
   end
 
@@ -275,12 +275,12 @@ class InternshipOffer < ApplicationRecord
 
   def first_monday
     I18n.l internship_offer_weeks.first.week.week_date,
-            format: Week::WEEK_DATE_FORMAT
+           format: Week::WEEK_DATE_FORMAT
   end
 
   def last_monday
     I18n.l internship_offer_weeks.last.week.week_date,
-            format: Week::WEEK_DATE_FORMAT
+           format: Week::WEEK_DATE_FORMAT
   end
 
   def has_spots_left?
@@ -294,10 +294,13 @@ class InternshipOffer < ApplicationRecord
     internship_applications.empty?
   end
 
-  def next_year_week_ids
+  def next_year_weeks
     weeks.to_a
-          .intersection(Week.selectable_on_next_school_year.to_a)
-          .map(&:id)
+         .intersection(Week.selectable_on_next_school_year.to_a)
+  end
+
+  def next_year_week_ids
+    next_year_weeks.map(&:id)
   end
 
   #
@@ -317,29 +320,44 @@ class InternshipOffer < ApplicationRecord
   def duplicate
     internship_offer = super
     internship_offer.week_ids = week_ids
+    internship_offer.mother_id = id
+
+    internship_offer.description = 'à définir' if description.blank?
+    internship_offer.description = description_copy_cleaning description
+
+    internship_offer.employer_description = employer_description.presence || organisation&.employer_description.presence || 'à définir'
+    internship_offer.employer_description = employer_description_copy_cleaning employer_description
+
+    if organisation.present?
+      organisation.employer_description = employer_description
+      organisation.save
+    end
     internship_offer
   end
 
   def split_in_two
+    # self is the older one
+    # internship_offer the new one
     original_week_ids = week_ids
-    print '.'
     return nil if next_year_week_ids.empty?
 
+
+    self.skip_enough_weeks_validation = true
+    clean_or_fake_contact_phone
+
     internship_offer = duplicate
-    internship_offer.week_ids = next_year_week_ids
+    internship_offer.weeks = next_year_weeks
     internship_offer.remaining_seats_count = max_candidates
     internship_offer.employer = employer
-    if internship_offer.valid?
-      internship_offer.save
-    else
-      raise StandardError.new "##{internship_offer.errors.full_messages} - on #{internship_offer.errors.full_messages}"
-    end
+    internship_offer.skip_enough_weeks_validation = true
 
     self.week_ids = original_week_ids - next_year_week_ids
     self.hidden_duplicate = true
-    self.split!
-    save!
 
+    save
+    unpublish!
+    # next year internship_offer
+    internship_offer.save
     internship_offer
   end
 
@@ -347,12 +365,18 @@ class InternshipOffer < ApplicationRecord
     !published?
   end
 
+  def clean_or_fake_contact_phone
+    self.contact_phone = '0606060606' if contact_phone.blank?
+    self.contact_phone = contact_phone.gsub(/\D/, '')
+  end
+
   def departement
-    Department.lookup_by_zipcode(zipcode: zipcode)
+    Department.lookup_by_zipcode(zipcode:)
   end
 
   def operator
-    return nil if !from_api?
+    return nil unless from_api?
+
     employer.operator
   end
 
@@ -361,7 +385,7 @@ class InternshipOffer < ApplicationRecord
   end
 
   def has_weeks_in_the_future?
-    weeks.map { |w| w.week_date > Time.now}.any?
+    weeks.map { |w| w.week_date > Time.now }.any?
   end
 
   def reserved_to_school?
@@ -414,12 +438,12 @@ class InternshipOffer < ApplicationRecord
 
   def duplicate_without_location
     white_list_without_location = %w[type title sector_id max_candidates
-                    tutor_name tutor_phone tutor_email tutor_role employer_website
-                    employer_name is_public group school_id coordinates
-                    first_date last_date siret employer_manual_enter
-                    internship_offer_area_id
-                    internship_offer_info_id organisation_id tutor_id
-                    weekly_hours daily_hours]
+                                     tutor_name tutor_phone tutor_email tutor_role employer_website
+                                     employer_name is_public group school_id coordinates
+                                     first_date last_date siret employer_manual_enter
+                                     internship_offer_area_id skip_enough_weeks_validation
+                                     internship_offer_info_id organisation_id tutor_id
+                                     weekly_hours daily_hours]
 
     generate_offer_from_attributes(white_list_without_location)
   end
@@ -439,25 +463,25 @@ class InternshipOffer < ApplicationRecord
     return unless organisation && !organisation.new_record?
 
     # return si aucun changement qui concerne organisation
-    organisation.update_columns(employer_name: self.employer_name) if attribute_changed?(:employer_name)
-    organisation.update_columns(employer_website: self.employer_website) if attribute_changed?(:employer_website)
-    organisation.update_columns(employer_description: self.employer_description) if attribute_changed?(:employer_description)
-    organisation.update_columns(siret: self.siret) if attribute_changed?(:siret)
-    organisation.update_columns(group_id: self.group_id) if attribute_changed?(:group_id)
-    organisation.update_columns(is_public: self.is_public) if attribute_changed?(:is_public)
+    organisation.update_columns(employer_name:) if attribute_changed?(:employer_name)
+    organisation.update_columns(employer_website:) if attribute_changed?(:employer_website)
+    organisation.update_columns(employer_description:) if attribute_changed?(:employer_description)
+    organisation.update_columns(siret:) if attribute_changed?(:siret)
+    organisation.update_columns(group_id:) if attribute_changed?(:group_id)
+    organisation.update_columns(is_public:) if attribute_changed?(:is_public)
   end
 
   def generate_offer_from_attributes(white_list)
     internship_offer = InternshipOffer.new(attributes.slice(*white_list))
     internship_offer.description_rich_text = (if description_rich_text.present?
-                                                description_rich_text.to_s
+                                                description_copy_cleaning description_rich_text.to_s
                                               else
-                                                description
+                                                description_copy_cleaning description
                                               end)
     internship_offer.employer_description_rich_text = (if employer_description_rich_text.present?
-                                                         employer_description_rich_text.to_s
+                                                         employer_description_copy_cleaning(employer_description_rich_text.to_s || '')
                                                        else
-                                                         employer_description
+                                                         employer_description_copy_cleaning(employer_description || '')
                                                        end)
     internship_offer
   end
@@ -467,7 +491,7 @@ class InternshipOffer < ApplicationRecord
   end
 
   def reverse_academy_by_zipcode
-    self.academy = Academy.lookup_by_zipcode(zipcode: zipcode)
+    self.academy = Academy.lookup_by_zipcode(zipcode:)
   end
 
   def sync_internship_offer_keywords
@@ -483,7 +507,7 @@ class InternshipOffer < ApplicationRecord
   end
 
   def with_applications?
-    self.internship_applications.count.positive?
+    internship_applications.count.positive?
   end
 
   def weekly_planning?
@@ -492,6 +516,7 @@ class InternshipOffer < ApplicationRecord
 
   def daily_planning?
     return false if daily_hours.blank?
+
     daily_hours.except('samedi').values.flatten.any? { |v| !v.blank? }
   end
 
@@ -506,11 +531,12 @@ class InternshipOffer < ApplicationRecord
   end
 
   def update_all_favorites
-    if approved_applications_count >= max_candidates || Time.now > last_date
-      Favorite.where(internship_offer_id: id).destroy_all
-    end
+    create_stats if stats.nil?
+    return unless Time.now > last_date || approved_applications_count >= max_candidates
+
+    Favorite.where(internship_offer_id: id).destroy_all
   end
-  
+
   def no_remaining_seat_anymore?
     remaining_seats_count.zero?
   end
@@ -522,6 +548,7 @@ class InternshipOffer < ApplicationRecord
   def available_weeks
     return Week.selectable_from_now_until_end_of_school_year unless respond_to?(:weeks)
     return Week.selectable_from_now_until_end_of_school_year unless persisted?
+
     if weeks&.first.nil?
       return Week.selectable_for_school_year(
         school_year: SchoolYear::Floating.new(date: Date.today)
@@ -530,7 +557,7 @@ class InternshipOffer < ApplicationRecord
 
     school_year = SchoolYear::Floating.new(date: weeks.first.week_date)
 
-    Week.selectable_on_specific_school_year(school_year: school_year)
+    Week.selectable_on_specific_school_year(school_year:)
   end
 
   def requires_update_at_toggle_time?
@@ -541,6 +568,7 @@ class InternshipOffer < ApplicationRecord
 
   def available_weeks_when_editing
     return nil unless persisted? && respond_to?(:weeks)
+
     Week.selectable_from_now_until_end_of_school_year
   end
 
@@ -549,13 +577,13 @@ class InternshipOffer < ApplicationRecord
   end
 
   def log_view(user)
-    history = UsersInternshipOffersHistory.find_or_initialize_by(internship_offer: self, user: user)
+    history = UsersInternshipOffersHistory.find_or_initialize_by(internship_offer: self, user:)
     history.views += 1
     history.save
   end
 
   def log_apply(user)
-    history = UsersInternshipOffersHistory.find_or_initialize_by(internship_offer: self, user: user)
+    history = UsersInternshipOffersHistory.find_or_initialize_by(internship_offer: self, user:)
     history.application_clicks += 1
     history.save
   end
@@ -566,10 +594,10 @@ class InternshipOffer < ApplicationRecord
   end
 
   def update_stats
-    stats.recalculate
+    stats.nil? ? create_stats : stats.recalculate
   end
-  
-  # TODO Rename
+
+  # TODO: Rename
   def missing_weeks_info?
     internship_offer_weeks.map(&:week_id).all? do |week_id|
       week_id < Week.current.id.to_i + 1
@@ -577,40 +605,41 @@ class InternshipOffer < ApplicationRecord
   end
 
   def missing_weeks_in_the_future
-    if missing_weeks_info?
-      errors.add(weeks_class, 'Vous devez sélectionner au moins une semaine dans le futur')
-    end
+    return unless missing_weeks_info?
+
+    errors.add(weeks_class, 'Vous devez sélectionner au moins une semaine dans le futur')
   end
 
   def check_for_missing_seats
-    if no_remaining_seat_anymore?
-      errors.add(:max_candidates, 'Augmentez Le nombre de places disponibles pour accueillir des élèves')
-    end
+    return unless no_remaining_seat_anymore?
+
+    errors.add(:max_candidates, 'Augmentez Le nombre de places disponibles pour accueillir des élèves')
   end
 
   def check_missing_seats_or_weeks
-    return false if published_at.nil? # different from published? since published? checks the database and the former state of the object
+    # different from published? since published? checks the database and the former state of the object
+    return false if published_at.nil?
     return false if republish.nil?
 
     missing_weeks_in_the_future && check_for_missing_seats
   end
 
   def user_update?
-    user_update == "true"
+    user_update == 'true'
   end
-  
+
   protected
 
   def make_sure_area_is_set
     return if internship_offer_area_id.present?
 
     if employer&.current_area_id.nil?
-      Rails.logger.error("no internship_offer_area with " \
+      Rails.logger.error('no internship_offer_area with ' \
                          "internship_offer_id: #{id} and " \
                          "employer_id: #{employer_id}")
     end
     self.internship_offer_area_id = employer.current_area_id
-    Rails.logger.warn("default internship_offer_area with " \
+    Rails.logger.warn('default internship_offer_area with ' \
                          "internship_offer_id: #{id} and " \
                          "employer_id: #{employer_id}")
   end

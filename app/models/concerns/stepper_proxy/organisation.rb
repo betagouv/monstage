@@ -27,7 +27,25 @@ module StepperProxy
       before_validation :clean_siret
 
       def replicate_employer_description_rich_text_to_raw_field
-        self.employer_description = employer_description_rich_text.to_plain_text if employer_description_rich_text.present?
+        return unless employer_description_rich_text.present?
+
+        self.employer_description = employer_description_copy_cleaning(employer_description_rich_text.to_plain_text || '')
+      end
+
+      def employer_description_copy_cleaning(str)
+        raise 'error in employer_description_copy_cleaning' if str.nil?
+
+        str.gsub(/[\n\r\t]/, '')
+           .strip
+           .truncate(InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT)
+      end
+
+      def description_copy_cleaning(str)
+        raise 'error in description_copy_cleaning' if str.nil?
+
+        str.gsub(/[\n\r\t]/, '')
+           .strip
+           .truncate(InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT)
       end
 
       def validate_group_is_public?
@@ -45,7 +63,7 @@ module StepperProxy
       end
 
       def clean_siret
-        self.siret = self.siret.gsub(' ', '') if self.try(:siret)
+        self.siret = siret.gsub(' ', '') if try(:siret)
       end
     end
   end

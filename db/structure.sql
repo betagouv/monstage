@@ -1092,7 +1092,8 @@ CREATE TABLE public.internship_offers (
     internship_offer_area_id bigint,
     lunch_break text,
     contact_phone character varying(20),
-    handicap_accessible boolean DEFAULT false
+    handicap_accessible boolean DEFAULT false,
+    mother_id integer DEFAULT 0
 );
 
 
@@ -3436,6 +3437,7 @@ ALTER TABLE ONLY public.internship_offer_weeks
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240808094927'),
 ('20240627152436'),
 ('20240624201910'),
 ('20240620123704'),
