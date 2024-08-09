@@ -336,6 +336,7 @@ class InternshipOffer < ApplicationRecord
   end
 
   def split_in_two
+    # TODO move this to a task
     # self is the older one
     # internship_offer the new one
     original_week_ids = week_ids
