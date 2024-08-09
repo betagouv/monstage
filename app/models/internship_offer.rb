@@ -341,8 +341,6 @@ class InternshipOffer < ApplicationRecord
     original_week_ids = week_ids
     return nil if next_year_week_ids.empty?
 
-
-    self.skip_enough_weeks_validation = true
     clean_or_fake_contact_phone
 
     internship_offer = duplicate
@@ -352,13 +350,28 @@ class InternshipOffer < ApplicationRecord
     internship_offer.skip_enough_weeks_validation = true
 
     self.week_ids = original_week_ids - next_year_week_ids
-    self.hidden_duplicate = true
 
-    save
-    unpublish!
+    if weeks.empty?
+      print('o')
+      update_columns(hidden_duplicate: true, published_at: nil)
+    else
+      self.hidden_duplicate = true
+      self.skip_enough_weeks_validation = true
+      raise StandardError, "2-erreur: #{errors.full_messages}} on ##{id}" unless valid?
+
+      save
+      unpublish!
+    end
+
     # next year internship_offer
+    raise StandardError, "1-erreur: #{internship_offer.errors.full_messages}}" unless internship_offer.valid?
+
     internship_offer.save
     internship_offer
+  end
+
+  def search_for_offers_with_no_weeks
+    InternshipOffer.where.not(id: InternshipOfferWeek.select(:internship_offer_id))
   end
 
   def shown_as_masked?
