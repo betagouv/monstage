@@ -19,14 +19,13 @@ class PagesController < ApplicationController
                 allow_other_host: true
   end
 
-
   def flyer
     respond_to do |format|
       format.html
       format.pdf do
         send_data(
-          File.read(Rails.root.join("public", "MS3_Flyer_2022.pdf")),
-          filename: "MS3E_flyer_2022.pdf",
+          File.read(Rails.root.join('public', 'MS3_Flyer_2022.pdf')),
+          filename: 'MS3E_flyer_2022.pdf',
           type: 'application/pdf',
           disposition: 'inline'
         )
@@ -39,8 +38,8 @@ class PagesController < ApplicationController
   end
 
   def student_landing
-    @internship_offers = offers_with_sector.last(3)
+    @internship_offers = offers_with_sector.published.last(3)
   end
-  alias_method :school_management_landing, :student_landing
-  alias_method :statistician_landing, :student_landing
+  alias school_management_landing student_landing
+  alias statistician_landing student_landing
 end
