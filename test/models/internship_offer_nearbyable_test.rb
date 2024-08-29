@@ -32,8 +32,8 @@ class InternshipOfferNearbyableTest < ActiveSupport::TestCase
       longitude: @coordinates_paris[:longitude]
     ).to_a
     assert_equal 6, result.count
-    assert_equal [@offer_paris, @offer_chatillon, @offer_bordeaux, @offer_pithiviers, @offer_verneuil, @offer_melun],
-                 result.to_a
+    assert_equal [@offer_paris.id, @offer_chatillon.id, @offer_bordeaux.id, @offer_pithiviers.id, @offer_verneuil.id, @offer_melun.id],
+                 result.map(&:id)
   end
 
   test 'scope :nearby_and_ordered' do

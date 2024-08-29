@@ -447,7 +447,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rexml (3.3.0)
+    rexml (3.3.6)
       strscan
     rgeo (3.0.1)
     rgeo-activerecord (7.0.1)
@@ -651,7 +651,7 @@ DEPENDENCIES
   webpacker
 
 RUBY VERSION
-   ruby 3.3.0p0
+   ruby 3.3.2p78
 
 BUNDLED WITH
    2.5.4
