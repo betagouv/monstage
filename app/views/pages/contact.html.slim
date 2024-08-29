@@ -12,4 +12,5 @@
           = " "
           = link_to "centre d'aide", helpdesk_url, title: "Centre d'aide de la plateforme monstagedetroisieme.fr"
 
-#feedback-form data-controller='contact-page'
+#feedback-form 
+  iframe title="Formulaire de contact" src="https://plugins.crisp.chat/urn:crisp.im:contact-form:0/contact/#{ENV['CRISP_FORM_ID']}" referrerpolicy="origin" sandbox="allow-forms allow-popups allow-scripts allow-same-origin" width="100%" height="600px" frameborder="0"
