@@ -9,7 +9,7 @@ module ApplicationHelper
   end
 
   def helpdesk_url
-    'https://zammad.mon-stage-de-troisieme.incubateur.anct.gouv.fr/help/fr-fr'
+    'https://monstagedetroisieme.crisp.help/fr/'
   end
 
   def custom_dashboard_controller?(user:)
