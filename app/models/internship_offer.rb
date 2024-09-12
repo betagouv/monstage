@@ -96,7 +96,7 @@ class InternshipOffer < ApplicationRecord
                       message: 'Le numéro de téléphone doit contenir des caractères chiffrés uniquement' },
             on: :create
 
-  validates :weeks, presence: true
+  validates :weeks, presence: true, unless: proc { |u| u.published_at.nil? }
   validate :check_missing_seats_or_weeks, if: :user_update?, on: :update
 
   # Scopes
@@ -336,7 +336,7 @@ class InternshipOffer < ApplicationRecord
   end
 
   def split_in_two
-    # TODO move this to a task
+    # TODO: move this to a task
     # self is the older one
     # internship_offer the new one
     original_week_ids = week_ids
