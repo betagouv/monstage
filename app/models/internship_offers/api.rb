@@ -85,6 +85,10 @@ module InternshipOffers
       where(offers_ar[:id].not_in(full_offers_ids))
     }
 
+    scope :filter_when_max_candidates_reached, lambda {
+      InternshipOffer.all
+    }
+
     def init
       self.is_public ||= false
       super
