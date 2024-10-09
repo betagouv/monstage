@@ -12,7 +12,7 @@
 
   - elsif @confirmable_user&.confirmed_at
     .fr-alert.fr-alert--success
-      h3.fr-alert__title= "Votre compte est déjà confirmé (#{user.email})"
+      h3.fr-alert__title= "Votre compte est déjà confirmé (#{user.anonymized_email})"
       br
       = "Veuillez vous "
       = link_to "connecter", new_user_session_path(email: user.email)
