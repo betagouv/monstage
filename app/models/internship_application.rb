@@ -27,7 +27,8 @@ class InternshipApplication < ApplicationRecord
     transfered
     examined
     validated_by_employer
-    approved ]
+    approved
+  ]
 
   attr_accessor :sgid
 
@@ -55,9 +56,6 @@ class InternshipApplication < ApplicationRecord
 
   paginates_per PAGE_SIZE
 
-  # Validations
-  validate :check_contact_uniqueness
-
   # Callbacks
   after_create :update_student_profile
 
@@ -84,11 +82,11 @@ class InternshipApplication < ApplicationRecord
     simple_duration = InternshipApplication::EXPIRATION_DURATION
     extended_duration = simple_duration + InternshipApplication::EXTENDED_DURATION
     expiration_not_extended_states.where('submitted_at < :date', date: simple_duration.ago)
-      .or(examined.where('submitted_at < :date', date: extended_duration.ago))
+                                  .or(examined.where('submitted_at < :date', date: extended_duration.ago))
   }
 
   scope :filtering_discarded_students, lambda {
-    joins(:student).where(student: {discarded_at: nil})
+    joins(:student).where(student: { discarded_at: nil })
   }
 
   #
@@ -122,53 +120,51 @@ class InternshipApplication < ApplicationRecord
       .order('orderable_aasm_state')
   }
 
-
   scope :no_date_index, lambda {
     where.not(aasm_state: [:drafted])
-    .includes(
-      :student,
-      :internship_offer
-    ).default_order
+         .includes(
+           :student,
+           :internship_offer
+         ).default_order
   }
 
-  scope :with_date_index, ->(internship_offer:){
+  scope :with_date_index, lambda { |internship_offer:|
     joins(internship_offer_week: :internship_offer)
-    .where('internship_offers.id = ?', internship_offer.id)
-    .where.not('internship_applications.aasm_state = ?', 'drafted')
-    .includes(:student, :internship_offer)
+      .where('internship_offers.id = ?', internship_offer.id)
+      .where.not('internship_applications.aasm_state = ?', 'drafted')
+      .includes(:student, :internship_offer)
   }
 
-  scope :through_teacher, ->(teacher:) {
+  scope :through_teacher, lambda { |teacher:|
     joins(student: :class_room).where('users.class_room_id = ?', teacher.class_room_id)
   }
 
-  scope :with_active_students, lambda{
+  scope :with_active_students, lambda {
     joins(:student).where('users.discarded_at is null')
   }
 
-  scope :not_drafted, ->{ where.not(aasm_state: 'drafted') }
+  scope :not_drafted, -> { where.not(aasm_state: 'drafted') }
 
   scope :approved_or_signed, lambda {
     applications = InternshipApplication.arel_table
-    where(applications[:aasm_state].in(['approved', 'signed']))
+    where(applications[:aasm_state].in(%w[approved signed]))
   }
 
   scope :pending_for_employers, lambda {
     applications = InternshipApplication.arel_table
-    where(applications[:aasm_state].in(['submitted', 'read_by_employer']))
+    where(applications[:aasm_state].in(%w[submitted read_by_employer]))
   }
 
   scope :current_school_year, lambda {
     where(created_at: SchoolYear::Current.new.beginning_of_period..SchoolYear::Current.new.end_of_period)
   }
 
-
   #
   # Other stuffs
   #
-  scope :default_order, ->{ order(updated_at: :desc) }
+  scope :default_order, -> { order(updated_at: :desc) }
   scope :for_user, ->(user:) { where(user_id: user.id) }
-  scope :not_by_id, ->(id:) { where.not(id: id) }
+  scope :not_by_id, ->(id:) { where.not(id:) }
 
   scope :weekly_framed, -> { where(type: InternshipApplications::WeeklyFramed.name) }
 
@@ -177,7 +173,6 @@ class InternshipApplication < ApplicationRecord
   def deliver_later_with_additional_delay
     yield.deliver_later(wait: 1.second)
   end
-
 
   aasm do
     state :drafted, initial: true
@@ -198,30 +193,30 @@ class InternshipApplication < ApplicationRecord
       transitions from: :drafted,
                   to: :submitted,
                   after: proc { |*_args|
-        update!("submitted_at": Time.now.utc)
-        deliver_later_with_additional_delay do
-          EmployerMailer.internship_application_submitted_email(internship_application: self)
-        end
-        setSingleApplicationReminderJobs
-      }
+                    update!("submitted_at": Time.now.utc)
+                    deliver_later_with_additional_delay do
+                      EmployerMailer.internship_application_submitted_email(internship_application: self)
+                    end
+                    setSingleApplicationReminderJobs
+                  }
     end
 
     event :read do
       transitions from: :submitted, to: :read_by_employer,
                   after: proc { |*_args|
-        update!("read_at": Time.now.utc)
-      }
+                    update!("read_at": Time.now.utc)
+                  }
     end
 
     event :examine do
       transitions from: %i[submitted read_by_employer],
                   to: :examined,
                   after: proc { |*_args|
-        update!("examined_at": Time.now.utc)
-        deliver_later_with_additional_delay do
-          StudentMailer.internship_application_examined_email(internship_application: self)
-        end
-      }
+                    update!("examined_at": Time.now.utc)
+                    deliver_later_with_additional_delay do
+                      StudentMailer.internship_application_examined_email(internship_application: self)
+                    end
+                  }
     end
 
     event :transfer do
@@ -229,7 +224,7 @@ class InternshipApplication < ApplicationRecord
                   to: :transfered,
                   after: proc { |*_args|
                     update!("transfered_at": Time.now.utc)
-      }
+                  }
     end
 
     event :employer_validate do
@@ -243,7 +238,7 @@ class InternshipApplication < ApplicationRecord
                   to: :validated_by_employer,
                   after: proc { |*_args|
                     update!("validated_by_employer_at": Time.now.utc, aasm_state: :validated_by_employer)
-                    self.reload
+                    reload
                     after_employer_validation_notifications
                     CancelValidatedInternshipApplicationJob.set(wait: 15.days).perform_later(internship_application_id: id)
                   }
@@ -268,7 +263,7 @@ class InternshipApplication < ApplicationRecord
       transitions from: from_states,
                   to: :canceled_by_student_confirmation,
                   after: proc { |*_args|
-                    if employer_aware_states.include?(self.aasm_state)
+                    if employer_aware_states.include?(aasm_state)
                       # Employer need to be notified
                       EmployerMailer.internship_application_approved_for_an_other_internship_offer(internship_application: self).deliver_later
                     end
@@ -306,11 +301,11 @@ class InternshipApplication < ApplicationRecord
                   after: proc { |*_args|
                            update!("canceled_at": Time.now.utc)
                            if student.email.present?
-                              deliver_later_with_additional_delay do
-                                StudentMailer.internship_application_canceled_by_employer_email(internship_application: self)
-                              end
+                             deliver_later_with_additional_delay do
+                               StudentMailer.internship_application_canceled_by_employer_email(internship_application: self)
+                             end
                            end
-                           self.internship_agreement&.destroy
+                           internship_agreement&.destroy
                          }
     end
 
@@ -329,24 +324,24 @@ class InternshipApplication < ApplicationRecord
                                internship_application: self
                              )
                            end
-                           self.internship_agreement&.destroy
+                           internship_agreement&.destroy
                          }
     end
 
     event :expire do
-      transitions from: %i[submitted  read_by_employer examined validated_by_employer],
+      transitions from: %i[submitted read_by_employer examined validated_by_employer],
                   to: :expired,
                   after: proc { |*_args|
-        update!(expired_at: Time.now.utc)
-      }
+                    update!(expired_at: Time.now.utc)
+                  }
     end
 
     event :expire_by_student do
       transitions from: %i[validated_by_employer read_by_employer examined submitted drafted],
                   to: :expired_by_student,
                   after: proc { |*_args|
-        update!(expired_at: Time.now.utc)
-      }
+                    update!(expired_at: Time.now.utc)
+                  }
     end
   end
 
@@ -362,20 +357,20 @@ class InternshipApplication < ApplicationRecord
   end
 
   def setSingleApplicationReminderJobs
-    if student.internship_applications.count == 1
-      Triggered::SingleApplicationReminderJob.set(wait: 2.days).perform_later(student.id)
-      Triggered::SingleApplicationSecondReminderJob.set(wait: 5.days).perform_later(student.id)
-    end
+    return unless student.internship_applications.count == 1
+
+    Triggered::SingleApplicationReminderJob.set(wait: 2.days).perform_later(student.id)
+    Triggered::SingleApplicationSecondReminderJob.set(wait: 5.days).perform_later(student.id)
   end
 
   def student_approval_notifications
     main_teacher = student.main_teacher
     arg_hash = {
       internship_application: self,
-      main_teacher: main_teacher
+      main_teacher:
     }
     school_manager_presence = student&.school&.school_manager&.present?
-    if type == "InternshipApplications::WeeklyFramed" && school_manager_presence
+    if type == 'InternshipApplications::WeeklyFramed' && school_manager_presence
       create_agreement if employer.agreement_signatorable?
       if main_teacher.present?
         deliver_later_with_additional_delay do
@@ -390,7 +385,7 @@ class InternshipApplication < ApplicationRecord
   end
 
   def self.from_sgid(sgid)
-    GlobalID::Locator.locate_signed( sgid)
+    GlobalID::Locator.locate_signed(sgid)
   end
 
   def self.with_employer_explanations_states
@@ -398,7 +393,7 @@ class InternshipApplication < ApplicationRecord
   end
 
   def after_employer_validation_notifications
-    if type == "InternshipApplications::WeeklyFramed" && student.main_teacher.present?
+    if type == 'InternshipApplications::WeeklyFramed' && student.main_teacher.present?
       deliver_later_with_additional_delay do
         MainTeacherMailer.internship_application_validated_by_employer_email(self)
       end
@@ -413,8 +408,9 @@ class InternshipApplication < ApplicationRecord
 
   def generate_token
     return if access_token.present?
+
     self.access_token = SecureRandom.hex(10)
-    self.save
+    save
   end
 
   def create_agreement
@@ -426,7 +422,7 @@ class InternshipApplication < ApplicationRecord
     agreement.save!
 
     EmployerMailer.internship_application_approved_with_agreement_email(
-      internship_agreement: internship_agreement
+      internship_agreement:
     ).deliver_later
   end
 
@@ -442,7 +438,7 @@ class InternshipApplication < ApplicationRecord
   def internship_application_aasm_message_builder(aasm_target:)
     case self
     when InternshipApplications::WeeklyFramed
-      InternshipApplicationAasmMessageBuilders::WeeklyFramed.new(internship_application: self, aasm_target: aasm_target)
+      InternshipApplicationAasmMessageBuilders::WeeklyFramed.new(internship_application: self, aasm_target:)
     else
       raise 'can not build aasm message for this kind of internship_application'
     end
@@ -459,8 +455,8 @@ class InternshipApplication < ApplicationRecord
   def previous_student_phone
     student.internship_applications
            .where.not(student_phone: nil)
-            &.last
-            &.student_phone
+           &.last
+           &.student_phone
   end
 
   def previous_student_email
@@ -484,16 +480,16 @@ class InternshipApplication < ApplicationRecord
 
     self.student_phone = nil
     self.student_email = nil
-    self.save
+    save
   end
 
   def short_target_url(sgid = nil)
     options = Rails.configuration.action_mailer.default_url_options
     target = dashboard_students_internship_application_url(
-                student_id: student.id,
-                id: id,
-                **options
-             )
+      student_id: student.id,
+      id:,
+      **options
+    )
     target = "#{target}?student_id=#{student.id}"
     target = "#{target}&sgid=#{sgid}" if sgid
     UrlShrinker.short_url(url: target, user_id: student.id)
@@ -506,7 +502,7 @@ class InternshipApplication < ApplicationRecord
 
   # Used for prettier links in rails_admin
   def title
-    "Candidature de " + student_name
+    'Candidature de ' + student_name
   end
 
   def cancel_all_pending_applications
@@ -538,7 +534,7 @@ class InternshipApplication < ApplicationRecord
       field :aasm_state, :state
       field :week do
         pretty_value do
-          bindings[:object].internship_offer.is_a?(InternshipOffers::WeeklyFramed) ? value : ""
+          bindings[:object].internship_offer.is_a?(InternshipOffers::WeeklyFramed) ? value : ''
         end
       end
     end
@@ -568,18 +564,8 @@ class InternshipApplication < ApplicationRecord
     %w[read_by_employer examined validated_by_employer]
   end
 
-  def check_contact_uniqueness
-    if student_email && User.where.not(id: student.id).exists?(email: student_email)
-      errors.add(:student_email, 'Cet email est déjà utilisé')
-    end
-
-    if student_phone && User.where.not(id: student.id).exists?(phone: "+33#{student_phone}")
-      errors.add(:student_phone, 'Ce numéro de téléphone est déjà utilisé')
-    end
-  end
-
   def update_student_profile
-    student.update( 
+    student.update(
       phone: student.phone || "+33#{student_phone}",
       email: student.email || student_email
     )

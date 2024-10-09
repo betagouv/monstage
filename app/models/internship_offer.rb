@@ -156,8 +156,8 @@ class InternshipOffer < ApplicationRecord
     where('last_date > :now', now: Time.now)
   }
 
-  scope :filter_when_max_candidtes_reached, lambda {
-    all
+  scope :filter_when_max_candidates_reached, lambda {
+    InternshipOffer.none
   }
 
   scope :weekly_framed, lambda {
@@ -185,19 +185,6 @@ class InternshipOffer < ApplicationRecord
     full_offers_ids = InternshipOffers::WeeklyFramed.fulfilled.pluck(:id)
 
     where(offers_ar[:id].not_in(full_offers_ids))
-  }
-
-  # Retourner toutes les offres qui ont au moins une semaine de libre ???
-  scope :filter_when_max_candidtes_reached, lambda {
-    offer_weeks_ar = InternshipOfferWeek.arel_table
-    offers_ar      = InternshipOffer.arel_table
-
-    joins(:internship_offer_weeks)
-      .select(offers_ar[Arel.star], offers_ar[:id].count)
-      .left_joins(:internship_applications)
-      .where(offer_weeks_ar[:blocked_applications_count].lt(offers_ar[:max_students_per_group]))
-      .where(offers_ar[:id].not_in(InternshipOffers::WeeklyFramed.fulfilled.pluck(:id)))
-      .group(offers_ar[:id])
   }
 
   scope :specific_school_year, lambda { |school_year:|
