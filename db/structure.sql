@@ -738,7 +738,8 @@ CREATE TABLE public.internship_applications (
     dunning_letter_count integer DEFAULT 0,
     magic_link_tracker integer DEFAULT 0,
     access_token character varying(25),
-    transfered_at timestamp(6) without time zone
+    transfered_at timestamp(6) without time zone,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL
 );
 
 
@@ -2613,6 +2614,13 @@ CREATE INDEX index_internship_applications_on_user_id ON public.internship_appli
 
 
 --
+-- Name: index_internship_applications_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_internship_applications_on_uuid ON public.internship_applications USING btree (uuid);
+
+
+--
 -- Name: index_internship_applications_on_week_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3439,6 +3447,7 @@ SET search_path TO "$user", public;
 INSERT INTO "schema_migrations" (version) VALUES
 ('20240808094927'),
 ('20240627152436'),
+('20240625141243'),
 ('20240624201910'),
 ('20240620123704'),
 ('20240205142849'),

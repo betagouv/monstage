@@ -19,6 +19,6 @@ div.modal.sign-modal id="#{sign_application_modal_id(internship_application)}" t
       .modal-footer.actions
         button type="button" class="fr-btn" data-dismiss="modal" Annuler
 
-        = link_to dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application, transition: :signed!), method: :patch, class: 'fr-btn btn-sm' do
+        = link_to dashboard_internship_offer_internship_application_path(internship_application.internship_offer, uuid: internship_application.uuid, transition: :signed!), method: :patch, class: 'fr-btn btn-sm' do
           = "Valider la convention"
 

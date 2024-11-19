@@ -20,7 +20,7 @@ module Dashboard::InternshipOffers
       employer, internship_offer = create_employer_and_offer
       internship_application = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
       sign_in(employer)
-      visit dashboard_internship_offer_internship_application_path(internship_offer, internship_application)
+      visit dashboard_internship_offer_internship_application_path(internship_offer, uuid: internship_application.uuid)
       click_on 'Etudier'
       text = find("#internship_application_examined_message").text
       find("#internship_application_examined_message").click.set("#{text} (test)")
@@ -35,7 +35,7 @@ module Dashboard::InternshipOffers
       employer, internship_offer = create_employer_and_offer
       internship_application = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
       sign_in(employer)
-      visit dashboard_internship_offer_internship_application_path(internship_offer, internship_application)
+      visit dashboard_internship_offer_internship_application_path(internship_offer, uuid: internship_application.uuid)
       click_on 'Refuser'
       find("#internship_application_rejected_message").click.set("(test ata test)")
       click_button 'Confirmer'
@@ -51,7 +51,7 @@ module Dashboard::InternshipOffers
       employer, internship_offer = create_employer_and_offer
       internship_application = create(:weekly_internship_application, :submitted, internship_offer: internship_offer)
       sign_in(employer)
-      visit dashboard_internship_offer_internship_application_path(internship_offer, internship_application)
+      visit dashboard_internship_offer_internship_application_path(internship_offer, uuid: internship_application.uuid)
       click_on 'Accepter'
       click_button 'Confirmer'
       assert internship_application.reload.validated_by_employer?
@@ -107,7 +107,7 @@ module Dashboard::InternshipOffers
           internship_application = create(:weekly_internship_application, :submitted, internship_offer: internship_offer, student: student)
           sign_in(employer)
 
-          visit dashboard_internship_offer_internship_application_path(internship_offer, internship_application)
+          visit dashboard_internship_offer_internship_application_path(internship_offer, uuid: internship_application.uuid)
           click_on 'Accepter'
           click_button 'Confirmer'
           assert internship_application.reload.validated_by_employer?
@@ -127,7 +127,7 @@ module Dashboard::InternshipOffers
           sign_out(other_student)
 
           sign_in(employer)
-          visit dashboard_internship_offer_internship_application_path(internship_offer, other_internship_application)
+          visit dashboard_internship_offer_internship_application_path(internship_offer, uuid: other_internship_application.uuid)
           assert_select('button', text: 'Accepter', count: 0)
         end
       end

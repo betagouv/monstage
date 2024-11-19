@@ -11,11 +11,11 @@ module InternshipApplications
       internship_application = create(:weekly_internship_application, :drafted, internship_offer: internship_offer)
       sign_in(internship_application.student)
       get internship_offer_internship_application_path(internship_offer,
-                                                       internship_application)
+                                                       uuid: internship_application.uuid)
       assert_response :success
       assert_select 'title', 'Ma candidature | Monstage'
 
-      assert_select "form[action=\"#{internship_offer_internship_application_path(internship_offer, internship_application, transition: :submit!)}\"]"
+      assert_select "form[action=\"#{internship_offer_internship_application_path(internship_offer, uuid: internship_application.uuid, transition: :submit!)}\"]"
       assert_select "#submit_application_form[method='post'] input[name='_method'][value='patch']"
       assert_select '.student-email', internship_application.student_email
       assert_select '.student-phone', internship_application.student_phone
@@ -30,9 +30,9 @@ module InternshipApplications
       internship_application = create(:weekly_internship_application, :drafted, internship_offer: internship_offer, student: student)
       sign_in(main_teacher)
       get internship_offer_internship_application_path(internship_offer,
-                                                       internship_application)
+                                                       uuid: internship_application.uuid)
       assert_response :success
-      assert_select "form[action=\"#{internship_offer_internship_application_path(internship_offer, internship_application, transition: :submit!)}\"]"
+      assert_select "form[action=\"#{internship_offer_internship_application_path(internship_offer, uuid: internship_application.uuid, transition: :submit!)}\"]"
       assert_select "#submit_application_form[method='post'] input[name='_method'][value='patch']"
     end
 
@@ -41,7 +41,7 @@ module InternshipApplications
       internship_application = create(:weekly_internship_application, :drafted, internship_offer: internship_offer)
       sign_in(create(:student))
       get internship_offer_internship_application_path(internship_offer,
-                                                       internship_application)
+                                                       uuid: internship_application.uuid)
       assert_response :redirect
     end
   end

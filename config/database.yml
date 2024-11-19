@@ -23,7 +23,7 @@ default: &default
 
 development:
   <<: *default
-  database: monstage
+  database: monstage_3e
   read_timeout: 1
   write_timeout: 1  
 
