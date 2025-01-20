@@ -7,7 +7,7 @@ module Services
       result = fetch_data
       result = second_try if result.nil?
       result = third_try if result.nil?
-      return nil if result&.empty?
+      return nil if result.try(:empty?)
       return nil unless result.is_a?(Hash)
 
       result.reject! { |_k, value| value == '' }
