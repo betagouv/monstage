@@ -38,7 +38,7 @@
                 = prez.human_state[:label]
             td.text-center style="width: 100px;" data-controller="toggle-activate"
               = form_with( model: internship_application,
-                            url: set_to_read_dashboard_internship_offer_internship_application_path(prez.internship_offer, internship_application),
+                            url: set_to_read_dashboard_internship_offer_internship_application_path(prez.internship_offer, uuid: internship_application.uuid),
                             scope: :internship_application,
                             data: { turbo: false },
                             method: :PATCH) do |f|

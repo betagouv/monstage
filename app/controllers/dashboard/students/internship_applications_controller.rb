@@ -31,7 +31,7 @@ module Dashboard
           redirect_to(
             dashboard_students_internship_application_path(
                         student_id: @current_student.id,
-                        id: @internship_application.id)
+                        uuid: @internship_application.uuid)
           ) and return
         else
            authenticate_user!
@@ -52,7 +52,7 @@ module Dashboard
         else
           increase_dunning_letter_count
           EmployerMailer.resend_internship_application_submitted_email(internship_application: @internship_application).deliver_now
-          redirect_to dashboard_students_internship_application_path(student_id: @current_student.id, id: @internship_application.id),
+          redirect_to dashboard_students_internship_application_path(student_id: @current_student.id, uuid: @internship_application.uuid),
                       notice: "Votre candidature a bien été renvoyée"
         end
       end
@@ -68,7 +68,7 @@ module Dashboard
       end
 
       def set_internship_application
-        @internship_application = @current_student.internship_applications.find(params[:id])
+        @internship_application = @current_student.internship_applications.find_by(uuid: params[:uuid])
       end
 
       def increase_dunning_letter_count

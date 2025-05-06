@@ -31,7 +31,7 @@
               p class="fr-mt-1w fr-badge fr-badge--sm fr-badge--#{prez.human_state[:badge]} fr-badge--no-icon"
                 = prez.human_state[:label]
             td
-              = link_to dashboard_internship_offer_internship_application_path(internship_application.internship_offer.id.to_i, internship_application),
+              = link_to dashboard_internship_offer_internship_application_path(internship_application.internship_offer.id.to_i, uuid: internship_application.uuid),
                         class: 'fr-raw-link d-flex flex-row' do
                 span.fr-icon-eye-line.fr-icon--sm aria-hidden="true"
                 .fr-pl-1w Voir
