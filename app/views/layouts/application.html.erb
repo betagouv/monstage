@@ -26,9 +26,6 @@
       <header role="banner" class="custom-navbar">
         <div class="col px-0">
           <%= render "layouts/navbar" %>
-          <% if can?(:subscribe_to_webinar, current_user_or_visitor) %>
-            <%= render 'layouts/webinar_banner' %>
-          <% end %>
         </div>
       </header>
 

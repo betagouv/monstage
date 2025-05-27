@@ -74,10 +74,8 @@ class Ability
     end
     can %i[read], InternshipOffer
     can %i[create delete], Favorite
-    can :apply, InternshipOffer do |internship_offer|
-      student_can_apply?(student: user, internship_offer:)
-    end
-    can %i[submit_internship_application update show internship_application_edit],
+
+    can %i[show],
         InternshipApplication do |internship_application|
       internship_application.student.id == user.id
     end
@@ -219,16 +217,14 @@ class Ability
     can :duplicate, InternshipOffer do |internship_offer|
       duplicable?(internship_offer:, user:)
     end
-    can %i[create see_tutor], InternshipOffer
-    can %i[read update discard publish], InternshipOffer, employer_id: user.team_members_ids
+    can %i[see_tutor], InternshipOffer
+    can %i[read discard publish], InternshipOffer, employer_id: user.team_members_ids
     can %i[create], InternshipOfferInfo
     can %i[create], HostingInfo
     can %i[create], PracticalInfo
-    can %i[create], Organisation
     can %i[update edit renew], InternshipOfferInfo, employer_id: user.team_members_ids
     can %i[update edit renew], HostingInfo, employer_id: user.team_members_ids
     can %i[update edit renew], PracticalInfo, employer_id: user.team_members_ids
-    can %i[update edit], Organisation, employer_id: user.team_members_ids
     can %i[create], Tutor
     can %i[index update], InternshipApplication
     can %i[show transfer], InternshipApplication do |internship_application|
